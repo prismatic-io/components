@@ -9,13 +9,17 @@ The intent behind making these available is that our customers can leverage thes
 
 ## Contribution Policy
 
-Prismatic is not currently prepared to accept community contribution on these components. You are welcome to fork this repository and build upon any of the components within, but pull requests are not available to anyone outside the organization.
+Prismatic does not accept community contribution on these components.
 
-If you would like to report a bug or make a feature request, please reach out to Prismatic customer support or your account manager.
+You are welcome to fork this repository and build upon any of the components within, but pull requests are not available to anyone outside the organization.
 
 ## Modification and Support Policy
 
 As with any custom code running on the Prismatic platform, any modified version of these components is unsupported by Prismatic and entirely the creator's responsibility.
+
+## Feature Requests and Bug Reports
+
+If you would like to report a bug or make a feature request, please reach out to Prismatic customer support or your account manager.
 
 ## What is Prismatic?
 
