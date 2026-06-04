@@ -1,0 +1,56 @@
+The Webhook trigger receives alert notifications from [Datadog monitors](https://docs.datadoghq.com/monitors/). When a monitor changes state (e.g., from OK to Alert), Datadog sends an HTTP POST to the configured webhook URL with details about the alert.
+
+#### How It Works
+
+1. **On Instance Deploy**: The trigger automatically creates a webhook integration in Datadog pointing to the instance's webhook URL.
+2. **Monitor Configuration**: Configure Datadog monitors to notify `@webhook-<name>` where `<name>` matches the Webhook Name configured in the trigger.
+3. **On Alert**: When a monitor triggers, Datadog sends the alert payload to the webhook URL.
+4. **On Instance Deletion**: The trigger removes the webhook integration from Datadog.
+
+#### Event Types
+
+<details>
+<summary>Alert Transitions (5)</summary>
+
+| Alert Transition | Description |
+| --- | --- |
+| **Triggered** | Monitor threshold exceeded, alert fires |
+| **Recovered** | Monitor returned to normal state |
+| **Re-Notified** | Ongoing alert re-notification |
+| **No Data** | Monitor reports no data received |
+| **Warn** | Monitor entered warning state |
+
+</details>
+
+Refer to [Datadog's monitor notification documentation](https://docs.datadoghq.com/monitors/notify/) for details on configuring monitor alerts.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "ALERT_ID": "12345678",
+  "ALERT_METRIC": "system.load.1",
+  "ALERT_QUERY": "avg(last_5m):avg:system.load.1{host:my-host} > 5",
+  "ALERT_SCOPE": "host:my-host",
+  "ALERT_STATUS": "Triggered",
+  "ALERT_TITLE": "CPU load is high on my-host",
+  "ALERT_TRANSITION": "Triggered",
+  "ALERT_TYPE": "metric alert",
+  "DATE": "2024-01-15 10:30:00 UTC",
+  "HOSTNAME": "my-host",
+  "LINK": "https://app.datadoghq.com/monitors/12345678",
+  "ORG_NAME": "My Organization",
+  "TAGS": "environment:production,region:us-east-1"
+}
+```
+
+</details>
+
+#### Notes
+
+- The **Webhook Name** must be unique within the Datadog organization.
+- After deploying, add `@webhook-<name>` to the monitor's notification message in Datadog.
+- Custom payloads can use Datadog template variables like `$ALERT_TITLE`, `$HOSTNAME`, `$TAGS`, etc.

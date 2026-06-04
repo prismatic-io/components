@@ -1,0 +1,79 @@
+To connect to Google Shopping (Content API for Shopping), create an OAuth 2.0 application in the Google Cloud Console and configure the required scopes.
+
+For more information about Google's OAuth 2.0 implementation, refer to the [Google Identity Platform documentation](https://developers.google.com/identity/protocols/oauth2).
+
+#### Prerequisites
+
+- A Google Cloud account with access to the [Google API Console](https://console.cloud.google.com/)
+- A Google Cloud project (create one if needed)
+- Billing enabled on the project (required for some API features)
+
+#### Setup Steps
+
+1. Navigate to the [Google API Console](https://console.cloud.google.com/) and select or create a project.
+2. Enable the Content API for Shopping:
+   - Navigate to **APIs & Services** > **Library**
+   - Search for "Content API for Shopping"
+   - Select the API and click **Enable**
+3. Configure the OAuth consent screen:
+   - Navigate to **APIs & Services** > **OAuth consent screen**
+   - Select the appropriate user type (**Internal** for organization-only access or **External** for public access)
+   - Fill in the required fields:
+     - **App name**: Enter the application or company name
+     - **User support email**: Provide a support contact email
+     - **Developer contact information**: Add contact details
+   - Click **Save and Continue**
+4. Add OAuth scopes:
+   - Click **Add or Remove Scopes**
+   - Search for "Content API for Shopping"
+   - Select the following scope:
+     - `https://www.googleapis.com/auth/content` - View and manage data for Google Shopping
+   - Click **Update** and then **Save and Continue**
+5. Create OAuth 2.0 credentials:
+   - Navigate to **APIs & Services** > **Credentials**
+   - Click **Create Credentials** and select **OAuth client ID**
+   - Under **Application type**, select **Web application**
+   - Enter a name for the OAuth client
+   - Under **Authorized redirect URIs**, click **Add URI** and enter: <OauthCallbackUrl />
+   - Click **Create**
+6. Copy the generated **Client ID** and **Client Secret** - these values will be used to configure the connection.
+
+To retrieve the Client ID and Secret later, navigate to **APIs & Services** > **Credentials** and select the OAuth 2.0 client from the **OAuth 2.0 Client IDs** section.
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the OAuth 2.0 client
+- For **Scopes**, use the following value:
+  ```
+  https://www.googleapis.com/auth/content
+  ```
+  - Refer to the [Google Content API OAuth scopes documentation](https://developers.google.com/identity/protocols/oauth2/scopes#content) for additional scope information
+
+#### App Verification
+
+Google requires OAuth apps that request access to user data to pass a verification review before being deployed at scale. This process ensures the app complies with Google's API Services User Data Policy, accurately represents its functionality, and handles user data responsibly.
+
+Google OAuth apps pass through three stages before they are ready for production use.
+
+**Testing (unpublished):** The app is only accessible to users manually added as test users in the OAuth consent screen. Up to 100 test users are allowed — all other users receive an error. This is the expected state during initial development.
+
+**Published, unverified:** After publishing the app, all Google users can authenticate. However, for sensitive scopes, users see a **"This app isn't verified"** warning. Users can proceed by clicking **Advanced** → **Go to [app name] (unsafe)**, but this warning reduces trust and may be blocked by organizations with strict Google Workspace policies.
+
+**Verified:** Google has reviewed and approved the app. No warning is shown. Verification is required before deploying to production users.
+
+#### Publishing the App
+
+Publishing is required before any users outside the test list can authenticate:
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), navigate to **APIs & Services** → **OAuth consent screen**
+2. Click **PUBLISH APP** and confirm
+
+#### Requesting Verification
+
+The scopes used by this component are classified as **sensitive** by Google. Submitting for verification removes the "This app isn't verified" warning:
+
+1. On the **OAuth consent screen**, click **Prepare for verification**
+2. Provide a privacy policy URL, authorized domain, and app logo
+3. Submit for review — Google typically responds within several weeks
+
+Refer to [Google's OAuth consent screen documentation](https://support.google.com/cloud/answer/10311615) for the full verification requirements.

@@ -1,0 +1,37 @@
+The **New and Updated Sites** trigger polls the System Surveyor API for newly created or modified sites on a configured schedule.
+
+#### How It Works
+
+1. On the first execution, the trigger initializes a timestamp cursor and returns no results
+2. On subsequent executions, the trigger retrieves all sites modified after the stored cursor timestamp
+3. If new or modified sites are found, the trigger returns them and updates the cursor to the current time
+4. If no changes are detected, the trigger reports no changes and updates the cursor
+
+#### Configuration
+
+| Field | Description |
+| --- | --- |
+| **Connection** | A configured System Surveyor connection. |
+
+The polling schedule is configured at the integration level and determines how frequently the trigger checks for changes.
+
+#### Returned Data
+
+The trigger returns an object containing an array of site records that have been created or modified since the last poll:
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": [
+    {
+      "id": 123,
+      "name": "Site Name",
+      "modified_at": 1700000000
+    }
+  ]
+}
+```
+
+</details>

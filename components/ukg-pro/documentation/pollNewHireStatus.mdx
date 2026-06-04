@@ -1,0 +1,144 @@
+The **New Hire Status** polling trigger checks for new and updated new hire onboarding records in UKG Pro on a configured schedule. This trigger monitors new hire additions, status changes, and onboarding progress updates for employees going through the pre-employment onboarding process.
+
+For more information, refer to the [Get New Hires In Progress API documentation](https://developer.ukg.com/hcm/reference/get_talent-onboarding-v2-tenants-tenantidentifier-new-hires-in-progress) and [Get Completed New Hires API documentation](https://developer.ukg.com/hcm/reference/get_talent-onboarding-v2-tenants-tenantidentifier-new-hires-completed).
+
+#### How It Works
+
+The trigger polls the UKG Pro Talent Onboarding API endpoints to track new hire records across both in-progress and recently completed statuses. It maintains a state map of each new hire's status and progress percentage to detect changes between poll intervals.
+
+**State Management**
+
+The trigger stores a status map in state with the following structure:
+
+<details>
+<summary>State Map Structure</summary>
+
+```typescript
+{
+  lastStatusMap: {
+    "NH-12347": {
+      status: "In Progress",
+      progress: 40
+    },
+    "NH-12348": {
+      status: "In Progress",
+      progress: 100
+    }
+  },
+  lastPollTime: "2024-01-15T10:30:00.000Z"
+}
+```
+
+</details>
+
+**Change Detection**
+
+The trigger compares the current state of each new hire against the stored state to identify three types of changes:
+
+1. **NewHireAdded** - A new hire that wasn't in the previous state map
+2. **StatusChange** - The status field changed (e.g., "In Progress" → "Completed")
+3. **ProgressUpdate** - The onboarding progress percentage changed without a status change
+
+**Multi-Endpoint Polling**
+
+To capture new hires transitioning from in-progress to completed status, the trigger polls two endpoints:
+- `/new-hires/in-progress` - Active onboarding records
+- `/new-hires/completed` - Recently completed onboarding (last 50 records)
+
+This dual-endpoint approach ensures status changes are detected even when a new hire completes onboarding between poll intervals.
+
+#### Configuration
+
+This trigger requires no additional configuration inputs beyond the UKG Pro connection. It automatically polls all new hire records accessible to the authenticated tenant.
+
+#### Returned Data
+
+The trigger returns an object with detected changes:
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": [
+    {
+      "newHireId": "NH-12347",
+      "firstName": "Robert",
+      "lastName": "Johnson",
+      "changeType": "NewHireAdded",
+      "currentStatus": "In Progress",
+      "currentProgress": 40,
+      "detectedAt": "2024-01-15T10:30:00.000Z"
+    },
+    {
+      "newHireId": "NH-12348",
+      "firstName": "Alice",
+      "lastName": "Williams",
+      "changeType": "ProgressUpdate",
+      "previousStatus": "In Progress",
+      "currentStatus": "In Progress",
+      "previousProgress": 85,
+      "currentProgress": 100,
+      "detectedAt": "2024-01-15T10:30:00.000Z"
+    },
+    {
+      "newHireId": "NH-12346",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "changeType": "StatusChange",
+      "previousStatus": "In Progress",
+      "currentStatus": "Completed",
+      "previousProgress": 100,
+      "currentProgress": 100,
+      "detectedAt": "2024-01-15T10:30:00.000Z"
+    }
+  ],
+  "inProgressCount": 8,
+  "completedCount": 50,
+  "pollTime": "2024-01-15T10:30:00.000Z"
+}
+```
+
+</details>
+
+<details>
+<summary>Payload Fields</summary>
+
+Each change object includes:
+
+- **newHireId** - Unique identifier for the new hire
+- **firstName** / **lastName** - New hire's name
+- **changeType** - Type of change detected
+- **previousStatus** - Status before the change (for StatusChange and ProgressUpdate)
+- **currentStatus** - Current status
+- **previousProgress** - Progress percentage before the change (0-100)
+- **currentProgress** - Current progress percentage (0-100)
+- **detectedAt** - Timestamp when the change was detected
+
+The response also includes summary counts:
+- **inProgressCount** - Total number of in-progress new hires in current poll
+- **completedCount** - Number of completed new hires retrieved (up to 50)
+- **pollTime** - Timestamp of the poll execution
+
+</details>
+
+#### New Hire Statuses
+
+UKG Pro new hires can have various statuses including:
+- **In Progress** - Onboarding is active
+- **Completed** - Onboarding has been completed, new hire is now an employee
+- **Canceled** - Onboarding was canceled (not tracked by this trigger)
+
+#### Onboarding Progress Tracking
+
+The `overallPercentComplete` field tracks completion across onboarding tasks:
+- Personal information forms
+- Tax forms (W-4, state withholding)
+- Direct deposit setup
+- I-9 employment verification
+- Benefits enrollment
+- Company policy acknowledgments
+- Equipment requests
+- Custom onboarding tasks
+
+A new hire with 100% progress may still have status "In Progress" until the onboarding coordinator marks it as completed.

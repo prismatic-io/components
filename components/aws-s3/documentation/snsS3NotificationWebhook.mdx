@@ -1,0 +1,53 @@
+The **Webhook** trigger receives event notifications from Amazon S3 via [Amazon SNS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/EventNotifications.html) when changes occur in a monitored S3 bucket. It handles both subscription confirmation and notification events automatically.
+
+For real-time notifications without polling delays, use this trigger instead of the [New and Updated Files](#pollchangesfilestrigger) polling trigger.
+
+#### How It Works
+
+1. When an SNS topic subscribes to the flow URL, AWS sends a `SubscriptionConfirmation` message
+2. The trigger automatically confirms the subscription by requesting the `SubscribeURL`
+3. After confirmation, the trigger receives `Notification` messages containing S3 event data
+4. Messages are routed to the appropriate branch based on type
+
+#### Branch Logic
+
+This trigger uses branching to route different message types:
+
+- **Subscribe**: Routes SNS subscription confirmation messages (automatically confirmed)
+- **Notification**: Routes S3 event notifications containing bucket and object information
+
+#### Configuration
+
+To configure S3 event notifications:
+
+1. Create an SNS topic using the **Create Topic For S3 Event Notification** action
+2. Update the topic policy using the **Update Topic Policy For S3 Event Notification** action
+3. Subscribe to the topic using the **Subscribe to Topic** action with the flow URL as the endpoint
+4. Configure bucket notifications using the **Bucket SNS Event Trigger Configuration** action
+
+A full list of supported S3 event types is available in the [Event notification types documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/notification-how-to-event-types-and-destinations.html).
+
+#### Returned Data
+
+The trigger returns the parsed SNS message in the payload body. The `Message` field contains a JSON string with S3 event records that can be parsed for bucket name, object key, and event type.
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "Type": "Notification",
+  "MessageId": "22b80b92-fdea-4c2c-8f9d-bdfb0c7bf324",
+  "TopicArn": "arn:aws:sns:us-east-2:123456789012:MyTopic",
+  "Subject": "Amazon S3 Notification",
+  "Message": "{\"Records\":[{\"eventName\":\"ObjectCreated:Put\",\"s3\":{\"bucket\":{\"name\":\"my-bucket\"},\"object\":{\"key\":\"test-file.txt\"}}}]}"
+}
+```
+
+</details>
+
+#### Best Practices
+
+- **Region**: The SNS topic must be in the same AWS region as the S3 bucket
+- **Topic Type**: Use standard SNS topics; FIFO topics are not supported for S3 notifications
+- **Delivery**: Notifications are delivered at least once but may arrive out of order or as duplicates

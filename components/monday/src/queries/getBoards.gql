@@ -1,0 +1,11 @@
+#import "../fragments/boardMinimalFields.gql"
+query GetBoards($limit: Int, $page: Int) {
+  boards(limit: $limit, page: $page) {
+    ...BoardMinimalFields
+    state
+    board_folder_id
+    creator {
+      id
+    }
+  }
+}

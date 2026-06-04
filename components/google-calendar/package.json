@@ -1,0 +1,34 @@
+{
+  "name": "@prismatic-io/google-calendar",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && webpack",
+    "test": "echo 'no tests'",
+    "build:testapp": "npm run build",
+    "publish": "npm run build && prism components:publish"
+  },
+  "dependencies": {
+    "@googleapis/calendar": "^9.7.9",
+    "@prismatic-io/spectral": "10.17.1",
+    "mime-types": "^2.1.35",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.11",
+    "@types/gapi": "0.0.42",
+    "@types/jest": "^30.0.0",
+    "@types/mime-types": "^2.1.1",
+    "@types/node": "^18.19.120",
+    "@types/uuid": "^9.0.0",
+    "copy-webpack-plugin": "^13.0.0",
+    "jest": "^30.0.5",
+    "ts-jest": "^29.4.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1"
+  }
+}

@@ -1,0 +1,21 @@
+fragment InventoryItemDetails on InventoryItem {
+  id
+  sku
+  createdAt
+  updatedAt
+  requiresShipping
+  unitCost {
+    amount
+    currencyCode
+  }
+  countryCodeOfOrigin
+  provinceCodeOfOrigin
+  harmonizedSystemCode
+  tracked
+  countryHarmonizedSystemCodes(first: 250) {
+    nodes {
+      countryCode
+      harmonizedSystemCode
+    }
+  }
+}

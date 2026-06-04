@@ -1,0 +1,54 @@
+Snowflake supports key-pair authentication using a public-private key pair. This authentication method provides enhanced security for programmatic access to Snowflake resources.
+
+For detailed information, refer to the [Snowflake key-pair authentication guide](https://docs.snowflake.com/en/developer-guide/sql-api/authenticating#using-key-pair-authentication).
+
+#### Prerequisites
+
+- Active Snowflake account with appropriate user permissions
+- Access to a command line environment or tool capable of generating RSA key pairs
+- Ability to run SQL commands in Snowflake to assign the public key to a user
+
+#### Setup Steps
+
+1. Generate a public-private key pair using OpenSSL or another key generation tool. The following command generates an encrypted private key:
+
+```bash
+openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out rsa_key.p8
+```
+
+This creates a private key file (e.g., `rsa_key.p8`).
+
+2. Generate the corresponding public key:
+
+```bash
+openssl rsa -in rsa_key.p8 -pubout -out rsa_key.pub
+```
+
+3. Remove the header and footer lines from the public key file, then concatenate the remaining lines into a single line. The public key should be formatted as a continuous string without line breaks.
+
+4. In Snowflake, assign the public key to the user account by running the following SQL command. Replace `USERNAME` with the actual username and `PUBLIC_KEY_STRING` with the formatted public key:
+
+```sql
+ALTER USER USERNAME SET RSA_PUBLIC_KEY='PUBLIC_KEY_STRING';
+```
+
+5. Verify the public key assignment by running:
+
+```sql
+DESCRIBE USER USERNAME;
+```
+
+In the output, verify that the **RSA_PUBLIC_KEY_FP** property displays the fingerprint of the assigned public key.
+
+#### Configure the Connection
+
+Create a connection of type **Key Pair Authentication** and enter:
+
+- **Account Identifier**: The Snowflake account identifier (e.g., `myorg-account123`)
+- **Snowflake Username**: The username associated with the public key
+- **Private Key**: The full content from the `rsa_key.p8` file (include the header and footer lines)
+- **Passphrase**: The private key passphrase (if the key is encrypted)
+
+:::note[Private Key Security]
+Private key encryption is highly recommended for production integrations. Keep keys secure and never share them.
+:::

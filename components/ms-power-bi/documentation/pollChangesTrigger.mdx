@@ -1,0 +1,56 @@
+This trigger polls the [Power BI REST API](https://learn.microsoft.com/en-us/rest/api/power-bi/) for new records in a selected resource type on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches records from the selected Power BI resource using the appropriate change detection strategy:
+   - **Timestamp-based** (Datasets): records are compared against the last successful poll time using the `createdDate` field
+   - **ID-based** (Groups, Reports): records are compared against the set of previously known IDs; only newly appearing records are captured
+3. All identified records are classified as **created**; this trigger does not track updates
+4. The trigger updates its internal state after each poll — storing the poll timestamp for Datasets and the current set of known IDs for Groups and Reports
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Power BI connection used to authenticate API requests
+- **Resource Type**: The Power BI resource to monitor. Available options:
+
+  | Resource | Change Detection | Tracks New | Tracks Updated |
+  |----------|-----------------|------------|---------------|
+  | Groups (Workspaces) | ID-based | Yes | No |
+  | Datasets | Timestamp (`createdDate`) | Yes | No |
+  | Reports | ID-based | Yes | No |
+
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. The `updated` array is always empty, as this trigger only detects new records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "cfafbeb1-8037-4d0c-896e-a46fb27ff229",
+        "name": "Q1 Sales Analysis",
+        "createdDate": "2024-01-16T10:30:00Z",
+        "webUrl": "https://app.powerbi.com/groups/me/reports/cfafbeb1-8037-4d0c-896e-a46fb27ff229"
+      }
+    ],
+    "updated": []
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- For Groups and Reports: the first poll establishes a baseline snapshot of all known IDs. No records are returned on the first execution — subsequent polls detect additions against that baseline
+- For Datasets: the first poll uses the poll start time as the cutoff; records with a `createdDate` after that point are returned on subsequent polls
+- Refer to the [Power BI REST API documentation](https://learn.microsoft.com/en-us/rest/api/power-bi/) for rate limit details and available fields

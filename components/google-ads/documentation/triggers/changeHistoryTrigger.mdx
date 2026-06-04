@@ -1,0 +1,66 @@
+The Account Change History trigger checks for account modifications with user attribution on a configured schedule. Unlike the New and Updated Campaigns trigger which monitors only campaigns, this trigger captures changes across all resource types using the Google Ads [Change Event API](https://developers.google.com/google-ads/api/docs/change-event).
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 15 minutes)
+2. Query the change_event resource for modifications since the last poll
+3. Return change details including what changed, who made the change, and when
+4. Update state with the current timestamp for the next poll
+
+#### Configuration
+
+**Required Inputs:**
+- **Connection** - Google Ads OAuth2 connection
+- **Customer ID** - The Google Ads client account ID (format: `111-222-4444` or `1112224444`)
+
+**Optional Inputs:**
+- **Manager Customer ID** - Manager account ID when accessing sub-accounts
+- **Resource Types** - Filter for specific resource types:
+  - CAMPAIGN, CAMPAIGN_BUDGET, CAMPAIGN_CRITERION
+  - AD_GROUP, AD_GROUP_AD, AD_GROUP_CRITERION
+  - ASSET, CUSTOMER, and more
+  - Leave empty to monitor all resource types
+- **Include User Info** - Include user email and client type in results (default: true)
+
+#### Returned Data
+
+The trigger returns an object containing change events and metadata. When no changes are detected, returns `polledNoChanges: true`.
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": {
+    "changes": [
+      {
+        "changeEvent": {
+          "resourceName": "customers/6577008345/changeEvents/1764141874897602~0~1",
+          "changeDateTime": "2025-11-26 01:24:34.897602",
+          "changeResourceType": "CAMPAIGN_BUDGET",
+          "changeResourceName": "customers/6577008345/campaignBudgets/15170398017",
+          "clientType": "GOOGLE_ADS_WEB_CLIENT",
+          "userEmail": "user@example.com",
+          "oldResource": {
+            "campaignBudget": {}
+          },
+          "newResource": {
+            "campaignBudget": {
+              "resourceName": "customers/6577008345/campaignBudgets/15170398017",
+              "amountMicros": "481350000"
+            }
+          },
+          "resourceChangeOperation": "CREATE"
+        }
+      }
+    ],
+    "changeCount": 1,
+    "timeRange": {
+      "start": "2025-11-26 01:11:50",
+      "end": "2025-11-26 01:30:17"
+    }
+  }
+}
+```
+
+</details>

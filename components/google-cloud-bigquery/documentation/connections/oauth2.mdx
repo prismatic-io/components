@@ -1,0 +1,78 @@
+The Google BigQuery component authenticates requests through the Google Cloud Platform (GCP) OAuth 2.0 service. A GCP OAuth 2.0 app is required so the integration can authenticate and perform Google BigQuery tasks on the customer's behalf.
+
+#### Prerequisites
+
+- A Google Developer account is required - sign up at https://console.cloud.google.com/
+
+#### Setup Steps
+
+1. Open up the [Google BigQuery Console](https://console.cloud.google.com/bigquery)
+2. Click **CREATE PROJECT** to create a new GCP project, or select an existing project.
+3. The system will prompt to enable **Google BigQuery** for the project. Click **ENABLE**.
+4. On the sidebar, select **Credentials**.
+5. An OAuth 2.0 app includes a "Consent Screen" (the page that asks "Do you want to allow (Your Company) to access Google BigQuery on your behalf?"). Click **CONFIGURE CONSENT SCREEN**.
+   1. The app will be externally available to end users, so choose a **User Type** of **External**.
+   2. Fill out the OAuth consent screen with an app name (company or product name), support email, app logo, domain, etc.
+   3. Domains can be ignored for now.
+   4. On the next page, add these scopes to the app (these may not all be necessary, and should match the scopes in the connection definition):
+      - `https://www.googleapis.com/auth/bigquery`
+      - `https://www.googleapis.com/auth/bigquery.insertdata`
+      - `https://www.googleapis.com/auth/cloud-platform`
+      - `https://www.googleapis.com/auth/cloud-platform.read-only`
+      - `https://www.googleapis.com/auth/devstorage.full_control`
+      - `https://www.googleapis.com/auth/devstorage.read_only`
+      - `https://www.googleapis.com/auth/devstorage.read_write`
+   5. Enter some **test users** for testing purposes. The app will only work for those testing users until it is "verified" by Google.
+      When ready for verification (verification includes the privacy policy statement, etc), click **PUBLISH APP** on the **OAuth consent screen**. This will allow end users to authorize the integration to access their Google BigQuery data.
+6. Once the "Consent Screen" is configured, open the **Credentials** page from the sidebar again.
+7. Click **+CREATE CREDENTIALS** and select **OAuth client ID**.
+   1. Under **Application type** select **Web application**.
+   2. Under **Authorized redirect URIs** enter the OAuth 2.0 callback URL: <OauthCallbackUrl />
+   3. Click **CREATE**.
+8. Take note of the **Client ID** and **Client Secret** that are generated.
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0** and enter:
+
+- **Client ID**: Enter the Client ID from the OAuth application
+- **Client Secret**: Enter the Client Secret from the OAuth application
+- **Scopes**: The default [Google BigQuery](https://developers.google.com/identity/protocols/oauth2/scopes#bigquery) scopes should be kept:
+
+| https://www.googleapis.com/auth/bigquery                 | View and manage data in Google BigQuery and see the email address for the Google Account             |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| https://www.googleapis.com/auth/bigquery.insertdata      | Insert data into Google BigQuery                                                                           |
+| https://www.googleapis.com/auth/cloud-platform           | See, edit, configure, and delete Google Cloud data and see the email address for the Google Account. |
+| https://www.googleapis.com/auth/cloud-platform.read-only | View data across Google Cloud services and see the email address of the Google Account               |
+| https://www.googleapis.com/auth/devstorage.full_control  | Manage data and permissions in Cloud Storage and see the email address for the Google Account        |
+| https://www.googleapis.com/auth/devstorage.read_only     | View data in Google Cloud Storage                                                                     |
+| https://www.googleapis.com/auth/devstorage.read_write    | Manage data in Cloud Storage and see the email address of the Google Account                         |
+
+#### App Verification
+
+Google requires OAuth apps that request access to user data to pass a verification review before being deployed at scale. This process ensures the app complies with Google's API Services User Data Policy, accurately represents its functionality, and handles user data responsibly.
+
+Google OAuth apps pass through three stages before they are ready for production use.
+
+**Testing (unpublished):** The app is only accessible to users manually added as test users in the OAuth consent screen. Up to 100 test users are allowed — all other users receive an error. This is the expected state during initial development.
+
+**Published, unverified:** After publishing the app, all Google users can authenticate. However, for sensitive scopes, users see a **"This app isn't verified"** warning. Users can proceed by clicking **Advanced** → **Go to [app name] (unsafe)**, but this warning reduces trust and may be blocked by organizations with strict Google Workspace policies.
+
+**Verified:** Google has reviewed and approved the app. No warning is shown. Verification is required before deploying to production users.
+
+#### Publishing the App
+
+Publishing is required before any users outside the test list can authenticate:
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), navigate to **APIs & Services** → **OAuth consent screen**
+2. Click **PUBLISH APP** and confirm
+
+#### Requesting Verification
+
+The scopes used by this component are classified as **sensitive** by Google. Submitting for verification removes the "This app isn't verified" warning:
+
+1. On the **OAuth consent screen**, click **Prepare for verification**
+2. Provide a privacy policy URL, authorized domain, and app logo
+3. Submit for review — Google typically responds within several weeks
+
+Refer to [Google's OAuth consent screen documentation](https://support.google.com/cloud/answer/10311615) for the full verification requirements.

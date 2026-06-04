@@ -1,0 +1,12 @@
+#import "../../fragments/LocationDetails.gql"
+query ListLocations($first: Int!, $cursor: String) {
+  locations(first: $first, includeInactive: true, after: $cursor) {
+    nodes {
+      ...LocationDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

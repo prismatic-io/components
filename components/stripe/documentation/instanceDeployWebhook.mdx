@@ -1,0 +1,69 @@
+The Webhook Events trigger automatically manages the [Stripe webhook subscription](https://docs.stripe.com/webhooks) for the instance. Unlike manual webhook setups that require configuration in the Stripe dashboard, this trigger handles the entire webhook lifecycle.
+
+Incoming webhook signatures are validated automatically using the secret returned when the subscription is created.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook endpoint in the connected Stripe account pointing to the instance's unique webhook URL. If a webhook with the same URL and event set already exists, the existing webhook is reused to prevent duplication.
+- **On Instance Deletion**: The trigger automatically removes the webhook endpoint from the connected Stripe account.
+- **On Event Receipt**: The trigger validates the `Stripe-Signature` header against the stored webhook secret before passing the payload to the flow. Validation can be disabled for manual testing.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Webhook Events**: One or more Stripe event types to subscribe to (e.g., `customer.created`, `invoice.paid`, `payment_intent.succeeded`). Refer to [Stripe event types](https://docs.stripe.com/api/events/types) for the complete list.
+- **Connection**: The Stripe connection used to create and manage the webhook subscription.
+- **Disable Webhook Validation**: When enabled, signature validation is skipped. This is useful for manually testing the trigger without a signed request. Defaults to `false`.
+
+#### Event Types
+
+Stripe supports a large number of event types organized by resource (customers, invoices, payment intents, charges, subscriptions, disputes, etc.). Each event has a name in the form `<resource>.<action>` (for example, `customer.created`, `invoice.payment_failed`, `payment_intent.succeeded`).
+
+Refer to the [Stripe event types reference](https://docs.stripe.com/api/events/types) for the complete and up-to-date list.
+
+#### Returned Data
+
+The trigger returns the verified Stripe event payload as received from the webhook request.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "payload": {
+    "headers": {
+      "stripe-signature": "t=1716397800,v1=..."
+    },
+    "body": {
+      "data": {
+        "id": "evt_1Ozr8j2eZvKYlo2C9X1zHnGw",
+        "object": "event",
+        "api_version": "2025-04-30.basil",
+        "created": 1716397800,
+        "type": "customer.created",
+        "data": {
+          "object": {
+            "id": "cus_OzrFakeCustomer01",
+            "object": "customer",
+            "email": "jane@example.com",
+            "name": "Jane Doe",
+            "created": 1716397800
+          }
+        },
+        "livemode": false,
+        "pending_webhooks": 1
+      }
+    }
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Signature validation uses Stripe's standard scheme as described in the [webhook documentation](https://docs.stripe.com/webhooks). The signing secret is stored automatically when the subscription is created.
+- The webhook endpoint URL is unique to each instance, so multiple instances can subscribe to the same Stripe account without colliding.

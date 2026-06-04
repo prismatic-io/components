@@ -1,0 +1,51 @@
+This action allows you to make requests to any HubSpot API endpoint.
+This is especially helpful for [search](https://developers.hubspot.com/docs/api/crm/search) endpoints, where objects may have custom properties that are unique to your customers.
+
+The data that you send to HubSpot can be dynamically generated in a [code](components/code.mdx) step.
+Then, you can pass the code step's results as an input reference to the `Data` input.
+For example, if you are using HubSpot's search API to search for HubSpot "deals" that have the name "Sample Deal" and are valued less than 100 dollars, you can create a code step that reads like this:
+
+```js
+module.exports = async ({ logger, configVars }, stepResults) => {
+  const data = {
+    filterGroups: [
+      {
+        filters: [
+          {
+            propertyName: "dealname",
+            operator: "EQ",
+            value: "Sample Deal",
+          },
+          {
+            propertyName: "amount",
+            operator: "LT",
+            value: "100",
+          },
+        ],
+      },
+    ],
+    properties: [
+      "hs_object_id",
+      "createdate",
+      "hubspot_owner_id",
+      "dealstage",
+      "amount",
+      "dealname",
+      "closedate",
+      "days_to_close",
+      "hs_analytics_source",
+      "hs_analytics_source_data_1",
+      "hs_analytics_source_data_2",
+      "hs_campaign",
+      "hs_closed_amount",
+      "hs_lastmodifieddate",
+      "dealtype",
+      "description",
+    ],
+  };
+
+  return { data };
+};
+```
+
+On the raw request step, enter `/crm/v3/objects/deals/search` as the `URL` input, `POST` as the `Method`, and reference the code step's `results` as the `Data` input.

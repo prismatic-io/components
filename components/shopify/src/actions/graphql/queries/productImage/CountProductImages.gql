@@ -1,0 +1,7 @@
+query CountProductImages($productId: ID!) {
+  product(id: $productId) {
+    mediaCount {
+      count
+    }
+  }
+}

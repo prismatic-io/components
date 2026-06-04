@@ -1,0 +1,23 @@
+While service principal authentication is the recommended method for authenticating with the Databricks REST API, personal access tokens (which are tied to specific users) can also be used.
+
+#### Prerequisites
+
+- A Databricks workspace account
+
+#### Setup Steps
+
+1. Open [Databricks Workspaces](https://accounts.cloud.databricks.com/workspaces) and select the workspace. Open the URL for the workspace (e.g., `https://dbc-00000000-aaaa.cloud.databricks.com`) and log in.
+1. From the top-right, click the user icon and select **Settings**.
+1. Under the **User > Developer** tab, select **Manage** under **Access tokens**.
+1. Click the **Generate New Token** button. Enter a description for the token and click **Generate**. Omit _Lifetime (days)_ to create a token that never expires.
+
+The token will look similar to `dap000000000000000000000000000000000`. Copy this token for use in the connection configuration.
+
+#### Configure the Connection
+
+Create a connection of type **Databricks Personal Access Token** and enter:
+
+- **Host**: The workspace endpoint (e.g., `dbc-REPLACE-ME.cloud.databricks.com`)
+- **Personal Access Token**: The token generated above
+
+See [Databricks personal access token authentication](https://docs.databricks.com/en/dev-tools/auth/pat.html) for more information.

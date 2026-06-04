@@ -1,0 +1,74 @@
+fragment CustomerDetails on Customer {
+  id
+  email
+  #accepts_marketing
+  createdAt
+  updatedAt
+  firstName
+  lastName
+  #orders_count
+  state
+  #total_spent
+  lastOrder {
+    id
+    name
+  }
+  note
+  verifiedEmail
+  multipassIdentifier
+  taxExempt
+  tags
+  #currency
+  phone
+  addresses {
+    id
+    #customer_id
+    firstName
+    lastName
+    company
+    address1
+    address2
+    city
+    province
+    country
+    zip
+    phone
+    name
+    provinceCode
+    countryCodeV2
+    #default
+  }
+  #accepts_marketing_updated_at
+  #marketing_opt_in_level
+  taxExemptions
+  emailMarketingConsent {
+    marketingState
+    marketingOptInLevel
+    consentUpdatedAt
+  }
+  smsMarketingConsent {
+    marketingState
+    marketingOptInLevel
+    consentUpdatedAt
+    consentCollectedFrom
+  }
+  #admin_graphql_api_id
+  defaultAddress {
+    id
+    #customer_id
+    firstName
+    lastName
+    company
+    address1
+    address2
+    city
+    province
+    country
+    zip
+    phone
+    name
+    provinceCode
+    countryCodeV2
+    #default
+  }
+}

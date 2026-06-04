@@ -1,0 +1,240 @@
+fragment DraftOrderDetails on DraftOrder {
+  id
+  note2
+  email
+  taxesIncluded
+  currencyCode
+  invoiceSentAt
+  createdAt
+  updatedAt
+  taxExempt
+  completedAt
+  name
+  status
+  lineItems(first: 250) {
+    nodes {
+      id
+      variant {
+        id
+      }
+      product {
+        id
+      }
+      title
+      variantTitle
+      sku
+      vendor
+      quantity
+      requiresShipping
+      taxable
+      isGiftCard
+      fulfillmentService {
+        type
+      }
+      #grams deprecated
+      weight {
+        unit
+        value
+      }
+      taxLines {
+        channelLiable
+        priceSet {
+          shopMoney {
+            amount
+            currencyCode
+          }
+        }
+        rate
+        ratePercentage
+        source
+        title
+      }
+      appliedDiscount {
+        title
+        value
+        valueType
+        description
+        amountSet {
+          shopMoney {
+            amount
+            currencyCode
+          }
+        }
+      }
+      name
+      #properties
+      custom
+      #price
+      originalUnitPriceSet {
+        shopMoney {
+          currencyCode
+          amount
+        }
+      }
+    }
+  }
+  shippingAddress {
+    firstName
+    address1
+    phone
+    city
+    zip
+    province
+    country
+    lastName
+    address2
+    company
+    latitude
+    longitude
+    name
+    countryCodeV2
+    provinceCode
+  }
+  billingAddress {
+    firstName
+    address1
+    phone
+    city
+    zip
+    province
+    country
+    lastName
+    address2
+    company
+    latitude
+    longitude
+    name
+    countryCodeV2
+    provinceCode
+  }
+  invoiceUrl
+  appliedDiscount {
+    description
+    value
+    title
+    amountSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+    valueType
+  }
+  order {
+    id
+  }
+  shippingLine {
+    title
+    custom
+    shippingRateHandle
+    originalPriceSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+    discountedPriceSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+  }
+  taxLines {
+    rate
+    ratePercentage
+    source
+    priceSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+    channelLiable
+    title
+  }
+  tags
+  #note_attributes
+  totalPriceSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+  }
+  subtotalPriceSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+  }
+  totalTaxSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+  }
+  paymentTerms {
+    dueInDays
+    paymentTermsName
+    paymentTermsType
+    overdue
+  }
+  customer {
+    id
+    email
+    #accepts_marketing
+    createdAt
+    updatedAt
+    firstName
+    lastName
+    numberOfOrders
+    state
+    amountSpent {
+      amount
+      currencyCode
+    }
+    lastOrder {
+      id
+      name
+    }
+    note
+    verifiedEmail
+    multipassIdentifier
+    taxExempt
+    tags
+    #currency
+    phone
+    #accepts_marketing_updated_at
+    #marketing_opt_in_level
+    taxExemptions
+    emailMarketingConsent {
+      marketingState
+      #opt_in_level
+      consentUpdatedAt
+    }
+    smsMarketingConsent {
+      marketingState
+      #opt_in_level
+      consentUpdatedAt
+      consentCollectedFrom
+    }
+    defaultAddress {
+      id
+      #customer_id
+      firstName
+      lastName
+      company
+      address1
+      address2
+      city
+      province
+      country
+      zip
+      phone
+      name
+      provinceCode
+      countryCodeV2
+      #default
+    }
+  }
+}

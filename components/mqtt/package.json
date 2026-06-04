@@ -1,0 +1,32 @@
+{
+  "name": "@prismatic-io/mqtt",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "0.0.2",
+  "main": "index.js",
+  "scripts": {
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "test": "echo 'no tests'"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "mqtt": "^5.7.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.4",
+    "@types/jest": "30.0.0",
+    "@types/node": "18.19.100",
+    "copy-webpack-plugin": "13.0.1",
+    "jest": "30.0.5",
+    "ts-jest": "29.4.1",
+    "ts-loader": "9.5.2",
+    "typescript": "5.9.2",
+    "webpack": "5.101.1",
+    "webpack-cli": "6.0.1"
+  }
+}

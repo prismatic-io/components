@@ -1,0 +1,36 @@
+A personal access token provides user-specific access to Airtable bases and can be used for testing integrations or for user-scoped operations.
+
+:::info[Personal Access Tokens vs OAuth 2.0]
+Personal access tokens are user-scoped and suitable for testing or personal automations. For production integrations where users need to authenticate with their own credentials, OAuth 2.0 is recommended.
+:::
+
+#### Prerequisites
+
+- An Airtable account with access to the bases that will be accessed
+
+#### Setup Steps
+
+To generate a personal access token:
+
+1. Log in to Airtable and navigate to [airtable.com/create/tokens](https://airtable.com/create/tokens).
+2. Click **Create new token**.
+3. Enter a descriptive **Token name** to identify the token's purpose.
+4. Under **Scopes**, select the permissions required for the integration. Refer to [Airtable's scopes documentation](https://airtable.com/developers/web/api/scopes) for details on available scopes.
+   - Common scopes include:
+     - `data.records:read` - Read records from bases
+     - `data.records:write` - Create, edit, and delete records
+     - `schema.bases:read` - Read base schema information
+     - `schema.bases:write` - Create and modify base schema
+5. Under **Access**, select the specific bases the token should have access to, or select **All current and future bases in all current and future workspaces** for broader access.
+6. Click **Create token**.
+7. Copy the token value immediately. The token will not be shown again after leaving the page.
+
+The token format will look similar to: `patAbCdEfGh1234567.1234567890abcdefghijklmnopqr`
+
+#### Configure the Connection
+
+- Enter the personal access token into the **API Key** field of the connection configuration.
+
+:::note[Token Security]
+Store the token securely. Personal access tokens do not expire but can be revoked at any time from the [token management page](https://airtable.com/create/tokens).
+:::

@@ -1,0 +1,48 @@
+This trigger polls the [WooCommerce REST API](https://woocommerce.github.io/woocommerce-rest-api-docs/) for new records of a selected resource type on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It queries WooCommerce for records created after the timestamp of the last poll, using the `after` parameter
+3. All records returned by the API are treated as newly created
+4. The trigger updates its internal state after each poll, recording the current timestamp for use in the next request
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The WooCommerce connection to authenticate API requests
+- **Resource Type**: The type of WooCommerce resource to monitor for new records
+
+| Resource | Tracks New | Tracks Updated |
+|----------|------------|---------------|
+| Orders | Yes | No |
+| Customers | Yes | No |
+| Products | Yes | No |
+| Coupons | Yes | No |
+
+#### Returned Data
+
+Returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 1234,
+        "date_created": "2024-11-10T10:30:00",
+        "status": "processing"
+      }
+    ],
+    "updated": []
+  }
+}
+```
+
+The `updated` array is always empty — this trigger does not track modifications to existing records.
+
+#### Notes
+
+- This trigger does not detect updates to existing records. Only records created after the last poll time are returned.
+- Records are fetched in ascending date order, up to 100 per page, with automatic pagination across all pages.

@@ -1,0 +1,92 @@
+fragment FulfillmentOrderDetails on FulfillmentOrder {
+  id
+  #shop_id
+  orderId
+  #assigned_location_id
+  requestStatus
+  status
+  supportedActions {
+    action
+  }
+  destination {
+    id
+    address1
+    address2
+    city
+    company
+    countryCode
+    email
+    firstName
+    lastName
+    phone
+    province
+    zip
+  }
+  lineItems(first: 250) {
+    nodes {
+      id
+      #shop_id
+      #fulfillment_order_id
+      totalQuantity
+      lineItem {
+        id
+      }
+      inventoryItemId
+      #fulfillable_quantity
+      variant {
+        id
+      }
+    }
+  }
+  internationalDuties {
+    incoterm
+  }
+  fulfillAt
+  fulfillBy
+  fulfillmentHolds {
+    reason
+    reasonNotes
+    displayReason
+    id
+    heldByRequestingApp
+  }
+  createdAt
+  updatedAt
+  deliveryMethod {
+    id
+    methodType
+    serviceCode
+    presentedName
+    brandedPromise {
+      name
+      handle
+    }
+    sourceReference
+    maxDeliveryDateTime
+    minDeliveryDateTime
+    additionalInformation {
+      instructions
+      phone
+    }
+  }
+  assignedLocation {
+    address1
+    address2
+    city
+    countryCode
+    location {
+      id
+    }
+    name
+    phone
+    province
+    zip
+  }
+  merchantRequests(first: 250) {
+    nodes {
+      message
+      requestOptions
+      kind
+    }
+  }
+}

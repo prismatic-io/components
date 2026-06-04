@@ -1,0 +1,45 @@
+To connect to Okta using OAuth 2.0 Authorization Code flow, create an OpenID Connect (OIDC) web application in the Okta Admin Console. This authentication method allows end users to authorize the integration to access Okta APIs on their behalf.
+
+For more information about OAuth 2.0 Authorization Code, refer to the [Okta documentation](https://developer.okta.com/docs/guides/implement-grant-type/authcode/main/).
+
+#### Prerequisites
+
+- An Okta tenant with administrative access
+- Administrative permissions to create OAuth applications
+
+#### Setup Steps
+
+1. Log into the Okta Admin Console (e.g., `https://dev-12345.okta.com/admin`)
+2. Navigate to **Applications** > **Applications** > **Create App Integration**
+3. Select **OIDC - OpenID Connect** as the sign-in method
+4. Select **Web Application** as the application type and click **Next**
+5. Configure the application settings:
+   - **App integration name**: Enter a descriptive name (e.g., "Okta Integration")
+   - **Grant type**: Ensure **Authorization Code** is selected
+   - **Sign-in redirect URIs**: Add the OAuth callback URL: <OauthCallbackUrl />
+   - **Controlled access**: Configure based on requirements (e.g., allow all users or specific groups)
+6. Click **Save** to create the application
+7. Navigate to the **Okta API Scopes** tab
+8. Grant the required API scopes by clicking **Grant** for each needed scope
+   - Refer to [Okta's scope documentation](https://developer.okta.com/docs/guides/implement-oauth-for-okta/main/#scopes-and-supported-endpoints) for available scopes
+9. Navigate back to the **General** tab
+10. Copy the **Client ID** and **Client secret** values
+
+:::note[Client Secret]
+The client secret may be hidden by default. Click **Show** to reveal and copy it. Store the secret securely as it provides access to the OAuth application.
+:::
+
+#### Configure the Connection
+
+- Enter the **Okta Domain** (e.g., `dev-12345.okta.com` or `org-name.okta.com`)
+- Enter the **Client ID** from the OAuth application
+- Enter the **Client Secret** from the OAuth application
+- Optionally, specify **Scopes** if custom scopes are required (note that API scopes are typically set on the OAuth application itself)
+
+:::note[Okta Domain Format]
+The Okta Domain should be entered without the `https://` protocol. For example, use `dev-12345.okta.com` instead of `https://dev-12345.okta.com`. The domain format depends on the Okta cloud environment. Refer to the [Okta API documentation](https://developer.okta.com/docs/reference/api-overview/) for the correct domain format.
+:::
+
+:::info[Scopes and Permissions]
+For OAuth 2.0 Authorization Code applications, API scopes are typically configured directly in the Okta OAuth application under the **Okta API Scopes** tab. The scopes determine which Okta APIs can be accessed by the integration. Ensure appropriate scopes are granted based on the integration requirements.
+:::

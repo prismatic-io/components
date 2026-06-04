@@ -1,0 +1,23 @@
+Create a connection of type **OAuth 2.0** to authenticate with the Zendesk Sell API using OAuth 2.0.
+
+#### Prerequisites
+
+- A Zendesk Sell account with administrator access
+
+#### Setup Steps
+
+1. Log in to the Zendesk Sell Dashboard at a URL similar to `https://{subdomain}.zendesk.com/sales/dashboards/main`.
+2. On the left-hand side toolbar, click **Settings**.
+3. Within the Settings section, navigate to **Integrations** > **OAuth**.
+4. Under the OAuth section, open **OAuth2 Settings**.
+5. In the **Developer apps** section, click **Add Developer App**.
+6. Complete the required fields for the app setup. Specify the Redirect URL as <OauthCallbackUrl />.
+7. Once the app has been added, select the **details** button associated with the app to retrieve the **Client ID** and **Client Secret**.
+
+#### Configure the Connection
+
+- For **Authorize URL**, the default value is `https://api.getbase.com/oauth2/authorize`. Update if using a custom Zendesk Sell instance.
+- For **Token URL**, the default value is `https://api.getbase.com/oauth2/token`. Update if using a custom Zendesk Sell instance.
+- For **Scopes**, the default value is `read write profile`. Adjust based on the required level of access.
+- Enter the **Client ID** obtained from the developer app details.
+- Enter the **Client Secret** obtained from the developer app details.

@@ -1,0 +1,24 @@
+When a Twilio account is created, an **Account String Identifier** (Account SID) and **Auth Token** are generated automatically.
+The Account SID and Auth Token can be used to authenticate with Twilio and send SMS messages.
+
+#### Prerequisites
+
+- A Twilio account with access to the [Twilio Console](https://console.twilio.com/)
+
+#### Setup Steps
+
+1. Sign in to the [Twilio Console](https://console.twilio.com/)
+2. From the **Account Info** panel on the dashboard, locate the **Account SID** (starts with `AC`) and the **Auth Token**
+3. Copy both values for use in the connection configuration
+
+#### Configure the Connection
+
+Create a connection of type **Basic Authentication** and enter the following values:
+
+- **Account SID**: The Twilio Account SID, which starts with `AC`
+- **Auth Token**: The Auth Token shown in the Twilio Console
+
+:::caution[Consider API Keys instead]
+For security reasons, the [API Key Connection](#apikeysecret) is recommended over Basic Authentication.
+API keys can be revoked independently, and auth tokens generated using API keys are short-lived.
+:::

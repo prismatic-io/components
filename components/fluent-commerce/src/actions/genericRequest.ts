@@ -1,0 +1,58 @@
+import merge from "lodash.merge";
+import { action, input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import { createFluentClient } from "../client";
+import { genericRequestExamplePayload } from "../examplePayloads";
+import { connectionInput } from "../inputs";
+
+const genericRequest = action({
+  display: {
+    label: "Generic GraphQL Request",
+    description: "Issue any GraphQL query or mutation with variables",
+  },
+  inputs: {
+    connection: connectionInput,
+    query: input({
+      label: "Query or Mutation",
+      type: "code",
+      required: true,
+      language: "graphql",
+      default: `{
+  me {
+    id
+    username
+    primaryEmail
+  }
+}`,
+      clean: util.types.toString,
+    }),
+    variables: input({
+      label: "Variables",
+      type: "string",
+      required: false,
+      collection: "keyvaluelist",
+      clean: (val: unknown) =>
+        util.types.keyValPairListToObject(val as KeyValuePair[]),
+    }),
+    variablesObject: input({
+      label: "Variables Object",
+      type: "code",
+      language: "json",
+      required: false,
+      clean: (value) => (value ? util.types.toObject(value) : {}),
+    }),
+  },
+  perform: async (context, params) => {
+    const client = await createFluentClient(
+      params.connection,
+      context.debug.enabled,
+    );
+    const data = await client.request(
+      params.query,
+      merge(params.variables, params.variablesObject),
+    );
+    return { data };
+  },
+  examplePayload: genericRequestExamplePayload,
+});
+
+export default { genericRequest };

@@ -1,0 +1,55 @@
+This trigger polls the [Algolia Search API](https://www.algolia.com/doc/rest-api/search/) for new and updated indices on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches all indices from the Algolia account
+3. Records are categorized as **created** or **updated** based on their `createdAt` and `updatedAt` timestamp fields, compared against the last successful poll time
+4. The trigger updates its internal state after each poll, storing the poll timestamp for use in the next execution
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Algolia connection used to authenticate API requests
+- **Show New Records**: When enabled, includes newly created indices in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified indices in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new indices and `updated` for modified indices.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "name": "products_v2",
+        "createdAt": "2024-01-15T10:30:00Z",
+        "updatedAt": "2024-01-15T10:30:00Z",
+        "entries": 0,
+        "dataSize": 0
+      }
+    ],
+    "updated": [
+      {
+        "name": "products",
+        "createdAt": "2024-01-01T08:00:00Z",
+        "updatedAt": "2024-01-16T14:22:00Z",
+        "entries": 15420,
+        "dataSize": 3145728
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- A record is classified as **created** if its `createdAt` timestamp exceeds the last poll time. If `createdAt` does not exceed the cutoff but `updatedAt` does, the record is classified as **updated**
+- On the first poll, the trigger uses the current time as the initial cutoff; no records are returned unless indices were created or updated in the same polling window

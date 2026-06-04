@@ -1,0 +1,14 @@
+[
+  {
+    "label": "MySQL Docs",
+    "href": "https://dev.mysql.com/doc/"
+  },
+  {
+    "label": "MySQL Release Notes",
+    "href": "https://dev.mysql.com/doc/relnotes/mysql/8.0/en/"
+  },
+  {
+    "label": "Node.js Client Docs",
+    "href": "https://sidorares.github.io/node-mysql2/docs"
+  }
+]

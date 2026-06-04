@@ -1,0 +1,12 @@
+#import "../../fragments/ProductDetails.gql"
+query ListProducts($first: Int!, $query: String, $cursor: String) {
+  products(first: $first, query: $query, after: $cursor) {
+    nodes {
+      ...ProductDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

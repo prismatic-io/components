@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview?view=graph-rest-1.0"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://developer.microsoft.com/en-us/graph/changelog"
+  }
+]

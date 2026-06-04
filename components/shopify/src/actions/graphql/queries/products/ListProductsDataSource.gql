@@ -1,0 +1,12 @@
+query ListProductsDataSource($first: Int!, $cursor: String) {
+  products(first: $first, after: $cursor) {
+    nodes {
+      id
+      title
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

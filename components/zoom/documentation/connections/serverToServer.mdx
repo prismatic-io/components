@@ -1,0 +1,67 @@
+This component uses Server to Server OAuth to connect to Zoom's API. Server to Server OAuth apps are designed for backend integrations that operate without user interaction, ideal for machine-to-machine authentication.
+
+For additional information, refer to [Zoom's Server to Server OAuth documentation](https://developers.zoom.us/docs/internal-apps/s2s-oauth/).
+
+#### Prerequisites
+
+- A Zoom account with administrative access
+- Permission to create apps in the [Zoom Marketplace](https://marketplace.zoom.us/)
+- Secure credential storage for Client ID, Client Secret, and Account ID
+
+#### Setup Steps
+
+1. Navigate to the [Zoom Marketplace](https://marketplace.zoom.us/) and log in
+2. Click **Develop** -> **Build App**
+3. Select **Server to Server OAuth App** as the app type
+4. Take note of the following credentials that are generated:
+   - **Client ID**: The app's unique identifier
+   - **Client Secret**: The app's secret key (must be kept secure)
+   - **Account ID**: The Zoom account identifier
+
+:::note[Finding the Account ID]
+The **Account ID** can be found in multiple locations:
+- In the app credentials section after creation
+- In the Zoom account settings under **Account Management** -> **Account Info**
+- In the Zoom Admin dashboard URL (the alphanumeric string after `/account/`)
+:::
+
+5. (Optional) In the **Features** section, configure Event Subscriptions if needed:
+   - Check the appropriate box
+   - Copy the **Secret Token** for webhook verification
+
+6. In the **Scopes** section, add the required scopes for the integration:
+   - `meeting:read:meeting:admin` - View all user meetings
+   - `meeting:write:meeting:admin` - Create and manage meetings
+   - `user:read:user:admin` - View user information
+   - `user:write:user:admin` - Manage user accounts
+   - `webinar:read:webinar:admin` - View webinar information
+   - `webinar:write:webinar:admin` - Create and manage webinars
+   - `cloud_recording:read:recording:admin` - View recordings
+
+   Refer to [Zoom's scope documentation](https://developers.zoom.us/docs/integrations/oauth-scopes/) for additional scope information.
+
+7. Review the app configuration and click **Activate your app**
+
+:::info[Server to Server Authentication]
+Unlike OAuth apps, Server to Server apps do not require user consent and are immediately active once created.
+:::
+
+#### Configure the Connection
+
+When creating a Zoom Server to Server connection in the integration:
+
+- Enter the **Client ID** from the Zoom app
+- Enter the **Client Secret** from the Zoom app
+- Enter the **Account ID** from the Zoom account
+
+:::warning[Credential Security]
+- Store the **Client Secret** securely and never expose it in client-side code
+- Rotate credentials periodically for enhanced security
+- Use environment variables or secure configuration management
+:::
+
+:::note[Rate Limiting]
+Server to Server apps are subject to Zoom's rate limiting policies. Monitor API usage and implement appropriate retry logic with exponential backoff.
+:::
+
+Save the connection to authenticate with Zoom.

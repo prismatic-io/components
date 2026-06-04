@@ -1,0 +1,34 @@
+To create an Airtable OAuth 2.0 connection, an OAuth integration must be registered in Airtable.
+
+#### Prerequisites
+
+- An Airtable account with permissions to create OAuth integrations
+
+#### Setup Steps
+
+1. Log in to Airtable and navigate to [airtable.com/create/oauth](https://airtable.com/create/oauth).
+2. Click **Register new OAuth integration**.
+3. Fill in the required fields:
+   - **App name**: A descriptive name for the integration
+   - **App description**: Brief description of the integration's purpose
+   - **Redirect URLs**: Enter <OauthCallbackUrl /> as the OAuth redirect URL
+4. Under **Scopes**, select the scopes required for the integration. Refer to [Airtable's OAuth scopes documentation](https://airtable.com/developers/web/api/scopes) for details on available scopes.
+   - Common scopes include:
+     - `data.records:read` - Read records from bases
+     - `data.records:write` - Create, edit, and delete records
+     - `schema.bases:read` - Read base schema information
+     - `schema.bases:write` - Create and modify base schema
+     - `webhook:manage` - Create and manage webhooks
+5. Click **Save** to create the integration.
+6. Copy the **Client ID** and **Client secret** values displayed on the integration details page.
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the OAuth integration.
+- For **Scopes**, enter the selected scopes as a space-separated list. For example:
+  ```
+  data.records:read data.records:write schema.bases:read webhook:manage
+  ```
+- The default scopes include common permissions for reading, writing, and managing webhooks. Adjust the scopes based on the specific requirements of the integration.
+
+The connection is now ready to authenticate with Airtable.

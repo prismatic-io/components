@@ -1,0 +1,12 @@
+#import "../../fragments/OrderDetails.gql"
+mutation CloseOrder($input: OrderCloseInput!) {
+  orderClose(input: $input) {
+    order {
+      ...OrderDetails
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

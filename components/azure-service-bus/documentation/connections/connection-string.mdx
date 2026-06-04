@@ -1,0 +1,17 @@
+[Connection String](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-get-started-with-queues?tabs=connection-string#get-the-connection-string)
+
+The Connection String authentication method is required for any integrations using the following actions:
+
+1.  Send Messages from Queue
+2.  Receive Messages from Queue
+
+Additionally, in an integration, ensure when using these actions, the connection is configured to the Connection String authentication type.
+
+Creating a new namespace automatically generates an initial Shared Access Signature (SAS) policy with primary and secondary keys, and primary and secondary connection strings that each grant full control over all aspects of the namespace. See [Service Bus authentication and authorization](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-get-started-with-queues?tabs=connection-string) for information about how to create rules with more constrained rights for regular senders and receivers.
+
+A client can use the connection string to connect to the Service Bus namespace. To copy the primary connection string for your namespace, follow these steps:
+
+1.  On the Service Bus Namespace page, select Shared access policies on the left menu.
+2.  On the Shared access policies page, select RootManageSharedAccessKey.
+
+In the Policy: RootManageSharedAccessKey window, select the copy button next to Primary Connection String, to copy the connection string to your clipboard for later use. Paste this value into the connection configuration of your integration.

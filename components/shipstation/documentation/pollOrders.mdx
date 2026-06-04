@@ -1,0 +1,42 @@
+This trigger polls [ShipStation](https://www.shipstation.com/docs/api/) for new and updated orders on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It queries the ShipStation Orders API for records modified since the last poll time
+3. Records are categorized as "new" or "updated" based on their `createDate` and `modifyDate` timestamps
+4. The trigger updates its internal state to track the last successful poll time
+
+#### Returned Data
+
+The trigger returns an object containing arrays for new and updated records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "newRecords": [
+      {
+        "orderId": 123456789,
+        "orderNumber": "TEST-001",
+        "orderStatus": "awaiting_shipment",
+        "createDate": "2024-01-15T10:30:00.0000000",
+        "modifyDate": "2024-01-15T10:30:00.0000000"
+      }
+    ],
+    "updatedRecords": [
+      {
+        "orderId": 987654321,
+        "orderNumber": "TEST-002",
+        "orderStatus": "shipped",
+        "createDate": "2024-01-10T09:00:00.0000000",
+        "modifyDate": "2024-01-16T14:22:00.0000000"
+      }
+    ]
+  }
+}
+```
+
+</details>

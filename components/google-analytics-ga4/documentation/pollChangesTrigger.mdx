@@ -1,0 +1,102 @@
+The **New and Updated Records** trigger checks for new and updated records in Google Analytics GA4 on a configured schedule. It uses the [Google Analytics Admin API](https://developers.google.com/analytics/devguides/config/admin/v1) to monitor accounts or properties.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It paginates the full set of records from the selected resource type — the GA4 Admin API does not support server-side timestamp filters, so all records are fetched and filtered client-side using each record's `createTime` and `updateTime` fields
+3. Records are categorized as **created** or **updated** based on those timestamps relative to the last poll time — records whose `createTime` exceeds the last poll time are classified as created; records whose `updateTime` exceeds the last poll time (and were not classified as created) are classified as updated
+4. On the first execution, the trigger initializes silently — `lastPolledAt` is set to the current time, so historical records do not flood the workflow on the very first poll
+5. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Google Analytics GA4 connection used to authenticate API requests
+- **Resource Type**: The type of records to monitor — `Accounts` or `Properties`
+- **Account ID**: The Google Analytics Account ID. Required only when **Resource Type** is set to `Properties` — properties are scoped to a parent account
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response — Accounts</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "name": "accounts/123456789",
+        "createTime": "2026-05-04T10:30:00.000Z",
+        "updateTime": "2026-05-04T10:30:00.000Z",
+        "displayName": "Acme Corporation",
+        "regionCode": "US"
+      }
+    ],
+    "updated": [
+      {
+        "name": "accounts/987654321",
+        "createTime": "2026-04-10T09:00:00.000Z",
+        "updateTime": "2026-05-04T14:22:00.000Z",
+        "displayName": "Global Industries Ltd",
+        "regionCode": "GB"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Example Response — Properties</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "name": "properties/111111111",
+        "parent": "accounts/123456789",
+        "createTime": "2026-05-04T10:30:00.000Z",
+        "updateTime": "2026-05-04T10:30:00.000Z",
+        "displayName": "Acme Marketing Site",
+        "industryCategory": "RETAIL",
+        "timeZone": "America/Los_Angeles",
+        "currencyCode": "USD",
+        "serviceLevel": "GOOGLE_ANALYTICS_STANDARD",
+        "account": "accounts/123456789",
+        "propertyType": "PROPERTY_TYPE_ORDINARY"
+      }
+    ],
+    "updated": [
+      {
+        "name": "properties/222222222",
+        "parent": "accounts/123456789",
+        "createTime": "2026-04-10T09:00:00.000Z",
+        "updateTime": "2026-05-04T14:22:00.000Z",
+        "displayName": "Global Industries Storefront",
+        "industryCategory": "SHOPPING",
+        "timeZone": "Europe/London",
+        "currencyCode": "GBP",
+        "serviceLevel": "GOOGLE_ANALYTICS_STANDARD",
+        "account": "accounts/123456789",
+        "propertyType": "PROPERTY_TYPE_ORDINARY"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The GA4 Admin API does not expose server-side timestamp filters on `accounts.list` or `properties.list`, so each poll fetches the full result set and filters client-side. For tenants with very large numbers of accounts or properties, factor this into the polling frequency
+- Both `Accounts` and `Properties` expose `createTime` and `updateTime` on every record, so both resource types support new and updated record detection
+- When **Resource Type** is `Properties`, the trigger lists properties under the selected **Account ID** using a `parent:accounts/{id}` filter — leaving **Account ID** blank with `Properties` selected results in an error
+- Refer to the [Google Analytics Admin API documentation](https://developers.google.com/analytics/devguides/config/admin/v1/rest) for rate limit details and the full schema for each resource type

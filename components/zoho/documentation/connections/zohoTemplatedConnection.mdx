@@ -1,0 +1,57 @@
+To connect to Zoho CRM or Zoho Books, create a Client application in the [Zoho Developer Console](https://api-console.zoho.com/).
+
+Zoho supports OAuth 2.0 authentication for both [Zoho CRM](https://www.zoho.com/crm/developer/docs/api/v3/oauth-overview.html) and [Zoho Books](https://www.zoho.com/books/api/v3/oauth/#overview) APIs. The same OAuth client can be configured to access multiple Zoho services by combining their scopes.
+
+#### Prerequisites
+
+- Access to the [Zoho Developer Console](https://api-console.zoho.com/)
+- A Zoho account with appropriate permissions to create OAuth clients
+- Knowledge of which Zoho region the account is hosted in (see [Zoho region information](https://accounts.zoho.com/oauth/serverinfo))
+
+#### Setup Steps
+
+1. Log in to the [Zoho Developer Console](https://api-console.zoho.com/)
+2. Click **ADD CLIENT**
+3. Select **Server-based Applications** as the client type
+4. Configure the client application:
+   - Enter a descriptive name in the **Client Name** field
+   - Enter the application homepage URL in the **Homepage URL** field
+   - Under **Authorized Redirect URIs**, add: <OauthCallbackUrl />
+5. Click **CREATE** to generate the client
+6. Copy the **Client ID** and **Client Secret** values displayed on the confirmation page
+
+For detailed information about creating OAuth clients, refer to the [Zoho OAuth client registration documentation](https://www.zoho.com/crm/developer/docs/api/v3/register-client.html).
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the Zoho Developer Console
+- Select the appropriate **Region URL** for the Zoho account's data center location:
+
+  - **United States**: `https://accounts.zoho.com`
+  - **Europe**: `https://accounts.zoho.eu`
+  - **India**: `https://accounts.zoho.in`
+  - **Australia**: `https://accounts.zoho.com.au`
+  - **Japan**: `https://accounts.zoho.jp`
+  - **United Kingdom**: `https://accounts.zoho.uk`
+  - **Canada**: `https://accounts.zohocloud.ca`
+  - **United Arab Emirates**: `https://accounts.zoho.ae`
+  - **Saudi Arabia**: `https://accounts.zoho.sa`
+
+  Refer to [Zoho's server information page](https://accounts.zoho.com/oauth/serverinfo) to determine the correct region URL.
+
+- Configure the **Scopes** field with the required permissions:
+  - For Zoho CRM access, refer to the [Zoho CRM scopes documentation](https://www.zoho.com/crm/developer/docs/api/v8/scopes.html)
+  - For Zoho Books access, refer to the [Zoho Books scopes documentation](https://www.zoho.com/books/api/v3/oauth/#overview)
+  - Multiple scopes can be combined by separating them with spaces
+  - Example for both CRM and Books access:
+    ```
+    ZohoCRM.modules.ALL ZohoCRM.settings.ALL ZohoBooks.fullaccess.all
+    ```
+
+:::note[Multi Region Deployments]
+For integrations that will be deployed to users in multiple Zoho regions, configure the **Region URL** field to be visible to instance deployers. This allows end users to select their appropriate region during instance configuration.
+
+To make the Region URL field visible to deployers, enable the field visibility in the connection configuration:
+
+![Connection input visibility(maxWidth: 500px)](/img/components/zoho/visible.png)
+:::

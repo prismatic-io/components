@@ -1,0 +1,26 @@
+{
+  "name": "ms-intune",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish",
+    "test": "echo 'no tests'",
+    "lint": "biome lint . --write",
+    "format": "biome format . --write"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/jest": "29.5.14",
+    "copy-webpack-plugin": "13.0.0",
+    "jest": "29.7.0",
+    "ts-jest": "29.3.2",
+    "ts-loader": "9.5.2",
+    "typescript": "5.8.3",
+    "webpack": "5.99.8",
+    "webpack-cli": "6.0.1"
+  }
+}

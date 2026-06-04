@@ -1,0 +1,64 @@
+To connect to Sage Intacct, Web Services credentials are required. These credentials consist of sender credentials (provided by Sage Intacct) and company/user credentials (created within the Sage Intacct platform).
+
+Sage Intacct uses a dual authentication model:
+- **Sender credentials** (Sender ID and Sender Password) are provisioned by Sage Intacct for customers or partners with an active Web Services developer license
+- **Company credentials** (Company ID, User ID, and User Password) are created within the Sage Intacct account
+
+Refer to [Sage Intacct's Web Services documentation](https://developer.intacct.com/web-services/) for additional information on authentication.
+
+#### Prerequisites
+
+- An active Sage Intacct account with a Web Services developer license
+- Administrative access to configure Web Services settings
+- Sender ID and Sender Password provisioned by Sage Intacct
+- A Sage Intacct user account with appropriate API permissions
+
+#### Setup Steps
+
+To obtain Web Services credentials:
+
+1. **Obtain Sender Credentials**:
+   - Contact Sage Intacct support or the account representative to request Web Services access
+   - Once provisioned, Sage Intacct will provide a **Sender ID** and **Sender Password**
+   - These credentials are used to authenticate the integration at the organization level
+
+2. **Enable Web Services in Sage Intacct**:
+   - Log in to Sage Intacct as an administrator
+   - Navigate to **Company** > **Setup** > **Company** > **Security**
+   - Locate the **Web Services authorizations** section
+   - Enable Web Services for the organization
+
+3. **Identify Company Credentials**:
+   - The **Company ID** is the unique identifier for the Sage Intacct company
+   - This is typically visible in the Sage Intacct URL or company settings
+   - Navigate to **Company** > **Setup** > **Company** > **Company info** to verify the Company ID
+
+4. **Create or Identify API User**:
+   - Create a dedicated user account for API access or use an existing user
+   - Navigate to **Company** > **Admin** > **Web Services users**
+   - Ensure the user has the necessary permissions for the integration's operations
+   - Note the **User ID** (username) and **User Password** for this account
+
+5. **Determine Entity ID (Multi-Entity Only)**:
+   - If the Sage Intacct account uses multiple entities, determine the **Entity ID** for the entity to access
+   - Navigate to **Company** > **Setup** > **Entities** to view available entities
+   - If using a single-entity account, the Entity ID can be left blank
+
+#### Configure the Connection
+
+Enter the following credentials into the connection configuration:
+
+- **Sender ID**: The Sender ID provided by Sage Intacct for Web Services authentication
+- **Sender Password**: The Sender Password provided by Sage Intacct
+- **Company ID**: The unique company identifier in Sage Intacct
+- **User ID**: The username of the Web Services user account
+- **User Password**: The password for the Web Services user account
+- **Entity ID** (optional): The entity identifier for multi-entity environments. Leave blank for single-entity accounts.
+
+:::note[Multi-Entity Environments]
+For Sage Intacct accounts with multiple entities, specify the **Entity ID** to connect to a specific entity. If left blank, the integration will use the default entity associated with the user account.
+:::
+
+:::warning[Security Best Practice]
+Use a dedicated user account for API integrations with minimal required permissions. Avoid using personal administrator accounts for Web Services authentication.
+:::

@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://www.odoo.com/documentation/19.0/developer/reference/external_api.html"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://www.odoo.com/page/release-notes"
+  }
+]

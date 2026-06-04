@@ -1,0 +1,82 @@
+This trigger polls the [Gorgias REST API](https://developers.gorgias.com/reference/introduction) for new and updated records of the selected resource type on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. On each execution, all records of the selected resource type are fetched from Gorgias using the corresponding list endpoint with full pagination
+3. Because Gorgias list endpoints do not support server-side date filtering, records are categorized client-side as **created** or **updated** by comparing each record's `created_datetime` and `updated_datetime` against the timestamp of the last successful poll
+4. Records whose `created_datetime` is newer than the last poll time are classified as created; records whose `updated_datetime` is newer (but were created before the last poll) are classified as updated
+5. The trigger updates its internal state with the current timestamp after each poll so subsequent executions only surface records changed since the previous run
+6. When no records match on a given run, the trigger reports `polledNoChanges` so downstream flows are not invoked unnecessarily
+
+#### Supported Resource Types
+
+The trigger currently supports the following Gorgias resources:
+
+- **Tickets** — polls the `/api/tickets` endpoint
+- **Customers** — polls the `/api/customers` endpoint
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Gorgias connection used to authenticate API requests
+- **Resource Type**: The type of records to monitor — Tickets or Customers
+- **Show New Records**: When enabled, newly created records are included in the trigger output. Defaults to `true`
+- **Show Updated Records**: When enabled, records that were updated after the last poll are included in the trigger output. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object containing two arrays — `created` for newly created records and `updated` for modified records. Each array contains full Gorgias resource objects matching the selected resource type.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 1234,
+        "external_id": "EXT1234",
+        "channel": "email",
+        "via": "helpdesk",
+        "status": "open",
+        "subject": "Order question",
+        "created_datetime": "2024-08-21T12:00:00Z",
+        "updated_datetime": "2024-08-21T12:00:00Z",
+        "customer": {
+          "id": 789,
+          "email": "customer@example.com",
+          "name": "Sam Doe"
+        }
+      }
+    ],
+    "updated": [
+      {
+        "id": 5678,
+        "external_id": "EXT5678",
+        "channel": "email",
+        "via": "helpdesk",
+        "status": "resolved",
+        "subject": "Refund request",
+        "created_datetime": "2024-08-10T09:00:00Z",
+        "updated_datetime": "2024-08-21T14:22:00Z",
+        "customer": {
+          "id": 456,
+          "email": "another@example.com",
+          "name": "Jordan Smith"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Gorgias list endpoints do not support server-side filtering by date, so the trigger fetches all records on each run and filters client-side. For workspaces with very large record volumes, consider tuning the polling schedule to balance freshness against API rate limits
+- On the very first execution, the trigger has no prior poll timestamp and uses the current time as its baseline, so no historical records are emitted on the initial run — only changes that occur after the trigger is enabled will be surfaced
+- Refer to the [Gorgias REST API documentation](https://developers.gorgias.com/reference/introduction) for rate limit details and the full set of fields available on each resource type

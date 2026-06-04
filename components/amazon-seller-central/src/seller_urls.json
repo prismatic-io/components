@@ -1,0 +1,26 @@
+[
+  { "countryName": "Canada", "url": "https://sellercentral.amazon.ca" },
+  { "countryName": "US", "url": "https://sellercentral.amazon.com" },
+  { "countryName": "Mexico", "url": "https://sellercentral.amazon.com.mx" },
+  { "countryName": "Brazil", "url": "https://sellercentral.amazon.com.br" },
+  { "countryName": "Spain", "url": "https://sellercentral-europe.amazon.com" },
+  { "countryName": "UK", "url": "https://sellercentral-europe.amazon.com" },
+  { "countryName": "France", "url": "https://sellercentral-europe.amazon.com" },
+  { "countryName": "Netherlands", "url": "https://sellercentral.amazon.nl" },
+  {
+    "countryName": "Germany",
+    "url": "https://sellercentral-europe.amazon.com"
+  },
+  { "countryName": "Italy", "url": "https://sellercentral-europe.amazon.com" },
+  { "countryName": "Sweden", "url": "https://sellercentral.amazon.se" },
+  { "countryName": "Poland", "url": "https://sellercentral.amazon.pl" },
+  { "countryName": "Egypt", "url": "https://sellercentral.amazon.eg" },
+  { "countryName": "Turkey", "url": "https://sellercentral.amazon.com.tr" },
+  { "countryName": "Saudi Arabia", "url": "https://sellercentral.amazon.sa" },
+  { "countryName": "U.A.E.", "url": "https://sellercentral.amazon.ae" },
+  { "countryName": "India", "url": "https://sellercentral.amazon.in" },
+  { "countryName": "Belgium", "url": "https://sellercentral.amazon.com.be" },
+  { "countryName": "Singapore", "url": "https://sellercentral.amazon.sg" },
+  { "countryName": "Australia", "url": "https://sellercentral.amazon.com.au" },
+  { "countryName": "Japan", "url": "https://sellercentral.amazon.co.jp" }
+]

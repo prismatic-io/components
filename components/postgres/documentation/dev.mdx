@@ -1,0 +1,22 @@
+### Query formatting
+
+Instead of generating dynamic queries and sanitizing SQL yourself, you can use generic queries with [query formatting](https://github.com/vitaly-t/pg-promise#query-formatting).
+Formatted queries can either use numbered parameter placeholders like `$1`, `$2`, etc., or can use named parameter placeholders like `${variableKey}`.
+
+#### Index variables
+
+Index variables are numbered parameter placeholders like `$1`, `$2`, etc.
+To use index variables, write a query that uses indexed placeholders (e.g. `SELECT * FROM users WHERE id = $1 AND name = $2`).
+Then, generate an array like `[5, "John Doe"]` and reference it from the **Parameters Object or Array** input.
+
+Note: If you use indexed variables, you cannot use named variables in the same query.
+
+#### Named variables
+
+Named variables are written in the form `${variableKey}`, `$<variableKey>` or `$(variableKey)`.
+For example, you can enter a query that reads `INSERT INTO users (name, email) VALUES (${name}, ${email})`.
+Then, you can enter values with keys of `name` and `email`, and whatever values you like as **Named Parameters Inputs**.
+Values provided as variables are sanitized automatically.
+
+If you are dynamically generating SQL queries and do not know what parameters you will need ahead of time, create a key/value object in another step and reference them through the **Parameters Object or Array** input.
+In the example above, you could generate an object of the form `{name: "John doe", email: "john.doe@example.com"}`.

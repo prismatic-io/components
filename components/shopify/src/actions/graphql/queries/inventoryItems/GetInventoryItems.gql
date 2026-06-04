@@ -1,0 +1,6 @@
+#import "../../fragments/InventoryItemDetails.gql"
+query GetInventoryItemsGql($id: ID!) {
+  inventoryItem(id: $id) {
+    ...InventoryItemDetails
+  }
+}

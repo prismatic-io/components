@@ -1,0 +1,30 @@
+{
+  "name": "@prismatic-io/facebook-marketing",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome check . --write",
+    "format": "biome format . --write",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish",
+    "test": "echo 'no tests'"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.2",
+    "@types/jest": "30.0.0",
+    "@types/mime-types": "2.1.0",
+    "@types/node": "18.19.120",
+    "copy-webpack-plugin": "13.0.0",
+    "jest": "30.0.5",
+    "ts-jest": "29.4.0",
+    "ts-loader": "9.5.2",
+    "typescript": "5.8.3",
+    "webpack": "5.100.2",
+    "webpack-cli": "6.0.1"
+  }
+}

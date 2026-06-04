@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://firebase.google.com/docs/firestore"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://firebase.google.com/support/releases"
+  }
+]

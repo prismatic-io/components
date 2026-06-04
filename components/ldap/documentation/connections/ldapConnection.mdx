@@ -1,0 +1,14 @@
+#### Prerequisites
+
+- An LDAP server instance (e.g., Active Directory, OpenLDAP)
+- Distinguished Name (DN) credentials with appropriate permissions
+
+#### Configure the Connection
+
+Create a connection of type **LDAP** and enter:
+
+- **URL**: The LDAP server URL (e.g., `ldap://ldap.example.com`)
+- **DN**: The Distinguished Name (DN) used to bind to the server (e.g., `uid=example,dc=example,dc=com`)
+- **Password**: The password associated with the DN
+- **Certificate** (optional): A certificate for secure connections if required by the server
+- **Use on-prem LDAPS** (optional): When enabled, uses LDAPS (LDAP over SSL/TLS) for secure connections to private LDAP servers

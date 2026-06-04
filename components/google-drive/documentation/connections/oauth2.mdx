@@ -1,0 +1,69 @@
+The Google Drive component authenticates requests through the Google Cloud Platform (GCP) OAuth 2.0 service.
+A GCP OAuth 2.0 app is required for the integration to authenticate and perform Google Drive tasks on behalf of users.
+
+#### Prerequisites
+
+- A Google Developer account (sign up at [https://console.cloud.google.com/](https://console.cloud.google.com/))
+
+#### Setup Steps
+
+To create a Google Drive OAuth 2.0 app:
+
+1. Open the Google Drive API console at [https://console.cloud.google.com/apis/api/drive.googleapis.com](https://console.cloud.google.com/apis/api/drive.googleapis.com)
+1. Click **CREATE PROJECT** to create a new GCP project, or select an existing project.
+1. Enable the **Google Drive API** for the project by clicking **ENABLE**.
+1. On the sidebar, select **Credentials**.
+1. Configure the OAuth 2.0 Consent Screen (the page that asks "Do you want to allow (Your Company) to access Google Drive on your behalf?"). Click **CONFIGURE CONSENT SCREEN**.
+   1. Choose a **User Type** of **External** so the app will be available to customers.
+   1. Fill out the OAuth consent screen with an app name (company or product name), support email, app logo, domain, etc.
+   1. Domains can be ignored for now.
+   1. On the next page, add the scope `https://www.googleapis.com/auth/drive`.
+   1. Enter some **test users** for testing purposes.
+      The app will only work for those testing users until it is "verified" by Google.
+      When ready for verification (Google verifies privacy policy statement, etc), click **PUBLISH APP** on the **OAuth consent screen**.
+      This will allow customers to authorize the integration to access their Google Drive.
+1. Once the "Consent Screen" is configured, open the **Credentials** page from the sidebar again.
+1. Click **+CREATE CREDENTIALS** and select **OAuth client ID**.
+   1. Under **Application type** select **Web application**.
+   1. Under **Authorized redirect URIs** enter the OAuth 2.0 callback URL: <OauthCallbackUrl />
+   1. Click **CREATE**.
+1. Copy the **Client ID** and **Client Secret** that are generated.
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the OAuth app credentials.
+- For **Scopes**, use the default [Google Drive scope](https://developers.google.com/identity/protocols/oauth2/scopes#drive):
+  ```
+  https://www.googleapis.com/auth/drive
+  ```
+  - Refer to [Google's OAuth 2.0 Scopes for Google APIs](https://developers.google.com/identity/protocols/oauth2/scopes#drive) for additional scope information.
+
+#### App Verification
+
+Google requires OAuth apps that request access to user data to pass a verification review before being deployed at scale. This process ensures the app complies with Google's API Services User Data Policy, accurately represents its functionality, and handles user data responsibly.
+
+Google OAuth apps pass through three stages before they are ready for production use.
+
+**Testing (unpublished):** The app is only accessible to users manually added as test users in the OAuth consent screen. Up to 100 test users are allowed — all other users receive an error. This is the expected state during initial development.
+
+**Published, unverified:** After publishing the app, all Google users can authenticate. However, for restricted scopes, users see a **"This app isn't verified"** warning. Users can proceed by clicking **Advanced** → **Go to [app name] (unsafe)**, but this warning reduces trust and may be blocked by organizations with strict Google Workspace policies.
+
+**Verified:** Google has reviewed and approved the app. No warning is shown. Verification is required before deploying to production users.
+
+#### Publishing the App
+
+Publishing is required before any users outside the test list can authenticate:
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), navigate to **APIs & Services** → **OAuth consent screen**
+2. Click **PUBLISH APP** and confirm
+
+#### Requesting Verification
+
+This component uses **restricted scopes** (`https://www.googleapis.com/auth/drive`). Restricted scopes require a security assessment in addition to standard sensitive scope verification:
+
+1. On the **OAuth consent screen**, click **Prepare for verification**
+2. Provide a privacy policy URL, authorized domain, and app logo
+3. Arrange a **security assessment** with a [Google-approved assessor](https://support.google.com/cloud/answer/10311615) — this is required for restricted scopes
+4. Submit for review — restricted scope reviews can take longer than sensitive scope reviews
+
+Refer to [Google's OAuth consent screen documentation](https://support.google.com/cloud/answer/10311615) for the full verification requirements.

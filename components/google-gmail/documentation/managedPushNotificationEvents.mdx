@@ -1,0 +1,51 @@
+This trigger receives real-time mailbox event notifications from Gmail using [push notifications](https://developers.google.com/workspace/gmail/api/guides/push). It automatically creates and manages a Cloud Pub/Sub subscription when the instance is deployed, and removes the subscription when the instance is deleted.
+
+For manual control over push notification subscriptions, see the [Push Notification Webhook](#pushnotificationwebhook) trigger.
+
+#### How Gmail Push Notifications Work
+
+Gmail push notifications use [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs) to deliver real-time updates when mailbox changes occur. Whenever a mailbox changes, the Gmail API publishes a notification to a configured Cloud Pub/Sub topic, which then pushes the notification to the webhook URL.
+
+The notification payload includes:
+
+- The user's email address
+- A history ID indicating what changed
+- A timestamp of when the change occurred
+
+This trigger automatically decodes the base64 encoded Pub/Sub payload data and makes it available in the `message.decodedData` field, so no additional decoding step is required.
+
+#### Automatic Watch Renewal
+
+Gmail push notification watches expire after 7 days. This trigger supports scheduled execution to automatically renew the watch before it expires.
+
+To enable automatic renewal:
+
+1. Configure the trigger with a schedule (e.g. daily)
+2. The trigger detects scheduled invocations and automatically renews the Gmail watch
+3. Scheduled renewals follow the **Log Messages** branch, while webhook notifications follow the **Push Notifications** branch
+
+This eliminates the need for a separate renewal flow or manual intervention to keep push notifications active.
+
+#### Branching Behavior
+
+This trigger uses branching to distinguish between two types of invocations:
+
+| Branch | Invocation Type | Description |
+|--------|-----------------|-------------|
+| **Push Notifications** | Webhook | Triggered when Gmail sends a push notification about a mailbox change |
+| **Log Messages** | Schedule | Triggered on the configured schedule to renew the watch subscription |
+
+Design the integration flow with separate branches to handle each case appropriately:
+
+- **Push Notifications branch**: Process the mailbox change (fetch message details, apply business logic, etc.)
+- **Log Messages branch**: Typically no action needed; the trigger handles renewal automatically. Use this branch for logging or monitoring if desired.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Gmail OAuth or Service Account connection to use
+- **Project ID**: The Google Cloud project ID containing the Pub/Sub topic
+- **Topic ID**: The base name for the Pub/Sub topic (the trigger automatically prefixes this with a unique identifier)
+- **Gmail User ID**: The user ID or email address to monitor. Defaults to `"me"` (the authenticated user)
+- **Label IDs **: Filter notifications to only specific labels (e.g., `"INBOX"`, `"SENT"`)

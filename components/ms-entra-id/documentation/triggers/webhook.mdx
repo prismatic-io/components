@@ -1,0 +1,67 @@
+This trigger receives and validates [change notification](https://learn.microsoft.com/en-us/graph/change-notifications-overview) webhook requests from Microsoft Entra ID for manually configured webhook subscriptions.
+
+Unlike the Group Trigger and User Trigger (which manage subscriptions automatically), this trigger requires manual subscription creation through the [Create Subscription](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0) API or the component's subscription actions.
+
+#### How It Works
+
+This trigger uses two branches to handle incoming requests:
+
+- **URL Validation**: When Microsoft Graph creates or renews a subscription, it sends a validation request with a `validationToken` query parameter. The trigger automatically responds with the token to confirm the endpoint, completing the [subscription validation handshake](https://learn.microsoft.com/en-us/graph/change-notifications-overview).
+- **Notification**: All subsequent change notification payloads are routed to this branch for processing.
+
+The trigger automatically detects which type of request is received and routes it to the correct branch.
+
+#### Configuration
+
+This trigger has no additional inputs. Point the manually created subscription's `notificationUrl` to the flow's webhook URL.
+
+#### Event Types
+
+The events received depend on the subscription configuration. Microsoft Graph supports change notifications for a wide range of resources.
+
+<details>
+<summary>Common Resources (5)</summary>
+
+| Resource | Description |
+|----------|-------------|
+| `users` | User profile changes (create, update, delete) |
+| `groups` | Group changes (create, update, delete, membership) |
+| `contacts` | Organizational contact changes |
+| `devices` | Device registration and property changes |
+| `applications` | Application registration changes |
+
+</details>
+
+Refer to the [Microsoft Graph change notifications documentation](https://learn.microsoft.com/en-us/graph/change-notifications-overview) for the complete and up-to-date list of supported resources.
+
+#### Returned Data
+
+<details>
+<summary>Example Notification Payload</summary>
+
+```json
+{
+  "value": [
+    {
+      "changeType": "updated",
+      "clientState": "secretClientValue",
+      "resource": "users/00000000-0000-0000-0000-000000000000",
+      "resourceData": {
+        "@odata.type": "#Microsoft.Graph.User",
+        "@odata.id": "users/00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000000"
+      },
+      "subscriptionId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "subscriptionExpirationDateTime": "2026-03-20T18:23:45.9356913Z",
+      "tenantId": "11111111-2222-3333-4444-555555555555"
+    }
+  ]
+}
+```
+
+</details>
+
+#### Notes
+
+- Subscriptions have a maximum lifetime that varies by resource type. Refer to the [subscription resource documentation](https://learn.microsoft.com/en-us/graph/api/resources/subscription?view=graph-rest-1.0) for expiration limits.
+- Consider using the **Group Trigger** or **User Trigger** instead for automatic subscription lifecycle management.

@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.github.com/en/rest"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://docs.github.com/en/rest/about-the-rest-api/breaking-changes"
+  }
+]

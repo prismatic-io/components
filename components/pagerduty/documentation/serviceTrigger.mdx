@@ -1,0 +1,27 @@
+The Service Trigger receives [webhook notifications](https://support.pagerduty.com/main/docs/webhooks) from PagerDuty when service events occur. This trigger works identically to the **Incidents Trigger**, automatically managing webhook subscriptions throughout the instance lifecycle.
+
+See [Incidents Trigger](#incidentstrigger) for complete documentation on how lifecycle management, configuration, and webhook subscriptions work.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Service Events**: Select which service events the webhook subscription should monitor.
+- **Webhook Description**: A description for the webhook subscription created in PagerDuty.
+- **Filter ID**: The ID of the PagerDuty object (account, service, or team) used to scope the webhook subscription.
+- **Filter Type**: The type of object used as the filter — **Account**, **Service**, or **Team**.
+
+#### Event Types
+
+<details>
+<summary>Available Service Events (3)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `service.created` | A service is created |
+| `service.deleted` | A service is deleted |
+| `service.updated` | A service is updated |
+
+</details>
+
+Refer to the [PagerDuty webhooks documentation](https://support.pagerduty.com/main/docs/webhooks) for the complete and up-to-date list of event types.

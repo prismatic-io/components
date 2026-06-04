@@ -1,0 +1,26 @@
+To connect to Mailchimp using OAuth 2.0, an OAuth application must be registered in the Mailchimp account.
+
+For detailed information about Mailchimp OAuth, refer to the [Mailchimp OAuth 2.0 documentation](https://mailchimp.com/developer/marketing/guides/access-user-data-oauth-2/).
+
+#### Prerequisites
+
+- A [Mailchimp account](https://mailchimp.com/) with admin access
+- Access to the [Mailchimp OAuth Apps](https://admin.mailchimp.com/account/oauth2/) settings page
+
+#### Setup Steps
+
+1. Navigate to the [Mailchimp OAuth Apps](https://admin.mailchimp.com/account/oauth2/) page in the Mailchimp account settings.
+2. Click **Register an App** to create a new OAuth application.
+3. Fill in the required fields:
+   - **App Name**: A descriptive name for the application
+   - **App Description**: A brief description of what the application does
+   - **Redirect URL**: <OauthCallbackUrl />
+4. Click **Create** to register the application.
+5. Once created, copy the **Client ID** and **Client Secret** values displayed on the app details page.
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the registered OAuth application.
+- The **Authorize URL** and **Token URL** are pre-configured with the correct Mailchimp endpoints.
+
+The connection is now ready to authenticate with Mailchimp.

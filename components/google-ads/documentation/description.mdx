@@ -1,0 +1,20 @@
+[Google Ads](https://ads.google.com/) is an online advertising platform that allows businesses to create and manage ad campaigns across Google Search, YouTube, and partner websites. This component allows managing campaigns, uploading conversions, handling customer accounts, and working with Local Services ads in Google Ads.
+
+#### API Documentation
+
+This component was built using the [Google Ads API](https://developers.google.com/google-ads/api/docs/get-started/introduction), currently utilizing v23 by default. Older versions (v21, v22) are supported by specifying the API Version in the connection.
+
+#### EU Political Advertising Self-Declaration (v22+)
+
+When using API v22 or later, the `containsEuPoliticalAdvertising` field must be set when:
+
+- Creating new campaigns
+- Modifying location or proximity targeting on existing campaigns
+
+This field is required and accepts one of the following values:
+
+- `CONTAINS_EU_POLITICAL_ADVERTISING`: Campaign contains EU political advertising.
+- `DOES_NOT_CONTAIN_EU_POLITICAL_ADVERTISING`: Campaign does not contain EU political advertising.
+- `UNSPECIFIED` or `UNKNOWN`: Use when the value is unknown or indeterminate.
+
+Failure to set this field will result in a `FieldError.REQUIRED` error from the API.

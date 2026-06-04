@@ -1,0 +1,119 @@
+<Vimeo video="907604023" />
+
+#### Creating an App Registration
+
+With a licensed instance of Microsoft SharePoint, create and configure a new App Registration in the [Microsoft Entra admin center](https://entra.microsoft.com/).
+
+1. Navigate to [Microsoft Entra](https://entra.microsoft.com/) **Identity** > **Applications** > **App registrations**
+2. Select **New registration**
+3. Configure the basic settings:
+   - **Name**: Provide a descriptive name for the application
+   - **Supported account types**: Select **Accounts in any organizational directory (Any Azure AD directory - Multitenant)**
+   - **Redirect URI**: Select **Web** platform and add <OauthCallbackUrl />
+4. Click **Register** to create the app registration
+
+#### Obtaining Application Credentials
+
+After registration, navigate to the **Overview** page and note:
+- **Application (client) ID** - This will be the Client ID
+- **Directory (tenant) ID** - Required for certain connection types
+
+#### API Permissions Configuration
+
+1. Navigate to **API Permissions**
+2. Click **Add a permission**
+3. Select **SharePoint** for SharePoint-specific operations
+4. Choose **Delegated permissions** for user-authenticated flows
+5. Select the following permissions:
+
+**Essential Scopes:**
+- `offline_access` - **Required** for refresh tokens (without this, users re-authenticate every hour)
+
+**Site Operations:**
+- `AllSites.Read` - Read items in all site collections
+- `AllSites.Write` - Edit or delete items in all site collections
+- `AllSites.Manage` - Create, edit and delete items and lists in all site collections
+- `AllSites.FullControl` - Full control of all site collections
+
+**File Operations:**
+- `MyFiles.Read` - Read user files
+- `MyFiles.Write` - Read and write user files
+- `AllSites.Read` - Read files in all sites
+- `AllSites.Write` - Read and write files in all sites
+
+**List Operations:**
+- `AllSites.Write` - Required for list item operations
+- `AllSites.Manage` - For creating and managing lists
+
+**User Profile:**
+- `User.Read.All` - Read all users' profiles
+- `User.ReadBasic.All` - Read all users' basic profiles
+
+6. Click **Add permissions**
+7. **Important**: Click **Grant admin consent** to activate the permissions
+
+#### Creating Client Secret
+
+1. Navigate to **Certificates & Secrets** in the app registration
+2. Select the **Client secrets** tab
+3. Click **New client secret**
+4. Provide a description and select expiration period
+5. Click **Add**
+6. **Important**: Copy the secret **Value** immediately - it cannot be retrieved later
+
+#### Connection Configuration
+
+Configure the following fields:
+- **Client ID**: Application ID from app registration
+- **Client Secret**: Secret value created above
+- **Authorize URL**: Default provided, or tenant-specific URL if not using multitenant
+- **Token URL**: Default provided, or tenant-specific URL if not using multitenant
+
+#### Tenant-Specific URLs
+
+If the app registration is not configured as multitenant, replace the default URLs with tenant-specific versions:
+- **Authorize URL**: `https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/authorize`
+- **Token URL**: `https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token`
+
+#### App Verification and Admin Consent
+
+Microsoft requires Azure AD app registrations used in multi-tenant deployments to complete a publisher verification process. This review confirms the app developer's identity, giving end users confidence that they are authorizing a legitimate, verified application.
+
+Azure AD app registrations have two distinct verification concepts that affect how users experience the authentication flow.
+
+#### Publisher Verification
+
+**Complete publisher verification before deploying to end users.** Without it, the Microsoft consent screen displays **"Unverified"** next to the app name. This reduces user trust and may prevent users in organizations with strict Azure AD policies from being able to authorize the app at all.
+
+To verify the publisher:
+
+1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/)
+2. In the [Microsoft Entra Admin Center](https://entra.microsoft.com/), open the app registration
+3. Under **Branding & properties**, click **Add a verified publisher**
+4. Enter the MPN ID and confirm
+
+Once verified, the consent screen displays the organization name with a verified badge instead of "Unverified."
+
+#### Admin Consent
+
+Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error.
+
+A tenant administrator can grant consent using either method:
+
+**Method 1 — Admin Consent URL:**
+
+Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
+
+    https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
+
+**Method 2 — Microsoft Entra Admin Center:**
+
+1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
+2. Select the app registration
+3. Under **Permissions**, click **Grant admin consent for [organization name]**
+
+:::note[Delegated vs. Application Permissions]
+Delegated permissions (user-level) typically do not require admin consent unless they are classified as high privilege. Application permissions always require admin consent. Review the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to identify which permissions require consent.
+:::
+
+<Vimeo video="907604023" />

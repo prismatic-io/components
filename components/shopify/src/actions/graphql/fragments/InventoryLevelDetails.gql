@@ -1,0 +1,14 @@
+fragment InventoryLevelDetails on InventoryLevel {
+  id
+  item {
+    id
+  }
+  location {
+    id
+  }
+  quantities(names: ["available"]) {
+    name
+    quantity
+  }
+  updatedAt
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_what_is_rest_api.htm"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/rest_rns.htm"
+  }
+]

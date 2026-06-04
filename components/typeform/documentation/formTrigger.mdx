@@ -1,0 +1,71 @@
+The Typeform Webhook Trigger receives [Typeform webhook](https://www.typeform.com/developers/webhooks/) notifications when form responses are submitted. This trigger automatically manages webhook subscriptions, handling the entire lifecycle without manual configuration in the Typeform dashboard.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook subscription on the specified Typeform form, pointing to the instance's unique webhook URL. The webhook is configured with the specified event types and signing secret.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from the Typeform form.
+
+All incoming webhook payloads are verified using [HMAC SHA-256 signature validation](https://www.typeform.com/developers/webhooks/secure-your-webhooks/). The trigger compares the `Typeform-Signature` header against a computed hash of the payload using the configured secret. If the signature is invalid, the trigger rejects the request.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: A Typeform OAuth 2.0 or Personal Token connection.
+- **Form Id**: The unique identifier of the Typeform form to monitor for responses.
+- **Secret**: A signing secret used to verify webhook payloads via HMAC SHA-256. This ensures incoming requests originate from Typeform.
+- **Form Response**: Set to **True** to receive notifications for completed form submissions.
+- **Form Response Partial**: Set to **True** to receive notifications for partially completed form submissions.
+
+#### Event Types
+
+The trigger supports two event types configured at the webhook level:
+
+| Event Type | Description |
+|------------|-------------|
+| `form_response` | Fires when a respondent completes and submits the form |
+| `form_response_partial` | Fires when a respondent partially completes the form without submitting |
+
+Refer to the [Typeform Webhooks documentation](https://www.typeform.com/developers/webhooks/) for additional details on event behavior and delivery policies.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "event_id": "LtWXD3crgy",
+  "event_type": "form_response",
+  "form_response": {
+    "form_id": "lT4Z3j",
+    "token": "a3a12ec67a1365927098a606107fac15",
+    "submitted_at": "2018-01-18T18:17:02Z",
+    "landed_at": "2018-01-18T18:07:02Z",
+    "definition": {
+      "id": "lT4Z3j",
+      "title": "Webhooks are fun"
+    },
+    "answers": [
+      {
+        "type": "text",
+        "text": "It's cold right now! I live in the North Pole.",
+        "field": {
+          "id": "DlXFaesGBpoF",
+          "type": "long_text"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Typeform enforces a **30-second timeout** for webhook responses. If a response is not received within this window, the delivery is considered failed.
+- Webhooks are automatically disabled by Typeform if they accumulate over **100 failed delivery attempts** within 24 hours, or **100 attempts within 5 minutes**.
+- The webhook endpoint must use **HTTPS**. Self-signed certificates are not supported.

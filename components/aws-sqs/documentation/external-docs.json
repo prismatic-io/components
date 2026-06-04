@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://github.com/aws/aws-sdk-js-v3/releases"
+  }
+]

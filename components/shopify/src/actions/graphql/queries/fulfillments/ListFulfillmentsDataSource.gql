@@ -1,0 +1,8 @@
+query ListFulfillmentsDataSource($orderId: ID!, $first: Int!) {
+  order(id: $orderId) {
+    fulfillments(first: $first) {
+      id
+      name
+    }
+  }
+}

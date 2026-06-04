@@ -1,0 +1,65 @@
+This trigger polls Slack's [`conversations.history`](https://docs.slack.dev/reference/methods/conversations.history) endpoint on a configured schedule and emits new messages posted in a selected Slack channel.
+
+The trigger checks for:
+
+- **New records**: Messages posted in the channel since the last poll, when **Show New Records** is enabled.
+- **Updated records**: Reserved for shape consistency with other polling triggers. Slack's `conversations.history` endpoint returns immutable history, so message edits and deletions are not surfaced as separate records and the `updated` bucket is always empty. To receive `message_changed` and `message_deleted` events, use the **Events API Webhook** trigger instead.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (for example, every five minutes).
+2. It calls `conversations.history` with `oldest` set to the timestamp of the previous successful poll (formatted as UNIX seconds with subsecond precision, for example `1716397800.000200`).
+3. Slack returns matching messages newest-first. If the page is **truncated** because more messages exist than fit in a single page, the trigger advances its cursor to the `ts` of the oldest fetched message so the next poll resumes from that point. Otherwise, the cursor advances to the current time.
+4. The cursor is persisted via `context.polling.setState({ lastPolledAt })`, so subsequent invocations only return messages newer than the previous run.
+5. When no new messages are returned, the trigger reports `polledNoChanges: true` and the flow is not invoked.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Slack OAuth connection used to call `conversations.history`. The connection must include the appropriate `*:history` scope for the channel type (for example, `channels:history`, `groups:history`, `im:history`, `mpim:history`).
+- **Channel ID**: The static Slack channel ID to poll (for example, `C02MS7HV6KB`). The dropdown is populated by the `selectChannels` data source.
+- **Show New Records**: When true, newly posted messages are included in the `created` bucket. Defaults to `true`.
+- **Show Updated Records**: Reserved for shape consistency with other polling triggers. The `updated` bucket is always empty because `conversations.history` does not surface message edits. Defaults to `true` but has no effect.
+
+#### Returned Data
+
+<details>
+<summary>Example Polling Payload</summary>
+
+```json
+{
+  "payload": {
+    "body": {
+      "data": {
+        "created": [
+          {
+            "type": "message",
+            "user": "U012AB3CDE",
+            "text": "Heads up — deploy at 3pm.",
+            "ts": "1716397800.000200",
+            "team": "T012AB3C4"
+          },
+          {
+            "type": "message",
+            "user": "U987XY6Z5",
+            "text": "Got it, thanks.",
+            "ts": "1716397950.000100",
+            "team": "T012AB3C4"
+          }
+        ],
+        "updated": []
+      }
+    }
+  },
+  "polledNoChanges": false
+}
+```
+
+</details>
+
+#### Notes
+
+- **`updated` is always empty.** Slack's `conversations.history` endpoint does not return edited or deleted messages as separate records. To react to `message_changed` or `message_deleted` events, configure the **Events API Webhook** trigger and subscribe to the corresponding Slack event types.
+- **Truncation behavior.** When Slack reports `has_more: true`, the cursor advances only to the oldest message in the returned page so the next poll resumes from there. This guarantees no messages are skipped under sustained traffic, though high-volume channels may take several polls to catch up.
+- **Rate limits.** `conversations.history` is rate limited at Tier 3 (50+ requests per minute for Marketplace apps). Avoid polling intervals shorter than one minute when monitoring many channels.

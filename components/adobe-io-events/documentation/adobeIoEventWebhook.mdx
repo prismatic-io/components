@@ -1,0 +1,23 @@
+[Adobe I/O Events](https://developer.adobe.com/events/) can be configured to send webhook notifications to a flow's webhook URL when changes to content and data occur on Adobe's Experience Platform, or when predefined rules or thresholds have been met.
+
+#### How It Works
+
+This trigger uses two branches to handle the Adobe I/O Events webhook verification flow:
+
+- **Webhook Verify** branch: When a webhook is first registered, Adobe I/O sends a challenge request containing a `challenge` query parameter. The trigger automatically responds with the challenge value to confirm the webhook URL, and the request is routed to this branch.
+- **Trigger** branch: All subsequent event notifications from Adobe I/O are routed to this branch for processing.
+
+No additional verification steps are required. The trigger handles the challenge response automatically.
+
+#### Event Types
+
+Adobe I/O Events supports a wide range of event types depending on the Adobe product and event provider configured. Refer to the [Adobe I/O Events documentation](https://developer.adobe.com/events/docs/) for the complete and up-to-date list of available event providers and event types.
+
+#### Returned Data
+
+The trigger returns the full webhook payload as received from Adobe I/O Events. The structure of the payload varies depending on the event provider and event type configured in the Adobe Developer Console.
+
+#### Notes
+
+- The webhook URL from the flow must be registered in the [Adobe Developer Console](https://developer.adobe.com/console/) as part of an Event Registration.
+- The challenge verification is handled automatically on the first request. Ensure the instance is deployed before registering the webhook URL with Adobe.

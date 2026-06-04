@@ -1,0 +1,14 @@
+#import "../../fragments/InventoryLevelDetails.gql"
+query ListInventoryLevels($id: ID!, $first: Int!, $cursor: String) {
+  location(id: $id) {
+    inventoryLevels(first: $first, after: $cursor) {
+      nodes {
+        ...InventoryLevelDetails
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}

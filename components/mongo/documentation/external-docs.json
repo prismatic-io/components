@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://www.mongodb.com/docs/manual/reference/connection-string/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://www.mongodb.com/docs/atlas/reference/api-resources-spec/changelog/"
+  }
+]

@@ -1,0 +1,29 @@
+import { AssumeRoleCommand, STSClient } from "@aws-sdk/client-sts";
+import { util } from "@prismatic-io/spectral";
+import type { Credentials } from "../interfaces/Credentials";
+export const assumeRole = async (
+  region: string,
+  accessKeyId: string,
+  secretAccessKey: string,
+  roleArn: string,
+  externalId?: string,
+): Promise<Credentials> => {
+  const stsClient = new STSClient({
+    ...(region.length > 0 && { region }),
+    credentials: { accessKeyId, secretAccessKey },
+  });
+  const {
+    Credentials: { AccessKeyId, SecretAccessKey, SessionToken },
+  } = await stsClient.send(
+    new AssumeRoleCommand({
+      RoleArn: util.types.toString(roleArn),
+      RoleSessionName: "integration-session",
+      ExternalId: externalId,
+    }),
+  );
+  return {
+    accessKeyId: AccessKeyId,
+    secretAccessKey: SecretAccessKey,
+    sessionToken: SessionToken,
+  };
+};

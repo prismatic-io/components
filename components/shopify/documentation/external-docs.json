@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://shopify.dev/docs/api/admin-graphql/latest"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://shopify.dev/changelog?filter=api"
+  }
+]

@@ -1,0 +1,95 @@
+OAuth 2.0 provides a simple way for users to authorize applications.
+To use OAuth 2.0, create and configure an External Client App (recommended) or a [Connected App](https://help.salesforce.com/s/articleView?id=xcloud.connected_app_create.htm&type=5) within Salesforce.
+
+#### Prerequisites
+
+- A Salesforce account with Administrator access
+- Permission to create External Client Apps or Connected Apps in the Salesforce org
+
+:::warning[Connected App Creation Restricted as of Spring '26]
+Salesforce restricted the creation of new Connected Apps in the Spring '26 release. To create a new Connected App, contact Salesforce Support. Salesforce recommends using External Client Apps for new integrations.
+
+Existing Connected Apps continue to work and do not require changes.
+:::
+
+#### External Client App Setup (Recommended for New Integrations)
+
+1. Log in to the Salesforce account
+1. Navigate to **Setup** by clicking the gear icon in the upper right corner
+1. In the **Quick Find** box, search for **External Client App Manager** and select it
+1. Click **New External Client App**
+1. Complete the **Basic Information** fields:
+   - **Name**: Enter a descriptive name for the integration
+   - **Contact Email**: Enter a valid contact email address
+1. Expand **API (Enable OAuth Settings)** and check **Enable OAuth**
+1. Enter the OAuth callback URL <OauthCallbackUrl /> as the **Callback URL**
+1. Under **Selected OAuth Scopes**, add:
+   - **Full access (full)**: grants the integration the same permissions as the authenticating user
+   - **Perform requests at any time (refresh_token, offline_access)**
+1. Under security settings, select **Require Secret for the Web Server Flow** and **Require Secret for Refresh Token Flow**
+1. Click **Save**
+
+To retrieve the app credentials after saving:
+
+1. From **External Client App Manager**, click the app name
+1. Select **Settings**
+1. Click **Consumer Key and Secret** to view the credentials
+
+Take note of the **Consumer Key** and **Consumer Secret**. Both are required when configuring the connection.
+
+#### Connected App Setup (Existing Apps)
+
+:::note[For existing Connected Apps only]
+Connected App creation is restricted as of Spring '26. These steps apply only if a Connected App was created before Spring '26 or if Salesforce Support has granted permission to create new ones.
+:::
+
+1. Log in to the Salesforce account
+1. Navigate to **Setup** by clicking the gear icon in the upper right corner
+1. Open **Apps** > **App Manager**
+1. Select **New Connected App**
+1. Check **Enable OAuth Settings**
+1. Enter the OAuth callback URL <OauthCallbackUrl /> as the **Callback URL**
+1. Under **Selected OAuth Scopes**, add:
+   - **Full access (full)**: grants the integration the same permissions as the authenticating user
+   - **Perform requests at any time (refresh_token, offline_access)**
+1. Select **Require Secret for the Web Server Flow** and **Require Secret for Refresh Token Flow**
+
+![Manage Connected Apps in Salesforce Platform Tools](/img/components/salesforce/create-connected-app.png)
+
+1. Select **Save** and **Continue**
+1. Click **Manage Consumer Details** to retrieve the **Consumer Key** and **Consumer Secret**
+
+Take note of these keys:
+
+![Manage Connected Apps in Salesforce Platform Tools with Consumer and Secret Keys](/img/components/salesforce/get-keys.png)
+
+To update callback URLs later, select **Apps** > **App Manager**, click the dropdown next to the app, and select **Edit**.
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0** and enter:
+
+- **Consumer Key**: Enter the Consumer Key from the app
+- **Consumer Secret**: Enter the Consumer Secret from the app
+- **Authorize URL**: Defaults to `https://login.salesforce.com/services/oauth2/authorize`
+- **Token URL**: Defaults to `https://login.salesforce.com/services/oauth2/token`
+- **Revoke URL**: Defaults to `https://login.salesforce.com/services/oauth2/revoke`
+
+:::note[Connecting to a Salesforce Sandbox Account]
+To connect to a Salesforce sandbox organization for testing purposes, edit the connection's **Authorize URL**, **Token URL** and **Revoke URL** to read `test.salesforce.com` instead of `login.salesforce.com`.
+Be sure to change these values back when testing is done.
+:::
+
+#### OAuth Policies
+
+Salesforce administrators control which users can authorize through **OAuth Policies**. The navigation path depends on the app type:
+
+- **External Client App**: Navigate to **Setup** > **External Client App Manager**, click the app name, select **OAuth** from the left menu, then **Edit Policies**
+- **Connected App**: Navigate to **Setup** > **Apps** > **App Manager**, click the dropdown next to the app, select **Manage**, then **Edit Policies**
+
+The **Permitted Users** setting determines access:
+
+- **All users may self-authorize**: Any user in the Salesforce org can authenticate with the integration. This is the default setting.
+- **Admin approved users are pre-authorized**: Only users or profiles that an administrator has explicitly granted access can authenticate. All other users see an authorization error when attempting to connect.
+
+If users encounter authorization errors after the connection is configured correctly, verify the **Permitted Users** policy is set to **All users may self-authorize**, or that the required users or profiles have been granted access under **Manage** > **Profiles** or **Permission Sets**.

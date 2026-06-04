@@ -1,0 +1,117 @@
+The **Events Webhook** trigger can manage [SurveyMonkey webhook subscriptions](https://developer.surveymonkey.com/api/v3/#webhooks) for an instance. Unlike traditional webhook setups that require manual configuration in the SurveyMonkey dashboard, this trigger handles the entire webhook lifecycle automatically.
+
+When the trigger is used in a flow:
+
+- **On Instance Deploy**: Creates a webhook subscription in SurveyMonkey for the selected event type, pointing to the instance's webhook URL.
+- **On Instance Reconfiguration**: Updates the existing webhook subscription with new event type and filter settings.
+- **On Instance Deletion**: Removes the webhook subscription associated with the instance's webhook URL.
+
+The trigger includes update logic: if a webhook already exists for the instance (from a previous deployment), it will be updated with the new configuration instead of creating a duplicate.
+
+#### Supported Event Types
+
+<details>
+<summary>Available Events (12)</summary>
+
+| Event Type | Description |
+|------------|-------------|
+| `response_completed` | A survey response was completed |
+| `response_created` | A respondent started a survey |
+| `response_updated` | A response was modified |
+| `response_deleted` | A response was deleted |
+| `response_disqualified` | A respondent was disqualified |
+| `response_overquota` | A response exceeded quota limits |
+| `survey_created` | A new survey was created |
+| `survey_updated` | A survey was modified |
+| `survey_deleted` | A survey was deleted |
+| `collector_created` | A new collector was created |
+| `collector_updated` | A collector was modified |
+| `collector_deleted` | A collector was deleted |
+
+</details>
+
+#### Configuration Options
+
+- **Event Type**: The event type to monitor. Only one event type can be subscribed per instance.
+- **Object Type** (optional): Filters events by object type (`survey` or `collector`).
+- **Object IDs** (optional): Filters events to specific survey or collector IDs. When specified, only events for those objects trigger the webhook.
+
+:::tip[Single Subscription Per Instance]
+Each instance can only maintain one webhook subscription. If multiple event types need monitoring, create separate flows for each event type. The webhook name follows the pattern: `[Flow Name]-[unique-id]` to ensure uniqueness across instances.
+:::
+
+#### Webhook Signature Verification
+
+SurveyMonkey signs webhook payloads using HMAC-SHA1. The trigger automatically verifies signatures to ensure requests originate from SurveyMonkey.
+
+**Headers sent with each webhook request:**
+
+| Header | Description |
+|--------|-------------|
+| `Sm-Apikey` | The Client ID (API Key) of the application |
+| `Sm-Signature` | Base64-encoded HMAC-SHA1 signature of the request body |
+
+The signature is computed using the format `{api_key}&{api_secret}` as the signing key. Requests with invalid signatures are rejected with an error.
+
+:::note[Signature Verification Requirements]
+For signature verification to work, the connection must include both the **API Key (Client ID)** and **API Secret (Client Secret)**. These values are required even when using Access Token authentication.
+:::
+
+#### Webhook Payload Structure
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "name": "My Webhook",
+  "filter_type": "survey",
+  "filter_id": "123456789",
+  "event_type": "response_completed",
+  "event_id": "unique-event-id",
+  "object_type": "response",
+  "object_id": "987654321",
+  "event_datetime": "2026-01-21T10:30:00.000000+00:00",
+  "resources": {
+    "survey_id": "123456789",
+    "collector_id": "111222333",
+    "respondent_id": "444555666",
+    "recipient_id": "777888999"
+  }
+}
+```
+
+</details>
+
+| Field | Description |
+|-------|-------------|
+| `name` | The name of the webhook subscription |
+| `filter_type` | The type of filter applied (`survey` or `collector`) |
+| `filter_id` | The ID of the filtered object |
+| `event_type` | The type of event that occurred |
+| `event_id` | Unique identifier for this event |
+| `object_type` | The type of object affected (`response`, `survey`, or `collector`) |
+| `object_id` | The ID of the affected object |
+| `event_datetime` | ISO 8601 timestamp of when the event occurred |
+| `resources` | Object containing related resource IDs |
+
+#### Required Scopes
+
+The connection must have the following OAuth scopes to use this trigger:
+
+- `webhooks_read` - Required to check for existing webhooks
+- `webhooks_write` - Required to create and delete webhooks
+
+#### Troubleshooting
+
+**Webhooks not being created:**
+- Verify the connection has `webhooks_read` and `webhooks_write` scopes.
+- Check that the SurveyMonkey account has API access enabled.
+
+**Signature verification failures:**
+- Ensure the **API Key** and **API Secret** in the connection match the values from the SurveyMonkey Developer Portal.
+- Verify the app credentials have not been regenerated since the connection was configured.
+
+**Webhook updates on reconfiguration:**
+- When an instance is reconfigured with different settings (e.g., changing the event type), the existing webhook is automatically updated rather than creating a new one.
+- This prevents duplicate subscriptions and maintains a clean webhook setup.

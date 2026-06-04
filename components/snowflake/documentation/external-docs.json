@@ -1,0 +1,10 @@
+[
+  {
+    "label": "Developer Docs",
+    "href": "https://docs.snowflake.com/en/developer"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://docs.snowflake.com/en/release-notes/clients-drivers/nodejs-2026"
+  }
+]

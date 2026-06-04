@@ -1,0 +1,235 @@
+#### List Events Webhook
+
+The **List Events Webhook** trigger automatically creates and manages a webhook subscription in Mailchimp to receive notifications when subscribers are added, removed, or updated in a list (audience). The webhook is created automatically when the integration instance is deployed and deleted when the instance is removed.
+
+#### Configuration
+
+Configure the trigger by providing:
+
+- **Connection** - Mailchimp API key connection
+- **List Id** - The unique identifier for the audience list (available via dropdown or manual entry)
+- **Events** - The specific events to monitor:
+  - **Subscribe** - Subscriber added to the list
+  - **Unsubscribe** - Subscriber removed from the list
+  - **Profile Update** - Subscriber profile information updated
+  - **Cleaned (Bounced)** - Email address bounced and cleaned from the list
+  - **Email Change** - Subscriber's email address changed
+  - **Campaign Sent** - Campaign sent to the list
+- **Sources** - The sources that should trigger notifications:
+  - **User** - Changes made by subscribers through forms or preference centers
+  - **Admin** - Changes made by administrators through the Mailchimp interface
+  - **API** - Changes made programmatically through the Mailchimp API
+
+For more information about Mailchimp webhooks, see [Mailchimp's list webhooks documentation](https://mailchimp.com/developer/marketing/api/list-webhooks/) and the [sync audience data guide](https://mailchimp.com/developer/marketing/guides/sync-audience-data-webhooks/).
+
+#### Automatic Webhook Lifecycle Management
+
+This trigger uses webhook lifecycle handlers to automatically manage webhooks in Mailchimp:
+
+#### Instance Deployment
+
+When an integration instance is deployed with this trigger:
+
+1. The trigger creates a webhook subscription in Mailchimp for the specified list
+2. The webhook is configured with the selected events and sources
+3. The webhook URL is automatically set to the integration instance's trigger endpoint
+4. If a webhook already exists for this URL, creation is skipped to avoid duplicates
+
+#### Instance Deletion
+
+When an integration instance is deleted:
+
+1. The trigger locates the webhook subscription by matching the URL
+2. The webhook is deleted from Mailchimp
+3. If no matching webhook exists, deletion is skipped
+
+This automatic lifecycle management ensures:
+- Webhooks are only active when instances are deployed
+- No orphaned webhooks remain after instance deletion
+- Webhook configuration stays synchronized with instance configuration
+- Multiple instances can safely use different lists without conflicts
+
+#### Webhook Events
+
+The trigger receives webhook requests for the configured events:
+
+- **subscribe** - Fired when a subscriber is added to the list through any configured source
+- **unsubscribe** - Fired when a subscriber is removed from the list or unsubscribes
+- **profile** - Fired when subscriber profile information (name, address, merge fields) is updated
+- **cleaned** - Fired when an email address bounces and is cleaned from the list
+- **upemail** - Fired when a subscriber changes their email address
+- **campaign** - Fired when a campaign is sent to the list
+
+#### Webhook Sources
+
+Filter events by their origin source:
+
+- **user** - Changes initiated directly by subscribers (subscription forms, preference centers, email links)
+- **admin** - Changes made by account administrators through the Mailchimp web interface
+- **api** - Changes made programmatically through the Mailchimp Marketing API
+
+Configure sources to control which types of changes trigger the integration. For example, select only **user** and **api** sources to exclude manual admin changes from triggering the workflow.
+
+#### Returned Data
+
+The trigger returns the complete webhook payload from Mailchimp. The payload structure varies by event type:
+
+<details>
+<summary>Subscribe Event</summary>
+
+```json
+{
+  "type": "subscribe",
+  "fired_at": "2024-12-05T14:30:00Z",
+  "data": {
+    "id": "8a25ff1d98",
+    "list_id": "a6b5da1054",
+    "email": "john.doe@example.com",
+    "email_type": "html",
+    "ip_opt": "192.168.1.100",
+    "ip_signup": "192.168.1.100",
+    "merges": {
+      "EMAIL": "john.doe@example.com",
+      "FNAME": "John",
+      "LNAME": "Doe",
+      "ADDRESS": "",
+      "PHONE": "",
+      "BIRTHDAY": ""
+    }
+  }
+}
+```
+
+The subscribe event includes:
+- **id** - Unique member identifier
+- **list_id** - List where subscription occurred
+- **email** - Subscriber's email address
+- **email_type** - Preferred email format (html or text)
+- **ip_opt** - IP address where opt-in occurred
+- **ip_signup** - IP address where initial signup occurred
+- **merges** - Merge field values for the subscriber
+
+</details>
+
+<details>
+<summary>Unsubscribe Event</summary>
+
+```json
+{
+  "type": "unsubscribe",
+  "fired_at": "2024-12-05T15:45:00Z",
+  "data": {
+    "action": "unsub",
+    "reason": "manual",
+    "id": "8a25ff1d98",
+    "list_id": "a6b5da1054",
+    "email": "john.doe@example.com",
+    "email_type": "html",
+    "ip_opt": "192.168.1.100",
+    "campaign_id": "cb398d21d2",
+    "merges": {
+      "EMAIL": "john.doe@example.com",
+      "FNAME": "John",
+      "LNAME": "Doe"
+    }
+  }
+}
+```
+
+The unsubscribe event includes:
+- **action** - Type of unsubscribe action
+- **reason** - Reason for unsubscribe (manual, abuse, etc.)
+- **campaign_id** - Campaign that triggered unsubscribe (if applicable)
+
+</details>
+
+<details>
+<summary>Profile Update Event</summary>
+
+```json
+{
+  "type": "profile",
+  "fired_at": "2024-12-05T16:20:00Z",
+  "data": {
+    "id": "8a25ff1d98",
+    "list_id": "a6b5da1054",
+    "email": "john.doe@example.com",
+    "email_type": "html",
+    "ip_opt": "192.168.1.100",
+    "merges": {
+      "EMAIL": "john.doe@example.com",
+      "FNAME": "John",
+      "LNAME": "Smith",
+      "ADDRESS": "123 Main St",
+      "PHONE": "+1-555-123-4567",
+      "BIRTHDAY": "01/15"
+    }
+  }
+}
+```
+
+The profile event contains the updated merge field values.
+
+</details>
+
+<details>
+<summary>Email Changed Event</summary>
+
+```json
+{
+  "type": "upemail",
+  "fired_at": "2024-12-05T17:00:00Z",
+  "data": {
+    "list_id": "a6b5da1054",
+    "new_id": "9b36gg2e09",
+    "new_email": "john.smith@example.com",
+    "old_email": "john.doe@example.com"
+  }
+}
+```
+
+The email change event includes both old and new email addresses plus the new member ID.
+
+</details>
+
+<details>
+<summary>Cleaned Event</summary>
+
+```json
+{
+  "type": "cleaned",
+  "fired_at": "2024-12-05T18:30:00Z",
+  "data": {
+    "list_id": "a6b5da1054",
+    "campaign_id": "cb398d21d2",
+    "reason": "hard",
+    "email": "bounced@example.com"
+  }
+}
+```
+
+The cleaned event includes:
+- **reason** - Type of bounce (hard, soft, etc.)
+- **campaign_id** - Campaign where bounce occurred (if applicable)
+
+</details>
+
+<details>
+<summary>Campaign Event</summary>
+
+```json
+{
+  "type": "campaign",
+  "fired_at": "2024-12-05T19:00:00Z",
+  "data": {
+    "id": "cb398d21d2",
+    "list_id": "a6b5da1054",
+    "subject": "Your Monthly Newsletter",
+    "status": "sent"
+  }
+}
+```
+
+The campaign event includes campaign details and sending status.
+
+</details>

@@ -1,0 +1,6 @@
+#import "../../fragments/OrderDetails.gql"
+query GetOrder($id: ID!) {
+  order(id: $id) {
+    ...OrderDetails
+  }
+}

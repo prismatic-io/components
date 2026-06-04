@@ -1,0 +1,108 @@
+This trigger receives and validates webhook notifications from Amazon SNS. The trigger is designed for manually configured SNS subscriptions where the subscription is created and managed through the AWS console or other external tools, rather than being automatically managed by the integration.
+
+For more information on SNS HTTP/HTTPS subscriptions, see [Amazon SNS HTTP/HTTPS notifications](https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.html).
+
+#### Configuration
+
+To configure this trigger:
+
+1. Deploy the integration instance and note the webhook URL for the flow using this trigger
+2. In the AWS SNS console, [subscribe the webhook URL](https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.subscribe.html) to an SNS topic
+3. Optionally enable the **Parse Message** input to automatically parse JSON message payloads
+
+Once the subscription is created in SNS, messages sent to the topic will be delivered to the integration via the webhook URL.
+
+#### Subscription Confirmation
+
+When a subscription is first created in SNS, Amazon sends a **SubscriptionConfirmation** message to the webhook URL. This trigger automatically handles the [subscription confirmation process](https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.confirm.html) by making an HTTP GET request to the `SubscribeURL` provided in the confirmation message. This confirms to Amazon SNS that the endpoint is ready to receive notifications.
+
+Similarly, if an unsubscribe request is initiated, the trigger automatically handles **UnsubscribeConfirmation** messages.
+
+#### Message Verification
+
+All messages received from SNS are automatically verified using [SNS message signature verification](https://docs.aws.amazon.com/sns/latest/dg/sns-verify-signature-of-message.html). The trigger validates the cryptographic signature on each incoming message to ensure it originated from Amazon and has not been tampered with.
+
+#### Branches
+
+This trigger uses branches to route different message types:
+
+- **Notification**: Triggered when SNS sends a notification message to the webhook. This branch receives the actual message content from the SNS topic.
+- **Subscribe**: Triggered when SNS sends a subscription confirmation. The confirmation is automatically handled, and this branch can be used for additional actions (such as logging or sending alerts).
+- **Unsubscribe**: Triggered when SNS sends an unsubscribe confirmation. The unsubscribe event is automatically handled, and this branch can be used for additional actions.
+
+The **Subscribe** and **Unsubscribe** branches can be left empty if no additional processing is needed. Most integrations will only implement logic in the **Notification** branch.
+
+#### Parse Message Option
+
+When **Parse Message** is enabled and a **Notification** message is received:
+
+- If the message body is valid JSON, it will be automatically parsed into an object
+- If the message body is not valid JSON, the trigger will throw an error
+- This option only applies to messages in the **Notification** branch
+- Raw delivery messages are always parsed when this option is enabled
+
+Leave **Parse Message** disabled if the SNS topic sends non-JSON content or if JSON parsing should be handled in subsequent integration steps.
+
+#### Returned Data
+
+The trigger returns an object with the following structure:
+
+<details>
+<summary>Example Notification Message</summary>
+
+```json
+{
+  "Type": "Notification",
+  "MessageId": "da41e39f-ea4d-435a-b922-c6aae3915ebe",
+  "TopicArn": "arn:aws:sns:us-west-2:123456789012:MyTopic",
+  "Subject": "test",
+  "Message": "test message",
+  "Timestamp": "2012-04-25T21:49:25.719Z",
+  "SignatureVersion": "1",
+  "Signature": "EXAMPLElDMXvB8r9R83tGoNn0ecwd5UjllzsvSvbItzfaMpN2nk5HVSw7XnOn/49IkxDKz8YrlH2qJXj2iZB0Zo2O71c4qQk1fMUDi3LGpij7RCW7AW9vYYsSqIKRnFS94ilu7NFhUzLiieYr4BKHpdTmdD6c0esKEYBpabxDSc=",
+  "SigningCertURL": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-f3ecfb7224c7233fe7bb5f59f96de52f.pem",
+  "UnsubscribeURL": "https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:123456789012:MyTopic:2bcfbf39-05c3-41de-beaa-fcfcc21c8f55"
+}
+```
+
+</details>
+
+<details>
+<summary>Example Subscription Confirmation Message</summary>
+
+```json
+{
+  "Type": "SubscriptionConfirmation",
+  "MessageId": "165545c9-2a5c-472c-8df2-7ff2be2b3b1b",
+  "Token": "2336412f37f...",
+  "TopicArn": "arn:aws:sns:us-west-2:123456789012:MyTopic",
+  "Message": "You have chosen to subscribe to the topic...",
+  "SubscribeURL": "https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic&Token=2336412f37f...",
+  "Timestamp": "2012-04-26T20:45:04.751Z",
+  "SignatureVersion": "1",
+  "Signature": "EXAMPLEpH+...",
+  "SigningCertURL": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-f3ecfb7224c7233fe7bb5f59f96de52f.pem"
+}
+```
+
+</details>
+
+<details>
+<summary>Example Unsubscribe Confirmation Message</summary>
+
+```json
+{
+  "Type": "UnsubscribeConfirmation",
+  "MessageId": "47138184-6831-46b8-8f7c-afc488602d7d",
+  "Token": "2336412f37f...",
+  "TopicArn": "arn:aws:sns:us-west-2:123456789012:MyTopic",
+  "Message": "You have chosen to deactivate subscription arn:aws:sns:us-west-2:123456789012:MyTopic:2bcfbf39-05c3-41de-beaa-fcfcc21c8f55.\nTo cancel this operation and restore the subscription, visit the SubscribeURL included in this message.",
+  "SubscribeURL": "https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic&Token=2336412f37f...",
+  "Timestamp": "2012-04-26T20:06:41.581Z",
+  "SignatureVersion": "1",
+  "Signature": "EXAMPLEHXgJ...",
+  "SigningCertURL": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-f3ecfb7224c7233fe7bb5f59f96de52f.pem"
+}
+```
+
+</details>

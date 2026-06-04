@@ -1,0 +1,12 @@
+#import "../../fragments/WebhookSubscriptionDetails.gql"
+query ListWebhooks($first: Int!, $cursor: String, $callbackUrl: URL) {
+  webhookSubscriptions(first: $first, after: $cursor, callbackUrl: $callbackUrl) {
+    nodes {
+      ...WebhookSubscriptionDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

@@ -1,0 +1,13 @@
+[tools]
+awscli = "2.33.3"
+bun = "1.3.6"
+jq = "1.8.1"
+
+# Node.js with npm upgrade postinstall
+[tools.nodejs]
+version = "22.22.0"
+postinstall = """
+  npm install --global npm@^10
+  npm install --global @prismatic-io/prism@^9
+  npm install --global @prismatic-io/spectral@^10
+"""

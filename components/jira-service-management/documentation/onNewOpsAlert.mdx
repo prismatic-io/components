@@ -1,0 +1,48 @@
+The **New Ops Alerts** trigger polls the Jira Service Management Ops (Operations) API on a recurring schedule and fires the flow with any alerts created since the previous poll. State is tracked between executions so each alert is only emitted once.
+
+#### How It Works
+
+On each scheduled run, the trigger:
+
+1. Reads the last polled timestamp from polling state (defaults to the current time on the first run)
+2. Builds an OpsGenie query language filter of the form `createdAt > <epochMs>`, optionally combined with the **Additional Query** input
+3. Fetches matching alerts from the [List alerts](https://developer.atlassian.com/cloud/jira/service-desk-ops/rest/api-group-alerts/) endpoint
+4. Updates polling state to the current timestamp
+5. If no new alerts are found, the flow is not executed (the trigger reports `polledNoChanges: true`)
+
+Filtering happens server-side via the OpsGenie query language. The `createdAt` filter uses epoch milliseconds and must not be converted to an ISO string — the API rejects that format.
+
+#### Configuration
+
+| Input | Required | Description |
+|-------|----------|-------------|
+| **Connection** | Yes | An OAuth 2.0 connection to Jira Service Management with Ops Management scopes |
+| **Additional Query** | No | Atlassian Ops query terms appended to the built-in `createdAt` filter. Uses OpsGenie query language syntax (e.g., `status: open AND priority: P1`). |
+
+Refer to the [OpsGenie query language documentation](https://support.atlassian.com/opsgenie/docs/search-queries-for-alerts/) for filter syntax.
+
+#### Returned Data
+
+The trigger payload contains an array of new Ops alerts in `body.data`. Each entry is an alert summary from the JSM Ops API.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "body": {
+    "data": [
+      {
+        "id": "70413b54-5cfd-4f2e-bb2d-2e0a2f1c9b14",
+        "tinyId": "1791",
+        "alias": "event_573",
+        "message": "Disk usage above 90% on host-12",
+        "status": "open",
+        "createdAt": 1730462523000
+      }
+    ]
+  }
+}
+```
+
+</details>

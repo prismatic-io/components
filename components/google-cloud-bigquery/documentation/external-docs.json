@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.cloud.google.com/bigquery/docs"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://docs.cloud.google.com/bigquery/docs/release-notes"
+  }
+]

@@ -1,0 +1,22 @@
+#### Prerequisites
+
+- A Salesforce account with API access enabled
+- The account's security token (if security tokens are enabled)
+
+#### Setup Steps
+
+When using Basic Auth, supply a Salesforce username and password.
+Depending on the Salesforce setup, the password may have a security token attached to it.
+If security tokens in the Salesforce account are _disabled_, the password to supply is simply the Salesforce password.
+If security tokens are _enabled_ in the Salesforce account, then the password to enter is the concatenation of the password and the security token.
+
+For example, if the Salesforce password is `p@$sw0rD` and the security token that Salesforce provides is `ExAmPlE0000000000ExAmPlE`, then enter `p@$sw0rDExAmPlE0000000000ExAmPlE` as the password.
+Manage security tokens by clicking the profile picture on the top-right of _Salesforce_, selecting **My Settings**, and then opening **Personal** -> **Reset My Security Token**.
+
+#### Configure the Connection
+
+Create a connection of type **Basic Authentication** and enter:
+
+- **Username**: Enter the Salesforce account username
+- **Password**: Enter the Salesforce password, or the password concatenated with the security token if security tokens are enabled
+- **Login URL**: Enter the Salesforce My Domain URL (e.g., `https://my-company.my.salesforce.com/`)

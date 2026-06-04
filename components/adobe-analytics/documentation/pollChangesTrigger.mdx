@@ -1,0 +1,52 @@
+This trigger polls the [Adobe Analytics API](https://developer.adobe.com/analytics-apis/docs/2.0/) for new records across a selected resource type on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches all records from the selected Adobe Analytics resource — using paginated requests (up to 1,000 records per page) for Report Suites, or a single request to the `/discovery/me` endpoint for Companies
+3. Records are compared against the set of previously known IDs; only newly appearing records are captured
+4. The trigger updates its internal state after each poll, storing the current set of known IDs
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Adobe Analytics connection used to authenticate API requests
+- **Resource Type**: The Adobe Analytics resource to monitor. Available options:
+
+  | Resource | Change Detection | Tracks New | Tracks Updated |
+  |----------|-----------------|------------|---------------|
+  | Report Suites | ID-based | Yes | No |
+  | Companies | ID-based | Yes | No |
+
+- **Global Company ID**: Required when **Resource Type** is set to `Report Suites`. Identifies the company whose report suites are fetched
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. Because both resource types use ID-based change detection, `updated` is always an empty array.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "rsid": "exampleco.main",
+        "name": "Main Site"
+      }
+    ],
+    "updated": []
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- On the first poll, the trigger captures a baseline snapshot of existing IDs. No records are returned on the first execution — subsequent polls detect additions against that baseline
+- When **Resource Type** is `Report Suites`, the **Global Company ID** input must be set; requests will fail without it
+- ID-based tracking cannot detect updates to existing records — only the appearance of new IDs is reported

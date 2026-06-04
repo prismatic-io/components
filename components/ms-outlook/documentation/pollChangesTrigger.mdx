@@ -1,0 +1,63 @@
+The **New and Updated Messages** polling trigger checks Microsoft Outlook on a configured schedule for mail messages that were created or modified since the last poll. Unlike webhook-based triggers, polling does not require webhook subscription management and works reliably for low-frequency monitoring scenarios.
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads the last poll timestamp from the polling state (or uses the current time on the first run)
+2. Queries Microsoft Graph for messages where `lastModifiedDateTime` is greater than the last poll timestamp, optionally scoped to a single mail folder
+3. Partitions the returned messages into **created** and **updated** buckets by comparing `createdDateTime` against the last poll timestamp
+4. Persists the current execution time as the new last-poll timestamp for the next run
+5. Emits the partitioned results in the trigger payload, filtered by the **Show New Messages** and **Show Updated Messages** toggles
+
+If both **Show New Messages** and **Show Updated Messages** are disabled, the trigger skips the API call entirely.
+
+#### Returned Data
+
+The trigger emits a payload with two arrays — `created` and `updated` — each containing message resources from Microsoft Graph.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "AAMkAGI2TGuLAAA=",
+        "subject": "Welcome to the team",
+        "from": {
+          "emailAddress": {
+            "name": "Megan Brown",
+            "address": "megan.brown@example.com"
+          }
+        },
+        "receivedDateTime": "2024-11-01T15:32:10Z",
+        "createdDateTime": "2024-11-01T15:32:10Z",
+        "lastModifiedDateTime": "2024-11-01T15:32:10Z",
+        "isRead": false
+      }
+    ],
+    "updated": [
+      {
+        "id": "AAMkAGI2TGuLBBB=",
+        "subject": "Re: Project status",
+        "isRead": true,
+        "lastModifiedDateTime": "2024-11-01T15:45:22Z",
+        "createdDateTime": "2024-10-30T09:12:04Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### When to Use Polling vs. Webhooks
+
+- Use **polling** when the integration needs to run on a fixed schedule, when webhook subscription management is not desired, or when the volume of changes is low enough that polling latency is acceptable.
+- Use the **Mail Message Webhook** or **Webhook** triggers when near real-time delivery is required and the integration can manage subscription lifecycles.
+
+Refer to the [Microsoft Graph message resource](https://learn.microsoft.com/en-us/graph/api/resources/message) for the complete schema of returned message fields.

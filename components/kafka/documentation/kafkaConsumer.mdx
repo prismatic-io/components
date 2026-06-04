@@ -1,0 +1,67 @@
+This trigger consumes messages from [Apache Kafka](https://kafka.apache.org/) topics on a configured schedule.
+
+Unlike traditional polling triggers that track state between executions, this trigger consumes a configurable number of messages from one or more Kafka topics each time it runs based on the schedule configured in the integration.
+
+#### How It Works
+
+1. The trigger executes on the configured schedule (e.g., every 5 minutes)
+2. It connects to Kafka using the provided connection credentials and broker addresses
+3. Creates a consumer with the specified consumer group ID
+4. Subscribes to one or more topics
+5. Consumes up to the maximum number of messages (or times out after 10 seconds if fewer messages are available)
+6. Returns all consumed messages in a structured format
+7. Disconnects from Kafka after consumption
+
+The trigger uses Kafka's consumer group mechanism to track offsets. When **Auto Commit** is enabled (default), offsets are automatically committed after processing. This ensures that the same messages are not consumed twice by the same consumer group.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Kafka connection configuration
+- **Client ID**: An identifier for the Kafka consumer passed to the broker with every request (e.g., `"myExampleClient"`)
+- **Brokers**: One or more Kafka broker addresses in `host:port` format (e.g., `"kafka-broker.example.com:9092"`)
+- **Consumer Group ID**: The consumer group ID to use for this consumer (e.g., `"my-consumer-group"`)
+- **Topics**: One or more topics to subscribe to (e.g., `"my-topic"`)
+- **Max Messages**: Maximum number of messages to consume per trigger execution (default: `100`)
+- **Session Timeout (ms)**: The timeout for consumer session in milliseconds (default: `30000`)
+- **Heartbeat Interval (ms)**: The interval for sending heartbeats to the broker in milliseconds (default: `3000`)
+- **From Beginning**: Whether to start consuming from the beginning of the topic (default: `false`)
+- **Auto Commit**: Whether to automatically commit offsets after processing messages (default: `true`)
+
+#### Returned Data
+
+The trigger returns consumed messages along with metadata about the consumption.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "messages": [
+    {
+      "topic": "my-topic",
+      "partition": 0,
+      "offset": "42",
+      "key": "message-key",
+      "value": "{\"orderId\": \"12345\", \"status\": \"shipped\"}",
+      "timestamp": "1707500000000",
+      "headers": {}
+    },
+    {
+      "topic": "my-topic",
+      "partition": 0,
+      "offset": "43",
+      "key": "message-key-2",
+      "value": "{\"orderId\": \"12346\", \"status\": \"delivered\"}",
+      "timestamp": "1707500001000",
+      "headers": {}
+    }
+  ],
+  "messageCount": 2,
+  "consumerGroupId": "my-consumer-group",
+  "topics": ["my-topic"]
+}
+```
+
+</details>

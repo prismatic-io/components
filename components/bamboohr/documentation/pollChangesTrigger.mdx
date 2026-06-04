@@ -1,0 +1,48 @@
+The [BambooHR](https://www.bamboohr.com/) **Changed Employees** polling trigger checks for new, updated, and deleted employees on a configured schedule. It calls the `GET /v1/employees/changed` endpoint and partitions the response into newly inserted employees and updated or deleted employees.
+
+For details on the underlying endpoint, refer to the [Get Last Changed Info reference](https://documentation.bamboohr.com/reference/get-last-changed-info).
+
+#### How It Works
+
+On each scheduled execution, this trigger:
+
+1. Reads the `lastPolledAt` timestamp from cross-flow polling state (defaults to the current time on the first run, so the first poll returns no changes).
+2. Calls the BambooHR API for employees changed since `lastPolledAt`.
+3. Partitions the response into `created` (records with `action: "Inserted"`) and `updated` (records with `action: "Updated"` or `"Deleted"`).
+4. Persists the current timestamp as the new `lastPolledAt` for the next run.
+5. Returns the filtered results. When both **Show New Employees** and **Show Updated Employees** are disabled, the API call is skipped entirely.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "123",
+        "action": "Inserted",
+        "lastChanged": "2025-01-15T12:00:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": "456",
+        "action": "Updated",
+        "lastChanged": "2025-01-15T12:30:00Z"
+      },
+      {
+        "id": "789",
+        "action": "Deleted",
+        "lastChanged": "2025-01-15T12:45:00Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

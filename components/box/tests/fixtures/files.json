@@ -1,0 +1,88 @@
+{
+  "files": [
+    {
+      "id": "1",
+      "name": "a",
+      "type": "folder",
+      "parent": "0"
+    },
+    {
+      "id": "2",
+      "name": "b",
+      "type": "folder",
+      "parent": "0"
+    },
+    {
+      "id": "3",
+      "name": "a1",
+      "type": "folder",
+      "parent": "1"
+    },
+    {
+      "id": "4",
+      "name": "a2",
+      "type": "folder",
+      "parent": "1"
+    },
+    {
+      "id": "5",
+      "name": "b1",
+      "type": "folder",
+      "parent": "2"
+    },
+    {
+      "id": "6",
+      "name": "b2",
+      "type": "folder",
+      "parent": "2"
+    },
+    {
+      "id": "7",
+      "name": "a1file1",
+      "type": "file",
+      "parent": "3"
+    },
+    {
+      "id": "8",
+      "name": "a1file2",
+      "type": "file",
+      "parent": "3"
+    },
+    {
+      "id": "9",
+      "name": "a2file1",
+      "type": "file",
+      "parent": "4"
+    },
+    {
+      "id": "10",
+      "name": "a2file2",
+      "type": "file",
+      "parent": "4"
+    },
+    {
+      "id": "11",
+      "name": "b1file1",
+      "type": "file",
+      "parent": "5"
+    },
+    {
+      "id": "12",
+      "name": "b1file2",
+      "type": "file",
+      "parent": "5"
+    },
+    {
+      "id": "13",
+      "name": "b2file1",
+      "type": "file",
+      "parent": "6"
+    },
+    {
+      "id": "14",
+      "name": "b2file2",
+      "type": "file",
+      "parent": "6"
+    }
+  ]
+}

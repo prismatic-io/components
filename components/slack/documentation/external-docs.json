@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.slack.dev/apis/web-api/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://docs.slack.dev/changelog/"
+  }
+]

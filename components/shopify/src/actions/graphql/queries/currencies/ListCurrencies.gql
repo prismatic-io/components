@@ -1,0 +1,16 @@
+query ListCurrencies($first: Int!, $cursor: String) {
+  shop {
+    currencySettings(first: $first, after: $cursor) {
+      nodes {
+        currencyCode
+        rateUpdatedAt
+        enabled
+      }
+
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}

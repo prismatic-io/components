@@ -1,0 +1,12 @@
+query ListInventoryItemsDataSource($first: Int!, $cursor: String) {
+  inventoryItems(first: $first, after: $cursor) {
+    nodes {
+      id
+      sku
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

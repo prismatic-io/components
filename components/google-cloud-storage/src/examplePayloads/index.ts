@@ -1,0 +1,22 @@
+
+export {
+	completeMultipartUploadExamplePayload,
+	copyFileExamplePayload,
+	createBucketExamplePayload,
+	createMultipartUploadExamplePayload,
+	deleteBucketExamplePayload,
+	deleteFileExamplePayload,
+	downloadFileExamplePayload,
+	generatePresignedUrlExamplePayload,
+	getBucketExamplePayload,
+	getFileExamplePayload,
+	listBucketsExamplePayload,
+	listFilesExamplePayload,
+	moveFileExamplePayload,
+	rawRequestExamplePayload,
+	saveFileSimpleExamplePayload,
+	saveFileWithMetadataExamplePayload,
+	selectBucketExamplePayload,
+	selectFileExamplePayload,
+	uploadPartExamplePayload,
+} from "../examplePayloads";

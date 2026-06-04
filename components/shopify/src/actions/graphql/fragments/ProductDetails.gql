@@ -1,0 +1,86 @@
+fragment ProductDetails on Product {
+  id
+  title
+  descriptionHtml
+  vendor
+  productType
+  createdAt
+  handle
+  updatedAt
+  publishedAt
+  templateSuffix
+  #published_scope
+  tags
+  status
+  variants(first: 250) {
+    nodes {
+      id
+      product {
+        id
+      }
+      title
+      price
+      sku
+      position
+      inventoryPolicy
+      compareAtPrice
+      #fulfillment_service
+      #inventory_management
+      #option1
+      #option2
+      #option3
+      createdAt
+      updatedAt
+      taxable
+      barcode
+      #grams
+      #weight
+      #weight_unit
+
+      inventoryItem {
+        id
+        measurement {
+          weight {
+            value
+            unit
+          }
+        }
+        requiresShipping
+        #image_id
+      }
+
+      image {
+        id
+        url
+      }
+
+      inventoryQuantity
+      #old_inventory_quantity
+      #presentment_prices
+    }
+  }
+  options(first: 250) {
+    id
+    #product_id
+    name
+    position
+    values
+  }
+  media(first: 250, query: "media_type:IMAGE", sortKey: POSITION) {
+    nodes {
+      ... on MediaImage {
+        id
+        alt
+        createdAt
+        updatedAt
+        image {
+          url
+          id
+          width
+          height
+          #variant_ids
+        }
+      }
+    }
+  }
+}

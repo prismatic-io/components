@@ -1,0 +1,35 @@
+Create a connection of type **Service Account**.
+
+To authenticate with Google Gemini via Vertex AI, a Google Cloud service account with the appropriate roles is required.
+
+#### Prerequisites
+
+- A Google Cloud project with billing enabled
+- Access to the [Google Cloud Console](https://console.cloud.google.com/)
+- The Vertex AI API enabled in the project
+
+#### Setup Steps
+
+1. Navigate to the [Google Cloud Console](https://console.cloud.google.com/) and open the **IAM & Admin** section
+2. Create a **Service Account** (or use an existing one)
+3. Assign the following roles to the Service Account:
+   - **Vertex AI User** or **Vertex AI Administrator**
+   - **Storage Object Viewer**
+4. Generate a **Service Account Key**:
+   - Select the Service Account, navigate to the **Keys** tab, and click **Add Key** to create a new key
+   - Download the JSON file containing the key information
+
+   :::warning
+   The downloaded key file contains sensitive credentials. Store it securely and do not expose it in version control.
+   :::
+
+5. Note the **Project ID** from the top section of the console (click the project selector to display all projects and their IDs)
+6. Identify the target [region](https://docs.cloud.google.com/vertex-ai/docs/general/locations) by navigating to the **Vertex AI Dashboard** in the console
+7. Enable the **Vertex AI API** by navigating to **APIs & Services > Library**, searching for "Vertex AI API", and clicking **Enable**
+
+#### Configure the Connection
+
+- Enter the **Client Email** using the Service Account email address
+- Enter the **Private Key** from the downloaded JSON key file
+- Enter the **Project ID** of the Google Cloud project
+- Enter the **Region** for API requests (e.g., `us-central1`). Refer to the [available regions](https://docs.cloud.google.com/vertex-ai/docs/general/locations) for supported values

@@ -1,0 +1,29 @@
+To trigger webhook calls within Service Bus, you need to make use of Azure Event Grid and Logic Apps. Follow these steps to build the webhook integration:
+
+1. Register Microsoft.EventGrid resource provider to the subscription:
+
+   - Navigate to Azure account subscriptions.
+   - Open the subscription settings.
+   - Go to Resource Providers.
+   - Register Microsoft.EventGrid resource.
+
+2. Create a Service Bus namespace: [Create a Service Bus Namespace](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-to-event-grid-integration-example#create-a-service-bus-namespace)
+
+3. Receive messages by using Logic Apps: [Receive Messages by Using Logic Apps](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-to-event-grid-integration-example#receive-messages-by-using-logic-apps)
+
+4. Add a step to receive messages from Service Bus via Event Grid: [Add a Step to Receive Messages from Service Bus via Event Grid](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-to-event-grid-integration-example#add-a-step-receive-messages-from-service-bus-via-event-grid)
+
+5. Add a foreach loop: [Add a Foreach Loop](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-to-event-grid-integration-example#add-a-foreach-loop)
+
+6. Add an HTTP action to post to your trigger:
+
+- Within the For Each loop, select "Add an action."
+- In the "Search connectors and actions" text box, enter "HTTP."
+- Select the HTTP action.
+- Select POST for Method.
+- Add the flow URL to the URI Input.
+- For the Body, add this expression: `base64ToString(items('For_each')?['ContentData'])`.
+
+7. Add another action in the foreach loop to complete the message: [Add Another Action in the Foreach Loop to Complete the Message](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-to-event-grid-integration-example#add-another-action-in-the-foreach-loop-to-complete-the-message)
+
+To test the webhook, send a message to the Topic Subscription using Service Bus Explorer. This should trigger the integration.

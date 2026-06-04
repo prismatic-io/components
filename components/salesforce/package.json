@@ -1,0 +1,38 @@
+{
+  "name": "@prismatic-io/salesforce",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "build": "ts-node --prefer-ts-exts --compiler-options \"{\\\"module\\\": \\\"commonjs\\\"}\" ./esbuild.config.ts",
+    "test": "jest --maxWorkers=4",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "fast-xml-parser": "3.17.4",
+    "jsforce": "^3.6.4",
+    "mime-types": "2.1.35",
+    "timezone-support": "2.0.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.0",
+    "@types/jest": "30.0.0",
+    "@types/jsforce": "^1.11.5",
+    "@types/mime-types": "2.1.0",
+    "@types/node": "18.19.122",
+    "copy-webpack-plugin": "13.0.1",
+    "dotenv": "8.2.0",
+    "esbuild": "0.25.8",
+    "jest": "30.0.5",
+    "ts-jest": "29.4.1",
+    "ts-loader": "9.5.2",
+    "ts-node": "10.8.0",
+    "typescript": "5.9.2",
+    "webpack": "5.101.2",
+    "webpack-cli": "6.0.1"
+  }
+}

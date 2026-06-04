@@ -1,0 +1,58 @@
+This trigger polls the [Microsoft Project Web App ProjectData OData service](https://learn.microsoft.com/en-us/previous-versions/office/project-odata/jj163015(v=office.15)) for new and updated projects on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches projects from the `/Projects` endpoint, applying a server-side OData `$filter` against `CreatedDate` and/or `LastPublishedDate` so only records changed since the previous poll are returned
+3. Records are categorized as **created** or **updated** based on their timestamps relative to the last poll time — records whose `CreatedDate` exceeds the last poll time are classified as created, while records whose `LastPublishedDate` exceeds the last poll time (but `CreatedDate` does not) are classified as updated
+4. The trigger updates its internal state after each poll, storing the poll timestamp as an ISO 8601 string in `lastPolledAt`
+5. On the first execution, `lastPolledAt` is initialized to the current time so the initial poll does not emit historical projects as false-positive events
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Microsoft Project connection used to authenticate API requests
+- **Show New Records**: When enabled, includes newly created projects (those whose `CreatedDate` is later than the last poll time) in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified projects (those whose `LastPublishedDate` is later than the last poll time) in the results. Defaults to `true`
+
+If both toggles are disabled, the trigger short-circuits without making an API request and emits an empty result.
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new projects and `updated` for modified projects.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "Id": "cfafbeb1-8037-4d0c-896e-a46fb27ff229",
+        "Name": "Q1 Product Launch",
+        "CreatedDate": "2024-01-16T10:30:00",
+        "LastPublishedDate": "2024-01-16T10:30:00"
+      }
+    ],
+    "updated": [
+      {
+        "Id": "e2b60d3a-1c4f-4d89-9f3e-7a2c1b9d4e5f",
+        "Name": "Website Redesign",
+        "CreatedDate": "2024-01-10T09:00:00",
+        "LastPublishedDate": "2024-01-16T14:22:00"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Only the top-level `/Projects` collection is polled. Tasks, Assignments, and other child resources require a parent project GUID and are not exposed as pollable resources
+- The `$filter` clause is applied server-side, so only records modified since the last poll are returned — this minimizes data transfer on each execution
+- Project Web App OData v3 returns responses in `{ d: { results: [...] } }` envelope format in verbose mode; the trigger also handles `{ value: [...] }` and `{ results: [...] }` shapes for compatibility with newer endpoints
+- Refer to the [Projects entity set reference](https://learn.microsoft.com/en-us/previous-versions/office/project-odata/jj163621(v=office.15)) for the available fields on the `Projects` entity

@@ -1,0 +1,57 @@
+This trigger polls the [Sage Accounting API](https://developer.sage.com/api/accounting/) for new and updated records on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches records from Sage Accounting using the `updated_from` filter parameter, passing the last poll time to retrieve only records modified since the previous execution
+3. Records are categorized as **created** or **updated** based on their `created_at` timestamp relative to the last poll time — records whose `created_at` exceeds the last poll time are classified as created; all other records returned by the query are classified as updated
+4. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Sage Accounting connection used to authenticate API requests
+- **Resource Type**: The type of records to monitor — Contacts, Sales Invoices, Purchase Invoices, or Ledger Accounts
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "b04c86fb-4a82-4ba3-ab0d-93bf5b2b5abc",
+        "displayed_as": "Acme Corporation",
+        "name": "Acme Corporation",
+        "created_at": "2024-01-16T10:30:00Z",
+        "updated_at": "2024-01-16T10:30:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": "e2b60d3a-1c4f-4d89-9f3e-7a2c1b9d4e5f",
+        "displayed_as": "Global Industries Ltd",
+        "name": "Global Industries Ltd",
+        "created_at": "2024-01-10T09:00:00Z",
+        "updated_at": "2024-01-16T14:22:00Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The `updated_from` filter is applied server-side, so only records modified since the last poll are returned — this minimizes data transfer on each execution
+- All four resource types support both new and updated record detection
+- Refer to the [Sage Accounting API documentation](https://developer.sage.com/api/accounting/) for rate limit details and available fields per resource type

@@ -1,0 +1,44 @@
+To connect to Intercom you will need to create a new app in their [Developer Hub](https://developers.intercom.com/).
+
+Click "New App" and select "Public app" (you can use "Internal integration" if you do not need to connect to customer Intercom workspaces).
+
+To enable OAuth you need to navigate to "Authentication", click the "Edit" button, and check "Use OAuth". Click "Add redirect URL" and enter the callback URL: <OauthCallbackUrl />
+
+You can also use this opportunity to reduce the selected Permissions (scopes) if desired. Once complete, click "Save".
+
+Next, collect the **Client ID** and **Client secret** from the "Basic information" page.
+
+You are now ready to create the OAuth 2.0 connection to Intercom:
+
+- Enter the **Client ID** and **Client secret** values into the same named fields.
+
+Save your integration and you should now be able to authenticate to Intercom.
+
+#### App Review
+
+Intercom requires public apps to pass an app review before they can be used outside the development workspace. This process verifies the app's functionality and confirms it complies with Intercom's developer policies before it can serve external customers.
+
+Intercom apps pass through two states before they are ready for deployment.
+
+**Pre-review:** Only users within the development workspace can authenticate. Users from any other Intercom workspace who attempt to authorize receive an error. Authorization cannot be completed outside the development workspace. This is the expected state during development and testing.
+
+**Approved:** Any Intercom user can authenticate with the integration. No restriction is shown.
+
+**Submit for app review before deploying to end users.** Without approval, users outside the development workspace cannot authenticate. Only members of the development workspace can connect to the integration.
+
+Both listed apps (published in the [Intercom App Store](https://www.intercom.com/app-store)) and unlisted public apps require review. Review typically takes up to 7 business days.
+
+To submit the app for review:
+
+1. In the [Developer Hub](https://developers.intercom.com/), navigate to the app
+2. Under **Publishing**, select **Submit for review**
+3. Complete the submission form, which includes:
+   - A description of the integration's functionality
+   - A screen recording or video demo demonstrating the OAuth flow and key features
+4. Submit. Intercom will notify when review is complete
+
+For detailed submission requirements, refer to the [Intercom app review documentation](https://developers.intercom.com/docs/publish-to-the-app-store/review-publish-your-app).
+
+:::note[Internal Integrations]
+If the integration is only used within a single Intercom workspace (created as **Internal integration** rather than **Public app**), app review is not required. Internal integrations cannot be used across multiple customer workspaces.
+:::

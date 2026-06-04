@@ -1,0 +1,13 @@
+query ListFulfillmentOrdersDataSource($orderId: ID!, $first: Int!, $cursor: String) {
+  order(id: $orderId) {
+    fulfillmentOrders(first: $first, after: $cursor) {
+      nodes {
+        id
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+Authenticate requests to BambooHR using an API key.
+
+#### Prerequisites
+
+- An active BambooHR account with permission to manage API keys.
+- The BambooHR company domain (the `MYCOMPANY` portion of `https://MYCOMPANY.bamboohr.com`).
+
+#### Setup Steps
+
+1. Log in to BambooHR.
+2. Click the user profile image in the upper-right corner.
+3. Select **API Keys**.
+4. Click **Add New Key**.
+5. Copy the generated key — it will be an approximately 40-character alphanumeric string. Store it securely; it will not be shown again.
+
+#### Configure the Connection
+
+Create a connection of type **API Key** and provide the following inputs:
+
+- **API Key**: The BambooHR API key generated in the steps above.
+- **Company Domain**: The `MYCOMPANY` portion of the `https://MYCOMPANY.bamboohr.com` instance URL.

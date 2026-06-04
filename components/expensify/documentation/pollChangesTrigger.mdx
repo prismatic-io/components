@@ -1,0 +1,46 @@
+This trigger polls the [Expensify Integration Server API](https://integrations.expensify.com/Integration-Server/doc/) for new policies on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches the complete list of policies from the Expensify account
+3. The returned policy IDs are compared against the set of previously known IDs; only newly appearing policies are captured
+4. The trigger updates its internal state after each poll, storing the current set of known policy IDs
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Expensify connection used to authenticate API requests
+- **Show New Records**: When enabled, includes newly created policies in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new policies and `updated` for modified policies. Because change detection is ID-based, `updated` is always an empty array.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "0123456789ABCDEF",
+        "name": "Engineering Team Policy",
+        "type": "corporate",
+        "owner": "admin@example.com"
+      }
+    ],
+    "updated": []
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- On the first poll, the trigger captures a baseline snapshot of all existing policy IDs. No records are returned on the first execution — subsequent polls detect additions against that baseline
+- ID-based tracking cannot detect updates to existing policies — only the appearance of new policy IDs is reported
+- The Expensify API returns the full policy list on every request; the trigger performs the new/known comparison locally

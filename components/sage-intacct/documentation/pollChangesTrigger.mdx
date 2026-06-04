@@ -1,0 +1,82 @@
+This trigger polls Sage Intacct for new or updated records of the selected object on a scheduled basis using the [Sage Intacct XML API](https://developer.intacct.com/api/).
+
+It uses each object's `WHENMODIFIED` timestamp to detect changes since the last poll, then categorizes results as new or updated based on the `WHENCREATED` timestamp.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes).
+2. It queries Sage Intacct's `Functions.Common.ReadByQuery` endpoint with a server-side filter of the form `OBJECT.WHENMODIFIED > '{lastPolledAt}'`. A newly created record has `WHENMODIFIED == WHENCREATED`, so this single query captures both new and updated records.
+3. Returned records are split client-side into `created` and `updated` arrays based on whether `WHENCREATED` is greater than the last poll timestamp.
+4. The trigger persists the current poll timestamp via `context.polling.setState()` so the next execution resumes from where this one left off.
+5. On the very first poll, `lastPolledAt` is initialized to the current time so historical records do not flood the workflow.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Sage Intacct connection to use.
+- **Resource Type**: The Sage Intacct object to poll for new or updated records. Supported types are listed below.
+- **Show New Records**: When enabled, newly created records are included in the trigger output. Defaults to `true`.
+- **Show Updated Records**: When enabled, records updated after the last poll are included in the trigger output. Defaults to `true`.
+
+If both **Show New Records** and **Show Updated Records** are disabled, the trigger short-circuits and returns empty arrays without making an API call.
+
+#### Supported Resource Types
+
+<details>
+<summary>Available Resource Types (8)</summary>
+
+| Resource Type | Sage Intacct Object |
+|---------------|---------------------|
+| Vendors | `VENDOR` |
+| Customers | `CUSTOMER` |
+| Bills (AP) | `APBILL` |
+| Invoices (AR) | `ARINVOICE` |
+| Contacts | `CONTACT` |
+| Employees | `EMPLOYEE` |
+| Projects | `PROJECT` |
+| AR Payments | `ARPYMT` |
+
+</details>
+
+#### Returned Data
+
+The trigger returns separate arrays for newly created and updated records:
+
+<details>
+<summary>Example response payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "RECORDNO": "12345",
+        "VENDORID": "V-001",
+        "NAME": "Acme Supplies",
+        "WHENCREATED": "2026-05-04T10:30:00Z",
+        "WHENMODIFIED": "2026-05-04T10:30:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "RECORDNO": "67890",
+        "VENDORID": "V-002",
+        "NAME": "Globex Corp",
+        "WHENCREATED": "2026-04-15T09:00:00Z",
+        "WHENMODIFIED": "2026-05-04T14:22:00Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+The exact fields returned depend on the selected resource type. Each record reflects the full object as returned by the Sage Intacct XML API.
+
+#### Best Practices
+
+- **Polling Frequency**: Use 5-15 minute intervals to balance timeliness with API rate limits.
+- **First Poll**: The first execution after deployment establishes the baseline timestamp and returns no records. Subsequent polls return changes made after that baseline.
+- **Toggles**: Disable **Show New Records** or **Show Updated Records** to filter the output to only one category of change.

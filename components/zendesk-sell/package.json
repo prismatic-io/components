@@ -1,0 +1,27 @@
+{
+  "name": "zendesk-sell",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "publish": "npm run build && prism components:publish",
+    "build": "npm run lint && npm run format && webpack",
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.4",
+    "@types/jest": "30.0.0",
+    "@types/node": "^25.3.0",
+    "copy-webpack-plugin": "13.0.1",
+    "jest": "30.2.0",
+    "ts-jest": "29.4.6",
+    "ts-loader": "9.5.4",
+    "typescript": "5.9.3",
+    "webpack": "5.105.2",
+    "webpack-cli": "6.0.1"
+  }
+}

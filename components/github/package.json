@@ -1,0 +1,24 @@
+{
+  "name": "@prismatic-io/github",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome check . --write",
+    "format": "biome check . --write",
+    "build": "webpack",
+    "test": "echo 'no tests'",
+    "publish": "npm run build && prism components:publish"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.1",
+    "@types/node": "18.19.130",
+    "copy-webpack-plugin": "13.0.1",
+    "ts-loader": "9.5.4",
+    "typescript": "5.9.3",
+    "webpack": "5.102.1",
+    "webpack-cli": "6.0.1"
+  }
+}

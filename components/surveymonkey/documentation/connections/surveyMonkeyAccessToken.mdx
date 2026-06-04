@@ -1,0 +1,43 @@
+To connect to SurveyMonkey using an Access Token, a registered private application in the [SurveyMonkey Developer Portal](https://developer.surveymonkey.com/apps/) is required.
+
+:::info[When to Use Access Token Authentication]
+Access Token authentication is best suited for private applications that access a single SurveyMonkey account. For multi-user or multi-tenant integrations, OAuth 2.0 is recommended.
+:::
+
+#### Prerequisites
+
+- A SurveyMonkey account with access to the [Developer Portal](https://developer.surveymonkey.com/)
+- A **Private** application registered in the Developer Portal
+
+#### Setup Steps
+
+1. Navigate to the [SurveyMonkey Developer Portal](https://developer.surveymonkey.com/apps/) and sign in.
+2. Click **Create New App** to register a new application, or select an existing private app.
+3. Set **App Type** to **Private** (required for access token generation).
+4. Navigate to the app's **Settings** tab.
+5. Copy the following values from the app's **Settings** tab:
+   - **Access Token**: The long-lived token used for API authentication
+   - **Client ID** (also called **API Key**): Needed for webhook signature verification
+   - **Client Secret** (also called **API Secret**): Needed for webhook signature verification
+
+:::note[Access Token Generation]
+The **Access Token** field is only visible for private applications. If the field is not visible, verify that the app type is set to **Private** in the app settings.
+:::
+
+#### Configure the Connection
+
+- Enter the **Access Token** from the app's Settings tab.
+- Enter the **API Key (Client ID)** for webhook signature verification.
+- Enter the **API Secret (Client Secret)** for webhook signature verification.
+- Select the **Region** based on account location:
+  - **United States**: Default for most accounts
+  - **European Union**: For EU-based accounts (uses `api.eu.surveymonkey.com`)
+  - **Canada**: For Canadian accounts (uses `api.surveymonkey.ca`)
+
+#### Verify Connection
+
+After entering the **Access Token**, **API Key**, and **API Secret**, save the connection configuration. The connection can be tested by executing any action, such as **Get Current User**, to verify authentication is working correctly.
+
+:::warning[Security Considerations]
+Access tokens provide full access to the associated SurveyMonkey account. Store tokens securely and rotate them periodically. For production integrations with multiple users, consider using OAuth 2.0 instead.
+:::

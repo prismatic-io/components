@@ -1,0 +1,16 @@
+The **Get Temporary Upload Link** action allows you to fetch a presigned URL from Dropbox that can be used to upload a file directly to Dropbox.
+This is handy if you have a large file that you want to upload to Dropbox, but cannot upload the file through a flow.
+
+After fetching a presigned URL, your app can upload a file directly to Dropbox.
+Note that your request must be a POST request and your `content-type` header must be `application/octet-stream`.
+
+For example,
+
+```bash
+curl --request POST \
+  --upload-file ./my-file.png \
+  --header "content-type: application/octet-stream" \
+  https://content.dropboxapi.com/apitul/1/ExAmPlE
+```
+
+Dropbox documentation notes that the maximum size for a file uploaded via a presigned URL is 150MB.

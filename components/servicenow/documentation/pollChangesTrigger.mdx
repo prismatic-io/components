@@ -1,0 +1,61 @@
+This trigger polls the [ServiceNow Table API](https://developer.servicenow.com/dev.do) for new and updated records in a selected ServiceNow table on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It queries the ServiceNow Table API using `sysparm_query=sys_updated_on>{lastPolledAt}` to fetch only records modified since the last poll
+3. Records are classified as **created** if `sys_created_on` exceeds the last poll time; all other returned records are classified as **updated**
+4. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The ServiceNow connection used to authenticate API requests
+- **Instance URL**: The full base URL of the ServiceNow instance (e.g., `https://dev12345.service-now.com`)
+- **API Version**: The ServiceNow REST API version to use (e.g., `v2`)
+- **Table Name**: The name of the ServiceNow table to monitor. Enter any valid table name (e.g., `incident`, `problem`, `change_request`, `sc_task`)
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+
+#### Returned Data
+
+Returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "sys_id": "abc123def456",
+        "number": "INC0010001",
+        "short_description": "Cannot connect to VPN",
+        "sys_created_on": "2024-01-16 10:30:00",
+        "sys_updated_on": "2024-01-16 10:30:00",
+        "state": "1"
+      }
+    ],
+    "updated": [
+      {
+        "sys_id": "xyz789ghi012",
+        "number": "INC0009875",
+        "short_description": "Printer offline on floor 3",
+        "sys_created_on": "2024-01-10 09:00:00",
+        "sys_updated_on": "2024-01-16 14:22:00",
+        "state": "6"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- **Table Name** is a free-form input — any valid ServiceNow table name is accepted. Common examples include `incident`, `problem`, `change_request`, and `sc_task`
+- **Instance URL** must be the full base URL including the protocol (e.g., `https://dev12345.service-now.com`)
+- Refer to the [ServiceNow developer documentation](https://developer.servicenow.com/dev.do) for the full list of available tables and API version details

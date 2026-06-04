@@ -1,0 +1,113 @@
+A Google Shopping [Pub/Sub notification webhook](https://developers.google.com/shopping-content/guides/push-delivery) can be configured to send information to a flow's webhook URL when order events occur in Google Merchant Center.
+
+This trigger receives webhook requests from Google Cloud Pub/Sub for manually configured push notification subscriptions. When an order is created or other registered events occur, Google publishes notifications to a configured Cloud Pub/Sub topic, which then pushes the notification to this trigger's webhook URL.
+
+#### How It Works
+
+Google Shopping push notifications use [Google Cloud Pub/Sub](https://docs.cloud.google.com/pubsub/docs) as the delivery mechanism:
+
+1. Register a Merchant Center account for push notifications using the **Update PubSub Notification** action
+2. Google returns a `cloudTopicName` that will receive event notifications
+3. Configure a Cloud Pub/Sub push subscription pointing to this trigger's webhook URL
+4. When events occur in the Merchant Center (order creation, etc.), Google publishes messages to the topic
+5. Cloud Pub/Sub delivers the messages to this trigger via HTTP POST
+
+#### Configuration Requirements
+
+To use this trigger, configure the following components externally:
+
+**1. Create a Cloud Pub/Sub Topic**
+
+In the Google Cloud console:
+
+1. Navigate to **Pub/Sub** (Navigation Menu > More Products > Analytics > Pub/Sub)
+2. Click **Topics** > **Create Topic**
+3. Enter a **Topic ID** (example: `merchant-notifications`)
+4. Leave default values for remaining options
+5. Click **Create**
+
+A new topic and default subscription are created.
+
+**2. Register the Merchant Center Account**
+
+Use the **Update PubSub Notification** action with:
+
+- **Merchant ID**: The Merchant Center account ID
+- **Cloud Topic Name**: Full topic name (example: `projects/my-project/topics/merchant-notifications`)
+- **Registered Events**: List of event types to monitor (example: `["OrderStatusChangeEvent"]`)
+
+The action registers the merchant account with Google's push notification service.
+
+**3. Create a Push Subscription**
+
+In the Google Cloud console:
+
+1. Navigate to **Pub/Sub** > **Subscriptions**
+2. Click **Create subscription**
+3. Enter a **Subscription ID** (example: `merchant-webhook-sub`)
+4. Select the topic created in step 1
+5. For **Delivery type**, select **Push**
+6. Enter the **Endpoint URL**: Use this trigger's webhook URL from the integration instance
+7. Leave default values for remaining options
+8. Click **Create**
+
+Cloud Pub/Sub will now push messages from the topic to this trigger's webhook URL.
+
+#### Event Types
+
+The following event types can be registered for notifications:
+
+- **OrderStatusChangeEvent** - Triggered when an order status changes in Merchant Center
+
+Additional event types may be available. Refer to the [Content API for Shopping documentation](https://developers.google.com/shopping-content) for the complete list of supported events.
+
+#### Notification Payload
+
+Cloud Pub/Sub delivers notifications as HTTP POST requests with a JSON payload containing:
+
+```json
+{
+  "message": {
+    "data": "<base64-encoded-event-data>",
+    "messageId": "message-id",
+    "publishTime": "2024-01-15T10:30:00.123Z"
+  },
+  "subscription": "projects/my-project/subscriptions/merchant-webhook-sub"
+}
+```
+
+The `message.data` field contains base64-encoded event information that can be decoded to access:
+
+- Event type
+- Merchant ID
+- Order details (for order events)
+- Timestamp
+- Additional event-specific data
+
+#### Return Data
+
+The trigger returns the complete notification payload, including:
+
+- **message** - The Pub/Sub message object with encoded data
+- **subscription** - The subscription path that delivered the notification
+
+Process the `message.data` field using a **Base64 Decode** action or custom code to extract event details.
+
+#### Notes
+
+- The trigger automatically responds with HTTP 200 to acknowledge receipt of notifications
+- Google Cloud Pub/Sub retries delivery if the endpoint is unreachable or returns an error
+- Subscriptions can be configured with message retention, retry policies, and expiration settings
+- The **Get PubSub Notification Settings** action retrieves current notification configuration for a merchant account
+- This trigger supports both webhook delivery and scheduled execution modes
+
+#### Related Actions
+
+- **Update PubSub Notification** - Register a merchant account for push notifications and specify event types
+- **Get PubSub Notification Settings** - Retrieve current notification configuration for a merchant account
+
+#### Additional Resources
+
+- [Google Shopping Content API - Push Delivery](https://developers.google.com/shopping-content/guides/push-delivery)
+- [Google Cloud Pub/Sub Documentation](https://docs.cloud.google.com/pubsub/docs)
+- [Pub/Sub Push Subscriptions](https://docs.cloud.google.com/pubsub/docs/push)

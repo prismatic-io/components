@@ -1,0 +1,22 @@
+The [Slack Message from Webhook](#postslackmessage) and the [Slack Block Message from Webhook](#postwebhookblockmessage) actions are the only Slack actions that do not authenticate with OAuth.
+Instead, these actions use Slack [Incoming Webhooks](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks).
+
+#### Prerequisites
+
+- A Slack workspace with administrator access
+- Ability to create Slack apps in the workspace
+
+#### Setup Steps
+
+To generate a Slack incoming webhook URL:
+
+1. Navigate to the [Slack App Portal](https://api.slack.com/apps)
+1. Click **Create New App**, adding an app to the workspace
+1. Under **Add features and functionality** select **Incoming Webhooks**
+1. **Activate Incoming Webhooks** and then **Add New Webhook to Workspace**
+1. Select the channel where messages will be posted
+1. Copy the **Webhook URL**. It should be of the form `https://hooks.slack.com/services/foo/bar/baz`
+
+#### Configure the Connection
+
+- Enter the **Webhook URL** into the connection configuration

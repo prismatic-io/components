@@ -1,0 +1,81 @@
+Slack can be configured to send [events](https://docs.slack.dev/apis/events-api/) to a workflow. This webhook trigger uses the Slack app's **signing secret** to [verify requests from Slack](https://docs.slack.dev/authentication/verifying-requests-from-slack).
+
+This trigger automatically handles Slack's challenge verification, so no additional verification steps are required.
+
+#### How It Works
+
+This trigger routes incoming requests to one of three branches based on the request type:
+
+- **URL Verify** branch: Handles the initial [challenge request](https://docs.slack.dev/apis/events-api/) when configuring the webhook in Slack. The trigger automatically responds with the proper challenge response.
+- **Notification** branch: Handles actual event notifications from Slack, such as when a channel is created or a message is posted.
+- **Management** branch: Handles requests from external systems for testing or management purposes. To invoke this branch, include the `prismatic-bypass-challenge: true` header in the request to bypass Slack message verification.
+
+The trigger verifies all requests using the signing secret to ensure they originate from Slack.
+
+#### Configuration
+
+Configure the following input:
+
+- **Connection**: The Slack connection containing the **signing secret** from the Slack app. This secret is used to cryptographically verify that webhook requests originate from Slack.
+
+#### Event Types
+
+Slack supports numerous event types that can trigger this webhook. Common events include:
+
+<details>
+<summary>Available Events (6)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `app_mention` | App was mentioned in a channel |
+| `channel_created` | Channel was created |
+| `channel_deleted` | Channel was deleted |
+| `message.channels` | Message was posted in a public channel |
+| `message.im` | Message was posted in a direct message |
+| `user_change` | User profile information changed |
+
+</details>
+
+Refer to [Slack's Event Types documentation](https://docs.slack.dev/reference/events) for the complete and up-to-date list of available event types.
+
+#### Returned Data
+
+The trigger returns different payloads depending on the branch:
+
+<details>
+<summary>Example Notification Payload</summary>
+
+```json
+{
+  "token": "XXYYZZ",
+  "team_id": "TXXXXXXXX",
+  "api_app_id": "AXXXXXXXXX",
+  "event": {
+    "type": "channel_created",
+    "channel": {
+      "id": "C024BE91L",
+      "name": "general",
+      "created": 1360782804
+    },
+    "event_ts": "1360782804.083113"
+  },
+  "type": "event_callback",
+  "event_id": "Ev08MFMKH6",
+  "event_time": 1234567890
+}
+```
+
+</details>
+
+<details>
+<summary>Example Challenge Payload (URL Verify Branch)</summary>
+
+```json
+{
+  "token": "XXYYZZ",
+  "challenge": "3eZbrw1aBm2rZgRNFdxV2595E9CY3gmdALWMmHkvFXO7tYXAYM8P",
+  "type": "url_verification"
+}
+```
+
+</details>

@@ -1,0 +1,20 @@
+### A Note on Asana Pagination
+
+Asana's API is paginated.
+That means that their API will return up to 100 results for any query.
+If additional results are available, an Asana step will return an additional property, `next_page` alongside the `data` that is returned.
+
+```json
+{
+  "data": {},
+  "next_page": {
+    "offset": "yJ0eXAiOiJKV1QiLCJhbGciOiJIRzI1NiJ9",
+    "path": "/tasks?project=1337&limit=5&offset=yJ0eXAiOiJKV1QiLCJhbGciOiJIRzI1NiJ9",
+    "uri": "https://app.asana.com/api/1.0/tasks?project=1337&limit=5&offset=yJ0eXAiOiJKV1QiLCJhbGciOiJIRzI1NiJ9"
+  }
+}
+```
+
+The `offset` returned from `next_page` can be used in a subsequent query to fetch additional results.
+
+See [Asana's docs](https://developers.asana.com/docs/pagination) for information about Asana's paginated API.

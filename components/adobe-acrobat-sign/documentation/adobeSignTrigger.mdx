@@ -1,0 +1,99 @@
+An [Adobe Acrobat Sign](https://www.adobe.com/sign.html) [webhook](https://opensource.adobe.com/acrobat-sign/developer_guide/webhookapis.html) can be configured to send notifications to a flow's webhook URL when events occur in the Adobe Acrobat Sign account (an agreement is created, signed, recalled, etc.).
+
+#### How It Works
+
+Adobe Acrobat Sign requires that all webhook endpoints echo back the `X-AdobeSign-ClientId` header in every response. This trigger automatically handles that verification by reading the client ID from the incoming request headers and including it in the response.
+
+When **Perform Strict Validation** is enabled, the trigger also compares the incoming `X-AdobeSign-ClientId` header against the client ID stored in the connection. If the values do not match, the trigger returns a `401 Unauthorized` response and the payload is rejected. This provides an additional layer of security to ensure that only legitimate Adobe Acrobat Sign requests are processed.
+
+#### Event Types
+
+<details>
+<summary>Available Events (10)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `AGREEMENT_CREATED` | An agreement was created (for example, as a draft) in Adobe Acrobat Sign. |
+| `AGREEMENT_ACTION_REQUESTED` | An action (such as signing) was requested from a participant on an agreement. |
+| `AGREEMENT_ACTION_COMPLETED` | A participant completed a requested action (such as signing) on an agreement. |
+| `AGREEMENT_WORKFLOW_COMPLETED` | All participants completed their actions and the agreement workflow is fully completed. |
+| `AGREEMENT_EXPIRED` | An agreement reached its expiration date before being completed. |
+| `AGREEMENT_CANCELLED` | An agreement was cancelled (for example, by a sender or admin). |
+| `AGREEMENT_RECALLED` | An agreement was recalled by the sender before completion. |
+| `AGREEMENT_REMINDER_SENT` | A reminder was sent to a participant for an outstanding agreement. |
+| `AGREEMENT_VAULTED` | An agreement was vaulted (archived to a long-term storage provider). |
+| `AGREEMENT_DOCUMENT_VIEWED` | A participant viewed the agreement document. |
+
+</details>
+
+Refer to the [Adobe Acrobat Sign webhook documentation](https://opensource.adobe.com/acrobat-sign/developer_guide/webhookapis.html) for the complete and up-to-date list of webhook events and payload structures.
+
+#### Configuration
+
+- **Connection**: The Adobe Acrobat Sign connection to use. When strict validation is enabled, the connection's client ID is used to verify incoming requests.
+- **Perform Strict Validation**: When enabled, the trigger compares the `X-AdobeSign-ClientId` header from each incoming request against the connection's client ID. Requests with a mismatched client ID are rejected with a `401` response. Disabled by default.
+
+#### Configure the Webhook in Adobe Acrobat Sign
+
+1. Log in to [Adobe Acrobat Sign](https://www.adobe.com/sign.html) and navigate to **Account > Webhooks**.
+2. Click **Create Webhook** (the "+" icon).
+3. Enter a **Name** for the webhook.
+4. Set the **Scope** (Account, Group, User, or Resource).
+5. Paste the flow's webhook URL into the **URL** field.
+6. Select the **Events** to subscribe to (e.g., Agreement All Events, Agreement Created, Agreement Signed).
+7. Click **Save**.
+
+Adobe Acrobat Sign will send a verification request to the webhook URL. The trigger automatically responds with the required `X-AdobeSign-ClientId` header to complete the verification.
+
+#### Returned Data
+
+The trigger passes through the full webhook payload as received from Adobe Acrobat Sign. The payload structure varies by event type.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "webhookId": "CBJCHBCAABAAqz5U6lTZ",
+  "webhookName": "Agreement Events",
+  "webhookNotificationId": "5a05-b4a1-7de3-ae68",
+  "webhookUrlInfo": {
+    "url": "https://hooks.example.com/trigger/example"
+  },
+  "webhookScope": "ACCOUNT",
+  "webhookNotificationApplicableUsers": [
+    {
+      "id": "CBJCHBCAABAAc8PjNTED",
+      "email": "user@example.com",
+      "role": "SENDER",
+      "payloadApplicable": true
+    }
+  ],
+  "event": "AGREEMENT_CREATED",
+  "subEvent": "CREATED",
+  "eventDate": "2024-01-15T10:30:00Z",
+  "eventResourceType": "agreement",
+  "eventResourceParentType": "NA",
+  "eventResourceParentId": "",
+  "participantUserId": "CBJCHBCAABAAc8PjNTED",
+  "participantUserEmail": "user@example.com",
+  "actingUserId": "CBJCHBCAABAAc8PjNTED",
+  "actingUserEmail": "user@example.com",
+  "actingUserIpAddress": "192.0.2.1",
+  "initiatingUserId": "CBJCHBCAABAAc8PjNTED",
+  "initiatingUserEmail": "user@example.com",
+  "agreement": {
+    "id": "CBJCHBCAABAAnRx1zWdf",
+    "name": "Sample Agreement",
+    "status": "OUT_FOR_SIGNATURE"
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The trigger always responds with the `X-AdobeSign-ClientId` header, which is required by the [Adobe Acrobat Sign webhook verification protocol](https://opensource.adobe.com/acrobat-sign/developer_guide/webhookapis.html). This is handled automatically and no additional configuration is needed.
+- Enable **Perform Strict Validation** in production environments to ensure only requests from the expected Adobe Acrobat Sign application are processed.
+- For a full list of available webhook events, refer to the [Adobe Acrobat Sign Webhook API documentation](https://opensource.adobe.com/acrobat-sign/developer_guide/webhookapis.html).

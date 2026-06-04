@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://learn.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-overview?view=azure-bot-service-4.0"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://learn.microsoft.com/en-us/azure/bot-service/what-is-new"
+  }
+]

@@ -1,0 +1,19 @@
+To create a PagerDuty API Key connection, generate a REST API key from the PagerDuty account.
+
+#### Prerequisites
+
+- A PagerDuty account with administrative permissions to create API access keys
+- Access to the [PagerDuty web app](https://app.pagerduty.com/)
+
+#### Setup Steps
+
+1. [Log in to PagerDuty](https://app.pagerduty.com/) and navigate to [Integrations | API Access Keys](https://support.pagerduty.com/main/docs/api-access-keys#section-generate-a-user-token-rest-api-key).
+2. Click **Create New API Key**.
+3. Enter a description for the API key. Check **Read-only API Key** if read-only behavior is desired.
+4. Click **Create Key**.
+5. Copy the provided API Key for use in the connection configuration.
+
+#### Configure the Connection
+
+- Create a connection of type **API Key**.
+- Enter the **Token** copied from PagerDuty. This is the API token used to authenticate requests.

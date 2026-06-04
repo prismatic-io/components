@@ -1,0 +1,61 @@
+The Campaign Budget Alerts trigger checks for campaigns approaching or exceeding budget thresholds on a configured schedule.
+
+This trigger uses the [Google Ads API Campaign resource](https://developers.google.com/google-ads/api/fields/v23/campaign) to query campaign budget and cost data, calculating budget utilization in real-time.
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 15 minutes)
+2. Query all enabled campaigns with their budget and cost metrics
+3. Calculate spending percentage, remaining budget, and severity level for each campaign
+4. Return only campaigns that exceed the alert threshold
+
+#### Severity Levels
+
+Budget alerts are classified by severity:
+
+- **Warning** - Spending has reached or exceeded the alert threshold (default: 80%) but is below 100%
+- **Critical** - Spending has reached or exceeded 100% of the configured budget
+
+Only campaigns with Warning or Critical severity are included in the results.
+
+#### Configuration
+
+**Required Inputs:**
+- **Connection** - Google Ads OAuth2 connection
+- **Customer ID** - The Google Ads client account ID (format: `111-222-4444` or `1112224444`)
+
+**Optional Inputs:**
+- **Manager Customer ID** - Manager account ID when accessing sub-accounts
+- **Alert Threshold** - Percentage threshold for triggering alerts (default: 80)
+
+#### Returned Data
+
+The trigger returns an object containing budget alerts and metadata. When no campaigns exceed the threshold, returns `polledNoChanges: true`.
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": {
+    "alerts": [
+      {
+        "campaignId": "23302011123",
+        "campaignName": "Example-Campaign-1",
+        "budgetAmount": 100,
+        "spent": 95,
+        "percentSpent": 95,
+        "remaining": 5,
+        "period": "DAILY",
+        "shouldAlert": true,
+        "severity": "WARNING",
+        "message": "Campaign approaching daily budget limit"
+      }
+    ],
+    "totalCampaignsMonitored": 10,
+    "alertThreshold": 80
+  }
+}
+```
+
+</details>

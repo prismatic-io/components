@@ -1,0 +1,44 @@
+To connect to Jira Service Management using OAuth 2.0, create and configure an OAuth 2.0 (3LO) application in the [Atlassian Developer Console](https://developer.atlassian.com/console/myapps/).
+
+#### Prerequisites
+
+- An Atlassian account with access to Jira Service Management
+- Access to the [Atlassian Developer Console](https://developer.atlassian.com/console/myapps/)
+
+#### Setup Steps
+
+1. Navigate to the [Atlassian Developer Console](https://developer.atlassian.com/console/myapps/) and click **Create** then **OAuth 2.0 integration**
+2. Enter a name for the application and click **Create**
+3. In the left sidebar, click **Authorization** and then click **Add** next to **OAuth 2.0 (3LO)**
+4. Enter the OAuth 2.0 callback URL as the **Callback URL**: <OauthCallbackUrl />
+5. Click **Save changes**
+6. In the left sidebar, click **Permissions** and configure the required scopes for Jira Service Management access
+7. In the left sidebar, click **Settings** to find the **Client ID** and **Secret** values
+
+Refer to the [Atlassian OAuth 2.0 (3LO) documentation](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/) for detailed setup instructions.
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0** and configure the following fields:
+
+- For **Authorize URL**, the default value is pre-configured for Atlassian Cloud APIs:
+  ```
+  https://auth.atlassian.com/authorize?audience=api.atlassian.com&prompt=consent
+  ```
+- For **Token URL**, the default value is:
+  ```
+  https://auth.atlassian.com/oauth/token
+  ```
+- For **Scopes**, the default value covers Service Desk requests, Ops alerts and configuration, and Assets / CMDB objects, schemas, and types:
+  ```
+  read:servicedesk-request write:servicedesk-request manage:servicedesk-customer read:jira-user
+  read:ops-alert:jira-service-management write:ops-alert:jira-service-management delete:ops-alert:jira-service-management
+  read:ops-config:jira-service-management write:ops-config:jira-service-management delete:ops-config:jira-service-management
+  read:cmdb-object:jira write:cmdb-object:jira delete:cmdb-object:jira
+  read:cmdb-schema:jira write:cmdb-schema:jira delete:cmdb-schema:jira
+  read:cmdb-type:jira write:cmdb-type:jira delete:cmdb-type:jira
+  read:cmdb-attribute:jira offline_access
+  ```
+  Existing connections created before the Ops and Assets scopes were added must be reauthorized to use those actions. Trim the list to only the scopes the integration needs. Refer to the [Atlassian scopes documentation](https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/) for additional scope information.
+- Enter the **Client ID** and **Client Secret** from the application settings in the Developer Console
+- Optionally, enter the **Atlassian Site Name** if the Atlassian account has access to multiple Jira sites (e.g., `example-company.atlassian.net`). If left blank, the connection uses the first accessible site.

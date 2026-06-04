@@ -1,0 +1,23 @@
+export interface Order {
+  id: string | null;
+  name: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+  email: string | null;
+  phone: string | null;
+  note: string | null;
+  tags: string[] | null;
+  test: boolean | null;
+  currencyCode: string | null;
+  customerLocale: string | null;
+  displayFinancialStatus: string | null;
+  displayFulfillmentStatus: string | null;
+  confirmed: boolean | null;
+  cancelReason: string | null;
+  cancelledAt: string | null;
+  closedAt: string | null;
+  processedAt: string | null;
+  taxExempt: boolean | null;
+  taxesIncluded: boolean | null;
+  totalWeight: number | null;
+}

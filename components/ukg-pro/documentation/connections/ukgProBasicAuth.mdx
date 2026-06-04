@@ -1,0 +1,43 @@
+#### UKG Pro Basic Auth (Web Service Account)
+
+This connection method uses a Web Service Account to authenticate with UKG Pro's Personnel and Configuration APIs.
+
+#### Prerequisites
+
+Obtain the following items before configuring this connection:
+
+1. **Web Service Account credentials** from the UKG Pro administrator
+2. **Customer API Key** from the UKG Pro account
+3. **Base URL** for the UKG Pro environment
+
+For more information about UKG Pro API authentication, see the [UKG Pro API documentation](https://developer.ukg.com/hcm/docs).
+
+#### Configure the Connection
+
+Create a connection of type **Basic Authentication** and enter the following values:
+
+- **API Base URL**: The UKG Pro API base URL (e.g., `https://service5.ultipro.com`)
+- **Customer API Key**: The organization's unique Customer API Key
+- **Service Account Username**: Web Service Account username
+- **Service Account Password**: Web Service Account password
+
+#### Obtain Web Service Account Credentials
+
+Follow these steps to create and retrieve Web Service Account credentials:
+
+1. Log into the UKG Pro administration portal
+2. Navigate to **System Configuration** > **Web Services**
+3. Select **Create Web Service Account** or locate an existing account
+4. Copy the following values:
+   - **Username**: The Web Service Account username
+   - **Password**: The Web Service Account password
+   - **Customer API Key**: Located in **Web Services** configuration
+
+For detailed instructions, refer to the [UKG Pro Web Services configuration guide](https://developer.ukg.com/hcm/docs).
+
+#### Supported APIs
+
+This connection type is used for:
+
+- Personnel API endpoints (employee demographics, employment details, changes)
+- Configuration API endpoints (companies, locations, jobs, positions)

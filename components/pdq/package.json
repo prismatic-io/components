@@ -1,0 +1,29 @@
+{
+  "name": "pdq",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish",
+    "test": "echo 'no tests'",
+    "lint": "biome check . --write",
+    "format": "biome format . --write"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.2",
+    "@types/jest": "30.0.0",
+    "@types/node": "18.19.123",
+    "copy-webpack-plugin": "13.0.1",
+    "jest": "30.0.5",
+    "ts-jest": "29.4.1",
+    "ts-loader": "9.5.4",
+    "typescript": "5.9.2",
+    "webpack": "5.101.3",
+    "webpack-cli": "6.0.1"
+  }
+}

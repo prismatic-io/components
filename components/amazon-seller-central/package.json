@@ -1,0 +1,32 @@
+{
+  "name": "amazon-seller-central",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "scripts": {
+    "lint": "biome check ./src",
+    "format": "biome check --write ./src",
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish",
+    "test": "echo 'no tests'"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "aws-utils": "file:../../packages/aws-utils",
+    "form-data": "^4.0.1",
+    "qs": "^6.13.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.11",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^18.19.68",
+    "@types/qs": "^6.9.17",
+    "copy-webpack-plugin": "^11.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
+  }
+}

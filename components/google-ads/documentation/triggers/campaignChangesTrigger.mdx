@@ -1,0 +1,63 @@
+The New and Updated Campaigns trigger checks for new and updated campaigns in a Google Ads account on a configured schedule. It monitors campaign properties including status, budget, bidding strategy, and settings by comparing the current state against the previous polling state.
+
+This trigger uses the [Google Ads API Campaign resource](https://developers.google.com/google-ads/api/fields/v23/campaign) to query campaign data and performs client-side change detection between polling intervals.
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 15 minutes)
+2. Query campaigns modified since the last poll using [Google Ads Query Language](https://developers.google.com/google-ads/api/docs/query/overview)
+3. Compare current campaign data against stored state to identify changes
+4. Categorize changes as "created", "updated", or "deleted"
+5. Update state with current campaign data for the next poll
+
+#### Configuration
+
+**Required Inputs:**
+- **Connection** - Google Ads OAuth2 connection
+- **Customer ID** - The Google Ads client account ID (format: `111-222-4444` or `1112224444`)
+
+**Optional Inputs:**
+- **Manager Customer ID** - Manager account ID when accessing sub-accounts
+- **Change Types to Monitor** - Filter for specific change types:
+  - Status Changes (enabled, paused, removed)
+  - Budget Changes (amounts or assignments)
+  - Bid Strategy Changes (strategies or amounts)
+  - Campaign Settings (targeting, schedule, ad rotation)
+  - Leave empty to detect all changes
+
+#### Returned Data
+
+The trigger returns an object containing detected changes and metadata. When no changes are detected, returns `polledNoChanges: true`.
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": {
+    "changes": [
+      {
+        "changeType": "created",
+        "campaignId": "12345678901",
+        "campaignName": "Example-Campaign-1",
+        "field": "campaign",
+        "oldValue": null,
+        "newValue": {
+          "campaign": {
+            "resourceName": "customers/1234567890/campaigns/12345678901",
+            "status": "ENABLED",
+            "name": "Example-Campaign-1",
+            "id": "12345678901"
+          }
+        },
+        "changedAt": "2025-01-01T12:00:00.000Z"
+      }
+    ],
+    "totalCampaigns": 1,
+    "changesDetected": 1,
+    "syncedAt": "2025-01-01"
+  }
+}
+```
+
+</details>

@@ -1,0 +1,89 @@
+The **Data Source Items** trigger monitors records within a specific Notion database for new and updated items on a configured schedule. This is the most efficient polling trigger for monitoring database records.
+
+Unlike the Pages and Data Sources triggers that search the entire workspace, this trigger queries a specific data source using server-side filtering, making it significantly more performant for database record monitoring.
+
+#### How It Works
+
+1. Runs on the configured schedule (e.g., every 5 minutes)
+2. Makes two parallel requests to the [Query Data Source API](https://developers.notion.com/reference/query-a-data-source):
+   - One filtered by `created_time >= lastPolledAt` for new items
+   - One filtered by `last_edited_time >= lastPolledAt` for updated items
+3. Returns separate arrays for new and updated items
+4. Maintains state to track the last poll time automatically
+
+Note: Newly created items appear in **both** `newItems` and `updatedItems` arrays since creation time equals last edited time for new records.
+
+#### Configuration
+
+- **Connection**: A Notion OAuth or Internal Integration connection with read access to the data source
+- **Data Source ID**: The unique identifier of the data source to monitor
+
+#### Finding Data Source IDs
+
+1. Open the database as a full page in Notion
+2. Navigate to **Database settings** > **Manage Data Sources**
+3. Click the menu (⋯) next to the data source > **Copy data source ID**
+
+Alternatively, use the **List Data Sources** action to retrieve IDs programmatically.
+
+#### Returned Data
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "newItems": [
+      {
+        "object": "page",
+        "id": "12345678-1234-1234-1234-123456789012",
+        "created_time": "2026-01-23T10:00:00.000Z",
+        "last_edited_time": "2026-01-23T10:00:00.000Z",
+        "parent": {
+          "type": "data_source_id",
+          "data_source_id": "87654321-4321-4321-4321-210987654321"
+        },
+        "properties": {
+          "Name": {
+            "id": "title",
+            "type": "title",
+            "title": [{ "plain_text": "New Record" }]
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "select": { "name": "Active", "color": "green" }
+          }
+        },
+        "url": "https://www.notion.so/New-Record-12345678123412341234123456789012"
+      }
+    ],
+    "updatedItems": [
+      {
+        "object": "page",
+        "id": "11111111-1111-1111-1111-111111111111",
+        "created_time": "2026-01-20T14:30:00.000Z",
+        "last_edited_time": "2026-01-23T11:15:00.000Z",
+        "properties": {
+          "Name": {
+            "id": "title",
+            "type": "title",
+            "title": [{ "plain_text": "Updated Record" }]
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "select": { "name": "Completed", "color": "blue" }
+          }
+        },
+        "url": "https://www.notion.so/Updated-Record-11111111111111111111111111111111"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+The `properties` structure depends on the schema defined in the parent data source. See the [Notion Property Values documentation](https://developers.notion.com/reference/property-value-object) for details.

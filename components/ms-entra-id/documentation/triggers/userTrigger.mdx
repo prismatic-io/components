@@ -1,0 +1,67 @@
+This trigger receives [change notifications](https://learn.microsoft.com/en-us/graph/change-notifications-overview) from Microsoft Entra ID when users are created, updated, or deleted. Unlike the manual Webhook trigger, this trigger automatically manages the subscription lifecycle.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a [subscription](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0) in Microsoft Graph for user change notifications, pointing to the instance's unique webhook URL. If a subscription with the same URL already exists, it updates the existing subscription's expiration instead of creating a duplicate.
+- **On Instance Deletion**: The trigger automatically removes all subscriptions associated with the instance's webhook URL.
+
+The trigger uses two branches to handle incoming requests:
+
+- **URL Validation**: Automatically responds to Microsoft Graph's [validation handshake](https://learn.microsoft.com/en-us/graph/change-notifications-overview) when the subscription is created or renewed.
+- **Notification**: Routes all user change notification payloads for processing.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The OAuth 2.0 connection to Microsoft Entra ID.
+- **Change Type**: The types of changes to monitor. Select "Created / Updated / Soft Deleted" for standard change tracking, or "Permanently Deleted" for hard-delete notifications.
+- **Expiration Date Time**: Optional. The date and time when the subscription expires. If not specified, defaults to 29 days from creation. The subscription must be reactivated after expiration.
+
+#### Event Types
+
+<details>
+<summary>Supported Change Types (2)</summary>
+
+| Change Type | Description |
+|-------------|-------------|
+| `updated` | User is created, updated, or soft deleted |
+| `deleted` | User is permanently deleted |
+
+</details>
+
+Refer to the [Microsoft Graph change notifications documentation](https://learn.microsoft.com/en-us/graph/change-notifications-overview) for additional details on user change notifications.
+
+#### Returned Data
+
+<details>
+<summary>Example Notification Payload</summary>
+
+```json
+{
+  "value": [
+    {
+      "changeType": "updated",
+      "clientState": "secretClientValue",
+      "resource": "users/00000000-0000-0000-0000-000000000000",
+      "resourceData": {
+        "@odata.type": "#Microsoft.Graph.User",
+        "@odata.id": "users/00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000000"
+      },
+      "subscriptionId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "subscriptionExpirationDateTime": "2026-03-20T18:23:45.9356913Z",
+      "tenantId": "11111111-2222-3333-4444-555555555555"
+    }
+  ]
+}
+```
+
+</details>
+
+#### Notes
+
+- User subscriptions have a maximum lifetime of 29 days (41,760 minutes). The trigger sets this as the default expiration when no custom value is provided.
+- The subscription is automatically renewed on each instance deploy, extending the expiration window.

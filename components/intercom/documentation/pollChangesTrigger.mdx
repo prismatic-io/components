@@ -1,0 +1,65 @@
+This trigger polls the [Intercom API](https://developers.intercom.com/docs/references/rest-api/) for new and updated contacts or companies on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches records from the selected Intercom resource using paginated requests
+3. Records are categorized as **created** or **updated** based on Unix epoch timestamps — records whose `created_at` exceeds the last poll time are classified as created; records whose `updated_at` exceeds the last poll time (but `created_at` does not) are classified as updated
+4. The trigger updates its internal state after each poll, storing the poll timestamp as a Unix epoch integer
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Intercom connection used to authenticate API requests
+- **Resource Type**: The Intercom resource to monitor. Available options:
+
+  | Resource | Change Detection | Tracks New | Tracks Updated |
+  |----------|-----------------|------------|---------------|
+  | Contacts | Timestamp (Unix epoch) | Yes | Yes |
+  | Companies | Timestamp (Unix epoch) | Yes | Yes |
+
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "64d2f4e3c8e4b1a2d3f4e5a6",
+        "type": "contact",
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "created_at": 1705402200,
+        "updated_at": 1705402200
+      }
+    ],
+    "updated": [
+      {
+        "id": "64b1c3d2a7f8e9b0c1d2e3f4",
+        "type": "contact",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "created_at": 1704758400,
+        "updated_at": 1705406532
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Timestamps are stored and compared as Unix epoch seconds (integers), not ISO 8601 strings
+- A record is classified as **created** if its `created_at` timestamp exceeds the last poll time. If `created_at` does not exceed the cutoff but `updated_at` does, the record is classified as **updated**
+- Refer to the [Intercom API documentation](https://developers.intercom.com/docs/references/rest-api/) for rate limit details and available fields

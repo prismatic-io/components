@@ -1,0 +1,77 @@
+This component uses OAuth 2.0 to connect to Zoom's API.
+
+For additional information on Zoom OAuth 2.0 apps, refer to [Zoom's documentation](https://developers.zoom.us/docs/integrations/oauth/).
+
+#### Prerequisites
+
+- A Zoom account with administrative access
+- Permission to create apps in the [Zoom Marketplace](https://marketplace.zoom.us/)
+
+#### Setup Steps
+
+1. Navigate to the [Zoom Marketplace](https://marketplace.zoom.us/) and log in
+2. Click **Develop** -> **Build App**
+3. Select **OAuth** as the app type
+4. Zoom auto-generates a name for the app, which can be modified at the top left. An icon can also be added in that section.
+5. Select how the app will be managed
+6. Take note of the **Client ID** and **Client Secret** that are generated
+7. Add the OAuth callback URL to the **OAuth Redirect URL** input: <OauthCallbackUrl />
+   - The **OAuth Allow Lists** input should populate automatically with the same value
+8. Click **Continue**
+9. (Optional) In the Access section, activate Event Subscriptions if needed:
+   - Check the appropriate box
+   - Copy the **Secret Token** for webhook verification and functionality
+10. Skip the Surface and Embed sections by clicking **Continue**
+
+#### Add Scopes
+
+**Scopes** determine what the integration is allowed to do on behalf of users. Scopes might include permissions for accessing meetings, webinars, recordings, and user information.
+
+Add the required scopes for:
+- **Meetings** - Create, read, update, delete meetings
+- **Webinars** - Manage webinar settings and participants
+- **Recordings** - Access cloud recordings
+- **Users** - Read user profile information
+
+A Scope Description can also be added for clarity.
+
+Click **Continue** to complete the creation of the OAuth app.
+
+#### Test the Connection
+
+To verify the app configuration:
+
+1. Click **Add App Now**
+2. The browser will redirect to a Zoom consent screen
+3. Click **Allow**
+4. The OAuth callback URL will open with an "Authorization failed" message - this is expected during initial setup
+
+#### Configure the Connection
+
+When creating a Zoom OAuth 2.0 connection in the integration:
+
+- Enter the **Client ID** from the Zoom app
+- Enter the **Client Secret** from the Zoom app
+- The **Scopes** field is pre-configured based on the app settings
+
+Save the connection to authenticate with Zoom.
+
+#### App Publication
+
+Zoom requires apps that will be installed across multiple Zoom accounts to go through a publication review. This process verifies the app meets Zoom's distribution policies before it can be made available to users outside the developer's organization.
+
+Zoom OAuth apps pass through two states before they are ready for broad deployment.
+
+**Unpublished (default):** The app can only be authorized by users within the developer's own Zoom account. Users from other Zoom accounts encounter an error on the Zoom consent screen and cannot complete authorization. This is the expected state during development and testing.
+
+**Published (after Zoom review):** Any Zoom account user can authorize the integration. No restriction is shown.
+
+#### Choosing a Distribution Path
+
+**Account-level app** (no review required):
+Configure the app as account-level in the [Zoom Marketplace](https://marketplace.zoom.us/). This restricts authorization to users within a single Zoom organization. This is the appropriate option for internal integrations or single-customer deployments.
+
+**Published app** (Zoom review required):
+Submit the app for publication in the [Zoom Marketplace](https://marketplace.zoom.us/). Once approved, users from any Zoom account can authorize the integration. Zoom reviews for policy compliance and functionality.
+
+For integrations deployed to multiple customers, each with their own Zoom account, the published path is required. For single-organization deployments, the account-level path avoids the review process.

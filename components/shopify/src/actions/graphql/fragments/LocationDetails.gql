@@ -1,0 +1,20 @@
+fragment LocationDetails on Location {
+  id
+  name
+  address {
+    address1
+    address2
+    city
+    zip
+    province
+    country
+    phone
+    countryCode
+    #country_name
+    provinceCode
+    #legacy
+  }
+  createdAt
+  updatedAt
+  isActive
+}

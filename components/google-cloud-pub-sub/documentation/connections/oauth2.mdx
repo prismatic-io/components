@@ -1,0 +1,70 @@
+All requests to the Google Cloud Pub/Sub API must be authorized by an authenticated user.
+
+To create a Google Cloud Pub/Sub OAuth 2.0 connection, configure an OAuth application in the [Google Cloud Console](https://console.cloud.google.com/).
+
+#### Prerequisites
+
+- A Google Cloud account with access to create projects and credentials
+- A Google Cloud project (or the ability to create one)
+
+#### Setup Steps
+
+1. Navigate to the [Google Cloud Console](https://console.cloud.google.com/) and select or create a project
+2. From **APIs & Services** > **Library**, search for and enable the **Cloud Pub/Sub API**
+3. Navigate to **APIs & Services** > **Credentials** and select **Create Credentials**
+4. Choose **OAuth client ID**
+5. If this is the first time creating credentials, configure the OAuth consent screen:
+   - Enter an **App name** (company or product name)
+   - Provide a **User support email**
+   - Add **App logo**, **Application home page**, and **Authorized domains** as needed
+   - Enter **Developer contact information**
+6. On the **Scopes** screen, select **Add Or Remove Scopes**:
+   - Search for "Pub/Sub" and add the following scopes:
+     - `https://www.googleapis.com/auth/cloud-platform`
+     - `https://www.googleapis.com/auth/pubsub`
+   - Refer to [Google's OAuth 2.0 Scopes documentation](https://developers.google.com/identity/protocols/oauth2/scopes#pubsub) for additional scope information
+7. Return to **Create OAuth client ID**:
+   - Under **Application type** select **Web application**
+   - Provide a **Name** for the OAuth client
+   - Under **Authorized redirect URIs** click **Add URI** and enter: <OauthCallbackUrl />
+   - Click **CREATE**
+8. Copy the **Client ID** and **Client Secret** from the confirmation dialog
+
+The **Client ID** and **Client Secret** can be retrieved later from **APIs & Services** > **Credentials** under the **OAuth 2.0 Client IDs** section by selecting the name of the OAuth client.
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the OAuth client created above
+- For **Scopes**, use the following value:
+  ```
+  https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/pubsub
+  ```
+
+#### App Verification
+
+Google requires OAuth apps that request access to user data to pass a verification review before being deployed at scale. This process ensures the app complies with Google's API Services User Data Policy, accurately represents its functionality, and handles user data responsibly.
+
+Google OAuth apps pass through three stages before they are ready for production use.
+
+**Testing (unpublished):** The app is only accessible to users manually added as test users in the OAuth consent screen. Up to 100 test users are allowed — all other users receive an error. This is the expected state during initial development.
+
+**Published, unverified:** After publishing the app, all Google users can authenticate. However, for sensitive scopes, users see a **"This app isn't verified"** warning. Users can proceed by clicking **Advanced** → **Go to [app name] (unsafe)**, but this warning reduces trust and may be blocked by organizations with strict Google Workspace policies.
+
+**Verified:** Google has reviewed and approved the app. No warning is shown. Verification is required before deploying to production users.
+
+#### Publishing the App
+
+Publishing is required before any users outside the test list can authenticate:
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), navigate to **APIs & Services** → **OAuth consent screen**
+2. Click **PUBLISH APP** and confirm
+
+#### Requesting Verification
+
+The scopes used by this component are classified as **sensitive** by Google. Submitting for verification removes the "This app isn't verified" warning:
+
+1. On the **OAuth consent screen**, click **Prepare for verification**
+2. Provide a privacy policy URL, authorized domain, and app logo
+3. Submit for review — Google typically responds within several weeks
+
+Refer to [Google's OAuth consent screen documentation](https://support.google.com/cloud/answer/10311615) for the full verification requirements.

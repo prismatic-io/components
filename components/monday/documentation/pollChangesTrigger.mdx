@@ -1,0 +1,52 @@
+This trigger polls a Monday.com board on a configurable schedule and surfaces items created or updated since the last execution. Each run compares item timestamps against the timestamp persisted from the previous poll and emits two separate buckets — new items and updated items — so downstream steps can react to each change type independently.
+
+#### How It Works
+
+On each scheduled execution:
+
+- The trigger reads the `lastPolledAt` timestamp persisted by the previous run. On the very first execution, this timestamp defaults to the current time, so the initial poll establishes a baseline and emits no results.
+- Items on the configured board with `updated_at` greater than `lastPolledAt` are fetched (paginated automatically) from the Monday GraphQL API.
+- Returned items are partitioned by comparing `created_at` against `lastPolledAt`: items whose `created_at` falls within the polling window are classified as **new**, while items whose `created_at` precedes the window but whose `updated_at` falls within it are classified as **updated**.
+- The current execution time is persisted as the new `lastPolledAt`, becoming the lower bound for the next poll.
+- When both buckets are empty, the trigger short-circuits with `polledNoChanges: true` so the flow does not execute.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "4277581982",
+        "name": "Task 5",
+        "created_at": "2026-01-27T11:55:00Z",
+        "updated_at": "2026-01-27T11:55:00Z",
+        "state": "active"
+      }
+    ],
+    "updated": [
+      {
+        "id": "4277581981",
+        "name": "Task 1",
+        "created_at": "2026-01-20T09:12:33Z",
+        "updated_at": "2026-01-27T11:58:42Z",
+        "state": "active"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### Notes
+
+- The polling interval is controlled by the schedule configured on the flow, not by the trigger itself.
+- Item ordering within each bucket follows the order returned by the Monday GraphQL API and is not guaranteed to be chronological.
+- Both `created` and `updated` buckets are always present in the payload. When `Show New Records` or `Show Updated Records` is disabled, the corresponding bucket is returned as an empty array.
+- Refer to the [Monday items API documentation](https://developer.monday.com/api-reference/reference/items) for the complete item field reference.

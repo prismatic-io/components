@@ -1,0 +1,88 @@
+A [Greenhouse](https://www.greenhouse.com/) [webhook](https://developers.greenhouse.io/webhooks.html) can be configured to send information to a flow's webhook URL when certain events occur (a candidate is hired, an application is created, an offer is approved, etc.).
+
+#### How It Works
+
+This trigger receives webhook requests from Greenhouse and validates the request signature using HMAC-SHA256. Each incoming request must include a `Signature` header containing a SHA-256 hash of the request body. If the signature does not match, the request is rejected.
+
+When **Enabled Events** are configured, the trigger only processes requests whose `action` field matches one of the specified event types. All other events are rejected. If no enabled events are configured, all events are accepted.
+
+#### Configuration
+
+- **Secret Key**: The secret key used to verify webhook signatures. This must match the secret key configured in the Greenhouse webhook settings.
+- **Enabled Events**: An optional list of event action types to accept. If left empty, all events are accepted.
+
+#### Event Types
+
+<details>
+<summary>Available Events (28)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `new_candidate_application` | A new candidate application is submitted |
+| `new_prospect_application` | A new prospect application is created |
+| `delete_application` | An application is deleted |
+| `application_updated` | An application is updated |
+| `offer_created` | An offer is created for a candidate |
+| `offer_approved` | An offer is approved |
+| `offer_updated` | An offer is updated |
+| `offer_deleted` | An offer is deleted |
+| `delete_candidate` | A candidate is deleted |
+| `hire_candidate` | A candidate is hired |
+| `unhire_candidate` | A candidate hire is reversed |
+| `merge_candidate` | Two candidate records are merged |
+| `candidate_stage_change` | A candidate moves to a different interview stage |
+| `reject_candidate` | A candidate is rejected |
+| `unreject_candidate` | A candidate rejection is reversed |
+| `update_candidate` | A candidate record is updated |
+| `candidate_anonymized` | A candidate record is anonymized |
+| `interview_deleted` | An interview is deleted |
+| `scorecard_deleted` | A scorecard is deleted |
+| `job_created` | A new job is created |
+| `job_deleted` | A job is deleted |
+| `job_updated` | A job is updated |
+| `job_approved` | A job is approved |
+| `job_post_created` | A job post is created |
+| `job_post_updated` | A job post is updated |
+| `job_post_deleted` | A job post is deleted |
+| `department_deleted` | A department is deleted |
+| `office_deleted` | An office is deleted |
+
+</details>
+
+Refer to the [Greenhouse webhook documentation](https://developers.greenhouse.io/webhooks.html) for the complete and up-to-date list of events.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "action": "new_candidate_application",
+  "payload": {
+    "application": {
+      "id": 46194062,
+      "candidate_id": 34172063,
+      "prospect": false,
+      "applied_at": "2024-01-15T10:30:00Z",
+      "current_stage": {
+        "id": 6813488,
+        "name": "Application Review"
+      },
+      "jobs": [
+        {
+          "id": 371417,
+          "name": "Software Engineer"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The **Secret Key** must match the secret key configured in the Greenhouse webhook settings. Navigate to **Configure > Dev Center > Webhooks** in Greenhouse to locate or create webhook configurations.
+- Signature verification uses HMAC-SHA256. The `Signature` header from Greenhouse contains the value in the format `sha256 [hash]`.

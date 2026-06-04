@@ -1,0 +1,42 @@
+This connection authenticates directly with an SAP S/4HANA Cloud Public Edition tenant using Basic Authentication.
+
+:::note[Production Access]
+This connection is for **direct tenant access** to SAP S/4HANA Cloud Public Edition. It requires a Communication Arrangement configured by an SAP administrator.
+:::
+
+#### Prerequisites
+
+- SAP S/4HANA Cloud Public Edition tenant
+- Administrator access to configure Communication Arrangements
+- A Communication Scenario enabled for the required APIs (e.g., `SAP_COM_0008` for Business Partner API)
+
+#### Setup Steps in SAP S/4HANA Cloud
+
+To configure Basic Authentication access, an SAP administrator must complete these steps:
+
+1. **Create a Communication User**
+   - Navigate to the **Maintain Communication Users** app
+   - Create a new user for API access
+   - Set a secure password and note the credentials
+
+2. **Create a Communication System**
+   - Navigate to the **Communication Systems** app
+   - Create a new system representing the external integration
+   - Under **Users for Inbound Communication**, add the Communication User created above
+   - Ensure **User ID and Password** (Basic Authentication) is enabled
+
+3. **Create a Communication Arrangement**
+   - Navigate to the **Communication Arrangements** app
+   - Create a new arrangement based on the required Communication Scenario
+   - Select the Communication System created above
+   - Verify the inbound services are enabled
+
+#### Configure the Connection
+
+- **Tenant URL**: The SAP S/4HANA Cloud tenant URL
+  - Example: `https://my123456-api.s4hana.cloud.sap`
+
+- **Communication User**: The Communication User name created in SAP S/4HANA Cloud
+  - Example: `Username`
+
+- **Password**: The Communication User password

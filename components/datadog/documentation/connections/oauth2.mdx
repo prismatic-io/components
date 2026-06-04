@@ -1,0 +1,27 @@
+#### Prerequisites
+
+To configure this connection, the following are required:
+
+- A Datadog account with organization admin permissions
+- A registered OAuth application with Datadog (typically for marketplace/partner integrations)
+- The Client ID and Client Secret from the OAuth application
+
+#### Setup Steps
+
+1. Register the application with Datadog as an integration partner.
+2. Obtain the Client ID and Client Secret from the Datadog Developer Platform.
+3. Configure the required OAuth scopes for the use case (e.g., metrics_read, create_webhooks).
+4. Note the Datadog site/region (e.g., US1, EU, US3).
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0 Authorization Code** and enter:
+
+| Field | Description |
+| --- | --- |
+| **Datadog Site** | Select the Datadog site that matches the organization. |
+| **Scopes** | Space-separated OAuth scopes. Available: metrics_read, timeseries_query, metric_tags_manage, create_webhooks. |
+| **Client ID** | The Client ID from the Datadog OAuth application. |
+| **Client Secret** | The Client Secret from the Datadog OAuth application. |
+
+The Authorize URL and Token URL are pre-configured for the standard Datadog OAuth endpoints.

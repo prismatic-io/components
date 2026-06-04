@@ -1,0 +1,5 @@
+This action leverages NodeJS [Streams](https://nodejs.org/api/stream.html) to stream an HTTP response directly to Azure Files.
+This is helpful if you deal with large files because the entire file is never loaded into memory all at once.
+Instead, it's uploaded to Azure Files as it is downloaded.
+
+The source URL you reference must be accessible via an unauthenticated HTTP GET request, and must the HTTP response must include a `content-length` header.

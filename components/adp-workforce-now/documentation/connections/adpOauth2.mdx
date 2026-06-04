@@ -1,0 +1,49 @@
+To connect to ADP Workforce Now using OAuth 2.0, several credentials and certificate files are required. ADP's OAuth implementation uses client certificates for enhanced security in addition to standard OAuth credentials.
+
+For detailed information about ADP's OAuth implementation, refer to the [ADP Developer Documentation](https://developers.adp.com/articles/guide/auth-process-overview).
+
+#### Prerequisites
+
+- An active ADP Workforce Now account
+- Access to the [Developer Self Service Portal](https://adpapps.adp.com/self-service)
+- Contact with an ADP client representative to obtain initial credentials
+- Ability to generate SSL certificate signing requests (CSR)
+
+#### Setup Steps
+
+1. Contact the ADP client representative to request access to the **Developer Self Service Portal** if not already available.
+
+2. Log in to the [Developer Self Service Portal](https://adpapps.adp.com/self-service).
+
+3. Create a new project to house the OAuth credentials:
+   - Navigate to the projects section
+   - Click **Create Project**
+   - Enter the project name and details
+   - Save the project
+
+4. Navigate to the **Development Credentials** tab within the project to locate the **Client ID** and **Client Secret** values. Copy these values for later use.
+
+5. Configure the OAuth callback URL:
+   - Switch from the **Data Connector** tab to the **End-user/SSO** tab
+   - In the **App redirect URI** field, enter: <OauthCallbackUrl />
+   - Save the configuration
+
+6. Generate and configure SSL certificates:
+   - Follow the [Certificate Signing Request Guide](https://developers.adp.com/learn/how-to-articles/generate-a-certificate-signing-request#overview) to generate a certificate signing request
+   - Submit the CSR to ADP through the Developer Portal
+   - Download the **Certificate File** (.pem) and **Key File** once approved
+   - Keep these files secure as they will be needed for the connection configuration
+
+#### Configure the Connection
+
+After obtaining all required credentials and certificates, configure the connection in the integration:
+
+| Field | Description |
+| ----- | ----------- |
+| **API Endpoint** | The ADP API endpoint URL. Select `api.adp.com` for production or `uat-api.adp.com` for testing/UAT environments. |
+| **Token Endpoint** | The token endpoint URL. Select `accounts.adp.com` for production or `uat-accounts.adp.com` for UAT environments. |
+| **Client ID** | The Client ID from the **Development Credentials** tab in the Developer Portal. |
+| **Client Secret** | The Client Secret from the **Development Credentials** tab in the Developer Portal. |
+| **Key File** | The entire contents of the private key file (.key) generated from the certificate signing request. |
+| **Certificate File** | The entire contents of the certificate file (.pem) received after the CSR was approved. |
+| **Subscriber Organization OID** | (Optional) The organization OID of the subscribed client. Only required when querying data from an organization different from the one associated with the Client ID and Client Secret. |

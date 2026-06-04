@@ -1,0 +1,74 @@
+Checks for new and updated products in a Shopify store on a configured schedule.
+
+#### How It Works
+
+The trigger operates by:
+1. Running on the configured schedule (e.g., every 5 minutes)
+2. Querying the [Shopify GraphQL API](https://shopify.dev/docs/api/admin-graphql) for products modified since the last poll using the `updated_at` filter
+3. Categorizing products as "created" or "updated" based on their `createdAt` timestamp compared to the last poll time
+4. Maintaining state automatically to track the last poll time
+5. Returning all products on the first run (when no previous poll state exists)
+
+#### Configuration
+
+The trigger requires only a Shopify connection. Schedule configuration is handled by the platform.
+
+#### Returned Data
+
+The trigger returns data with products categorized by change type:
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "gid://shopify/Product/108828309",
+        "title": "Example Product",
+        "handle": "example-product",
+        "vendor": "Burton Inc.",
+        "productType": "T-shirt",
+        "status": "ACTIVE",
+        "createdAt": "2024-11-10T10:30:00Z",
+        "updatedAt": "2024-11-10T10:30:00Z",
+        "tags": ["Style", "New"],
+        "variants": {
+          "nodes": [
+            {
+              "id": "gid://shopify/ProductVariant/1070325177",
+              "price": "19.99",
+              "sku": "EXAMPLE-SKU"
+            }
+          ]
+        }
+      }
+    ],
+    "updated": [
+      {
+        "id": "gid://shopify/Product/108828310",
+        "title": "Updated Product",
+        "handle": "updated-product",
+        "vendor": "Acme Corp.",
+        "productType": "Shoes",
+        "status": "ACTIVE",
+        "createdAt": "2024-11-08T09:00:00Z",
+        "updatedAt": "2024-11-10T14:22:00Z",
+        "tags": ["Sale"],
+        "variants": {
+          "nodes": [
+            {
+              "id": "gid://shopify/ProductVariant/1070325178",
+              "price": "49.99",
+              "sku": "UPDATED-SKU"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>

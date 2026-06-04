@@ -1,0 +1,155 @@
+The Postmark component includes a webhook trigger that receives and validates webhook requests from Postmark for manually configured webhooks.
+
+## Overview
+
+Postmark [webhooks](https://postmarkapp.com/developer/webhooks/webhooks-overview) allow applications to receive real-time notifications when events occur, such as email bounces, deliveries, opens, clicks, spam complaints, and subscription changes. When an event occurs, Postmark makes an HTTP POST request to the configured webhook URL with a JSON payload containing event details.
+
+## Webhook Types
+
+Postmark supports several webhook event types that can be configured:
+
+- **Bounce** - Notifies when emails bounce (hard bounce, soft bounce, etc.)
+- **Delivery** - Confirms successful email delivery to the receiving server
+- **Open** - Tracks when recipients open emails (requires open tracking to be enabled)
+- **Click** - Monitors when recipients click tracked links in emails
+- **SpamComplaint** - Alerts when recipients mark emails as spam
+- **SubscriptionChange** - Tracks when recipients unsubscribe from emails
+
+## Configuration
+
+To configure the webhook trigger in an integration:
+
+1. Add the Postmark Webhook trigger to a flow and note the webhook URL
+2. Use the [Create Webhook](https://postmarkapp.com/developer/api/webhooks-api#create-a-webhook) action or the Postmark dashboard to create a webhook configuration
+3. Set the webhook URL to the flow's webhook endpoint
+4. Configure which event types (triggers) should be sent to the webhook URL
+5. Optionally enable content inclusion for bounce and spam complaint events
+
+The **Triggers** configuration is a JSON object that specifies which events are enabled. Example:
+
+```json
+{
+  "Open": {
+    "Enabled": true,
+    "PostFirstOpenOnly": false
+  },
+  "Click": {
+    "Enabled": true
+  },
+  "Delivery": {
+    "Enabled": true
+  },
+  "Bounce": {
+    "Enabled": true,
+    "IncludeContent": false
+  },
+  "SpamComplaint": {
+    "Enabled": true,
+    "IncludeContent": false
+  },
+  "SubscriptionChange": {
+    "Enabled": true
+  }
+}
+```
+
+## Webhook Payload Examples
+
+### Bounce Event
+
+```json
+{
+  "RecordType": "Bounce",
+  "MessageStream": "outbound",
+  "ID": 4323372036854775807,
+  "Type": "HardBounce",
+  "TypeCode": 1,
+  "Name": "Hard bounce",
+  "Tag": "Test",
+  "MessageID": "883953f4-6105-42a2-a16a-77a8eac79483",
+  "Metadata": {
+    "a_key": "a_value",
+    "b_key": "b_value"
+  },
+  "ServerID": 23,
+  "Description": "The server was unable to deliver your message (ex: unknown user, mailbox not found).",
+  "Details": "Test bounce details",
+  "Email": "john@example.com",
+  "From": "sender@example.com",
+  "BouncedAt": "2019-11-05T16:33:54.9070259Z",
+  "DumpAvailable": true,
+  "Inactive": true,
+  "CanActivate": true,
+  "Subject": "Test subject"
+}
+```
+
+### Delivery Event
+
+```json
+{
+  "MessageID": "883953f4-6105-42a2-a16a-77a8eac79483",
+  "Recipient": "john@example.com",
+  "DeliveredAt": "2019-11-05T16:33:54.9070259Z",
+  "Details": "Test delivery webhook details",
+  "Tag": "welcome-email",
+  "ServerID": 23,
+  "Metadata": {
+    "a_key": "a_value",
+    "b_key": "b_value"
+  },
+  "RecordType": "Delivery",
+  "MessageStream": "outbound"
+}
+```
+
+### Open Tracking Event
+
+```json
+{
+  "RecordType": "Open",
+  "MessageStream": "outbound",
+  "FirstOpen": true,
+  "Client": {
+    "Name": "Chrome 35.0.1916.153",
+    "Company": "Google",
+    "Family": "Chrome"
+  },
+  "OS": {
+    "Name": "OS X 10.7 Lion",
+    "Company": "Apple Computer, Inc.",
+    "Family": "OS X 10"
+  },
+  "Platform": "WebMail",
+  "UserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5)",
+  "Geo": {
+    "CountryISOCode": "RS",
+    "Country": "Serbia",
+    "RegionISOCode": "VO",
+    "Region": "Autonomna Pokrajina Vojvodina",
+    "City": "Novi Sad",
+    "Zip": "21000",
+    "Coords": "45.2517,19.8369",
+    "IP": "188.2.95.4"
+  },
+  "MessageID": "883953f4-6105-42a2-a16a-77a8eac79483",
+  "Metadata": {
+    "a_key": "a_value",
+    "b_key": "b_value"
+  },
+  "ReceivedAt": "2019-11-05T16:33:54.9070259Z",
+  "Tag": "welcome-email",
+  "Recipient": "john@example.com"
+}
+```
+
+## Branch Behavior
+
+This trigger returns all webhook events through the **Notification** branch. The trigger automatically responds with a `200 OK` status to acknowledge receipt of the webhook.
+
+## Retry Behavior
+
+Postmark implements automatic retry logic for webhook deliveries:
+
+- **Bounce and Inbound webhooks**: Retries at 1 min, 5 mins, 10 mins (3x), 15 mins, 30 mins, 1 hour, and 2 hours
+- **Click, Open, Delivery, and Subscription webhooks**: Retries at 1 min, 5 mins, and 15 mins

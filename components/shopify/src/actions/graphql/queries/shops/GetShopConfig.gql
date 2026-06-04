@@ -1,0 +1,62 @@
+query GetShopConfig {
+  shop {
+    id
+    name
+    email
+    myshopifyDomain
+    billingAddress {
+      province
+      countryCodeV2
+      address1
+      zip
+      city
+      #source
+      phone
+      latitude
+      longitude
+      #primary_locale
+      address2
+      country
+      provinceCode
+    }
+    createdAt
+    updatedAt
+    currencyCode
+    #customer_email
+    timezoneOffset
+    ianaTimezone
+    shopOwnerName
+    currencyFormats {
+      moneyFormat
+      moneyWithCurrencyFormat
+      moneyInEmailsFormat
+      moneyWithCurrencyInEmailsFormat
+    }
+    weightUnit
+    taxesIncluded
+    #auto_configure_tax_inclusivity
+    taxShipping
+    #county_taxes
+    plan {
+      displayName
+    }
+    #plan_name
+    #has_discounts
+    #has_gift_cards
+    #google_apps_domain
+    #google_apps_login_enabled
+    #eligible_for_payments
+    #requires_extra_payments_agreement
+    #password_enabled
+    #has_storefront
+    #finances
+    #primary_location_id
+    checkoutApiSupported
+    #multi_location_enabled
+    setupRequired
+    #pre_launch_enabled
+    enabledPresentmentCurrencies
+    marketingSmsConsentEnabledAtCheckout
+    transactionalSmsDisabled
+  }
+}

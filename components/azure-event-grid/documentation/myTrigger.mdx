@@ -1,0 +1,86 @@
+An [Azure Event Grid](https://learn.microsoft.com/en-us/azure/event-grid/overview) webhook subscription can be configured to deliver events to a flow's webhook URL. This trigger handles the [subscription validation handshake](https://learn.microsoft.com/en-us/azure/event-grid/receive-events) automatically and routes incoming events through configurable branches.
+
+The trigger supports both the **Event Grid Schema** and the **CloudEvents v1.0 Schema**.
+
+#### How It Works
+
+Azure Event Grid uses a validation handshake to confirm ownership of the webhook endpoint. When a new event subscription is created, Event Grid sends a `Microsoft.EventGrid.SubscriptionValidationEvent` containing a validation code. This trigger automatically responds with the required validation code, completing the handshake without any additional configuration.
+
+The trigger uses three branches to route requests:
+
+- **Validation Event**: Handles subscription validation handshake requests from Azure Event Grid. This branch is invoked automatically during initial webhook registration and responds with the validation code that Event Grid requires.
+- **Process Event**: Handles actual event notifications that match the configured event topics. The event payload is forwarded for processing.
+- **Skip Event**: Handles event notifications that do not match any of the configured event topics. A `200` response is returned, but no processing occurs.
+
+For the **CloudEvents v1.0 Schema**, Event Grid sends an `OPTIONS` request instead of a validation event. The trigger automatically responds with the appropriate `WebHook-Allowed-Origin` headers.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Event Topics to Listen For**: A list of event types the trigger should process (e.g., `Microsoft.Storage.BlobCreated`, `Microsoft.Resources.ResourceWriteSuccess`). Events not matching these topics are routed to the **Skip Event** branch.
+
+Refer to the [Azure Event Grid event types documentation](https://learn.microsoft.com/en-us/azure/event-grid/event-schema) for a complete list of available system event types.
+
+#### Returned Data
+
+<details>
+<summary>Example Event Grid Schema Payload</summary>
+
+```json
+[
+  {
+    "id": "b3ccc7e3-c1cb-49bf-b7c8-0d4e60980616",
+    "topic": "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Storage/storageAccounts/{storage-account}",
+    "subject": "/blobServices/default/containers/my-container/blobs/my-blob.txt",
+    "data": {
+      "api": "PutBlob",
+      "clientRequestId": "6d79dbfb-0e37-4fc4-981f-442c9ca65760",
+      "requestId": "831e1650-001e-001b-66ab-eeb76e000000",
+      "eTag": "0x8D4BCC2E4835CD0",
+      "contentType": "text/plain",
+      "contentLength": 524288,
+      "blobType": "BlockBlob",
+      "url": "https://example.blob.core.windows.net/my-container/my-blob.txt"
+    },
+    "eventType": "Microsoft.Storage.BlobCreated",
+    "eventTime": "2024-01-15T10:30:00.000Z",
+    "metadataVersion": "1",
+    "dataVersion": "1"
+  }
+]
+```
+
+</details>
+
+<details>
+<summary>Example CloudEvents v1.0 Payload</summary>
+
+```json
+[
+  {
+    "id": "b3ccc7e3-c1cb-49bf-b7c8-0d4e60980616",
+    "source": "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Storage/storageAccounts/{storage-account}",
+    "specversion": "1.0",
+    "type": "Microsoft.Storage.BlobCreated",
+    "time": "2024-01-15T10:30:00.000Z",
+    "data": {
+      "api": "PutBlob",
+      "clientRequestId": "6d79dbfb-0e37-4fc4-981f-442c9ca65760",
+      "requestId": "831e1650-001e-001b-66ab-eeb76e000000",
+      "contentType": "text/plain",
+      "contentLength": 524288,
+      "blobType": "BlockBlob",
+      "url": "https://example.blob.core.windows.net/my-container/my-blob.txt"
+    }
+  }
+]
+```
+
+</details>
+
+#### Notes
+
+- Azure Event Grid does not use HMAC signature validation for webhook endpoints. The subscription validation handshake is the documented security mechanism.
+- Events that do not match the configured event topics are silently acknowledged with a `200` response and routed to the **Skip Event** branch.
+- The maximum delivery attempt count and event time-to-live are configured on the Azure Event Grid subscription itself, not on this trigger.

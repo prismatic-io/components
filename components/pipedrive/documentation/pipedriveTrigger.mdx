@@ -1,0 +1,21 @@
+The **Webhook** trigger subscribes to Pipedrive events and invokes the integration whenever the chosen object changes.
+
+#### How It Works
+
+When the integration deploys, this trigger calls the Pipedrive `POST /webhooks` endpoint and registers a subscription pointed at the flow's webhook URL. When the integration is removed, the corresponding webhook is deleted automatically.
+
+#### Configuration
+
+Use the **Event Action** and **Event Object** inputs to scope the subscription. For example, set Event Action to `change` and Event Object to `deal` to receive a payload every time any deal is updated. Use `*` (All) to subscribe to every action or every object.
+
+#### Webhook Version
+
+Pipedrive supports two webhook payload versions. Version `2.0` is the default as of March 17th, 2025 and is recommended for new integrations. See the [Pipedrive webhooks documentation](https://developers.pipedrive.com/docs/api/v1/Webhooks) for payload differences.
+
+#### HTTP Basic Auth (Optional)
+
+If the endpoint requires HTTP Basic Auth, supply the **HTTP Auth User** and **HTTP Auth Password** inputs. Pipedrive will include those credentials on each webhook request.
+
+#### User Context
+
+By default, the webhook is registered under the user that authorized the OAuth connection. This can be overridden by providing a **User ID** — typically a top-level admin — so that events are checked against that user's permissions and not the connecting user's.

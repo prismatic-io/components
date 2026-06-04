@@ -1,0 +1,10 @@
+#### Query formatting
+
+Instead of generating dynamic queries and sanitizing SQL manually, use generic queries with [variable binding](https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#bind-by-name).
+Formatted queries use `:variable_name` syntax as placeholders for variable values.
+
+For example, the query may read `INSERT INTO people (id, first, last) VALUES (:id, :firstname, :lastname)` or `SELECT firstname, lastname FROM people WHERE id = :id`.
+If the named parameter names are known ahead of time, provide a **Named Parameter** input with key `id`, `firstname` or `lastname`, and a value that references a previous step's result.
+
+When dynamically generating SQL queries without knowing what parameters are needed ahead of time, create a key/value object in another step and reference them through the **Named Parameters Object** input.
+In the example above, generate an object of the form `{id: 1, firstname: "John", lastname: "Doe"}`.

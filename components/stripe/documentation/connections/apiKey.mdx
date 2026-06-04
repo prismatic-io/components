@@ -1,0 +1,25 @@
+To authenticate requests with Stripe, an API key is required. API keys are managed in the Stripe Dashboard. For background, refer to the [Stripe authentication documentation](https://docs.stripe.com/keys).
+
+#### Prerequisites
+
+- A Stripe account with access to the [API keys dashboard](https://dashboard.stripe.com/apikeys)
+
+#### Setup Steps
+
+1. Sign in to the [Stripe Dashboard](https://dashboard.stripe.com/) and navigate to **Developers > API keys**
+2. Locate the desired secret key:
+   - Use a test mode key (prefix `sk_test_`) for development and testing
+   - Use a live mode key (prefix `sk_live_`) for production traffic
+3. Click **Reveal test key** (or create a new restricted key as needed) and copy the key value
+
+:::warning[Security Note]
+Secret API keys grant full access to the Stripe account. Store them securely and never expose them in client-side code or version control.
+:::
+
+#### Configure the Connection
+
+- Enter the secret key value into the **API Key** field
+
+#### Verify Connection
+
+Save the integration and run any Stripe action (such as **List Customers**) to confirm that the API key is valid.

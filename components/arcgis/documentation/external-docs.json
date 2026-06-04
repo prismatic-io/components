@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://developers.arcgis.com/rest/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://developers.arcgis.com/javascript/latest/release-notes/"
+  }
+]

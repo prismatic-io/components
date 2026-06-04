@@ -1,0 +1,32 @@
+Azure Blob Storage can use [Shared Key authentication](https://learn.microsoft.com/en-us/rest/api/storageservices/authorize-with-shared-key) to authenticate requests. This authentication method uses a storage account name and account key pair.
+
+For more information about storage account authentication, refer to the [Azure Storage security guide](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage).
+
+#### Prerequisites
+
+- An active [Azure account](https://portal.azure.com/)
+- An existing Azure Storage Account or permissions to create one
+- Appropriate permissions to view and manage storage account access keys
+
+#### Setup Steps
+
+To obtain the storage account credentials:
+
+1. Sign in to the [Azure Portal](https://portal.azure.com/)
+2. Navigate to **Storage accounts** from the main menu
+3. Select the storage account to connect to
+4. In the left sidebar, under **Security + networking**, select **Access keys**
+5. Two keys are displayed: **key1** and **key2**. Either key can be used for authentication
+6. Copy the **Storage account name** (shown at the top of the page)
+7. Click **Show** next to either key and copy the **Key** value
+
+:::note[Key Rotation]
+Azure provides two access keys to allow for key rotation without downtime. When rotating keys, update the connection configuration with the new key value.
+:::
+
+#### Configure the Connection
+
+- Enter the **Storage account name** into the **Account Name** field
+- Enter the copied **Key** value into the **Account Key** field
+
+For additional information about managing storage account keys and security best practices, refer to the [Azure documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage).

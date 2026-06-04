@@ -1,0 +1,12 @@
+#import "../../fragments/CustomerDetails.gql"
+query ListCustomers($first: Int!, $query: String, $cursor: String) {
+  customers(first: $first, query: $query, after: $cursor) {
+    nodes {
+      ...CustomerDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

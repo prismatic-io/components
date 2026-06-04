@@ -1,0 +1,35 @@
+import { action, util, input } from "@prismatic-io/spectral";
+import { connection } from "../../inputs";
+import { getSftpClient } from "../../client";
+import { deleteFileExamplePayload } from "../../examplePayloads";
+
+const path = input({
+  label: "Path",
+  placeholder: "Path of file to delete",
+  type: "string",
+  required: true,
+  comments: "Path of file to delete",
+  example: "/path/to/file.txt",
+  clean: util.types.toString,
+});
+
+const deleteFile = action({
+  display: {
+    label: "Delete File",
+    description: "Delete a file from a SFTP server",
+  },
+  perform: async (context, { connection, path }) => {
+    const sftp = await getSftpClient(connection, context.debug.enabled);
+    try {
+      await sftp.delete(path);
+    } finally {
+      await sftp.end();
+    }
+
+    return null;
+  },
+  inputs: { connection, path },
+  examplePayload: deleteFileExamplePayload,
+});
+
+export default deleteFile;

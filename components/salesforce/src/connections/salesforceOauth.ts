@@ -1,0 +1,66 @@
+import { oauth2Connection, OAuth2PkceMethod, OAuth2Type } from "@prismatic-io/spectral";
+
+export const salesforceOAuth = oauth2Connection({
+  oauth2Type: OAuth2Type.AuthorizationCode,
+  key: "oauth2",
+  display: {
+    label: "OAuth 2.0",
+    description: "Authenticate requests using OAuth 2.0.",
+  },
+  oauth2PkceMethod: OAuth2PkceMethod.S256,
+  inputs: {
+    authorizeUrl: {
+      label: "Authorize URL",
+      placeholder: "Enter authorize URL",
+      type: "string",
+      required: true,
+      shown: true,
+      comments: "The OAuth 2.0 Authorization URL for Salesforce",
+      default: "https://login.salesforce.com/services/oauth2/authorize",
+    },
+    tokenUrl: {
+      label: "Token URL",
+      placeholder: "Enter token URL",
+      type: "string",
+      required: true,
+      shown: true,
+      comments: "The OAuth 2.0 Token URL for Salesforce",
+      default: "https://login.salesforce.com/services/oauth2/token",
+    },
+    revokeUrl: {
+      label: "Revoke URL",
+      placeholder: "Enter revoke URL",
+      type: "string",
+      required: true,
+      shown: true,
+      comments: "The OAuth 2.0 Revocation URL for Salesforce",
+      default: "https://login.salesforce.com/services/oauth2/revoke",
+    },
+    scopes: {
+      label: "Scopes",
+      placeholder: "Enter OAuth scopes",
+      type: "string",
+      required: false,
+      shown: false,
+      default: "",
+      comments: "A space-delimited set of one or more OAuth scopes to request access to.",
+    },
+    clientId: {
+      label: "Consumer Key",
+      placeholder: "Enter consumer key",
+      example: "3MVG9ZL1aBcDeFGHjklMNOpQRsTUVwXyZ1234567890abcdefg",
+      type: "string",
+      required: true,
+      shown: true,
+      comments: "The Consumer Key from the Salesforce Connected App.",
+    },
+    clientSecret: {
+      label: "Consumer Secret",
+      placeholder: "Enter consumer secret",
+      type: "password",
+      required: true,
+      shown: true,
+      comments: "The Consumer Secret from the Salesforce Connected App.",
+    },
+  },
+});

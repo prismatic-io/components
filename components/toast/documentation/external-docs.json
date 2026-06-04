@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://doc.toasttab.com/openapi/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://doc.toasttab.com/doc/relnotes/devPortalApiChangeLog.html"
+  }
+]

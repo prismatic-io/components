@@ -1,0 +1,9 @@
+Microsoft Outlook [webhooks](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview) (also called change notifications or subscriptions) send notifications to the flow's webhook URL when Outlook resources change.
+
+Microsoft Graph sends a validation request when the subscription is first configured. This validation is routed to the **URL Validation** branch. The trigger automatically responds with the validation token to complete setup. All subsequent event notifications are routed to the **Notification** branch.
+
+To configure a webhook subscription, use the accompanying [Subscription](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions) actions provided in the component.
+
+**Supported resources**: Calendar events (`me/events`), mail messages (`me/messages`), mail folders (`me/mailFolders`), contacts (`me/contacts`)
+
+Refer to the [Microsoft Graph change notifications overview](https://learn.microsoft.com/en-us/graph/change-notifications-overview) for subscription lifetimes and additional resources.

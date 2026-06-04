@@ -1,0 +1,5 @@
+query CountOrders {
+  ordersCount(limit: 10000) {
+    count
+  }
+}

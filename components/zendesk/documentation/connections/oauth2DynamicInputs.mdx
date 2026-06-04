@@ -1,0 +1,8 @@
+The Zendesk component authenticates requests with OAuth 2.0.
+To configure an application inside Zendesk follow the directions in this [guide](https://support.zendesk.com/hc/en-us/articles/4408845965210-Using-OAuth-authentication-with-your-application).
+Then, create a new Zendesk connection.
+
+- For **Zendesk Sub Domain** enter the Zendesk sub domain (e.g. if the Zendesk URL is `https://acme-inc.zendesk.com`, then the sub domain is `acme-inc`).
+- For **Client ID** enter the unique identifier of the app inside the Zendesk admin dashboard.
+- For **Client Secret** enter the generated client secret received from the Zendesk admin dashboard.
+- For **Scopes** refer to the [guide](https://support.zendesk.com/hc/en-us/articles/4408845965210-Using-OAuth-authentication-with-your-application) linked above. It contains detailed information on picking the correct scope.

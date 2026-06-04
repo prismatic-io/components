@@ -1,0 +1,91 @@
+This trigger polls Gmail for mailbox changes on a scheduled basis using the [Gmail History API](https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.history).
+
+For real-time notifications instead of scheduled polling, consider using the [Push Notifications](#push-notifications) trigger with Gmail's push notification service.
+
+
+The trigger checks for:
+- **New messages**: Messages added to the mailbox since the last poll
+- **Deleted messages**: Messages permanently deleted from the mailbox
+- **Label changes**: Labels added to or removed from messages (including read/unread, starred, categories, etc.)
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It queries Gmail's History API for changes since the last poll using a tracked `historyId`
+3. The History API returns records of all mailbox changes in chronological order
+4. The trigger updates its state with the latest `historyId` for the next poll
+5. If the `historyId` becomes invalid (typically after a week), the trigger automatically retrieves a new starting point
+
+#### State Management
+
+Gmail uses history IDs to efficiently track mailbox changes. Each mailbox has a `historyId` that increments with every change. Instead of scanning all messages, this trigger:
+
+- Stores the last seen `historyId` between executions
+- Queries only for changes after that point
+- Handles expired history IDs automatically (Gmail may invalidate history IDs after ~7 days)
+
+This approach is more efficient than polling all messages, as it only retrieves actual changes.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Gmail OAuth connection to use
+- **Gmail User ID (optional)**: The user ID or email address to monitor. Defaults to `"me"` (the authenticated user)
+- **Label ID**: Optional filter to receive changes only for messages with a specific label (e.g., `"INBOX"`, `"SENT"`, `"UNREAD"`)
+- **Get Message Details**: When enabled, fetches full message content for each changed message. **This significantly increases response time** as it makes additional API calls for each message.
+
+#### Returned Data
+
+The trigger returns a history response with four types of change records:
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": {
+    "history": [
+      {
+        "id": "12345",
+        "messagesAdded": [
+          {
+            "message": {
+              "id": "18abc123def",
+              "threadId": "18abc123xyz"
+            }
+          }
+        ],
+        "messagesDeleted": [
+          {
+            "message": {
+              "id": "18def456ghi"
+            }
+          }
+        ],
+        "labelsAdded": [
+          {
+            "message": {
+              "id": "18ghi789jkl",
+              "labelIds": ["STARRED", "IMPORTANT"]
+            }
+          }
+        ],
+        "labelsRemoved": [
+          {
+            "message": {
+              "id": "18jkl012mno",
+              "labelIds": ["UNREAD"]
+            }
+          }
+        ]
+      }
+    ],
+    "historyId": "67890"
+  }
+}
+```
+
+</details>
+
+By default, message objects only include `id` and `threadId` fields. Enable **Get Message Details** to include full message content (headers, body, attachments) for each changed message, though this increases execution time proportionally to the number of changed messages.

@@ -1,0 +1,6 @@
+#import "../../fragments/FulfillmentDetails.gql"
+query GetFulfillment($id: ID!) {
+  fulfillment(id: $id) {
+    ...FulfillmentDetails
+  }
+}

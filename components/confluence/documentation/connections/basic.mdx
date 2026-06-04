@@ -1,0 +1,39 @@
+Basic Authentication can be used to connect to both Confluence Cloud and self-hosted Confluence instances.
+
+- For **Confluence Cloud**: Use the account email and an API token
+- For **Self-hosted Confluence**: Use the account email and password
+
+:::info[API Token vs Password]
+For Confluence Cloud, API tokens are required. Passwords are only accepted for self-hosted instances.
+:::
+
+#### Prerequisites
+
+- A Confluence account (Cloud or self-hosted)
+- For Cloud: Access to [Atlassian account management](https://id.atlassian.com/manage-profile/security/api-tokens)
+- The Confluence site URL
+
+#### Setup Steps
+
+To generate an API token for Confluence Cloud:
+
+1. Log in to [Atlassian API Token Management](https://id.atlassian.com/manage-profile/security/api-tokens)
+2. Select **Create API token**
+3. Enter a descriptive **Label** for the token and select **Create**
+4. Select **Copy to clipboard** to copy the generated token
+
+For additional information on generating an API token, refer to the [Atlassian documentation](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+
+#### Configure the Connection
+
+Add a Confluence action to the integration to automatically create a connection configuration variable.
+
+Configure the Basic Auth connection:
+
+- **Email**: Enter the email address associated with the Confluence account (e.g., `example.user@confluence.com`)
+- **API Token**: Enter the API token generated from the Atlassian account management page, or for self-hosted instances, enter the account password
+- **Host**: Enter the Confluence site URL (e.g., `your-domain.atlassian.net` for Cloud or the server hostname for self-hosted instances)
+
+:::warning[Self-Hosted Credentials]
+For self-hosted Confluence instances, API tokens may not be available. Use the account password instead.
+:::

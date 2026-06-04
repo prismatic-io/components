@@ -1,0 +1,78 @@
+<Vimeo video="907604023" />
+
+The OAuth 2.0 authorization code flow allows an end user to grant the integration permission to interact with Dynamics on their behalf.
+
+#### Prerequisites
+
+- An active [Azure Portal](https://portal.azure.com/) account with permission to register applications.
+- Access to a Microsoft Dynamics 365 environment.
+
+#### Setup Steps
+
+1. Log in to [Azure Portal](https://portal.azure.com/).
+1. Select **App Registrations**.
+1. Click **+ New Registration**.
+   - **Supported Account Types** should be **Multi-tenant** when end customers will authenticate with their own Dynamics instance, or **Single-tenant** when authenticating with a single Dynamics instance.
+   - Under **Redirect URI** enter <OauthCallbackUrl />.
+   - Click **Register**.
+1. Under **API Permissions** click **+ Add A Permission**.
+   - Select **Dynamics CRM**.
+   - Check the `user_impersonation` permission.
+   - Click **Add Permissions**.
+   - Additionally, ensure the `offline_access` scope is included in the app registration. It is essential to maintain the OAuth connection and receive refresh tokens. Without it, end users will need to re-authenticate every hour.
+1. Under **Certificates & Secrets** click **+ New Client Secret**.
+   - Provide a description and expiration date for the certificate.
+   - Take note of the **Value** (not the Secret ID) of the client secret.
+1. Returning to the **Overview** page, take note of **Application (Client) ID**.
+
+#### Configure The Connection
+
+Create a connection of type **OAuth 2.0 Authorization Code**.
+
+- Enter the **Client ID** and **Client Secret** noted above.
+- Log in to Dynamics and take note of the Dynamics URL.
+  - Enter that Dynamics URL as the **Web API URL**. It should look like `https://REPLACE-ME.crm.dynamics.com/`.
+  - Under scopes, enter the following, replacing the URL with the Dynamics URL: `https://REPLACE-ME.crm.dynamics.com/user_impersonation offline_access`.
+
+#### App Verification and Admin Consent
+
+Microsoft requires Azure AD app registrations used in multi-tenant deployments to complete a publisher verification process. This review confirms the app developer's identity, giving end users confidence that they are authorizing a legitimate, verified application.
+
+Azure AD app registrations have two distinct verification concepts that affect how users experience the authentication flow.
+
+#### Publisher Verification
+
+**Complete publisher verification before deploying to end users.** Without it, the Microsoft consent screen displays **"Unverified"** next to the app name. This reduces user trust and may prevent users in organizations with strict Azure AD policies from being able to authorize the app at all.
+
+To verify the publisher:
+
+1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/)
+2. In the [Microsoft Entra Admin Center](https://entra.microsoft.com/), open the app registration
+3. Under **Branding & properties**, click **Add a verified publisher**
+4. Enter the MPN ID and confirm
+
+Once verified, the consent screen displays the organization name with a verified badge instead of "Unverified."
+
+#### Admin Consent
+
+Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error.
+
+A tenant administrator can grant consent using either method:
+
+**Method 1 — Admin Consent URL:**
+
+Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
+
+    https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
+
+**Method 2 — Microsoft Entra Admin Center:**
+
+1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
+2. Select the app registration
+3. Under **Permissions**, click **Grant admin consent for [organization name]**
+
+:::note[Delegated vs. Application Permissions]
+Delegated permissions (user-level) typically do not require admin consent unless they are classified as high privilege. Application permissions always require admin consent. Review the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to identify which permissions require consent.
+:::
+
+<Vimeo video="907604023" />

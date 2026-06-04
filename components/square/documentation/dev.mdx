@@ -1,0 +1,14 @@
+### A Note on Square Pagination
+
+Square's API supports pagination. This means that the API will return up to a specific limit of items for any query. If additional results are available, the API response includes a cursor field that can be used to retrieve the next page of data.
+
+```json
+{
+  "objects": [],
+  "cursor": "next_page_cursor"
+}
+```
+
+The cursor can be used in a subsequent query to fetch additional results.
+
+See [Square's Docs](https://developer.squareup.com/explorer/square) for information about Square's paginated API.

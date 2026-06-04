@@ -1,0 +1,104 @@
+This trigger receives [Guru webhook events](https://developer.getguru.com/docs/getting-started-with-gurus-webhook-services) and automatically manages webhook subscriptions throughout the instance lifecycle. Unlike manual webhook setups, the entire lifecycle is handled automatically.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook subscription in Guru pointing to the instance's unique webhook URL. If a subscription with the same URL already exists, it reuses and updates the existing subscription.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from Guru.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Event Types**: Select which event types should trigger the webhook. A maximum of 10 event types can be selected per subscription. Defaults to `card-created` and `card-updated`.
+- **Active**: Whether the webhook subscription is active. Defaults to `true`.
+- **Delivery Mode**: The delivery mode for the webhook subscription. **Single** delivers events as individual JSON objects one at a time. **Batch** delivers one or more events in a JSON envelope. Defaults to **Batch**.
+
+#### Event Types
+
+<details>
+<summary>Available Events (55)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `alert-read` | An alert is read |
+| `api-token-created` | An API token is created |
+| `api-token-deleted` | An API token is deleted |
+| `board-created` | A board is created |
+| `board-updated` | A board is updated |
+| `board-deleted` | A board is deleted |
+| `board-viewed` | A board is viewed |
+| `board-to-pdf` | A board is exported to PDF |
+| `card-created` | A card is created |
+| `card-updated` | A card is updated |
+| `card-deleted` | A card is deleted |
+| `card-restored` | A card is restored |
+| `card-viewed` | A card is viewed |
+| `card-verified` | A card is verified |
+| `card-favorited` | A card is favorited |
+| `card-unfavorited` | A card is unfavorited |
+| `card-shared-to-team` | A card is shared to a team |
+| `card-unshared` | A card is unshared |
+| `card-copied` | A card is copied |
+| `card-copied-tracking` | A card copy is tracked |
+| `card-to-pdf` | A card is exported to PDF |
+| `card-link-copied` | A card link is copied |
+| `card-link-viewed` | A card link is viewed |
+| `card-sync-link-copied` | A card sync link is copied |
+| `card-file-link-viewed` | A card file link is viewed |
+| `card-added-to-board` | A card is added to a board |
+| `card-comment-created` | A comment is created on a card |
+| `card-comment-updated` | A comment on a card is updated |
+| `card-comment-deleted` | A comment on a card is deleted |
+| `card-comment-resolved` | A comment on a card is resolved |
+| `card-comment-reopened` | A comment on a card is reopened |
+| `collection-created` | A collection is created |
+| `collection-deleted` | A collection is deleted |
+| `collection-exported` | A collection is exported |
+| `draft-created` | A draft is created |
+| `draft-deleted` | A draft is deleted |
+| `login` | A user logs in |
+| `question-created` | A question is created |
+| `question-answered` | A question is answered |
+| `question-deleted` | A question is deleted |
+| `tag-category-created` | A tag category is created |
+| `tag-category-updated` | A tag category is updated |
+| `tag-category-deleted` | A tag category is deleted |
+| `tag-category-merged` | A tag category is merged |
+| `tag-created` | A tag is created |
+| `tag-updated` | A tag is updated |
+| `tag-deleted` | A tag is deleted |
+| `tag-merged` | A tag is merged |
+| `team-member-added` | A team member is added |
+| `team-member-removed` | A team member is removed |
+| `usergroup-created` | A user group is created |
+| `usergroup-deleted` | A user group is deleted |
+| `usergroup-member-added` | A member is added to a user group |
+| `usergroup-member-deleted` | A member is removed from a user group |
+
+</details>
+
+Refer to [Guru's webhook documentation](https://developer.getguru.com/docs/getting-started-with-gurus-webhook-services) for the complete and up-to-date list of available events.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "id": "64753163-9817-4500-9651-96177c32e3d1",
+  "eventType": "card-created",
+  "user": "user@example.com",
+  "eventDate": "2024-01-15T10:30:00.000+0000"
+}
+```
+
+</details>
+
+#### Notes
+
+- Each webhook subscription supports a maximum of 10 event types. To monitor more than 10 event types, create multiple flows with separate webhook subscriptions.
+- Individual users can create up to 25 webhook subscriptions in Guru.
+- The target URL must use HTTPS.

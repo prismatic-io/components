@@ -1,0 +1,51 @@
+To enable IAM role authentication, log in to the [AWS Console](https://aws.amazon.com/) and navigate to **Identity and Access Management (IAM)**.
+
+#### Setup Steps
+
+**Create an ARN user and generate credentials:**
+
+1. Navigate to **Users** and select **Create User**.
+
+   - Provide a user name and check the box providing user access to the AWS Management Console if needed.
+   - Once the user is created, copy the ARN provided in the summary for a later step.
+
+2. To obtain the ARN for an existing user, click on the designated username from the **Users** page and the ARN will be provided in the summary section.
+3. From the summary section, select **Create access key**
+
+   - Select **Third-party service** as the access key type and select **Next**.
+   - Set a description and select **Create access key**.
+   - Copy the **Access Key** and **Secret access key** for use in the connection configuration.
+
+**Create and assign a role:**
+
+1. Navigate to **Roles** and select **Create Role**.
+
+   - Select **Custom Trust Policy** for the Trusted entity types.
+   - Copy the following statement into the statement console, replacing **ARN** with the user's actual ARN from the previous step:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "ARN"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
+
+   - When adding permissions, provide the **redshift:\*** permission to grant access to all Redshift operations.
+   - Complete the remaining steps and select **Create Role**.
+
+#### Configure the Connection
+
+Create a connection of type **AWS Role ARN** and enter:
+
+- **Role ARN**: The ARN of the IAM role to assume (e.g., `arn:aws:iam::OtherAccount-ID:role/assumed-role-name`)
+- **Access Key ID**: The AWS IAM Access Key ID
+- **Secret Access Key**: The AWS IAM Secret Access Key
+- **External ID** (optional): A shared secret for enhanced security; see the [AWS docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html#id_roles_third-party_external-id) for more information

@@ -1,0 +1,54 @@
+The Notifications trigger manages [Zoho CRM notification channel subscriptions](https://www.zoho.com/crm/developer/docs/api/v8/notifications/overview.html) for an instance. It handles the entire webhook lifecycle automatically.
+
+When the trigger is used in a flow:
+- **On Instance Deploy**: Creates a notification channel with the specified event subscriptions (e.g., "Leads.create", "Deals.edit"). The webhook target URL is set to the instance's unique webhook URL. The Channel ID is stored in cross-flow state.
+- **On Instance Deletion**: Disables the notification events for the stored channel, ensuring no orphaned subscriptions remain.
+
+#### Configuration
+
+- **Connection**: Zoho CRM connection for API access
+- **Events**: Array of subscribed operations in `{module}.{operation}` format (e.g., `["Leads.create", "Deals.edit", "Contacts.all"]`)
+- **Channel ID** (optional): Custom numeric identifier for the channel. Auto-generated if not provided.
+- **Token** (optional): Verification token (max 50 chars) sent in callbacks
+- **Channel Expiry** (optional): ISO datetime for channel expiration. Max 1 week, default 1 hour.
+- **Return Affected Field Values** (optional): Include updated field values in the payload
+- **Notify On Related Action** (optional): Trigger on associated record actions. Default: true
+- **Notification Condition** (optional): JSON object filtering to specific field changes
+
+#### Event Types
+
+Available operations for any CRM module:
+- `create` - Record created
+- `edit` - Record updated
+- `delete` - Record deleted
+- `all` - Any operation
+
+Example: `["Leads.create", "Deals.edit", "Contacts.delete"]`
+
+#### Returned Data
+
+Webhook payloads include:
+
+<details>
+<summary>View example payload</summary>
+
+```json
+{
+  "channel_id": 1234567890,
+  "token": "my_verification_token",
+  "module": "Deals",
+  "operation": "edit",
+  "ids": ["5394166000000456789"],
+  "affected_fields": ["Stage", "Amount"],
+  "Modified_By": {
+    "name": "Jane Smith",
+    "id": "5394166000000987654"
+  }
+}
+```
+
+</details>
+
+:::tip
+Notification channels expire after 1 week maximum. Configure the **Channel Expiry** input appropriately and consider implementing channel renewal logic for long-running instances.
+:::

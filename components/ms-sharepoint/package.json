@@ -1,0 +1,29 @@
+{
+  "name": "@prismatic-io/ms-sharepoint",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish",
+    "test": "jest --maxWorkers=4",
+    "lint": "biome lint .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@azure/msal-node": "^3.7.3",
+    "@prismatic-io/spectral": "10.17.1",
+    "ms-utils": "file:../../packages/ms-utils"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.1",
+    "@types/jest": "30.0.0",
+    "@types/node": "18.19.120",
+    "copy-webpack-plugin": "13.0.0",
+    "jest": "30.0.5",
+    "ts-jest": "29.4.0",
+    "ts-loader": "9.5.2",
+    "typescript": "5.8.3",
+    "webpack": "5.100.2",
+    "webpack-cli": "6.0.1"
+  }
+}

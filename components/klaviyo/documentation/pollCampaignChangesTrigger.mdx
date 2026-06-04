@@ -1,0 +1,98 @@
+This trigger polls the [Klaviyo API](https://developers.klaviyo.com/en/reference/get_campaigns) for new and updated campaigns on the selected message channel since the last execution.
+
+#### How It Works
+
+1. The trigger runs on the configured polling schedule
+2. On the first execution, the current timestamp is stored as the initial `lastPolledAt` state and no records are returned
+3. On each subsequent execution, a server-side Klaviyo JSON:API filter is built from the configured **Message Channel** and the stored `lastPolledAt`: `and(equals(messages.channel,'<channel>'),greater-than(updated_at,<lastPolledAt>))`
+4. All paginated campaign records matching the filter are fetched via the Klaviyo Campaigns API
+5. Returned records are categorized client-side as **created** or **updated** based on the `created_at` timestamp relative to `lastPolledAt` — records whose `created_at` exceeds `lastPolledAt` are classified as created; all other records returned by the filter are classified as updated
+6. After the fetch completes, the current timestamp is stored as the new `lastPolledAt`
+7. If both **Show New Records** and **Show Updated Records** are disabled, the trigger short-circuits without calling the API and still advances `lastPolledAt`
+
+The trigger sets `polledNoChanges: true` when no matching records are returned, allowing downstream flows to skip execution when there is nothing to process.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Klaviyo connection used to authenticate API requests
+- **Message Channel**: The Klaviyo message channel to filter campaigns by — `Email`, `SMS`, or `Mobile Push`. Klaviyo requires this filter on every campaign list call
+- **Show New Records**: When enabled, includes newly created campaigns in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified campaigns in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for newly created campaigns and `updated` for modified campaigns. Both arrays follow the Klaviyo JSON:API resource shape.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "type": "campaign",
+        "id": "01HABCDEF0123456789CAMPAIGN1",
+        "attributes": {
+          "name": "Spring Sale Email",
+          "status": "Draft",
+          "archived": false,
+          "audiences": {
+            "included": ["Y6nRLr"],
+            "excluded": []
+          },
+          "send_options": {
+            "use_smart_sending": true
+          },
+          "tracking_options": {
+            "is_tracking_clicks": true,
+            "is_tracking_opens": true
+          },
+          "send_strategy": {
+            "method": "static"
+          },
+          "created_at": "2026-04-15T14:30:00Z",
+          "scheduled_at": null,
+          "updated_at": "2026-04-15T14:30:00Z",
+          "send_time": null
+        },
+        "relationships": {
+          "campaign-messages": {
+            "data": [{ "type": "campaign-message", "id": "01HMSG0123456789" }]
+          }
+        }
+      }
+    ],
+    "updated": [
+      {
+        "type": "campaign",
+        "id": "01HABCDEF0123456789CAMPAIGN2",
+        "attributes": {
+          "name": "Welcome Series",
+          "status": "Sent",
+          "archived": false,
+          "audiences": {
+            "included": ["UTd5ui"],
+            "excluded": []
+          },
+          "created_at": "2026-03-01T09:00:00Z",
+          "scheduled_at": "2026-03-02T15:00:00Z",
+          "updated_at": "2026-04-15T16:22:00Z",
+          "send_time": "2026-03-02T15:00:00Z"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The `messages.channel` equality filter is required by the Klaviyo Campaigns API — campaign list calls without it are rejected
+- The `greater-than(updated_at,...)` clause is applied server-side, so only campaigns modified since the last poll are returned
+- A newly created campaign has `created_at == updated_at`, so the same record is never classified as both created and updated
+- Refer to the [Klaviyo API rate limits documentation](https://developers.klaviyo.com/en/docs/rate_limits_and_error_handling) for throttling behavior and the [Get Campaigns endpoint reference](https://developers.klaviyo.com/en/reference/get_campaigns) for the full list of returned attributes

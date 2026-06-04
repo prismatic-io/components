@@ -1,0 +1,71 @@
+This trigger polls the [ServiceTitan API](https://developer.servicetitan.io/) for new and updated records on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches records from ServiceTitan using the `modifiedOnOrAfter` API parameter to retrieve only records modified since the last poll
+3. Records are classified as **created** if `createdOn` exceeds the last poll time; all other returned records are classified as **updated**
+4. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The ServiceTitan connection used to authenticate API requests
+- **Resource Type**: The type of ServiceTitan record to monitor
+
+  | Resource | Tracks New | Tracks Updated |
+  |----------|------------|----------------|
+  | Jobs | Yes | Yes |
+  | Appointments | Yes | Yes |
+  | Projects | Yes | Yes |
+  | Invoices | Yes | Yes |
+  | Payments | Yes | Yes |
+  | Customers | Yes | Yes |
+  | Locations | Yes | Yes |
+  | Installed Equipment | Yes | Yes |
+  | Technicians | Yes | Yes |
+
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+
+#### Returned Data
+
+Returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 98765432,
+        "number": "JOB-0001234",
+        "status": "Scheduled",
+        "createdOn": "2024-01-16T10:30:00Z",
+        "modifiedOn": "2024-01-16T10:30:00Z",
+        "customerId": 11223344
+      }
+    ],
+    "updated": [
+      {
+        "id": 98765399,
+        "number": "JOB-0001198",
+        "status": "Completed",
+        "createdOn": "2024-01-10T09:00:00Z",
+        "modifiedOn": "2024-01-16T14:22:00Z",
+        "customerId": 55667788
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- ServiceTitan uses different API URL namespaces per resource type (jobs, appointments, and projects use the dispatch namespace; invoices and payments use accounting; customers and locations use CRM; installed equipment uses equipment systems; technicians use settings). The trigger selects the correct endpoint automatically based on the chosen resource type
+- Refer to the [ServiceTitan developer documentation](https://developer.servicetitan.io/) for rate limit details and available fields per resource type

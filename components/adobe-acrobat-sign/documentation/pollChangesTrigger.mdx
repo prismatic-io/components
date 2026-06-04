@@ -1,0 +1,32 @@
+The **New and Updated Agreements** trigger polls [Adobe Acrobat Sign](https://www.adobe.com/sign.html) on a configured schedule and emits any agreements that have been created or modified since the previous run.
+
+#### How It Works
+
+On each poll the trigger sends a `POST /api/rest/v6/search` request scoped to `AGREEMENT_ASSETS`, filtering on `modifiedDate.range.min = lastPolledAt`. Returned records are split into two buckets based on their per-record timestamps:
+
+- `created`: records whose `createdDate` is later than `lastPolledAt`
+- `updated`: records whose `modifiedDate` is later than `lastPolledAt` and whose `createdDate` is not
+
+A record that qualifies for both buckets is placed in `created` only (created beats updated). The `lastPolledAt` cursor is then advanced to the current time before returning.
+
+On the very first poll, when no cursor exists yet, the trigger uses a 24-hour lookback so the search filter has a sane non-empty value.
+
+#### Returned Data
+
+The trigger emits a payload of the form:
+
+```json
+{
+  "created": [ /* agreement asset records created since lastPolledAt */ ],
+  "updated": [ /* agreement asset records modified since lastPolledAt */ ]
+}
+```
+
+Each record uses the agreement asset shape returned by `/search` and contains the identifier and key lifecycle fields (`id`, `name`, `status`, `type`, `createdDate`, `modifiedDate`). Fields shown are representative. The full response object includes additional properties.
+
+#### Notes
+
+- The trigger uses the `OWNED` ownership scope. Customers needing agreements from `SHARED` or `SHARED_AND_OWNED` scopes should use the **Search Resources** action and orchestrate their own filtering.
+- **PARTIAL** and **DRAFT** agreements are not returned by the `/search` endpoint and are therefore not surfaced by this trigger. This is an Adobe Acrobat Sign API limitation, not a component bug.
+- Pagination is offset-based and bounded per run to keep each poll within the documented `startIndex < 10000` limit. When the per-run page cap is reached, the cursor is rewound to the newest fetched record's `modifiedDate` so no records are missed on the next run.
+- For richer filter expressions (status, role, participant email, query string, etc.), use the **Search Resources** action directly.

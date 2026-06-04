@@ -1,0 +1,93 @@
+This component uses OAuth 2.0 to connect to the Google Ads API.
+
+#### Prerequisites
+
+- A [Developer Token](https://developers.google.com/google-ads/api/docs/api-policy/developer-token) is required to work with Google Ads
+- The Customer ID of the Ads Manager account (the hyphenated number in the top-left corner of the Ads app) must be noted
+- A [Google Developer account](https://console.cloud.google.com/) is required
+
+#### Developer Token
+
+The Developer Token is obtained from a Google Ads Manager account:
+
+1. Sign in to [Google Ads](https://ads.google.com/) with the Google account that will be used for the integration
+1. Click **Tools & Settings** in the top right corner
+1. Under **Setup**, click **API Center**
+1. In the **Developer token** section, click **Create token** or view the existing token
+1. Copy and save the **Developer Token** value securely
+1. Take note of the **Customer ID** displayed in the top-right corner of Google Ads (XXX-XXX-XXXX). This will be needed when configuring the connection.
+
+#### Configure Google Cloud Project
+
+1. Access the project selector in the top-left and select an existing project or create a new one.
+1. Select **APIs & Services** -> **Enabled APIs & services** from the left hand menu
+1. Click **Enable APIs and Services** towards the top of the screen
+1. Search for "google ads api" and select **Google Ads API** in the results (avoid selecting AdWords as that is deprecated)
+1. Click the **Enable** button to add the API to the project
+1. On the sidebar, select **Credentials**.
+1. An OAuth 2.0 app includes a "Consent Screen". Click **CONFIGURE CONSENT SCREEN**.
+   1. The app will be externally available to customers, so choose a **User Type** of **External**.
+   1. Fill out the OAuth consent screen with an app name, support email, app logo, domain, etc.
+   1. On the next page, add the `https://www.googleapis.com/auth/adwords` scope to the app.
+   1. Enter some **test users** for testing purposes.
+      The app will only work for those testing users until it is "verified" by Google.
+      When ready for verification, click **PUBLISH APP** on the **OAuth consent screen**.
+      That will allow customers to authorize the integration to access their Google Ads.
+1. Once the "Consent Screen" is configured, open the **Credentials** page from the sidebar again.
+1. Click **+CREATE CREDENTIALS** and select **OAuth client ID**.
+   1. Under **Application type** select **Web application**.
+   1. Under **Authorized redirect URIs** enter the OAuth 2.0 callback URL: <OauthCallbackUrl />
+   1. Click **CREATE**.
+1. Take note of the **Client ID** and **Client Secret** that are generated.
+
+#### Configure the Connection
+
+- **Client ID**: From the Google Cloud Console OAuth client credentials
+- **Client Secret**: From the Google Cloud Console OAuth client credentials
+- **Developer Token**: From the Google Ads API Center
+- **API Version**: The Google Ads API version to use. Refer to the [Google Ads API release notes](https://developers.google.com/google-ads/api/docs/release-notes) for the latest version.
+
+#### Supported API Versions
+
+The component supports multiple API versions through the **API Version** connection field:
+
+| Version | Status | Tentative Sunset |
+|---------|--------|------------------|
+| **v23** | Recommended (default) | January 2027 |
+| **v22** | Stable | October 2026 |
+| **v21** | Stable | August 2026 |
+| **v20** | Stable | June 2026 |
+| ~~v19~~ | Sunset | February 11, 2026 |
+
+Sunset dates are tentative and subject to change. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest information.
+
+After entering the credentials, authorize the connection by signing in with the Google account used to create the Developer Token and OAuth credentials.
+
+#### App Verification
+
+Google requires OAuth apps that request access to user data to pass a verification review before being deployed at scale. This process ensures the app complies with Google's API Services User Data Policy, accurately represents its functionality, and handles user data responsibly.
+
+Google OAuth apps pass through three stages before they are ready for production use.
+
+**Testing (unpublished):** The app is only accessible to users manually added as test users in the OAuth consent screen. Up to 100 test users are allowed. All other users receive an error. This is the expected state during initial development.
+
+**Published, unverified:** After publishing the app, all Google users can authenticate. However, for sensitive scopes, users see a **"This app isn't verified"** warning. Users can proceed by clicking **Advanced** → **Go to [app name] (unsafe)**, but this warning reduces trust and may be blocked by organizations with strict Google Workspace policies.
+
+**Verified:** Google has reviewed and approved the app. No warning is shown. Verification is required before deploying to production users.
+
+#### Publishing the App
+
+Publishing is required before any users outside the test list can authenticate:
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), navigate to **APIs & Services** → **OAuth consent screen**
+2. Click **PUBLISH APP** and confirm
+
+#### Requesting Verification
+
+The scopes used by this component are classified as **sensitive** by Google. Submitting for verification removes the "This app isn't verified" warning:
+
+1. On the **OAuth consent screen**, click **Prepare for verification**
+2. Provide a privacy policy URL, authorized domain, and app logo
+3. Submit for review. Google typically responds within several weeks
+
+Refer to [Google's OAuth consent screen documentation](https://support.google.com/cloud/answer/10311615) for the full verification requirements.

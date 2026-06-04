@@ -1,0 +1,55 @@
+Create a connection of type **OAuth 2.0** to authenticate against the Pipedrive API.
+
+#### Prerequisites
+
+- A Pipedrive sandbox account. Sign up via the [Pipedrive Developers Corner](https://developers.pipedrive.com/).
+- Access to the Pipedrive [Developer Hub](https://app.pipedrive.com/developer-hub) to create and manage OAuth apps.
+
+#### Setup Steps
+
+1. Navigate to the [Pipedrive Developer Hub](https://app.pipedrive.com/developer-hub).
+2. **Click** **Create an App** and **Select** **Public app**.
+3. Fill in the minimal required fields. Be sure to include the OAuth 2.0 **Callback URL**: <OauthCallbackUrl />
+4. Update the **Access scopes** to grant the app access to the necessary types of data. Reference the [Marketplace scopes and permissions explanations](https://pipedrive.readme.io/docs/marketplace-scopes-and-permissions-explanations) for information on what permissions the integration might need.
+5. **Click** **Save**.
+6. After saving, the **OAuth & Access scopes** section will include the **Client ID** and **Client Secret** for the app.
+
+Note that the Pipedrive app must be submitted for review if "Yes" was selected on the "Intent to publish app" page during app creation.
+
+#### Configure the Connection
+
+- **Authorization URL**: The OAuth 2.0 authorization URL. Defaults to `https://oauth.pipedrive.com/oauth/authorize`.
+- **Token URL**: The OAuth 2.0 token URL. Defaults to `https://oauth.pipedrive.com/oauth/token`.
+- **Client ID**: Enter the **Client ID** from the Pipedrive OAuth app.
+- **Client Secret**: Enter the **Client Secret** from the Pipedrive OAuth app.
+
+Save the integration and the connection will be ready to authenticate against Pipedrive.
+
+#### Pipedrive Custom Redirect URIs
+
+For Pipedrive apps intended to be public and published in the Pipedrive marketplace, Pipedrive has additional stipulations for how app installation occurs. Reference the [App installation flows documentation](https://pipedrive.readme.io/docs/app-installation-flows).
+
+When a user within Pipedrive selects the app and clicks **Install**, Pipedrive requires that the **Callback URL** handle an auth code without a `state` search parameter in the URL.
+
+Outside of this flow, the `state` variable is used to map an auth code to a config variable. When a user clicks **Connect** in the integration, they visit a Pipedrive consent screen and are redirected to the callback URL with search parameters `?code=[SOME AUTH CODE]&state=SW5example`. The platform then exchanges that auth `code` for an access token, and saves that access token to the config variable with the `SW5example` ID.
+
+With the Pipedrive installation flow, a custom endpoint must be supplied that captures and handles an auth code that potentially has no `state` attached to it (yet).
+
+At a high level, the following is required:
+
+- Create a custom endpoint within the app that can receive `code` and optional `state` search parameters.
+- Save the `code` off to secure temporary browser storage:
+  - If the user is a guest of the app, encourage them to sign up.
+  - If the user is registered but not logged in, have them log in.
+  - If the user is logged in, continue.
+- Once a user is authenticated in the app with a Pipedrive auth `code`, programmatically create a customer (if needed) and programmatically deploy an unconfigured instance to the customer (assuming they do not have an instance of the Pipedrive integration already).
+- Look up the unconfigured instance's connection config variable's ID. Make a `GET` request to the callback URL with search parameters `?code=[SOME AUTH CODE]&state=SW5....` where `state` represents the config variable's ID. This will start the auth code exchange process.
+- Invoke `configureInstance()` with the unconfigured instance's ID to open a config wizard. The connection will be "active" from the previous step and the user will be able to continue through the config flow.
+
+:::note[Update the integration's authorize URL]
+Note that Pipedrive only allows one **Callback URL**, which must be the custom endpoint (above), and must match `redirect_uri` in the authorization URL if a user initiates connection from the marketplace.
+
+The `redirect_uri` in the authorize URL must be overridden to point to the custom endpoint.
+
+Open the config variable in the integration designer and edit the **Authorize URL** from `https://oauth.pipedrive.com/oauth/authorize` to something like `https://oauth.pipedrive.com/oauth/authorize?redirect_uri=https://example.com/your/callback/endpoint`.
+:::

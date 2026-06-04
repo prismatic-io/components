@@ -1,0 +1,38 @@
+The Event Type Subscription trigger can manage [HubSpot webhook subscriptions](https://developers.hubspot.com/docs/api/webhooks) for an instance. Unlike the [Webhook](#webhook) trigger that requires manual configuration in the HubSpot Developer Console, this trigger handles the entire webhook lifecycle automatically.
+
+When the trigger is used in a flow:
+- **On Instance Deploy**: The trigger automatically creates webhook subscription configurations in the HubSpot app for the selected event types (contact creation, deal updates, etc.). The webhook target URL is set to the instance's unique webhook URL. If webhook settings already exist for the app and the overwrite option is disabled, the trigger will throw an error to prevent accidental changes. If overwrite is enabled, existing settings are replaced with the new configuration.
+- **On Instance Deletion**: The trigger automatically removes webhook subscriptions and settings from the HubSpot app if the webhook URL matches the instance being deleted. This ensures no orphaned webhook configurations remain after instance cleanup.
+
+#### Configuration Requirements
+
+This trigger requires a HubSpot OAuth 2.0 connection with the following values from the [HubSpot Developer Console](https://developers.hubspot.com/):
+
+- **Client ID** and **Client Secret** - OAuth credentials for authentication
+- **App ID** - The numeric application ID from the developer console
+- **Developer API Key** - The developer API key for managing webhook subscriptions
+- **OAuth Scopes** - Required scopes for the events being subscribed to (e.g., `crm.objects.contacts.read` for contact events)
+
+#### Event Types Configuration
+
+When configuring the trigger, select which HubSpot events should trigger the flow. Available event types include:
+
+**CRM Object Events:**
+- Contact events: `contact.creation`, `contact.deletion`, `contact.propertyChange`, `contact.associationChange`
+- Company events: `company.creation`, `company.deletion`, `company.propertyChange`, `company.associationChange`
+- Deal events: `deal.creation`, `deal.deletion`, `deal.propertyChange`, `deal.associationChange`
+- Ticket, product, and line item events follow the same patterns
+
+**Property-Specific Events:**
+For `propertyChange` events, you can optionally specify individual property names to monitor (e.g., only trigger when the `email` or `phone` property changes).
+
+A full list of available webhook events and required OAuth scopes is available in the [HubSpot Webhooks API documentation](https://developers.hubspot.com/docs/api/webhooks).
+
+#### Overwrite Settings
+
+HubSpot limits webhooks to a single URL per app. Therefore, the **Overwrite Webhook Settings** input controls behavior when webhook configurations already exist for the HubSpot app.
+This is disabled by default, but when enabled, existing webhook settings are deleted and replaced with the new configuration from this trigger.
+
+:::tip
+When multiple instances use the same HubSpot app, coordinate the overwrite setting carefully. Enabling overwrite in one instance will affect webhook configurations for all instances using the app.
+:::

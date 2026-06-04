@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://learn.microsoft.com/en-us/dynamics365/customerengagement/on-premises/developer/use-microsoft-dynamics-365-web-api"
+  },
+  {
+    "label": "Release Notes",
+    "href": "https://learn.microsoft.com/en-us/dynamics365/release-plans/"
+  }
+]

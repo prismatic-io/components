@@ -1,0 +1,37 @@
+To authenticate with Mixpanel, a service account is required for API access, along with a project token for project-specific operations.
+
+For more information, refer to [Mixpanel's Service Account documentation](https://developer.mixpanel.com/reference/service-accounts).
+
+#### Prerequisites
+
+- A Mixpanel account with access to organization settings
+- Permissions to create service accounts in the organization
+- Access to the project where the integration will be used
+
+#### Setup Steps
+
+**Setting up a Service Account:**
+
+1. Navigate to [Organization Settings > Service Accounts](https://mixpanel.com/settings/org#serviceaccounts) in Mixpanel
+2. Click **Add Service Account** to create a new service account
+3. Select the appropriate role and grant access to the required projects
+4. Click **Add** to complete the creation
+5. Copy the **Username** and **Secret** values that are provided
+
+**Obtaining the Project Token:**
+
+1. Navigate to the [Project Settings](https://mixpanel.com/settings/project/) page in Mixpanel
+2. Locate the **Access Keys** section
+3. Copy the **Project Token** value
+
+#### Configure the Connection
+
+Enter the following values into the connection configuration:
+
+- **Username**: The service account username from step 5 above
+- **Password**: The service account secret from step 5 above
+- **Project Token**: The project token from the Access Keys section
+
+:::note[Service Account Roles]
+The service account role determines what operations can be performed through the API. Ensure the selected role has sufficient permissions for the integration's intended use. Refer to [Mixpanel's documentation on roles and permissions](https://docs.mixpanel.com/docs/orgs-and-projects/roles-and-permissions) for more information.
+:::

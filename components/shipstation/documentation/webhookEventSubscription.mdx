@@ -1,0 +1,52 @@
+This trigger receives [webhook](https://www.shipstation.com/docs/api/webhooks/subscribe/) event notifications from ShipStation. It automatically creates and manages a webhook subscription for the selected event type when the instance is deployed, and removes the subscription when the instance is deleted.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook subscription in ShipStation pointing to the instance's unique webhook URL. If a webhook with the same configuration already exists, it reuses the existing subscription.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from ShipStation.
+
+If the event type or store ID configuration changes between deployments, the trigger deletes the existing webhook and creates a new one with the updated settings.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Webhook Event**: The event type to subscribe to for webhook notifications
+- **Store ID**: (Optional) Limits webhook notifications to a specific store. When omitted, notifications are sent for all stores.
+- **Friendly Name**: (Optional) A descriptive label to identify the webhook
+
+#### Event Types
+
+<details>
+<summary>Available Events (6)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `ORDER_NOTIFY` | Triggers when a new order is created |
+| `ITEM_ORDER_NOTIFY` | Triggers when a new order item is created |
+| `SHIP_NOTIFY` | Triggers when a shipment is created |
+| `ITEM_SHIP_NOTIFY` | Triggers when a shipment item is created |
+| `FULFILLMENT_SHIPPED` | Triggers when a fulfillment is shipped |
+| `FULFILLMENT_REJECTED` | Triggers when a fulfillment is rejected |
+
+</details>
+
+Refer to the [ShipStation Webhooks documentation](https://www.shipstation.com/docs/api/webhooks/subscribe/) for the complete and up-to-date list.
+
+#### Returned Data
+
+The trigger returns the raw webhook payload sent by ShipStation via HTTP POST.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "resource_url": "https://ssapi.shipstation.com/orders?importBatch=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "resource_type": "ORDER_NOTIFY"
+}
+```
+
+</details>

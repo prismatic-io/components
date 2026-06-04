@@ -1,0 +1,70 @@
+Checks for new and updated files in a specified folder on a configured schedule.
+
+This polling trigger monitors a Box folder at regular intervals and identifies files that have been created or modified since the last poll. The trigger automatically maintains state to track the last polling time and categorizes results into new files and updated files.
+
+#### How It Works
+
+The trigger operates as follows:
+
+1. Runs on the configured schedule (e.g., every 5 minutes)
+2. Fetches all files from the specified folder using the [Box Folders API](https://developer.box.com/reference/get-folders-id-items/)
+3. Normalizes timestamps to UTC for accurate comparison (Box stores dates with timezone offsets)
+4. Compares file creation and modification timestamps against the last poll time
+5. Categorizes files as:
+   - **New Files**: Files where `created_at` is after the last poll time
+   - **Updated Files**: Files where `modified_at` is after the last poll time but are not classified as new
+6. Maintains polling state automatically to track the last poll time
+
+#### Configuration
+
+Configure the trigger with the following inputs:
+
+- **Connection**: Box OAuth 2.0 connection with read permissions for the target folder
+- **Folder ID**: The unique identifier of the folder to monitor (use the Box folder data source to select a folder)
+
+The trigger fetches up to 1,000 files per poll from the specified folder using Box's pagination mechanism.
+
+#### Returned Data
+
+The trigger returns separate arrays for new and updated files with branch support.
+
+<details>
+<summary>Example returned data structure</summary>
+
+```json
+{
+  "data": {
+    "newFiles": {
+      "data": [
+        {
+          "id": "1234567890",
+          "type": "file",
+          "name": "report.pdf",
+          "created_at": "2024-11-10T18:07:45Z",
+          "modified_at": "2024-11-10T18:07:45Z"
+        },
+        {
+          "id": "9876543210",
+          "type": "file",
+          "name": "invoice.xlsx",
+          "created_at": "2024-11-10T18:15:22Z",
+          "modified_at": "2024-11-10T18:15:22Z"
+        }
+      ]
+    },
+    "updatedFiles": {
+      "data": [
+        {
+          "id": "5555555555",
+          "type": "file",
+          "name": "presentation.pptx",
+          "created_at": "2024-11-08T14:30:00Z",
+          "modified_at": "2024-11-10T18:20:10Z"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>

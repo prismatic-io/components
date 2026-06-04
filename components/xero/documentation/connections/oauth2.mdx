@@ -1,0 +1,23 @@
+**Xero** uses OAuth 2.0 to authorize requests made to the API.
+In order for your integration to authenticate with your customers' Xero accounts, you will need to create a Xero OAuth 2.0 app:
+
+- Log on to Xero's [developer portal](https://developer.xero.com/app/manage/)
+- Click **New app**
+  - Give your app a name
+  - Select **Web app** for **Integration type**
+  - Enter _your company's_ URL for **Company or application URL**
+  - Enter <OauthCallbackUrl /> for the **Redirect URI**
+- Next, open the **Configuration** page
+  - Click **Generate Secret** and take note of the **Client id** and **Client secret** - you'll enter those in a moment
+
+When you add a Xero step to an integration, a Xero OAuth 2.0 connection config variable will be created automatically for you:
+
+- For **Scopes**, enter the scopes from [this list](https://developer.xero.com/documentation/guides/oauth2/scopes/) that are relevant to your integration.
+  Always include the `offline_access` scope in order for authentication tokens to refresh automatically.
+- For **Client ID** and **Client Secret**, enter the values you noted above.
+- A single customer might be logged in to multiple tenants, and **Tenant Name** is unique for each customer.
+  Leave that input blank, and click the gear icon next to **Tenant Name**.
+  Adjust **Input Visibility** and select **Customer** to make that input visible to your customers.
+  That way, your customers will be prompted for their tenant name when they enable this integration.
+
+For additional information regarding authentication, please refer to the [Xero docs](https://developer.xero.com/documentation/guides/oauth2/auth-flow/#2-users-are-redirected-back-to-you-with-a-code).

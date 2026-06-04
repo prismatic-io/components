@@ -1,0 +1,41 @@
+The New Incidents polling trigger fetches PagerDuty incidents created since the last execution on a recurring schedule. Unlike the webhook-based triggers, this trigger does not require any external subscription — the integration polls the PagerDuty REST API directly.
+
+#### How It Works
+
+- On each scheduled execution, the trigger calls the PagerDuty REST API to retrieve incidents created since the timestamp of the previous run.
+- The last poll timestamp is persisted in the trigger's polling state and updated after every execution.
+- When no new incidents are returned, the trigger signals `polledNoChanges` so the flow does not execute downstream steps.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "body": {
+    "data": {
+      "created": [
+        {
+          "id": "Q1P5SQEISWZ3K4",
+          "type": "incident",
+          "summary": "[#1234] Server is on fire",
+          "status": "triggered",
+          "urgency": "high",
+          "created_at": "2024-01-15T10:30:00Z",
+          "service": {
+            "id": "PF9KMXH",
+            "type": "service_reference",
+            "summary": "Production API"
+          }
+        }
+      ],
+      "updated": []
+    }
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

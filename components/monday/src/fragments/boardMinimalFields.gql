@@ -1,0 +1,4 @@
+fragment BoardMinimalFields on Board {
+  id
+  name
+}

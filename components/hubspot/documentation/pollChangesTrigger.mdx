@@ -1,0 +1,63 @@
+HubSpot provides two polling triggers to monitor changes to CRM records. Both check for new and updated records on a scheduled basis and work identically. The main difference is which types of objects they monitor.
+
+**New and Updated Records** - Use for standard HubSpot objects:
+- Companies, Contacts, Deals, Tickets, Products, Line Items, Quotes, Feedback Submissions
+- Calls, Emails, Meetings, Notes, Tasks
+
+**New and Updated Custom Records** - Use for custom objects:
+- Custom object types created in HubSpot
+- Requires specifying the custom object type name
+
+#### How It Works
+
+Both triggers operate the same way:
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. Search HubSpot using the [Search API](https://developers.hubspot.com/docs/api/crm/search) for records modified since the last poll
+3. Categorize records as "new" or "updated" based on created date last modified date timestamps
+4. Maintain state to track the last poll time automatically
+
+#### Configuration
+
+**Inputs common to both triggers:**
+- **Show New Records**: Include newly created records
+- **Show Updated Records**: Include modified records
+- **Search Properties**: Optional JSON for additional filters, sorts, or specific properties to return. See [HubSpot Search API docs](https://developers.hubspot.com/docs/api/crm/search).
+
+#### Returned Data
+
+Both triggers return the same structure with separate arrays for new and updated records:
+
+```json
+{
+  "data": {
+    "newRecords": [
+      {
+        "id": "12345678",
+        "properties": {
+          "createdate": "2024-11-10T10:30:00.000Z",
+          "lastmodifieddate": "2024-11-10T10:30:00.000Z"
+          /* additional properties */
+        }
+      }
+    ],
+    "updatedRecords": [
+      {
+        "id": "87654321",
+        "properties": {
+          "createdate": "2024-11-08T09:00:00.000Z",
+          "lastmodifieddate": "2024-11-10T14:22:00.000Z"
+          /* additional properties */
+        }
+      }
+    ]
+  }
+}
+```
+
+Properties returned depend on the Search Properties configuration. If not specified, HubSpot returns default properties for the object type.
+
+#### Best Practices
+
+- **Polling Frequency**: Use 5-15 minute intervals to balance timeliness with API limits
+- **Filter Results**: Use Search Properties to request only needed properties and add filters
+- **Monitor Limits**: Both triggers fetch up to 20,000 records per poll

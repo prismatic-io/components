@@ -1,0 +1,13 @@
+query ListDraftOrdersDataSource($first: Int!, $cursor: String) {
+  draftOrders(first: $first, after: $cursor) {
+    nodes {
+      id
+      name
+      status
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

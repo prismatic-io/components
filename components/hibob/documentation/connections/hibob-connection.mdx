@@ -1,0 +1,28 @@
+Create a connection of type **Basic Authentication** to authenticate with the HiBob API using a [Service User](https://apidocs.hibob.com/docs/api-service-users) ID and token.
+
+#### Prerequisites
+
+- A HiBob account with administrator access
+- Access to the Service Users configuration page in HiBob
+
+#### Setup Steps
+
+1. Log in to the HiBob admin panel and navigate to the **Service Users** configuration page
+2. Click **Create a New Service User**
+3. Copy the **Service User ID** and **Token** immediately, as the token can only be viewed once
+4. Create a dedicated permission group for the service user:
+   - Add the service user to the group
+   - Configure the necessary permissions based on the API operations to perform
+   - For basic employee data access, ensure the **Default Employee Fields** permissions are enabled
+
+:::note[Administrator Access Required]
+If direct access to the HiBob admin panel is not available, contact a HiBob administrator to generate the credentials.
+:::
+
+#### Configure the Connection
+
+- Enter the **Service User ID** from the HiBob admin panel
+- Enter the **Token** generated during service user creation
+- Set **Use Sandbox** to `true` to connect to the HiBob sandbox environment instead of production
+
+Refer to the [HiBob API Service Users documentation](https://apidocs.hibob.com/docs/api-service-users) for additional details on permissions and access configuration.

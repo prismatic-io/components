@@ -1,0 +1,46 @@
+To create an OAuth 2.0 app for Gusto, sign up for a Gusto developer account and create a new application.
+
+For detailed information, refer to the [Gusto Developer Documentation](https://docs.gusto.com/app-integrations/docs/introduction).
+
+#### Prerequisites
+
+- A Gusto developer account at [dev.gusto.com](https://dev.gusto.com/)
+
+#### Setup Steps
+
+1. Log in to the [Gusto Developer Portal](https://dev.gusto.com/) and create a new application
+2. Enter a name and description for the application
+3. Under **Redirect URI**, add the OAuth callback URL: <OauthCallbackUrl />
+4. Save the application configuration
+
+#### Configure the Connection
+
+- Copy the **Client ID** and **Secret** from the application settings in the Gusto Developer Portal
+- Enter the **Client ID** and **Client Secret** into the connection configuration
+
+#### Production Access
+
+Gusto restricts new app integrations to a demo environment until the app has been reviewed and approved for production access. This two-stage process evaluates the integration's security practices and intended use before granting access to real employee and payroll data.
+
+Gusto apps pass through two states before they are ready for deployment.
+
+**Demo environment (before production access):** Users can authenticate and the OAuth flow completes normally, but the integration connects to `api.gusto-demo.com`. Only demo payroll data is accessible. No real employee records, company data, or live payroll information can be reached. This is the expected state during development and testing.
+
+**Production (after approval):** The integration connects to `api.gusto.com`. Real Gusto accounts and live payroll data become accessible.
+
+**Complete the production access process before deploying to end users.** Gusto apps begin in the demo environment (`api.gusto-demo.com`) and can only access demo data. They cannot connect to real Gusto accounts until production access is granted. To gain production access, the integration must complete a two-stage approval process.
+
+#### Production Pre-Approval
+
+Submit a production access request through the Gusto Developer Portal. Gusto reviews the request and typically responds within 1–2 weeks, evaluating the integration's intended use case and data access requirements.
+
+#### Security Review
+
+In addition to the production access request, Gusto requires a security review. The integration must demonstrate compliance with industry security standards. Acceptable certifications include:
+
+- SOC 2 Type II
+- ISO 27001
+
+Submit documentation demonstrating compliance as part of the production access process.
+
+Once both the pre-approval and security review are complete, Gusto provides production credentials. Update the connection configuration with the production **Client ID** and **Client Secret** to connect to live Gusto accounts (`api.gusto.com`).

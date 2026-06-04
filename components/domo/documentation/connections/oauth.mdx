@@ -1,0 +1,23 @@
+Create a connection of type **OAuth 2.0 Client Credentials** to authenticate with the Domo API.
+
+To [generate a Client ID and Client Secret](https://developer.domo.com/portal/8ba9aedad3679-ap-is#step-1-create-client-id-and-secret), follow the steps below.
+
+#### Prerequisites
+
+- A Domo account with access to the Developer Portal
+- The Domo instance name (the part of the URL preceding `domo.com` -- for example, if the Domo URL is `acmecompany.domo.com`, the instance name is `acmecompany`)
+
+#### Setup Steps
+
+1. Navigate to the [Domo Developer Portal login page](https://developer.domo.com/login)
+2. Enter the Domo instance name and user credentials when prompted
+3. After logging in, click on the **My Account** dropdown and select **Manage Clients**
+4. Click **Create a New Client** from the **Manage Clients** page
+5. Submit the required information -- a newly provisioned **Client ID** and **Client Secret** will be generated and displayed on the **Manage Clients** page
+6. Copy the **Client ID** and **Client Secret** values
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** obtained from the Developer Portal
+- For **Scopes**, enter the required OAuth permission scopes separated by spaces (e.g., `data workflow audit buzz user account dashboard`)
+  - Refer to the [Domo API documentation](https://developer.domo.com/portal/8ba9aedad3679-ap-is) for available scope information

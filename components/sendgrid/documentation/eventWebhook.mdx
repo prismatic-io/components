@@ -1,0 +1,87 @@
+The Event Webhook trigger can manage [SendGrid event webhook subscriptions](https://www.twilio.com/docs/sendgrid/for-developers/tracking-events/getting-started-event-webhook) for an instance. Unlike traditional webhook setups that require manual configuration in the SendGrid dashboard, this trigger handles the entire webhook lifecycle.
+
+When the trigger is used in a flow:
+- **On Instance Deploy**: The trigger automatically creates a webhook endpoint in the SendGrid account pointing to the instance's unique webhook URL. If a webhook with the same ID already exists in the stored state, it updates the existing webhook instead of creating a duplicate. The trigger also automatically enables signature verification and stores the public key for validating incoming requests.
+- **On Instance Deletion**: The trigger automatically removes the webhook endpoint from the SendGrid account.
+
+#### Event Types
+
+Configure the trigger to receive notifications for the following email events:
+
+<details>
+<summary>Event Types</summary>
+
+| Event | Description |
+| ----- | ----------- |
+| Delivered | Message has been successfully delivered to the receiving server |
+| Bounce | Receiving server could not or would not accept the message |
+| Deferred | Receiving server temporarily rejected the message |
+| Processed | Message has been received and is ready to be delivered |
+| Dropped | Message has been dropped (e.g., invalid header, spam content) |
+| Open | Recipient has opened the HTML message |
+| Click | Recipient clicked on a link within the message |
+| Spam Report | Recipient marked the message as spam |
+| Unsubscribe | Recipient clicked the unsubscribe link |
+| Group Unsubscribe | Recipient unsubscribed from a specific group |
+| Group Resubscribe | Recipient resubscribed to a specific group |
+
+</details>
+
+Enable the specific events to monitor by configuring the corresponding inputs when setting up the trigger.
+
+#### Signature Verification
+
+The trigger automatically verifies the authenticity of incoming webhook requests using SendGrid's ECDSA signature verification. When the webhook is created during instance deployment, signature verification is enabled and the public key is stored in the instance state.
+
+For each incoming request, the trigger:
+1. Extracts the signature and timestamp from the `X-Twilio-Email-Event-Webhook-Signature` and `X-Twilio-Email-Event-Webhook-Timestamp` headers
+2. Converts the stored public key to ECDSA format
+3. Verifies the signature against the raw request body
+4. Rejects requests with invalid signatures to prevent spoofing
+
+This ensures that only genuine requests from SendGrid are processed by the flow.
+
+#### Configuration
+
+When configuring the Event Webhook trigger, specify:
+
+- **SendGrid Connection**: The authenticated SendGrid API connection
+- **Friendly Name**: A descriptive name to help differentiate between multiple webhooks
+- **Event Type Toggles**: Enable the specific events to monitor (Delivered, Bounce, Open, Click, etc.)
+
+#### Returned Data
+
+The trigger returns the webhook payload containing an array of email events:
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "payload": {
+    "headers": {
+      "Content-Type": "application/json;charset=utf-8",
+      "X-Twilio-Email-Event-Webhook-Signature": "MEQCIExampleSignatureBase64...",
+      "X-Twilio-Email-Event-Webhook-Timestamp": "1700000000"
+    },
+    "body": {
+      "data": [
+        {
+          "email": "user@example.com",
+          "event": "delivered",
+          "timestamp": 1700000000,
+          "sg_event_id": "ZGVsaXZlcmVkLTAtMTIzNDU2NzgtRXhhbXBsZQ==",
+          "sg_message_id": "ExampleMessageId123.recvd-abc123",
+          "response": "250 2.0.0 OK DMARC:Pass",
+          "category": ["Marketing", "Newsletter"],
+          "tls": 1
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+For complete event payload schemas, see the [SendGrid Event Webhook Reference](https://www.twilio.com/docs/sendgrid/for-developers/tracking-events/event).

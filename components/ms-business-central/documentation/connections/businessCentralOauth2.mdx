@@ -1,0 +1,45 @@
+The OAuth 2.0 Authorization Code flow allows users to grant permission for integrations to interact with Business Central on their behalf. For more information, refer to the [Microsoft Business Central OAuth Documentation](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/webservices/authenticate-web-services-using-oauth).
+
+#### Prerequisites
+
+- A Microsoft Azure account with administrator access
+- Access to the Azure Portal
+
+#### Register an Application in Azure
+
+1. Log in to [Azure Portal](https://portal.azure.com/)
+2. Select **App registrations**
+3. Click **+ New registration**
+   - **Supported account types** should be **Multi-tenant** for customers authenticating with their own Business Central instance, or **Single-tenant** for authenticating with a specific Business Central instance
+   - Under **Redirect URI** enter <OauthCallbackUrl />
+   - Click **Register**
+
+#### Configure API Permissions
+
+1. Under **API permissions** click **+ Add a permission**
+2. Select **Business Central**
+3. Check the following permissions:
+   - `user_impersonation`
+   - `offline_access`
+   - `Financials.ReadWrite.All`
+4. Click **Add permissions**
+
+#### Create a Client Secret
+
+1. Under **Certificates & secrets** click **+ New client secret**
+2. Provide a description and expiration date
+3. Take note of the **Value** (not the Secret ID) of the client secret
+
+#### Retrieve the Client ID
+
+1. Return to the **Overview** page
+2. Take note of the **Application (client) ID**
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0 Authorization Code** and enter:
+
+- **Web API URL**: The Business Central API URL in the format `https://api.businesscentral.dynamics.com/v2.0/<TENANT_DOMAIN>/<ENVIRONMENT>`
+- **Scopes**: Use `https://api.businesscentral.dynamics.com/.default offline_access`
+- **Client ID**: The Application (client) ID from the Azure app registration
+- **Client Secret**: The secret value created above

@@ -1,0 +1,55 @@
+SharePoint supports webhook notifications that can be manually configured using the Microsoft Graph API. This trigger receives and processes webhook requests from SharePoint, handling both URL validation and notification events.
+
+For automatic webhook subscription management (recommended for most use cases), use the **Drive Subscription** trigger instead, which creates and manages subscriptions automatically.
+
+#### Configuration
+
+Configure SharePoint webhooks manually using the [Microsoft Graph Subscriptions API](https://learn.microsoft.com/en-us/graph/api/resources/subscription):
+
+1. Create a subscription using the Graph API by sending a POST request to `/subscriptions`
+2. Specify the resource to monitor (e.g., `/sites/{siteId}/lists/{listId}`)
+3. Set the `notificationUrl` to the webhook URL provided by the integration instance
+4. Include desired change types (created, updated, deleted)
+5. Set an expiration date/time (maximum 6 months for most SharePoint resources)
+
+#### How It Works
+
+The trigger processes incoming webhook requests on two branches:
+
+**URL Validation** - When Microsoft validates the webhook endpoint:
+- Microsoft sends a validation request with a `validationToken` query parameter
+- The trigger extracts the token and returns it in a plain text response
+- This occurs during subscription creation and is required by Microsoft
+
+**Notification** - When SharePoint sends change notifications:
+- Microsoft posts notification payloads containing change events
+- The trigger passes the payload to the integration flow for processing
+- Notifications include resource changes based on the subscription configuration
+
+#### Returned Data
+
+The trigger returns the raw webhook payload, which varies based on the subscribed resource and change types:
+
+<details>
+<summary>Example Notification Payload</summary>
+
+```json
+{
+  "value": [
+    {
+      "subscriptionId": "7f105c7d-2dc5-4530-97cd-4e7ae6534c07",
+      "subscriptionExpirationDateTime": "2024-12-15T18:23:45.9356913Z",
+      "changeType": "updated",
+      "resource": "sites/{siteId}/lists/{listId}",
+      "resourceData": {
+        "@odata.type": "#Microsoft.Graph.List",
+        "@odata.id": "sites/{siteId}/lists/{listId}",
+        "id": "{listId}"
+      },
+      "clientState": "optional-client-state-value"
+    }
+  ]
+}
+```
+
+</details>

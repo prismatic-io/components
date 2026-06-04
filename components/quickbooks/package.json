@@ -1,0 +1,44 @@
+{
+  "name": "@prismatic-io/quickbooks",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "webpack",
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "echo 'no tests'",
+    "testapp": "node ./test/testapp.js",
+    "build:testapp": "npm run build && npm run testapp",
+    "dev": "nodemon --watch src -e ts,ejs --exec npm run build:testapp",
+    "publish": "npm run build && prism components:publish"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "form-data": "^4.0.0",
+    "intuit-oauth": "2.1.0",
+    "verify-quickbooks-webhooks": "1.1.5"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.13",
+    "@types/body-parser": "1.19.2",
+    "@types/cookie-parser": "1.4.2",
+    "@types/express": "4.17.14",
+    "@types/express-session": "1.17.0",
+    "@types/jest": "30.0.0",
+    "@types/node": "^18.19.130",
+    "body-parser": "1.20.1",
+    "cookie-parser": "1.4.5",
+    "copy-webpack-plugin": "13.0.1",
+    "csrf": "3.1.0",
+    "express": "4.18.2",
+    "express-session": "1.17.1",
+    "jest": "30.2.0",
+    "nodemon": "2.0.20",
+    "query-string": "6.12.1",
+    "ts-jest": "29.4.6",
+    "ts-loader": "9.5.4",
+    "typescript": "5.9.3",
+    "webpack": "5.104.1",
+    "webpack-cli": "6.0.1"
+  }
+}

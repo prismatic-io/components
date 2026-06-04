@@ -1,0 +1,10 @@
+query GetVariant($id: ID!) {
+  productVariant(id: $id) {
+    id
+    title
+    availableForSale
+    barcode
+    compareAtPrice
+    createdAt
+  }
+}

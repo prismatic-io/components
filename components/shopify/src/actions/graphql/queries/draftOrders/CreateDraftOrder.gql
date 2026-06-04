@@ -1,0 +1,12 @@
+#import "../../fragments/DraftOrderDetails.gql"
+mutation CreateDraftOrder($input: DraftOrderInput!) {
+  draftOrderCreate(input: $input) {
+    draftOrder {
+      ...DraftOrderDetails
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

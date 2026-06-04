@@ -1,0 +1,10 @@
+[
+  {
+    "label": "Kafka Docs",
+    "href": "https://kafka.apache.org/documentation/"
+  },
+  {
+    "label": "Node.js Client Docs",
+    "href": "https://kafka.js.org/"
+  }
+]

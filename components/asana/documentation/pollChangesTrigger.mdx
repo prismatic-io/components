@@ -1,0 +1,53 @@
+The **New and Updated Tasks** polling trigger checks Asana on a configured schedule for tasks that were created or modified in a selected project since the last poll. Unlike webhook-based triggers, polling does not require webhook subscription management and works reliably for low-frequency monitoring scenarios.
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads the last poll timestamp (`lastPolledAt`) from the polling state, defaulting to the current execution time on the first run
+2. Calls the Asana `/tasks` endpoint with a `modified_since` filter scoped to the configured project, walking all paginated results
+3. Partitions the returned tasks into **created** and **updated** buckets by comparing each task's `created_at` against the last poll timestamp. Tasks whose `created_at` is after the cutoff land in the `created` bucket. All others land in the `updated` bucket.
+4. Persists the current execution time as the new `lastPolledAt` for the next run
+5. Emits the partitioned results in the trigger payload, filtered by the **Show New Records** and **Show Updated Records** toggles
+
+#### Returned Data
+
+The trigger emits a payload with two arrays, `created` and `updated`, each containing task resources from the Asana API.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "gid": "1202178854270531",
+        "name": "Newly created task",
+        "created_at": "2026-05-20T14:00:00.000Z",
+        "modified_at": "2026-05-20T14:00:00.000Z",
+        "completed": false,
+        "due_on": "2026-05-27",
+        "assignee": { "gid": "1202178852626547", "resource_type": "user" },
+        "resource_type": "task"
+      }
+    ],
+    "updated": [
+      {
+        "gid": "1202178854270599",
+        "name": "Recently updated task",
+        "created_at": "2026-05-19T10:00:00.000Z",
+        "modified_at": "2026-05-20T15:00:00.000Z",
+        "completed": false,
+        "due_on": "2026-05-30",
+        "assignee": { "gid": "1202178852626547", "resource_type": "user" },
+        "resource_type": "task"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

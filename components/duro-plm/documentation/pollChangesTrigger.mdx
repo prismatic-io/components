@@ -1,0 +1,58 @@
+This trigger polls [Duro](https://durolabs.co/) for new and updated components or change orders on a configured schedule. Use it to drive a flow whenever records are created or modified in a Duro workspace, without relying on an external webhook subscription.
+
+The trigger detects two kinds of changes, each of which can be toggled independently:
+
+- **New records**: records created after the last successful poll. Included when **Show New Records** is enabled.
+- **Updated records**: records modified after the last successful poll. Included when **Show Updated Records** is enabled.
+
+A record that is both newly created and modified within the same window is reported as a new record, since creation takes precedence over update.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule and reads the timestamp of the last successful poll from its stored state. On the first run, the current time is used as the baseline.
+2. It fetches the selected resource type (components or change orders) from Duro, paging through results until the available records are retrieved or a safety page cap is reached.
+3. Each record is classified as new or updated by comparing its `created` and `lastModified` timestamps against the last poll time. New records take precedence over updated records.
+4. Records are filtered according to the **Show New Records** and **Show Updated Records** settings before being returned.
+5. The stored state is advanced to the current poll time so the next run only reports changes that occur afterward.
+
+State management uses an at-least-once delivery model. When a poll retrieves every available record, the cursor advances to the current time. When the page cap is reached and older records have not yet been retrieved, the cursor is held at the previous poll time so the remaining records are delivered on the next run rather than being skipped. As a result, a record may occasionally be delivered more than once, so downstream steps must tolerate repeats.
+
+#### Returned Data
+
+The trigger returns an object whose `body.data` contains two arrays: `created` for new records and `updated` for modified records. Each record includes its identifier, name, and creation and modification timestamps.
+
+Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response (Polling)</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "666c5a8828e82100081595b0",
+        "name": "High-Performance IC",
+        "created": "2024-06-14T14:58:16.638Z",
+        "lastModified": "2024-06-14T14:58:16.638Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": "666c5a9528e821000815990e",
+        "name": "Precision Resistor 10k",
+        "created": "2024-06-10T09:12:04.118Z",
+        "lastModified": "2024-06-14T14:58:18.069Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The resource type, **Show New Records**, and **Show Updated Records** settings are presented in the integration configuration UI and do not require manual setup here.
+- Duro serves results newest-first without a server-side time filter, so the trigger filters by timestamp after fetching. Very frequent schedules on high-volume workspaces may approach the per-poll page cap, in which case remaining records are delivered on subsequent runs.
+- When both record types are disabled, the trigger fetches records but returns empty arrays.

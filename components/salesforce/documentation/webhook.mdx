@@ -1,0 +1,34 @@
+A Salesforce [outbound message](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_om_outboundmessaging_understanding.htm) can be configured to send information to a flow's webhook URL under certain conditions (an "Account" is created, an "Opportunity" is updated, etc.).
+
+This trigger responds to a Salesforce outbound message request with the acknowledgement (ack) response that [Salesforce expects](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_om_outboundmessaging_wsdl.htm).
+
+Since Salesforce always sends XML payloads, the XML is deserialized automatically as part of the trigger, so no additional XML deserialization step is required.
+
+#### Returned Data
+
+The trigger automatically deserializes the XML payload from Salesforce into a JSON object. The structure depends on which Salesforce object and fields are configured in the outbound message.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "soapenv:Envelope": {
+    "soapenv:Body": {
+      "notifications": {
+        "OrganizationId": { "_text": "00D7F000004xkKaUAI" },
+        "ActionId": { "_text": "04k7F0000008OKaQAM" },
+        "Notification": {
+          "Id": { "_text": "04l7F0000008OKQQA2" },
+          "sObject": {
+            "sf:Id": { "_text": "0017000000hOMChAAO" },
+            "sf:Name": { "_text": "Acme Corp" }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+</details>

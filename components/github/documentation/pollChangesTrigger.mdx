@@ -1,0 +1,59 @@
+The **New and Updated Records** trigger polls a GitHub repository for [issues and pull requests](https://docs.github.com/en/rest/issues/issues#list-repository-issues) that have changed since the last poll. GitHub's issues endpoint returns both issues and pull requests, so both are included.
+
+The trigger checks for:
+
+- **Created**: Records whose `created_at` falls after the last poll.
+- **Updated**: Records modified since the last poll but created earlier.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule.
+2. It records the time of each run and queries the repository's issues endpoint using GitHub's `since` parameter, requesting records whose `updated_at` is at or after the time of the last poll.
+3. Because `since` is inclusive (greater than or equal to), a record may occasionally be returned in two consecutive polls. Downstream flows should treat delivery as at-least-once and handle the same record being seen more than once.
+4. Closed issues and pull requests are included (`state=all`) so changes to closed records are not missed.
+5. Each returned record is partitioned by comparing its `created_at` to the last poll time. Records created within the window are emitted on the **created** branch; records that existed before the window but were modified are emitted on the **updated** branch.
+6. The trigger stores the current run time as the new last-poll time so the next run only retrieves records changed since.
+
+The **created** and **updated** branches can be enabled or disabled independently using the **Show New Records** and **Show Updated Records** inputs.
+
+#### Returned Data
+
+The trigger returns an object under `body.data` with two arrays, `created` and `updated`, each containing GitHub issue records. Records that represent pull requests include a `pull_request` property.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 2147483647,
+        "number": 142,
+        "title": "Add dark mode toggle",
+        "state": "open",
+        "html_url": "https://github.com/octocat/Hello-World/issues/142",
+        "created_at": "2026-05-26T14:30:00Z",
+        "updated_at": "2026-05-26T14:30:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": 2147480000,
+        "number": 87,
+        "title": "Fix pagination off-by-one",
+        "state": "closed",
+        "html_url": "https://github.com/octocat/Hello-World/pull/87",
+        "created_at": "2026-04-12T09:00:00Z",
+        "updated_at": "2026-05-26T15:45:00Z",
+        "pull_request": {
+          "url": "https://api.github.com/repos/octocat/Hello-World/pulls/87",
+          "merged_at": "2026-05-26T15:45:00Z"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>

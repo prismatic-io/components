@@ -1,0 +1,49 @@
+This trigger polls the [Sage HR API](https://sagehr.docs.apiary.io/) for new records on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches records from Sage HR for the selected resource type
+3. New records are identified by comparing returned IDs against the set of known IDs from previous polls
+4. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Sage HR connection used to authenticate API requests
+- **Resource Type**: The type of records to monitor — Employees, Time-off Requests, Teams, or Positions
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with a `created` array containing new records detected since the last poll. No `updated` array is returned — this trigger detects additions only.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 48271,
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "email": "jane.smith@example.com",
+        "employment_start_date": "2024-01-15",
+        "team_id": 12,
+        "position_id": 7
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The first poll establishes a baseline — no records are returned on the initial execution. Subsequent polls detect additions against that baseline
+- Update detection is not supported for any resource type — only new records are returned
+- Refer to the [Sage HR API documentation](https://sagehr.docs.apiary.io/) for details on available fields per resource type

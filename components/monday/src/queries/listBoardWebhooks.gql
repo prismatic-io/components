@@ -1,0 +1,8 @@
+query ListBoardWebhooks($board_id: ID!) {
+  webhooks(board_id: $board_id) {
+    id
+    board_id
+    config
+    event
+  }
+}

@@ -1,0 +1,41 @@
+SAP Business One uses username and password authentication to connect to the Service Layer API. The Service Layer supports two API versions: v2 (OData 4.0, recommended for new integrations) and v1 (OData 3.0, the default for backwards compatibility).
+
+For detailed information about the SAP Business One Service Layer API, refer to the [Service Layer API Reference](https://help.sap.com/doc/056f69366b5345a386bb8149f1700c19/10.0/en-US/Service%20Layer%20API%20Reference.html).
+
+#### Prerequisites
+
+- Access to a SAP Business One instance (cloud or on-premises)
+- SAP Business One user account with API access permissions
+- For cloud instances: Server address including hostname/IP and port
+- For on-premises instances: Network access to the SAP Business One server via the on-premises agent
+
+#### Setup Steps
+
+Gather the following information from the SAP Business One administrator:
+
+1. **Username and Password**: SAP Business One user credentials with appropriate API permissions
+2. **Server Address** (for cloud/non-OnPrem instances):
+   - Format: `https://<Server Name/IP>:<Port>`
+   - Example: `https://sapb1-server.example.com:50000`
+3. **Database Instance** (optional):
+   - Format: `<DatabaseName>@<Host>:<Port>`
+   - Example: `C200@10.58.114.200:30013`
+4. **Company Name** (optional):
+   - The company database name to connect to
+   - Example: `SBODEMOUS`
+5. **API Version**:
+   - **v1 (OData 3.0)** - Default, for backwards compatibility with existing integrations
+   - **v2 (OData 4.0)** - Recommended for new integrations with improved functionality
+
+#### Configure the Connection
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| **Username** | Yes | The SAP Business One username for authentication |
+| **Password** | Yes | The SAP Business One password for authentication |
+| **Server Address** | No* | The URL of the SAP Business One Service Layer server, including the port. Required for non-OnPrem connections. Example: `https://sapb1-server.example.com:50000` |
+| **Database Instance** | No | The SAP HANA database instance in format `DatabaseName@Host:Port`. Example: `C200@10.58.114.200:30013` |
+| **Company Name** | No | The company database name to connect to in SAP Business One. Example: `SBODEMOUS` |
+| **API Version** | No | The Service Layer API version to use. Defaults to v1 (OData 3.0). Select v2 (OData 4.0) for new integrations |
+
+*Required for cloud deployments. For on-premises deployments, the **Host** and **Port** fields are automatically configured by the on-premises agent.

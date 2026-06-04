@@ -1,0 +1,57 @@
+This trigger polls the [ManageEngine ServiceDesk Plus API](https://www.manageengine.com/products/service-desk/help/sdpod-v3-api/) for new records on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches records from ServiceDesk Plus and compares them against the set of known record IDs stored from the previous poll
+3. Records whose IDs were not present in the previous poll are classified as **created**
+4. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The ServiceDesk Plus connection used to authenticate API requests
+- **Resource Type**: The type of ServiceDesk Plus record to monitor
+
+  | Resource | Tracks New | Tracks Updated |
+  |----------|------------|----------------|
+  | Requests | Yes | No |
+  | Problems | Yes | No |
+  | Assets | Yes | No |
+
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+
+#### Returned Data
+
+Returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "301",
+        "subject": "Unable to access email",
+        "status": {
+          "name": "Open"
+        },
+        "created_time": {
+          "value": "1705398600000"
+        }
+      }
+    ],
+    "updated": []
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The first poll establishes a baseline by recording all current record IDs. No records are returned on the first execution — subsequent polls detect newly added records by comparing against this baseline
+- Update detection is not supported for any resource type. Only new records are surfaced

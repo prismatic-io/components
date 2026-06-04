@@ -1,0 +1,23 @@
+To authenticate with Rippling using OAuth 2.0, create and deploy an App Listing in the Rippling partner company dashboard. Refer to the [Developer Portal documentation](https://developer.rippling.com/documentation/developer-portal) for detailed guidance, including the [Partner Requirements](https://developer.rippling.com/documentation/distribute/getting-started/requirements) and [Installation OAuth Guide](https://developer.rippling.com/documentation/distribute/guides/installation).
+
+#### Prerequisites
+
+- A Rippling partner account (apply via [Partner Requirements](https://developer.rippling.com/documentation/developer-portal/getting-started/process))
+- Access to the partner company dashboard at [app.rippling.com](https://app.rippling.com)
+
+#### Setup Steps
+
+1. Log in to the Rippling partner company at [app.rippling.com](https://app.rippling.com) and navigate to **Partner > Client Command Center**
+2. [Create an App Listing](https://developer.rippling.com/documentation/developer-portal/creating-publishing/create) with the following configuration:
+   - Set the **Redirect URI** to: <OauthCallbackUrl />
+   - Note the **Authorization URL** (typically in the format `https://app.rippling.com/apps/PLATFORM/{AppName}`)
+3. [Deploy the App Listing](https://developer.rippling.com/documentation/developer-portal/creating-publishing/deploy) (sandbox first for testing)
+4. Retrieve the **Client ID** and **Client Secret** from the deployed App Listing
+5. Determine the required [scopes](https://developer.rippling.com/documentation/base-api/scopes) for the integration (space-delimited values like `employees:read departments:read`)
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the deployed App Listing
+- Enter the **Authorization URL** from step 2
+- For **Scopes**, enter the space-delimited scopes determined in step 5. Refer to [Rippling's scopes documentation](https://developer.rippling.com/documentation/base-api/scopes) for available scope values
+- The **Token URL** is automatically set to `https://app.rippling.com/api/o/token/` and does not require modification

@@ -1,0 +1,138 @@
+QuickBooks sends [webhook notifications](https://developer.intuit.com/app/developer/qbo/docs/develop/webhooks) when entities change in a company's account (e.g., an Invoice is created, a Customer is updated, a Payment is deleted).
+
+This trigger automatically normalizes both [CloudEvents](https://developer.intuit.com/app/developer/qbo/docs/develop/webhooks/cloudevents-webhooks) and legacy webhook formats into a consistent data structure, so no additional parsing is required.
+
+#### How It Works
+
+1. Configure a webhook subscription in the [QuickBooks Developer Portal](https://developer.intuit.com/) pointing to the flow's webhook URL.
+2. When an entity change occurs, QuickBooks sends a notification to the webhook URL.
+3. The trigger detects the payload format (CloudEvents or legacy) and normalizes it into a consistent structure.
+4. The normalized data is passed to the flow for processing.
+
+**Format detection is automatic.** The trigger inspects the incoming payload and handles both formats transparently. If a legacy-format webhook is received, a deprecation warning is included in the output since QuickBooks will require CloudEvents format after May 15, 2026.
+
+#### Event Types
+
+<details>
+<summary>Common Entity Change Events</summary>
+
+| Entity | Operations | Description |
+|--------|-----------|-------------|
+| `Account` | Create, Update, Delete | Chart of accounts changes |
+| `Customer` | Create, Update, Delete, Merge | Customer record changes |
+| `Invoice` | Create, Update, Delete, Void | Invoice lifecycle events |
+| `Payment` | Create, Update, Delete, Void | Payment processing events |
+| `Bill` | Create, Update, Delete | Vendor bill changes |
+| `Vendor` | Create, Update, Delete, Merge | Vendor record changes |
+| `Item` | Create, Update, Delete | Product and service changes |
+| `Employee` | Create, Update, Delete | Employee record changes |
+| `Purchase` | Create, Update, Delete | Purchase transaction changes |
+| `Estimate` | Create, Update, Delete | Estimate lifecycle events |
+| `SalesReceipt` | Create, Update, Delete, Void | Sales receipt events |
+| `RefundReceipt` | Create, Update, Delete, Void | Refund receipt events |
+| `PurchaseOrder` | Create, Update, Delete | Purchase order changes |
+
+</details>
+
+Refer to the [QuickBooks webhook documentation](https://developer.intuit.com/app/developer/qbo/docs/develop/webhooks) for the complete and up-to-date list of supported entities and operations.
+
+#### Returned Data
+
+The trigger normalizes both webhook formats into a consistent `NormalizedWebhookOutput` structure available at `payload.body.data`:
+
+<details>
+<summary>Example Payload (CloudEvents format)</summary>
+
+```json
+{
+  "format": "cloudevents",
+  "eventCount": 1,
+  "events": [
+    {
+      "id": "evt_abc123",
+      "entityId": "456",
+      "accountId": "1234567890",
+      "entity": "invoice",
+      "operation": "create",
+      "eventType": "qbo.invoice.create",
+      "timestamp": "2026-02-26T14:30:00Z",
+      "source": "qbo",
+      "specversion": "1.0"
+    }
+  ],
+  "event": {
+    "id": "evt_abc123",
+    "entityId": "456",
+    "accountId": "1234567890",
+    "entity": "invoice",
+    "operation": "create",
+    "eventType": "qbo.invoice.create",
+    "timestamp": "2026-02-26T14:30:00Z",
+    "source": "qbo",
+    "specversion": "1.0"
+  },
+  "entityId": "456",
+  "accountId": "1234567890",
+  "entity": "invoice",
+  "operation": "create",
+  "eventType": "qbo.invoice.create",
+  "timestamp": "2026-02-26T14:30:00Z"
+}
+```
+
+</details>
+
+<details>
+<summary>Example Payload (Legacy format - deprecated)</summary>
+
+```json
+{
+  "format": "legacy",
+  "formatWarning": "Legacy webhook format detected. This format is deprecated and will be removed on May 15, 2026. Please migrate to CloudEvents format in your QuickBooks webhook settings.",
+  "eventCount": 1,
+  "events": [
+    {
+      "id": "1234567890-456-2026-02-26T14:30:00Z",
+      "entityId": "456",
+      "accountId": "1234567890",
+      "entity": "customer",
+      "operation": "update",
+      "eventType": "legacy.customer.update",
+      "timestamp": "2026-02-26T14:30:00Z",
+      "source": "legacy"
+    }
+  ],
+  "event": {
+    "id": "1234567890-456-2026-02-26T14:30:00Z",
+    "entityId": "456",
+    "accountId": "1234567890",
+    "entity": "customer",
+    "operation": "update",
+    "eventType": "legacy.customer.update",
+    "timestamp": "2026-02-26T14:30:00Z",
+    "source": "legacy"
+  },
+  "entityId": "456",
+  "accountId": "1234567890",
+  "entity": "customer",
+  "operation": "update",
+  "eventType": "legacy.customer.update",
+  "timestamp": "2026-02-26T14:30:00Z"
+}
+```
+
+</details>
+
+**Key fields:**
+
+- **`format`** — Either `"cloudevents"` or `"legacy"`, indicating which webhook format was received.
+- **`event`** — The first parsed event (convenient shortcut when processing single-event webhooks).
+- **`events`** — Array of all parsed events in the notification.
+- **`entity`** / **`operation`** — The entity type and operation from the first event (e.g., `"invoice"` / `"create"`).
+- **`entityId`** / **`accountId`** — The affected entity ID and QuickBooks company account ID.
+
+#### Notes
+
+- **Legacy format deprecation**: QuickBooks will require CloudEvents format after **May 15, 2026**. Update webhook subscriptions in the [QuickBooks Developer Portal](https://developer.intuit.com/) to use CloudEvents before this date.
+- **Multi-event notifications**: A single webhook request may contain multiple entity change events. Use the `events` array to process all changes, not just the `event` shortcut.
+- **Webhook verification**: QuickBooks signs webhook payloads with a verification token. Configure the token in the QuickBooks Developer Portal to match the value in the connection settings.

@@ -1,0 +1,131 @@
+The **Event Subscription** trigger receives event notifications from [Contentful](https://www.contentful.com/). It automatically creates and manages a webhook subscription for the selected topics when an instance is deployed, and removes the subscription when the instance is deleted.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook in Contentful configured to send events to the instance's unique webhook URL.
+- **On Instance Deletion**: The trigger automatically removes the corresponding webhook from Contentful.
+
+The trigger fires each time Contentful sends a matching event notification to the webhook endpoint.
+
+#### Configuration
+
+- **Connection**: The Contentful OAuth 2.0 connection to use for authentication.
+- **Space ID**: The unique identifier of the Contentful space to subscribe to.
+- **Events**: The event types to subscribe to (e.g., `Entry.publish`, `Asset.create`).
+
+#### Event Types
+
+<details>
+<summary>Available Events (43)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `ContentType.create` | A content type is created |
+| `ContentType.save` | A content type is saved |
+| `ContentType.publish` | A content type is published |
+| `ContentType.unpublish` | A content type is unpublished |
+| `ContentType.delete` | A content type is deleted |
+| `ContentType.*` | All content type events |
+| `Entry.create` | An entry is created |
+| `Entry.save` | An entry is saved |
+| `Entry.auto_save` | An entry is auto-saved |
+| `Entry.archive` | An entry is archived |
+| `Entry.unarchive` | An entry is unarchived |
+| `Entry.publish` | An entry is published |
+| `Entry.unpublish` | An entry is unpublished |
+| `Entry.delete` | An entry is deleted |
+| `Entry.*` | All entry events |
+| `Asset.create` | An asset is created |
+| `Asset.save` | An asset is saved |
+| `Asset.auto_save` | An asset is auto-saved |
+| `Asset.archive` | An asset is archived |
+| `Asset.unarchive` | An asset is unarchived |
+| `Asset.publish` | An asset is published |
+| `Asset.unpublish` | An asset is unpublished |
+| `Asset.delete` | An asset is deleted |
+| `Asset.*` | All asset events |
+| `Task.create` | A task is created |
+| `Task.save` | A task is saved |
+| `Task.delete` | A task is deleted |
+| `Task.*` | All task events |
+| `Comment.create` | A comment is created |
+| `Comment.delete` | A comment is deleted |
+| `Comment.*` | All comment events |
+| `Release.create` | A release is created |
+| `Release.save` | A release is saved |
+| `Release.archive` | A release is archived |
+| `Release.unarchive` | A release is unarchived |
+| `Release.delete` | A release is deleted |
+| `Release.*` | All release events |
+| `Workflow.create` | A workflow is created |
+| `Workflow.save` | A workflow is saved |
+| `Workflow.complete` | A workflow is completed |
+| `Workflow.*` | All workflow events |
+| `TemplateInstallation.complete` | A template installation is completed |
+| `TemplateInstallation.*` | All template installation events |
+| `BulkAction.create` | A bulk action is created |
+| `BulkAction.execute` | A bulk action is executed |
+| `BulkAction.*` | All bulk action events |
+| `ReleaseAction.create` | A release action is created |
+| `ReleaseAction.execute` | A release action is executed |
+| `ReleaseAction.*` | All release action events |
+| `ScheduledAction.create` | A scheduled action is created |
+| `ScheduledAction.execute` | A scheduled action is executed |
+| `ScheduledAction.save` | A scheduled action is saved |
+| `ScheduledAction.delete` | A scheduled action is deleted |
+| `ScheduledAction.*` | All scheduled action events |
+
+</details>
+
+Refer to the [Contentful Webhook documentation](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks) for the complete and up-to-date list of available events.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "sys": {
+    "type": "Entry",
+    "id": "exampleEntryId",
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "exampleSpaceId"
+      }
+    },
+    "environment": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Environment",
+        "id": "master"
+      }
+    },
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "blogPost"
+      }
+    },
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z",
+    "publishedAt": "2024-01-15T10:30:00.000Z",
+    "revision": 1
+  },
+  "fields": {
+    "title": {
+      "en-US": "Hello, World!"
+    },
+    "body": {
+      "en-US": "Example content body."
+    }
+  }
+}
+```
+
+</details>

@@ -1,0 +1,12 @@
+#import "../../fragments/InventoryItemDetails.gql"
+query ListInventoryItems($first: Int!, $query: String, $cursor: String) {
+  inventoryItems(first: $first, query: $query, after: $cursor) {
+    nodes {
+      ...InventoryItemDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

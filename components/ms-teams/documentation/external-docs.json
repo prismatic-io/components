@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://developer.microsoft.com/en-us/graph/changelog"
+  }
+]

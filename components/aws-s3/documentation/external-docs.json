@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.aws.amazon.com/AmazonS3/latest/API/Type_API_Reference.html"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://github.com/aws/aws-sdk-js-v3/releases"
+  }
+]

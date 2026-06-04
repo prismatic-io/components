@@ -1,0 +1,24 @@
+Private app access tokens are recommended for testing purposes only. For production integrations, OAuth 2.0 should be used to allow users to authenticate with their own credentials.
+
+Private app access tokens do not expire but can be revoked at any time from the HubSpot account settings.
+
+#### Prerequisites
+
+- Access to a [HubSpot account](https://app.hubspot.com)
+- Appropriate permissions to create private apps
+
+#### Setup Steps
+
+To generate a private app access token:
+
+1. Navigate to [HubSpot](https://app.hubspot.com) and log in
+2. Navigate to **Settings > Integrations > Private Apps**
+3. Click **Create a private app**
+4. Enter a name for the app
+5. Configure the required scopes for the integration
+6. After creating the app, navigate to the **Auth** tab
+7. Copy the **Access Token** displayed
+
+#### Configure the Connection
+
+- Enter the **Access Token** from the HubSpot private app settings into the connection configuration

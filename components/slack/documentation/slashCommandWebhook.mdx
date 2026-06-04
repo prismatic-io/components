@@ -1,0 +1,62 @@
+Slack [slash commands](https://docs.slack.dev/interactivity/implementing-slash-commands) and [modal interaction](https://docs.slack.dev/surfaces/modals) requests post their parameters as `application/x-www-form-urlencoded` data. This trigger receives those requests at a manually configured webhook endpoint and automatically deserializes the form body into a JSON object, so no additional decoding step is required.
+
+#### How It Works
+
+1. Slack posts the slash command or interaction payload to the configured webhook URL as URL-encoded form data.
+2. The trigger reads the raw request body and parses it into a key/value object exposed on `payload.deserializedBody`.
+3. The trigger responds synchronously with the configured **Content Type** and optional **Response Body**, which Slack displays back to the user (for example, an ephemeral acknowledgment message).
+4. The original raw payload remains available on `payload.rawBody` for components or steps that need the unparsed request.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Response Body**: Optional JSON payload returned to Slack as the response body. Leave empty to respond with no body.
+- **Content Type**: The `Content-Type` header for the response sent back to Slack. Use `text/plain` for simple message replies or `application/json` when returning a Block Kit payload.
+
+#### Returned Data
+
+<details>
+<summary>Example Slash Command Payload (deserialized)</summary>
+
+```json
+{
+  "payload": {
+    "deserializedBody": {
+      "token": "gIkuvaNzQIHg97ATvDxqgjtO",
+      "team_id": "T0001",
+      "team_domain": "example",
+      "channel_id": "C2147483705",
+      "channel_name": "test",
+      "user_id": "U2147483697",
+      "user_name": "Steve",
+      "command": "/weather",
+      "text": "94070",
+      "response_url": "https://hooks.slack.com/commands/1234/5678",
+      "trigger_id": "13345224609.738474920.8088930838d88f008e0"
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Example Modal Interaction Payload (deserialized)</summary>
+
+```json
+{
+  "payload": {
+    "deserializedBody": {
+      "payload": "{\"type\":\"view_submission\",\"team\":{\"id\":\"T0001\",\"domain\":\"example\"},\"user\":{\"id\":\"U2147483697\",\"username\":\"Steve\"},\"view\":{\"id\":\"VMHU10V25\",\"type\":\"modal\",\"callback_id\":\"identify_your_modals\",\"state\":{\"values\":{}}}}"
+    }
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The trigger does not validate the Slack signing secret. For signed-request verification, route slash command traffic through the **Events API Webhook** trigger or add a verification step downstream.
+- Modal interaction payloads from Slack include a nested JSON-encoded `payload` field. Parse that field with a JSON parser step before consuming the inner structure.

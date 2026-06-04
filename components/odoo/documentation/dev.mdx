@@ -1,0 +1,20 @@
+### Developer Note: Odoo Models
+
+An Odoo database tracks hundreds of types of records.
+A default installation of Odoo includes more than 800 unique record types (more when additional apps are installed).
+
+Each type of record is called a **model**, and models have human-readable names and model names.
+For example, contacts in Odoo are called `Contacts`, and their model name is `res.partner`.
+To list all contacts in an Odoo installation, use the [List Records](#listrecords) action and provide it a model of `res.partner`.
+
+A **model** has **fields**.
+`Contacts` for example has hundreds of fields related to a person: `name`, `email`, `country_code`, `zip`, etc.
+
+For convenience, two utility actions are included in this component.
+
+- [List Models](#listmodels) lists all models in an Odoo installation, including their ID, name and model name.
+- [List Model Fields](#listmodelfields) lists all of the fields of a given model.
+
+These two utility actions help identify the fields to set when using [Create](#createrecord) or [Update](#updaterecord) records.
+Identify the **name** of the fields to set for a given model.
+Then, create an object, either in a [code step](components/code.mdx) or another action, and pass the results of that step in as a reference.

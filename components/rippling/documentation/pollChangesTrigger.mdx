@@ -1,0 +1,57 @@
+This trigger polls the [Rippling API](https://developer.rippling.com/documentation/) for new and updated records on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches records from Rippling for the selected resource type — Workers and Users are queried with a server-side `updated_at gt lastPolledAt` filter for efficiency; Departments and Teams fetch all records and apply timestamp comparison client-side
+3. Records are categorized as **created** or **updated** based on their timestamps relative to the last poll time
+4. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Rippling connection used to authenticate API requests
+- **Resource Type**: The type of records to monitor — Workers, Users, Departments, or Teams
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "wrk_01H9ZQ2KBCDEF12345",
+        "name": "Jane Smith",
+        "workEmail": "jane.smith@example.com",
+        "department": "Engineering",
+        "startDate": "2024-01-15"
+      }
+    ],
+    "updated": [
+      {
+        "id": "wrk_01H9ZQ2KBCDEF67890",
+        "name": "John Doe",
+        "workEmail": "john.doe@example.com",
+        "department": "Product",
+        "startDate": "2023-06-01"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- All four resource types — Workers, Users, Departments, and Teams — support both new and updated record detection
+- Workers and Users use a server-side filter (`updated_at gt lastPolledAt`) for efficient retrieval; Departments and Teams fetch all records and filter client-side by comparing timestamps
+- Refer to the [Rippling API documentation](https://developer.rippling.com/documentation/) for rate limit details and available fields per resource type

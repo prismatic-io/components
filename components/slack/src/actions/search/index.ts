@@ -1,0 +1,1 @@
+export { searchAll } from "./searchAll";

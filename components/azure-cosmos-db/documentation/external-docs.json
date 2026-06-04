@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://learn.microsoft.com/en-us/rest/api/cosmos-db/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://azure.microsoft.com/en-us/updates/?product=cosmos-db"
+  }
+]

@@ -1,0 +1,33 @@
+The Push Notifications service lets you to receive notifications that an order has been created. This is called "push" since Google will push
+notifications to you about events, such as orders, that happen on the Google side.
+
+- The Content API's `pubsubnotificationsettings.update` receives the request and sends you back a `cloudTopicName`.
+- To configure additional Topics
+  - In the Google Cloud console, select the navigation menu scroll to the **Pub/Sub** page (Navigation Menu > More Products > Analytics > Pub/Sub)
+  - In the **Topics** page, click Create Topic
+    - In the window that opens, enter `MyTopic` in the **Topic ID** field.
+      - Leave the default values for the remaining options, and then click **Create**.
+      - You see the success message: `A new topic and a new subscription have been successfully created.`
+      - You have just created a topic called `MyTopic` and an associated default subscription `MyTopic-sub`.
+- You create a subscription for the topic and register the URL push endpoint with Cloud Pub/Sub.
+- To Configure Subscription go to Pub/Sub > Subscriptions
+
+  - In the **Subscriptions** page, click **Create subscription**.
+  - Enter `MySub` in the Subscription ID field.
+  - For **Select a Cloud Pub/Sub topic**, select the `MyTopic` topic from the drop-down menu
+  - Leave the default values for the remaining options.
+  - Click Create
+    - You see the success message: `Subscription successfully added.`
+  - Click the Topics page and click `MyTopic`.
+
+    - The `MySub` subscription is now attached to the topic
+
+      `MyTopic`. Pub/Sub delivers all messages sent to
+
+      `MyTopic` to the `MySub` and `MyTopic-sub` subscriptions.
+
+- Cloud Pub/Sub accepts your subscription and associates that `cloudTopicName` with your URL. When messages are published to that `cloudTopicName` (for example, your order notifications), they will be sent to your URL push endpoint.
+
+Request
+
+`PUT https://shoppingcontent.googleapis.com/content/v2.1/merchantId/pubsubnotificationsettings`

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["esnext"],
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "typeRoots": ["./node_modules/@types"],
+    "moduleResolution": "node"
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://redis.io/docs/latest/apis/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://github.com/redis/node-redis/blob/master/CHANGELOG.md"
+  }
+]

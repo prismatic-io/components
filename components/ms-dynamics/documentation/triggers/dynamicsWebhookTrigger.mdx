@@ -1,0 +1,89 @@
+A Microsoft Dynamics 365 [webhook](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-webhooks?tabs=cs) can be configured to send information to a flow's webhook URL when server-side events occur (a "Contact" is created, an "Account" is updated, etc.).
+
+#### How It Works
+
+When a webhook is first registered, Microsoft Dynamics 365 sends a URL validation request with the `x-ms-dynamics-request-name` header set to `URL_VALIDATION`. This request is routed to the **URL Validation / Heartbeat** branch beneath the trigger. The trigger automatically responds with a `200 OK` status to confirm the endpoint is reachable.
+
+All subsequent event notifications are routed to the **Event** branch. The trigger automatically parses the JSON request body and extracts key fields from both the headers and payload, including:
+
+<details>
+<summary>Extracted Fields (5)</summary>
+
+- **Organization** — the Dynamics 365 tenant name (from the `x-ms-dynamics-organization` header)
+- **Entity Name** — the logical name of the entity that triggered the event (from the `x-ms-dynamics-entity-name` header)
+- **Message Name** — the name of the event (e.g., `Create`, `Update`, `Delete`)
+- **Input Parameters** — the entity data included in the event
+- **Initiating User ID** — the ID of the user whose action triggered the event
+
+</details>
+
+#### Branches
+
+- **URL Validation / Heartbeat** — the validation handshake. Microsoft Dynamics 365 sends a `URL_VALIDATION` request when a webhook is first registered (and periodically thereafter). The trigger auto-responds with a `200 OK`; no business logic should be added on this branch.
+- **Event** — real notifications. All `Create`, `Update`, `Delete`, and other event messages flow through this branch. Business logic, downstream steps, and routing should be implemented here.
+
+#### Event Types
+
+Events are configured when registering the webhook step in the Dynamics 365 Plugin Registration Tool. Common events include:
+
+- `Create` — a record is created
+- `Update` — a record is modified
+- `Delete` — a record is removed
+
+Refer to the [Microsoft Dataverse webhook documentation](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-webhooks?tabs=cs) for the complete list of supported messages and filtering options.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload (Event Branch)</summary>
+
+```json
+{
+  "headers": {
+    "x-request-id": "4af10637-4ea2-e711-8122-000d3aa2331c",
+    "x-ms-dynamics-organization": "org-name",
+    "x-ms-dynamics-entity-name": "contact",
+    "x-ms-dynamics-request-name": "Update"
+  },
+  "bodyData": {
+    "MessageName": "Update",
+    "InitiatingUserId": "11bb11bb-cc22-dd33-ee44-55ff55ff55ff",
+    "InputParameters": [
+      {
+        "key": "Target",
+        "value": {
+          "Attributes": [
+            { "key": "firstname", "value": "James" },
+            { "key": "contactid", "value": "6d81597f-0f9f-e711-8122-000d3aa2331c" }
+          ],
+          "LogicalName": "contact"
+        }
+      }
+    ]
+  },
+  "requestId": "4af10637-4ea2-e711-8122-000d3aa2331c",
+  "organization": "org-name",
+  "entityName": "contact",
+  "messageName": "Update",
+  "initiatingUserId": "11bb11bb-cc22-dd33-ee44-55ff55ff55ff",
+  "inputParameters": [
+    {
+      "key": "Target",
+      "value": {
+        "Attributes": [
+          { "key": "firstname", "value": "James" },
+          { "key": "contactid", "value": "6d81597f-0f9f-e711-8122-000d3aa2331c" }
+        ],
+        "LogicalName": "contact"
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+#### Notes
+
+- Webhook registration and step configuration are performed using the [Plugin Registration Tool](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/download-tools-nuget) in Dynamics 365.
+- When the HTTP payload exceeds 256 KB, the `x-ms-dynamics-msg-size-exceeded` header is included and certain context properties (`ParentContext`, `InputParameters`, `PreEntityImages`, `PostEntityImages`) may be removed from the payload.

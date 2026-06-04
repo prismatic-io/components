@@ -1,0 +1,24 @@
+A personal access token can be used for development and testing purposes. For production deployments, use the OAuth 2.0 connection to allow users to authenticate with their own Asana credentials.
+
+#### Prerequisites
+
+- An active Asana account with permissions to create personal access tokens
+
+#### Setup Steps
+
+To generate a personal access token:
+
+1. Log in to Asana and navigate to [app.asana.com/0/my-apps](https://app.asana.com/0/my-apps)
+2. Click **+ Create new token**
+3. Enter a description for the token and click **Create token**
+4. Copy the generated token value
+
+:::warning[Security Note]
+Personal access tokens are tied to the user account that created them and inherit that user's permissions. Store tokens securely and rotate them regularly.
+:::
+
+#### Configure the Connection
+
+- Enter the **Personal Access Token** value into the connection configuration
+
+For more information on personal access tokens, refer to the [Asana Docs](https://developers.asana.com/docs/personal-access-token).

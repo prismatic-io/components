@@ -1,0 +1,12 @@
+#import "../../fragments/DraftOrderDetails.gql"
+mutation CompleteDraftOrder($id: ID!) {
+  draftOrderComplete(id: $id) {
+    draftOrder {
+      ...DraftOrderDetails
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

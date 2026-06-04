@@ -1,0 +1,77 @@
+Checks for new and updated items across all drives in a SharePoint site on a configured schedule.
+
+This trigger monitors all drives within a site for file and folder changes using Microsoft Graph's delta tracking. For monitoring a specific drive or folder, use the **New and Updated Drive Items** or **New and Updated Folder Items** triggers instead.
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. Retrieve all drives in the specified SharePoint site
+3. For each drive, query the Microsoft Graph delta endpoint to detect changes
+4. Categorize items as "created", "updated", or "deleted" based on their properties and timestamps
+5. Maintain delta tracking state automatically for each drive to efficiently track changes between polls
+
+The trigger uses Microsoft Graph's [delta query](https://learn.microsoft.com/en-us/graph/delta-query-overview) functionality to track changes efficiently without scanning all items on each poll.
+
+#### Configuration
+
+**Inputs:**
+- **Connection**: Microsoft SharePoint connection for authentication
+- **Site Id**: The unique identifier of the SharePoint site to monitor
+
+#### Returned Data
+
+The trigger returns changes grouped by drive name, with separate arrays for created, updated, and deleted items:
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "Documents": {
+      "created": [
+        {
+          "id": "01BYE5RZ6QN3ZWBTUFOFD3GSPGOHDJD36K",
+          "name": "NewReport.xlsx",
+          "createdDateTime": "2024-12-09T10:30:00Z",
+          "lastModifiedDateTime": "2024-12-09T10:30:00Z",
+          "size": 25600,
+          "webUrl": "https://contoso.sharepoint.com/sites/TeamSite/Documents/NewReport.xlsx"
+        }
+      ],
+      "updated": [
+        {
+          "id": "01BYE5RZ5MYLM2SMX75ZBIPQZIHT93ZEPC",
+          "name": "ProjectPlan.docx",
+          "createdDateTime": "2024-12-08T09:15:00Z",
+          "lastModifiedDateTime": "2024-12-09T14:22:00Z",
+          "size": 45200,
+          "webUrl": "https://contoso.sharepoint.com/sites/TeamSite/Documents/ProjectPlan.docx"
+        }
+      ],
+      "deleted": [
+        {
+          "id": "01BYE5RZ7H3LGDF7C5FJHMLBN22O3ORUIX",
+          "deleted": {}
+        }
+      ]
+    },
+    "Archive": {
+      "created": [],
+      "updated": [
+        {
+          "id": "01BYE5RZ2OWGDLHOQ2JBHYOJH7CJEQK234",
+          "name": "Archive2024.zip",
+          "createdDateTime": "2024-11-15T08:00:00Z",
+          "lastModifiedDateTime": "2024-12-09T11:05:00Z",
+          "size": 1048576,
+          "webUrl": "https://contoso.sharepoint.com/sites/TeamSite/Archive/Archive2024.zip"
+        }
+      ],
+      "deleted": []
+    }
+  }
+}
+```
+
+</details>

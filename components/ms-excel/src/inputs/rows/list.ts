@@ -1,0 +1,25 @@
+import {
+  driveOrSiteId,
+  oDataParams,
+  workbookId,
+  worksheetId,
+} from "../general";
+import { tableId } from "../tables/general";
+
+export const listRowsInputs = {
+  driveOrSiteId,
+  workbookId: {
+    ...workbookId,
+    comments:
+      "The ID of the workbook that contains the worksheet to list rows from.",
+  },
+  worksheetId: {
+    ...worksheetId,
+    comments: "The ID or name of the worksheet to list rows from.",
+  },
+  tableId: {
+    ...tableId,
+    comments: "The ID or name of the table to list rows from.",
+  },
+  ...oDataParams,
+};

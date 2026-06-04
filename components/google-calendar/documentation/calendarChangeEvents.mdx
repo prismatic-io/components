@@ -1,0 +1,193 @@
+The **Calendar Change Events** trigger receives push notifications when events change in a specified Google Calendar. This trigger automatically creates and manages a Google Calendar push notification subscription when the instance is deployed, and removes the subscription when the instance is deleted.
+
+For information on Google Calendar push notifications, see the [Google Calendar Push Notifications documentation](https://developers.google.com/calendar/api/guides/push).
+
+#### How It Works
+
+#### Lifecycle Management
+
+When an instance is deployed:
+1. The trigger creates a push notification channel with Google Calendar using the [watch](https://developers.google.com/calendar/api/v3/reference/events/watch) endpoint
+2. Establishes an initial sync token to track future changes
+3. Stores the channel information and sync token in cross-flow state
+4. Configures automatic renewal before the channel expires (typically 1 week)
+
+When an instance is deleted:
+1. The trigger stops the push notification channel using the [stop](https://developers.google.com/calendar/api/v3/reference/channels/stop) endpoint
+2. Cleans up all stored state (channel information, sync tokens)
+
+
+#### Branches
+
+The trigger uses two branches to route different types of events:
+
+#### Push Notifications
+
+This branch receives actual calendar change events when:
+- An event is created in the calendar
+- An event is updated or modified
+- An event is deleted or cancelled
+
+The payload includes detailed change information with events categorized by change type (created, updated, deleted).
+
+#### Log Messages
+
+This branch receives informational messages for:
+- **Sync notifications** - Initial verification message when the webhook subscription is first established
+- **Scheduled renewals** - Automatic channel renewal events that occur before expiration
+- **Resync events** - When the sync token expires and the baseline must be re-established
+
+These messages provide operational status information but do not contain calendar event changes.
+
+#### Change Detection
+
+The trigger uses Google Calendar's [incremental synchronization](https://developers.google.com/calendar/api/guides/sync) to efficiently track changes:
+
+1. **Initial Sync**: When deployed, establishes a sync token representing the current calendar state
+2. **Incremental Changes**: Each notification uses the sync token to fetch only events that changed since the last update
+3. **Change Categorization**: Events are automatically categorized as created, updated, or deleted based on their status and timestamps
+4. **Token Management**: The sync token is updated after each successful change retrieval
+
+#### Returned Data
+
+<details>
+<summary>Example payload for event created notification</summary>
+
+```json
+{
+  "calendar": {
+    "id": "primary",
+    "summary": "Work Calendar",
+    "timeZone": "America/Chicago"
+  },
+  "changes": {
+    "summary": {
+      "totalChanges": 1,
+      "created": 1,
+      "updated": 0,
+      "deleted": 0
+    },
+    "createdEvents": [
+      {
+        "changeType": "created",
+        "id": "abc123event",
+        "summary": "Team Meeting",
+        "status": "confirmed",
+        "start": {
+          "dateTime": "2026-01-28T10:00:00-06:00"
+        },
+        "end": {
+          "dateTime": "2026-01-28T11:00:00-06:00"
+        },
+        "organizer": "user@example.com",
+        "htmlLink": "https://www.google.com/calendar/event?eid=..."
+      }
+    ],
+    "updatedEvents": [],
+    "deletedEvents": [],
+    "allChanges": []
+  },
+  "notification": {
+    "resourceState": "exists",
+    "changedFields": "content",
+    "resourceId": "xyz789resource",
+    "timestamp": "2026-01-28T16:00:00.000Z"
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Example payload for event updated notification</summary>
+
+```json
+{
+  "calendar": {
+    "id": "primary",
+    "summary": "Work Calendar",
+    "timeZone": "America/Chicago"
+  },
+  "changes": {
+    "summary": {
+      "totalChanges": 1,
+      "created": 0,
+      "updated": 1,
+      "deleted": 0
+    },
+    "createdEvents": [],
+    "updatedEvents": [
+      {
+        "changeType": "updated",
+        "id": "abc123event",
+        "summary": "Team Meeting - Updated",
+        "status": "confirmed",
+        "start": {
+          "dateTime": "2026-01-28T11:00:00-06:00"
+        },
+        "end": {
+          "dateTime": "2026-01-28T12:00:00-06:00"
+        },
+        "updated": "2026-01-28T15:30:00.000Z",
+        "htmlLink": "https://www.google.com/calendar/event?eid=..."
+      }
+    ],
+    "deletedEvents": [],
+    "allChanges": []
+  },
+  "notification": {
+    "resourceState": "exists",
+    "changedFields": "content,properties",
+    "resourceId": "xyz789resource",
+    "timestamp": "2026-01-28T16:00:00.000Z"
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Example payload for event deleted notification</summary>
+
+```json
+{
+  "calendar": {
+    "id": "primary",
+    "summary": "Work Calendar",
+    "timeZone": "America/Chicago"
+  },
+  "changes": {
+    "summary": {
+      "totalChanges": 1,
+      "created": 0,
+      "updated": 0,
+      "deleted": 1
+    },
+    "createdEvents": [],
+    "updatedEvents": [],
+    "deletedEvents": [
+      {
+        "changeType": "deleted",
+        "id": "abc123event",
+        "summary": "Cancelled Meeting",
+        "status": "cancelled",
+        "start": {
+          "dateTime": "2026-01-28T10:00:00-06:00"
+        },
+        "end": {
+          "dateTime": "2026-01-28T11:00:00-06:00"
+        }
+      }
+    ],
+    "allChanges": []
+  },
+  "notification": {
+    "resourceState": "exists",
+    "changedFields": "content",
+    "resourceId": "xyz789resource",
+    "timestamp": "2026-01-28T16:00:00.000Z"
+  }
+}
+```
+
+</details>

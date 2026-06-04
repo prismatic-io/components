@@ -1,0 +1,70 @@
+The **Webhook** trigger receives event notifications from a Square [webhook subscription](https://developer.squareup.com/docs/webhooks/overview) configured in the Square Developer Dashboard. When a subscribed event occurs (a payment is created, an order is updated, a customer profile is modified, an inventory count changes, etc.), Square sends a POST request to the flow's webhook URL and this trigger forwards the event payload to the integration.
+
+#### How It Works
+
+This trigger does not register or manage the webhook subscription. Subscriptions are created manually in the Square Developer Dashboard and pointed at the flow's instance webhook URL.
+
+1. Square sends a POST request to the flow's webhook URL when a subscribed event occurs.
+2. The trigger forwards the request body to the integration as the flow payload.
+3. The trigger responds to Square with HTTP `200` to acknowledge receipt.
+
+For signature verification, refer to the [Square webhook signature validation](https://developer.squareup.com/docs/webhooks/step3validate) documentation and implement the validation logic in a dedicated action.
+
+#### Event Types
+
+A complete list of supported event types is available in the [Square Webhook Events Reference](https://developer.squareup.com/docs/webhooks/v2webhook-events-tech-ref). Common event categories include:
+
+<details>
+<summary>Common Event Categories (8)</summary>
+
+- `payment.created` / `payment.updated` — Payment lifecycle events
+- `refund.created` / `refund.updated` — Refund lifecycle events
+- `order.created` / `order.updated` / `order.fulfillment.updated` — Order lifecycle events
+- `customer.created` / `customer.updated` / `customer.deleted` — Customer profile changes
+- `inventory.count.updated` — Inventory count changes
+- `invoice.created` / `invoice.updated` / `invoice.payment_made` — Invoice lifecycle events
+- `catalog.version.updated` — Catalog changes
+- `team_member.created` / `team_member.updated` / `team_member.wage_setting.updated` — Team member changes
+
+</details>
+
+#### Returned Data
+
+The trigger returns the raw payload sent by Square. Payload structure varies by event type.
+
+<details>
+<summary>Example Payload (payment.created)</summary>
+
+```json
+{
+  "merchant_id": "6SSW7HV8K2ST5",
+  "type": "payment.created",
+  "event_id": "6a8f5f28-54a1-4eb0-a98a-3111513fd4fc",
+  "created_at": "2026-05-20T22:55:45.293Z",
+  "data": {
+    "type": "payment",
+    "id": "KkAkhdMsgzn59SM8A89WgKwekxLZY",
+    "object": {
+      "payment": {
+        "id": "KkAkhdMsgzn59SM8A89WgKwekxLZY",
+        "status": "COMPLETED",
+        "amount_money": {
+          "amount": 100,
+          "currency": "USD"
+        },
+        "source_type": "CARD",
+        "location_id": "L8MR4Y5BMDJSC",
+        "order_id": "03O3USaPaAaFnI6kkwB1JxGgBsUZY",
+        "created_at": "2026-05-20T22:55:45.183Z",
+        "updated_at": "2026-05-20T22:55:45.273Z"
+      }
+    }
+  }
+}
+```
+
+</details>
+
+#### Configuration
+
+This trigger does not require configurable inputs. The webhook subscription, signing key, and event types are managed in the Square Developer Dashboard.

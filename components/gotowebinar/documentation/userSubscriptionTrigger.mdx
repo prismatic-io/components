@@ -1,0 +1,62 @@
+This trigger receives event notifications from [GoToWebinar](https://developer.goto.com/guides/GoToWebinar/07_HOW_WebHooksOverview/) via user subscriptions. It automatically manages the webhook and subscription lifecycle -- no manual configuration in the GoToWebinar dashboard is required.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook in GoToWebinar for the selected event type, activates it, and subscribes the user to receive notifications at the instance's unique webhook URL.
+- **On Instance Deletion**: The trigger automatically removes the webhook and associated subscriptions from GoToWebinar.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Event Name**: The event type to subscribe to. Select from the available GoToWebinar events (see Event Types below).
+- **Event Version**: The version of the event schema to use (defaults to `1.0.0`).
+
+#### Event Types
+
+<details>
+<summary>Available Events (4)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `registrant.added` | Triggered when someone registers for a webinar |
+| `registrant.joined` | Triggered when a registered participant joins an active webinar session |
+| `webinar.created` | Triggered when an organizer creates a new webinar |
+| `webinar.changed` | Triggered when an existing webinar is modified or deleted |
+
+</details>
+
+Refer to the [GoToWebinar Webhooks Overview](https://developer.goto.com/guides/GoToWebinar/07_HOW_WebHooksOverview/) for the complete and up-to-date event list.
+
+#### Returned Data
+
+The trigger returns the raw webhook payload sent by GoToWebinar for the subscribed event. The payload structure varies by event type.
+
+<details>
+<summary>Example Payload (registrant.added)</summary>
+
+```json
+{
+  "eventName": "registrant.added",
+  "eventVersion": "1.0.0",
+  "product": "g2w",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "registrantKey": 123456789,
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane.doe@example.com",
+    "webinarKey": 987654321,
+    "webinarTitle": "Getting Started with GoToWebinar"
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Both the webhook and the user subscription must be in an **ACTIVE** state for event notifications to be delivered. This trigger handles activation automatically.
+- Signature verification of incoming webhooks is recommended. See the [GoToWebinar webhook setup guide](https://developer.goto.com/guides/GoToWebinar/08_HOW_webhooks/) for details on HMAC-SHA256 validation.

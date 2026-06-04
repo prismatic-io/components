@@ -1,0 +1,13 @@
+#import "../../fragments/DraftOrderDetails.gql"
+query ListDraftOrders($first: Int!, $cursor: String) {
+  draftOrders(first: $first, after: $cursor) {
+    nodes {
+      ...DraftOrderDetails
+    }
+
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

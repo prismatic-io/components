@@ -1,0 +1,64 @@
+A Smartsheet [webhook](https://developers.smartsheet.com/api/smartsheet/openapi/webhooks) can be configured to send information to a flow's webhook URL under certain conditions (a "Column" is updated, a "Row" is deleted, etc.).
+
+#### How It Works
+
+When a webhook is first configured, Smartsheet sends a confirmation request to the webhook endpoint. This request is passed into the **URL Verify** branch beneath the trigger. The trigger automatically handles the challenge response required by Smartsheet.
+
+All subsequent webhook requests are routed to the **Event** branch.
+
+#### Configuration
+
+To configure a webhook, use the [Create Webhook](#createwebhook) action and reference a sibling flow's webhook URL by referencing the trigger's payload.
+
+#### Event Types
+
+Smartsheet webhooks support two scopes, each with a different set of event types.
+
+<details>
+<summary>Available Event Types</summary>
+
+| Scope | Event | Description |
+|-------|-------|-------------|
+| `sheet` | `*.*` | Required for sheet webhooks. Subscribes to all sheet-related events (rows, columns, cells, attachments, discussions, comments). |
+| `plan` | `*.*` | Subscribes to all plan-level events. |
+| `plan` | `user.seatType.updated` | Triggered when a user's seat type is updated within the plan. |
+
+</details>
+
+Refer to the [Smartsheet Webhook Event Types](https://developers.smartsheet.com/api/smartsheet/webhook-event-types) reference for the complete and up-to-date list.
+
+#### Returned Data
+
+The callback contains a "skinny" payload — an array of events identifying the changed objects and event types, without the full object data. Use a follow-up action (such as **Get Sheet** or **Get Row**) to retrieve full record details when needed.
+
+<details>
+<summary>Example Event Payload</summary>
+
+```json
+{
+  "nonce": "ed6dac98-577a-4b95-a01a-94a266769ed1",
+  "timestamp": "2026-05-01T12:34:56.000+00:00",
+  "webhookId": 8951687911106436,
+  "scope": "sheet",
+  "scopeObjectId": 285065612683140,
+  "events": [
+    {
+      "objectType": "row",
+      "eventType": "updated",
+      "id": 1234567890123456,
+      "userId": 9876543210123456,
+      "timestamp": "2026-05-01T12:34:56.000+00:00"
+    },
+    {
+      "objectType": "cell",
+      "eventType": "updated",
+      "rowId": 1234567890123456,
+      "columnId": 7318427511613316,
+      "userId": 9876543210123456,
+      "timestamp": "2026-05-01T12:34:56.000+00:00"
+    }
+  ]
+}
+```
+
+</details>

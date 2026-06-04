@@ -1,0 +1,77 @@
+A [Gusto](https://gusto.com/) [webhook subscription](https://docs.gusto.com/embedded-payroll/docs/webhooks) can be configured to send event notifications to a flow's webhook URL when resources change in a Gusto account (an "Employee" is created, a "Payroll" is paid, etc.).
+
+#### How It Works
+
+When a webhook subscription is first created, Gusto sends a verification request containing a `verification_token` to the webhook endpoint. This request is routed to the **URL Validation** branch beneath the trigger. The trigger automatically handles the verification by calling the Gusto API to confirm the token, then responds with the token in the response body.
+
+All subsequent webhook event notifications are routed to the **Notification** branch.
+
+#### Configuration
+
+The trigger requires an **OAuth 2.0** connection to authenticate with the Gusto API for webhook verification.
+
+To set up a webhook subscription:
+
+1. Deploy the instance so the flow's webhook URL is available.
+2. Use the **Create Webhook Subscription** action (or the Gusto API directly) to create a subscription, providing the flow's webhook URL and the desired subscription types.
+3. Gusto sends a verification request to the webhook URL, which the trigger handles automatically.
+4. Once verified, the subscription becomes active and event notifications begin flowing to the **Notification** branch.
+
+#### Event Types
+
+<details>
+<summary>Available Subscription Types and Events (21 categories)</summary>
+
+| Subscription Type | Events |
+|---|---|
+| `BankAccount` | created, updated, deleted |
+| `Company` | provisioned, deprovisioned, partner_authorized, migrated, updated, onboarded, approved, needs_approval, marked_as_high_risk_business, marked_as_marijuana_business, suspended, unsuspended, payroll_transfer_completed |
+| `CompanyBenefit` | created, updated, deleted |
+| `Contractor` | created, updated, onboarded, deactivated, reactivated, deleted |
+| `ContractorPayment` | created, cancelled |
+| `ContractorPaymentGroup` | created, cancelled |
+| `Document` | created, updated, signed |
+| `Employee` | created, updated, onboarded, marked_for_self_onboarding, terminated, rehired, deleted, invited_to_partner_portal |
+| `EmployeeBenefit` | created, updated, deleted |
+| `EmployeeJobCompensation` | created, updated, deleted |
+| `ExternalPayroll` | created, updated, deleted |
+| `FastAchConfig` | activated, deactivated |
+| `Form` | created, updated, signed |
+| `GeneratedDocument` | generated, failed |
+| `HomeAddress` | created, updated, deleted |
+| `Location` | created, updated |
+| `Notifications` | created, resolved |
+| `Payroll` | created, updated, calculated, submitted, processed, paid, reversed, partially_reversed, cancelled, processing_failed |
+| `PaySchedule` | created, updated |
+| `Signatory` | created, updated, deleted, marked_for_invite |
+| `WorkAddress` | created, updated, deleted |
+
+</details>
+
+Refer to the [Gusto Webhook Events documentation](https://docs.gusto.com/embedded-payroll/docs/webhook-events) for the complete and up-to-date list of event types.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "uuid": "evt_abc123-def456",
+  "event_type": "payroll.paid",
+  "resource_type": "Company",
+  "entity_type": "Payroll",
+  "entity_uuid": "pay_xyz789",
+  "timestamp": 1705312200,
+  "partner_uuid": "partner_abc123",
+  "company_uuid": "company_def456"
+}
+```
+
+</details>
+
+#### Notes
+
+- A single API request may generate multiple webhook events.
+- Gusto retries delivery up to 16 times over 3 days if the endpoint does not return a 2xx response within 10 seconds.
+- Gusto computes an HMAC-SHA256 signature of the event payload using the `verification_token` as the secret. The signature is sent in the `X-Gusto-Signature` header and can be used to validate that events originate from Gusto.

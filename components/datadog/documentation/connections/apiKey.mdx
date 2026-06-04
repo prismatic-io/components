@@ -1,0 +1,26 @@
+#### Prerequisites
+
+To configure this connection, the following are required:
+
+- A Datadog account with appropriate permissions
+- A Datadog API Key (created under Organization Settings > API Keys)
+- A Datadog Application Key (created under Organization Settings > Application Keys)
+
+#### Setup Steps
+
+1. Log in to the [Datadog account](https://app.datadoghq.com/).
+2. Navigate to **Organization Settings** > **API Keys**.
+3. Click **+ New Key** to create an API Key. Copy the key value.
+4. Navigate to **Organization Settings** > **Application Keys**.
+5. Click **+ New Key** to create an Application Key. Copy the key value.
+6. Note the Datadog site/region (e.g., US1, EU, US3).
+
+#### Configure the Connection
+
+Create a connection of type **API Key + Application Key** and enter:
+
+| Field | Description |
+| --- | --- |
+| **Datadog Site** | Select the Datadog site that matches the organization (US1, US3, US5, EU, AP1, AP2, or US1-FED). |
+| **API Key** | The Datadog API Key. Identifies the organization. |
+| **Application Key** | The Datadog Application Key. Authorizes management and read operations. |

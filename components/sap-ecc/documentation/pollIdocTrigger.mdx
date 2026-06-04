@@ -1,0 +1,73 @@
+Checks for new IDocs in the SAP EDIDC table on a configured schedule using the DOCNUM field as a high-water-mark cursor. Unlike date-based polling, it relies solely on document number ordering to detect new IDocs since the last poll. Only new IDocs are detected — updates to existing IDocs are not captured.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule.
+2. On the first execution it reads the **Starting DOCNUM** input (or defaults to `0000000000000000`) to seed the cursor.
+3. It calls `RFC_READ_TABLE` via SOAP/RFC, querying EDIDC for rows where `DOCNUM > lastDocnum`, applying any optional **Message Type** or **Direction** filters.
+4. The highest DOCNUM in the result set becomes the new cursor, which is persisted in polling state.
+5. Subsequent executions repeat from step 3 using the stored cursor, ignoring the **Starting DOCNUM** input.
+
+<details>
+<summary>Configuration (6 inputs)</summary>
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| **Connection** | Yes | — | The SAP ECC connection to use. |
+| **Endpoint** | Yes | `/sap/bc/soap/rfc` | The SAP SOAP endpoint path. |
+| **Row Count** | No | `50` | Maximum number of IDocs to return per poll cycle. |
+| **Message Type** | No | — | Optional IDoc message type filter (MESTYP). Only IDocs matching this type are returned (e.g., `ORDERS`). |
+| **Direction** | No | — | Optional IDoc direction filter (DIRECT). `1` = Outbound, `2` = Inbound. |
+| **Starting DOCNUM** | No | `0000000000000000` | Cursor seed for the very first poll when no state exists yet. Set this to the last known DOCNUM to avoid processing historical records. Ignored after the first successful poll. |
+
+</details>
+
+#### Returned Data
+
+The trigger returns an object containing the matched IDoc records, a count, and the updated cursor value.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "records": [
+    {
+      "idocNumber": "0000000000000025",
+      "status": "53",
+      "messageType": "ORDERS",
+      "idocType": "ORDERS05",
+      "createdDate": "20260311",
+      "createdTime": "104530",
+      "direction": "2"
+    },
+    {
+      "idocNumber": "0000000000000026",
+      "status": "53",
+      "messageType": "ORDERS",
+      "idocType": "ORDERS05",
+      "createdDate": "20260311",
+      "createdTime": "104535",
+      "direction": "2"
+    }
+  ],
+  "recordCount": 2,
+  "lastDocnum": "0000000000000026"
+}
+```
+
+</details>
+
+| Field | Description |
+|-------|-------------|
+| `records` | Array of IDoc records matching the query filters. |
+| `recordCount` | Number of records returned in this poll cycle. |
+| `lastDocnum` | The highest DOCNUM seen, used as the cursor for the next poll. |
+
+#### State Management
+
+- The highest DOCNUM from each poll cycle is persisted as the cursor for the next execution.
+- On the first execution, the **Starting DOCNUM** input seeds the cursor. After the first successful poll, the persisted cursor is used and **Starting DOCNUM** is ignored.
+- If a SOAP call fails, the error is logged and the cursor is preserved so the next poll retries from the same position.
+- When no new IDocs are found, the trigger signals `polledNoChanges` so the platform can skip downstream processing.
+- The **Row Count** input caps the number of rows returned per cycle. In high-volume environments, consider lowering the poll interval or increasing this value to avoid falling behind.

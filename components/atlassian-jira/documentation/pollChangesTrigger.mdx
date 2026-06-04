@@ -1,0 +1,64 @@
+The **New and Updated Issues** polling trigger checks Jira on a configured schedule for issues that were created or modified since the last poll. Unlike webhook-based triggers, polling does not require webhook subscription management and works reliably for low-frequency monitoring scenarios.
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads the last poll timestamp (`lastPolledAt`) from the polling state, or uses the current time on the first run
+2. Queries Jira's `/rest/api/3/search/jql` endpoint for issues matching `updated >= <lastPolledAt>`, optionally narrowed by an additional JQL clause
+3. Partitions the returned issues into **created** and **updated** buckets by comparing the issue's `created` timestamp against the last poll timestamp
+4. Persists the current execution time as the new `lastPolledAt` for the next run
+5. Emits the partitioned results in the trigger payload, filtered by the **Show New Issues** and **Show Updated Issues** toggles
+
+If both **Show New Issues** and **Show Updated Issues** are disabled, the trigger skips the API call entirely.
+
+#### Returned Data
+
+The trigger emits a payload with two arrays — `created` and `updated` — each containing issue resources from the Jira REST API.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "10001",
+        "key": "PROJ-123",
+        "self": "https://example.atlassian.net/rest/api/3/issue/10001",
+        "fields": {
+          "summary": "New issue summary",
+          "status": { "name": "To Do", "id": "10000" },
+          "priority": { "name": "Medium", "id": "3" },
+          "created": "2026-05-21T10:30:00.000+0000",
+          "updated": "2026-05-21T10:30:00.000+0000"
+        }
+      }
+    ],
+    "updated": [
+      {
+        "id": "10002",
+        "key": "PROJ-124",
+        "fields": {
+          "summary": "Existing issue summary",
+          "status": { "name": "In Progress", "id": "10001" },
+          "created": "2026-05-15T08:00:00.000+0000",
+          "updated": "2026-05-21T11:05:00.000+0000"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### When to Use Polling vs. Webhooks
+
+- Use **polling** when the integration needs to run on a fixed schedule, when webhook subscription management is not desired, or when the volume of changes is low enough that polling latency is acceptable.
+- Use the **Issue Events** webhook trigger when near real-time delivery is required and the integration can manage subscription lifecycles.
+
+Refer to the [Jira REST API issue resource](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/) for the complete schema of returned issue fields.

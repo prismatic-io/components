@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://developers.openai.com/api/reference/overview"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://learn.microsoft.com/en-us/azure/ai-services/openai/whats-new"
+  }
+]

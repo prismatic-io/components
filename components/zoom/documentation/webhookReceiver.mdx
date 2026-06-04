@@ -1,0 +1,67 @@
+A Zoom [Webhook](https://developers.zoom.us/docs/api/webhooks/) can be configured to send event notifications to a flow's webhook URL when certain events occur (meetings created, users updated, recordings completed, etc.).
+
+This trigger uses HMAC-SHA256 signature verification to ensure webhook requests originate from Zoom. It handles two types of requests through separate branches:
+
+- **Notification** - Processes webhook event notifications (meetings, users, recordings, webinars)
+- **URL Verify** - Responds to Zoom's webhook URL verification challenge during setup or periodic revalidation
+
+#### Configuration
+
+To use this trigger:
+
+1. Open the Zoom app in the [Zoom Marketplace](https://marketplace.zoom.us/user/build)
+2. Navigate to **Feature** and enable **Event Subscriptions**
+3. Add an event subscription with the flow's webhook URL as the **Event notification endpoint URL**
+4. Copy the **Secret Token** and paste it into the trigger's **Webhook Secret Token** field
+5. Select the events to subscribe to and save
+
+When the webhook URL is first configured, Zoom sends a verification request (`endpoint.url_validation`). The URL Verify branch handles this automatically by computing and returning the required challenge response.
+
+#### Signature Verification
+
+All webhook requests include `x-zm-signature` and `x-zm-request-timestamp` headers. The trigger verifies requests by computing an HMAC-SHA256 signature using the format `v0:{timestamp}:{request_body}` and comparing it to the provided signature. Requests with invalid signatures are rejected.
+
+#### Returned Data
+
+The trigger returns the complete webhook payload from Zoom. The structure varies by event type.
+
+<details>
+<summary>Example Notification Payload</summary>
+
+```json
+{
+  "event": "meeting.started",
+  "payload": {
+    "account_id": "abc123",
+    "object": {
+      "id": "123456789",
+      "uuid": "abc-def-ghi",
+      "host_id": "xyz789",
+      "topic": "Team Standup",
+      "type": 2,
+      "start_time": "2025-01-15T10:00:00Z",
+      "duration": 30
+    }
+  },
+  "event_ts": 1642248000000
+}
+```
+
+</details>
+
+<details>
+<summary>Example URL Verification Payload</summary>
+
+```json
+{
+  "event": "endpoint.url_validation",
+  "payload": {
+    "plainToken": "qgg8vlvZRS6UYooatFL8Aw"
+  },
+  "event_ts": 1642248000000
+}
+```
+
+</details>
+
+A full list of available webhook events and payload structures is available in the [Zoom Webhooks API documentation](https://developers.zoom.us/docs/api/webhooks/).

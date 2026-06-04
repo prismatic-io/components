@@ -1,0 +1,133 @@
+The Spreadsheet Change Events trigger automatically creates and manages [Google Drive push notification subscriptions](https://developers.google.com/drive/api/guides/push) for a Google Spreadsheet. This trigger handles the complete webhook lifecycle, including subscription creation, renewal, and deletion, eliminating the need for manual webhook configuration.
+
+When the trigger is used in a flow:
+- **On Instance Deploy**: The trigger creates a Google Drive file watch subscription for the specified spreadsheet. The subscription monitors all changes to the spreadsheet file and automatically renews before expiration.
+- **On Scheduled Renewal**: The trigger automatically renews the subscription before it expires (subscriptions have a 7-day lifespan) to ensure uninterrupted change notifications.
+- **On Instance Deletion**: The trigger removes the watch subscription from Google Drive and cleans up all associated resources.
+
+#### Configuration
+
+Configure the trigger with the following inputs:
+
+- **Connection**: Google Sheets OAuth 2.0 connection with permissions to access Google Drive and create file watch subscriptions
+- **Spreadsheet ID**: The unique identifier of the Google Spreadsheet to monitor (found in the spreadsheet URL: `https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit`)
+
+#### How It Works
+
+The trigger manages push notifications through Google Drive's file watch API:
+
+**On Instance Deploy:**
+1. Creates a file watch subscription using the [Google Drive Files: watch](https://developers.google.com/drive/api/reference/rest/v3/files/watch) endpoint
+2. Generates a unique channel ID for the subscription
+3. Sets a 7-day expiration for the subscription
+4. Stores the channel ID, resource ID, and expiration in cross-flow state
+5. Google sends a sync notification to confirm the subscription is active
+
+**On Change Notification:**
+1. Receives push notification from Google Drive when the spreadsheet changes
+2. Validates the channel ID and resource ID match the stored subscription (prevents unauthorized calls)
+3. Checks the resource state from `X-Goog-Resource-State` header:
+   - **update**: Spreadsheet content or properties changed
+   - **remove**: Spreadsheet was deleted or moved to trash
+   - **sync**: Initial confirmation notification
+4. For update events, fetches current spreadsheet metadata including all worksheets and file details
+5. Routes the enriched payload to the appropriate branch
+
+#### Branches
+
+The trigger uses two branches to handle different notification types:
+
+**Push Notifications** - Handles actual spreadsheet change events:
+- Triggered when the spreadsheet is updated or removed
+- Payload includes enriched spreadsheet metadata, file details, and notification information
+- The `notification.resourceState` field indicates whether the spreadsheet was updated or removed
+- The `notification.changedFields` field specifies what changed (e.g., "content,properties")
+
+**Log Messages** - Handles system notifications:
+- Triggered for sync notifications (initial subscription confirmation)
+- Triggered for scheduled renewal confirmations
+- Provides operational visibility into subscription lifecycle events
+- Useful for debugging and monitoring subscription health
+
+#### Returned Data
+
+The trigger returns different data structures depending on the notification type.
+
+<details>
+<summary>Example payload for spreadsheet update notification</summary>
+
+```json
+{
+  "spreadsheet": {
+    "title": "Example Spreadsheet",
+    "spreadsheetId": "1ABC123DEF456GHI789JKL012MNO345PQR678STU901",
+    "worksheets": [
+      {
+        "title": "Sheet1",
+        "sheetId": 0,
+        "rowCount": 1000,
+        "columnCount": 26
+      }
+    ],
+    "worksheetCount": 1
+  },
+  "file": {
+    "name": "Example Spreadsheet",
+    "modifiedTime": "2026-01-06T22:25:56.293Z",
+    "lastModifyingUser": {
+      "kind": "drive#user",
+      "displayName": "John Doe",
+      "photoLink": "https://lh3.googleusercontent.com/a/ExamplePhotoLinkId",
+      "me": true,
+      "permissionId": "12345678901234567890",
+      "emailAddress": "john.doe@example.com"
+    },
+    "webViewLink": "https://docs.google.com/spreadsheets/d/1ABC123DEF456GHI789JKL012MNO345PQR678STU901/edit?usp=drivesdk",
+    "size": "1024"
+  },
+  "notification": {
+    "resourceState": "update",
+    "changedFields": "content,properties",
+    "resourceId": "ExampleResourceId1234567890",
+    "timestamp": "2026-01-06T22:26:35.618Z"
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Example payload for spreadsheet removal notification</summary>
+
+When a spreadsheet is deleted or moved to trash, the payload contains minimal information:
+
+```json
+{
+  "spreadsheet": null,
+  "file": null,
+  "notification": {
+    "resourceState": "remove",
+    "changedFields": null,
+    "resourceId": "ExampleResourceId1234567890",
+    "timestamp": "2026-01-06T22:26:35.618Z"
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Example payload for sync notification (Log Messages branch)</summary>
+
+```json
+{
+  "notification": {
+    "resourceState": "sync",
+    "resourceId": "ExampleResourceId1234567890",
+    "timestamp": "2026-01-06T22:26:35.618Z",
+    "type": "sync"
+  }
+}
+```
+
+</details>

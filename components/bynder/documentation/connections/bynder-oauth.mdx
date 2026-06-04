@@ -1,0 +1,24 @@
+To create a new [OAuth App](https://support.bynder.com/hc/en-us/articles/360013875180-Create-OAuth-Apps) for the OAuth 2.0 Authorization Code flow:
+
+#### Prerequisites
+
+- A Bynder account with administrator access to Portal Settings
+
+#### Setup Steps
+
+1. Sign into Bynder and navigate to **Settings > Advanced Settings > Portal Settings** and select **OAuth Apps**
+2. Select **Register new application** to create an OAuth App
+3. Set Grant Type to **Authorization Code** and configure the redirect URL:
+   - Set the redirect URI to <OauthCallbackUrl />
+4. Add at least the following scopes: `asset:read asset:write collection:read collection:write`
+5. Select **Register application** to retrieve a **Client ID** and **Client Secret**
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0** and enter:
+
+- **Authorize URL**: The Bynder authorization URL (e.g., `https://{your-bynder-domain}/v6/authentication/oauth2/auth`)
+- **Token URL**: The Bynder token URL (e.g., `https://{your-bynder-domain}/v6/authentication/oauth2/token`)
+- **Scopes**: The required OAuth scopes (defaults are pre-populated)
+- **Client ID**: The Client ID from the registered OAuth application
+- **Client Secret**: The Client Secret from the registered OAuth application

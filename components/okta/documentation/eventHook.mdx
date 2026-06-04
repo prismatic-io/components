@@ -1,0 +1,13 @@
+Configure an Okta [Event Hook](https://developer.okta.com/docs/concepts/event-hooks/) to send real time notifications to a flow's webhook URL when specific events occur in the Okta organization (user created, user deactivated, application assigned, etc.).
+
+#### How it Works
+
+This trigger responds to Okta event hook requests with the verification response that [Okta expects](https://developer.okta.com/docs/concepts/event-hooks/#verification-request) during the initial setup and processes incoming event notifications.
+
+#### Event Types
+
+Okta supports numerous event types including:
+- User lifecycle events (user.lifecycle.create, user.lifecycle.activate, user.lifecycle.deactivate)
+- Authentication events (user.authentication.auth_via_mfa, user.authentication.auth_via_password)
+- Application events (application.user_membership.add, application.user_membership.remove)
+- Group membership events (group.user_membership.add, group.user_membership.remove)

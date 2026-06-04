@@ -1,0 +1,30 @@
+{
+  "name": "@prismatic-io/ms-bot-framework",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish",
+    "test": "echo 'no tests'"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "jsonwebtoken": "9.0.0",
+    "jwks-rsa": "3.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.7",
+    "@types/jest": "30.0.0",
+    "@types/jsonwebtoken": "8.5.9",
+    "@types/node": "18.19.130",
+    "copy-webpack-plugin": "13.0.1",
+    "jest": "30.2.0",
+    "ts-jest": "29.4.5",
+    "ts-loader": "9.5.4",
+    "typescript": "5.9.3",
+    "webpack": "5.102.1",
+    "webpack-cli": "6.0.1"
+  }
+}

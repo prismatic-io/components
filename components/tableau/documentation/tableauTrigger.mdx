@@ -1,0 +1,57 @@
+The Scheduled Event trigger receives [Tableau webhook](https://help.tableau.com/current/developer/webhooks/en-us/) notifications in real time. This trigger automatically manages webhook subscriptions -- unlike manual webhook setups, the entire lifecycle is handled automatically.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates webhook subscriptions in Tableau for each selected event type, pointing to the instance's unique webhook URL.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscriptions from Tableau.
+
+When Tableau fires a matching event, the trigger receives the webhook payload and fetches additional event information before passing it to the flow.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **API Event Name** (required): Select one or more Tableau event types to subscribe to. Multiple events can be selected.
+- **API Version**: The version of the Tableau REST API to use (default: `3.6`).
+- **Timeout**: The maximum time (in milliseconds) the client will wait for a response.
+
+#### Event Types
+
+<details>
+<summary>Available Events (7)</summary>
+
+| Event                      | Description                                       |
+| -------------------------- | ------------------------------------------------- |
+| `UserDeleted`              | A user is deleted from the Tableau site           |
+| `WorkbookUpdated`          | A workbook is updated                             |
+| `WorkbookCreated`          | A new workbook is created                         |
+| `WorkbookDeleted`          | A workbook is deleted                             |
+| `WorkbookRefreshStarted`   | A workbook extract refresh has started            |
+| `WorkbookRefreshSucceeded` | A workbook extract refresh completed successfully |
+| `WorkbookRefreshFailed`    | A workbook extract refresh failed                 |
+
+</details>
+
+Refer to the [Tableau Webhooks Events and Payloads](https://help.tableau.com/current/developer/webhooks/en-us/docs/webhooks-events-payload.html) documentation for the complete and up-to-date list of available events.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "resource": "WORKBOOK",
+  "event_type": "WorkbookUpdated",
+  "resource_name": "My Workbook",
+  "site_luid": "a946d148-...",
+  "resource_luid": "f12a9855-...",
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+</details>
+
+The trigger automatically fetches additional event information from Tableau before returning the payload to the flow.

@@ -1,0 +1,58 @@
+Zoho CRM provides two polling triggers to monitor changes to CRM records. Both check for new and updated records on a scheduled basis and work identically. The main difference is which record type they monitor.
+
+**New and Updated CRM Contacts** - Monitors contact records in Zoho CRM
+
+**New and Updated CRM Leads** - Monitors lead records in Zoho CRM
+
+#### How It Works
+
+Both triggers operate the same way:
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. Fetch records from Zoho CRM sorted by `Modified_Time`
+3. Categorize records as "created" or "updated" based on `Created_Time` vs `Modified_Time` timestamps
+4. Maintain state to track the last poll time automatically
+
+For more details, see the [CRM Modules API documentation](https://www.zoho.com/crm/developer/docs/api/v8/modules-api.html).
+
+#### Returned Data
+
+Both triggers return the same structure with separate arrays for created and updated records:
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "5394166000000379001",
+        "Email": "john.doe@example.com",
+        "First_Name": "John",
+        "Last_Name": "Doe",
+        "Created_Time": "2025-11-24T10:30:00-08:00",
+        "Modified_Time": "2025-11-24T10:30:00-08:00"
+      }
+    ],
+    "updated": [
+      {
+        "id": "5394166000000456789",
+        "Email": "jane.smith@example.com",
+        "First_Name": "Jane",
+        "Last_Name": "Smith",
+        "Created_Time": "2025-11-20T14:20:00-08:00",
+        "Modified_Time": "2025-11-24T09:15:00-08:00"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Lead records include additional fields like `Company`, `Lead_Status`, and `Lead_Source`.
+
+#### Best Practices
+
+- **Polling Frequency**: Use 5-15 minute intervals to balance timeliness with API limits
+- **Rate Limits**: Zoho CRM limits vary by edition (5,000-100,000 calls/day)

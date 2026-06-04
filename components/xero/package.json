@@ -1,0 +1,43 @@
+{
+  "name": "@prismatic-io/xero",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --cache --quiet --ext .ts,.js --ignore-pattern '*testapp*' .",
+    "lint-fix": "eslint --cache --fix --quiet --ext .ts,.js --ignore-pattern '*testapp*' .",
+    "format": "npm run lint-fix && prettier --log-level error --write \"./src/**/*.{js,jsx,ts,tsx,css,html,json,scss}\" \"documentation/*.mdx\"",
+    "check-format": "prettier --check \"./src/**/*.{js,jsx,ts,tsx,css,html,json,scss}\" \"documentation/*.mdx\"",
+    "build": "npm run format && npm run lint && webpack",
+    "test": "jest --maxWorkers=4",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@prismatic-io/eslint-config-spectral": "2.1.0",
+    "@types/jest": "29.5.14",
+    "@types/node": "15.14.9",
+    "copy-webpack-plugin": "13.0.0",
+    "eslint": "^8.57.1",
+    "jest": "29.7.0",
+    "prettier": "3.6.0",
+    "ts-jest": "29.3.2",
+    "ts-loader": "9.5.2",
+    "typescript": "5.8.3",
+    "webpack": "5.99.5",
+    "webpack-cli": "6.0.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@prismatic-io/eslint-config-spectral"
+    ]
+  }
+}

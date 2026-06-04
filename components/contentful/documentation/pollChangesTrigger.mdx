@@ -1,0 +1,72 @@
+Checks for new and updated entries in a [Contentful](https://www.contentful.com/) space and environment on a configured schedule. Each poll queries the [Content Management API](https://www.contentful.com/developers/docs/references/content-management-api/) for entries whose `sys.updatedAt` is at or after the previous poll time, then sorts them into newly created and modified entries. Use this trigger to drive a flow whenever content changes in Contentful without configuring a webhook in the vendor dashboard.
+
+Both new and updated entries are reported by default. Each category can be disabled independently through the trigger inputs, so a flow can react to only new entries, only modified entries, or both.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (for example, every five minutes).
+2. It queries the selected Contentful space and environment for entries whose `sys.updatedAt` is at or after the time of the previous poll. An optional content type filter narrows the query to a single content type.
+3. Each returned entry is sorted by comparing its `sys.createdAt` to the previous poll time:
+   - Entries created after the previous poll are reported as **created**.
+   - Entries that already existed but were modified since the previous poll are reported as **updated**.
+4. The **Show New Entries** and **Show Updated Entries** inputs control which categories are included. A category that is turned off is omitted from the results.
+5. State management: the trigger stores the poll time as `lastPolledAt` and reuses it on the next run, so each entry is reported once as content changes over time. When a poll reaches the page limit, the cursor advances to the oldest `sys.updatedAt` in the returned set and the next poll resumes from that point, so no changes are skipped.
+6. When no entries match, the trigger reports that the poll produced no changes and the flow does not continue.
+
+#### Returned Data
+
+Fields shown are representative. The full response object includes additional properties. The trigger returns an object under `body.data` with two arrays: `created` holds entries created since the previous poll, and `updated` holds entries that existed earlier but were modified. Each entry follows the Contentful entry shape, with a `sys` metadata block and a localized `fields` block.
+
+<details>
+<summary>Example Returned Data</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "sys": {
+          "id": "5KsDBWseXY6QegucYAoacS",
+          "type": "Entry",
+          "version": 1,
+          "createdAt": "2026-05-26T14:30:00.000Z",
+          "updatedAt": "2026-05-26T14:30:00.000Z",
+          "contentType": {
+            "sys": { "type": "Link", "linkType": "ContentType", "id": "blogPost" }
+          }
+        },
+        "fields": {
+          "title": { "en-US": "Launch announcement" },
+          "body": { "en-US": "We are live!" }
+        }
+      }
+    ],
+    "updated": [
+      {
+        "sys": {
+          "id": "2cOd0Aho4dInhwh5cgY9rj",
+          "type": "Entry",
+          "version": 7,
+          "createdAt": "2026-04-12T09:00:00.000Z",
+          "updatedAt": "2026-05-26T15:45:00.000Z",
+          "contentType": {
+            "sys": { "type": "Link", "linkType": "ContentType", "id": "blogPost" }
+          }
+        },
+        "fields": {
+          "title": { "en-US": "Pricing update (revised)" },
+          "body": { "en-US": "New tiers effective June 1." }
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Contentful enforces a default rate limit of 7 requests per second on the Content Management API. Avoid very frequent polling schedules to stay within that limit.
+- A single poll fetches a bounded number of entries. When that limit is reached, the poll is reported as truncated and the cursor advances to the oldest entry returned, so remaining changes are picked up on the next poll.
+- An entry that is both created and modified within the same polling window is reported once, in the `created` array.

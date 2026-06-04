@@ -1,0 +1,25 @@
+The Microsoft Bot Framework component supports Direct Line connectivity for direct communication with an Azure Bot.
+
+Direct Line is a channel that allows integrating a bot directly into a client application. It provides a simple REST API for exchanging messages with the bot.
+
+#### Prerequisites
+
+- An Azure Bot resource configured in the Azure Portal
+- Permissions to manage channels for the Azure Bot
+
+#### Setup Steps
+
+1. Navigate to the Azure Bot resource in the [Azure Portal](https://portal.azure.com).
+
+2. Select the **Channels** blade from the left-hand menu.
+
+3. Click on **Direct Line** from the available channels list to enable it.
+
+4. Once enabled, two secret keys will be presented. These keys are used to authenticate the application with the Direct Line service.
+
+5. Copy one of the secret keys - this is the **Direct Line Secret**.
+
+#### Configure the Connection
+
+- For **Direct Line Secret**, enter the secret key copied from the Direct Line channel configuration in the Azure Bot.
+

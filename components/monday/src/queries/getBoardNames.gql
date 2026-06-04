@@ -1,0 +1,6 @@
+#import "../fragments/boardMinimalFields.gql"
+query GetBoardNames($limit: Int, $page: Int) {
+  boards(limit: $limit, page: $page) {
+    ...BoardMinimalFields
+  }
+}

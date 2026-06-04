@@ -1,0 +1,52 @@
+To configure OAuth 2.0 for Adobe Acrobat Sign, begin by [creating an App](https://opensource.adobe.com/acrobat-sign/developer_guide/gstarted.html#get-the-app-id-and-secret):
+
+#### Prerequisites
+
+- An [Adobe Acrobat Sign](https://secure.adobesign.com/public/login) account with access to **API Applications**.
+- Permission to create OAuth applications in the Adobe Acrobat Sign account.
+- The region/shard of the Adobe Acrobat Sign account (visible in the web app URL, e.g. `https://secure.na3.adobesign.com`).
+
+#### Setup Steps
+
+1. [Log in to Adobe Acrobat Sign](https://secure.adobesign.com/public/login).
+2. Select **API** from the top menu. If the **API** link is not visible, select **Account** first.
+3. Select **API Applications**.
+4. Select the **Create** (+) icon at the top right of the table and provide application details.
+5. Choose a domain based on the intended use:
+   - **CUSTOMER**: Apps that only access the creating account or are used for internal use and testing.
+   - **PARTNER**: Select this type for applications distributed to other users that require access to other Adobe Acrobat Sign accounts.
+     Note: PARTNER applications [must be certified](https://www.adobe.com/go/esign-dev-cert) to have full access to other accounts.
+6. To retrieve the OAuth [Client ID and Secret](https://opensource.adobe.com/acrobat-sign/developer_guide/gstarted.html#configure-oauth): in the **API Applications** menu, select the application.
+7. Click the **Configure OAuth for the Application** link to configure the OAuth integration.
+8. For the **Redirect URI**, enter <OauthCallbackUrl />.
+9. Check the boxes for the necessary scopes with the modifier set to `account` for the integration and save.
+10. In the **API Applications** menu, select the application and select **View / Edit**.
+11. Copy the **Application ID / Client ID** and **Client Secret** values. (Client ID and Application ID are the same value and can be used interchangeably.)
+
+#### Configure the Connection
+
+Each Adobe Acrobat Sign OAuth URL is region-dependent. Replace the shard (e.g. `na3`) in the host with the shard shown in the Adobe Acrobat Sign web app URL (for example, an `https://secure.na3.adobesign.com` web app uses `na3`).
+
+- **Authorize URL**: The OAuth 2.0 authorization endpoint for the region. Example: `https://secure.na3.adobesign.com/public/oauth/v2`.
+- **Token URL**: The OAuth 2.0 token endpoint for the region. Example: `https://secure.na3.adobesign.com/oauth/v2/token`.
+- **Refresh URL**: The OAuth 2.0 refresh endpoint for the region. Example: `https://secure.na3.adobesign.com/oauth/v2/refresh`.
+- **Scopes**: Space-separated OAuth 2.0 permission scopes for Adobe Acrobat Sign, with the modifier set to `account` (for example, `user_read:account user_write:self agreement_read:group`). Refer to the [Acrobat Sign scopes documentation](https://opensource.adobe.com/acrobat-sign/developer_guide/gstarted.html#configure-scopes) for the available scopes.
+- **Client ID**: The **Application ID / Client ID** copied from the API Application.
+- **Client Secret**: The **Client Secret** copied from the API Application.
+
+#### PARTNER Application Certification
+
+Adobe requires PARTNER domain apps (those designed to access multiple organizations' Adobe Acrobat Sign accounts) to complete a certification process before deployment. This review verifies the app meets Adobe's security and compliance requirements for handling enterprise e-signature data on behalf of external accounts.
+
+**Complete PARTNER application certification before deploying to customer accounts.** Without certification, a PARTNER app is limited to authenticating with the developing organization's own Adobe Acrobat Sign account. Users from other organizations cannot connect to the integration.
+
+To apply for certification:
+
+1. Ensure the PARTNER application is fully developed and tested using the developing organization's own Adobe Acrobat Sign account.
+2. Complete the [PARTNER Application Certification form](https://www.adobe.com/go/esign-dev-cert).
+3. Submit the form. Adobe reviews the application for security and compliance requirements.
+4. Once certified, the PARTNER application can be authorized by users from other organizations' Adobe Acrobat Sign accounts.
+
+:::note[Certification Applies to PARTNER Domain Only]
+CUSTOMER domain applications do not require certification and can only access the account used to create the app. Only select the PARTNER domain if the integration needs to access other organizations' Adobe Acrobat Sign accounts. Refer to the [Acrobat Sign developer guide](https://opensource.adobe.com/acrobat-sign/developer_guide/gstarted.html) for details on choosing the correct domain.
+:::

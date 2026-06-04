@@ -1,0 +1,73 @@
+To connect to Amazon Seller Central, register an application in the Developer Central console and configure OAuth 2.0 authentication.
+
+For detailed information, refer to the [Amazon Selling Partner API documentation](https://developer-docs.amazon.com/sp-api/docs/connecting-to-the-selling-partner-api).
+
+#### Prerequisites
+
+- An Amazon Seller Central account with developer access
+- Access to the [Developer Central console](https://sellercentral.amazon.com/sellingpartner/developerconsole)
+
+#### Setup Steps
+
+To register the application for public or private seller use:
+
+1. Sign into Seller Central using developer credentials and navigate to [Developer Central](https://sellercentral.amazon.com/sellingpartner/developerconsole).
+2. On the **Developer Central** page, select **Add new app client**.
+3. Enter the OAuth Redirect URI: <OauthCallbackUrl />
+4. Save the application configuration.
+5. View the **LWA Credentials** section to access the **Client ID** and **Client Secret**.
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the LWA Credentials section
+- Select the appropriate **Region** for the Seller Central account
+- Configure the **Authorize URL** based on the Seller Central region:
+  - For the Seller Central URL, refer to [Amazon's region URLs](https://developer-docs.amazon.com/sp-api/docs/seller-central-urls)
+  - Replace `{YOUR_APPLICATION_ID}` with the application ID from the Developer Central page
+  - For applications not yet in production, add `version=beta` to the URL parameter
+- If connecting to a Sandbox environment, select **Yes** for the **Is Sandbox Environment** field
+
+For information on required scopes and permissions, refer to the [SP-API authorization documentation](https://developer-docs.amazon.com/sp-api/docs/authorizing-selling-partner-api-applications).
+
+#### Public Developer Registration
+
+Amazon requires apps that will be used across multiple seller accounts to complete a public developer registration and Appstore listing review. This process verifies the integration complies with Amazon's data access policies before it can access seller accounts beyond the developer's own.
+
+**Complete public developer registration before deploying to end users.** By default, an Amazon Seller Central app can only be authorized by the seller account that registered the application. Other sellers receive an error when attempting to connect. To allow other sellers to authorize the integration, the application must be registered as a public developer and listed on the Selling Partner Appstore.
+
+#### Registering as a Public Developer
+
+1. In the [Developer Central console](https://sellercentral.amazon.com/sellingpartner/developerconsole), navigate to **Developer Profile**
+2. Complete the developer registration questionnaire, including a description of the integration, data access justification for each requested permission, and security and data handling practices
+3. Submit the profile for Amazon's review. Registration review typically takes 1–2 weeks
+
+For detailed requirements, refer to [Registering your application](https://developer-docs.amazon.com/sp-api/docs/registering-your-application).
+
+#### Listing on the Selling Partner Appstore
+
+After public developer registration is approved, list the application on the Selling Partner Appstore so other sellers can install it:
+
+1. In **Developer Central**, navigate to the application and select **Add Appstore listing**
+2. Complete the listing details: title, description, screenshots, and support contact
+3. Submit the listing for review. Listing review adds approximately 1–2 additional weeks
+
+For detailed requirements, refer to [Listing your app on the Selling Partner Appstore](https://developer-docs.amazon.com/sp-api/docs/list-your-app-on-the-selling-partner-appstore).
+
+Once the Appstore listing is approved, the `version=beta` parameter can be removed from the **Authorize URL**, indicating the application is no longer in draft state.
+
+:::note[Self-Authorization (Private Use)]
+If the integration is only used to access the developer's own Seller Central account, public developer registration and Appstore listing are not required. The `version=beta` parameter should remain in the **Authorize URL** for self-authorization scenarios.
+:::
+
+:::note[Amazon Seller Central Sandbox Environment]
+When connecting to the Sandbox environment, some fields require different value formats than Production to succeed. The expected values can be referenced in the [Selling Partner API Models](https://github.com/amzn/selling-partner-api-models/tree/f3b0bc6c3949f791589b079e78b341f13f954b41/models).
+
+**Orders Example** ([Model Reference](https://github.com/amzn/selling-partner-api-models/blob/f3b0bc6c3949f791589b079e78b341f13f954b41/models/orders-api-model/ordersV0.json)):
+- **Created After**: `TEST_CASE_200` or `TEST_CASE_200_NEXT_TOKEN`
+- **Created Before**: `TEST_CASE_200` or `TEST_CASE_200_NEXT_TOKEN`
+- **Order ID**: `TEST_CASE_200`
+
+**Notifications Example** ([Model Reference](https://github.com/amzn/selling-partner-api-models/blob/f3b0bc6c3949f791589b079e78b341f13f954b41/models/notifications-api-model/notifications.json)):
+- **Subscription ID**: `TEST_CASE_200_SUBSCRIPTION_ID`
+- **Created Before**: `TEST_CASE_200_DESTINATION_ID`
+:::

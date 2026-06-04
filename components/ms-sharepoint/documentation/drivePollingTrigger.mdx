@@ -1,0 +1,76 @@
+Checks for new and updated items in a specified SharePoint drive on a configured schedule.
+
+This trigger monitors a single drive for file and folder changes using Microsoft Graph's delta tracking. For monitoring all drives in a site, use the **New and Updated Site Items** trigger. For monitoring a specific folder within a drive, use the **New and Updated Folder Items** trigger.
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. Query the Microsoft Graph delta endpoint for the specified drive
+3. Categorize items as "created", "updated", or "deleted" based on their properties and timestamps
+4. Maintain delta tracking state automatically to efficiently track changes between polls
+
+The trigger uses Microsoft Graph's [delta query](https://learn.microsoft.com/en-us/graph/delta-query-overview) functionality to track changes efficiently without scanning all items on each poll.
+
+#### Configuration
+
+**Inputs:**
+- **Connection**: Microsoft SharePoint connection for authentication
+- **Drive**: The unique identifier of the SharePoint drive to monitor
+
+#### Returned Data
+
+The trigger returns changes with separate arrays for created, updated, and deleted items:
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "01BYE5RZ6QN3ZWBTUFOFD3GSPGOHDJD36K",
+        "name": "NewReport.xlsx",
+        "createdDateTime": "2024-12-09T10:30:00Z",
+        "lastModifiedDateTime": "2024-12-09T10:30:00Z",
+        "size": 25600,
+        "file": {
+          "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        },
+        "parentReference": {
+          "driveId": "b!WumF-zsD8ku93Y0QqhKM9jVTjPefo6RGrpVCkPpe547Qrf38sox_TYIFuj9sqJhv",
+          "id": "01BYE5RZROOT",
+          "path": "/drive/root:"
+        },
+        "webUrl": "https://contoso.sharepoint.com/Shared Documents/NewReport.xlsx"
+      }
+    ],
+    "updated": [
+      {
+        "id": "01BYE5RZ5MYLM2SMX75ZBIPQZIHT93ZEPC",
+        "name": "ProjectPlan.docx",
+        "createdDateTime": "2024-12-08T09:15:00Z",
+        "lastModifiedDateTime": "2024-12-09T14:22:00Z",
+        "size": 45200,
+        "file": {
+          "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        },
+        "parentReference": {
+          "driveId": "b!WumF-zsD8ku93Y0QqhKM9jVTjPefo6RGrpVCkPpe547Qrf38sox_TYIFuj9sqJhv",
+          "id": "01BYE5RZROOT",
+          "path": "/drive/root:"
+        },
+        "webUrl": "https://contoso.sharepoint.com/Shared Documents/ProjectPlan.docx"
+      }
+    ],
+    "deleted": [
+      {
+        "id": "01BYE5RZ7H3LGDF7C5FJHMLBN22O3ORUIX",
+        "deleted": {}
+      }
+    ]
+  }
+}
+```
+
+</details>

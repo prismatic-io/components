@@ -1,0 +1,105 @@
+fragment MetafieldDetails on Metafield {
+  key
+  value
+  type
+  namespace
+  description
+  jsonValue
+  createdAt
+  updatedAt
+  owner {
+    ... on Validation {
+      validationId: id
+    }
+    ... on Shop {
+      shopId: id
+    }
+    ... on SellingPlan {
+      sellingPlanId: id
+    }
+    ... on ProductVariant {
+      productVariantId: id
+    }
+    ... on Product {
+      productId: id
+    }
+    ... on PaymentCustomization {
+      paymentCustomizationId: id
+    }
+    ... on Page {
+      pageId: id
+    }
+    ... on Order {
+      orderId: id
+    }
+    ... on MediaImage {
+      mediaImageId: id
+    }
+    ... on Market {
+      marketId: id
+    }
+    ... on Location {
+      locationId: id
+    }
+    ... on Image {
+      imageId: id
+    }
+    ... on GiftCardDebitTransaction {
+      giftCardDebitTransactionId: id
+    }
+    ... on GiftCardCreditTransaction {
+      giftCardCreditTransactionId: id
+    }
+    ... on GateConfiguration {
+      gateConfigurationId: id
+    }
+    ... on FulfillmentConstraintRule {
+      fulfillmentConstraintRuleId: id
+    }
+    ... on DraftOrder {
+      draftOrderId: id
+    }
+    ... on DiscountNode {
+      discountNodeId: id
+    }
+    ... on DiscountCodeNode {
+      discountCodeNodeId: id
+    }
+    ... on DiscountAutomaticNode {
+      discountAutomaticNodeId: id
+    }
+    ... on DeliveryMethod {
+      deliveryMethodId: id
+    }
+    ... on DeliveryCustomization {
+      deliveryCustomizationId: id
+    }
+    ... on CustomerSegmentMember {
+      customerSegmentMemberId: id
+    }
+    ... on Customer {
+      customerId: id
+    }
+    ... on CompanyLocation {
+      companyLocationId: id
+    }
+    ... on Company {
+      companyId: id
+    }
+    ... on Collection {
+      collectionId: id
+    }
+    ... on CartTransform {
+      cartTransformId: id
+    }
+    ... on Blog {
+      blogId: id
+    }
+    ... on Article {
+      articleId: id
+    }
+    ... on AppInstallation {
+      appInstallationId: id
+    }
+  }
+}

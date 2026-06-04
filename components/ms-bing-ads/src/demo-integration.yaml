@@ -1,0 +1,406 @@
+category: ""
+configPages:
+    - elements:
+          - type: configVar
+            value: Microsoft Bing Ads Connection
+      name: Configuration
+      tagline: ""
+    - elements:
+          - type: configVar
+            value: Bing Customer ID
+      name: Configure Customer ID
+      tagline: ""
+      userLevelConfigured: false
+    - elements:
+          - type: configVar
+            value: Bing Account ID
+      name: Configure Account ID
+      tagline: ""
+      userLevelConfigured: false
+definitionVersion: 7
+description: ""
+documentation: ""
+endpointType: flow_specific
+flows:
+    - description: ""
+      isSynchronous: false
+      name: Invite a User
+      steps:
+          - action:
+                key: webhook
+                component:
+                    isPublic: true
+                    key: webhook-triggers
+                    version: LATEST
+            description: ""
+            inputs:
+                body:
+                    type: value
+                    value: ""
+                contentType:
+                    type: value
+                    value: ""
+                headers:
+                    type: complex
+                    value: []
+                statusCode:
+                    type: value
+                    value: ""
+            isTrigger: true
+            name: Integration Trigger
+          - action:
+                key: sendUserInvitation
+                component:
+                    isPublic: true
+                    key: ms-bing-ads
+                    version: LATEST
+            description: ""
+            inputs:
+                accountIds:
+                    type: complex
+                    value: []
+                connection:
+                    type: configVar
+                    value: Microsoft Bing Ads Connection
+                customerId:
+                    type: configVar
+                    value: Bing Customer ID
+                email:
+                    type: value
+                    value: user@example.com
+                firstName:
+                    type: value
+                    value: Example
+                lastName:
+                    type: value
+                    value: User
+                lcid:
+                    type: value
+                    value: EnglishUS
+                roleId:
+                    type: value
+                    value: "203"
+            name: Send User Invitation
+    - description: ""
+      isSynchronous: false
+      name: Get actions
+      steps:
+          - action:
+                key: webhook
+                component:
+                    isPublic: true
+                    key: webhook-triggers
+                    version: LATEST
+            description: ""
+            inputs:
+                body:
+                    type: value
+                    value: ""
+                contentType:
+                    type: value
+                    value: ""
+                headers:
+                    type: complex
+                    value: []
+                statusCode:
+                    type: value
+                    value: ""
+            isTrigger: true
+            name: Get Actions Trigger
+          - action:
+                key: getAccountsInfo
+                component:
+                    isPublic: true
+                    key: ms-bing-ads
+                    version: LATEST
+            description: ""
+            inputs:
+                connection:
+                    type: configVar
+                    value: Microsoft Bing Ads Connection
+                customerId:
+                    type: configVar
+                    value: Bing Customer ID
+            name: Get Account Info
+          - action:
+                key: getCustomer
+                component:
+                    isPublic: true
+                    key: ms-bing-ads
+                    version: LATEST
+            description: ""
+            inputs:
+                connection:
+                    type: configVar
+                    value: Microsoft Bing Ads Connection
+                customerId:
+                    type: configVar
+                    value: Bing Customer ID
+            name: Get Customer
+          - action:
+                key: getCustomersInfo
+                component:
+                    isPublic: true
+                    key: ms-bing-ads
+                    version: LATEST
+            description: ""
+            inputs:
+                connection:
+                    type: configVar
+                    value: Microsoft Bing Ads Connection
+                customerNameFilter:
+                    type: value
+                    value: ""
+                topN:
+                    type: value
+                    value: "5"
+            name: Get Customers Info
+          - action:
+                key: getLinkedAccountsAndCustomersInfo
+                component:
+                    isPublic: true
+                    key: ms-bing-ads
+                    version: LATEST
+            description: ""
+            inputs:
+                connection:
+                    type: configVar
+                    value: Microsoft Bing Ads Connection
+                customerId:
+                    type: configVar
+                    value: Bing Customer ID
+                onlyParentAccounts:
+                    type: value
+                    value: "true"
+            name: Get Linked Accounts And Customers Info
+          - action:
+                key: searchAccounts
+                component:
+                    isPublic: true
+                    key: ms-bing-ads
+                    version: LATEST
+            description: ""
+            inputs:
+                accountId:
+                    type: value
+                    value: ""
+                accountLifeCycleStatus:
+                    type: value
+                    value: ""
+                accountName:
+                    type: value
+                    value: ""
+                accountNumber:
+                    type: value
+                    value: ""
+                connection:
+                    type: configVar
+                    value: Microsoft Bing Ads Connection
+                customerId:
+                    type: value
+                    value: ""
+                ordering:
+                    type: value
+                    value: ""
+                userId:
+                    type: value
+                    value: ""
+            name: Search Accounts
+    - description: ""
+      isSynchronous: false
+      name: Client Link Actions
+      steps:
+          - action:
+                key: webhook
+                component:
+                    isPublic: true
+                    key: webhook-triggers
+                    version: LATEST
+            description: ""
+            inputs:
+                body:
+                    type: value
+                    value: ""
+                contentType:
+                    type: value
+                    value: ""
+                headers:
+                    type: complex
+                    value: []
+                statusCode:
+                    type: value
+                    value: ""
+            isTrigger: true
+            name: Client Link Actions Trigger
+          - action:
+                key: addClientLinks
+                component:
+                    isPublic: true
+                    key: ms-bing-ads
+                    version: LATEST
+            description: ""
+            inputs:
+                clientEntityId:
+                    type: value
+                    value: "144015218"
+                connection:
+                    type: configVar
+                    value: Microsoft Bing Ads Connection
+                customerLinkPermission:
+                    type: value
+                    value: Administrative
+                inviterEmail:
+                    type: value
+                    value: user@example.com
+                inviterName:
+                    type: value
+                    value: Example
+                inviterPhone:
+                    type: value
+                    value: ""
+                isBillToClient:
+                    type: value
+                    value: "false"
+                managingCustomerId:
+                    type: configVar
+                    value: Bing Customer ID
+                name:
+                    type: value
+                    value: Example Link
+                note:
+                    type: value
+                    value: ""
+                suppressNotification:
+                    type: value
+                    value: "false"
+                type:
+                    type: value
+                    value: AccountLink
+            name: Add Client Link
+    - description: ""
+      isSynchronous: false
+      name: Raw Request
+      steps:
+          - action:
+                key: webhook
+                component:
+                    isPublic: true
+                    key: webhook-triggers
+                    version: LATEST
+            description: ""
+            inputs:
+                body:
+                    type: value
+                    value: ""
+                contentType:
+                    type: value
+                    value: ""
+                headers:
+                    type: complex
+                    value: []
+                statusCode:
+                    type: value
+                    value: ""
+            isTrigger: true
+            name: Raw Request Trigger
+          - action:
+                key: rawRequest
+                component:
+                    isPublic: true
+                    key: ms-bing-ads
+                    version: LATEST
+            description: ""
+            inputs:
+                accountId:
+                    type: configVar
+                    value: Bing Account ID
+                connection:
+                    type: configVar
+                    value: Microsoft Bing Ads Connection
+                customerId:
+                    type: configVar
+                    value: Bing Customer ID
+                soapAction:
+                    type: value
+                    value: GetCustomersInfo
+                soapBodyRequest:
+                    type: value
+                    value: >-
+                        <GetCustomersInfoRequest
+                        xmlns="https://bingads.microsoft.com/Customer/v13">
+                          <TopN>1000</TopN>
+                        </GetCustomersInfoRequest>
+                webService:
+                    type: value
+                    value: CUSTOMER_MANAGEMENT_API
+            name: Raw Request
+name: Bing Ads
+requiredConfigVars:
+    - connection:
+          key: oauth
+          component:
+              isPublic: true
+              key: ms-bing-ads
+              version: LATEST
+      dataType: connection
+      inputs:
+          clientId:
+              meta:
+                  visibleToCustomerDeployer: false
+                  visibleToOrgDeployer: false
+              type: value
+              value: a2cfd6d9-9fb7-45fb-a46e-0d042d6839d9
+          clientSecret:
+              meta:
+                  visibleToCustomerDeployer: false
+                  visibleToOrgDeployer: false
+              type: value
+              value: lyW8Q~6gefhE2zBWbr.CgJY_hZHA3o7vlrdH6a4h
+          developerToken:
+              meta:
+                  visibleToCustomerDeployer: false
+                  visibleToOrgDeployer: false
+              type: value
+              value: 113NP9J8RO150311
+      key: Microsoft Bing Ads Connection
+      orgOnly: false
+    - dataSource:
+          key: selectCustomerId
+          component:
+              isPublic: true
+              key: ms-bing-ads
+              version: LATEST
+      dataType: picklist
+      defaultValue: ""
+      inputs:
+          connection:
+              meta:
+                  visibleToCustomerDeployer: false
+                  visibleToOrgDeployer: false
+              type: configVar
+              value: Microsoft Bing Ads Connection
+      key: Bing Customer ID
+      orgOnly: false
+    - dataSource:
+          key: selectAccountId
+          component:
+              isPublic: true
+              key: ms-bing-ads
+              version: LATEST
+      dataType: picklist
+      defaultValue: ""
+      inputs:
+          connection:
+              meta:
+                  visibleToCustomerDeployer: false
+                  visibleToOrgDeployer: false
+              type: configVar
+              value: Microsoft Bing Ads Connection
+          customerId:
+              meta:
+                  visibleToCustomerDeployer: false
+                  visibleToOrgDeployer: false
+              type: configVar
+              value: Bing Customer ID
+      key: Bing Account ID
+      orgOnly: false

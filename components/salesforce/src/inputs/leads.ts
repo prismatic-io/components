@@ -1,0 +1,90 @@
+import {
+  connectionInput,
+  description,
+  dynamicValues,
+  fieldValues,
+  listInputs,
+  recordId,
+  version,
+} from "./common";
+import {
+  city,
+  company,
+  email,
+  employeeCount,
+  firstName,
+  lastName,
+  leadSource,
+  leadStatus,
+  phone,
+  postalCode,
+  rating,
+  revenue,
+  state,
+  street,
+  title,
+  website,
+} from "./fields";
+
+export const createLeadInputs = {
+  version,
+  dynamicValues,
+  fieldValues,
+  firstName,
+  lastName,
+  company,
+  title,
+  phone,
+  email,
+  leadSource,
+  rating,
+  website,
+  street,
+  state,
+  city,
+  postalCode,
+  employeeCount,
+  description,
+  revenue,
+  leadStatus,
+  connection: connectionInput,
+};
+
+export const updateLeadInputs = {
+  recordId: {
+    ...recordId,
+    dataSource: "selectLead",
+  },
+  version,
+  company,
+  email,
+  leadStatus,
+  dynamicValues,
+  fieldValues,
+  firstName,
+  lastName,
+  title,
+  phone,
+  leadSource,
+  rating,
+  website,
+  street,
+  state,
+  city,
+  postalCode,
+  employeeCount,
+  description,
+  revenue,
+  connection: connectionInput,
+};
+
+export const deleteLeadInputs = {
+  version,
+  recordId: {
+    ...recordId,
+    dataSource: "selectLead",
+  },
+  connection: connectionInput,
+};
+
+export const listLeadsInputs = { ...listInputs };

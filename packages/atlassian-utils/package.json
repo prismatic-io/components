@@ -1,0 +1,30 @@
+{
+  "name": "atlassian-utils",
+  "private": true,
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "npm run format && npm run lint && tsc",
+    "test": "echo 'No tests'",
+    "lint": "biome check --write .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.8",
+    "@types/jest": "30.0.0",
+    "copy-webpack-plugin": "13.0.0",
+    "jest": "30.0.5",
+    "ts-jest": "29.4.0",
+    "ts-loader": "9.5.2",
+    "typescript": "5.9.3",
+    "webpack": "5.103.0",
+    "webpack-cli": "6.0.1"
+  }
+}

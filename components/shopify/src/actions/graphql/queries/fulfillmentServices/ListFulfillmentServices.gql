@@ -1,0 +1,8 @@
+#import "../../fragments/FulfillmentServiceDetails.gql"
+query ListFulfillmentServices {
+  shop {
+    fulfillmentServices {
+      ...FulfillmentServiceDetails
+    }
+  }
+}

@@ -1,0 +1,9 @@
+mutation DeleteCustomer($id: ID!) {
+  customerDelete(input: { id: $id }) {
+    userErrors {
+      field
+      message
+    }
+    deletedCustomerId
+  }
+}

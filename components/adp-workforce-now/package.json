@@ -1,0 +1,31 @@
+{
+  "name": "adp-workforce-now",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "npm run format && npm run lint && webpack",
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "echo 'no tests'",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.2",
+    "@types/jest": "^30.0.0",
+    "@types/lodash": "^4.17.13",
+    "@types/node": "^22.19.11",
+    "copy-webpack-plugin": "^13.0.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1"
+  }
+}

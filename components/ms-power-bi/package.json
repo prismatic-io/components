@@ -1,0 +1,25 @@
+{
+  "name": "@prismatic-io/ms-power-bi",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "scripts": {
+    "lint": "npx @biomejs/biome check --write .",
+    "format": "npx @biomejs/biome format --write .",
+    "build": "webpack",
+    "test": "echo 'no tests'",
+    "publish": "npm run build && prism components:publish"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^18.19.68",
+    "copy-webpack-plugin": "^12.0.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.1.4"
+  }
+}

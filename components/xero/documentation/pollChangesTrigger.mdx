@@ -1,0 +1,61 @@
+This trigger polls the [Xero Accounting API](https://developer.xero.com/documentation/api/accounting/overview) for new and updated records of a selected resource type on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches records modified since the last poll using Xero's `If-Modified-Since` header, limiting results to records that have changed
+3. Each returned record is compared against the set of previously known IDs — records with unknown IDs are classified as new; records with known IDs are classified as updated
+4. The trigger updates its internal state after each poll, storing the last poll timestamp and the full set of known record IDs
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Xero connection to authenticate API requests
+- **Resource Type**: The type of Xero record to monitor
+
+| Resource          | Paginated | Tracks New | Tracks Updated |
+| ----------------- | --------- | ---------- | -------------- |
+| Accounts          | No        | Yes        | Yes            |
+| Bank Transactions | Yes       | Yes        | Yes            |
+| Contacts          | Yes       | Yes        | Yes            |
+| Credit Notes      | Yes       | Yes        | Yes            |
+| Invoices          | Yes       | Yes        | Yes            |
+| Items             | No        | Yes        | Yes            |
+| Manual Journals   | Yes       | Yes        | Yes            |
+| Payments          | Yes       | Yes        | Yes            |
+| Purchase Orders   | Yes       | Yes        | Yes            |
+
+- **Show New Records**: When enabled, records not previously seen are included in the trigger output
+- **Show Updated Records**: When enabled, records previously seen that have been modified are included in the trigger output
+
+#### Returned Data
+
+Returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "ContactID": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "Name": "Acme Corp",
+        "UpdatedDateUTC": "/Date(1699610400000+0000)/"
+      }
+    ],
+    "updated": [
+      {
+        "ContactID": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "Name": "Global Industries",
+        "UpdatedDateUTC": "/Date(1699696800000+0000)/"
+      }
+    ]
+  }
+}
+```
+
+#### Notes
+
+- Classification as new or updated is based on ID history, not Xero metadata. A record whose ID has not been seen in a prior poll is classified as created; a record whose ID is already known is classified as updated.
+- The known ID set and the last poll timestamp both persist across executions via polling state.
+- Paginated resource types fetch all pages before classifying records.

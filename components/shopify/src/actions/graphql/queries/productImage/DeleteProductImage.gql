@@ -1,0 +1,10 @@
+mutation DeleteProductImage($productId: ID!, $mediaIds: [ID!]!) {
+  productDeleteMedia(productId: $productId, mediaIds: $mediaIds) {
+    deletedMediaIds
+    deletedProductImageIds
+    mediaUserErrors {
+      field
+      message
+    }
+  }
+}

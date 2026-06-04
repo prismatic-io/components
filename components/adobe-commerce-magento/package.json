@@ -1,0 +1,26 @@
+{
+  "name": "adobe-commerce-magento",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "publish": "npm run build && prism components:publish",
+    "build": "npm run lint && npm run format && webpack",
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "echo 'no tests'"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.4",
+    "@types/jest": "29.5.14",
+    "copy-webpack-plugin": "11.0.0",
+    "jest": "29.7.0",
+    "ts-jest": "29.2.5",
+    "ts-loader": "9.5.2",
+    "typescript": "5.8.3",
+    "webpack": "5.105.2",
+    "webpack-cli": "5.0.1"
+  }
+}

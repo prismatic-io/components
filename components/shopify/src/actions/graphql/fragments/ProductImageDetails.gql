@@ -1,0 +1,15 @@
+fragment ProductImageDetails on MediaImage {
+  id
+  alt
+  #position
+  #productId
+  createdAt
+  updatedAt
+
+  image {
+    width
+    height
+    url
+  }
+  #variant_ids
+}

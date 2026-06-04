@@ -1,0 +1,38 @@
+An **admin API access token** can be used for testing purposes during integration development.
+
+Personal access tokens are recommended for testing only. For production integrations, use OAuth 2.0 to allow users to authenticate with their own credentials.
+
+#### Prerequisites
+
+- A Shopify store (for testing purposes)
+
+#### Setup Steps
+
+To generate an admin API access token:
+
+1. Log in to the Shopify admin dashboard.
+2. Navigate to **Settings** > **Apps and sales channels**.
+3. Click **Develop apps**.
+4. If prompted, click **Allow custom app development**.
+5. Click **Create an app** and provide a name for the app.
+6. Click **Configure Admin API scopes** and select the required scopes for the integration.
+7. Click **Save**.
+8. Navigate to the **API credentials** tab.
+9. Under **Admin API access token**, click **Install app** to generate the token.
+10. Copy the **Admin API access token** value.
+
+The token will have a format similar to `shpat_00000000000000000000000000000000`.
+
+Refer to [Shopify's Admin API access token documentation](https://shopify.dev/docs/apps/auth/admin-app-access-tokens) for more information.
+
+#### Configure the Connection
+
+Create a connection of type **Access Token** and configure the following fields:
+
+- Enter the **Admin API Access Token** into the connection configuration.
+- Enter the **Host** (the Shopify domain without `https://`, e.g., `example-store.myshopify.com`).
+- Optionally configure the **API Version** (defaults to latest version).
+
+:::warning[Production Use]
+Admin API access tokens are tied to custom apps and recommended for testing only. For production integrations, OAuth 2.0 authentication provides a better user experience and allows users to authenticate with their own credentials.
+:::

@@ -1,0 +1,47 @@
+This trigger polls the [Toast Labor API](https://doc.toasttab.com/openapi/) for new and updated time entries on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches time entries from Toast using the `modifiedStartDate` and `modifiedEndDate` filter parameters, passing the last poll time so only entries modified since the previous execution are retrieved
+3. Records are categorized as **created** or **updated** by comparing each entry's timestamps to the last poll time. Entries whose `createdDate` is after the last poll time are classified as created, and the remaining entries whose `modifiedDate` is after the last poll time are classified as updated
+4. The trigger updates its internal state after each poll
+
+#### Returned Data
+
+The trigger returns an object with two arrays: `created` for new time entries and `updated` for modified time entries. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "guid": "b04c86fb-4a82-4ba3-ab0d-93bf5b2b5abc",
+        "entityType": "TimeEntry",
+        "createdDate": "2026-05-27T10:30:00.000Z",
+        "modifiedDate": "2026-05-27T10:30:00.000Z"
+      }
+    ],
+    "updated": [
+      {
+        "guid": "e2b60d3a-1c4f-4d89-9f3e-7a2c1b9d4e5f",
+        "entityType": "TimeEntry",
+        "createdDate": "2026-05-20T09:00:00.000Z",
+        "modifiedDate": "2026-05-27T14:22:00.000Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The `modifiedStartDate` and `modifiedEndDate` filters are applied server-side, so only time entries modified since the last poll are returned. This minimizes data transfer on each execution
+- The Toast Labor API limits the modified date window to a maximum of one month. On the first poll, or when the last poll occurred more than 30 days ago, the start of the window is clamped to roughly 30 days before the current poll time
+- A time entry that qualifies as both new and updated is reported as **created** only, since a record cannot be created and updated in the same poll window from the consumer's perspective
+- Refer to the [Toast API Reference](https://doc.toasttab.com/openapi/) for rate limit details and the full Time Entry field set

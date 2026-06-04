@@ -1,0 +1,10 @@
+#### Filtering Records
+
+Filter for specific records using the **Filter By Formula** input.
+For example, to return only records where the product of the `Quantity` and `Price` fields is greater than 100 and the record's `Shipped?` field is not checked, use a formula like this:
+
+```
+AND({Quantity} * {Price} > 100, NOT({Shipped?}))
+```
+
+Full documentation on Airtable formulas is available on the [Airtable support site](https://support.airtable.com/hc/en-us/articles/203255215-Formula-Field-Reference).

@@ -1,0 +1,49 @@
+This trigger polls the [Paylocity API](https://developer.paylocity.com/) for new employees in a specified company on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches all employees for the configured company ID and compares the returned employee IDs against the set of previously known IDs to identify newly appearing records
+3. Newly identified employees are classified as **created**; this trigger does not track updates
+4. The trigger updates its internal state after each poll, storing the current set of known employee IDs
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Paylocity OAuth 2.0 (v2 API) connection used to authenticate API requests
+- **Company ID**: The identifier of the Paylocity company to monitor for new employees
+- **Show New Records**: When enabled, includes newly created employee records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new employees and `updated` for modified employees. The `updated` array is always empty, as this trigger only detects new employees.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "employeeId": "00001",
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "companyId": "ACME",
+        "statusCode": "A"
+      }
+    ],
+    "updated": []
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- On the first poll, the trigger captures a baseline snapshot of all known employee IDs for the specified company. No employees are returned on the first execution — subsequent polls detect additions against that baseline
+- The **Company ID** input is required. Each trigger instance monitors a single company
+- This trigger requires the Paylocity OAuth 2.0 (v2 API) connection
+- Refer to the [Paylocity API documentation](https://developer.paylocity.com/) for rate limit details and available employee fields

@@ -1,0 +1,17 @@
+Parameters can be passed to an SQL query using colon notation.
+Parameters should be an array of objects, and each object should have a `name` and `value` property, and optional `type` property.
+
+For example, if the statement reads `SELECT * FROM my_table WHERE name = :my_name AND date = :my_date`, the following parameters can be passed:
+
+```json
+[
+  { "name": "my_name", "value": "the name" },
+  { "name": "my_date", "value": "2020-01-01", "type": "DATE" }
+]
+```
+
+This action will execute the SQL query and then wait for the results to be available, throwing an error if the query fails.
+
+If the query is expected to run for a long time, use the "Raw Request" action to issue a query, take note of the `statement_id` that is returned, and then use that statement ID to fetch results at a later time.
+Large results may be split into chunks, and the `next_chunk_internal_link` can be used to fetch the next chunk of results.
+See [Databricks Statement Execution API](https://docs.databricks.com/api/workspace/statementexecution/executestatement) for more information.

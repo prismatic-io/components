@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.newrelic.com/docs/logs/log-api/introduction-log-api/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://docs.newrelic.com/docs/release-notes/"
+  }
+]

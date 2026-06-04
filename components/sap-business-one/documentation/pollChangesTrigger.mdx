@@ -1,0 +1,94 @@
+The **New and Updated Records** trigger checks SAP Business One for new and updated records of a selected resource type on a configured schedule. The trigger queries the SAP Business One Service Layer using OData filters and categorizes results into newly created and updated records based on `CreateDate` and `UpdateDate` timestamps.
+
+For details on the underlying API, refer to the [SAP Business One Service Layer API Reference](https://help.sap.com/doc/056f69366b5345a386bb8149f1700c19/10.0/en-US/Service%20Layer%20API%20Reference.html).
+
+#### How It Works
+
+The trigger maintains a `lastPolledAt` timestamp in polling state and uses it to fetch only records changed since the previous run.
+
+1. **Initial Poll**: On the first execution, `lastPolledAt` is initialized to the current time so historical records are not flooded into the workflow.
+2. **Subsequent Polls**: The trigger fetches records where `UpdateDate >= lastPolledAt` (day-precision) using a server-side OData `$filter`.
+3. **Categorization**: Records are split client-side into `created` (where `CreateDate > lastPolledAt`) and `updated` (where only `UpdateDate > lastPolledAt`) buckets.
+4. **State Persistence**: After each successful poll, the current timestamp is saved as the new `lastPolledAt`.
+
+**Date Precision**
+
+SAP Business One Service Layer reports `CreateDate` and `UpdateDate` with day-only precision (`YYYY-MM-DD`). The trigger uses `ge` (greater-or-equal) instead of `gt` so records updated on the same day as the last poll are still detected. As a result, a record updated multiple times within a single calendar day is reported once per day.
+
+**Known Limitation**
+
+SAP Business One session cookies returned by the `/Login` endpoint expire server-side (default ~30 minutes). When `Fetch All` issues many parallel paged requests, a cookie that expires mid-fetch will cause remaining requests to fail. Cookie refresh is intentionally out of scope for this trigger; reduce the polling interval or batch size if this is encountered frequently.
+
+#### Configuration
+
+The trigger requires the following inputs:
+
+- **Connection** (Required): The SAP Business One connection to use.
+- **Resource Type** (Required): The Service Layer collection to monitor for changes. See the supported resource types below.
+- **Show New Records** (Optional, default `true`): When enabled, newly created records are included in the trigger output.
+- **Show Updated Records** (Optional, default `true`): When enabled, records that were updated after the last poll are included in the trigger output.
+
+If both **Show New Records** and **Show Updated Records** are disabled, the trigger emits an empty payload and skips the API call.
+
+#### Supported Resource Types
+
+<details>
+<summary>Available Resource Types (7)</summary>
+
+| Resource Type | Service Layer Endpoint | Description |
+|---------------|-----------------------|-------------|
+| `BusinessPartners` | `/BusinessPartners` | Customers, suppliers, and leads |
+| `Items` | `/Items` | Inventory items, services, labor, travel, and fixed assets |
+| `Orders` | `/Orders` | Sales orders |
+| `Invoices` | `/Invoices` | A/R invoices |
+| `PurchaseOrders` | `/PurchaseOrders` | Purchase orders |
+| `Warehouses` | `/Warehouses` | Warehouse master data |
+| `PriceLists` | `/PriceLists` | Price list definitions |
+
+</details>
+
+#### Returned Data
+
+The trigger returns a payload with separate arrays for newly created and updated records.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "CardCode": "C20000",
+        "CardName": "Acme Corporation",
+        "CardType": "cCustomer",
+        "CreateDate": "2026-04-23",
+        "UpdateDate": "2026-04-23",
+        "Phone1": "555-0100",
+        "EmailAddress": "contact@acme.example"
+      }
+    ],
+    "updated": [
+      {
+        "CardCode": "C30000",
+        "CardName": "Globex Industries",
+        "CardType": "cCustomer",
+        "CreateDate": "2026-01-15",
+        "UpdateDate": "2026-04-25",
+        "Phone1": "555-0200",
+        "EmailAddress": "info@globex.example"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+The exact fields returned depend on the resource type selected. Refer to the [SAP Business One Service Layer API Reference](https://help.sap.com/doc/056f69366b5345a386bb8149f1700c19/10.0/en-US/Service%20Layer%20API%20Reference.html) for the full schema of each entity.
+
+#### Best Practices
+
+- **Polling Frequency**: Use intervals of at least 5–15 minutes. Polling more frequently than the API's date precision (one day) does not surface additional records sooner — it only adds load.
+- **Resource-per-Trigger**: Configure one trigger per resource type. Running multiple triggers for different resources lets each maintain its own `lastPolledAt` cursor.
+- **Session Cookie Awareness**: Avoid extremely long polling intervals on high-volume tenants where the cookie may expire mid-poll. Shorter, more frequent polls reduce the chance of mid-fetch session expiry.

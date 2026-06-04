@@ -1,0 +1,347 @@
+This component wraps some of OpenAI's REST API endpoints.
+Additional endpoints can be referenced in their [API documentation](https://platform.openai.com/docs/api-reference).
+You can use the [Raw Request](#rawrequest) action to interact with endpoints that are not covered by other actions.
+
+## AI Agents
+
+The agent system is built on the [OpenAI Agents SDK](https://openai.github.io/openai-agents-js/) and provides a visual way to create conversational AI agents with tools and multi agent workflows.
+Build AI agents using OpenAI's Agents SDK with Prismatic's drag and drop Designer interface. Create agents with custom instructions, tools, and multi agent workflows without writing code.
+
+### Quick Start
+
+Create a simple AI assistant in three steps:
+
+1. **Add "Agent: Create" action** from the OpenAI component
+
+   - Set **Name**: "Assistant"
+   - Set **Instructions**: "You are a helpful assistant"
+   - Select **Model**: "gpt-4o-mini" (fast and cost-effective)
+
+2. **Add "Agent: Run" action**
+
+   - Set **OpenAI Connection**: Select your configured connection
+   - Set **Agent Configuration**: Reference the Create Agent output: `{{$agentCreate.results}}`
+   - Set **User Input**: "What is the weather in San Francisco?"
+
+3. **Test your flow** - The agent's response will be in `{{$agentRun.results.finalOutput}}`
+
+### Core Concepts
+
+#### Agent Configuration
+
+Agents are configured and executed in two steps:
+
+- **Agent Configuration**: Created using the "Agent: Create" action, which outputs a configuration object defining the agent's behavior, tools, and capabilities
+- **Agent Execution**: The "Agent: Run" action executes the configured agent with user input and returns the response
+
+#### Tools
+
+Tools extend agent capabilities:
+
+- **Flow Tools**: Let agents trigger other Prismatic flows
+- **Approval Tools**: Require human approval before proceeding
+- **Built in Tools**: Web search, code interpreter, file search, and image generation
+
+#### MCP Servers
+
+Model Context Protocol servers connect agents to external systems:
+
+- **Local MCP**: Run tools over STDIO
+- **Remote MCP**: Connect to remote HTTPS servers
+
+### Configuration Examples
+
+Understanding the configuration objects helps you work with agent actions.
+
+#### Tool Configurations
+
+**Flow Tool** - Output from "Agent: Create Flow Tool" action:
+
+```json
+{
+  "type": "flow",
+  "tool": {
+    "type": "function",
+    "function": {
+      "name": "send_email",
+      "description": "Send a welcome email to a new customer",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "to": { "type": "string" },
+          "subject": { "type": "string" },
+          "body": { "type": "string" }
+        }
+      }
+    }
+  },
+  "toolName": "send_email"
+}
+```
+
+**Approval Tool** - Output from "Agent: Create Human Approval Tool" action:
+
+```json
+{
+  "type": "approval",
+  "tool": {
+    "type": "function",
+    "function": {
+      "name": "delete_confirmation",
+      "description": "Confirm before deleting records",
+      "needsApproval": true
+    }
+  },
+  "toolName": "delete_confirmation"
+}
+```
+
+#### MCP Server Configurations
+
+**Local MCP Server** - Output from "Agent: Add Local MCP Server" action:
+
+```json
+{
+  "mcpServer": {
+    "type": "stdio",
+    "label": "sequential-thinking",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+  }
+}
+```
+
+**Remote MCP Server** - Output from "Agent: Add Remote MCP Server" action:
+
+```json
+{
+  "mcpServer": {
+    "type": "http",
+    "label": "company-data-server",
+    "url": "https://api.company.com/mcp",
+    "headers": {
+      "Authorization": "Bearer YOUR_TOKEN"
+    }
+  }
+}
+```
+
+#### Agent Configurations
+
+**Simple Agent**:
+
+```json
+{
+  "agent": {
+    "name": "Assistant",
+    "instructions": "You are a helpful assistant",
+    "model": "gpt-4o-mini"
+  }
+}
+```
+
+**Agent with Structured Output**:
+
+```json
+{
+  "agent": {
+    "name": "Email Classifier",
+    "instructions": "Classify emails by priority and sentiment",
+    "model": "gpt-4o",
+    "outputType": {
+      "type": "json_schema",
+      "name": "EmailClassification",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "priority": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          },
+          "sentiment": {
+            "type": "string",
+            "enum": ["positive", "negative", "neutral"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### Common Workflows
+
+#### Simple Q&A Bot
+
+1. Add **Agent: Create** action
+
+   - Name: "Q&A Bot"
+   - Instructions: "Answer questions about our product. Be helpful and concise."
+   - Model: "gpt-4o-mini"
+
+2. Add **Agent: Run** action
+
+   - Agent Configuration: `{{$agentCreate.results}}`
+   - User Input: `{{$trigger.body.question}}`
+
+3. Add **Webhook Reply** action
+   - Response Body: `{{$agentRun.results.finalOutput}}`
+
+#### Message Triage with Structured Output
+
+1. Add **Agent: Create** action with output schema:
+
+   ```json
+   {
+     "type": "object",
+     "properties": {
+       "priority": {
+         "type": "string",
+         "enum": ["high", "medium", "low"]
+       },
+       "sentiment": {
+         "type": "string",
+         "enum": ["positive", "negative", "neutral"]
+       },
+       "summary": {
+         "type": "string"
+       }
+     },
+     "required": ["priority", "sentiment", "summary"]
+   }
+   ```
+
+2. Add **Agent: Run** action
+
+   - User Input: `{{$trigger.body.emailContent}}`
+
+3. Use the structured output:
+   - Priority: `{{$agentRun.results.finalOutput.priority}}`
+   - Sentiment: `{{$agentRun.results.finalOutput.sentiment}}`
+
+#### Multi Agent Customer Support
+
+1. Create specialist agents:
+
+   - **Billing Agent**: "Handle billing and payment questions"
+   - **Technical Agent**: "Solve technical problems"
+
+2. Create main triage agent:
+
+   - Instructions: "Route questions to the right specialist"
+
+3. Run with handoffs:
+   - Agent Configuration: `{{$triageAgent.results}}`
+   - Handoffs: `[{{$billingAgent.results}}, {{$techAgent.results}}]`
+
+#### Human Approval Workflow
+
+1. Add **Agent: Create Human Approval Tool**
+
+   - Name: "Delete Confirmation"
+
+2. Add **Agent: Create** with tools:
+
+   - Tools: `{{$approvalTool.results}}`
+
+3. Add **Agent: Run** action
+
+4. Add **If Condition is Met**:
+   - If `{{$agentRun.results.hasInterruptions}}` is true:
+     - Send approval request
+     - Add **Agent: Resume Run** with approval response
+
+#### Multi Turn Conversation
+
+1. Initial message:
+
+   - Add **Agent: Run** with user input
+   - Store: `{{$firstRun.results.history}}`
+
+2. Follow up message:
+   - Add **Agent: Run** with same configuration
+   - History: `{{$firstRun.results.history}}`
+   - Agent will maintain conversation context
+
+#### Flow Tool Integration
+
+1. Add **Agent: Create Flow Tool**
+
+   - Select existing flow (e.g., "Send Email")
+   - Tool Description: "Send emails to customers"
+
+2. Add **Agent: Create** with tools:
+
+   - Tools: `{{$flowTool.results}}`
+
+3. Agent will invoke your flow when appropriate
+
+### Using Configurations in Designer
+
+When actions output configurations, reference them in subsequent actions:
+
+- **Tool outputs**: `{{$createFlowTool.results}}` or `{{$approvalTool.results}}`
+- **MCP Server outputs**: `{{$addLocalMcp.results}}` or `{{$addRemoteMcp.results}}`
+- **Agent configuration**: `{{$createAgent.results}}`
+
+Pass multiple tools/servers as a list:
+
+- Tools: `[{{$tool1.results}}, {{$tool2.results}}]`
+- MCP Servers: `[{{$mcp1.results}}, {{$mcp2.results}}]`
+
+### File Processing with Agents
+
+The OpenAI component supports file uploads and processing, allowing agents to work with documents, images, and other files.
+
+#### Uploading Files
+
+Use the **File: Upload** action to upload files to OpenAI:
+
+1. Add **File: Upload** action
+
+   - File: Your file data (binary or base64)
+   - Filename: "document.pdf"
+   - Purpose: "assistants" (for use with agents)
+
+2. Store the file ID: `{{$uploadFile.results.id}}`
+
+#### Processing Files with Agents
+
+Pass file IDs to agents for processing PDFs, images, and other documents:
+
+1. Upload your files first:
+
+   ```
+   File: Upload → Returns file ID
+   ```
+
+2. Add **Agent: Create** action:
+
+   - Instructions: "Analyze the provided documents and extract key information"
+   - Model: "gpt-4o" (for best document understanding)
+
+3. Add **Agent: Run** action:
+   - Agent Configuration: `{{$agentCreate.results}}`
+   - User Input: "Summarize the main points from the attached document"
+   - File IDs: `[{{$uploadFile.results.id}}]`
+
+#### Common File Processing Workflows
+
+**PDF Analysis**:
+
+1. Upload PDF with **File: Upload**
+2. Create agent with document analysis instructions
+3. Run agent with file ID to extract text, tables, or answer questions
+
+**Image Processing**:
+
+1. Upload image with **File: Upload**
+2. Create agent with vision capabilities (gpt-4o model)
+3. Run agent with file ID to describe, analyze, or extract text from images
+
+**Multi-File Processing**:
+
+1. Upload multiple files
+2. Pass array of file IDs: `[{{$file1.results.id}}, {{$file2.results.id}}]`
+3. Agent can reference and compare across multiple documents

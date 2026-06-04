@@ -1,0 +1,35 @@
+To connect to Microsoft Intune using OAuth 2.0, create an app registration in Microsoft Entra.
+
+#### Prerequisites
+
+- A Microsoft account with administrative access to Microsoft Entra (formerly Azure AD)
+
+#### Setup Steps
+
+1. Navigate to the [Microsoft Entra admin center](https://entra.microsoft.com/) and go to **Identity** > **Applications** > **App registrations**, then select **New registration**.
+2. Configure the app registration:
+   - Set **Supported account types** to **Accounts in any organizational directory (Any Azure AD directory - Multitenant)** to allow users from different organizations to authenticate.
+   - Under **Redirect URI**, select **Web** as the platform and enter: <OauthCallbackUrl />
+   - Select **Register** to complete the initial setup.
+3. Navigate to **Certificates & Secrets** and create a new **Client Secret**. Copy the **Value** immediately (it will not be shown again).
+4. Navigate to the **Overview** page and copy the **Application (client) ID**.
+5. Navigate to **API Permissions** and select **Add a permission**:
+   - Select **Microsoft Graph**
+   - Select **Delegated permissions**
+   - Under **DeviceManagementManagedDevices**, add the required permissions such as **DeviceManagementManagedDevices.PrivilegedOperations.All** and **DeviceManagementManagedDevices.Read.All**
+   - Add any additional permissions required by the integration
+
+For more information on available permissions, refer to the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference).
+
+#### Configure the Connection
+
+1. Enter the **Application (client) ID** as the **Client ID**
+2. Enter the **Client Secret** value copied earlier
+3. Use the default **Authorize URL**: `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`
+4. For **Token URL**, replace **common** with the Tenant ID when authenticating to a specific tenant:
+   - Default: `https://login.microsoftonline.com/common/oauth2/v2.0/token`
+   - With Tenant ID: `https://login.microsoftonline.com/abf988bf-86f1-41af-91ab-2d7cd011db46/oauth2/v2.0/token`
+
+:::note[Tenant-Specific Authentication]
+Some actions require tenant-specific authentication. Replace the **common** portion of the Token URL with the specific Tenant ID when connecting to a particular organization.
+:::

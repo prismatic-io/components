@@ -1,0 +1,41 @@
+Registering a [Dynamic Webhook](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-webhooks/) requires supplying a [highly configurable payload called "Webhook Details"](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-webhooks/#api-rest-api-3-webhook-post). It's important to configure this for all use cases as each Jira app is only permitted to create and manage one endpoint.
+
+#### Registering a Webhook Notes
+
+Please note that whenever trying to register a webhook, the request payload's structure is different depending on the authentication method:
+
+- For Basic Auth, the payload should be structured as follows on this article: [Basic Auth Webhook Payload Structure](https://developer.atlassian.com/cloud/jira/platform/webhooks/#registering-a-webhook-using-the-jira-rest-api--other-integrations-)
+
+```json
+{
+  "name": "my first webhook via rest",
+  "description": "description of my first webhook",
+  "events": ["jira:issue_created", "jira:issue_updated"],
+  "filters": {
+    "issue-related-events-section": "Project = JRA AND resolution = Fixed"
+  },
+  "excludeBody": false,
+  "secret": "G8j4166a5OkXRD4WbqV3"
+}
+```
+
+- For OAuth, the payload should be structured as follows: [OAuth Webhook Payload Structure](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-webhooks/#api-rest-api-3-webhook-post)
+
+```json
+[
+  {
+    "events": ["jira:issue_created", "jira:issue_updated"],
+    "fieldIdsFilter": ["summary", "customfield_10029"],
+    "jqlFilter": "project = PROJ"
+  },
+  {
+    "events": ["jira:issue_deleted"],
+    "jqlFilter": "project IN (PROJ, EXP) AND status = done"
+  },
+  {
+    "events": ["issue_property_set"],
+    "issuePropertyKeysFilter": ["my-issue-property-key"],
+    "jqlFilter": "project = PROJ"
+  }
+]
+```

@@ -1,0 +1,74 @@
+The **New or Updated Records** trigger checks for new and updated records in NetSuite based on the `lastmodifieddate` field on a configured schedule.
+
+For more information on NetSuite REST API filtering, see [Record Collection Filtering](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545222128.html) and [Searching by lastModifiedDate](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_N3518534.html).
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. Query records using the [REST API Record Service](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/chapter_1540391670.html) with a filter on `lastmodifieddate`
+3. Fetch all matching records using automatic pagination (1,000 records per page)
+4. Return both new and updated records that have been modified since the last poll
+5. Maintain state to track the last poll time automatically
+
+On the first run, the trigger sets the poll timestamp to the current time and returns all matching records. Subsequent runs detect records created or modified after that timestamp.
+
+#### Configuration
+
+- **Connection**: NetSuite OAuth 2.0 or OAuth 2.0 Client Credentials connection
+- **Record Type**: The type of NetSuite record to monitor (e.g., customer, invoice, salesOrder, contact)
+- **Additional Filter**: Optional WHERE clause conditions to append to the query (without 'AND' prefix)
+
+The trigger uses a query in the format: `lastmodifieddate AFTER {lastPolledAt}` and appends any additional filter conditions specified.
+
+**Example Additional Filters:**
+- `isinactive = 'F'` - Only active records
+- `subsidiary.id = '2'` - Records from a specific subsidiary
+- `email IS NOT NULL` - Records with email addresses
+
+See [Record Collection Filtering documentation](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545222128.html) for complete filter syntax.
+
+#### Returned Data
+
+The trigger returns all records that have been created or modified since the last poll. When no changes are detected, returns an empty array and sets `polledNoChanges` to `true`.
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": {
+    "totalRecords": 2,
+    "recordType": "customer",
+    "records": [
+      {
+        "id": "456",
+        "entityid": "CUST-001",
+        "companyname": "Acme Corporation",
+        "email": "contact@acmecorp.example.com",
+        "phone": "555-0123",
+        "lastmodifieddate": "2026-01-23T10:30:00.000Z",
+        "datecreated": "2026-01-23T10:30:00.000Z",
+        "subsidiary": {
+          "id": "1",
+          "refName": "Parent Company"
+        }
+      },
+      {
+        "id": "457",
+        "entityid": "CUST-002",
+        "companyname": "Global Tech Inc",
+        "email": "info@globaltech.example.com",
+        "phone": "555-0456",
+        "lastmodifieddate": "2026-01-23T10:35:00.000Z",
+        "datecreated": "2026-01-22T14:20:00.000Z",
+        "subsidiary": {
+          "id": "1",
+          "refName": "Parent Company"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>

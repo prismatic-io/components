@@ -1,0 +1,429 @@
+fragment OrderDetails on Order {
+  id
+  name
+  app {
+    id
+  }
+  customAttributes {
+    key
+    value
+  }
+  clientIp
+  customerAcceptsMarketing
+  cancelReason
+  cancelledAt
+  #cart_token
+  #checkout_id
+  #checkout_token
+  #client_details
+  closedAt
+  confirmationNumber
+  confirmed
+  #contact_email
+  createdAt
+  currencyCode
+  #current_subtotal_price
+  currentSubtotalPriceSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  currentTotalAdditionalFeesSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+  }
+  #current_total_discounts
+  currentTotalDiscountsSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  currentTotalDutiesSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  #current_total_price
+  currentTotalPriceSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  #current_total_tax
+  currentTotalTaxSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  customerLocale
+  #device_id
+  discountCodes
+  dutiesIncluded
+  email
+  estimatedTaxes
+  displayFinancialStatus
+  displayFulfillmentStatus
+  #landing_site
+  #landing_site_ref
+  retailLocation {
+    id
+  }
+  merchantBusinessEntity {
+    id
+  }
+  merchantOfRecordApp {
+    id
+  }
+  note
+  #note_attributes
+  #number
+  #order_number
+  #order_status_url
+  originalTotalAdditionalFeesSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  originalTotalDutiesSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  paymentGatewayNames
+  phone
+  poNumber
+  presentmentCurrencyCode
+  processedAt
+  #reference
+  sourceIdentifier
+  sourceName
+  registeredSourceUrl
+  #subtotal_price
+  subtotalPriceSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  tags
+  taxExempt
+  taxLines {
+    priceSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+    rate
+    title
+    channelLiable
+  }
+  taxesIncluded
+  test
+  #token
+  totalCashRoundingAdjustment {
+    paymentSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+      presentmentMoney {
+        amount
+        currencyCode
+      }
+    }
+    refundSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+      presentmentMoney {
+        amount
+        currencyCode
+      }
+    }
+  }
+  #total_discounts
+  totalDiscountsSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  #total_line_items_price
+  #total_line_items_price_set
+  totalOutstandingSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+  }
+  #total_price
+  totalPriceSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  totalShippingPriceSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  #total_tax
+  totalTaxSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+    presentmentMoney {
+      amount
+      currencyCode
+    }
+  }
+  totalTipReceivedSet {
+    shopMoney {
+      amount
+      currencyCode
+    }
+  }
+  totalWeight
+  updatedAt
+  #user_id
+  billingAddress {
+    address1
+    address2
+    name
+    lastName
+    company
+    phone
+    zip
+    country
+    countryCodeV2
+    province
+    provinceCode
+  }
+  customer {
+    id
+    displayName
+    firstName
+    lastName
+    phone
+  }
+  lineItems(first: 250) {
+    nodes {
+      id
+      #attributed_staffs
+      currentQuantity
+      unfulfilledQuantity
+      #fulfillment_service
+      #fulfillment_status
+      isGiftCard
+      #grams
+      name
+      #price
+      #price_set
+      originalUnitPriceSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+        presentmentMoney {
+          amount
+          currencyCode
+        }
+      }
+      #product_exists
+      product {
+        id
+      }
+      #properties
+      quantity
+      requiresShipping
+      sku
+      taxable
+      title
+      #total_discount
+      totalDiscountSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+        presentmentMoney {
+          amount
+          currencyCode
+        }
+      }
+      variant {
+        id
+        title
+      }
+      #variant_inventory_management
+      vendor
+      taxLines {
+        channelLiable
+        #price
+        priceSet {
+          shopMoney {
+            amount
+            currencyCode
+          }
+          presentmentMoney {
+            amount
+            currencyCode
+          }
+        }
+        rate
+        title
+      }
+      duties {
+        id
+        price {
+          shopMoney {
+            amount
+            currencyCode
+          }
+        }
+        taxLines {
+          rate
+          title
+          priceSet {
+            shopMoney {
+              amount
+              currencyCode
+            }
+            presentmentMoney {
+              amount
+              currencyCode
+            }
+          }
+          channelLiable
+        }
+      }
+      discountAllocations {
+        allocatedAmountSet {
+          shopMoney {
+            amount
+            currencyCode
+          }
+          presentmentMoney {
+            amount
+            currencyCode
+          }
+        }
+
+        discountApplication {
+          index
+        }
+      }
+    }
+  }
+  paymentTerms {
+    dueInDays
+    paymentTermsName
+    paymentTermsType
+    overdue
+  }
+  refunds {
+    id
+    createdAt
+    note
+    order {
+      id
+      processedAt
+      restockable
+
+      currentTotalAdditionalFeesSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+        presentmentMoney {
+          amount
+          currencyCode
+        }
+      }
+      currentTotalDutiesSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+        presentmentMoney {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+  shippingAddress {
+    firstName
+    address1
+    phone
+    city
+    zip
+    province
+    country
+    lastName
+    address2
+    company
+    latitude
+    longitude
+    name
+    countryCodeV2
+    provinceCode
+  }
+}

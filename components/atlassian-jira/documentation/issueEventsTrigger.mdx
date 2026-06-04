@@ -1,0 +1,187 @@
+The Issue Events trigger manages [Jira webhook subscriptions](https://developer.atlassian.com/cloud/jira/platform/webhooks/) for an instance. This trigger handles the entire webhook lifecycle automatically.
+
+When the trigger is used in a flow:
+- **On Instance Deploy**: The trigger automatically creates a webhook subscription in Jira for the selected issue events (issue creation, updates, deletions, etc.). The webhook target URL is set to the instance's unique webhook URL. For OAuth connections, the webhook is registered with an expiration date and is automatically refreshed by the trigger. For Basic Auth connections, the webhook persists indefinitely.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from Jira to ensure no orphaned webhook configurations remain after instance cleanup.
+
+#### Authentication Methods
+
+This trigger supports both OAuth 2.0 and Basic Authentication, with different webhook registration behaviors:
+
+**OAuth 2.0**:
+- Webhooks expire after 30 days and require periodic refresh
+- The trigger automatically refreshes the webhook on each invocation
+- Webhook payload structure uses the [Dynamic Webhooks format](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-webhooks/#api-rest-api-3-webhook-post)
+- Requires OAuth connection with appropriate scopes
+
+**Basic Authentication**:
+- Webhooks persist indefinitely without expiration
+- No automatic refresh required
+- Webhook payload structure uses the [Classic Webhooks format](https://developer.atlassian.com/cloud/jira/platform/webhooks/#registering-a-webhook-using-the-jira-rest-api--other-integrations-)
+- Requires Basic Auth connection with API token
+
+#### Configuration Requirements
+
+This trigger requires a Jira connection configured in the Atlassian Jira component. The connection can be either:
+
+- **OAuth 2.0** - Requires Client ID, Client Secret, and appropriate OAuth scopes for the events being subscribed to
+- **Basic Auth** - Requires Jira site URL, email address, and API token
+
+#### Event Types
+
+When configuring the trigger, select which Jira issue events should trigger the flow.
+
+<details>
+<summary>Available Events (11)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `jira:issue_created` | Triggered when a new issue is created |
+| `jira:issue_updated` | Triggered when an issue is modified |
+| `jira:issue_deleted` | Triggered when an issue is deleted |
+| `issue_property_set` | Triggered when an issue property is set or updated |
+| `issue_property_deleted` | Triggered when an issue property is deleted |
+| `jira:worklog_updated` | Triggered when work is logged on an issue |
+| `comment_created` | Triggered when a comment is added to an issue |
+| `comment_updated` | Triggered when a comment is modified |
+| `comment_deleted` | Triggered when a comment is removed |
+| `attachment_created` | Triggered when a file is attached to an issue |
+| `attachment_deleted` | Triggered when an attachment is removed |
+
+</details>
+
+A full list of available webhook events is available in the [Jira Webhooks documentation](https://developer.atlassian.com/cloud/jira/platform/webhooks/).
+
+#### Filtering Options
+
+The trigger provides powerful filtering capabilities to limit which issues trigger the flow:
+
+**JQL Filter** (Required):
+Filter issues using [Jira Query Language (JQL)](https://support.atlassian.com/jira-service-management-cloud/docs/use-advanced-search-with-jira-query-language-jql/). This allows precise control over which issues trigger webhooks.
+
+Examples:
+- `project = PROJ` - Only issues in the PROJ project
+- `project IN (PROJ, TEST) AND status = Done` - Issues in specific projects with Done status
+- `assignee = currentUser() AND priority = High` - High priority issues assigned to the current user
+
+**Field IDs Filter** (Optional, OAuth only):
+Specify field IDs to monitor for changes. When provided, the webhook only triggers when those specific fields are updated. This is particularly useful for `jira:issue_updated` events.
+
+Examples:
+- `summary, description` - Only trigger when summary or description changes
+- `customfield_10029` - Only trigger when a specific custom field changes
+
+Leave empty to trigger on any field change.
+
+#### Returned Data
+
+The trigger returns the complete webhook payload from Jira, which varies based on the event type. All payloads include:
+
+**Common Properties:**
+- `webhookEvent` - The event type that triggered the webhook
+- `issue` - Complete issue object with fields, status, priority, assignee, etc.
+- `user` - User who performed the action
+- `changelog` - For update events, lists what changed (old value, new value, field name)
+
+<details>
+<summary>Example payload for jira:issue_created event</summary>
+
+```json
+{
+  "webhookEvent": "jira:issue_created",
+  "issue": {
+    "id": "10001",
+    "key": "PROJ-123",
+    "self": "https://your-domain.atlassian.net/rest/api/3/issue/10001",
+    "fields": {
+      "summary": "New issue summary",
+      "description": {
+        "type": "doc",
+        "version": 1,
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Issue description"
+              }
+            ]
+          }
+        ]
+      },
+      "status": {
+        "name": "To Do",
+        "id": "10000"
+      },
+      "priority": {
+        "name": "Medium",
+        "id": "3"
+      },
+      "assignee": {
+        "accountId": "5b10a2844c20165700ede21g",
+        "displayName": "John Smith",
+        "emailAddress": "john@example.com"
+      },
+      "project": {
+        "id": "10000",
+        "key": "PROJ",
+        "name": "Example Project"
+      },
+      "issuetype": {
+        "id": "10001",
+        "name": "Task"
+      },
+      "created": "2024-11-10T10:30:00.000+0000",
+      "updated": "2024-11-10T10:30:00.000+0000"
+    }
+  },
+  "user": {
+    "accountId": "5b10a2844c20165700ede21g",
+    "displayName": "John Smith",
+    "emailAddress": "john@example.com"
+  },
+  "timestamp": 1699614600000
+}
+```
+
+</details>
+
+<details>
+<summary>Example payload for jira:issue_updated event</summary>
+
+```json
+{
+  "webhookEvent": "jira:issue_updated",
+  "issue": {
+    "id": "10001",
+    "key": "PROJ-123",
+    "fields": {
+      "summary": "Updated issue summary",
+      "status": {
+        "name": "In Progress",
+        "id": "10001"
+      }
+    }
+  },
+  "user": {
+    "accountId": "5b10a2844c20165700ede21g",
+    "displayName": "John Smith"
+  },
+  "changelog": {
+    "items": [
+      {
+        "field": "status",
+        "fieldtype": "jira",
+        "from": "10000",
+        "fromString": "To Do",
+        "to": "10001",
+        "toString": "In Progress"
+      }
+    ]
+  },
+  "timestamp": 1699614700000
+}
+```
+
+</details>

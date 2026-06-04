@@ -1,0 +1,15 @@
+#import "../../fragments/WebhookSubscriptionDetails.gql"
+mutation CreateWebhook(
+  $topic: WebhookSubscriptionTopic!
+  $webhookSubscription: WebhookSubscriptionInput!
+) {
+  webhookSubscriptionCreate(topic: $topic, webhookSubscription: $webhookSubscription) {
+    userErrors {
+      field
+      message
+    }
+    webhookSubscription {
+      ...WebhookSubscriptionDetails
+    }
+  }
+}

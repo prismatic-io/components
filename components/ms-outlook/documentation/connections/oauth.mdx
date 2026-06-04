@@ -1,0 +1,79 @@
+:::warning[Deprecated]
+This connection type is deprecated. Use the **OAuth 2.0 Authorization Code** connection instead, which provides the same functionality with improved configuration.
+:::
+
+<Vimeo video="907604023" />
+
+You will first need to create and configure a new "App Registration" within your [Azure Active Directory tenant](https://portal.azure.com/#home).
+When creating the application you will be prompted to select the 'Supported account types'. Under this section, be sure to select 'Accounts in any organizational directory (Any Azure AD directory - Multitenant)'.
+
+#### Prerequisites
+
+- Access to an [Azure Active Directory tenant](https://portal.azure.com/#home)
+- Permissions to create App Registrations
+
+#### Setup Steps
+
+1. Create and configure a new **App Registration** within the Azure Active Directory tenant
+2. When creating the application, select **Supported account types**:
+   - Choose **Accounts in any organizational directory (Any Azure AD directory - Multitenant)** to allow access from other organizations
+3. Under **Platforms**, add the **Web** platform:
+   - Add the OAuth 2.0 callback URL — <OauthCallbackUrl /> — as a **Redirect URI**
+4. Navigate to **Certificates & Secrets** and create a new **Client Secret**:
+   - Copy the **Value** of the client secret (this will only be shown once)
+5. Navigate to the **Overview** page and copy the **Application (client) ID**
+
+#### Configure the Connection
+
+- Enter the **Application (client) ID** value into the **Client ID** field
+- Enter the **Client Secret** value into the same named field
+- If Multitenant was not selected when creating the Azure application, replace the **Authorize URL** and **Token URL** with tenant-specific values
+- The default scopes are pre-configured (any scopes not needed can be removed):
+  - `https://graph.microsoft.com/User.Read` — reads basic user data
+  - `https://graph.microsoft.com/Calendars.ReadWrite` — manages Outlook calendar
+  - `https://graph.microsoft.com/Mail.ReadWrite` — manages email
+  - `https://graph.microsoft.com/Mail.Send` — sends email
+  - Ensure the `offline_access` scope is included in the app registration. It is essential to maintain the OAuth connection and receive refresh tokens. Without it, users will need to re-authenticate every hour.
+
+After saving the integration, users can authenticate with OAuth 2.0 to access their Microsoft Outlook data.
+
+#### App Verification and Admin Consent
+
+Microsoft requires Azure AD app registrations used in multi-tenant deployments to complete a publisher verification process. This review confirms the app developer's identity, giving end users confidence that they are authorizing a legitimate, verified application.
+
+Azure AD app registrations have two distinct verification concepts that affect how users experience the authentication flow.
+
+#### Publisher Verification
+
+**Complete publisher verification before deploying to end users.** Without it, the Microsoft consent screen displays **"Unverified"** next to the app name. This reduces user trust and may prevent users in organizations with strict Azure AD policies from being able to authorize the app at all.
+
+To verify the publisher:
+
+1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/)
+2. In the [Microsoft Entra Admin Center](https://entra.microsoft.com/), open the app registration
+3. Under **Branding & properties**, click **Add a verified publisher**
+4. Enter the MPN ID and confirm
+
+Once verified, the consent screen displays the organization name with a verified badge instead of "Unverified."
+
+#### Admin Consent
+
+Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error.
+
+A tenant administrator can grant consent using either method:
+
+**Method 1 — Admin Consent URL:**
+
+Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
+
+    https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
+
+**Method 2 — Microsoft Entra Admin Center:**
+
+1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
+2. Select the app registration
+3. Under **Permissions**, click **Grant admin consent for [organization name]**
+
+:::note[Delegated vs. Application Permissions]
+Delegated permissions (user-level) typically do not require admin consent unless they are classified as high privilege. Application permissions always require admin consent. Review the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to identify which permissions require consent.
+:::

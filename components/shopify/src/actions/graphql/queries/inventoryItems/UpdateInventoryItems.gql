@@ -1,0 +1,12 @@
+#import "../../fragments/InventoryItemDetails.gql"
+mutation UpdateInventoryItems($id: ID!, $input: InventoryItemInput!) {
+  inventoryItemUpdate(id: $id, input: $input) {
+    inventoryItem {
+      ...InventoryItemDetails
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

@@ -1,0 +1,26 @@
+#### Example Shopify Integration
+
+An example Shopify integration is available in the GitHub examples repository.
+Import the integration definition to try it out.
+
+<ExampleIntegrationLink href="https://github.com/prismatic-io/examples/blob/main/integrations/shopify-example.yml" />
+
+The example integration consists of four flows that demonstrate how to interact with the Shopify API:
+
+- **Initial Product Sync** runs when an instance of the integration is deployed.
+  It loops over Shopify's paginated API, fetching pages of products and sending all products to an "Acme API" (replace with the desired API endpoint).
+- **Product Update Listener** subscribes to `product/create`, `product/update` and `product/delete` events from Shopify.
+  When a product is created, updated, or deleted in Shopify, the integration receives a webhook request from Shopify and sends the create, update, or delete to the "Acme API".
+- **List Inventory Levels** fetches inventory levels for all products in Shopify at a particular **location** specified as part of the deployment process.
+  The flow is triggered synchronously, so the caller receives a response with a JSON body containing the inventory levels.
+- **Create New Product** is a flow that creates a new product in Shopify.
+  To invoke the flow, send a POST request to the flow's webhook endpoint with a format that looks like this:
+
+  ```json
+  {
+    "name": "Green T-Shirt",
+    "description": "A green t-shirt",
+    "product_type": "T-Shirt",
+    "vendor": "Acme"
+  }
+  ```

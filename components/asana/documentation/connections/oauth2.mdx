@@ -1,0 +1,45 @@
+To connect to Asana using OAuth 2.0, create an OAuth application within Asana's developer portal. This allows users to authenticate with their Asana credentials.
+
+#### Prerequisites
+
+- An active Asana account
+- Permissions to create OAuth applications in Asana
+
+#### Setup Steps
+
+1. Log in to Asana and navigate to [app.asana.com/0/my-apps](https://app.asana.com/0/my-apps)
+2. Click **Create new app**
+3. Enter a name for the application and agree to Asana's terms and conditions
+4. Open **OAuth** from the left-hand menu
+5. Click **+ Add redirect URL** and enter the OAuth callback URL: <OauthCallbackUrl />
+6. Copy the generated **Client ID** and **Client secret** values
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client secret** from the OAuth application
+- For **Scopes**, specify the required permissions using the format `<resource>:<action>`:
+  - Leave blank to request full access (all available scopes)
+  - Refer to [Asana's OAuth scopes documentation](https://developers.asana.com/docs/oauth-scopes) for a complete list of available scopes
+
+#### Recommended Scopes
+
+| Scope | Description |
+|-------|-------------|
+| `default` | Basic access to user identity and workspace membership |
+| `tasks:read` | Read tasks, subtasks, and task details |
+| `tasks:write` | Create, update, and delete tasks |
+| `projects:read` | Read projects and project details |
+| `projects:write` | Create, update, and delete projects |
+| `users:read` | Read user profiles and team membership |
+| `workspaces:read` | Read workspace and organization details |
+| `attachments:read` | Read file attachments on tasks |
+| `attachments:write` | Upload and manage attachments |
+| `webhooks:read` | Read webhook subscriptions |
+| `webhooks:write` | Create and manage webhooks |
+
+**Example scope configurations:**
+
+- **Read-only access**: `default tasks:read projects:read users:read workspaces:read`
+- **Task management**: `default tasks:read tasks:write projects:read users:read`
+- **Full project access**: `default tasks:read tasks:write projects:read projects:write users:read workspaces:read`
+- **Webhook-enabled**: `default tasks:read projects:read webhooks:read webhooks:write`

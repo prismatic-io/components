@@ -1,0 +1,12 @@
+#import "../../fragments/CollectionDetails.gql"
+query ListCollections($first: Int!, $cursor: String) {
+  collections(first: $first, after: $cursor) {
+    nodes {
+      ...CollectionDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

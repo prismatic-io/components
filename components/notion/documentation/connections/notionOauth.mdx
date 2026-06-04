@@ -1,0 +1,58 @@
+To create an OAuth 2.0 integration for Notion, set up a public integration that allows users to authenticate with their Notion workspaces.
+
+For detailed information about Notion integrations, refer to the [Notion Integration Documentation](https://developers.notion.com/docs/authorization).
+
+#### Prerequisites
+
+- A Notion account with permission to create integrations
+- Access to the [Notion integration settings](https://notion.so/my-integrations)
+
+#### Setup Steps
+
+1. Visit [notion.so/my-integrations](https://notion.so/my-integrations) and log into Notion.
+2. Click **Create new integration**.
+3. Fill in the required integration details:
+   - **Name**: Enter a descriptive name for the integration
+   - **Logo**: Optionally upload a logo
+   - **Associated workspace**: Select the workspace where the integration will be created
+4. Under **Capabilities**, select the permissions needed for the integration:
+   - **Read content**: Allows reading pages, databases, and other content
+   - **Update content**: Allows modifying existing content
+   - **Insert content**: Allows creating new content
+5. Under **Content Capabilities**, choose specific content types if needed (pages, databases, comments, etc.).
+6. Save the integration settings.
+
+#### Configure OAuth Settings
+
+1. Navigate to the **Distribution** tab in the integration settings.
+2. Select **Public integration** to enable OAuth 2.0 authentication.
+3. Under **Redirect URIs**, add the OAuth callback URL: <OauthCallbackUrl />
+4. Configure any additional OAuth settings as needed.
+5. Review and save the distribution settings.
+
+#### Get OAuth Credentials
+
+1. Navigate to the **Secrets** tab in the integration settings.
+2. Locate the OAuth credentials section.
+3. Copy the **OAuth client ID** value.
+4. Copy the **OAuth client secret** value.
+
+#### Configure the Connection
+
+- Enter the **OAuth client ID** into the **Client ID** field.
+- Enter the **OAuth client secret** into the **Client Secret** field.
+
+When users authenticate through OAuth 2.0, they will be redirected to Notion's authorization page where they can select which pages and databases to share with the integration. The integration will have access only to the content explicitly shared by the user, within the capabilities configured during integration setup.
+
+#### Content Access and Permissions
+
+Notion uses a page-scoped consent model. During authorization, users select specific pages and databases to share with the integration. The integration does not automatically gain access to all content in the workspace.
+
+If actions fail with permission errors or return no results for content that exists in Notion, the user may not have shared the relevant pages during authorization. To grant the integration access to additional content:
+
+1. Navigate to the Notion page or database that needs to be accessible
+2. Click **...** (menu) in the upper right corner of the page
+3. Select **Connections** and locate the integration
+4. Click to confirm access
+
+Alternatively, the user can re-authorize the integration and select the additional pages during the OAuth flow.

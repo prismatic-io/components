@@ -1,0 +1,49 @@
+The [BambooHR](https://www.bamboohr.com/) webhook trigger receives and validates incoming webhook requests from BambooHR. This trigger performs HMAC signature verification to ensure that payloads originate from BambooHR and have not been tampered with in transit.
+
+For details on configuring webhooks in BambooHR, refer to the [BambooHR Webhooks documentation](https://documentation.bamboohr.com/docs/webhooks).
+
+#### How It Works
+
+When BambooHR sends a webhook request, this trigger:
+
+1. Extracts the `x-bamboohr-signature` and `x-bamboohr-timestamp` headers from the incoming request
+2. Computes an HMAC-SHA256 hash using the request body concatenated with the timestamp and the stored signing secret
+3. Compares the computed hash against the signature provided in the header
+4. If the signatures match, the payload is accepted and passed to the flow for processing
+5. If the signatures do not match, the request is rejected with an error
+
+The signing secrets are stored in cross-flow state and may include multiple keys to support secret rotation.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "headers": {
+    "x-bamboohr-signature": "abc123def456...",
+    "x-bamboohr-timestamp": "1700000000",
+    "content-type": "application/json"
+  },
+  "body": {
+    "data": {
+      "employees": [
+        {
+          "id": "123",
+          "action": "Updated",
+          "changedFields": ["firstName", "lastName"]
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The trigger does not have configurable inputs. Webhook signing secrets are managed through cross-flow state.
+- Multiple signing secrets are supported, allowing for seamless secret rotation without downtime.
+- If none of the stored signing secrets produce a matching signature, the request is rejected to protect against unauthorized or tampered payloads.

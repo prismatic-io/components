@@ -1,0 +1,78 @@
+Snowflake uses OAuth 2.0 for authentication and making API calls. This connection type requires creating a security integration within Snowflake and configuring OAuth settings.
+
+For additional details, refer to the [Snowflake OAuth custom client documentation](https://docs.snowflake.com/en/user-guide/oauth-custom).
+
+#### Prerequisites
+
+- Active Snowflake account with appropriate permissions to create security integrations
+- User account with roles excluding `ACCOUNTADMIN`, `SECURITYADMIN`, or `ORGADMIN` (these roles are blocked from OAuth authentication by default)
+
+#### Setup Steps
+
+1. Log in to Snowflake and create a new worksheet to configure the security integration.
+
+2. Create a new security integration by copying the following SQL statement into Snowflake and selecting the **Play** button at the top right of the screen. Replace `INTEGRATIONNAME` with a descriptive name:
+
+```sql
+CREATE SECURITY INTEGRATION
+  INTEGRATIONNAME
+  TYPE = OAUTH
+  OAUTH_CLIENT = CUSTOM
+  OAUTH_REDIRECT_URI = '<OauthCallbackUrl />'
+  OAUTH_CLIENT_TYPE = 'PUBLIC'
+```
+
+Note: The `OAUTH_REDIRECT_URI` should be set to the OAuth callback URL: <OauthCallbackUrl />
+
+3. Retrieve the **Authorization URL**, **Token URL**, and **Client ID** by running the following SQL statement. Replace `INTEGRATIONNAME` with the name used in step 2:
+
+```sql
+DESCRIBE INTEGRATION INTEGRATIONNAME
+```
+
+4. Retrieve the **Client Secret** by running the following SQL statement:
+
+```sql
+SELECT SYSTEM$SHOW_OAUTH_CLIENT_SECRETS('INTEGRATIONNAME')
+```
+
+Copy the value listed as **OAUTH_CLIENT_SECRET** from the returned results.
+
+5. Enable the security integration by running the following SQL statement:
+
+```sql
+ALTER SECURITY INTEGRATION INTEGRATIONNAME SET ENABLED = TRUE
+```
+
+#### Configuring Scopes
+
+Scopes control which Snowflake role is used during the OAuth session. If no scope is specified, the user's default role is used.
+
+**Scope Format:** `session:role:<ROLE_NAME>`
+
+**Common Scopes:**
+
+| Scope | Description |
+|-------|-------------|
+| `session:role:PUBLIC` | Use the PUBLIC role |
+| `session:role:SYSADMIN` | Use the SYSADMIN role for database/warehouse management |
+| `session:role:USERADMIN` | Use the USERADMIN role for user/role management |
+| `session:role:ANALYST` | Use a custom ANALYST role (if configured) |
+
+**Examples:**
+
+- Single role: `session:role:SYSADMIN`
+- Multiple roles (space-separated): `session:role:SYSADMIN session:role:PUBLIC`
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0** and enter:
+
+- **Authorization URL**: From step 3
+- **Token URL**: From step 3
+- **Client ID**: From step 3
+- **Client Secret**: From step 4
+- **Scopes**: Optionally configure scopes to control the Snowflake role
+- **Headers**: Optionally add additional authorization request headers
+
+

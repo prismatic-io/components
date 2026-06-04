@@ -1,0 +1,90 @@
+The **New and Updated Events** trigger checks for new and updated calendar events on a configured schedule. This trigger uses Google Calendar's incremental synchronization to efficiently detect changes without fetching the entire calendar on each poll.
+
+For information on Google Calendar's synchronization mechanism, see the [Google Calendar Sync documentation](https://developers.google.com/calendar/api/guides/sync).
+
+#### How It Works
+
+This polling trigger uses a stateful synchronization approach:
+
+1. **Initial Poll**: On the first execution, establishes a sync token representing the current calendar state
+2. **Subsequent Polls**: Uses the sync token to fetch only events that changed since the last poll
+3. **Change Detection**: Automatically categorizes events as created, updated, or deleted based on timestamps and status
+4. **State Persistence**: Stores the sync token between polls to maintain continuity
+
+#### Returned Data
+
+<details>
+<summary>Example payload with multiple changes</summary>
+
+```json
+{
+  "changes": {
+    "summary": {
+      "totalChanges": 3,
+      "created": 1,
+      "updated": 1,
+      "deleted": 1,
+      "syncTokenAvailable": true
+    },
+    "createdEvents": [
+      {
+        "changeType": "created",
+        "id": "abc123event",
+        "summary": "New Team Meeting",
+        "status": "confirmed",
+        "start": {
+          "dateTime": "2026-01-30T14:00:00-06:00",
+          "timeZone": "America/Chicago"
+        },
+        "end": {
+          "dateTime": "2026-01-30T15:00:00-06:00",
+          "timeZone": "America/Chicago"
+        },
+        "created": "2026-01-28T10:30:00.000Z",
+        "updated": "2026-01-28T10:30:00.000Z",
+        "organizer": "user@example.com",
+        "htmlLink": "https://www.google.com/calendar/event?eid=..."
+      }
+    ],
+    "updatedEvents": [
+      {
+        "changeType": "updated",
+        "id": "def456event",
+        "summary": "Updated Meeting Time",
+        "status": "confirmed",
+        "start": {
+          "dateTime": "2026-01-30T15:00:00-06:00",
+          "timeZone": "America/Chicago"
+        },
+        "end": {
+          "dateTime": "2026-01-30T16:00:00-06:00",
+          "timeZone": "America/Chicago"
+        },
+        "created": "2026-01-20T08:00:00.000Z",
+        "updated": "2026-01-28T11:15:00.000Z",
+        "organizer": "user@example.com",
+        "htmlLink": "https://www.google.com/calendar/event?eid=..."
+      }
+    ],
+    "deletedEvents": [
+      {
+        "changeType": "deleted",
+        "id": "ghi789event",
+        "summary": "Cancelled Meeting",
+        "status": "cancelled",
+        "start": {
+          "dateTime": "2026-01-29T10:00:00-06:00"
+        },
+        "end": {
+          "dateTime": "2026-01-29T11:00:00-06:00"
+        }
+      }
+    ],
+    "allChanges": []
+  },
+  "calendarId": "primary",
+  "syncToken": "newSyncTokenForNextPoll"
+}
+```
+
+</details>

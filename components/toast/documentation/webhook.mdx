@@ -1,0 +1,57 @@
+This trigger receives and validates webhook requests from [Toast](https://doc.toasttab.com/doc/devguide/index.html). It verifies the authenticity of incoming webhook payloads using HMAC-SHA256 signature validation against the `Toast-Signature` header.
+
+#### How It Works
+
+When Toast sends a webhook event, the trigger:
+
+1. Computes an HMAC-SHA256 signature using the configured **Secret**, the request body, and the timestamp from the payload
+2. Compares the computed signature against the value in the `Toast-Signature` HTTP header
+3. Rejects the request if the header is missing or the signatures do not match
+4. Returns the validated payload if the signatures match
+
+This signature verification ensures that only legitimate webhook requests from Toast are processed, protecting against spoofed or tampered payloads.
+
+#### Configuration
+
+- **Secret**: The webhook secret key generated when the webhook subscription is created in Toast. Each subscription has a unique secret key per environment. Enter the secret that corresponds to the specific webhook subscription being used.
+
+#### Setting Up Webhooks in Toast
+
+1. Navigate to the [Toast developer portal](https://doc.toasttab.com/doc/devguide/apiDeveloperPortal.html) and locate the webhook subscription settings
+2. Create a new webhook subscription for the desired event category
+3. Copy the generated **secret key** for the subscription
+4. Enter the secret key into the **Secret** input of the trigger configuration
+5. Set the webhook endpoint URL to the instance's webhook URL
+
+For detailed instructions on creating webhook subscriptions, see the [Toast webhook setup guide](https://doc.toasttab.com/doc/cookbook/apiWebhookUsageChecklist.html).
+
+#### Signature Verification Details
+
+Toast uses HMAC-SHA256 to sign webhook messages. The signature is computed by concatenating the request body and the timestamp from the payload, then hashing the result with the subscription's secret key. The output is Base64-encoded and sent in the `Toast-Signature` header.
+
+For more information on message signing, see the [Toast message signing documentation](https://doc.toasttab.com/doc/devguide/apiMessageSigning.html).
+
+#### Event Types
+
+Toast supports webhook notifications for several event categories. The specific events received depend on the webhook subscription configuration in the Toast developer portal.
+
+<details>
+<summary>Available Event Categories (6)</summary>
+
+| Category | Description |
+|----------|-------------|
+| `partners` | Notifications when an integration is added to or removed from a restaurant location |
+| `stock` | Inventory and stock level change notifications |
+| `orders` | Order creation, update, and completion notifications |
+| `menus` | Menu item and menu group change notifications |
+| `restaurant_availability` | Notifications when a restaurant's ability to accept online orders changes |
+| `guest_order_fulfillment_status` | Guest order fulfillment status update notifications |
+
+</details>
+
+For a complete list of event types and their payload structures, see the [Toast webhook basics documentation](https://doc.toasttab.com/doc/devguide/apiWebhookBasics.html).
+
+#### Notes
+
+- Each webhook subscription has a unique secret key per environment. Different subscription types (e.g., stock vs. partners) use different keys even within the same integration.
+- When a webhook event is received with a valid structure, submit a 2xx response before applying any additional business logic to allow Toast API clients to scale efficiently.

@@ -1,0 +1,75 @@
+This trigger polls the [Bill.com API](https://developer.bill.com/reference/api-reference-overview) for new and updated records of the selected resource type on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. On each execution, the trigger sends a request to the Bill.com `List` endpoint corresponding to the selected resource type, applying a server-side filter of `updatedTime > lastPolledAt` to retrieve only records changed since the last successful poll
+3. Results are paginated automatically until all matching records have been retrieved
+4. Records are categorized client-side as **created** or **updated** by comparing each record's `createdTime` and `updatedTime` against the timestamp of the last successful poll. Newly created records have `createdTime` newer than the last poll; existing records with `updatedTime` newer than the last poll are classified as updated
+5. The trigger updates its internal state with the current timestamp after each poll so subsequent executions only surface records changed since the previous run
+6. When no records match on a given run, the trigger reports `polledNoChanges` so downstream flows are not invoked unnecessarily
+7. If both **Show New Records** and **Show Updated Records** are disabled, the trigger short-circuits without calling the API and returns empty arrays
+
+#### Supported Resource Types
+
+The trigger supports the following Bill.com resources:
+
+| Resource | List Endpoint | Change Detection |
+|----------|---------------|------------------|
+| Bills | `/List/Bill.json` | Timestamp (`createdTime`, `updatedTime`) |
+| Customers | `/List/Customer.json` | Timestamp (`createdTime`, `updatedTime`) |
+| Invoices | `/List/Invoice.json` | Timestamp (`createdTime`, `updatedTime`) |
+| Vendors | `/List/Vendor.json` | Timestamp (`createdTime`, `updatedTime`) |
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Bill.com connection used to authenticate API requests
+- **Resource Type**: The type of resource to poll for changes — Bills, Customers, Invoices, or Vendors
+- **Show New Records**: When enabled, newly created records are included in the trigger output. Defaults to `true`
+- **Show Updated Records**: When enabled, records that were updated after the last poll are included in the trigger output. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object containing two arrays — `created` for newly created records and `updated` for modified records. Each array contains full Bill.com resource objects matching the selected resource type.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "00n01ABCDEFGHIJKL",
+        "createdTime": "2024-08-21T12:00:00.000+0000",
+        "updatedTime": "2024-08-21T12:00:00.000+0000",
+        "vendorId": "00v01MNOPQRSTUVWX",
+        "invoiceNumber": "INV-1001",
+        "amount": 250.00,
+        "dueDate": "2024-09-20"
+      }
+    ],
+    "updated": [
+      {
+        "id": "00n01YZABCDEFGHIJ",
+        "createdTime": "2024-08-10T09:00:00.000+0000",
+        "updatedTime": "2024-08-21T14:22:00.000+0000",
+        "vendorId": "00v01KLMNOPQRSTUV",
+        "invoiceNumber": "INV-0987",
+        "amount": 1200.00,
+        "dueDate": "2024-09-10"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- On the very first execution, the trigger has no prior poll timestamp and uses the current time as its baseline, so no historical records are emitted on the initial run — only changes that occur after the trigger is enabled will be surfaced
+- The Bill.com `List` API combines multiple filters with `AND` and does not support `OR`, so a single filter on `updatedTime` is used. This captures both newly created records (whose `updatedTime` equals their `createdTime`) and records that were modified after the last poll
+- Refer to the [Bill.com API documentation](https://developer.bill.com/reference/api-reference-overview) for rate limit details and the full set of fields available on each resource type

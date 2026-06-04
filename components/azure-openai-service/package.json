@@ -1,0 +1,25 @@
+{
+  "name": "@prismatic-io/azure-openai-service",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "npm run format && npm run lint && webpack",
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "echo 'no tests'",
+    "publish": "npm run build && prism components:publish"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "openai": "^4.47.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.6",
+    "@types/node": "^25.4.0",
+    "copy-webpack-plugin": "13.0.0",
+    "ts-loader": "9.5.4",
+    "typescript": "5.9.3",
+    "webpack": "5.105.4",
+    "webpack-cli": "6.0.1"
+  }
+}

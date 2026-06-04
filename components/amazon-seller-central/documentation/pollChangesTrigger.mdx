@@ -1,0 +1,62 @@
+This trigger polls the [Amazon Selling Partner API](https://developer-docs.amazon.com/sp-api/docs/) for new and updated records across a selected resource type on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches records from the selected Amazon Seller Central resource, optionally filtered by marketplace
+3. Records are categorized as **created** or **updated** based on timestamp fields, compared against the last successful poll time
+4. The trigger updates its internal state after each poll, storing the poll timestamp for use in the next execution
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Amazon Seller Central connection used to authenticate API requests
+- **Resource Type**: The Amazon Seller Central resource to monitor. Available options:
+
+  | Resource | Change Detection | Tracks New | Tracks Updated |
+  |----------|-----------------|------------|---------------|
+  | Orders | Timestamp (`PurchaseDate`) | Yes | Yes |
+  | Feeds | Timestamp (submission date) | Yes | No |
+
+- **Marketplace IDs**: An optional list of marketplace IDs used to filter Orders results to specific Amazon marketplaces. When left empty, orders across all accessible marketplaces are returned. Does not apply to Feeds
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Applies only to Orders. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. For Feeds, `updated` is always an empty array.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "AmazonOrderId": "111-1234567-1234567",
+        "PurchaseDate": "2024-01-15T10:30:00Z",
+        "OrderStatus": "Pending",
+        "MarketplaceId": "ATVPDKIKX0DER"
+      }
+    ],
+    "updated": [
+      {
+        "AmazonOrderId": "111-9876543-9876543",
+        "PurchaseDate": "2024-01-10T09:00:00Z",
+        "OrderStatus": "Shipped",
+        "MarketplaceId": "ATVPDKIKX0DER"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Orders use `PurchaseDate` for both new and updated detection — an order is classified as **created** if its `PurchaseDate` exceeds the last poll time; updated orders (status changes, shipment updates) are detected via a separate `LastUpdateDate` field
+- Feeds do not expose an update timestamp, so only newly submitted feeds are tracked
+- Marketplace ID filtering applies only to Orders; specifying marketplace IDs when monitoring Feeds has no effect

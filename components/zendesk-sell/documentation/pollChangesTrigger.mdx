@@ -1,0 +1,58 @@
+This trigger polls the [Zendesk Sell API](https://developer.zendesk.com/api-reference/sales-crm/introduction/) for new and updated records of a selected resource type on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches all records of the selected resource type using pagination, following `next_page` links until all pages are retrieved (100 records per page)
+3. Records are filtered client-side: those with a `created_at` timestamp after the last poll are classified as new; those with an `updated_at` timestamp after the last poll but a `created_at` at or before it are classified as updated
+4. The trigger updates its internal state after each poll, recording the current timestamp for use in the next comparison
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Zendesk Sell connection to authenticate API requests
+- **Resource Type**: The type of Zendesk Sell resource to monitor
+
+| Resource | Tracks New | Tracks Updated |
+|----------|------------|---------------|
+| Deals | Yes | Yes |
+| Leads | Yes | Yes |
+| Contacts | Yes | Yes |
+| Tasks | Yes | Yes |
+| Notes | Yes | Yes |
+
+- **Show New Records**: When enabled, records created since the last poll are included in the trigger output
+- **Show Updated Records**: When enabled, records modified since the last poll are included in the trigger output
+
+#### Returned Data
+
+Returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 1234567,
+        "name": "Acme Corp Deal",
+        "created_at": "2024-11-10T10:30:00Z",
+        "updated_at": "2024-11-10T10:30:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": 7654321,
+        "name": "Global Industries Deal",
+        "created_at": "2024-11-08T09:00:00Z",
+        "updated_at": "2024-11-10T14:22:00Z"
+      }
+    ]
+  }
+}
+```
+
+#### Notes
+
+- All records are fetched on every poll and filtered in memory by timestamp. For large datasets, this may result in significant API usage and longer poll durations.
+- A record is classified as updated only if its `created_at` is at or before the last poll time. Records where both timestamps are after the last poll are classified as new, not updated.

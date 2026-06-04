@@ -1,0 +1,97 @@
+<Vimeo video="907604023" />
+
+The Microsoft Power BI component authenticates requests through the Microsoft Graph API using OAuth 2.0.
+
+#### Prerequisites
+
+- A Microsoft Azure account with access to the Azure Portal
+- Appropriate permissions to register applications in Azure Active Directory
+
+#### Setup Steps
+
+To create an OAuth 2.0 application for Power BI:
+
+1. Navigate to the [Azure Portal](https://portal.azure.com/) and sign in
+2. Select **Azure Active Directory** from the menu
+3. Click **App registrations** and then **New registration**
+4. Configure the application:
+   - Enter a name for the application
+   - Choose the appropriate **Supported account types** (single tenant or multi-tenant)
+   - Under **Redirect URI**, select **Web** and enter: <OauthCallbackUrl />
+5. Click **Register** to create the application
+6. After registration, locate and copy the **Application (client) ID** from the Overview page
+7. Navigate to **Certificates & secrets** in the left menu
+8. Click **New client secret**, provide a description and expiration period, then click **Add**
+9. Copy the **Value** of the newly created client secret immediately (it will not be shown again)
+10. Navigate to **API permissions** in the left menu
+11. Click **Add a permission** and select **Power BI Service**
+12. Select **Delegated permissions** and choose the appropriate scopes based on the integration requirements
+13. Ensure the `offline_access` scope is included to maintain the OAuth connection and receive refresh tokens
+
+For detailed instructions, refer to [Microsoft's documentation on registering Power BI apps](https://docs.microsoft.com/en-us/power-bi/developer/embedded/register-app?tabs=customers%2CAzure).
+
+#### Configure the Connection
+
+Configure the OAuth 2.0 connection with the following values:
+
+- **Client ID**: Enter the **Application (client) ID** from the Azure Portal
+- **Client Secret**: Enter the **Value** of the client secret created in step 9
+- **Scopes**: Add the Power BI scopes configured in step 12. Refer to the [Microsoft Graph API permissions reference](https://docs.microsoft.com/en-us/graph/permissions-reference) for available options. The `offline_access` scope is essential for maintaining the connection
+- **Authorize URL** and **Token URL**:
+  - For single-tenant apps: Use the tenant-specific endpoints that include the Azure Tenant ID
+  - For multi-tenant apps: Use the `common` endpoints (default configuration)
+
+:::note[Tenant Configuration]
+The OAuth endpoints depend on the tenant configuration. Single-tenant applications require the Azure Tenant ID in the authorization and token URLs. Multi-tenant applications can use the `common` endpoints. Consult [Microsoft's authentication documentation](https://docs.microsoft.com/en-us/power-bi/developer/automation/walkthrough-push-data-get-token) for details.
+:::
+
+:::warning[Refresh Token Requirements]
+The `offline_access` scope must be included in the app registration. Without this scope, users will need to re-authenticate every hour when the access token expires.
+:::
+
+#### Verify Connection
+
+After configuring the connection, test the authentication by executing a Power BI action. Refer to the [Microsoft Power BI REST API documentation](https://docs.microsoft.com/en-us/rest/api/power-bi/) for available API operations and endpoints.
+
+#### App Verification and Admin Consent
+
+Microsoft requires Azure AD app registrations used in multi-tenant deployments to complete a publisher verification process. This review confirms the app developer's identity, giving end users confidence that they are authorizing a legitimate, verified application.
+
+Azure AD app registrations have two distinct verification concepts that affect how users experience the authentication flow.
+
+#### Publisher Verification
+
+**Complete publisher verification before deploying to end users.** Without it, the Microsoft consent screen displays **"Unverified"** next to the app name. This reduces user trust and may prevent users in organizations with strict Azure AD policies from being able to authorize the app at all.
+
+To verify the publisher:
+
+1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/)
+2. In the [Microsoft Entra Admin Center](https://entra.microsoft.com/), open the app registration
+3. Under **Branding & properties**, click **Add a verified publisher**
+4. Enter the MPN ID and confirm
+
+Once verified, the consent screen displays the organization name with a verified badge instead of "Unverified."
+
+#### Admin Consent
+
+Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error.
+
+A tenant administrator can grant consent using either method:
+
+**Method 1 — Admin Consent URL:**
+
+Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
+
+    https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
+
+**Method 2 — Microsoft Entra Admin Center:**
+
+1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
+2. Select the app registration
+3. Under **Permissions**, click **Grant admin consent for [organization name]**
+
+:::note[Delegated vs. Application Permissions]
+Delegated permissions (user-level) typically do not require admin consent unless they are classified as high privilege. Application permissions always require admin consent. Review the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to identify which permissions require consent.
+:::
+
+<Vimeo video="907604023" />

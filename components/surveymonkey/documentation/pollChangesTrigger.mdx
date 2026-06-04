@@ -1,0 +1,62 @@
+The **New and Updated Records** trigger polls a SurveyMonkey survey for responses that have changed since the last poll. It uses the bulk responses endpoint, which returns full response detail including each respondent's answers.
+
+The trigger checks for:
+
+- **Created**: Responses whose `date_created` falls after the last poll.
+- **Updated**: Responses modified since the last poll but created earlier.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule.
+2. It records the time of each run and queries the survey's bulk responses endpoint using SurveyMonkey's `start_modified_at` parameter, requesting responses whose `date_modified` is at or after the time of the last poll, sorted ascending.
+3. Because `start_modified_at` is inclusive (greater than or equal to), a response may occasionally be returned in two consecutive polls. Downstream flows should treat delivery as at-least-once and handle the same response being seen more than once.
+4. Each returned response is partitioned by comparing its `date_created` to the last poll time. Responses created within the window are emitted on the **created** branch; responses that existed before the window but were modified are emitted on the **updated** branch.
+5. The trigger stores the current run time as the new last-poll time so the next run only retrieves responses changed since.
+
+The **created** and **updated** branches can be enabled or disabled independently using the **Show New Records** and **Show Updated Records** inputs.
+
+:::note[Required Scope]
+This trigger requires the `responses_read_detail` OAuth scope, which is available on paid SurveyMonkey plans.
+:::
+
+#### Returned Data
+
+The trigger returns an object under `body.data` with two arrays, `created` and `updated`, each containing SurveyMonkey response records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "5007154401",
+        "survey_id": "1234567890",
+        "collector_id": "987654321",
+        "response_status": "completed",
+        "date_created": "2026-05-26T14:30:00+00:00",
+        "date_modified": "2026-05-26T14:30:00+00:00",
+        "href": "https://api.surveymonkey.com/v3/surveys/1234567890/responses/5007154401",
+        "pages": []
+      }
+    ],
+    "updated": [
+      {
+        "id": "5007150099",
+        "survey_id": "1234567890",
+        "collector_id": "987654321",
+        "response_status": "completed",
+        "date_created": "2026-04-12T09:00:00+00:00",
+        "date_modified": "2026-05-26T15:45:00+00:00",
+        "href": "https://api.surveymonkey.com/v3/surveys/1234567890/responses/5007150099",
+        "pages": []
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

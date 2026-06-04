@@ -1,0 +1,65 @@
+The **New and Updated Records** trigger polls the [Qlik API](https://qlik.dev/apis/rest/) for new and updated records on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. On the first execution, the trigger records the current time and emits no records — historical data is not replayed on bootstrap
+3. On each subsequent run, the trigger fetches all records of the selected resource type and compares each record's created and updated timestamps against the last poll time
+4. Records are categorized as **created** when their created timestamp is later than the last poll time, or **updated** when only their updated timestamp is later
+5. The trigger persists the new poll time after each execution so the next run picks up where the previous run left off
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Qlik connection used to authenticate API requests
+- **Resource Type**: The type of Qlik resource to monitor — `Spaces`, `Users`, `DataFiles`, or `DataStores`
+- **Show New Records**: When enabled, includes newly created records in the trigger output. Defaults to `true`
+- **Show Updated Records**: When enabled, includes records modified since the last poll in the trigger output. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records since the previous poll.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69",
+        "name": "Finance (dev)",
+        "type": "shared",
+        "ownerId": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69",
+        "tenantId": "xqGQ0k66vSR8f9G7J-vYtHZQkiYrCpct",
+        "createdAt": "2024-01-15T10:30:00Z",
+        "updatedAt": "2024-01-15T10:30:00Z",
+        "description": "Development space for Finance team applications"
+      }
+    ],
+    "updated": [
+      {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "Marketing Space",
+        "type": "shared",
+        "ownerId": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69",
+        "tenantId": "xqGQ0k66vSR8f9G7J-vYtHZQkiYrCpct",
+        "createdAt": "2023-08-10T09:15:00Z",
+        "updatedAt": "2024-02-20T14:22:00Z",
+        "description": "Updated description for marketing assets"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- All four resource types — `Spaces`, `Users`, `DataFiles`, and `DataStores` — support both new and updated record detection
+- The Qlik REST API does not expose server-side date filtering on these list endpoints, so all records are paginated client-side and timestamps are compared in the trigger after retrieval
+- `Spaces`, `Users`, and `DataFiles` use cursor pagination via `links.next.href`; `DataStores` uses offset pagination with `page` and `limit` parameters
+- Refer to the [Qlik API documentation](https://qlik.dev/apis/rest/) for rate limit details and available fields per resource type

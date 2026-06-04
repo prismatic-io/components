@@ -1,0 +1,25 @@
+#### MySQL parameterized queries
+
+Instead of generating dynamic queries and sanitizing SQL manually, generic queries with parameter placeholders using the `?` placeholder are supported.
+The placeholder can be used several times in a query, with a list of optional parameters provided to the action.
+For example, a query that reads `INSERT INTO users (name, email) VALUES (?, ?)` can be used.
+Then, configure the optional parameters input to look like the following: `["myUsername", "myEmail"]` or any desired values.
+Values provided for name and email are sanitized automatically.
+
+When dynamically generating SQL queries with an unknown number of parameters ahead of time, create a dynamic array of parameters in another step and reference them through the **Reference Parameters** input.
+
+#### Bulk inserting data
+
+When inserting an unknown number of rows of data into a table, the `Reference Parameters` input must be used, and the input must be a doubly-wrapped array.
+
+For example, if the query reads `INSERT INTO myTable (id, mycolumn1, mycolumn2) VALUES ?`, the reference parameter should read something like
+
+```json
+[
+  [
+    ["3", "foo3", "bar3"],
+    ["4", "foo4", "bar4"],
+    ["5", "foo5", "bar5"]
+  ]
+]
+```

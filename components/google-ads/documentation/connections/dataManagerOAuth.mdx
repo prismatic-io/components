@@ -1,0 +1,82 @@
+This connection uses OAuth 2.0 to connect to the Google [Data Manager API](https://developers.google.com/data-manager/api). Use this connection for the **Ingest Offline Conversions** action. A Developer Token is **not** required for the Data Manager API.
+
+#### Prerequisites
+
+- A [Google Developer account](https://console.cloud.google.com/) with permission to manage APIs and OAuth credentials
+- A Google Ads account that owns the conversion actions to ingest into
+- The numeric **Customer ID** of the Google Ads account that will receive the offline conversions (configured per-action, not on the connection)
+
+#### Configure Google Cloud Project
+
+1. Sign in to the [Google Cloud Console](https://console.cloud.google.com/) and select or create a project.
+1. Select **APIs & Services** -> **Enabled APIs & services** from the left hand menu.
+1. Click **Enable APIs and Services** at the top of the screen.
+1. Search for "data manager api" and select **Data Manager API** in the results.
+1. Click the **Enable** button to add the API to the project.
+1. From the sidebar, select **Credentials**.
+1. An OAuth 2.0 app requires a "Consent Screen". Click **CONFIGURE CONSENT SCREEN**.
+   1. The app will be externally available to customers, so choose a **User Type** of **External**.
+   1. Fill out the OAuth consent screen with an app name, support email, app logo, and authorized domain.
+   1. On the next page, add the `https://www.googleapis.com/auth/datamanager` scope to the app.
+   1. Enter **test users** for testing purposes. The app will only work for those testing users until it is "verified" by Google. When ready for verification, click **PUBLISH APP** on the **OAuth consent screen**.
+1. Once the "Consent Screen" is configured, open the **Credentials** page from the sidebar again.
+1. Click **+CREATE CREDENTIALS** and select **OAuth client ID**.
+   1. Under **Application type** select **Web application**.
+   1. Under **Authorized redirect URIs** enter the OAuth 2.0 callback URL: <OauthCallbackUrl />
+   1. Click **CREATE**.
+1. Take note of the **Client ID** and **Client Secret** that are generated.
+
+#### Configure the Connection
+
+- **Client ID**: From the Google Cloud Console OAuth client credentials
+- **Client Secret**: From the Google Cloud Console OAuth client credentials
+- **API Version**: The Google Data Manager API version to use. Defaults to `v1`. Refer to the [Data Manager API reference](https://developers.google.com/data-manager/api/reference/rest) for the latest version.
+
+After entering the credentials, authorize the connection by signing in with the Google account that has access to the target Google Ads account.
+
+:::note[No Developer Token]
+Unlike the standard Google Ads connection, the Data Manager API does not require a Developer Token. The `developer-token` header is not sent on requests made by this connection.
+:::
+
+#### Supported API Versions
+
+The component supports the following Google Data Manager API versions through the **API Version** connection field:
+
+| Version | Status |
+|---------|--------|
+| **v1** | Recommended (default) |
+
+Refer to the official [Data Manager API release notes](https://developers.google.com/data-manager/api/release-notes) for the latest version information.
+
+#### App Verification
+
+Google requires OAuth apps that request access to user data to pass a verification review before being deployed at scale. This process ensures the app complies with Google's API Services User Data Policy, accurately represents its functionality, and handles user data responsibly.
+
+Google OAuth apps pass through three stages before they are ready for production use.
+
+**Testing (unpublished):** The app is only accessible to users manually added as test users in the OAuth consent screen. Up to 100 test users are allowed. All other users receive an error. This is the expected state during initial development.
+
+**Published, unverified:** After publishing the app, all Google users can authenticate. However, for sensitive scopes, users see a **"This app isn't verified"** warning. Users can proceed by clicking **Advanced** -> **Go to [app name] (unsafe)**, but this warning reduces trust and may be blocked by organizations with strict Google Workspace policies.
+
+**Verified:** Google has reviewed and approved the app. No warning is shown. Verification is required before deploying to production users.
+
+#### Publishing the App
+
+Publishing is required before any users outside the test list can authenticate:
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), navigate to **APIs & Services** -> **OAuth consent screen**
+2. Click **PUBLISH APP** and confirm
+
+#### Requesting Verification
+
+The `datamanager` scope used by this connection is classified as **sensitive** by Google. Submitting for verification removes the "This app isn't verified" warning:
+
+1. On the **OAuth consent screen**, click **Prepare for verification**
+2. Provide a privacy policy URL, authorized domain, and app logo
+3. Submit for review. Google typically responds within several weeks.
+
+Refer to [Google's OAuth consent screen documentation](https://support.google.com/cloud/answer/10311615) for the full verification requirements.
+
+#### Verify Connection
+
+Save the integration to authenticate. After authorizing, run the **Ingest Offline Conversions** action with **Validate Only** enabled to confirm the connection and payload are valid without ingesting live data.

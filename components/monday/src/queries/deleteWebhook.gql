@@ -1,0 +1,6 @@
+mutation DeleteWebhook($id: ID!) {
+  delete_webhook(id: $id) {
+    id
+    board_id
+  }
+}

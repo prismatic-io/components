@@ -1,0 +1,23 @@
+The System Surveyor connection authenticates via email and password to obtain a JWT token for API requests.
+
+#### Prerequisites
+
+- A System Surveyor account with API access
+- Account credentials (email and password) provided by the account administrator
+
+#### Setup Steps
+
+1. Obtain the account email and password from the System Surveyor account administrator
+2. Determine which API environment to connect to (Production, Staging, or Dev)
+
+#### Configure the Connection
+
+Create a connection of type **Basic Authentication** and configure the following fields:
+
+| Field | Description |
+| --- | --- |
+| **Base URL** | The API environment URL. Defaults to the production environment (`https://openapi.systemsurveyor.com`). Change to the staging or dev URL if needed. |
+| **Email** | The email address associated with the System Surveyor account. |
+| **Password** | The password for the System Surveyor account. |
+
+The component authenticates via the [Authentication endpoint](https://docs.openapi.systemsurveyor.com/#tag/Auth/operation/authenticate) to obtain a JWT token for subsequent API requests.

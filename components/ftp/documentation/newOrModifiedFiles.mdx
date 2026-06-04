@@ -1,0 +1,54 @@
+This trigger polls an FTP server for new and modified files on a scheduled basis.
+
+The trigger checks for:
+- **New files**: Files that did not exist in the previous poll
+- **Modified files**: Files whose modification timestamp or size has changed since the last poll
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It lists all files in the specified directory on the FTP server
+3. Files are compared against the previous poll's file map (stored in state)
+4. Files are categorized as "new" or "modified" based on their presence and attributes
+5. The trigger updates its state with the current file map for the next poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The FTP connection with server credentials
+- **Path**: The directory path to monitor on the FTP server
+- **Pattern**: Optional glob pattern to filter files (e.g., `*.csv`)
+- **Include Subdirectories**: Enable to recursively monitor subdirectories
+
+#### Returned Data
+
+The trigger returns an object with two arrays:
+
+```json
+{
+  "data": {
+    "newFiles": [
+      {
+        "path": "/uploads/incoming/report-2026-02-11.csv",
+        "size": 24576,
+        "modifiedAt": 1739308800000
+      }
+    ],
+    "modifiedFiles": [
+      {
+        "path": "/uploads/incoming/daily-log.txt",
+        "size": 102400,
+        "modifiedAt": 1739312400000
+      }
+    ]
+  }
+}
+```
+
+#### Notes
+
+- Files are tracked by path, size, and modification timestamp
+- The first poll will return all files as "new"
+- Polling frequency should balance freshness with server load
+- A common integration pattern involves looping over the returned files to perform actions on each file

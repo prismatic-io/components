@@ -1,0 +1,22 @@
+Create a connection of type **OAuth 2.0** to authenticate with HiBob using the OAuth 2.0 Authorization Code flow.
+
+#### Prerequisites
+
+- A HiBob account with access to the Developer Portal
+- An OAuth application registered in the HiBob Developer Portal
+
+#### Setup Steps
+
+1. Navigate to the [HiBob Developer Portal](https://apidocs.hibob.com/) and create or select an OAuth application
+2. In the application's OAuth section, locate the **App Installation URL** (this is the Authorize URL)
+3. Copy the **Client ID** and **Client Secret** from the application settings
+4. Configure the required scopes under **Manage Scopes** in the Developer Portal
+5. Set the OAuth callback URL to <OauthCallbackUrl /> in the application's redirect URI settings
+
+#### Configure the Connection
+
+- Enter the **Authorize URL** (the App Installation URL from the Developer Portal)
+- Enter the **Client ID** and **Client Secret** from the application settings
+- For **Scopes**, enter the required scopes separated by spaces. Configure scopes in the HiBob Developer Portal under **Manage Scopes**
+
+Refer to the [HiBob API documentation](https://apidocs.hibob.com/reference/getting-started-with-bob-api) for additional details on available scopes and permissions.

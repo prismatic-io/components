@@ -1,0 +1,12 @@
+query ListVariants($first: Int!, $query: String!, $cursor: String) {
+  productVariants(first: $first, query: $query, after: $cursor) {
+    nodes {
+      id
+      title
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

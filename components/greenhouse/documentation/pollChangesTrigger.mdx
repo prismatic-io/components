@@ -1,0 +1,74 @@
+This trigger polls the [Greenhouse Harvest API](https://developers.greenhouse.io/harvest.html) for new and updated applications on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. On each execution, applications updated since the last poll are fetched from the `GET /v1/applications` endpoint using the `last_activity_after` query parameter, with full pagination
+3. Records are partitioned client-side into **created** or **updated** by comparing each application's `applied_at` and `last_activity_at` timestamps against the timestamp of the last successful poll
+4. Applications whose `applied_at` is newer than the last poll time are classified as created; applications with later activity that were applied before the last poll are classified as updated
+5. The trigger updates its internal state with the current timestamp after each poll so subsequent executions only surface records changed since the previous run
+6. When no records match on a given run, the trigger reports `polledNoChanges` so downstream flows are not invoked unnecessarily
+
+#### Returned Data
+
+The trigger returns an object containing two arrays — `created` for newly submitted applications and `updated` for applications with new activity since the last poll. Each array contains full Greenhouse application objects.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 69306314,
+        "candidate_id": 57683957,
+        "prospect": false,
+        "applied_at": "2024-08-21T12:00:00Z",
+        "last_activity_at": "2024-08-21T12:00:00Z",
+        "status": "active",
+        "current_stage": {
+          "id": 767358,
+          "name": "Application Review"
+        },
+        "jobs": [
+          {
+            "id": 107761,
+            "name": "UX Designer - Boston"
+          }
+        ]
+      }
+    ],
+    "updated": [
+      {
+        "id": 65153308,
+        "candidate_id": 53883394,
+        "prospect": false,
+        "applied_at": "2024-08-10T09:00:00Z",
+        "last_activity_at": "2024-08-21T14:22:00Z",
+        "status": "active",
+        "current_stage": {
+          "id": 2966800,
+          "name": "Face to Face"
+        },
+        "jobs": [
+          {
+            "id": 299100,
+            "name": "Data Scientist - BK"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### Notes
+
+- This trigger uses the Greenhouse Harvest v1 API. The Harvest v1/v2 APIs are deprecated and will be removed on August 31, 2026 — migration to Harvest v3 will be required before that date
+- On the very first execution, the trigger has no prior poll timestamp and uses the current time as its baseline, so no historical applications are emitted on the initial run — only changes that occur after the trigger is enabled will be surfaced
+- Refer to the [List Applications endpoint documentation](https://developers.greenhouse.io/harvest.html#get-list-applications) for the full set of fields returned on each application and to the [Harvest API documentation](https://developers.greenhouse.io/harvest.html) for rate limit details

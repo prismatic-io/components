@@ -1,0 +1,29 @@
+ServiceNow supports OAuth 2.0 Authorization Code authentication. An OAuth application must be registered in the ServiceNow instance before configuring this connection.
+
+#### Prerequisites
+
+- A ServiceNow instance with administrator access
+- Access to **System OAuth > Application Registry** in the ServiceNow instance
+
+#### Setup Steps
+
+1. Log in to the ServiceNow instance as an administrator
+2. Navigate to **System OAuth > Application Registry**
+3. Click **New** and select **Create an OAuth API endpoint for external clients**
+4. Configure the application:
+   - **Name**: Enter a descriptive name
+   - **Redirect URL**: <OauthCallbackUrl />
+5. Save the application
+6. Copy the **Client ID** and **Client Secret** from the application record
+
+#### Configure the Connection
+
+- **Authorize URL**: Enter the OAuth authorization URL for the ServiceNow instance (e.g., `https://dev12345.service-now.com/oauth_auth.do`)
+- **Token URL**: Enter the OAuth token URL for the ServiceNow instance (e.g., `https://dev12345.service-now.com/oauth_token.do`)
+- **Scopes**: Enter space-separated OAuth scopes if required (optional)
+- **Client ID**: Enter the Client ID from the OAuth application
+- **Client Secret**: Enter the Client Secret from the OAuth application
+
+:::note[Instance-Specific URLs]
+The Authorize URL and Token URL are specific to each ServiceNow instance. Replace `dev12345` with the actual instance name.
+:::

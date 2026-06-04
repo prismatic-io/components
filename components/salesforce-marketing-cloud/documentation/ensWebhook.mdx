@@ -1,0 +1,126 @@
+Salesforce Marketing Cloud [Event Notification Service (ENS)](https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/ens.html) delivers real-time event notifications for transactional email, SMS, and engagement activities. ENS sends event batches as HTTP POST requests to registered callback endpoints.
+
+Before events are delivered, a callback endpoint must be registered and verified using the **Create ENS Callback** and **Verify ENS Callback** actions. Subscriptions are then created to specify which event categories the callback should receive.
+
+#### How It Works
+
+1. Register a callback endpoint using the **Create ENS Callback** action, providing the flow's webhook URL.
+2. When ENS sends the verification request to your webhook URL, this trigger automatically captures the verification key.
+3. Use the **Verify ENS Callback** action with the verification key returned by this trigger to complete verification.
+4. Create one or more event subscriptions using the **Create ENS Subscription** action, selecting the event categories to monitor.
+5. ENS sends event batches as POST requests to the registered callback URL when matching events occur.
+
+This trigger:
+- Automatically handles ENS verification requests by capturing and returning the verification key
+- Validates HMAC-SHA256 signatures on incoming events when a signature key is provided
+- Extracts and returns event payloads for downstream processing
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Signature Key** (optional): The signature key provided when creating the ENS callback. Used to validate webhook signatures for enhanced security. If not provided, signature validation is skipped.
+
+#### Event Types
+
+<details>
+<summary>Transactional Email Events</summary>
+
+| Event | Description |
+|-------|-------------|
+| `TransactionalSendEvents.EmailSent` | A transactional email was successfully sent |
+| `TransactionalSendEvents.EmailNotSent` | A transactional email failed to send |
+| `TransactionalSendEvents.EmailBounced` | A transactional email bounced |
+
+</details>
+
+<details>
+<summary>Engagement Events</summary>
+
+| Event | Description |
+|-------|-------------|
+| `EngagementEvents.EmailOpen` | A recipient opened an email |
+| `EngagementEvents.EmailClick` | A recipient clicked a link in an email |
+| `EngagementEvents.EmailUnsubscribe` | A recipient unsubscribed from an email |
+
+</details>
+
+<details>
+<summary>Transactional SMS Events</summary>
+
+| Event | Description |
+|-------|-------------|
+| `TransactionalSendEvents.SmsSent` | A transactional SMS was successfully sent |
+| `TransactionalSendEvents.SmsNotSent` | A transactional SMS failed to send |
+| `TransactionalSendEvents.SmsTransient` | A transactional SMS is in a transient delivery state |
+| `TransactionalSendEvents.SmsDelivered` | A transactional SMS was delivered to the recipient |
+| `TransactionalSendEvents.SmsBounced` | A transactional SMS bounced |
+
+</details>
+
+<details>
+<summary>Automation Events</summary>
+
+| Event | Description |
+|-------|-------------|
+| `SendEvents.AutomationInstanceStarted` | An automation instance started running |
+| `SendEvents.AutomationInstanceCompleted` | An automation instance completed successfully |
+| `SendEvents.AutomationInstanceStopped` | An automation instance was stopped |
+| `SendEvents.AutomationInstanceErrored` | An automation instance encountered an error |
+| `SendEvents.AutomationInstanceSkipped` | An automation instance was skipped |
+
+</details>
+
+Refer to the [ENS documentation](https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/ens.html) for the complete and up-to-date list of supported event categories.
+
+#### Returned Data
+
+The trigger extracts the event payload from the incoming request body. ENS delivers events in batches, so the payload typically contains an array of event objects.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+[
+  {
+    "eventCategoryType": "TransactionalSendEvents.EmailSent",
+    "timestampUTC": "2024-02-01T15:30:00.000Z",
+    "definitionKey": "welcome-email-def",
+    "requestId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "compositeId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890.1",
+    "info": {
+      "messageKey": "d4e5f6a7-b8c9-0123-defa-345678901234",
+      "contactKey": "subscriber-001",
+      "to": "john.doe@example.com",
+      "statusCode": 200,
+      "statusMessage": "OK"
+    }
+  },
+  {
+    "eventCategoryType": "TransactionalSendEvents.EmailBounced",
+    "timestampUTC": "2024-02-01T15:31:00.000Z",
+    "definitionKey": "welcome-email-def",
+    "requestId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "compositeId": "b2c3d4e5-f6a7-8901-bcde-f12345678901.1",
+    "info": {
+      "messageKey": "e5f6a7b8-c9d0-1234-efab-456789012345",
+      "contactKey": "subscriber-002",
+      "to": "jane.smith@example.com",
+      "statusCode": 550,
+      "statusMessage": "Mailbox not found",
+      "bounceCode": "1",
+      "bounceMessage": "Address does not exist"
+    }
+  }
+]
+```
+
+</details>
+
+#### Notes
+
+- **Verification Process**: When a callback is first created, ENS sends a verification request containing a `callbackId` and `verificationKey` in the request body. This trigger automatically captures and returns these values for use with the **Verify ENS Callback** action.
+- **Signature Validation**: ENS event payloads include an HMAC-SHA256 signature in the `X-SFMC-ENS-Signature` or `X-SFMC-HMAC-SHA256` header. When you provide the signature key (returned during callback creation), this trigger automatically validates the signature to ensure events originate from Salesforce Marketing Cloud.
+- **Batch Delivery**: Events are delivered in batches. The **maxBatchSize** parameter configured during callback registration controls the maximum number of events per delivery.
+- **Retry Policy**: If event delivery fails, ENS retries delivery according to its built-in retry policy. Refer to the [ENS documentation](https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/ens.html) for retry behavior details.
+- **No Lifecycle Support**: This trigger does not support automatic webhook lifecycle management because ENS requires a two-step verification process where the verification key is sent asynchronously to the callback URL. The webhook must be running and accessible to receive and respond to the verification request.

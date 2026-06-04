@@ -1,0 +1,17 @@
+fragment FulfillmentServiceDetails on FulfillmentService {
+  id
+  #name
+  #email
+  serviceName
+  handle
+  #fulfillment_orders_opt_in deprecated
+  #include_pending_stock
+  #provider_id
+  location {
+    id
+  }
+  callbackUrl
+  trackingSupport
+  inventoryManagement
+  permitsSkuSharing
+}

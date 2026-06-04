@@ -1,0 +1,55 @@
+fragment CollectionDetails on Collection {
+  id
+  description
+  descriptionHtml
+  handle
+  products(first: 250) {
+    nodes {
+      descriptionHtml
+      category {
+        fullName
+        id
+        name
+      }
+      createdAt
+      description
+      featuredMedia {
+        alt
+        id
+        preview {
+          image {
+            url
+            width
+            height
+            id
+          }
+        }
+        status
+      }
+      handle
+      id
+      priceRangeV2 {
+        maxVariantPrice {
+          amount
+          currencyCode
+        }
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      productType
+      publishedAt
+      status
+      tags
+      title
+      totalInventory
+      vendor
+    }
+  }
+  productsCount {
+    count
+  }
+  sortOrder
+  title
+}

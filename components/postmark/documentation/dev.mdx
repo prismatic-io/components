@@ -1,0 +1,15 @@
+### A Note on Postmark Message Streams Pagination
+
+Postmark's Message Streams API supports pagination. This means that the API will return up to 50 streams for any query. If additional results are available, the API response includes a `Meta` field that indicates the `TotalCount` and `Offset`.
+
+```json
+{
+  "MessageStreams": [],
+  "TotalCount": 100,
+  "Offset": 0
+}
+```
+
+The `Offset` can be used in a subsequent query to fetch additional results.
+
+See [Postmark's Docs](https://postmarkapp.com/developer/api/message-streams-api#list-message-streams) for information about Postmark's paginated API, and [this quickstart](integrations/common-patterns/loop-over-paginated-api.mdx) for information on looping over a paginated API in Prismatic.

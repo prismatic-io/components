@@ -1,0 +1,12 @@
+#import "../../fragments/ProductDetails.gql"
+mutation CreateProduct($input: ProductInput!, $media: [CreateMediaInput!]) {
+  productCreate(input: $input, media: $media) {
+    product {
+      ...ProductDetails
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

@@ -1,0 +1,36 @@
+To authenticate with Okta APIs using an API token, generate a token from the Okta Admin Console. API tokens provide programmatic access to Okta resources and are tied to a specific admin account's permissions.
+
+For more information about API tokens, refer to the [Okta documentation](https://developer.okta.com/docs/guides/create-an-api-token/main/).
+
+#### Prerequisites
+
+- An Okta tenant with administrative access
+- An admin account with appropriate permissions for the operations to be performed
+
+#### Setup Steps
+
+To generate an API token:
+
+1. Log into the Okta Admin Console (e.g., `https://dev-12345.okta.com/admin`)
+2. Navigate to **Security** > **API** > **Tokens**
+3. Click **Create Token**
+4. Enter a descriptive name for the token (e.g., "Integration API Token")
+5. Click **Create Token**
+6. Copy the token value immediately — it will only be displayed once
+
+:::warning[Token Security]
+API tokens should be stored securely and never shared or committed to version control. The token cannot be retrieved again after closing the dialog. If lost, a new token must be created.
+:::
+
+#### Configure the Connection
+
+- Enter the **Okta Domain** (e.g., `dev-12345.okta.com` or `org-name.okta.com`)
+- Enter the **API Token** that was generated
+
+:::note[Okta Domain Format]
+The Okta Domain should be entered without the `https://` protocol. For example, use `dev-12345.okta.com` instead of `https://dev-12345.okta.com`. The domain format depends on the Okta cloud environment. Refer to the [Okta API documentation](https://developer.okta.com/docs/reference/api-overview/) for the correct domain format.
+:::
+
+:::info[Token Permissions]
+API tokens inherit the permissions of the admin account that created them. Ensure the admin account has the necessary permissions for the operations the integration will perform. For more granular control and service-to-service authentication, consider using OAuth 2.0 Client Credentials instead.
+:::

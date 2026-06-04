@@ -1,0 +1,43 @@
+{
+  "name": "@prismatic-io/customer-io",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "eslint --cache --quiet --ext .ts,.js .",
+    "lint-fix": "eslint --cache --fix --quiet --ext .ts,.js .",
+    "format": "npm run lint-fix && prettier --loglevel error --write './src/**/*.{js,jsx,ts,tsx,css,html,json,scss}' 'documentation/*.mdx'",
+    "check-format": "prettier --check './src/**/*.{js,jsx,ts,tsx,css,html,json,scss}' 'documentation/*.mdx'",
+    "build": "webpack",
+    "test": "jest --maxWorkers=4"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "customerio-node": "3.0.0"
+  },
+  "devDependencies": {
+    "@prismatic-io/eslint-config-spectral": "1.0.0",
+    "@types/jest": "29.5.14",
+    "@types/js-yaml": "3.12.4",
+    "@types/node": "14.14.35",
+    "@types/papaparse": "5.2.2",
+    "copy-webpack-plugin": "6.0.3",
+    "eslint": "^6.8.0",
+    "jest": "30.0.0",
+    "prettier": "2.0.5",
+    "ts-jest": "29.4.0",
+    "ts-loader": "8.0.2",
+    "typescript": "5.9.3",
+    "webpack": "5.76.2",
+    "webpack-cli": "5.0.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@prismatic-io/eslint-config-spectral"
+    ]
+  }
+}

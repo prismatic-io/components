@@ -1,0 +1,10 @@
+[
+  {
+    "label": "OracleDB Docs",
+    "href": "https://docs.oracle.com/en/database/"
+  },
+  {
+    "label": "Node.js Client Docs",
+    "href": "https://oracle.github.io/node-oracledb/"
+  }
+]

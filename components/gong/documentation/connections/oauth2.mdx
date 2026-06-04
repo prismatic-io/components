@@ -1,0 +1,11 @@
+To Create an [OAuth app](https://help.gong.io/docs/create-an-app-for-gong) for Gong:
+
+1. In your company's **Settings** page, click **API** and click the **Integrations** tab.
+2. Click **Create Integration**.
+3. In the **Integration details** area, enter your integration name and a description.
+4. In the **Required authorization scopes** area, select the scopes that your app needs.
+   You can check our [API documentation](https://app.gong.io/settings/api/documentation#overview) to see which APIs use which scopes.
+5. Add **Redirect URI** as <OauthCallbackUrl />
+6. Click **Save**.
+
+A new row appears in the table of apps, containing the **Client ID** and the **Client Secret**. Copy and paste these into the connection configuration of your workflow.

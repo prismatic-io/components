@@ -1,0 +1,44 @@
+To connect to Square using OAuth 2.0, create an application in the Square Developer Portal.
+
+#### Prerequisites
+
+- A Square account
+- Access to the [Square Developer Portal](https://developer.squareup.com/)
+
+#### Setup Steps
+
+1. Navigate to the [Square Developer Portal](https://developer.squareup.com/apps) and sign in
+2. Create a new application or select an existing application
+3. In the application settings, navigate to the **OAuth** section
+4. Add <OauthCallbackUrl /> as a **Redirect URL**
+5. Configure the required permissions (scopes) for the application based on the integration needs
+6. Copy the **Application ID** and **Application Secret** from the **Credentials** section
+
+#### Configure the Connection
+
+- Select the **Authorize URL** matching the target Square environment. Defaults to the Production URL `https://connect.squareup.com/oauth2/authorize`; select the Sandbox URL `https://connect.squareupsandbox.com/oauth2/authorize` for testing.
+- Select the **Token URL** matching the same environment as the Authorize URL. Defaults to the Production URL `https://connect.squareup.com/oauth2/token`; select the Sandbox URL `https://connect.squareupsandbox.com/oauth2/token` for testing.
+- For **Scopes**, enter a space-separated list of OAuth permissions required by the application. Refer to the [Square OAuth Permissions documentation](https://developer.squareup.com/docs/oauth-api/square-permissions) for available scopes.
+- Enter the **Application ID** as the **Client ID**.
+- Enter the **Application Secret** as the **Client Secret**.
+- (Optional) Set the **API Version** to override the default Square API version. Leave blank to use the default. See [Square API Versioning](https://developer.squareup.com/docs/build-basics/versioning-overview) for details.
+
+#### Verify Connection
+
+After configuring the connection, the authorizing user is redirected to Square to authorize access to the account. Once authorized, the integration can interact with the Square API on behalf of the merchant.
+
+#### Production Credentials
+
+Square separates its development environment from production to prevent test operations from affecting live merchant data. Sandbox and production credentials are distinct. Switching to production credentials is a required step before the integration can interact with real Square accounts.
+
+Square sandbox and production environments use separate credentials. The sandbox environment is for testing only. To connect to real Square accounts, use production credentials.
+
+1. Navigate to the application in the [Square Developer Portal](https://developer.squareup.com/apps)
+2. Toggle from **Sandbox** to **Production** in the top navigation
+3. Copy the **Application ID** and **Application Secret** from the **Production** > **Credentials** section
+
+Update the connection configuration with the production **Application ID** (Client ID) and **Application Secret** (Client Secret).
+
+:::note[App Marketplace]
+If distributing the app publicly through the [Square App Marketplace](https://squareup.com/app-marketplace), a formal app review is required, including having at least 5 active sellers using the integration. For private integrations within a single organization, App Marketplace listing is not required and no formal review applies.
+:::

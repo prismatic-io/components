@@ -1,0 +1,78 @@
+<Vimeo video="907604023" />
+
+#### Prerequisites
+
+- A Microsoft Azure account with admin access
+- Access to the [Microsoft Azure Portal](https://portal.azure.com/#home)
+
+#### Setup Steps
+
+1. Navigate to **Azure Active Directory** > **App registrations** in the [Microsoft Azure Portal](https://portal.azure.com/#home).
+
+2. Create a new application registration.
+
+3. When prompted to select **Supported account types**, select **Accounts in any organizational directory (Any Azure AD directory - Multitenant)** to allow users outside of the organization to authenticate.
+
+4. Go to **Platforms** and add the **Web** platform.
+
+5. Add the OAuth 2.0 callback URL as a **Redirect URI**: <OauthCallbackUrl />
+
+6. Navigate to **Certificates & Secrets** and add a new **Client Secret**. Copy the **value** (not ID) for future use.
+
+7. Locate the **Application (client) ID** on the **Overview** page.
+
+#### Configure the Connection
+
+Supply the following values to the **OAuth 2.0** connection:
+
+- **Client ID**: The Application (client) ID from the Azure Portal.
+- **Client Secret**: The secret value copied from Certificates & Secrets.
+- **Scopes**: The OAuth permission scopes required by the integration. Scopes can be found in the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) or by making test calls in the [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer).
+- **Authorize URL** and **Token URL**: For single-tenant applications, replace these with tenant-specific URLs. Multi-tenant applications can use the default `/common/` endpoints.
+
+**Important**: Ensure the `offline_access` scope is included in the app registration. This scope is essential for receiving refresh tokens. Without it, users must re-authenticate every hour.
+
+For more information on authenticating against the Microsoft Graph API, refer to the [Microsoft documentation](https://docs.microsoft.com/en-us/graph/auth-v2-user).
+
+#### App Verification and Admin Consent
+
+Microsoft requires Azure AD app registrations used in multi-tenant deployments to complete a publisher verification process. This review confirms the app developer's identity, giving end users confidence that they are authorizing a legitimate, verified application.
+
+Azure AD app registrations have two distinct verification concepts that affect how users experience the authentication flow.
+
+#### Publisher Verification
+
+Without publisher verification, the Microsoft consent screen displays **"Unverified"** next to the app name. This can reduce user trust and may trigger security warnings in organizations with strict app access policies.
+
+To verify the publisher:
+
+1. Ensure the organization has a [Microsoft Partner Network (MPN) account](https://partner.microsoft.com/)
+2. In the [Microsoft Entra Admin Center](https://entra.microsoft.com/), open the app registration
+3. Under **Branding & properties**, click **Add a verified publisher**
+4. Enter the MPN ID and confirm
+
+Once verified, the consent screen displays the organization name with a verified badge instead of "Unverified."
+
+#### Admin Consent
+
+Apps requesting **application permissions** (permissions that act without a signed-in user) or high-privilege **delegated permissions** require admin consent before any user in a Microsoft 365 tenant can authenticate. Without admin consent, users see a **"Need admin approval"** error.
+
+A tenant administrator can grant consent using either method:
+
+**Method 1 — Admin Consent URL:**
+
+Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
+
+    https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
+
+**Method 2 — Microsoft Entra Admin Center:**
+
+1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
+2. Select the app registration
+3. Under **Permissions**, click **Grant admin consent for [organization name]**
+
+:::note[Delegated vs. Application Permissions]
+Delegated permissions (user-level) typically do not require admin consent unless they are classified as high privilege. Application permissions always require admin consent. Review the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) to identify which permissions require consent.
+:::
+
+<Vimeo video="907604023" />

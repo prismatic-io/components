@@ -1,0 +1,70 @@
+Checks for new emails in a specified mailbox on a configured schedule. This trigger uses IMAP UIDs to track which messages have already been processed, ensuring each email is only returned once.
+
+#### How It Works
+
+1. On the first execution, the trigger connects to the IMAP server and records the current UID state of the mailbox. No emails are returned on this initial run.
+2. On subsequent executions, the trigger checks for emails with UIDs greater than the last recorded value.
+3. If the mailbox's `uidValidity` changes (indicating the mailbox was rebuilt or re-created), the trigger resets its state and begins tracking from the new baseline.
+4. New emails are returned as an array in the trigger payload.
+
+#### Configuration
+
+- **Connection**: An IMAP connection with the server host, port, credentials, and TLS settings.
+- **Mailbox**: The mailbox to monitor (default: `INBOX`).
+- **Fetch Content**: When enabled, downloads and parses the full message body (plain text and HTML) for each new email. Disabled by default to reduce payload size.
+- **Mark as Read**: When enabled, sets the `\Seen` flag on new emails after polling. Disabled by default.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": [
+    {
+      "uid": 76791,
+      "envelope": {
+        "from": [{ "address": "sender@example.com", "name": "Sender Name" }],
+        "to": [{ "address": "recipient@example.com", "name": "Recipient Name" }],
+        "subject": "Example Subject",
+        "date": "2026-02-18T12:00:00.000Z",
+        "messageId": "<unique-id@example.com>"
+      },
+      "flags": ["\\Recent"],
+      "internalDate": "2026-02-18T12:00:00.000Z",
+      "size": 4523
+    },
+    {
+      "uid": 76792,
+      "envelope": {
+        "from": [{ "address": "another@example.com", "name": "Another Sender" }],
+        "to": [{ "address": "recipient@example.com", "name": "Recipient Name" }],
+        "subject": "Another Email",
+        "date": "2026-02-18T12:05:00.000Z",
+        "messageId": "<unique-id-2@example.com>"
+      },
+      "flags": [],
+      "internalDate": "2026-02-18T12:05:00.000Z",
+      "size": 8912,
+      "text": "Plain text body (when Fetch Content is enabled)",
+      "html": "<p>HTML body (when Fetch Content is enabled)</p>",
+      "attachments": [
+        {
+          "filename": "report.pdf",
+          "size": 24576,
+          "contentType": "application/pdf"
+        }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+#### Notes
+
+- The trigger returns an empty array when no new emails are found since the last poll.
+- Enabling **Fetch Content** increases the payload size and execution time, especially for emails with large attachments. Only attachment metadata (filename, size, content type) is included — not the actual attachment data.
+- The polling schedule is configured at the integration level, not within the trigger itself.

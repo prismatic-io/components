@@ -1,0 +1,10 @@
+[
+  {
+    "label": "MQTT Docs",
+    "href": "https://mqtt.org/"
+  },
+  {
+    "label": "Node.js Client Docs",
+    "href": "https://github.com/mqttjs/MQTT.js"
+  }
+]

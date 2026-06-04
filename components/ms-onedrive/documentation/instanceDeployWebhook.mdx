@@ -1,0 +1,122 @@
+The Drive Subscription trigger automatically creates and manages webhook subscriptions for OneDrive resources throughout the instance lifecycle. Unlike the manual Webhook trigger, this trigger handles all subscription operations automatically, eliminating the need for manual configuration in the Azure portal or Microsoft Graph API.
+
+When the trigger is configured in a flow:
+- **On Instance Deploy**: Automatically creates a webhook subscription in Microsoft Graph for the specified OneDrive resource. The subscription points to the instance's unique webhook URL and monitors the configured change types.
+- **On Instance Deletion**: Automatically removes all webhook subscriptions created by this instance, ensuring clean resource management.
+
+This trigger is ideal for production integrations where webhook lifecycle should be managed automatically alongside the integration instance.
+
+#### How It Works
+
+**Automatic Subscription Creation:**
+1. When an instance containing this trigger is deployed, the trigger creates a webhook subscription via the Microsoft Graph API
+2. Microsoft Graph validates the webhook endpoint by sending a validation request with a `validationToken` query parameter
+3. The trigger responds with the validation token to complete the handshake
+4. The subscription becomes active and begins monitoring the specified OneDrive resource
+
+**Notification Processing:**
+1. When changes occur to the monitored resource, Microsoft Graph sends webhook notifications to the instance
+2. The trigger validates the `clientState` value (if configured) to ensure notifications originate from Microsoft Graph
+3. Notifications route to the "Notification" branch for processing
+4. The integration uses the notification to trigger delta queries that identify specific changes
+
+**Automatic Subscription Cleanup:**
+1. When the instance is deleted, the trigger automatically removes all webhook subscriptions
+2. This prevents orphaned subscriptions and ensures clean resource management
+
+#### Configuration
+
+**Connection:**
+- **OneDrive Connection**: OAuth connection with permissions to create and manage webhook subscriptions (`Subscription.Read.All` permission recommended)
+
+**Subscription Settings:**
+- **Resource**: The Microsoft Graph resource path to monitor. Examples:
+  - `/me/drive/root` - Current user's root drive folder
+  - `/drives/{drive-id}/root` - Specific drive's root folder
+  - `/me/drive/items/{item-id}` - Specific folder or item
+
+- **Change Type**: The type of changes to monitor. OneDrive primarily supports `updated` for drive resources.
+
+- **Client State**: Optional validation token sent with each notification. Use to verify notifications originate from Microsoft Graph. The trigger logs a warning if the received clientState doesn't match the expected value.
+
+- **Expiration Date Time**: Optional expiration date/time for the subscription. If not provided, defaults to 3 days from now. Maximum is 30 days for OneDrive resources. The subscription will need to be renewed before expiration to continue receiving notifications.
+
+#### Branches
+
+The trigger uses branching to handle different request types:
+
+- **URL Validation**: Activated during subscription creation when Microsoft Graph validates the webhook endpoint. The trigger automatically responds with the validation token.
+- **Notification**: Activated when OneDrive sends change notifications. Process these notifications to identify what changed in the monitored resource.
+
+#### Returned Data
+
+**URL Validation Branch:**
+
+During subscription creation, Microsoft Graph validates the endpoint:
+
+<details>
+<summary>Validation Request</summary>
+
+```json
+{
+  "queryParameters": {
+    "validationToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1..."
+  }
+}
+```
+
+</details>
+
+The trigger automatically responds with HTTP 200 and the token in plain text.
+
+**Notification Branch:**
+
+Change notifications contain subscription metadata but not change details:
+
+<details>
+<summary>Notification Payload</summary>
+
+```json
+{
+  "body": {
+    "data": {
+      "value": [
+        {
+          "subscriptionId": "A640DFF3-0429-44FC-AF7E-30523A476864",
+          "expirationDateTime": "2025-02-22T16:00:00Z",
+          "resource": "/me/drive/root",
+          "clientState": "client-specific string"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+Use the [delta API](https://learn.microsoft.com/en-us/onedrive/developer/rest-api/api/driveitem_delta) to query for specific changes after receiving a notification.
+
+#### Best Practices
+
+- **Subscription Renewal**: OneDrive subscriptions expire after a maximum of 30 days. Configure the expiration appropriately and implement renewal logic if subscriptions need to last longer than the configured period.
+- **Resource Scope**: Subscribe to the most specific resource path needed. Broader paths (like `/me/drive/root`) generate more notifications than specific folders.
+- **Client State Validation**: Configure a unique `clientState` value to verify notification authenticity. The trigger logs warnings for mismatched values.
+- **Delta Queries**: Webhook notifications indicate changes occurred but don't specify what changed. Implement delta query logic to identify specific changes after receiving notifications.
+- **Error Handling**: Monitor logs for subscription creation failures. Common issues include insufficient permissions or invalid resource paths.
+- **Multiple Instances**: Each instance creates separate subscriptions. If deploying multiple instances monitoring the same resource, ensure the integration handles duplicate notifications appropriately.
+
+#### Notes
+
+- Subscriptions are automatically created when the instance is deployed and deleted when the instance is removed
+- OneDrive only supports `changeType: "updated"` for drive resources
+- Personal OneDrive allows subscriptions to any folder; OneDrive for Business only allows root folder subscriptions
+- The default expiration is 3 days; maximum is 30 days for OneDrive resources
+- The trigger validates `clientState` if configured and logs warnings for mismatches
+- Microsoft Graph retries failed webhook deliveries with exponential backoff for up to 15 minutes
+- The platform automatically URL-decodes query parameters before passing them to the trigger
+
+For complete details on OneDrive webhooks and subscriptions, see:
+- [Microsoft Graph webhooks documentation](https://learn.microsoft.com/en-us/graph/change-notifications-delivery-webhooks)
+- [OneDrive webhook concepts](https://learn.microsoft.com/en-us/onedrive/developer/rest-api/concepts/using-webhooks)
+- [Create subscription API reference](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions)

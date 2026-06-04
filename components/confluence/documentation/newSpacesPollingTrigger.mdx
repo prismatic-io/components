@@ -1,0 +1,47 @@
+Checks for new spaces on a configured schedule.
+
+This trigger monitors the Confluence site for newly created spaces using the [Confluence Cloud REST API v2 spaces endpoint](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/).
+
+#### How It Works
+
+1. Runs on the configured schedule (e.g., every 5 minutes)
+2. Queries the Confluence API to retrieve all spaces accessible to the authenticated user
+3. Filters spaces based on their `createdAt` timestamp compared to the last poll time
+4. Returns only spaces created since the last poll
+5. Maintains state automatically to track the last poll time
+6. Returns all spaces on the first run (when no previous poll state exists)
+
+The trigger uses cursor-based pagination to retrieve all spaces across multiple API requests if necessary.
+
+#### Configuration
+
+**Inputs:**
+- **Connection**: Confluence OAuth 2.0 connection with appropriate permissions to view spaces
+
+The schedule is configured in the integration's trigger configuration within the Prismatic platform.
+
+#### Returned Data
+
+The trigger returns newly created spaces with the following structure:
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": [
+    {
+      "id": "12345678",
+      "name": "Engineering Team Space",
+      "createdAt": "2026-01-27T10:30:00.000Z"
+    },
+    {
+      "id": "87654321",
+      "name": "Product Documentation",
+      "createdAt": "2026-01-27T11:15:00.000Z"
+    }
+  ]
+}
+```
+
+</details>

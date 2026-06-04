@@ -1,0 +1,55 @@
+This trigger polls the [QuickBooks Time API](https://tsheetsteam.github.io/api_docs/) for new records on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches records from QuickBooks Time for the selected resource type — for Timesheets, a `start_date` parameter derived from the last poll time is passed as an optimization to limit the result set
+3. New records are identified by comparing returned IDs against the set of known IDs from previous polls
+4. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The QuickBooks Time connection used to authenticate API requests
+- **Resource Type**: The type of records to monitor — Timesheets, Users, or Job Codes
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with a `created` array containing new records detected since the last poll. No `updated` array is returned — this trigger detects additions only.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 135288482,
+        "user_id": 317046,
+        "jobcode_id": 18080900,
+        "start": "2024-01-16T08:00:00-06:00",
+        "end": "2024-01-16T17:00:00-06:00",
+        "duration": 32400,
+        "date": "2024-01-16",
+        "tz": -6,
+        "type": "regular",
+        "on_the_clock": false,
+        "created": "2024-01-16T17:01:12-06:00",
+        "last_modified": "2024-01-16T17:01:12-06:00"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The first poll establishes a baseline — no records are returned on the initial execution. Subsequent polls detect additions against that baseline
+- For Timesheets, the `start_date` filter is applied as a query optimization, but change detection still relies on ID comparison rather than timestamps
+- Update detection is not supported for any resource type — only new records are returned
+- Refer to the [QuickBooks Time API documentation](https://tsheetsteam.github.io/api_docs/) for details on available fields per resource type

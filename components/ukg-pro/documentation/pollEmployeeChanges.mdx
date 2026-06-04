@@ -1,0 +1,101 @@
+The **Employee Changes** polling trigger checks for new and updated employee records in UKG Pro on a configured schedule. This trigger monitors various employee lifecycle events including hires, terminations, transfers, promotions, compensation changes, and other personnel updates.
+
+For more information, refer to the [Get Employee Changes API documentation](https://developer.ukg.com/hcm/reference/get_personnel-v1-employee-changes).
+
+#### How It Works
+
+The trigger polls the UKG Pro Employee Changes API endpoint at the configured polling interval. It maintains state to track the last successful poll time and only retrieves changes that occurred since that timestamp.
+
+**State Management**
+
+- **First Run**: On the initial execution, the trigger retrieves changes from the past 24 hours
+- **Subsequent Runs**: The trigger tracks the `lastPollTime` in state and queries for changes since that timestamp
+- **State Updates**: After each successful poll, the current timestamp is stored as the new `lastPollTime`
+
+**Date Range Handling**
+
+The trigger converts poll timestamps to ISO date format (YYYY-MM-DD) for the UKG Pro API:
+- `startDate`: The date of the last successful poll
+- `endDate`: The current poll date
+
+These date parameters are included in the response payload to indicate the time range covered by the poll.
+
+#### Configuration
+
+Configure the following input:
+
+- **Company ID** (Optional): Filter changes to a specific company within the UKG Pro tenant. When omitted, the trigger retrieves changes for all companies accessible to the authenticated connection.
+
+<details>
+<summary>Change Types (8)</summary>
+
+- **New Hire** (HIRE) - New employee added to the system
+- **Update** (UPD) - Changes to existing employee data
+- **Termination** (TERM) - Employee termination
+- **Transfer** (FER) - Department or location transfers
+- **Promotion** (PROMO) - Job level or title promotions
+- **Compensation Change** (COMP) - Salary or wage adjustments
+- **Position Change** (POS) - Job or role changes
+- **Benefits Change** (BEN) - Benefits enrollment updates
+
+</details>
+
+#### Returned Data
+
+The trigger returns an object with the following structure:
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": [
+    {
+      "employeeId": "EMP-12345",
+      "companyId": "COMP-001",
+      "employeeNumber": "E12345",
+      "firstName": "John",
+      "lastName": "Doe",
+      "changeType": "Update",
+      "changeTypeCode": "UPD",
+      "changedFields": ["jobTitle", "department", "payRate"],
+      "changeTimestamp": "2024-01-15T14:30:00.000Z",
+      "lastModifiedDate": "2024-01-15"
+    },
+    {
+      "employeeId": "EMP-12346",
+      "companyId": "COMP-001",
+      "employeeNumber": "E12346",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "changeType": "New Hire",
+      "changeTypeCode": "HIRE",
+      "changedFields": [],
+      "changeTimestamp": "2024-01-15T09:00:00.000Z",
+      "lastModifiedDate": "2024-01-15"
+    },
+    {
+      "employeeId": "EMP-12347",
+      "companyId": "COMP-001",
+      "employeeNumber": "E12347",
+      "firstName": "Bob",
+      "lastName": "Johnson",
+      "changeType": "Termination",
+      "changeTypeCode": "TERM",
+      "changedFields": ["employmentStatus", "terminationDate"],
+      "changeTimestamp": "2024-01-15T16:45:00.000Z",
+      "lastModifiedDate": "2024-01-15"
+    }
+  ],
+  "pollStartDate": "2024-01-10",
+  "pollEndDate": "2024-01-15",
+  "totalCount": 3
+}
+```
+
+</details>
+
+
+**Changed Fields**
+
+For update changes, the `changedFields` array indicates which specific employee attributes were modified (e.g., `jobTitle`, `department`, `payRate`, `employmentStatus`).

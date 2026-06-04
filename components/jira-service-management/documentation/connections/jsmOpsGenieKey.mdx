@@ -1,0 +1,26 @@
+To authenticate with the Jira Service Management Ops Integration Events API, an integration **GenieKey API key** is required. This connection is only used by the Ops Integration Events actions (Create, Acknowledge, Close, Add Note, Get Request) — Ops Management and Assets actions use the OAuth 2.0 connection instead.
+
+#### Prerequisites
+
+- A Jira Cloud instance with Jira Service Management Operations enabled
+- A JSM project where Operations is configured
+- Permission to manage integrations within that project
+
+#### Setup Steps
+
+1. Open the Jira Service Management project where alerts will be ingested
+2. In the left sidebar, navigate to **Operations** and then **Integrations**
+3. Click **Add integration** and choose **API**
+4. Enter a name for the integration (e.g., `My Integration`) and choose the team that should own the resulting alerts
+5. Click **Continue** and then **Turn on integration**
+6. Copy the generated **API key** (also referred to as the GenieKey) — this value is only shown once
+
+Refer to the [JSM Ops REST API documentation](https://developer.atlassian.com/cloud/jira/service-desk-ops/rest/intro/) for additional details about the integration endpoints and request shapes.
+
+#### Configure the Connection
+
+Create a connection of type **Ops Integration API Key** and configure the following field:
+
+- For **API Key**, paste the GenieKey value copied from the integration setup screen
+
+The connection sends requests to `https://api.atlassian.com/jsm/ops/integration/v2` with the header `Authorization: GenieKey <api-key>`. No additional configuration is required.

@@ -1,0 +1,33 @@
+Azure Service Bus uses OAuth 2.0 Authentication to authenticate the security principal (a user, a group, or service principal) running the application.
+Create and Register your Microsoft application with an Azure AD tenant. For more information refer to https://learn.microsoft.com/en-us/azure/service-bus-messaging/authenticate-application
+
+The first step in using Azure AD to authorize Service Bus entities is registering your client application with an Azure AD tenant from the [Azure portal](https://portal.azure.com/)
+
+Menu > All Services > Azure Active Directory
+
+- Select Add > App registration
+- Name the App and set the Supported Account types to 'Accounts in any organizational directory (Any Azure AD directory - Multitenant)'.
+- In Redirect URI set the first field to “Web”. In the second field enter <OauthCallbackUrl /> and select Register.
+
+Create a client Secret
+
+- Navigate to your app registration in the Azure portal if you aren't already on the page.
+- Select **Certificates & secrets** on the left menu.
+- Under **Client secrets**, select **New client secret** to create a new secret.
+
+Set the Permissions to the Service Bus API
+
+- If your application is a console application, you must register a native application and add API permissions for **Microsoft.ServiceBus** to the **required permissions** set. Native applications also need a **redirect-uri** in Azure AD, which serves as an identifier; the URI doesn't need to be a network destination. Use `https://servicebus.microsoft.com` for this example, because the sample code already uses that URI.
+
+Assign Azure roles using the Azure portal
+
+- Assign one of the [Service Bus roles](https://learn.microsoft.com/en-us/azure/service-bus-messaging/authenticate-application#azure-built-in-roles-for-azure-service-bus) to the application's service principal at the desired scope (Service
+- Bus namespace, resource group, subscription). For detailed steps, see [Assign Azure roles using the Azure portal](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
+
+Now, configure the OAuth 2.0 connection. Add an Azure Service Bus OAuth 2.0 Connection config variable:
+
+- Use the **Application (client) ID** value for the **Client ID** field.
+- Use the **Client Secret** for the same named field.
+- If you didn't select Multitenant when creating the Azure application, you will need to replace the **Authorize URL** and **Token URL** with ones specific to your tenant.
+
+Save your integration and you should be able to authenticate a user through Azure Service Bus with OAuth 2.0.

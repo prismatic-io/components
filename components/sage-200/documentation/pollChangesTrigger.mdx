@@ -1,0 +1,87 @@
+This trigger polls the [Sage 200 Professional/Extra Online API](https://developer.sage.com/200-uk) for new and updated records of the selected resource type on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. On each execution, records of the selected resource type are fetched from Sage 200 using the corresponding list endpoint with a server-side OData filter (`$filter=date_time_updated gt {lastPolledAt}`) so only records changed since the previous poll are returned
+3. Returned records are categorized client-side as **created** or **updated** by comparing each record's `date_time_created` and `date_time_updated` against the timestamp of the last successful poll
+4. A record is classified as **created** when `date_time_created` is newer than the last poll time; otherwise, when `date_time_updated` is newer than the last poll time, the record is classified as **updated** (created beats updated)
+5. The trigger updates its internal state with the current timestamp after each poll so subsequent executions only surface records changed since the previous run
+6. When no records match on a given run, the trigger reports `polledNoChanges` so downstream flows are not invoked unnecessarily
+7. On the very first execution, `lastPolledAt` defaults to the current time so no historical records flood the workflow — only changes that occur after the trigger is enabled will be surfaced
+
+#### Supported Resource Types
+
+<details>
+<summary>Available Resources (9)</summary>
+
+| Resource Type | Endpoint |
+|---------------|----------|
+| Customers | `/customers` |
+| Customer Contacts | `/customer_contacts` |
+| Customer Delivery Addresses | `/customer_delivery_addresses` |
+| Customer Price Bands | `/customer_price_bands` |
+| Price Bands | `/price_bands` |
+| Products | `/products` |
+| Product Groups | `/product_groups` |
+| Sales Orders | `/sop_orders` |
+| Tax Codes | `/tax_codes` |
+
+</details>
+
+#### Configuration
+
+Configure the following inputs:
+
+<details>
+<summary>Available Inputs (6)</summary>
+
+- **Connection**: The Sage 200 connection used to authenticate API requests
+- **Site**: The site ID. This value can be obtained from the *Get Site and Company Information* action
+- **Company**: The company ID. This value can be obtained from the *Get Site and Company Information* action
+- **Resource Type**: The Sage 200 resource type to poll for new or updated records
+- **Show New Records**: When enabled, newly created records are included in the trigger output. Defaults to `true`
+- **Show Updated Records**: When enabled, records updated after the last poll are included in the trigger output. Defaults to `true`
+
+</details>
+
+#### Returned Data
+
+The trigger returns an object containing two arrays — `created` for newly created records and `updated` for modified records. Each array contains full Sage 200 resource objects matching the selected resource type.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "a1b2c3d4-1234-5678-90ab-cdef12345678",
+        "code": "CUST001",
+        "name": "Acme Corporation",
+        "date_time_created": "2026-04-27T10:15:00Z",
+        "date_time_updated": "2026-04-27T10:15:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": "e5f6g7h8-9012-3456-78ab-cdef90123456",
+        "code": "CUST002",
+        "name": "Globex Industries",
+        "date_time_created": "2026-03-15T08:00:00Z",
+        "date_time_updated": "2026-04-27T11:42:00Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The trigger sends `lastPolledAt` directly to the Sage 200 OData `$filter` query as an ISO 8601 string (e.g. `2026-04-27T10:00:00Z`). The API parses the ISO string directly — no datetime literal wrapping is required
+- When both *Show New Records* and *Show Updated Records* are disabled, the trigger short-circuits without calling the API and reports `polledNoChanges`
+- A record qualifying as both new and updated is reported as **created** (created beats updated) so downstream flows do not process the same record twice on the run it first appears
+- Refer to the [Sage 200 Professional/Extra Online API Reference](https://developer.sage.com/200-uk) for rate limit details and the full set of fields available on each resource type

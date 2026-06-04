@@ -1,0 +1,20 @@
+The **Basic Authentication (Deprecated)** connection authenticates against Odoo's XML-RPC API with a username and password. It is maintained for backwards compatibility with integrations built against earlier versions of this component.
+
+:::warning[Deprecated]
+Odoo will drop XML-RPC support in 19.1 (mid-2026). Migrate existing integrations to the **API Key** connection before that release. New integrations should use the **API Key** connection instead.
+:::
+
+#### Prerequisites
+
+- An Odoo instance that still exposes the XML-RPC endpoint
+- An Odoo user account with permissions for the records the integration will manage
+
+#### Configure the Connection
+
+Create a connection of type **Basic Authentication (Deprecated)** and configure the following fields:
+
+- **Odoo Base URL**: Enter the URL used to log in to Odoo, for example `https://example-company.odoo.com`. Omit any trailing slash.
+- **Server Port**: Leave blank for default HTTP (80) or HTTPS (443). Set only when a self-hosted Odoo instance listens on a non-standard port.
+- **Odoo Database Name**: Click the user avatar in the top-right within Odoo and select **My Databases** to find the database name.
+- **Username**: The username (typically the email address) used to log in to Odoo.
+- **Password or API Key**: The user's password, or an API key generated under **Account Security → New API Key**.

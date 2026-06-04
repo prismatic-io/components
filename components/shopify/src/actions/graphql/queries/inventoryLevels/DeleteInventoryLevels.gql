@@ -1,0 +1,8 @@
+mutation DeleteInventoryLevels($inventoryLevelId: ID!) {
+  inventoryDeactivate(inventoryLevelId: $inventoryLevelId) {
+    userErrors {
+      field
+      message
+    }
+  }
+}

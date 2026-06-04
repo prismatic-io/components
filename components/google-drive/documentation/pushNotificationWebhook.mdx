@@ -1,0 +1,11 @@
+A Google Drive [push notification](https://developers.google.com/drive/api/guides/push) can be configured to send information to a flow's webhook URL when changes occur to files and folders (file created, updated, deleted, etc.).
+
+Google Drive push notifications allow applications to watch for changes to resources. When a watched resource changes, Google Drive sends a notification to the configured webhook endpoint.
+
+To configure push notifications:
+
+1. Use a Google Drive action or the [Google Drive API](https://developers.google.com/drive/api/v3/reference/files/watch) to create a watch request for a specific file or changes endpoint.
+2. Provide the webhook URL from the trigger as the notification address.
+3. Google Drive will send POST requests to the webhook URL when changes occur to the watched resources.
+
+For a full list of notification types and watch options, refer to the [Google Drive Push Notifications documentation](https://developers.google.com/drive/api/guides/push).

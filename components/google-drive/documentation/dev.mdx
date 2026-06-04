@@ -1,0 +1,11 @@
+Documentation for the Node.js client used in this component can be found at https://developers.google.com/drive/api/v3/quickstart/nodejs.
+
+A common integration pattern involves listing files in a file store, and performing a series of actions on the array of files that are returned.
+See our [looping over files](integrations/common-patterns/loop-over-files.mdx) quickstart for information about how to create a loop over an array of files.
+
+### Tracking Changes in Google Drive
+
+To track changes within Google Drive, use the [List Changes](#listchanges) action.
+You can either run **List Changes** on a schedule with a [schedule trigger](components/schedule-triggers.mdx) (for example, check for changes every 5 minutes), or you can use Google Drive's [change API](https://developers.google.com/drive/api/guides/push) to receive notifications in real time when changes occur.
+
+For an example of how to use webhooks with Google Drive, import this example integration available on [GitHub](https://github.com/prismatic-io/examples/blob/main/integrations/google-drive-webhooks.yml).

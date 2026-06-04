@@ -1,0 +1,10 @@
+It is recommended that when using the New Message trigger to use basic scenarios. More complex scenarios may have limitations:
+
+#### Unpredictable Return Behavior:
+SQS doesn’t guarantee that all available messages will be returned in a single return. Even when using the maximum allowed settings.
+
+#### Confirming Empty Queues:
+An empty response does not mean the queue is fully drained. Messages might still be delayed, invisible, or not returned due to SQS’s distributed nature.
+
+#### Delayed Messages:
+Messages sent with DelaySeconds will remain hidden until the delay expires.

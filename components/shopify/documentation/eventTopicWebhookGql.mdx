@@ -1,0 +1,109 @@
+The Event Topic Webhook trigger manages [Shopify webhook subscriptions](https://shopify.dev/docs/api/admin-graphql/latest/mutations/webhookSubscriptionCreate) for an instance. Unlike manual webhook configuration, this trigger handles the entire webhook lifecycle automatically using the Shopify GraphQL API.
+
+When the trigger is used in a flow:
+- **On Instance Deploy**: The trigger automatically creates webhook subscriptions in the Shopify store for the selected event topics (customer creation, order updates, product changes, etc.). The webhook callback URL is set to the instance's unique webhook URL. If subscriptions for the same topics and URL already exist, they are reused to prevent duplication.
+- **On Instance Deletion**: The trigger automatically removes webhook subscriptions from the Shopify store that match the instance's webhook URL. This ensures no orphaned webhook configurations remain after instance cleanup.
+
+#### Configuration Requirements
+
+This trigger requires:
+- **Connection**: A Shopify connection with appropriate API access permissions
+- **Secret Key**: The Shopify app's client secret for HMAC signature verification, viewable from the app's Configuration section in the [Shopify Partner Dashboard](https://partners.shopify.com/)
+- **Webhook Topics**: One or more event types to subscribe to (see Event Topics below)
+
+#### Signature Verification
+
+The trigger includes built-in HMAC-SHA256 signature verification to ensure webhook requests are authentic. When a webhook is received:
+1. The trigger extracts the `X-Shopify-Hmac-SHA256` header from the request
+2. Computes the expected signature using the configured Secret Key
+3. Compares the computed signature with the received signature
+4. Rejects requests with mismatched signatures
+
+The trigger automatically returns a 200 OK response with the parsed JSON body for verified webhooks.
+
+#### Event Topics Configuration
+
+Select which Shopify events should trigger the flow.
+
+<details>
+<summary>Available Event Topics (67)</summary>
+
+**Customer Events:**
+- `CUSTOMERS_CREATE`, `CUSTOMERS_UPDATE`, `CUSTOMERS_DELETE`
+- `CUSTOMERS_ENABLE`, `CUSTOMERS_DISABLE`, `CUSTOMERS_MERGE`
+- `CUSTOMERS_EMAIL_MARKETING_CONSENT_UPDATE`, `CUSTOMERS_MARKETING_CONSENT_UPDATE`
+
+**Order Events:**
+- `ORDERS_CREATE`, `ORDERS_UPDATED`, `ORDERS_DELETE`, `ORDERS_CANCELLED`
+- `ORDERS_FULFILLED`, `ORDERS_PARTIALLY_FULFILLED`, `ORDERS_PAID`, `ORDERS_EDITED`
+- `ORDERS_RISK_ASSESSMENT_CHANGED`, `ORDERS_SHOPIFY_PROTECT_ELIGIBILITY_CHANGED`
+
+**Product Events:**
+- `PRODUCTS_CREATE`, `PRODUCTS_UPDATE`, `PRODUCTS_DELETE`
+- `PRODUCT_LISTINGS_ADD`, `PRODUCT_LISTINGS_REMOVE`, `PRODUCT_LISTINGS_UPDATE`
+- `PRODUCT_PUBLICATIONS_CREATE`, `PRODUCT_PUBLICATIONS_UPDATE`, `PRODUCT_PUBLICATIONS_DELETE`
+
+**Fulfillment Events:**
+- `FULFILLMENTS_CREATE`, `FULFILLMENTS_UPDATE`
+- `FULFILLMENT_ORDERS_CANCELLED`, `FULFILLMENT_ORDERS_FULFILLMENT_REQUEST_ACCEPTED`
+- `FULFILLMENT_ORDERS_FULFILLMENT_REQUEST_REJECTED`, `FULFILLMENT_ORDERS_HOLD_RELEASED`
+
+**Inventory Events:**
+- `INVENTORY_ITEMS_CREATE`, `INVENTORY_ITEMS_UPDATE`, `INVENTORY_ITEMS_DELETE`
+- `INVENTORY_LEVELS_CONNECT`, `INVENTORY_LEVELS_DISCONNECT`, `INVENTORY_LEVELS_UPDATE`
+
+**Collection Events:**
+- `COLLECTIONS_CREATE`, `COLLECTIONS_UPDATE`, `COLLECTIONS_DELETE`
+- `COLLECTION_LISTINGS_ADD`, `COLLECTION_LISTINGS_REMOVE`, `COLLECTION_LISTINGS_UPDATE`
+
+**Company Events** (B2B):
+- `COMPANIES_CREATE`, `COMPANIES_UPDATE`, `COMPANIES_DELETE`
+- `COMPANY_CONTACTS_CREATE`, `COMPANY_CONTACTS_UPDATE`, `COMPANY_CONTACTS_DELETE`
+- `COMPANY_LOCATIONS_CREATE`, `COMPANY_LOCATIONS_UPDATE`, `COMPANY_LOCATIONS_DELETE`
+
+**Draft Order Events:**
+- `DRAFT_ORDERS_CREATE`, `DRAFT_ORDERS_UPDATE`, `DRAFT_ORDERS_DELETE`
+
+**Other Events:**
+- App lifecycle: `APP_UNINSTALLED`, `APP_SUBSCRIPTIONS_UPDATE`, `APP_SCOPES_UPDATE`
+- Cart: `CARTS_CREATE`, `CARTS_UPDATE`
+- Checkout: `CHECKOUTS_CREATE`, `CHECKOUTS_UPDATE`, `CHECKOUTS_DELETE`
+- Disputes: `DISPUTES_CREATE`, `DISPUTES_UPDATE`
+- Refunds: `REFUNDS_CREATE`
+- Shop: `SHOP_UPDATE`
+- Themes: `THEMES_CREATE`, `THEMES_UPDATE`, `THEMES_DELETE`, `THEMES_PUBLISH`
+- Subscriptions: `SUBSCRIPTION_CONTRACTS_CREATE`, `SUBSCRIPTION_CONTRACTS_UPDATE`, `SUBSCRIPTION_BILLING_ATTEMPTS_SUCCESS`
+
+</details>
+
+A complete list of webhook topics and their payloads is available in the [Shopify Webhook Topics documentation](https://shopify.dev/docs/api/webhooks).
+
+#### Webhook Payload Example
+
+When a webhook is received, the trigger provides the parsed JSON body.
+
+<details>
+<summary>Example: CUSTOMERS_CREATE Event</summary>
+
+```json
+{
+  "id": 5940139491234,
+  "email": "john.doe@example.com",
+  "created_at": "2024-11-10T10:30:00-05:00",
+  "updated_at": "2024-11-10T10:30:00-05:00",
+  "first_name": "John",
+  "last_name": "Doe",
+  "phone": "+18005555454",
+  "state": "enabled",
+  "tags": "VIP",
+  "note": null,
+  "verified_email": true,
+  "multipass_identifier": null,
+  "tax_exempt": false,
+  "accepts_marketing": true,
+  "addresses": [],
+  "admin_graphql_api_id": "gid://shopify/Customer/5940139491234"
+}
+```
+
+</details>

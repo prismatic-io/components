@@ -1,0 +1,96 @@
+The [WhatsApp Business Platform](https://developers.facebook.com/docs/whatsapp) can be configured to send [webhook notifications](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/components) to a flow when events occur, such as incoming messages, message status updates, and more.
+
+This trigger handles Meta's [webhook verification](https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests) challenge and validates all event payloads using [HMAC signature verification](https://developers.facebook.com/docs/graph-api/webhooks/getting-started#event-notifications) with the `x-hub-signature-256` header.
+
+#### How It Works
+
+This trigger routes incoming requests to one of two branches based on the request type:
+
+- **Verification Request** branch: Handles the initial [verification request](https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests) when configuring the webhook in the Meta App Dashboard. Meta sends a `GET` request with `hub.mode`, `hub.verify_token`, and `hub.challenge` query parameters. The trigger validates the verify token and responds with the challenge value to confirm the endpoint.
+- **Event Notification** branch: Handles actual webhook event notifications from WhatsApp. The trigger verifies the `x-hub-signature-256` header by computing an HMAC SHA-256 hash of the request body using the configured **App Secret**, ensuring the payload originates from Meta.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Verify Token**: A custom string token set during webhook configuration in the Meta App Dashboard. This token must match the value entered in the **Callback URL** verification settings. It is used only during the initial webhook verification handshake.
+- **App Secret**: The app secret from the Meta App Dashboard, found under **App Settings > Basic**. This secret is used to compute the HMAC SHA-256 signature for validating incoming event notification payloads.
+
+#### Event Types
+
+WhatsApp webhook notifications include various event types based on the subscribed fields:
+
+<details>
+<summary>Common Event Types</summary>
+
+| Event | Description |
+|-------|-------------|
+| `messages` | Incoming messages (text, media, location, contacts, etc.) |
+| `statuses` | Message delivery status updates (sent, delivered, read, failed) |
+| `errors` | Error notifications related to message delivery |
+| `message_template_status_update` | Status changes for message templates (approved, rejected, etc.) |
+| `account_alerts` | Account-level alerts and policy notifications |
+| `account_update` | Changes to the WhatsApp Business Account |
+| `phone_number_name_update` | Updates to the display name for a phone number |
+| `phone_number_quality_update` | Quality rating changes for a phone number |
+| `template_category_update` | Category changes for message templates |
+| `flows` | WhatsApp Flows status updates |
+
+</details>
+
+Refer to [WhatsApp's Webhooks Components documentation](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/components) for the complete and up-to-date list of available webhook fields and payload structures.
+
+#### Returned Data
+
+<details>
+<summary>Example Event Notification Payload</summary>
+
+```json
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "123456789",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "15551234567",
+              "phone_number_id": "987654321"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Jane Doe"
+                },
+                "wa_id": "15559876543"
+              }
+            ],
+            "messages": [
+              {
+                "from": "15559876543",
+                "id": "wamid.ABCxyz123",
+                "timestamp": "1677000000",
+                "text": {
+                  "body": "Hello!"
+                },
+                "type": "text"
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+#### Notes
+
+- The webhook endpoint must be publicly accessible and use HTTPS for Meta to deliver notifications.
+- During initial setup, the **Verify Token** must match exactly between the trigger configuration and the Meta App Dashboard webhook settings.
+- If signature verification fails, the trigger rejects the request with an error to prevent processing of unverified payloads.

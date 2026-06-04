@@ -1,0 +1,10 @@
+[
+  {
+    "label": "Node.js Client Docs",
+    "href": "https://tediousjs.github.io/node-mssql/"
+  },
+  {
+    "label": "SQL Server Docs",
+    "href": "https://www.microsoft.com/en-us/sql-server/"
+  }
+]

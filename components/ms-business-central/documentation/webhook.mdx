@@ -1,0 +1,77 @@
+The [Microsoft Dynamics 365 Business Central](https://www.microsoft.com/en-us/dynamics-365/products/business-central) Webhook trigger receives notifications when resources change in Business Central. Subscriptions are automatically created when the instance is deployed and removed when the instance is disabled.
+
+#### How It Works
+
+This trigger uses Microsoft Business Central's [webhook subscription API](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/api-reference/v2.0/dynamics-subscriptions) to receive real-time notifications when specified resources are created, updated, or deleted.
+
+#### Automatic Lifecycle Management
+
+- **On Instance Deploy**: A webhook subscription is automatically created in Business Central pointing to the instance's endpoint
+- **On Instance Deletion**: The webhook subscription is automatically removed from Business Central
+
+:::note[Subscription Expiration]
+Business Central webhook subscriptions expire after approximately 3 days. The trigger automatically handles subscription renewal to ensure continuous operation.
+:::
+
+#### URL Validation
+
+Business Central validates webhook endpoints by sending a validation request with a `validationToken` query parameter. The trigger automatically handles this validation by returning the token in the response.
+
+#### Branching
+
+This trigger uses branching to separate validation requests from actual notifications:
+
+- **URL Validation**: Handles initial webhook validation requests from Business Central
+- **Notification**: Processes actual change notifications for the subscribed resource
+
+#### Event Types
+
+The following resources can be monitored for changes:
+
+<details>
+<summary>Supported Resources</summary>
+
+| Resource | Path | Events |
+|----------|------|--------|
+| Customers | `/api/v1.0/companies({companyId})/customers` | Created, Updated, Deleted |
+| Sales Orders | `/api/v1.0/companies({companyId})/salesOrders` | Created, Updated, Deleted |
+| Items | `/api/v1.0/companies({companyId})/items` | Created, Updated, Deleted |
+| Vendors | `/api/v1.0/companies({companyId})/vendors` | Created, Updated, Deleted |
+| Purchase Orders | `/api/v1.0/companies({companyId})/purchaseOrders` | Created, Updated, Deleted |
+| Sales Invoices | `/api/v1.0/companies({companyId})/salesInvoices` | Created, Updated, Deleted |
+
+Replace `{companyId}` with the actual company GUID.
+
+</details>
+
+#### Configuration
+
+Specify the Business Central resource to subscribe to in the **Resource** input. The resource path should include the API version, company ID, and entity type.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+When a resource changes, Business Central sends a notification with the following structure:
+
+```json
+{
+  "value": [
+    {
+      "subscriptionId": "ba1cba0177854a6091865452e017742b",
+      "clientState": "",
+      "changeType": "updated",
+      "resource": "/api/v1.0/companies(5d115c9c-44e3-ea11-bb43-000d3a2feca1)/customers(7d577253-3ef0-4a0a-bb7f-8335c2596e70)",
+      "lastModifiedDateTime": "2024-01-15T10:30:00Z"
+    }
+  ]
+}
+```
+
+</details>
+
+#### Related Actions
+
+- **Create Event Subscription** - Manually create a webhook subscription
+- **Delete All Instance Subscriptions** - Remove all subscriptions for this instance

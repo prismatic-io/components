@@ -1,0 +1,74 @@
+The Ad Account Trigger receives real-time [webhook notifications](https://developers.facebook.com/docs/graph-api/webhooks/getting-started) from Meta when subscribed Ad Account fields change. This trigger automatically manages webhook subscriptions through the Meta Graph API.
+
+#### How It Works
+
+This trigger uses two branches to handle the Meta webhook lifecycle:
+
+- **URL Validation**: When the instance is first deployed, Meta sends a verification request containing a challenge token. The trigger validates the **Verify Token** and responds with the challenge to confirm the endpoint.
+- **Notification**: After verification, all subsequent webhook notifications are routed to this branch. The trigger verifies the `X-Hub-Signature-256` header on each request to ensure payload integrity.
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook subscription in the Meta Graph API for the specified Ad Account fields. The subscription points to the instance's unique webhook URL.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from the Meta Graph API.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Graph Version**: The version of the Graph API to use (defaults to 22).
+- **Verify Token**: A secret token used to validate the webhook subscription during the URL verification handshake. This value must match what Meta sends during verification.
+- **Ad Account Fields**: Select the Ad Account fields to subscribe to from the available options. At least one field is required.
+- **Dynamic Ad Account Fields**: Alternatively, provide Ad Account fields as a JSON array for dynamic configuration. This input is used when **Ad Account Fields** is empty.
+- **Connection**: A Meta Ads Client Credentials connection is required to manage webhook subscriptions through the API.
+
+#### Event Types
+
+<details>
+<summary>Available Ad Account Fields (4)</summary>
+
+| Field | Description |
+|-------|-------------|
+| `ad_recommendations` | Delivers guidance on ads with recommendation types and messages |
+| `creative_fatigue` | Monitors creative fatigue levels across ad accounts and ad groups |
+| `in_process_ad_objects` | Notifies when ad objects transition through processing states |
+| `with_issues_ad_objects` | Reports ads, ad sets, or campaigns encountering errors |
+
+</details>
+
+Refer to the [Meta Ad Account Webhooks Reference](https://developers.facebook.com/docs/graph-api/webhooks/reference/ad-account) for the complete and up-to-date list of available fields and their descriptions.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "object": "ad_account",
+  "entry": [
+    {
+      "id": "123456789",
+      "time": 1711929600,
+      "changes": [
+        {
+          "field": "with_issues_ad_objects",
+          "value": {
+            "ad_object_id": "987654321",
+            "ad_object_type": "AD",
+            "error_code": 1815869,
+            "error_summary": "Ad Not Delivering"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+#### Notes
+
+- A Meta Ads **Client Credentials** connection is required for this trigger to manage webhook subscriptions through the API.
+- The **Verify Token** is used both during the initial URL verification handshake and for validating the `X-Hub-Signature-256` signature on subsequent notifications.

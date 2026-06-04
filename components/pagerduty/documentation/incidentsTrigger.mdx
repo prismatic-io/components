@@ -1,0 +1,76 @@
+The Incidents Trigger receives [webhook notifications](https://support.pagerduty.com/main/docs/webhooks) from PagerDuty when incident events occur. This trigger automatically manages webhook subscriptions — the entire lifecycle is handled without manual configuration in the PagerDuty dashboard.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a V3 webhook subscription in PagerDuty pointing to the instance's unique webhook URL. The subscription is configured with the selected incident events, a filter (by account, service, or team), and a description.
+- **On Instance Deletion**: The trigger automatically removes all webhook subscriptions associated with the instance's webhook URLs from PagerDuty.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Incident Events**: Select which incident events the webhook subscription should monitor. Multiple events can be selected.
+- **Webhook Description**: A description for the webhook subscription created in PagerDuty.
+- **Filter ID**: The ID of the PagerDuty object (account, service, or team) used to scope the webhook subscription.
+- **Filter Type**: The type of object used as the filter — **Account**, **Service**, or **Team**.
+
+#### Event Types
+
+<details>
+<summary>Available Incident Events (17)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `incident.acknowledged` | An incident is acknowledged |
+| `incident.annotated` | A note is added to an incident |
+| `incident.conference_bridge.updated` | An incident's conference bridge is updated |
+| `incident.delegated` | An incident is delegated |
+| `incident.escalated` | An incident is escalated |
+| `incident.priority_updated` | An incident's priority is updated |
+| `incident.reassigned` | An incident is reassigned |
+| `incident.reopened` | An incident is reopened |
+| `incident.resolved` | An incident is resolved |
+| `incident.responder.added` | A responder is added to an incident |
+| `incident.responder.replied` | A responder replies to an incident |
+| `incident.service_updated` | An incident's service is updated |
+| `incident.status_update_published` | A status update is published for an incident |
+| `incident.triggered` | An incident is triggered |
+| `incident.unacknowledged` | An incident is unacknowledged |
+| `incident.workflow.started` | An incident workflow is started |
+| `incident.workflow.completed` | An incident workflow is completed |
+
+</details>
+
+Refer to the [PagerDuty webhooks documentation](https://support.pagerduty.com/main/docs/webhooks) for the complete and up-to-date list of event types.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "event": {
+    "id": "01DEN0M0L0OCDNR0CDEVP4SRGH",
+    "event_type": "incident.triggered",
+    "resource_type": "incident",
+    "occurred_at": "2024-01-15T10:30:00.000Z",
+    "data": {
+      "id": "Q1P5SQEISWZ3K4",
+      "type": "incident",
+      "title": "Server is on fire",
+      "status": "triggered",
+      "urgency": "high",
+      "service": {
+        "id": "PF9KMXH",
+        "type": "service_reference",
+        "summary": "Production API"
+      }
+    }
+  }
+}
+```
+
+</details>

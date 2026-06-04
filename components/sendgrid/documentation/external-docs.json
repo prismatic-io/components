@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://www.twilio.com/docs/sendgrid/api-reference"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://github.com/sendgrid/sendgrid-nodejs/blob/main/CHANGELOG.md"
+  }
+]

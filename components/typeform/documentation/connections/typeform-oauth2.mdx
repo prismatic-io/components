@@ -1,0 +1,14 @@
+To Generate an OAuth App:
+
+1. Log in to your account at [Typeform](https://www.typeform.com/).
+2. In the upper-left corner, click icon drop-down menu next to your organization name.
+3. Under **Organization** section, click **Developer Apps**.
+4. Click **Register a new app**.
+5. In the _App Name_ field, type the name for your new app.
+6. In the _App website_ field, type the complete URL for your app's homepage.
+7. In the _Redirect URI(s)_ field, enter <OauthCallbackUrl />
+8. Click **Register app**.
+9. Enter the following into the connection configuration of your integration
+   1. Scopes (Recommended): `offline accounts:read forms:write forms:read images:write images:write images:read themes:write themes:read responses:read responses:write webhooks:read webhooks:write workspaces:read workspaces:write`
+   1. Client ID
+   1. Client Secret

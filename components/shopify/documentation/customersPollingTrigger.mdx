@@ -1,0 +1,54 @@
+Checks for new and updated customers in a Shopify store on a configured schedule.
+
+#### How It Works
+
+The trigger operates by:
+1. Running on the configured schedule (e.g., every 5 minutes)
+2. Querying the [Shopify GraphQL API](https://shopify.dev/docs/api/admin-graphql) for customers modified since the last poll using the `updated_at` filter
+3. Categorizing customers as "created" or "updated" based on their `createdAt` timestamp compared to the last poll time
+4. Maintaining state automatically to track the last poll time
+5. Returning all customers on the first run (when no previous poll state exists)
+
+#### Configuration
+
+The trigger requires only a Shopify connection. Schedule configuration is handled by the platform.
+
+#### Returned Data
+
+The trigger returns data with customers categorized by change type:
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "gid://shopify/Customer/5940139491234",
+        "displayName": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "+18005555454",
+        "createdAt": "2024-11-10T10:30:00Z",
+        "updatedAt": "2024-11-10T10:30:00Z",
+        "state": "ENABLED",
+        "tags": ["VIP"]
+      }
+    ],
+    "updated": [
+      {
+        "id": "gid://shopify/Customer/5940139491235",
+        "displayName": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "phone": "+18005555455",
+        "createdAt": "2024-11-08T09:00:00Z",
+        "updatedAt": "2024-11-10T14:22:00Z",
+        "state": "ENABLED",
+        "tags": []
+      }
+    ]
+  }
+}
+```
+
+</details>

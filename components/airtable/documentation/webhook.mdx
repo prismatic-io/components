@@ -1,0 +1,223 @@
+The **Webhook** trigger receives webhook requests from manually configured Airtable webhooks. This trigger is designed for scenarios where webhooks are created and managed outside the integration using Airtable's API or automation interface.
+
+For information about creating Airtable webhooks manually, see the [Airtable Webhooks API documentation](https://airtable.com/developers/web/api/webhooks-overview).
+
+#### When to Use This Trigger
+
+Use this trigger when:
+
+- Webhooks are created and managed using Airtable's API or Automations interface directly
+- Multiple integrations need to receive the same webhook events
+- Webhook lifecycle needs to be controlled independently from instance deployment
+- Simple webhook reception is needed without automatic lifecycle management
+
+For automatic webhook creation and management with built-in expiration prevention and cursor-based retrieval, use the **Base Change Notifications** trigger instead.
+
+#### Configuration
+
+This trigger requires no configuration inputs. It simply receives and returns webhook payloads as-is.
+
+#### Setting Up the Webhook URL
+
+1. Deploy the instance containing this trigger
+2. Copy the webhook URL from the trigger's configuration in the instance
+3. Create an Airtable webhook manually using one of these methods:
+   - **Airtable API**: Call the [Create webhook endpoint](https://airtable.com/developers/web/api/create-a-webhook) with the trigger URL as the `notificationUrl`
+   - **Airtable Automations**: Use the [Webhook Received trigger](https://support.airtable.com/docs/when-webhook-received-trigger) in an Airtable automation to forward events
+4. Configure the webhook specification to define which events to monitor
+
+#### Webhook Payload Structure
+
+The trigger receives the raw webhook payload from Airtable and returns it unchanged. A typical Airtable webhook notification includes:
+
+<details>
+<summary>Webhook notification payload</summary>
+
+```json
+{
+  "base": {
+    "id": "appLkNDICXNqxSDhG"
+  },
+  "webhook": {
+    "id": "ach00000000000001"
+  },
+  "timestamp": "2023-09-15T18:30:00.000Z"
+}
+```
+
+</details>
+
+After receiving the notification ping, use the [List webhook payloads endpoint](https://airtable.com/developers/web/api/list-webhook-payloads) to retrieve the actual change data using the webhook ID and cursor values.
+
+#### Example Webhook Payloads
+
+<details>
+<summary>Record Created Event</summary>
+
+```json
+{
+  "base": {
+    "id": "appLkNDICXNqxSDhG"
+  },
+  "webhook": {
+    "id": "ach00000000000001"
+  },
+  "timestamp": "2023-09-15T18:30:00.000Z"
+}
+```
+
+</details>
+
+<details>
+<summary>Table Schema Changed Event</summary>
+
+```json
+{
+  "base": {
+    "id": "appLkNDICXNqxSDhG"
+  },
+  "webhook": {
+    "id": "ach00000000000001"
+  },
+  "timestamp": "2023-09-15T19:45:00.000Z"
+}
+```
+
+</details>
+
+<details>
+<summary>Multiple Changes Event</summary>
+
+```json
+{
+  "base": {
+    "id": "appLkNDICXNqxSDhG"
+  },
+  "webhook": {
+    "id": "ach00000000000002"
+  },
+  "timestamp": "2023-09-15T20:15:00.000Z"
+}
+```
+
+</details>
+
+#### Returned Data
+
+The trigger returns the complete webhook payload structure:
+
+<details>
+<summary>Complete webhook payload structure</summary>
+
+```json
+{
+  "headers": {
+    "Accept": "*/*",
+    "Content-Type": "application/json",
+    "Host": "hooks.example.com",
+    "User-Agent": "Airtable (https://airtable.com)"
+  },
+  "queryParameters": {},
+  "rawBody": {
+    "data": "<data (547 bytes)>"
+  },
+  "body": {
+    "data": [
+      {
+        "id": "recExample123",
+        "fields": {
+          "Field 1": "Example Value 1",
+          "Field 2": "Example Value 2"
+        },
+        "createdTime": "2023-01-01T00:00:00.000Z"
+      }
+    ],
+    "contentType": "application/json"
+  },
+  "pathFragment": "",
+  "webhookUrls": {
+    "Flow 1": "https://hooks.example.com/trigger/EXAMPLE_ID"
+  },
+  "webhookApiKeys": {
+    "Flow 1": ["example-api-key"]
+  },
+  "invokeUrl": "https://hooks.example.com/trigger/EXAMPLE_ID",
+  "executionId": "ExecutionResult:example-execution-id",
+  "customer": {
+    "id": "customerId",
+    "name": "Customer Name",
+    "externalId": "externalId"
+  },
+  "instance": {
+    "id": "instanceId",
+    "name": "Instance Name"
+  },
+  "user": {
+    "id": "userId",
+    "email": "user@example.com",
+    "name": "User Name",
+    "externalId": "userExternalId"
+  },
+  "integration": {
+    "name": "Integration Name",
+    "id": "integrationId",
+    "versionSequenceId": "1",
+    "externalVersion": "1"
+  },
+  "flow": {
+    "name": "Flow Name",
+    "id": "flowId"
+  },
+  "startedAt": "2023-01-01T00:00:00.000Z",
+  "globalDebug": false
+}
+```
+
+</details>
+
+#### Processing Webhook Data
+
+After receiving the notification ping, the integration flow should:
+
+1. **Extract webhook metadata**: Get the `webhook.id` and `base.id` from the payload
+2. **Retrieve change details**: Call the [List webhook payloads endpoint](https://airtable.com/developers/web/api/list-webhook-payloads) to get actual change data
+3. **Process changes**: Parse the change payloads and take appropriate actions
+4. **Track cursor**: Store the cursor value to avoid reprocessing payloads
+
+<details>
+<summary>Example flow</summary>
+
+```
+[Webhook Trigger]
+  → [Extract Webhook ID]
+  → [List Webhook Payloads Action]
+  → [Process Changes Loop]
+  → [Update Records]
+```
+
+</details>
+
+#### Important Notes
+
+- **No Automatic Lifecycle Management**: This trigger does not create, refresh, or delete webhooks. Webhook management must be handled separately
+- **No Signature Verification**: This trigger does not verify webhook signatures. Implement verification in the flow if needed using the MAC secret from webhook creation
+- **No Cursor Management**: The trigger does not track cursors or retrieve payloads automatically. The flow must implement cursor tracking
+- **Webhook Expiration**: Airtable webhooks expire after 7 days without a refresh. Implement refresh logic separately using the [Refresh webhook endpoint](https://airtable.com/developers/web/api/refresh-a-webhook)
+- **Raw Payload**: The trigger returns the webhook notification as-is without transformation
+
+#### Comparison with Base Change Notifications Trigger
+
+The Airtable component includes two webhook triggers:
+
+- **Webhook** (this trigger): Receives manually configured Airtable webhooks without lifecycle management
+- **Base Change Notifications**: Automatically creates and manages webhook subscriptions with lifecycle handlers, cursor-based retrieval, and auto-refresh
+
+Use this **Webhook** trigger for simple webhook reception when webhooks are managed externally. Use the **Base Change Notifications** trigger for automated webhook management with built-in expiration prevention and payload retrieval.
+
+#### Additional Resources
+
+- [Airtable Webhooks API Overview](https://airtable.com/developers/web/api/webhooks-overview)
+- [Create a webhook](https://airtable.com/developers/web/api/create-a-webhook)
+- [List webhook payloads](https://airtable.com/developers/web/api/list-webhook-payloads)
+- [Refresh a webhook](https://airtable.com/developers/web/api/refresh-a-webhook)
+- [Webhooks specification model](https://airtable.com/developers/web/api/model/webhooks-specification)

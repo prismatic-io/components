@@ -1,0 +1,33 @@
+Google documents many [common errors](https://developers.google.com/google-ads/api/docs/common-errors) that will aid in troubleshooting.
+
+#### Important Notes for v23
+
+**Breaking changes from v22:**
+- `CallAd` and `CallAdInfo` are removed — call ad creation and management must use alternative ad types
+- `Campaign.start_date` and `Campaign.end_date` are replaced by `Campaign.start_date_time` and `Campaign.end_date_time`
+- `Campaign.url_expansion_opt_out` is removed — URL expansion is now managed through `AssetAutomationType` settings
+- Video metrics are renamed: `video_views` becomes `video_trueview_views`, `average_cpv` becomes `trueview_average_cpv`, `video_view_rate` becomes `video_trueview_view_rate`
+
+For full details, see the [v23 release notes](https://developers.google.com/google-ads/api/docs/release-notes#v23_0).
+
+**EU Political Advertising Self-Declaration (v22+):**
+When using API v22 or later, the `containsEuPoliticalAdvertising` field must be set when:
+- Creating new campaigns
+- Modifying location or proximity targeting on existing campaigns
+
+This field is required and accepts one of the following values:
+- `CONTAINS_EU_POLITICAL_ADVERTISING` - Campaign contains EU political advertising
+- `DOES_NOT_CONTAIN_EU_POLITICAL_ADVERTISING` - Campaign does not contain EU political advertising
+- `UNSPECIFIED` or `UNKNOWN` - Use when the value is unknown or indeterminate
+
+Failure to set this field will result in a `FieldError.REQUIRED` error from the API.
+
+#### Version Compatibility
+
+The component supports multiple API versions through the `apiVersion` connection field:
+- **v23** (recommended): Latest features and improvements
+- **v22**: Stable, sunset October 2026
+- **v21**: Stable, sunset August 2026
+- **v20**: Minimum supported, sunset June 2026
+
+To use a specific version, set the `apiVersion` field when configuring the Google Ads connection. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest dates.

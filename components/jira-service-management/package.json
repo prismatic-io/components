@@ -1,0 +1,29 @@
+{
+  "name": "jira-service-management",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "scripts": {
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && webpack",
+    "test": "echo 'no tests'",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.18.1",
+    "atlassian-utils": "file:../../packages/atlassian-utils",
+    "form-data": "4.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.12",
+    "copy-webpack-plugin": "14.0.0",
+    "ts-loader": "9.5.7",
+    "typescript": "6.0.2",
+    "@types/node": "^25.6.0",
+    "webpack": "5.106.2",
+    "webpack-cli": "7.0.2"
+  }
+}

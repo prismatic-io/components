@@ -1,0 +1,27 @@
+{
+  "name": "ldap",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "webpack",
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "test": "echo 'no tests'"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "ldapts": "^7.2.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.13",
+    "@types/node": "^18.19.130",
+    "copy-webpack-plugin": "13.0.1",
+    "ts-loader": "9.5.4",
+    "typescript": "5.9.3",
+    "webpack": "5.104.1",
+    "webpack-cli": "6.0.1"
+  }
+}

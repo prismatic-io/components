@@ -1,0 +1,8 @@
+query ListFulfillmentServicesDataSource {
+  shop {
+    fulfillmentServices {
+      id
+      serviceName
+    }
+  }
+}

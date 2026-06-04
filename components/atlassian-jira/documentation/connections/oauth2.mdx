@@ -1,0 +1,49 @@
+To create an Atlassian Jira OAuth 2.0 connection, an OAuth 2.0 integration must be configured in the [Atlassian Developer Console](https://developer.atlassian.com/console).
+
+Jira's Cloud API supports OAuth 2.0 (3LO) flows for secure authentication. For more information on OAuth 2.0 (3LO) apps, refer to [Jira's OAuth 2.0 documentation](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/#enabling-oauth-2-0--3lo-).
+
+#### Prerequisites
+
+- Access to the [Atlassian Developer Console](https://developer.atlassian.com/console)
+- Administrative permissions to create OAuth 2.0 integrations
+
+#### Setup Steps
+
+1. Navigate to the [Atlassian Developer Console](https://developer.atlassian.com/console)
+2. Click **Create** and select **OAuth 2.0 integration**
+3. Enter a name for the integration
+4. After creation, locate the **App details** section and copy the **Client ID** and **Client Secret** values
+5. Under the **Authorization** section, click **Configure** next to **OAuth 2.0 (3LO)**
+6. Enter the callback URL: <OauthCallbackUrl />
+7. Navigate to the **Permissions** tab
+8. Add the required scopes based on the use case:
+   - For basic issue management, the following scopes are recommended:
+     ```
+     read:jira-user read:jira-work write:jira-work manage:jira-project manage:jira-configuration manage:jira-webhook offline_access
+     ```
+   - Refer to [Jira OAuth 2.0 scopes documentation](https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/) for a complete list of available scopes
+9. Click **Save** to apply the configuration
+
+:::warning[Scope Consistency]
+The scopes configured in the Atlassian Developer Console must match the scopes entered in the connection configuration. Inconsistent scopes will cause authentication failures.
+:::
+
+#### Configure the Connection
+
+- For **Authorize URL** and **Token URL**, keep the pre-populated defaults (`https://auth.atlassian.com/authorize?audience=api.atlassian.com&prompt=consent` and `https://auth.atlassian.com/oauth/token`) unless instructed otherwise by Atlassian
+- Enter the **Client ID** from the Atlassian Developer Console
+- Enter the **Client Secret** from the Atlassian Developer Console
+- For **Scopes**, use the following default value:
+  ```
+  read:jira-user read:jira-work write:jira-work manage:jira-project manage:jira-configuration manage:jira-webhook offline_access
+  ```
+  - The `offline_access` scope is required to obtain a refresh token
+  - Customize the scopes to match the use case requirements
+  - Ensure the scopes match those configured in the Atlassian Developer Console
+  - Refer to [Jira scopes documentation](https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/) for additional scope information
+- For **Jira Site Name** (optional):
+  - By default, the connection uses the first Jira site the authenticated user has access to
+  - To specify a different site, enter the site name (e.g., `example`) or full URL (e.g., `example.atlassian.net`)
+- For **Version**, select the API version (typically `3` for Jira Cloud)
+
+For additional information on developing Jira applications and OAuth 2.0 configuration, refer to the [Jira OAuth 2.0 apps guide](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/).

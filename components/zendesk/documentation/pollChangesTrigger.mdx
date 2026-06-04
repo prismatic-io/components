@@ -1,0 +1,53 @@
+The **New and Updated Tickets** polling trigger checks Zendesk on a configured schedule for tickets that were created or modified since the last poll. Unlike webhook-based triggers, polling does not require webhook subscription management and works reliably for low-frequency monitoring scenarios.
+
+The trigger uses Zendesk's Incremental Tickets Export endpoint with cursor-based pagination. This guarantees that no tickets are missed between runs and avoids re-processing old data, because Zendesk returns a stable cursor that points to the exact position in the ticket change stream.
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads `lastPolledAt` and `afterCursor` from the polling state. On the first run, `start_time` is set to 60 seconds before the current time, because Zendesk requires `start_time` to be at least one minute in the past.
+2. Calls the Zendesk Incremental Tickets Export endpoint, resuming from the persisted `afterCursor` when available, or using `start_time` on the first run. The trigger drains all pages until `end_of_stream` is reached.
+3. Partitions the collected tickets into `created` and `updated` buckets by comparing each ticket's `created_at` against the `lastPolledAt` cutoff. Tickets whose `created_at` is after the cutoff land in `created`, all others land in `updated`.
+4. Persists both the new `afterCursor` and the current execution time as `lastPolledAt` for the next run.
+5. Emits the partitioned results filtered by the **Show New Records** and **Show Updated Records** toggles.
+
+#### Returned Data
+
+The trigger emits a payload with two arrays, `created` and `updated`, each containing ticket resources from the Zendesk Incremental Tickets Export endpoint.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 35437,
+        "subject": "New ticket received",
+        "status": "new",
+        "priority": "normal",
+        "created_at": "2026-05-20T14:00:00Z",
+        "updated_at": "2026-05-20T14:00:00Z",
+        "requester_id": 114092137191
+      }
+    ],
+    "updated": [
+      {
+        "id": 35436,
+        "subject": "Re: Billing question",
+        "status": "open",
+        "priority": "high",
+        "created_at": "2009-07-20T22:55:29Z",
+        "updated_at": "2026-05-20T15:00:00Z",
+        "requester_id": 114092137191
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

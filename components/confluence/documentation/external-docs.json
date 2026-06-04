@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://developer.atlassian.com/cloud/confluence/rest/v2/intro/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://developer.atlassian.com/cloud/confluence/changelog/"
+  }
+]

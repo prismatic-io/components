@@ -1,0 +1,19 @@
+For testing purposes, an **API Key** connection can be used to authenticate requests to the Monday GraphQL API.
+
+#### Prerequisites
+
+- A Monday account with access to personal API token settings
+- For production integrations, OAuth 2.0 is recommended over API key authentication
+
+#### Setup Steps
+
+1. Log in to [Monday](https://monday.com/) and navigate to the user profile menu in the top-right corner
+2. Select **Administration** or open the user profile and go to **Developers** > **My Access Tokens**
+3. Copy the personal API token displayed on the page
+4. For more information, refer to the [Monday authentication documentation](https://developer.monday.com/apps/docs/choosing-auth)
+
+#### Configure the Connection
+
+Create a connection of type **API Key** and enter:
+
+- **API Key**: The personal API token copied from the Monday account settings

@@ -1,0 +1,17 @@
+The Google Cloud BigQuery component supports receiving notifications through Google Cloud Pub/Sub. This enables integrations to respond to events such as table changes, query completions, and data insertions.
+
+#### Setting Up Pub/Sub Notifications for BigQuery
+
+1. In the Google Cloud console, navigate to the **Pub/Sub** page (Navigation Menu > More Products > Analytics > Pub/Sub).
+2. In the **Topics** page, click **Create Topic**.
+   - Enter a **Topic ID** (e.g., `bigquery-notifications`).
+   - Leave the default values for the remaining options, and then click **Create**.
+3. Create a subscription for the topic:
+   - Navigate to **Pub/Sub > Subscriptions** and click **Create subscription**.
+   - Enter a **Subscription ID**.
+   - For **Select a Cloud Pub/Sub topic**, select the topic created in the previous step.
+   - Under **Delivery type**, select **Push** and enter the webhook URL from the integration's trigger configuration.
+   - Click **Create**.
+4. Configure BigQuery to publish notifications to the Pub/Sub topic using the BigQuery API or the Google Cloud console.
+
+When messages are published to the configured topic, they will be sent to the push endpoint configured in the integration trigger.

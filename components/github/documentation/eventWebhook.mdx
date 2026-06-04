@@ -1,0 +1,86 @@
+The **Event Webhook** trigger automatically creates and manages GitHub webhooks for a specified repository. This trigger handles the complete webhook lifecycle, including creation during instance deployment and deletion when the instance is removed.
+
+#### How It Works
+
+When an integration instance is deployed:
+
+1. The trigger automatically creates a webhook in the specified GitHub repository using the GitHub REST API
+2. A random 256-bit secret is generated and securely stored in the integration's cross-flow state
+3. The webhook is configured to send events to the flow-specific webhook URL
+4. The webhook is configured with the selected event types
+
+When the integration instance is deleted:
+
+1. The trigger automatically removes the webhook from the GitHub repository
+2. The stored webhook ID and secret are cleaned up from cross-flow state
+
+This automatic lifecycle management eliminates the need to manually configure webhooks in GitHub's repository settings.
+
+#### Webhook Signature Verification
+
+The trigger automatically generates a random secret during webhook creation and uses it to validate HMAC-SHA256 signatures on all incoming webhook requests. 
+
+For more information about GitHub's signature mechanism, see [GitHub's webhook security documentation](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries).
+
+#### Required GitHub Permissions
+
+The connection must have the following permissions:
+
+- **Repository webhooks**: Read and write access to manage repository webhooks
+- **Repository contents**: Read access (for most webhook event types)
+
+For organization owned repositories, the authenticated user or GitHub App must have admin access to the repository.
+
+#### Supported Event Types
+
+The trigger supports all GitHub webhook event types. For a complete list of event types and their payload structures, see the [GitHub webhook events and payloads documentation](https://docs.github.com/en/webhooks/webhook-events-and-payloads).
+
+#### Returned Data
+
+The trigger returns the complete webhook payload received from GitHub. The structure of the payload depends on the event type that triggered the webhook. Each event type has a specific payload format documented in GitHub's webhook events reference.
+
+Example payload structure for a `pull_request` event:
+
+<details>
+  <summary>Example Event Payload</summary>
+
+```json
+{
+  "action": "opened",
+  "number": 42,
+  "pull_request": {
+    "id": 123456789,
+    "number": 42,
+    "state": "open",
+    "title": "Update documentation",
+    "user": {
+      "login": "octocat",
+      "id": 1
+    },
+    "body": "This PR updates the documentation with examples",
+    "created_at": "2023-05-15T14:30:00Z",
+    "head": {
+      "ref": "feature-branch",
+      "sha": "abc123..."
+    },
+    "base": {
+      "ref": "main",
+      "sha": "def456..."
+    }
+  },
+  "repository": {
+    "id": 123456,
+    "name": "example-repo",
+    "full_name": "octocat/example-repo",
+    "owner": {
+      "login": "octocat",
+      "id": 1
+    }
+  },
+  "sender": {
+    "login": "octocat",
+    "id": 1
+  }
+}
+```
+</details>

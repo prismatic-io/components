@@ -1,0 +1,27 @@
+To authenticate with Postmark, access tokens are required. Postmark provides two types of tokens: a **Server Token** for sending emails and server-related actions, and an **Account Token** for account-level management such as creating and managing servers.
+
+#### Prerequisites
+
+- An active Postmark account
+- At least one server created in Postmark (required for Server Token)
+
+#### Setup Steps
+
+To generate access tokens:
+
+1. Log in to [Postmark](https://account.postmarkapp.com/)
+2. Navigate to **Servers** in the left sidebar
+3. Select the server to generate tokens for (or create a new server if needed)
+4. Click on the **API Tokens** tab in the server settings
+5. Locate the **Server API Token** in the API Tokens section
+6. Copy the **Server Token** value
+7. To obtain the **Account Token**, click on **Account** in the top navigation
+8. Select **API Tokens** from the account menu
+9. Copy the **Account Token** value
+
+#### Configure the Connection
+
+- Enter the **Account Token** value into the **Account Token** field
+- Enter the **Server Token** value into the **Server Token** field
+
+The **Server Token** is required for email sending operations and server-level actions. The **Account Token** is required for account-level operations such as creating and managing servers.

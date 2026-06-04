@@ -1,0 +1,20 @@
+A Shopify [webhook](https://shopify.dev/apps/webhooks) can be configured manually to send information to a flow's webhook URL when specific events occur (a customer is created, an order is shipped, etc.).
+
+This trigger receives and validates webhook requests from Shopify for manually configured webhook subscriptions.
+
+#### How It Works
+
+When a webhook request is received, the trigger performs HMAC-SHA256 signature verification to ensure the request originated from Shopify:
+
+1. The trigger extracts the `X-Shopify-Hmac-SHA256` header from the incoming request
+2. It computes the expected signature using the configured **Secret Key** and the request body
+3. If the signatures match, the trigger returns a 200 OK response with the parsed JSON body
+4. If the signatures do not match, the request is rejected
+
+#### Configuration
+
+- **Secret Key**: The Shopify app's client secret, used for HMAC signature verification. This value is available in the app's credentials section of the [Shopify Dev Dashboard](https://dev.shopify.com/dashboard).
+
+#### Event Types
+
+A full list of configurable webhook topics is available in the [Shopify Webhook Topics documentation](https://shopify.dev/docs/api/webhooks).

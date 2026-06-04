@@ -1,0 +1,5 @@
+query CountProducts {
+  productsCount(limit: 10000) {
+    count
+  }
+}

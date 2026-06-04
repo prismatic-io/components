@@ -1,0 +1,90 @@
+To connect to DocuSign using OAuth 2.0, a Developer Account is required to create integration applications.
+
+#### Prerequisites
+
+- A [DocuSign Developer Account](https://developers.docusign.com/) is required
+- Access to the DocuSign Admin Console
+
+#### Setup Steps
+
+1. Log in to the [DocuSign Developer Account](https://developers.docusign.com/auth/docusign-demo/)
+2. Click on the profile icon in the top right corner and select **My Apps & Keys**
+3. Click **Add App and Integration Key** to create a new application
+4. Enter the required application details
+5. Under **Redirect URIs** in the Additional settings section, add the OAuth callback URL: <OauthCallbackUrl />
+6. Under the **Secret Keys** section, click **Add Secret Key** to generate a secret key
+7. Copy the **Integration Key** (Client ID) and the newly generated **Secret Key** (Client Secret)
+8. Click **Save** to save the application configuration
+
+For more information on creating DocuSign integrations, refer to the [DocuSign Developer Documentation](https://developers.docusign.com/docs/esign-rest-api/esign101/auth/).
+
+#### Configure the Connection
+
+The DocuSign OAuth 2.0 connection requires the following fields:
+
+- **Client ID** (Integration Key): Enter the Integration Key from step 7
+- **Client Secret** (Secret Key): Enter the Secret Key from step 7
+- **Authorization Header**: This field requires a Base64-encoded value in the format `Basic <encoded_credentials>`
+
+To create the Authorization Header value:
+
+1. Combine the Integration Key and Secret Key with a colon separator in the format: `<integration_key>:<secret_key>`
+   - Example: `7c2b8d7e-xxxx-xxxx-xxxx-cda8a50dd73f:d7014634-xxxx-xxxx-xxxx-6842b7aa8861`
+
+2. Encode this string to Base64 using one of the following methods:
+
+   **Option A: Using an online encoder**
+   - Navigate to a [Base64 Encoder](https://www.base64encode.org/)
+   - Enter the combined key string in the format above
+   - Click **ENCODE**
+   - Copy the encoded result (e.g., `NWMyYjhkN2.....hODg2MQ==`)
+
+   **Option B: Using JavaScript**
+   - Open a JavaScript console and run:
+     ```javascript
+     btoa("7c2b8d7e-xxxx-xxxx-xxxx-cda8a50dd73f:d7014634-xxxx-xxxx-xxxx-6842b7aa8861")
+     ```
+   - Copy the returned Base64 string
+
+3. Enter the **Authorization Header** value as: `Basic <base64_encoded_string>`
+   - Example: `Basic NWMyYjhkN2.....hODg2MQ==`
+
+#### Verify Connection
+
+After configuring the connection, save the integration to authenticate with DocuSign. The OAuth flow will prompt for user authorization to complete the connection.
+
+#### Going Live
+
+DocuSign requires apps created in the developer environment to complete a Go-Live review before they can access real production accounts. This process verifies the integration is production-ready and meets DocuSign's requirements for handling legally binding signature workflows.
+
+DocuSign apps pass through two states before they are ready for deployment.
+
+**Developer environment (before Go-Live):** Users can authenticate and the OAuth flow completes normally, but the integration connects to `account-d.docusign.com`. Only demo accounts and test documents are accessible. No real production DocuSign accounts or live documents can be reached. This is the expected state during development and testing.
+
+**Production (after Go-Live):** The integration connects to `account.docusign.com`. Users authenticate with their real DocuSign credentials and live documents and accounts are fully accessible.
+
+**Complete the Go-Live process before deploying to end users.** DocuSign apps created in the developer account connect to the demo environment (`account-d.docusign.com`). Until Go-Live is approved, the integration cannot access real production DocuSign accounts.
+
+#### Go-Live Requirements
+
+- The app must make at least 20 API calls in the demo environment to demonstrate functional testing before Go-Live is available
+
+#### Go-Live Process
+
+1. Log in to the [DocuSign Developer Account](https://developers.docusign.com/auth/docusign-demo/)
+2. Navigate to **My Apps & Keys** and select the application
+3. Click **Go Live** to submit the application for production access
+4. DocuSign reviews the application. Reviews typically complete within 3 business days
+5. Once approved, the application is promoted to the production environment
+
+#### Production Endpoints
+
+After Go-Live approval, update the integration to connect to production endpoints:
+
+- **Authorization URL**: `https://account.docusign.com/oauth/auth`
+- **Token URL**: `https://account.docusign.com/oauth/token`
+- **API Base URL**: `https://www.docusign.net/restapi`
+
+The demo environment uses `account-d.docusign.com`. Ensure URLs are updated to production endpoints after Go-Live.
+
+For detailed Go-Live requirements, refer to the [DocuSign Go-Live documentation](https://developers.docusign.com/docs/esign-rest-api/go-live/).

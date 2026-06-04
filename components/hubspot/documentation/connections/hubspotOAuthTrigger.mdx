@@ -1,0 +1,35 @@
+The Webhook Authentication connection is used specifically for verifying HubSpot webhook signatures to ensure webhook requests are legitimate.
+
+This connection is only used for webhook triggers and does not grant API access. It solely validates that incoming webhooks are from HubSpot by verifying the request signature.
+
+#### Prerequisites
+
+- Access to a [HubSpot account](https://app.hubspot.com)
+- Appropriate permissions to create private apps or manage existing apps
+- A configured HubSpot app with webhook capabilities
+
+#### Setup Steps
+
+1. Navigate to [HubSpot](https://app.hubspot.com) and log in
+2. Navigate to **Settings > Integrations > Private Apps**
+3. To create a new app:
+   - Click **Create a private app** or **Create an app**
+   - Configure the required webhook subscriptions
+4. Navigate to the **Auth** or **App Credentials** section
+5. Copy the **Client Secret** value
+
+#### Configure the Connection
+
+- Enter the **Client Secret** from the HubSpot app into the connection configuration
+- The client secret is used to verify webhook signatures
+- Ensure the trigger is configured to use the Webhook Authentication connection
+
+#### Webhook Subscriptions
+
+After configuring the connection, webhook subscriptions must be set up:
+
+1. In the app settings, navigate to the **Webhooks** section
+2. Click **Configure** or **Set up webhooks**
+3. Provide the following:
+   - **Target URL**: The webhook endpoint URL where HubSpot will send webhook events (found in **Test Configuration > Trigger Payload** section of the integration)
+   - **Events to subscribe to**: Select the specific events to monitor (e.g., contact created, deal updated, company deleted)

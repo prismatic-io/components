@@ -1,0 +1,117 @@
+The **Employee Lifecycle Events** webhook trigger receives notifications from UKG Pro when employee lifecycle events occur. This trigger supports real-time detection of employee changes including hires, terminations, promotions, transfers, position changes, compensation updates, and benefits enrollment changes.
+
+UKG Pro must be configured to send webhook notifications to the flow webhook URL for this trigger to receive events.
+
+For more information on configuring webhooks in UKG Pro, refer to the [UKG Webhooks documentation](https://developer.ukg.com/flex/docs/welcome-to-ukg-webhooks).
+
+#### How It Works
+
+When an employee lifecycle event occurs in UKG Pro, the system sends an HTTP POST request to the configured webhook URL. The trigger receives the webhook payload, optionally verifies the signature, and returns a 200 OK acknowledgment response.
+
+**Webhook Configuration in UKG Pro**
+
+To receive lifecycle events, configure a webhook subscription in UKG Pro:
+
+1. Navigate to the webhook management interface in UKG Pro
+2. Create a new webhook subscription
+3. Set the webhook URL to the flow webhook URL
+4. Select the employee lifecycle event types to monitor
+5. Configure a shared secret for signature verification (recommended)
+6. Activate the webhook subscription
+
+<details>
+<summary>Event Types (8)</summary>
+
+- **created** - New employee record created
+- **updated** - Employee record updated (any field)
+- **terminated** - Employee termination processed
+- **transferred** - Employee transferred to new department/location
+- **promoted** - Employee promoted to new position/level
+- **position changed** - Employee position or role changed
+- **compensation changed** - Employee compensation adjusted
+- **benefits enrollment changed** - Benefits enrollment modified
+
+</details>
+
+The specific event type is typically included in the webhook payload body or headers sent by UKG Pro.
+
+#### Configuration
+
+**Verify Webhook Signature**
+
+**Type**: Boolean
+**Default**: true
+**Required**: No
+
+When enabled, the trigger validates the webhook signature using the HMAC-SHA256 algorithm and the shared secret from the connection. UKG Pro includes the signature in the `X-UKG-Signature` header.
+
+**Note**: Signature verification logic logs a warning if the signature is missing but does not reject the webhook. Complete signature validation with shared secret comparison should be implemented based on UKG Pro's webhook signature specification.
+
+#### Webhook Payload
+
+The structure of the webhook payload depends on the event type. A typical employee lifecycle event payload includes:
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "eventId": "evt-789012",
+  "eventType": "employee.updated",
+  "timestamp": "2024-01-15T14:30:00.000Z",
+  "tenantId": "acme-corp",
+  "employee": {
+    "employeeId": "EMP-12345",
+    "employeeNumber": "E12345",
+    "companyId": "COMP-001",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@acmecorp.example.com",
+    "status": "Active"
+  },
+  "changes": [
+    {
+      "field": "jobTitle",
+      "previousValue": "Software Engineer",
+      "newValue": "Senior Software Engineer"
+    },
+    {
+      "field": "department",
+      "previousValue": "Engineering",
+      "newValue": "Platform Engineering"
+    }
+  ],
+  "effectiveDate": "2024-01-15"
+}
+```
+
+</details>
+
+**Common Payload Fields**
+
+- **eventId** - Unique identifier for the webhook event
+- **eventType** - Type of lifecycle event (e.g., `employee.updated`, `employee.terminated`)
+- **timestamp** - When the event occurred
+- **tenantId** - UKG Pro tenant identifier
+- **employee** - Employee record information
+- **changes** - Array of field changes (for update events)
+- **effectiveDate** - When the change takes effect
+
+**Event-Specific Fields**
+
+Different event types may include additional fields:
+
+- **Termination events**: `terminationDate`, `terminationReason`, `terminationReasonCode`
+- **Transfer events**: `newDepartment`, `newLocation`, `transferType`
+- **Promotion events**: `newJobTitle`, `newJobLevel`, `promotionType`
+- **Compensation events**: `newSalary`, `newPayRate`, `compensationType`
+
+#### Response Handling
+
+The trigger returns a 200 OK response with a JSON body to acknowledge receipt:
+
+```json
+{
+  "received": true
+}
+```

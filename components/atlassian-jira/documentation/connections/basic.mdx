@@ -1,0 +1,34 @@
+To authenticate with Atlassian Jira using Basic Authentication, an email address and either an API token (for Jira Cloud) or password (for self-hosted Jira) is required.
+
+#### Prerequisites
+
+- Access to a Jira Cloud or self-hosted Jira instance
+- Administrative permissions to generate API tokens (for Jira Cloud)
+
+#### Setup Steps
+
+**For Jira Cloud:**
+
+1. Navigate to [Atlassian Account API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+2. Click **Create API token**
+3. Enter a label for the token and click **Create**
+4. Copy the generated API token value
+
+**For Self-Hosted Jira:**
+
+Use the standard account password for authentication. No additional setup is required.
+
+#### Configure the Connection
+
+- For **Username**, enter the email address associated with the Jira account
+- For **API Key**:
+  - **Jira Cloud**: Enter the API token generated in the previous step
+  - **Self-Hosted Jira**: Enter the account password
+- For **Host**, enter the Jira instance URL (e.g., `example.atlassian.net` for cloud or the self-hosted domain)
+- For **Version**, select the API version (typically `3` for Jira Cloud, `2` for older instances)
+
+For more information on generating API tokens from Jira Cloud, refer to the [Atlassian documentation](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+
+:::note[Self-Hosted vs Cloud Authentication]
+Jira Cloud requires an API token for Basic Authentication, while self-hosted instances can use the account password. For security reasons, it is recommended to use API tokens whenever possible.
+:::

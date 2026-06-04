@@ -1,0 +1,108 @@
+The Instance Webhook trigger automatically creates and manages [Box webhook subscriptions](https://developer.box.com/guides/webhooks/) for an instance. Unlike traditional webhook setups that require manual configuration in the Box Developer Console, this trigger handles the entire webhook lifecycle.
+
+When the trigger is used in a flow:
+- **On Instance Deploy**: The trigger automatically creates a V2 webhook subscription in Box pointing to the flow's unique webhook URL. The webhook monitors the specified target (file or folder) for the selected event types. If the webhook configuration changes between deployments, the trigger deletes the old webhook and creates a new one with the updated settings.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from Box, ensuring no orphaned webhooks remain.
+
+#### Configuration
+
+Configure the trigger with the following inputs:
+
+- **Connection**: Box OAuth 2.0 connection with permissions to create and manage webhooks
+- **Target ID**: The ID of the file or folder to monitor for events (use the Box content data source)
+- **Target Type**: Select either "File" or "Folder" as the webhook target
+- **Trigger Type**: Select one or more event types to monitor (see available events below)
+- **Primary Signature Key**: A signature key for webhook payload verification (optional but recommended)
+- **Secondary Signature Key**: A secondary signature key for webhook rotation scenarios (optional)
+
+#### Available Webhook Events
+
+The trigger supports monitoring over 30 different event types on Box files and folders.
+
+A full list of available webhook events is available in the [Box Webhooks documentation](https://developer.box.com/guides/webhooks/v2/create-v2/).
+<details>
+<summary>View all available webhook events</summary>
+
+| Category | Event | Description |
+|----------|-------|-------------|
+| **File** | `FILE.UPLOADED` | A file is uploaded to a folder |
+| | `FILE.PREVIEWED` | A file is previewed |
+| | `FILE.DOWNLOADED` | A file is downloaded |
+| | `FILE.TRASHED` | A file is moved to trash |
+| | `FILE.DELETED` | A file is permanently deleted |
+| | `FILE.RESTORED` | A file is restored from trash |
+| | `FILE.COPIED` | A file is copied to another location |
+| | `FILE.MOVED` | A file is moved to a different folder |
+| | `FILE.LOCKED` | A file is locked |
+| | `FILE.UNLOCKED` | A file is unlocked |
+| | `FILE.RENAMED` | A file is renamed |
+| **Folder** | `FOLDER.CREATED` | A new folder is created |
+| | `FOLDER.DOWNLOADED` | A folder is downloaded |
+| | `FOLDER.RESTORED` | A folder is restored from trash |
+| | `FOLDER.DELETED` | A folder is permanently deleted |
+| | `FOLDER.COPIED` | A folder is copied to another location |
+| | `FOLDER.MOVED` | A folder is moved to a different location |
+| | `FOLDER.TRASHED` | A folder is moved to trash |
+| | `FOLDER.RENAMED` | A folder is renamed |
+| **Comment** | `COMMENT.CREATED` | A comment is created on a file |
+| | `COMMENT.UPDATED` | A comment is updated |
+| | `COMMENT.DELETED` | A comment is deleted |
+| **Collaboration** | `COLLABORATION.CREATED` | A collaboration is created |
+| | `COLLABORATION.ACCEPTED` | A collaboration invitation is accepted |
+| | `COLLABORATION.REJECTED` | A collaboration invitation is rejected |
+| | `COLLABORATION.REMOVED` | A collaboration is removed |
+| | `COLLABORATION.UPDATED` | A collaboration is updated |
+| **Shared Link** | `SHARED_LINK.CREATED` | A shared link is created |
+| | `SHARED_LINK.UPDATED` | A shared link is updated |
+| | `SHARED_LINK.DELETED` | A shared link is deleted |
+| **Task** | `TASK_ASSIGNMENT.CREATED` | A task assignment is created |
+| | `TASK_ASSIGNMENT.UPDATED` | A task assignment is updated |
+| **Metadata** | `METADATA_INSTANCE.CREATED` | Metadata is added to a file or folder |
+| | `METADATA_INSTANCE.UPDATED` | Metadata is updated on a file or folder |
+| | `METADATA_INSTANCE.DELETED` | Metadata is removed from a file or folder |
+| **Sign Request** | `SIGN_REQUEST.COMPLETED` | A sign request is completed |
+| | `SIGN_REQUEST.DECLINED` | A sign request is declined |
+| | `SIGN_REQUEST.EXPIRED` | A sign request expires |
+| **Webhook** | `WEBHOOK.DELETED` | A webhook is deleted |
+
+</details>
+
+#### Returned Data
+
+The trigger returns the complete webhook payload from Box. The structure varies depending on the event type. The `source` field contains the file or folder that triggered the event, while `created_by` identifies the user who performed the action.
+
+<details>
+<summary>Example payload for FILE.UPLOADED event</summary>
+
+```json
+{
+  "trigger": "FILE.UPLOADED",
+  "id": "1234567890",
+  "type": "webhook_event",
+  "webhook": {
+    "id": "987654321",
+    "type": "webhook"
+  },
+  "created_by": {
+    "type": "user",
+    "id": "11111",
+    "name": "Example User",
+    "login": "user@example.com"
+  },
+  "created_at": "2024-11-10T10:30:00-08:00",
+  "source": {
+    "id": "555555",
+    "type": "file",
+    "name": "example.pdf",
+    "parent": {
+      "type": "folder",
+      "id": "999999",
+      "name": "Documents"
+    }
+  }
+}
+```
+
+</details>
+
+For complete payload structure details, see the [Box Webhooks V2 documentation](https://developer.box.com/guides/webhooks/v2/).

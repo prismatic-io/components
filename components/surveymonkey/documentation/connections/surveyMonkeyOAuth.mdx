@@ -1,0 +1,45 @@
+To connect to SurveyMonkey using OAuth 2.0, a registered application in the [SurveyMonkey Developer Portal](https://developer.surveymonkey.com/apps/) is required.
+
+#### Prerequisites
+
+- A SurveyMonkey account with access to the [Developer Portal](https://developer.surveymonkey.com/)
+- Appropriate plan level for the required API scopes (some scopes require paid plans)
+
+#### Setup Steps
+
+1. Navigate to the [SurveyMonkey Developer Portal](https://developer.surveymonkey.com/apps/) and sign in.
+2. Click **Create New App** to register a new application.
+3. Fill in the required fields:
+   - **App Name**: A descriptive name for the application
+   - **Description**: Brief description of the integration's purpose
+   - **App Type**: Select **Private** for single-organization use or **Public** for multi-tenant integrations
+4. Under **OAuth Settings**, configure the redirect URL:
+   - Add <OauthCallbackUrl /> as an **OAuth Redirect URL**
+5. Click **Save** to create the application.
+6. Copy the **Client ID** (also called API Key) and **Client Secret** from the app's **Settings** tab.
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the SurveyMonkey app.
+- Select the **Region** based on account location:
+  - **United States**: Default for most accounts
+  - **European Union**: For EU-based accounts (uses `api.eu.surveymonkey.com`)
+  - **Canada**: For Canadian accounts (uses `api.surveymonkey.ca`)
+- Configure the **Scopes** based on the required functionality:
+  - For read-only survey and response access:
+    ```
+    surveys_read responses_read collectors_read
+    ```
+  - For full access including webhooks:
+    ```
+    surveys_read responses_read collectors_read contacts_read webhooks_read webhooks_write
+    ```
+  - Refer to [SurveyMonkey's OAuth Scopes documentation](https://api.surveymonkey.com/v3/docs?shell#scopes) for all available scopes.
+
+:::note[Scope Approval for Public Apps]
+Some scopes (such as `surveys_write` and `responses_write`) require SurveyMonkey approval for public applications. Private apps have access to all scopes by default.
+:::
+
+#### Verify Connection
+
+After saving the connection configuration, click **Connect** to initiate the OAuth flow. SurveyMonkey will prompt for authorization to grant the requested permissions. After approving, the browser will redirect back to complete the connection. The connection is ready to use once the OAuth flow completes successfully.

@@ -1,0 +1,99 @@
+This trigger polls the [Stripe Events API](https://docs.stripe.com/api/events) for new and updated records in the connected Stripe account on a configured schedule. Events are partitioned by their type suffix: event types ending in `.created` are placed in the `created` bucket, and all other event types (such as `.updated`, `.deleted`, `.succeeded`, `.failed`, `.paid`) are placed in the `updated` bucket.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It calls `GET /v1/events` with a `created[gte]` filter set to the timestamp of the last successful poll. Optional event-type filters narrow the result set when configured
+3. Each returned event is classified by inspecting its `type` field:
+   - Event types ending in `.created` are appended to the `created` array
+   - All other event types are appended to the `updated` array
+4. The polling cursor is advanced based on the result:
+   - **Normal case**: The cursor advances to the current poll start time (`now`), so the next poll resumes from there
+   - **Truncated case**: When the result set exceeds the page cap, Stripe orders events newest-first, which truncates the older end of the change window. The cursor instead advances to the `created` timestamp of the oldest fetched event, so the next poll resumes from the gap. This yields **at-least-once** semantics: older events may be re-emitted as duplicates after truncation, but none are silently lost
+5. A warning is logged whenever truncation occurs, including the cursor value used for the next poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Stripe connection used to authenticate API requests
+- **Event Types**: Optional list of Stripe event types to poll for (e.g., `customer.created`, `invoice.paid`). Leave empty to include all event types. See [Stripe event types](https://docs.stripe.com/api/events/types)
+- **Show New Records**: When enabled, events with a type ending in `.created` are emitted in the `created` bucket of the payload. Defaults to `true`
+- **Show Updated Records**: When enabled, all other change events (e.g., `.updated`, `.deleted`, `.succeeded`) are emitted in the `updated` bucket of the payload. Defaults to `true`
+
+#### Event Types
+
+Stripe event types are named in the form `<resource>.<action>`. Partitioning is performed solely by inspecting the `.action` suffix:
+
+| Suffix Pattern | Bucket | Examples |
+|----------------|--------|----------|
+| `.created` | `created` | `customer.created`, `invoice.created`, `payment_intent.created` |
+| Any other suffix | `updated` | `customer.updated`, `invoice.paid`, `payment_intent.succeeded`, `charge.refunded`, `subscription.deleted` |
+
+Refer to the [Stripe event types reference](https://docs.stripe.com/api/events/types) for the full catalog of event names.
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for events whose type ends in `.created`, and `updated` for all other event types.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "evt_1Ozr8j2eZvKYlo2C9X1zHnGw",
+        "object": "event",
+        "api_version": "2025-04-30.basil",
+        "created": 1716397800,
+        "type": "customer.created",
+        "data": {
+          "object": {
+            "id": "cus_OzrFakeCustomer01",
+            "object": "customer",
+            "email": "jane@example.com",
+            "name": "Jane Doe",
+            "created": 1716397800
+          }
+        },
+        "livemode": false,
+        "pending_webhooks": 1
+      }
+    ],
+    "updated": [
+      {
+        "id": "evt_1Ozr8k2eZvKYlo2C9X1zHnHx",
+        "object": "event",
+        "api_version": "2025-04-30.basil",
+        "created": 1716397900,
+        "type": "invoice.paid",
+        "data": {
+          "object": {
+            "id": "in_1Ozr8k2eZvKYlo2C9X1zHnHx",
+            "object": "invoice",
+            "amount_paid": 5000,
+            "currency": "usd",
+            "customer": "cus_OzrFakeCustomer01",
+            "status": "paid",
+            "created": 1716397800
+          }
+        },
+        "livemode": false,
+        "pending_webhooks": 1
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- **At-least-once semantics**: When truncation occurs at the page cap, the cursor advances to the oldest fetched event's `created` timestamp so the next poll resumes from the gap. This guarantees no events are silently lost, but older events may be re-emitted as duplicates. Downstream flows should be idempotent on Stripe event `id`
+- **Event retention**: Stripe retains events for [30 days](https://docs.stripe.com/api/events) (and 7 days in some accounts). Polling intervals must remain well below that retention window to avoid losing changes
+- **Polling Frequency**: 5-15 minute intervals balance freshness against [Stripe rate limits](https://docs.stripe.com/rate-limits). Very frequent polling combined with high event volumes increases the risk of hitting per-account read limits
+- **Event-type filtering**: Supplying explicit event types in the **Event Types** input narrows the request at the API level, reducing payload size and the chance of truncation
+- **Comparison with the Webhook Events trigger**: For real-time delivery with no polling delay, prefer the **Webhook Events** lifecycle trigger. The polling trigger is useful when webhook delivery is not viable (for example, when the destination is not publicly reachable)

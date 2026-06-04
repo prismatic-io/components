@@ -1,0 +1,6 @@
+#import "../../fragments/LocationDetails.gql"
+query GetLocations($id: ID!) {
+  location(id: $id) {
+    ...LocationDetails
+  }
+}

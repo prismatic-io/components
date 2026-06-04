@@ -1,0 +1,49 @@
+To connect to NetSuite using OAuth 2.0 Authorization Code flow, create an OAuth 2.0 application in NetSuite with authorization code grant enabled.
+
+Refer to [NetSuite's OAuth 2.0 documentation](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/chapter_157769826287.html) for additional details.
+
+:::warning[OAuth 2.0 Auth Code Flow Expiration]
+Tokens retrieved using NetSuite's OAuth 2.0 Auth Code flow expire after 7 days and cannot be refreshed.
+This requires users to re-authenticate every 7 days, which is not a good user experience.
+**We recommend using the OAuth 2.0 Client Credentials flow instead.**
+:::
+
+#### Prerequisites
+
+- NetSuite administrator access
+- SuiteTalk enabled in the NetSuite account
+
+#### Setup Steps
+
+1. Enable SuiteTalk:
+   - Navigate to **Setup** > **Company** > **Enable Features**
+   - Under the **Suite Cloud** tab, ensure **REST WEB SERVICES** and **OAUTH 2.0** are both checked
+
+2. Create an OAuth 2.0 Application:
+   - Navigate to **Setup** > **Integration** > **Manage Integrations** > **New**
+   - Enter a name and description for the integration
+   - Under **Token-based Authentication**, un-check **TOKEN-BASED AUTHENTICATION** and **TBA: AUTHORIZATION FLOW**
+   - Under **OAuth 2.0**, ensure the following are checked:
+     - **AUTHORIZATION CODE GRANT**
+     - **REST WEB SERVICES**
+   - Under **SCOPE**, enable **REST WEB SERVICES**
+   - Set the **REDIRECT URI** to: <OauthCallbackUrl />
+   - After saving, copy the **CONSUMER KEY** and **CONSUMER SECRET**
+
+3. Configure OAuth 2.0 Roles:
+   - Ensure that users who will authenticate via OAuth have been assigned a [proper role](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_157771510070.html) with appropriate permissions
+
+#### Configure the Connection
+
+- Enter the **Consumer Key** (Client ID) and **Consumer Secret** (Client Secret) from the NetSuite integration
+- **Token URL**: Enter the NetSuite account's token URL in the format: `https://[ACCOUNT_ID].suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token`
+  - Replace `[ACCOUNT_ID]` with the NetSuite account ID (found in **Setup** > **Company** > **Company Information**)
+  - Example: `https://1234567.suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token`
+
+#### Verify Connection
+
+Save the connection to authenticate with NetSuite. Users will be redirected to NetSuite to authorize access.
+
+:::note[Token Re-authentication Required]
+Tokens expire after 7 days and cannot be refreshed. Users will need to re-authenticate every 7 days by opening the connection configuration and re-authorizing.
+:::

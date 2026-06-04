@@ -1,0 +1,55 @@
+Azure Blob Storage supports authentication using a [connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string). A connection string can authenticate with either of two methods:
+
+- **Account key**: Grants full access to the storage account. This is the simplest option and does not expire.
+- **Shared Access Signature (SAS)**: Grants limited, temporary access with fine-grained control over permissions and expiration. This is useful when full account key access is not required.
+
+#### Prerequisites
+
+- An active [Azure account](https://portal.azure.com/)
+- An existing Azure Storage Account
+- Understanding of required permissions for the integration's operations
+
+#### Setup Steps
+
+To retrieve an account key connection string:
+
+1. Sign in to the [Azure Portal](https://portal.azure.com/)
+2. Navigate to **Storage accounts** from the main menu
+3. Select the storage account to connect to
+4. In the left sidebar, under **Security + networking**, select **Access keys**
+5. Under one of the keys, click **Show** next to **Connection string** and copy the value
+
+To generate a SAS connection string instead:
+
+1. Sign in to the [Azure Portal](https://portal.azure.com/)
+2. Navigate to **Storage accounts** from the main menu
+3. Select the storage account to connect to
+4. In the left sidebar, under **Security + networking**, select **Shared access signature**
+5. Configure the SAS token settings:
+   - **Allowed services**: Select **Blob** (at minimum)
+   - **Allowed resource types**: Select the appropriate types (Container, Object, etc.)
+   - **Allowed permissions**: Select the minimum required permissions for the integration
+   - **Start and expiry date/time**: Set an appropriate expiration date
+6. Click **Generate SAS and connection string** at the bottom
+7. Copy the **Connection string** value (not the SAS token alone)
+
+:::warning[SAS Token Expiration]
+A SAS connection string has an expiration date. Note the expiration date and plan to refresh the connection string before it expires to avoid authentication failures. Account key connection strings do not expire.
+:::
+
+:::note[Connection String Format]
+An account key connection string has the format:
+```
+DefaultEndpointsProtocol=https;AccountName=account;AccountKey=...;EndpointSuffix=core.windows.net
+```
+A SAS connection string has the format:
+```
+BlobEndpoint=https://account.blob.core.windows.net/;SharedAccessSignature=sv=...
+```
+:::
+
+#### Configure the Connection
+
+- Enter the complete **Connection string** value into the connection configuration
+
+For more information about connection strings, account keys, and SAS security considerations, refer to the [Azure connection string documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string).

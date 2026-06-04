@@ -1,0 +1,122 @@
+import { action } from "@prismatic-io/spectral";
+import { getDocuSignClient } from "../client";
+import {
+  connection,
+  dateAreaHeight,
+  dateAreaWidth,
+  dateAreaX,
+  dateAreaY,
+  disallowUserResizeStamp,
+  externalID,
+  imageType,
+  isDefault,
+  nrdsId,
+  nrdsLastName,
+  phoneticName,
+  signatureFont,
+  signatureId,
+  signatureGroups,
+  signatureInitials,
+  signatureName,
+  signatureType,
+  signatureUsers,
+  stampFormat,
+  stampSizeMM,
+} from "../inputs";
+import { cleanObject } from "../utils";
+
+export const updateAccountSignature = action({
+  display: {
+    label: "Update Account Signature",
+    description:
+      "Updates an account stamp specified by the signatureId query parameter.",
+  },
+  perform: async (
+    context,
+    {
+      connection,
+      dateAreaHeight,
+      dateAreaWidth,
+      dateAreaX,
+      dateAreaY,
+      disallowUserResizeStamp,
+      externalID,
+      imageType,
+      isDefault,
+      nrdsId,
+      nrdsLastName,
+      phoneticName,
+      signatureFont,
+      signatureId,
+      signatureIdPath,
+      signatureGroups,
+      signatureInitials,
+      signatureName,
+      signatureType,
+      signatureUsers,
+      stampFormat,
+      stampSizeMM,
+    },
+  ) => {
+    const client = await getDocuSignClient(
+      connection,
+      true,
+      context.debug.enabled,
+    );
+    const body = cleanObject({
+      dateStampProperties: {
+        dateAreaHeight,
+        dateAreaWidth,
+        dateAreaX,
+        dateAreaY,
+      },
+      disallowUserResizeStamp: disallowUserResizeStamp.toString(),
+      externalID,
+      imageType,
+      isDefault: isDefault.toString(),
+      nrdsId,
+      nrdsLastName,
+      phoneticName,
+      signatureFont,
+      signatureId,
+      signatureGroups,
+      signatureInitials,
+      signatureName,
+      signatureType,
+      signatureUsers,
+      stampFormat,
+      stampSizeMM,
+    });
+    const { data } = await client.put(`/signatures/${signatureIdPath}`, body);
+    return { data };
+  },
+  inputs: {
+    connection,
+    signatureIdPath: { ...signatureId, comments: "Signature ID to update." },
+    dateAreaHeight,
+    dateAreaWidth,
+    dateAreaX,
+    dateAreaY,
+    disallowUserResizeStamp,
+    externalID,
+    imageType: { ...imageType, required: false },
+    isDefault,
+    nrdsId,
+    nrdsLastName,
+    phoneticName,
+    signatureFont,
+    signatureId: {
+      ...signatureId,
+      required: false,
+      comments:
+        "Specifies the signature ID associated with the signature name.",
+    },
+    signatureGroups,
+    signatureInitials,
+    signatureName,
+    signatureType,
+    signatureUsers,
+    stampFormat,
+    stampSizeMM,
+  },
+});

@@ -1,0 +1,28 @@
+{
+  "name": "@prismatic-io/gusto",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "jest",
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.0.6",
+    "@types/jest": "30.0.0",
+    "@types/lodash.merge": "4.6.7",
+    "@types/node": "18.11.19",
+    "copy-webpack-plugin": "13.0.0",
+    "jest": "30.0.3",
+    "ts-jest": "29.4.0",
+    "ts-loader": "9.5.2",
+    "typescript": "5.8.3",
+    "webpack": "5.99.9",
+    "webpack-cli": "6.0.1"
+  }
+}

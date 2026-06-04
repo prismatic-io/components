@@ -1,0 +1,133 @@
+This trigger polls the [Klaviyo API](https://developers.klaviyo.com/en/reference/api_overview) for new and updated profiles or lists since the last execution.
+
+#### How It Works
+
+1. The trigger runs on the configured polling schedule
+2. On the first execution, the current timestamp is stored as the initial `lastPolledAt` state and no records are returned
+3. On each subsequent execution, a server-side Klaviyo JSON:API filter is built from the stored `lastPolledAt`: `greater-than(updated,<lastPolledAt>)`
+4. All paginated records of the selected **Resource Type** matching the filter are fetched via the corresponding Klaviyo API (Profiles or Lists)
+5. Returned records are categorized client-side as **created** or **updated** based on the `created` timestamp relative to `lastPolledAt` — records whose `created` exceeds `lastPolledAt` are classified as created; all other records returned by the filter are classified as updated
+6. After the fetch completes, the current timestamp is stored as the new `lastPolledAt`
+7. If both **Show New Records** and **Show Updated Records** are disabled, the trigger short-circuits without calling the API and still advances `lastPolledAt`
+
+The trigger sets `polledNoChanges: true` when no matching records are returned, allowing downstream flows to skip execution when there is nothing to process.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Klaviyo connection used to authenticate API requests
+- **Resource Type**: The Klaviyo resource to poll — `Profiles` or `Lists`
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+
+#### Supported Resource Types
+
+| Resource Type | Klaviyo Endpoint | Created Field | Updated Field |
+|---------------|------------------|---------------|---------------|
+| `profiles` | `GET /api/profiles` | `created` | `updated` |
+| `lists` | `GET /api/lists` | `created` | `updated` |
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for newly created records and `updated` for modified records. Each record follows the Klaviyo JSON:API resource shape for the selected resource type.
+
+<details>
+<summary>Example Payload (Profiles)</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "type": "profile",
+        "id": "01HPROFILE0123456789ABCDEF",
+        "attributes": {
+          "email": "jane.doe@example.com",
+          "phone_number": "+15555550123",
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "created": "2026-04-15T14:30:00Z",
+          "updated": "2026-04-15T14:30:00Z",
+          "last_event_date": null,
+          "subscriptions": {
+            "email": {
+              "marketing": {
+                "can_receive_email_marketing": true,
+                "consent": "SUBSCRIBED"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "updated": [
+      {
+        "type": "profile",
+        "id": "01HPROFILE9876543210ZYXWVU",
+        "attributes": {
+          "email": "john.smith@example.com",
+          "first_name": "John",
+          "last_name": "Smith",
+          "created": "2025-12-01T09:00:00Z",
+          "updated": "2026-04-15T16:22:00Z",
+          "last_event_date": "2026-04-15T16:22:00Z"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Example Payload (Lists)</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "type": "list",
+        "id": "Y6nRLr",
+        "attributes": {
+          "name": "Spring Newsletter",
+          "created": "2026-04-15T14:30:00Z",
+          "updated": "2026-04-15T14:30:00Z",
+          "opt_in_process": "double_opt_in"
+        },
+        "relationships": {
+          "profiles": {
+            "links": {
+              "self": "https://a.klaviyo.com/api/lists/Y6nRLr/relationships/profiles/",
+              "related": "https://a.klaviyo.com/api/lists/Y6nRLr/profiles/"
+            }
+          }
+        }
+      }
+    ],
+    "updated": [
+      {
+        "type": "list",
+        "id": "UTd5ui",
+        "attributes": {
+          "name": "VIP Customers",
+          "created": "2025-10-10T12:00:00Z",
+          "updated": "2026-04-15T16:22:00Z",
+          "opt_in_process": "single_opt_in"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The `greater-than(updated,...)` filter is applied server-side, so only records modified since the last poll are returned
+- A newly created record has `created == updated`, so the same record is never classified as both created and updated
+- Both `profiles` and `lists` use the `created` and `updated` attribute names — these differ from the `created_at` / `updated_at` names used by the Campaigns API
+- Refer to the [Klaviyo API rate limits documentation](https://developers.klaviyo.com/en/docs/rate_limits_and_error_handling) for throttling behavior and the [Get Profiles](https://developers.klaviyo.com/en/reference/get_profiles) and [Get Lists](https://developers.klaviyo.com/en/reference/get_lists) endpoint references for the full list of returned attributes

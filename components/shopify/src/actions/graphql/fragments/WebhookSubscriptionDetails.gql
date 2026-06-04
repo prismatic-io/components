@@ -1,0 +1,18 @@
+fragment WebhookSubscriptionDetails on WebhookSubscription {
+  id
+  endpoint {
+    ... on WebhookHttpEndpoint {
+      callbackUrl
+    }
+  }
+  topic
+  createdAt
+  updatedAt
+  format
+  includeFields
+  metafieldNamespaces
+  apiVersion {
+    displayName
+  }
+  #private_metafield_namespaces deprecated
+}

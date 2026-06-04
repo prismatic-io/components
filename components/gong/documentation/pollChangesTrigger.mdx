@@ -1,0 +1,56 @@
+This trigger polls the [Gong API](https://us-66208.api.gong.io/v2/) for new calls or users on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches records from the selected Gong resource using the appropriate change detection strategy:
+   - **Calls**: fetches calls with a `fromDateTime`/`toDateTime` range spanning from the last poll time to the current time — only calls created within that window are returned
+   - **Users**: fetches all users and compares the returned IDs against the set of previously known IDs to identify newly appearing records
+3. All records identified as new are classified as **created**; neither Calls nor Users support update tracking
+4. The trigger updates its internal state after each poll — storing the poll timestamp for Calls and the current set of known IDs for Users
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Gong connection used to authenticate API requests
+- **Resource Type**: The Gong resource to monitor. Available options:
+
+  | Resource | Change Detection | Tracks New | Tracks Updated |
+  |----------|-----------------|------------|---------------|
+  | Calls | Timestamp (`fromDateTime`/`toDateTime`) | Yes | No |
+  | Users | ID-based | Yes | No |
+
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. The `updated` array is always empty for both Calls and Users, as neither resource supports update tracking.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "7782342274025937895",
+        "title": "Discovery Call - Acme Corp",
+        "started": "2024-01-16T15:00:00Z",
+        "duration": 1823,
+        "direction": "Outbound"
+      }
+    ],
+    "updated": []
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- For Calls: the time window is bounded by the last poll time and the current execution time. Calls outside this window are not returned
+- For Users: on the first poll, the trigger captures a baseline snapshot of all known user IDs. No records are returned on the first execution — subsequent polls detect additions against that baseline
+- Refer to the [Gong API documentation](https://us-66208.api.gong.io/v2/) for rate limit details and available fields

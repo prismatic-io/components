@@ -1,0 +1,12 @@
+#import "../../fragments/MetafieldDetails.gql"
+query ListMetafields($first: Int!, $resource: ID!, $after: String) {
+  metafields(first: $first, owner: $resource, after: $after) {
+    nodes {
+      ...MetafieldDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

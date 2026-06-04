@@ -1,0 +1,23 @@
+The **Basic Authentication** connection is used to connect to SFTP servers that support username / password login.
+
+#### Prerequisites
+
+- An SFTP server with username/password authentication enabled
+- Valid credentials (username and password)
+
+#### Configure the Connection
+
+- **Username**: Enter the SFTP account username
+- **Password**: Enter the SFTP account password
+- **Host**: Enter the SFTP server hostname or IP address
+- **Port**: Enter the SFTP server port (default: 22)
+
+#### Advanced Settings (Optional)
+
+- **Timeout**: Connection timeout in milliseconds (default: 3000)
+- **Enable Unsecure Server Host Key Algorithms**: Enable deprecated host key algorithms for legacy servers
+- **Enable Unsecure Ciphers**: Enable CBC ciphers for legacy servers
+- **Custom Server Host Key Algorithms**: Comma-separated list of custom host key algorithms (overrides defaults)
+- **Custom Ciphers**: Comma-separated list of custom ciphers (overrides defaults)
+
+Consult the SFTP server administrator to determine which login method the server supports.

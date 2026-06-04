@@ -1,0 +1,12 @@
+#import "../../fragments/InventoryLevelDetails.gql"
+mutation InventoryActivate($inventoryItemId: ID!, $locationId: ID!) {
+  inventoryActivate(inventoryItemId: $inventoryItemId, locationId: $locationId) {
+    inventoryLevel {
+      ...InventoryLevelDetails
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

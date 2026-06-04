@@ -1,0 +1,48 @@
+The **New and Updated Records** trigger checks for new and updated records in Salesforce on a recurring schedule. It uses the configured record type and field values to query for records, then compares timestamps against the last polling time to identify changes.
+
+#### How It Works
+
+On each polling interval, the trigger queries Salesforce for records of the specified type. It compares each record's `CreatedDate` and `LastModifiedDate` against the last poll timestamp to determine which records are new or updated. Only changed records are included in the trigger payload.
+
+The trigger maintains polling state internally, storing the timestamp of each execution to use as the comparison point for the next poll.
+
+#### Configuration
+
+- **Record Type**: The Salesforce object API name to poll for changes (e.g., Account, Contact, Opportunity)
+- **Show New Records**: When enabled, newly created records are included in the results
+- **Show Updated Records**: When enabled, recently modified records are included in the results
+- **Field Values**: Key-value pairs to filter which records are returned
+- **Field Value Types**: The data types for the field values (Boolean, Number, or String)
+- **Dynamic Fields**: Additional fields that can be configured at deploy time
+- **Max Records To Fetch**: The maximum number of records per poll. Defaults to 20,000 records
+- **Version**: The Salesforce API version to use
+
+#### Returned Data
+
+The trigger returns an object containing arrays of new and updated records based on the configuration.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "newRecords": [
+    {
+      "Id": "0017000000hOMChAAO",
+      "Name": "New Account",
+      "CreatedDate": "2025-01-15T10:30:00.000+0000",
+      "LastModifiedDate": "2025-01-15T10:30:00.000+0000"
+    }
+  ],
+  "updatedRecords": [
+    {
+      "Id": "0017000000hOMCiAAO",
+      "Name": "Updated Account",
+      "CreatedDate": "2024-06-01T08:00:00.000+0000",
+      "LastModifiedDate": "2025-01-15T10:45:00.000+0000"
+    }
+  ]
+}
+```
+
+</details>

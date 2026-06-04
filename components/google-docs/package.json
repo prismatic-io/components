@@ -1,0 +1,38 @@
+{
+  "name": "google-docs",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --cache --quiet --ext .ts,.js .",
+    "lint-fix": "eslint --cache --fix --quiet --ext .ts,.js .",
+    "format": "npm run lint-fix && prettier --loglevel error --write './src/**/*.{js,jsx,ts,tsx,css,html,json,scss}' 'documentation/*.mdx'",
+    "check-format": "prettier --check './src/**/*.{js,jsx,ts,tsx,css,html,json,scss}' 'documentation/*.mdx'",
+    "build": "webpack",
+    "test": "echo 'no tests'"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@prismatic-io/eslint-config-spectral"
+    ]
+  },
+  "dependencies": {
+    "@googleapis/docs": "^2.0.4",
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@prismatic-io/eslint-config-spectral": "1.0.0",
+    "@types/jest": "29.5.14",
+    "copy-webpack-plugin": "11.0.0",
+    "eslint": "6.8.0",
+    "jest": "30.0.0",
+    "ts-jest": "29.4.0",
+    "ts-loader": "9.2.3",
+    "typescript": "5.9.3",
+    "webpack": "5.76.3",
+    "webpack-cli": "5.0.1",
+    "prettier": "2.0.5"
+  }
+}

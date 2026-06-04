@@ -1,0 +1,44 @@
+To connect to Microsoft Outlook using OAuth 2.0, create an App Registration in Microsoft Entra (formerly Azure Active Directory).
+
+#### Prerequisites
+
+- Access to a [Microsoft Entra admin center](https://entra.microsoft.com/) or [Azure Portal](https://portal.azure.com/#home)
+- Permissions to create App Registrations
+
+#### Setup Steps
+
+1. Navigate to [Azure Active Directory tenant](https://portal.azure.com/#home) and create a new **App Registration**
+2. When creating the application, select **Supported account types**:
+   - Choose **Accounts in any organizational directory (Any Azure AD directory - Multitenant)** to allow users from other organizations to authenticate
+3. Under **Platforms**, add the **Web** platform:
+   - Add <OauthCallbackUrl /> as a **Redirect URI**
+4. Navigate to **Certificates & Secrets** and create a new **Client Secret**:
+   - Copy the **Value** of the client secret (this will only be shown once)
+5. Navigate to the **Overview** page and copy the **Application (client) ID**
+
+#### Configure the Connection
+
+- Enter the **Application (client) ID** value into the **Client ID** field
+- Enter the **Client Secret** value into the same named field
+- The default scopes are pre-configured for common use cases:
+  ```
+  https://graph.microsoft.com/User.Read https://graph.microsoft.com/Calendars.ReadWrite https://graph.microsoft.com/Mail.ReadWrite https://graph.microsoft.com/Mail.Send offline_access
+  ```
+  - `https://graph.microsoft.com/User.Read` - Read basic user data
+  - `https://graph.microsoft.com/Calendars.ReadWrite` - Manage Outlook calendar
+  - `https://graph.microsoft.com/Mail.ReadWrite` - Manage email
+  - `https://graph.microsoft.com/Mail.Send` - Send email
+  - `offline_access` - Maintain OAuth connection and receive refresh tokens
+  - Refer to [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) for additional scope information
+- **Additional Authorization Parameters** (optional) - Query string parameters appended to the OAuth authorization URL:
+  - Use `prompt=consent` to force Microsoft to display the consent screen, which is useful when the requested scopes have changed and users need to re-authorize
+  - Use `login_hint=user@example.com` to pre-fill the user's email address on the sign-in page
+  - Multiple parameters can be combined with `&` (e.g., `prompt=consent&login_hint=user@example.com`)
+
+:::note[Single-Tenant Applications]
+For single-tenant applications (not Multitenant), tenant-specific URLs are required. The connection will automatically handle tenant-specific configuration when a Tenant ID is provided.
+:::
+
+:::info[Cloud Environments]
+The connection supports different Microsoft cloud environments (Commercial, Government, China). The Base URL will automatically adjust based on the selected cloud environment.
+:::

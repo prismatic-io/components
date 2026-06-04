@@ -1,0 +1,24 @@
+This component wraps the most popular endpoints listed in the [Smartsheet API docs](https://developers.smartsheet.com/api/smartsheet/openapi/columns).
+For access to an endpoint not covered by an action in this component, use the [Raw Request](#rawrequest) action to issue a GET, POST, PUT or DELETE against any Smartsheet API endpoint.
+
+## June 2026 Pagination Migration
+
+Smartsheet is deprecating the `includeAll`, `page`, `pageSize`, `totalCount`, and `totalPages` parameters on list endpoints on **June 3, 2026**.
+
+The following changes are in effect as of the 2026-05-07 release:
+
+- **Auto-pagination**: migrated list operations now paginate internally. Setting `Include All` is no longer required to retrieve all results.
+- **Response shape change**: the response metadata fields `pageNumber`, `pageSize`, `totalCount`, and `totalPages` are **no longer present** on migrated list responses. Flows reading these fields must be updated to use the `data` array directly.
+- **Deprecated inputs**: `Include All`, `Page`, and `Page Size` remain on actions for backward compatibility but their values no longer reach the API on migrated actions. These inputs will be removed in a future major release.
+- **Templates: List** — a new optional input `Workspace ID For Templates` is available. When set, the action fetches templates from that workspace in a single API call. Without it, the action fetches templates across all workspaces (slower; rate-limit pressure increases with workspace count).
+- **Webhook list ordering**: results from webhook list operations are now returned in creation-date descending order (previously name ascending), reflecting Smartsheet's updated default sort order.
+- **Not yet migrated**: `Templates: List Public` is pending research into a replacement endpoint and will be addressed in a follow-up release.
+- **Breaking change — removed fields**: `Get Workspace` and `Get Folder` responses no longer include `ownerInfo` or `sheetVersion` — Smartsheet removed these from the new `/metadata` endpoint. The `source` field is preserved.
+- **`Load All` input deprecated**: the `Load All` input on `Get Workspace` has no effect after migration — Smartsheet's API no longer supports recursive nested expansion in a single response. The input is retained for backward compatibility.
+
+#### A Note on Webhooks
+
+It is recommended to create and configure webhooks in a flow triggered at [Instance Deploy](components/management-triggers.mdx#instancedeploy) using the [Create Webhook](#createwebhook) action.
+That action can be configured to create a webhook for a given sheet and can reference the trigger's [payload](integrations/triggers/webhook/sending-data.mdx#accessing-webhook-urls-in-an-integration) to fetch sibling flows' webhook URLs.
+
+To remove webhooks, use the built-in [Delete Instance Webhooks](#deleteinstancewebhooks) action to delete all webhooks in Smartsheet that point to a flow of the current instance.

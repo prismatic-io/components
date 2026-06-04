@@ -1,0 +1,12 @@
+#import "../../fragments/OrderDetails.gql"
+query ListOrders($first: Int!, $query: String, $cursor: String) {
+  orders(first: $first, query: $query, after: $cursor) {
+    nodes {
+      ...OrderDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

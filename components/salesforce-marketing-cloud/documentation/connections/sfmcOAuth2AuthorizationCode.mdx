@@ -1,0 +1,19 @@
+This connection uses the **OAuth 2.0 Authorization Code** flow to authenticate with Salesforce Marketing Cloud. It is designed for user-context integrations and supports refresh tokens for persistent access.
+
+#### Prerequisites
+
+1. In Marketing Cloud, navigate to **Setup > Apps > Installed Packages**
+2. Create a new package or select an existing one
+3. Add an **API Integration** component with the **Web App** integration type
+4. Note the **Client ID**, **Client Secret**, and the **Subdomain**
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0** and enter:
+
+| Field | Description |
+|-------|-------------|
+| **Subdomain** | The Marketing Cloud subdomain (28-character string starting with 'mc'). Found in the API Integration component details. |
+| **Client ID** | The Client ID from the installed package's API Integration component. |
+| **Client Secret** | The Client Secret from the installed package's API Integration component. |
+| **Scopes** | Space-separated OAuth scopes. Include `offline` to enable persistent refresh tokens. |

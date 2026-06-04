@@ -1,0 +1,18 @@
+Use the **Azure Active Directory** connection to connect to Azure SQL Database, Microsoft Fabric, or any SQL Server instance that supports Azure Active Directory authentication via service principal credentials.
+
+#### Prerequisites
+
+- An [Azure AD App Registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) with a client secret
+- The service principal must have the appropriate permissions on the target database or Fabric workspace
+
+#### Configure the Connection
+
+- **Host**: The server address (e.g., `my-server.database.windows.net` for Azure SQL, or `my-server.datawarehouse.fabric.microsoft.com` for Fabric)
+- **Port**: The database port (default: `1433`)
+- **Database**: The name of the database or Fabric warehouse
+- **Tenant ID**: The Directory (Tenant) ID from the Azure AD App Registration
+- **Client ID**: The Application (Client) ID from the Azure AD App Registration
+- **Client Secret**: The client secret from the Azure AD App Registration
+- **Connection Timeout**: Milliseconds before the connection attempt is considered failed (default: `15000`)
+
+Token acquisition and refresh are handled automatically by the underlying driver.

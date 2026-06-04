@@ -1,0 +1,59 @@
+Checks for new comments on a specified file on a configured schedule.
+
+This polling trigger monitors comments on a specific Box file at regular intervals and identifies comments that have been created since the last poll. The trigger automatically maintains state to track the last polling time and returns only newly created comments.
+
+#### How It Works
+
+The trigger operates as follows:
+
+1. Runs on the configured schedule (e.g., every 5 minutes)
+2. Fetches all comments for the specified file using the [Box Comments API](https://developer.box.com/reference/get-files-id-comments/)
+3. Normalizes timestamps to UTC for accurate comparison (Box stores dates with timezone offsets)
+4. Compares comment creation timestamps against the last poll time
+5. Returns comments where `created_at` is after the last poll time
+6. Maintains polling state automatically to track the last poll time
+
+#### State Management
+
+The trigger stores the last poll timestamp in the polling state. On the first execution, if no previous state exists, the trigger uses the current time as the baseline. This means the initial poll establishes the baseline and subsequent polls detect comments created after that point.
+
+Each poll updates the state with the current timestamp, ensuring accurate tracking of when comments were added.
+
+#### Configuration
+
+Configure the trigger with the following inputs:
+
+- **Connection**: Box OAuth 2.0 connection with read permissions for the target file
+- **File ID**: The unique identifier of the file to monitor for comments (use the Box content data source to select a file)
+
+The trigger fetches all comments on the specified file during each poll. Box's API returns all comments without pagination for most files.
+
+#### Returned Data
+
+The trigger returns an array of newly created comments.
+
+<details>
+<summary>Example returned data structure</summary>
+
+```json
+{
+  "data": {
+    "newComments": {
+      "data": [
+        {
+          "id": "1234567890",
+          "message": "Please review the updated section on page 3",
+          "created_at": "2024-11-10T18:07:45Z"
+        },
+        {
+          "id": "9876543210",
+          "message": "Approved for final release",
+          "created_at": "2024-11-10T18:15:22Z"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>

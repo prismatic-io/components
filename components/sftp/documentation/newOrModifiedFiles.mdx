@@ -1,0 +1,68 @@
+This trigger polls an SFTP server for new and modified files in a specified directory on a configured schedule.
+
+The trigger detects:
+
+- **New files**: Files that did not exist during the previous poll
+- **Modified files**: Files whose size or modification timestamp changed since the previous poll
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It connects to the SFTP server and lists all files in the configured directory
+3. Each file's path, size, and modification timestamp are recorded
+4. The current file list is compared against the previous poll's state
+5. Files not present in the previous state are reported as **new**
+6. Files whose size or modification timestamp differ from the previous state are reported as **modified**
+7. The trigger updates its state with the current file map for the next poll
+
+If no new or modified files are detected, the trigger reports no changes and the flow does not execute.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The SFTP server connection credentials
+- **Path**: The directory path on the SFTP server to monitor (e.g., `/uploads/incoming/`)
+- **Pattern**: A glob-style pattern to filter files (e.g., `*.csv`, `*.txt`). Defaults to `*` (all files)
+- **Include Subdirectories**: When enabled, the trigger recursively scans subdirectories within the specified path. Defaults to `false`
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "newFiles": [
+      {
+        "path": "/uploads/incoming/report-2026-02-11.csv",
+        "size": 24576,
+        "modifiedAt": 1739308800000
+      }
+    ],
+    "modifiedFiles": [
+      {
+        "path": "/uploads/incoming/daily-log.txt",
+        "size": 102400,
+        "modifiedAt": 1739312400000
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Each file entry includes:
+
+- **path**: The full path to the file on the SFTP server
+- **size**: The file size in bytes
+- **modifiedAt**: The file's last modification timestamp (Unix milliseconds)
+
+#### Notes
+
+- The trigger tracks changes using file size and modification timestamp. If a file is replaced with content of the same size and timestamp, the change will not be detected.
+- Enabling **Include Subdirectories** on directories with many nested files may increase polling time and SFTP server load.
+- The trigger does not detect deleted files. It only reports files that are new or have changed.
+- On the first poll, all files matching the pattern are reported as **new** since there is no previous state.

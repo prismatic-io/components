@@ -1,0 +1,114 @@
+Monday.com [webhooks](https://developer.monday.com/api-reference/reference/webhooks) deliver real-time notifications when board events occur. This trigger automatically manages the webhook subscription lifecycle — creating a webhook endpoint in Monday.com when the instance is deployed and removing it when the instance is deleted.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook subscription in Monday.com pointing to the instance's unique webhook URL, subscribed to the configured board event. If a webhook for this instance already exists from a previous deploy, it is replaced with a fresh one.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from Monday.com.
+
+Each incoming request is routed to one of two branches:
+
+- **Challenge Verification** branch: Handles the initial URL verification challenge that Monday.com sends when a webhook subscription is first registered. The trigger automatically responds with the required challenge token.
+- **Notification** branch: Handles all subsequent event notifications from Monday.com after verification is complete.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Monday.com connection (API Key or OAuth 2.0) to use for managing the webhook subscription.
+- **Board ID**: The ID of the Monday.com board to monitor for events. Use the **Select Board** data source to choose from available boards.
+- **Event**: The type of board event to subscribe to. Select from the available event types listed below.
+- **Config**: An optional JSON object for event-specific configuration (e.g., `{"columnId": "status"}` for `change_specific_column_value` events).
+
+#### Event Types
+
+<details>
+<summary>Available Events (21)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `change_column_value` | Fires when any column value is changed on an item |
+| `change_status_column_value` | Fires when a status column value is changed |
+| `change_subitem_column_value` | Fires when a column value is changed on a subitem |
+| `change_specific_column_value` | Fires when a specific column value is changed (requires `columnId` in Config) |
+| `change_name` | Fires when an item's name is changed |
+| `create_item` | Fires when a new item is created on the board |
+| `item_archived` | Fires when an item is archived |
+| `item_deleted` | Fires when an item is deleted |
+| `item_moved_to_any_group` | Fires when an item is moved to any group |
+| `item_moved_to_specific_group` | Fires when an item is moved to a specific group |
+| `item_restored` | Fires when an archived or deleted item is restored |
+| `create_subitem` | Fires when a subitem is created |
+| `change_subitem_name` | Fires when a subitem's name is changed |
+| `move_subitem` | Fires when a subitem is moved |
+| `subitem_archived` | Fires when a subitem is archived |
+| `subitem_deleted` | Fires when a subitem is deleted |
+| `create_column` | Fires when a new column is created on the board |
+| `create_update` | Fires when an update (comment) is posted on an item |
+| `edit_update` | Fires when an update (comment) is edited |
+| `delete_update` | Fires when an update (comment) is deleted |
+| `create_subitem_update` | Fires when an update is posted on a subitem |
+
+</details>
+
+Refer to [Monday.com's webhook documentation](https://developer.monday.com/api-reference/reference/webhooks) for the complete and up-to-date list of supported events.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "event": {
+    "userId": 12345678,
+    "originalTriggerUuid": null,
+    "boardId": 2924980809,
+    "groupId": "topics",
+    "pulseId": 4277581981,
+    "pulseName": "Task 1",
+    "columnId": "status",
+    "columnType": "color",
+    "columnTitle": "Status",
+    "value": {
+      "label": {
+        "index": 1,
+        "text": "Done",
+        "style": {
+          "color": "#00c875",
+          "border": "#00b461",
+          "var_name": "done-green"
+        },
+        "is_done": true
+      }
+    },
+    "previousValue": {
+      "label": {
+        "index": 0,
+        "text": "Working on it",
+        "style": {
+          "color": "#fdab3d",
+          "border": "#e99729",
+          "var_name": "working-orange"
+        },
+        "is_done": false
+      }
+    },
+    "changedAt": 1737993600.123456,
+    "isTopGroup": true,
+    "type": "update_column_value",
+    "triggerTime": "2025-01-27T12:00:00.000Z",
+    "subscriptionId": 147295839,
+    "triggerUuid": "abc123def456"
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- The **Challenge Verification** branch fires only once per webhook registration and does not contain board event data. Route all business logic through the **Notification** branch.
+- The `change_specific_column_value` event requires a `columnId` value in the **Config** input to identify which column to monitor.
+- Monday.com webhook payloads vary in structure depending on the event type. Refer to [Monday.com's webhook event payload documentation](https://developer.monday.com/api-reference/reference/webhooks) for field definitions per event type.

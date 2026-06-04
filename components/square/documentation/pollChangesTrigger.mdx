@@ -1,0 +1,64 @@
+The **New and Updated Payments** polling trigger fetches Square payments that were created or updated since the previous execution. Records are separated into `created` and `updated` buckets so that downstream steps can branch on lifecycle without re-comparing timestamps.
+
+#### How It Works
+
+1. On the first run, the trigger captures the current time and returns no records (the baseline is established).
+2. On each subsequent run, the trigger calls Square's [List Payments](https://developer.squareup.com/reference/square/payments-api/list-payments) endpoint with the `begin_time` set to the previous poll timestamp and paginates through all results.
+3. Each payment's `created_at` and `updated_at` timestamps are compared against the previous poll timestamp to partition results into `created` (new payments) and `updated` (payments modified after creation).
+4. The new poll timestamp is persisted to polling state for the next execution.
+5. If both buckets are empty, the trigger reports `polledNoChanges: true` so the flow does not execute unnecessarily.
+
+#### Returned Data
+
+The trigger returns an object with `created` and `updated` arrays under `body.data`. Each array contains full Square `Payment` objects.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "body": {
+    "data": {
+      "created": [
+        {
+          "id": "KkAkhdMsgzn59SM8A89WgKwekxLZY",
+          "status": "COMPLETED",
+          "amount_money": {
+            "amount": 100,
+            "currency": "USD"
+          },
+          "source_type": "CARD",
+          "location_id": "L8MR4Y5BMDJSC",
+          "order_id": "03O3USaPaAaFnI6kkwB1JxGgBsUZY",
+          "created_at": "2026-05-20T22:55:45.183Z",
+          "updated_at": "2026-05-20T22:55:45.273Z"
+        }
+      ],
+      "updated": [
+        {
+          "id": "9fNAOdpmh9XQpgUYRWJ7vWa4FdjZY",
+          "status": "COMPLETED",
+          "amount_money": {
+            "amount": 2500,
+            "currency": "USD"
+          },
+          "source_type": "CARD",
+          "location_id": "L8MR4Y5BMDJSC",
+          "created_at": "2026-05-18T14:12:03.000Z",
+          "updated_at": "2026-05-20T22:50:11.412Z"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### Notes
+
+- The polling interval is configured on the integration instance, not on the trigger itself.
+- The `begin_time` filter uses Square's server time. Clock skew between the integration runtime and Square may cause edge-case records near the boundary to be classified differently across runs.
+- For high-volume merchants, consider pairing this trigger with the **Webhook** trigger to receive real-time `payment.created` and `payment.updated` events and reduce polling load.

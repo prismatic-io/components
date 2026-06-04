@@ -1,0 +1,26 @@
+To authenticate with Mailchimp using an API Key, generate a key from the Mailchimp account settings.
+
+For detailed information about API key authentication, refer to [Mailchimp's API quickstart guide](https://mailchimp.com/developer/marketing/guides/quick-start/).
+
+#### Prerequisites
+
+- A [Mailchimp account](https://mailchimp.com/) with admin access
+- Access to the [API Keys](https://admin.mailchimp.com/account/api/) settings page
+
+#### Setup Steps
+
+To generate an API key:
+
+1. Navigate to the [API Keys](https://admin.mailchimp.com/account/api/) page in the Mailchimp account settings.
+2. Scroll to the **Your API keys** section.
+3. Click **Create A Key** to generate a new API key.
+4. Enter a descriptive name for the key (e.g., "Integration API Key").
+5. Copy the generated API key value.
+
+:::warning[API Key Format]
+Mailchimp API keys include a data center suffix (e.g., `abc123def456-us21`). The suffix after the hyphen indicates the data center where the account is hosted. This suffix is required for the API to route requests correctly.
+:::
+
+#### Configure the Connection
+
+- Enter the full **API Key** (including the data center suffix) into the connection configuration.

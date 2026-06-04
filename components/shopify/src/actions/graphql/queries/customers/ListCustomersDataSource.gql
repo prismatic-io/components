@@ -1,0 +1,12 @@
+query ListCustomersDataSource($first: Int!, $cursor: String) {
+  customers(first: $first, after: $cursor) {
+    nodes {
+      id
+      email
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

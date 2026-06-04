@@ -1,0 +1,65 @@
+The Resource Trigger monitors Microsoft Intune resources for changes using Microsoft Graph [change notifications](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview). When a monitored resource is created, updated, or deleted, Microsoft Graph sends a notification to this trigger.
+
+#### Automatic Subscription Management
+
+This trigger uses lifecycle webhook handlers to automatically manage Microsoft Graph subscriptions:
+
+- **On Deploy**: When the integration is deployed, subscriptions are automatically created for the selected resource and change types
+- **On Delete**: When the instance is deleted, all subscriptions associated with the webhook URL are automatically removed
+
+#### Branches
+
+This trigger uses two branches to handle different types of incoming requests:
+
+| Branch | Description |
+|--------|-------------|
+| **Notification** | Receives actual change notifications when the monitored resource changes |
+| **URL Validation** | Handles Microsoft Graph validation requests when subscriptions are created |
+
+:::info[URL Validation]
+When a subscription is created, Microsoft Graph sends a validation request containing a `validationToken` query parameter. The trigger automatically responds with the validation token to complete the subscription setup.
+:::
+
+#### Configuration
+
+| Input | Description |
+|-------|-------------|
+| **Resource** | The Microsoft Graph resource to monitor (e.g., `users`, `groups`, `devices`) |
+| **Change Type** | The types of changes to monitor. Multiple selections allowed: `created`, `updated`, `deleted` |
+| **Expiration Date Time** | Optional. When the subscription expires. Defaults to 29 days for users and groups |
+
+#### Supported Resources
+
+Common resources that can be monitored include:
+
+- `users` - User accounts
+- `groups` - Security and Microsoft 365 groups
+- `devices` - Managed devices
+- `applications` - Registered applications
+- `deviceManagement/managedDevices` - Intune managed devices
+
+For a complete list of supported resources, refer to the [Microsoft Graph change notifications documentation](https://learn.microsoft.com/en-us/graph/change-notifications-delivery-webhooks).
+
+#### Example Notification Payload
+
+When a monitored resource changes, Microsoft Graph sends a notification in this format:
+
+```json
+{
+  "value": [
+    {
+      "changeType": "updated",
+      "clientState": null,
+      "resource": "Users/87d349ed-44d7-43e1-9a83-5f2406dee5bd",
+      "resourceData": {
+        "@odata.type": "#Microsoft.Graph.User",
+        "@odata.id": "Users/87d349ed-44d7-43e1-9a83-5f2406dee5bd",
+        "id": "87d349ed-44d7-43e1-9a83-5f2406dee5bd"
+      },
+      "subscriptionId": "7f105c7d-2dc5-4530-97cd-4e7ae6534c07",
+      "subscriptionExpirationDateTime": "2025-01-15T18:23:45.9356913Z",
+      "tenantId": "84bd8158-6d4d-4958-8b9f-9d6445542f55"
+    }
+  ]
+}
+```

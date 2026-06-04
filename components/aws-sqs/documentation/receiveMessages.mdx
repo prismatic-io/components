@@ -1,0 +1,7 @@
+:::note
+**Receive Messages** can behave differently depending on what kind of queue you are trying to poll.
+If you are using a non-FIFO queue, this action may return [false blank responses](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ReceiveMessage.html).
+SNS FIFO is intended for customer use cases where it is critical to maintain the consistency in processing messages across multiple independent services in a strictly ordered manner.
+If you are polling a FIFO queue you are guaranteed to receive the maximum amount of messages you specify (up to 10) per request.
+Refer to the AWS docs for information on migrating to a [FIFO queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-moving.html)
+:::

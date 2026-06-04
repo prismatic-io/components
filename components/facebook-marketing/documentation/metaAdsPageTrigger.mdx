@@ -1,0 +1,131 @@
+The Page Trigger receives real-time [webhook notifications](https://developers.facebook.com/docs/graph-api/webhooks/getting-started) from Meta when subscribed Page fields change. This trigger automatically manages webhook subscriptions through the Meta Graph API.
+
+#### How It Works
+
+This trigger uses two branches to handle the Meta webhook lifecycle:
+
+- **URL Validation**: When the instance is first deployed, Meta sends a verification request containing a challenge token. The trigger validates the **Verify Token** and responds with the challenge to confirm the endpoint.
+- **Notification**: After verification, all subsequent webhook notifications are routed to this branch. The trigger verifies the `X-Hub-Signature-256` header on each request to ensure payload integrity.
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a webhook subscription in the Meta Graph API for the specified Page fields. The subscription points to the instance's unique webhook URL.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from the Meta Graph API.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Graph Version**: The version of the Graph API to use (defaults to 22).
+- **Verify Token**: A secret token used to validate the webhook subscription during the URL verification handshake. This value must match what Meta sends during verification.
+- **Page Fields**: Select the Page fields to subscribe to from the available options (e.g., `feed`, `messages`, `leadgen`). At least one field is required.
+- **Dynamic Page Fields**: Alternatively, provide Page fields as a JSON array for dynamic configuration. This input is used when **Page Fields** is empty.
+- **Connection**: A Meta Ads Client Credentials connection is required to manage webhook subscriptions through the API.
+
+#### Event Types
+
+<details>
+<summary>Available Page Fields (57)</summary>
+
+| Field | Value |
+|-------|-------|
+| Affiliation | `affiliation` |
+| Attire | `attire` |
+| Awards | `awards` |
+| Bio | `bio` |
+| Birthday | `birthday` |
+| Category | `category` |
+| Company Overview | `company_overview` |
+| Culinary Team | `culinary_team` |
+| Current Location | `current_location` |
+| Description | `description` |
+| Email | `email` |
+| Feed | `feed` |
+| Founded | `founded` |
+| General Info | `general_info` |
+| General Manager | `general_manager` |
+| Group Feed | `group_feed` |
+| Hometown | `hometown` |
+| Hours | `hours` |
+| Inbox Labels | `inbox_labels` |
+| Invoice Access Invoice Draft Change | `invoice_access_invoice_draft_change` |
+| Leadgen | `leadgen` |
+| Live Videos | `live_videos` |
+| Location | `location` |
+| Members | `members` |
+| Mention | `mention` |
+| Message Context | `message_context` |
+| Message Deliveries | `message_deliveries` |
+| Message Echoes | `message_echoes` |
+| Message Edits | `message_edits` |
+| Message Reactions | `message_reactions` |
+| Message Reads | `message_reads` |
+| Messages | `messages` |
+| Messaging Account Linking | `messaging_account_linking` |
+| Messaging Customer Information | `messaging_customer_information` |
+| Messaging Handovers | `messaging_handovers` |
+| Messaging In Thread Lead Form Submit | `messaging_in_thread_lead_form_submit` |
+| Messaging Integrity | `messaging_integrity` |
+| Messaging Optins | `messaging_optins` |
+| Messaging Policy Enforcement | `messaging_policy_enforcement` |
+| Messaging Postbacks | `messaging_postbacks` |
+| Messaging Referrals | `messaging_referrals` |
+| Mission | `mission` |
+| Name | `name` |
+| Page Change Proposal | `page_change_proposal` |
+| Page Upcoming Change | `page_upcoming_change` |
+| Parking | `parking` |
+| Payment Options | `payment_options` |
+| Personal Info | `personal_info` |
+| Personal Interests | `personal_interests` |
+| Phone | `phone` |
+| Picture | `picture` |
+| Price Range | `price_range` |
+| Product Review | `product_review` |
+| Products | `products` |
+| Public Transit | `public_transit` |
+| Response Feedback | `response_feedback` |
+| Send Cart | `send_cart` |
+| Videos | `videos` |
+| Website | `website` |
+
+</details>
+
+Refer to the [Meta Page Webhooks Reference](https://developers.facebook.com/docs/graph-api/webhooks/reference/page) for the complete and up-to-date list of available fields and their descriptions.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "object": "page",
+  "entry": [
+    {
+      "id": "123456789",
+      "time": 1711929600,
+      "changes": [
+        {
+          "field": "feed",
+          "value": {
+            "item": "post",
+            "verb": "add",
+            "post_id": "123456789_987654321",
+            "sender_id": 123456789,
+            "created_time": 1711929600
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+#### Notes
+
+- A Meta Ads **Client Credentials** connection is required for this trigger to manage webhook subscriptions through the API.
+- A page admin with **MODERATE** privileges must grant the app the `pages_manage_metadata` permission for webhook notifications to be delivered.
+- The **Verify Token** is used both during the initial URL verification handshake and for validating the `X-Hub-Signature-256` signature on subsequent notifications.

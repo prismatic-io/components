@@ -1,0 +1,30 @@
+This trigger receives webhook notifications from [Karbon](https://karbonhq.com/) when entities change. It automatically creates and manages a webhook subscription when the instance is deployed, and removes it when the instance is deleted.
+
+#### How It Works
+
+- **On Instance Deploy**: The trigger creates a webhook subscription in Karbon via `POST /v3/WebhookSubscriptions`, registering the instance endpoint to receive notifications for the selected entity type.
+- **On Instance Deletion**: The trigger removes the webhook subscription via `DELETE /v3/WebhookSubscriptions/{webhookType}`, ensuring no orphaned subscriptions remain.
+
+When an entity of the configured type changes in Karbon, a notification is sent to the registered endpoint and the flow is invoked with the webhook payload.
+
+#### Configuration
+
+- **Webhook Type** (required): The type of entity to monitor for changes. Available options:
+  - `Contact`
+  - `Work`
+  - `Note`
+  - `User`
+  - `Invoice`
+
+#### Event Types
+
+The trigger fires when an entity of the selected type is created, updated, or otherwise modified in Karbon. The specific change details are included in the webhook payload delivered to the flow.
+
+#### Returned Data
+
+The trigger passes the incoming webhook payload directly to the flow without transformation. The payload structure varies by webhook type and is determined by the Karbon API.
+
+#### Notes
+
+- Only one webhook type can be monitored per trigger instance. To monitor multiple entity types, configure separate flows with individual trigger instances.
+- For more information on the Karbon API, see the [Karbon Developer Center](https://developers.karbonhq.com/) and the [Karbon API Reference](https://developers.karbonhq.com/api/).

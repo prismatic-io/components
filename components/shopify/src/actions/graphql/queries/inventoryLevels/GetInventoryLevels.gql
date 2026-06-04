@@ -1,0 +1,6 @@
+#import "../../fragments/InventoryLevelDetails.gql"
+query GetInventoryLevels($id: ID!) {
+  inventoryLevel(id: $id) {
+    ...InventoryLevelDetails
+  }
+}

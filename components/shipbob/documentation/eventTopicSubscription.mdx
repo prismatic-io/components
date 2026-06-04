@@ -1,0 +1,67 @@
+[ShipBob](https://www.shipbob.com/) can send webhook notifications when specific events occur, such as when an order is shipped or a shipment is delivered. This trigger automatically manages webhook subscriptions in ShipBob based on the selected event topics.
+
+For more details on available webhook topics, refer to the [ShipBob Webhooks documentation](https://developer.shipbob.com/webhooks).
+
+#### How It Works
+
+This trigger automatically manages webhook subscriptions throughout the instance lifecycle. Unlike manual webhook setups, the entire lifecycle is handled automatically.
+
+- **On Instance Deploy**: The trigger creates webhook subscriptions in ShipBob for each selected topic, pointing to the flow's unique webhook URL. If subscriptions for the same URL already exist and **Overwrite Webhook Settings** is enabled, the existing subscriptions are deleted and recreated. If existing subscriptions are found and overwrite is disabled, deployment fails with an error.
+- **On Instance Deletion**: The trigger removes all webhook subscriptions in ShipBob that point to the flow's webhook URL.
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The ShipBob connection to use for API authentication.
+- **Version**: The ShipBob API version (default: `1.0`).
+- **Topics to Subscribe**: Select one or more event topics to receive notifications for. Each topic creates a separate webhook subscription. Duplicate topics are not allowed.
+- **Overwrite Webhook Settings**: When enabled, deletes existing webhook subscriptions pointing to the flow's URL and creates new ones. When disabled (default), deployment fails if subscriptions already exist for the flow's URL.
+
+#### Event Types
+
+<details>
+<summary>Available Topics (5)</summary>
+
+| Topic | Description |
+|-------|-------------|
+| `order_shipped` | Fires when an order has been shipped |
+| `shipment_delivered` | Fires when a shipment has been delivered |
+| `shipment_exception` | Fires when a shipment encounters an exception |
+| `shipment_onhold` | Fires when a shipment is placed on hold |
+| `shipment_cancelled` | Fires when a shipment is cancelled |
+
+</details>
+
+Refer to the [ShipBob Webhooks documentation](https://developer.shipbob.com/webhooks) for the complete and up-to-date list of available topics.
+
+#### Returned Data
+
+The trigger validates incoming webhook requests by checking for the `shipbob-subscription-id` and `shipbob-topic` headers. These headers are included in the response along with the parsed JSON payload.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "headers": {
+    "shipbob-subscription-id": "12345",
+    "shipbob-topic": "order_shipped"
+  },
+  "body": {
+    "id": 67890,
+    "order_id": 11111,
+    "tracking_number": "1Z999AA10123456784",
+    "carrier": "UPS",
+    "shipped_date": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Each selected topic creates a separate webhook subscription in ShipBob. Selecting multiple topics results in multiple subscriptions, all pointing to the same flow URL.
+- Duplicate topics in the subscription list are not allowed and will cause deployment to fail.
+- The trigger validates that incoming requests contain valid ShipBob headers (`shipbob-subscription-id` and `shipbob-topic`) before processing.

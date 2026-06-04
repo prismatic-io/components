@@ -1,0 +1,18 @@
+A HubSpot [Webhook](https://developers.hubspot.com/docs/api/webhooks) can be configured to send information to a flow's webhook URL under certain conditions (a contact is created, a deal is updated, a company property changes, etc.).
+
+This trigger is designed for **manually configured webhook subscriptions** that are set up through the HubSpot Developer Console. When a webhook is configured externally in HubSpot, this trigger receives the webhook requests and validates them using signature verification.
+
+For automated webhook subscription management that creates and removes webhook subscriptions automatically when an instance is deployed or deleted, use the [Event Type Subscription](#eventtypesubscription) trigger instead.
+
+#### Configuration
+
+To use this trigger:
+
+1. Create a public app in the [HubSpot Developer Console](https://developers.hubspot.com/)
+2. Configure webhook settings in the app's Webhooks section:
+   - Set the **Target URL** to the flow's webhook URL
+   - Configure the event subscriptions (contact creation, deal updates, etc.)
+   - Adjust throttling settings if needed
+3. When configuring the trigger connection, provide the **Client Secret** from the HubSpot app for signature verification
+
+A full list of available webhook events is available in the [HubSpot Webhooks API documentation](https://developers.hubspot.com/docs/api/webhooks).

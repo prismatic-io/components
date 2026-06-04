@@ -1,0 +1,13 @@
+query ListVariantsDataSource($first: Int!, $query: String!, $cursor: String) {
+  productVariants(first: $first, query: $query, after: $cursor) {
+    nodes {
+      id
+      title
+      displayName
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

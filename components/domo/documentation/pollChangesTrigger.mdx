@@ -1,0 +1,68 @@
+This trigger polls the [Domo API](https://developer.domo.com/portal/8ba9aedad3679-ap-is) for new and updated records across a selected resource type on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches all records from the selected Domo resource using paginated requests
+3. Records are categorized as **created** or **updated** based on the tracking strategy for the selected resource type:
+   - **Timestamp-based** (DataSets, Streams, Users, Projects): records are compared against the last successful poll time using their timestamp fields
+   - **ID-based** (Groups, Pages): records are compared against the set of previously known IDs; only newly appearing records are captured as created
+4. The trigger updates its internal state after each poll — storing either the poll timestamp or the current set of known IDs depending on the resource type
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Domo connection used to authenticate API requests
+- **Resource Type**: The Domo resource to monitor. Available options:
+
+  | Resource | Change Detection | Tracks New | Tracks Updated |
+  |----------|-----------------|------------|---------------|
+  | DataSets | Timestamp (`createdAt`, `updatedAt`) | Yes | Yes |
+  | Streams | Timestamp (`createdAt`, `modifiedAt`) | Yes | Yes |
+  | Users | Timestamp (`createdAt`, `updatedAt`) | Yes | Yes |
+  | Projects | Timestamp (`createdDate` only) | Yes | No |
+  | Groups | ID-based | Yes | No |
+  | Pages | ID-based | Yes | No |
+
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Applies only to resource types that support update tracking (DataSets, Streams, Users). Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. For resource types without update tracking (Projects, Groups, Pages), `updated` is always an empty array.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "ds-abc123",
+        "name": "Sales Report Q1",
+        "createdAt": "2024-01-15T10:30:00Z",
+        "updatedAt": "2024-01-15T10:30:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": "ds-xyz789",
+        "name": "Marketing Dashboard",
+        "createdAt": "2024-01-10T09:00:00Z",
+        "updatedAt": "2024-01-16T14:22:00Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- On the first poll, the trigger captures a baseline snapshot. No records are returned for ID-based resources (Groups, Pages) on the first execution — subsequent polls detect additions against that baseline
+- For timestamp-based resources, the trigger uses the poll start time as the cutoff to avoid missing records written during execution
+- The Domo API enforces rate limits. Consider using longer polling intervals for high-volume resources such as DataSets and Streams to avoid exhausting API quotas. Refer to the [Domo API documentation](https://developer.domo.com/portal/8ba9aedad3679-ap-is) for current rate limit details
+- A record is classified as **created** if its creation timestamp exceeds the last poll time. If the creation timestamp does not exceed the cutoff but the update timestamp does, the record is classified as **updated**

@@ -1,0 +1,79 @@
+SharePoint supports webhook notifications through the Microsoft Graph API with automatic subscription lifecycle management. This trigger automatically creates and manages webhook subscriptions, eliminating the need for manual subscription creation and maintenance.
+
+When an integration instance is deployed, the trigger creates a webhook subscription with Microsoft Graph. When the instance is deleted, the subscription is automatically removed. This lifecycle management ensures subscriptions stay synchronized with active integrations.
+
+For manual webhook configuration without automatic lifecycle management, use the **Webhook** trigger instead.
+
+#### Configuration
+
+Configure the trigger using these inputs:
+
+- **Connection**: Microsoft SharePoint connection for authentication
+- **Resource**: The Microsoft Graph resource path to monitor for changes
+  - Examples: `/me/drive/root`, `/sites/{site-id}/drive/root`, `/drives/{drive-id}/root`
+- **Change Type**: The type of changes to monitor (created, updated, deleted)
+- **Client State**: Optional validation token included in each notification to verify the source
+- **Expiration Date Time**: Optional expiration for the subscription (defaults to 3 days if not provided)
+  - Maximum is 30 days for SharePoint/OneDrive resources
+
+#### How It Works
+
+The trigger manages webhook subscriptions through a complete lifecycle:
+
+**On Instance Deploy:**
+1. Creates a webhook subscription using the Microsoft Graph Subscriptions API
+2. Subscribes to the specified resource path with the configured change types
+3. Sets the subscription expiration (default 3 days, maximum 30 days for SharePoint resources)
+4. Microsoft validates the webhook endpoint by sending a validation token
+5. The trigger responds with the token to complete subscription creation
+
+**On Webhook Notification:**
+- Microsoft posts notification payloads when monitored resources change
+- The trigger validates the clientState (if configured)
+- Notifications are routed to the appropriate branch for processing
+
+**On Instance Deletion:**
+- Automatically deletes the webhook subscription from Microsoft Graph
+- Cleans up all subscription resources to prevent orphaned subscriptions
+
+#### Branches
+
+The trigger uses two branches to handle different webhook events:
+
+**URL Validation** - Handles Microsoft's endpoint validation:
+- Triggered when Microsoft validates the webhook endpoint during subscription creation
+- Extracts the `validationToken` query parameter
+- Returns the token in a plain text response (required by Microsoft)
+
+**Notification** - Handles actual change notifications:
+- Triggered when SharePoint sends change event payloads
+- Validates clientState if configured (logs warning on mismatch)
+- Passes the payload to the integration flow for processing
+
+#### Returned Data
+
+The trigger returns the raw webhook payload containing change notifications:
+
+<details>
+<summary>Example Notification Payload</summary>
+
+```json
+{
+  "value": [
+    {
+      "subscriptionId": "7f105c7d-2dc5-4530-97cd-4e7ae6534c07",
+      "subscriptionExpirationDateTime": "2024-12-15T18:23:45.9356913Z",
+      "changeType": "updated",
+      "resource": "drives/{drive-id}/root",
+      "resourceData": {
+        "@odata.type": "#Microsoft.Graph.driveItem",
+        "@odata.id": "drives/{drive-id}/items/{item-id}",
+        "id": "{item-id}"
+      },
+      "clientState": "optional-validation-token"
+    }
+  ]
+}
+```
+
+</details>

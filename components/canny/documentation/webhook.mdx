@@ -1,0 +1,106 @@
+A Canny [webhook](https://developers.canny.io/api-reference#webhooks) sends notifications to the integration whenever events occur in Canny. All event types are sent automatically — there is no option to filter by event type.
+
+#### How It Works
+
+When a webhook event is received, the trigger validates the request using HMAC-SHA256 signature verification with the API key from the connection. If the signature is invalid, the request is rejected.
+
+#### Configuration
+
+Configure a webhook in the Canny admin panel:
+
+1. Navigate to **Settings** > **API** in Canny
+2. Under **Webhooks**, click **Add Webhook**
+3. Enter the flow's webhook URL as the **Webhook URL**
+4. Save the webhook configuration
+
+#### Event Types
+
+All event types are sent to the webhook. Use a branch or filter step in the flow to handle specific events.
+
+<details>
+<summary>Available Events (14)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `post.created` | Occurs when a new post is created |
+| `post.edited` | Occurs when a post is edited |
+| `post.deleted` | Occurs when a post is deleted |
+| `post.jira_issue_linked` | Occurs when a Jira issue is linked to a post |
+| `post.jira_issue_unlinked` | Occurs when a Jira issue is unlinked from a post |
+| `post.tag_added` | Occurs when a post is tagged |
+| `post.tag_removed` | Occurs when a post's tag is removed |
+| `post.status_changed` | Occurs when a post's status is changed |
+| `comment.created` | Occurs when a new comment is created |
+| `comment.edited` | Occurs when a comment is edited |
+| `comment.deleted` | Occurs when a comment is deleted |
+| `vote.created` | Occurs when a user votes on a post |
+| `vote.deleted` | Occurs when a user unvotes on a post |
+
+</details>
+
+Refer to the [Canny webhook documentation](https://developers.canny.io/api-reference#webhooks) for the complete and up-to-date list.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload (post.deleted)</summary>
+
+```json
+{
+  "created": "2026-04-16T20:12:49.566Z",
+  "object": {
+    "author": {
+      "adminRole": "Owner",
+      "avatarURL": null,
+      "created": "2025-10-08T17:30:30.782Z",
+      "email": "admin@example.com",
+      "id": "553c3ef8b8cdcd1501ba9999",
+      "isAdmin": true,
+      "name": "Jane Smith",
+      "url": "https://yourcompany.canny.io/admin/users/jane-smith",
+      "userID": null
+    },
+    "board": {
+      "created": "2026-04-16T00:10:27.227Z",
+      "id": "553c3ef8b8cdcd1501ba5678",
+      "name": "Feature Requests",
+      "postCount": 4,
+      "url": "https://yourcompany.canny.io/admin/board/feature-requests"
+    },
+    "by": null,
+    "category": null,
+    "commentCount": 0,
+    "clickup": {
+      "linkedTasks": []
+    },
+    "created": "2026-04-16T20:12:48.417Z",
+    "customFields": [],
+    "details": "It would be great to have a dark mode option for the dashboard.",
+    "eta": "June 2026",
+    "id": "553c3ef8b8cdcd1501ba1234",
+    "imageURLs": [],
+    "idea": null,
+    "jira": {
+      "linkedIssues": [],
+      "linkedIssueIDs": []
+    },
+    "linear": {
+      "linkedIssueIDs": []
+    },
+    "mergeHistory": [],
+    "owner": null,
+    "roadmaps": [],
+    "score": 1,
+    "status": "open",
+    "statusChangedAt": "2026-04-16T20:12:48.417Z",
+    "tags": [],
+    "title": "Add dark mode support",
+    "totalMRR": 0,
+    "url": "https://yourcompany.canny.io/admin/board/feature-requests/p/add-dark-mode-support"
+  },
+  "objectType": "post",
+  "type": "post.deleted"
+}
+```
+
+</details>

@@ -1,0 +1,22 @@
+## Zendesk webhooks
+
+The Zendesk API supports two types of webhooks - one for when something has changed for a user or an organization, and one when something has changed on a support ticket.
+
+### Zendesk user and support webhooks
+
+To be alerted when a change to a user or organization has occurred, create a new webhook using the [Create Webhook](#createwebhook) action.
+Select the events that will cause the webhook to fire.
+For example, selecting the `zen:event-type:user.deleted` event will cause the webhook to fire whenever a user is deleted.
+A full list of webhook event types are available in the [Zendesk developer docs](https://developer.zendesk.com/api-reference/event-connectors/webhooks/webhook-event-types/).
+
+### Zendesk ticket webhooks
+
+To be alerted when a ticket has changed, first create a webhook using the [Create Webhook](#createwebhook) action.
+When selecting webhook events, choose `conditional_ticket_events` (and only that value).
+This will create a webhook, pointed at an integration flow, that can be triggered conditionally.
+
+Next, a **trigger** must be created that will send data via the webhook just created.
+Fetch the webhook's **id** from the step where the webhook was created, and feed it into a [Create Trigger](#createwebhooktrigger) action.
+The default conditional and webhook body values will cause the webhook to be triggered whenever a ticket is changed, and will send all data related to the ticket to the webhook.
+Keeping the default values is recommended.
+The conditions under which the trigger fires can be changed - see the Zendesk [conditions reference](https://developer.zendesk.com/documentation/ticketing/reference-guides/conditions-reference/) for details.

@@ -1,0 +1,25 @@
+To authenticate with SendGrid, an API key is required.
+
+#### Setup Steps
+
+To generate an API key:
+
+1. Log in to the [SendGrid Console](https://app.sendgrid.com/)
+2. Navigate to **Settings** > **API Keys**
+3. Click **Create API Key**
+4. Enter a name for the API key
+5. Select the appropriate access level:
+   - **Full Access** - Grants all permissions (recommended for integration use)
+   - **Restricted Access** - Grants specific permissions based on requirements
+6. Click **Create & View**
+7. Copy the API key value (it will only be displayed once)
+
+For more information about creating API keys, refer to the [SendGrid API Keys documentation](https://docs.sendgrid.com/ui/account-and-settings/api-keys).
+
+#### Configure the Connection
+
+- Enter the API key into the **API Key** field in the connection configuration
+
+:::warning[API Key Security]
+The API key is only displayed once upon creation. Store it securely. If the key is lost, a new one must be generated.
+:::

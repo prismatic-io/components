@@ -1,0 +1,44 @@
+The **New and Updated Files** trigger checks for new and updated files in a specified S3 bucket on a configured schedule. It monitors file changes based on the `LastModified` timestamp of objects.
+
+For more information on S3 objects, see [Working with Amazon S3 objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingObjects.html).
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. List objects in the bucket using the [ListObjectsV2 API](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ListingKeysUsingAPIs.html) (up to 4,000 objects)
+3. Compare each object's `LastModified` timestamp against the last poll time
+4. Return keys for any files modified since the last poll
+5. Maintain state to track the last poll time automatically
+
+On the first run, the trigger sets the poll timestamp without returning files. Subsequent runs detect files created or modified after that timestamp.
+
+#### Configuration
+
+- **Connection**: AWS IAM credentials (Access Key or dynamic credentials)
+- **AWS Region**: The region where the S3 bucket is located
+- **Bucket Name**: The name of the S3 bucket to monitor
+
+#### Returned Data
+
+The trigger returns an array of object keys (file paths) that have been created or modified since the last poll. When no changes are detected, returns an empty array and sets `polledNoChanges` to `true`.
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": [
+    "path/to/new-file.txt",
+    "path/to/updated-file.pdf",
+    "images/photo.jpg"
+  ]
+}
+```
+
+</details>
+
+#### Best Practices
+
+- **Polling Frequency**: Use 5-15 minute intervals for active buckets; longer intervals for low-activity buckets
+- **Object Limit**: The trigger checks up to 4,000 objects per poll; for larger buckets, consider using the [Webhook](#snss3notificationwebhook) trigger with SNS notifications instead
+- **Permissions**: The IAM credentials require `s3:ListBucket` permission on the bucket

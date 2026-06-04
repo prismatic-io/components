@@ -1,0 +1,25 @@
+This connection authenticates with SAP S/4HANA Cloud APIs via the SAP API Business Hub sandbox environment. It is designed for testing and development purposes only and provides read-only access to sample data.
+
+:::note[Sandbox Environment Only]
+This connection is intended for **testing and development** using the SAP API Business Hub sandbox. For production access to real SAP S/4HANA Cloud data, use the Basic Auth connection instead.
+:::
+
+#### Prerequisites
+
+- An SAP account with access to [SAP API Business Hub](https://api.sap.com/)
+- API key generated from SAP API Business Hub
+
+#### Setup Steps
+
+To create an API key for the sandbox:
+
+1. Navigate to [SAP API Business Hub](https://api.sap.com/) and log in with SAP credentials.
+2. Click on the user profile icon in the top right corner.
+3. Select **Settings** or **API Keys** from the menu.
+4. Click **Show API Key** to reveal the existing key, or generate a new one if needed.
+5. Copy the API key and store it securely.
+
+#### Configure the Connection
+
+- **SAP API Key**: Enter the API key obtained from SAP API Business Hub.
+- **Base URL**: Use the default sandbox URL: `https://sandbox.api.sap.com/s4hanacloud`

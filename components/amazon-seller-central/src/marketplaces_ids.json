@@ -1,0 +1,112 @@
+[
+  {
+    "countryName": "Canada",
+    "marketplaceId": "A2EUQ1WTGCTBG2",
+    "countryCode": "CA"
+  },
+  {
+    "countryName": "United States of America",
+    "marketplaceId": "ATVPDKIKX0DER",
+    "countryCode": "US"
+  },
+  {
+    "countryName": "Mexico",
+    "marketplaceId": "A1AM78C64UM0Y8",
+    "countryCode": "MX"
+  },
+  {
+    "countryName": "Brazil",
+    "marketplaceId": "A2Q3Y263D00KWC",
+    "countryCode": "BR"
+  },
+  {
+    "countryName": "Spain",
+    "marketplaceId": "A1RKKUPIHCS9HS",
+    "countryCode": "ES"
+  },
+  {
+    "countryName": "United Kingdom",
+    "marketplaceId": "A1F83G8C2ARO7P",
+    "countryCode": "UK"
+  },
+  {
+    "countryName": "France",
+    "marketplaceId": "A13V1IB3VIYZZH",
+    "countryCode": "FR"
+  },
+  {
+    "countryName": "Belgium",
+    "marketplaceId": "AMEN7PMS3EDWL",
+    "countryCode": "BE"
+  },
+  {
+    "countryName": "Netherlands",
+    "marketplaceId": "A1805IZSGTT6HS",
+    "countryCode": "NL"
+  },
+  {
+    "countryName": "Germany",
+    "marketplaceId": "A1PA6795UKMFR9",
+    "countryCode": "DE"
+  },
+  {
+    "countryName": "Italy",
+    "marketplaceId": "APJ6JRA9NG5V4",
+    "countryCode": "IT"
+  },
+  {
+    "countryName": "Sweden",
+    "marketplaceId": "A2NODRKZP88ZB9",
+    "countryCode": "SE"
+  },
+  {
+    "countryName": "South Africa",
+    "marketplaceId": "AE08WJ6YKNBMC",
+    "countryCode": "ZA"
+  },
+  {
+    "countryName": "Poland",
+    "marketplaceId": "A1C3SOZRARQ6R3",
+    "countryCode": "PL"
+  },
+  {
+    "countryName": "Egypt",
+    "marketplaceId": "ARBP9OOSHTCHU",
+    "countryCode": "EG"
+  },
+  {
+    "countryName": "Turkey",
+    "marketplaceId": "A33AVAJ2PDY3EV",
+    "countryCode": "TR"
+  },
+  {
+    "countryName": "Saudi Arabia",
+    "marketplaceId": "A17E79C6D8DWNP",
+    "countryCode": "SA"
+  },
+  {
+    "countryName": "United Arab Emirates",
+    "marketplaceId": "A2VIGQ35RCS4UG",
+    "countryCode": "AE"
+  },
+  {
+    "countryName": "India",
+    "marketplaceId": "A21TJRUUN4KGV",
+    "countryCode": "IN"
+  },
+  {
+    "countryName": "Singapore",
+    "marketplaceId": "A19VAU5U5O7RUS",
+    "countryCode": "SG"
+  },
+  {
+    "countryName": "Australia",
+    "marketplaceId": "A39IBJ37TRP1C6",
+    "countryCode": "AU"
+  },
+  {
+    "countryName": "Japan",
+    "marketplaceId": "A1VC38T7YXB528",
+    "countryCode": "JP"
+  }
+]

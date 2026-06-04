@@ -1,0 +1,23 @@
+A Redis connection requires host and port information, along with optional authentication and TLS configuration.
+
+#### Prerequisites
+
+- A Redis server instance accessible from the network
+- Authentication credentials if the server requires them
+
+#### Configure the Connection
+
+- **Host**: Enter the hostname or IP address of the Redis server
+- **Port**: Enter the Redis server port (default is typically `6379`)
+- **Password**: Enter the Redis server password
+- **Username**: Enter the Redis username (optional - required only if ACL-based authentication is enabled)
+- **Database**: Enter the logical database number to connect to (optional, e.g., `0`)
+
+#### TLS Configuration
+
+For encrypted connections, enable TLS and provide the necessary certificates:
+
+- **Use TLS**: Set to `true` to enable TLS for the connection
+- **Client Key**: Provide the client private key for mutual TLS authentication (optional)
+- **Client Certificate**: Provide the client certificate for mutual TLS authentication (optional)
+- **CA Certificate**: Provide the CA certificate to verify the server's identity (optional - if not provided, the server certificate is not verified)

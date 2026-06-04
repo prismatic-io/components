@@ -1,0 +1,57 @@
+The **New and Updated Tasks** polling trigger checks ClickUp on a configured schedule for tasks that were created or modified since the last poll. Unlike webhook-based triggers, polling does not require webhook subscription management and works reliably for low-frequency monitoring scenarios.
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads the last poll timestamp from the polling state (or uses the current execution time on the first run) and converts it to Unix milliseconds
+2. Queries the ClickUp tasks API with a `date_updated_gt` filter, scoped to either an entire Team (Workspace) or a single List depending on the **Scope** input
+3. Partitions the returned tasks into **created** and **updated** buckets by comparing each task's `date_created` Unix millisecond timestamp against the last poll cutoff. Tasks whose `date_created` falls after the cutoff land in **created**, while all others land in **updated**
+4. Persists the current execution time as the new last-poll timestamp for the next run
+5. Emits the partitioned results in the trigger payload, filtered by the **Show New Records** and **Show Updated Records** toggles
+
+#### Returned Data
+
+The trigger emits a payload with two arrays, `created` and `updated`, each containing task resources from ClickUp.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "abc123",
+        "name": "New task",
+        "date_created": "1716220800000",
+        "date_updated": "1716220800000",
+        "status": { "status": "to do", "color": "#87909e" },
+        "assignees": [],
+        "list": { "id": "9010065123", "name": "Sprint 1" }
+      }
+    ],
+    "updated": [
+      {
+        "id": "def456",
+        "name": "Updated task",
+        "date_created": "1716134400000",
+        "date_updated": "1716224400000",
+        "status": { "status": "in progress", "color": "#4194f6" },
+        "assignees": [],
+        "list": { "id": "9010065123", "name": "Sprint 1" }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### Notes
+
+- Task timestamps from ClickUp are returned as Unix millisecond strings, which the trigger uses to categorize tasks as **created** or **updated**
+- Selecting **List** scope narrows the poll to a single List, which reduces payload size and API load compared to polling an entire Team
+- For near real-time delivery, use the **Webhook** trigger instead. Polling is best suited for scheduled, lower-frequency monitoring where webhook lifecycle management is not desired

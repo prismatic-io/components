@@ -1,0 +1,12 @@
+query ListOrdersDataSource($first: Int!, $query: String, $cursor: String) {
+  orders(first: $first, query: $query, after: $cursor) {
+    nodes {
+      id
+      name
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

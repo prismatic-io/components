@@ -1,0 +1,193 @@
+The **Base Change Notifications** trigger automatically creates and manages an Airtable webhook subscription that monitors changes to a base. When the instance is deployed, the trigger creates the webhook; when the instance is deleted, the webhook is automatically removed. The trigger uses cursor-based payload retrieval and includes automatic webhook refresh functionality to prevent expiration.
+
+For more information about Airtable's webhook system, see the [Airtable Webhooks API documentation](https://airtable.com/developers/web/api/webhooks-overview).
+
+#### Lifecycle Behavior
+
+#### Instance Deploy
+
+When an instance with this trigger is deployed, the trigger:
+
+1. **Checks for existing webhook**: If a webhook was previously created and exists in the instance state, the trigger validates whether it still exists in Airtable
+2. **Handles configuration changes**: If the configuration (base ID, data types, or record change scope) has changed, the trigger deletes the old webhook before creating a new one
+3. **Creates webhook**: Calls the Airtable API to create a new webhook subscription with the specified configuration
+4. **Stores state**: Saves the webhook ID, MAC secret, expiration time, cursor, and configuration details in cross-flow state
+
+#### Instance Update
+
+When an instance is redeployed with configuration changes:
+
+- If the **base ID**, **data types**, or **record change scope** has changed, the trigger deletes the old webhook and creates a new one with the updated configuration
+- If the configuration remains the same, the existing webhook is retained
+
+#### Instance Delete
+
+When an instance is deleted or disabled:
+
+- The trigger automatically deletes the webhook from Airtable using the webhook ID stored in state
+- The cross-flow state is cleared
+- If the webhook was already deleted in Airtable (404 response), the deletion is handled gracefully
+
+#### Webhook Events
+
+This trigger uses two branches to handle different types of events:
+
+#### Notification Branch
+
+The **Notification** branch processes webhook notifications from Airtable when changes occur in the monitored base. When invoked:
+
+1. **Validates signature**: Uses the stored MAC secret to verify the webhook payload is authentic
+2. **Retrieves payloads**: Fetches all change payloads using cursor-based pagination from the Airtable Webhooks API
+3. **Auto-refreshes webhook**: Automatically extends the webhook expiration if needed
+4. **Updates state**: Stores the latest cursor and new expiration time
+5. **Returns data**: Provides the notification ping, all retrieved payloads, payload count, and cursor
+
+#### Refresh Branch
+
+The **Refresh** branch handles scheduled invocations to prevent webhook expiration. Airtable webhooks expire after 7 days without a refresh. Configure a schedule (recommended: daily or every few days) to keep the webhook active. When invoked by schedule:
+
+1. **Extends expiration**: Calls the Airtable API to refresh the webhook
+2. **Updates state**: Stores the new expiration time
+3. **Returns confirmation**: Provides the new expiration time and success message
+
+#### Configuration
+
+The trigger requires the following inputs:
+
+- **Connection**: An Airtable OAuth or API key connection
+- **Base ID**: The ID of the Airtable base to monitor (e.g., `appLkNDICXNqxSDhG`)
+- **Data Types**: Types of changes to monitor (default: `tableData` for record changes)
+  - `tableData` - Monitor record changes (create, update, delete)
+  - `tableFields` - Monitor schema changes (field additions, modifications)
+  - `tableMetadata` - Monitor table metadata changes
+- **Record Change Scope** (optional): A specific table ID or view ID to limit monitoring (e.g., `tblMwMnUJpKoJUDzo`). Leave empty to monitor all tables in the base
+
+#### Schedule Configuration
+
+To prevent webhook expiration, configure a schedule for the trigger:
+
+1. In the integration designer, select the trigger
+2. Enable **Schedule** in the trigger configuration
+3. Set the schedule to run every 1-3 days (recommended: daily)
+4. When the schedule runs, the **Refresh** branch will execute and extend the webhook expiration
+
+#### Returned Data
+
+#### Notification Branch
+
+When a change notification is received, the trigger returns:
+
+<details>
+<summary>Notification branch response payload</summary>
+
+```json
+{
+  "notification": {
+    "base": {
+      "id": "appLkNDICXNqxSDhG"
+    },
+    "webhook": {
+      "id": "ach00000000000001"
+    },
+    "timestamp": "2023-09-15T18:30:00.000Z"
+  },
+  "payloads": [
+    {
+      "timestamp": "2023-09-15T18:30:00.000Z",
+      "actionMetadata": {
+        "source": "publicApi",
+        "sourceMetadata": {}
+      },
+      "changedTablesById": {
+        "tblMwMnUJpKoJUDzo": {
+          "createdRecordsById": {
+            "rec123abc": {
+              "createdTime": "2023-09-15T18:30:00.000Z",
+              "cellValuesByFieldId": {
+                "fldXYZ789": "New Value"
+              }
+            }
+          },
+          "changedRecordsById": {
+            "rec456def": {
+              "current": {
+                "cellValuesByFieldId": {
+                  "fldABC123": "Updated Value"
+                }
+              },
+              "previous": {
+                "cellValuesByFieldId": {
+                  "fldABC123": "Old Value"
+                }
+              },
+              "unchanged": {
+                "cellValuesByFieldId": {
+                  "fldDEF456": "Unchanged"
+                }
+              }
+            }
+          },
+          "destroyedRecordIds": ["rec789ghi"]
+        }
+      }
+    }
+  ],
+  "payloadCount": 1,
+  "cursor": 5
+}
+```
+
+</details>
+
+#### Refresh Branch
+
+When the webhook is refreshed by schedule, the trigger returns:
+
+<details>
+<summary>Refresh branch response payload</summary>
+
+```json
+{
+  "expirationTime": "2023-09-22T18:30:00.000Z",
+  "message": "Webhook refreshed"
+}
+```
+
+</details>
+
+#### Branch Logic
+
+Use branch routing in the integration flow to handle different event types:
+
+- Route the **Notification** branch to process base changes (record updates, schema changes, etc.)
+- Route the **Refresh** branch to log successful refresh events or send notifications
+
+<details>
+<summary>Example flow structure</summary>
+
+```
+[Base Change Notifications Trigger]
+  |
+  ├─ Notification → [Process Changes] → [Update Records]
+  |
+  └─ Refresh → [Log Refresh] → [Send Status Email]
+```
+
+</details>
+
+#### Important Notes
+
+- **Webhook Expiration**: Airtable webhooks expire after 7 days without activity. The trigger includes automatic refresh functionality, but a schedule must be configured for this to work
+- **MAC Signature Verification**: All webhook payloads are validated using HMAC-SHA256 signature verification to ensure authenticity
+- **Cursor Management**: The trigger uses cursors to track processed payloads and avoid duplicate processing
+- **State Management**: Webhook metadata is stored in cross-flow state and persists across executions
+- **Configuration Changes**: Changing the base ID, data types, or record change scope will delete and recreate the webhook
+
+#### Comparison with Manual Webhook Trigger
+
+The Airtable component includes two webhook triggers:
+
+- **Base Change Notifications** (this trigger): Automatically creates and manages webhook subscriptions with lifecycle handlers, cursor-based retrieval, and auto-refresh
+- **Webhook**: A simple webhook receiver for manually configured Airtable webhooks (configured outside the integration)
+
+Use the **Base Change Notifications** trigger for automated webhook management with built-in expiration prevention. Use the **Webhook** trigger if webhooks are managed externally or if simple webhook reception is needed without lifecycle management.

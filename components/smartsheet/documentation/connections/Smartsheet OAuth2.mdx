@@ -1,0 +1,37 @@
+:::warning[Deprecation Notice]
+This connection type is deprecated. Use the **OAuth 2.0** connection instead, which provides a simplified configuration with templated URLs.
+:::
+
+To authenticate with Smartsheet through OAuth 2.0, create and configure an app within the Smartsheet account.
+
+#### Prerequisites
+
+- A Smartsheet account with access to Developer Tools
+- A developer profile created in Smartsheet
+
+#### Setup Steps
+
+1. Log in to [Smartsheet](https://app.smartsheet.com)
+2. Navigate to the profile icon (bottom left) and select **Developer Tools**
+3. Create a developer profile if one does not already exist
+4. Click **Create New App**
+5. Configure the app:
+   - **App Name**: Enter the application name
+   - **App Description**: Add a brief description
+   - **App Logo**: Optional
+   - **Publish App**: Leave unchecked (not required)
+   - **App Redirect URL**: Enter <OauthCallbackUrl />
+6. Save the app and note the generated credentials:
+   - **App Client ID**
+   - **App Secret**
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0 (Deprecated)** and configure the following fields:
+
+- **Base URL**: Select the Smartsheet API base URL. Most applications use the commercial endpoint. Government entities should select the government endpoint.
+- **Authorization URL**: Select the OAuth 2.0 authorization endpoint for Smartsheet.
+- **Token URL**: Select the OAuth 2.0 token exchange endpoint for Smartsheet.
+- **Scopes**: A space-separated list of permissions to request. Remove any permissions not needed. Refer to the [available scopes](https://developers.smartsheet.com/api/smartsheet/guides/advanced-topics/oauth) documentation for details.
+- **App Client ID**: Enter the client ID generated from the Smartsheet app.
+- **App Secret**: Enter the client secret generated from the Smartsheet app.

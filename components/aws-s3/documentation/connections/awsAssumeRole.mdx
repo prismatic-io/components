@@ -1,0 +1,58 @@
+AWS Assume Role authentication allows assuming an IAM role using temporary security credentials.
+This method is useful for cross account access or when implementing principle of least privilege.
+
+Refer to the [AWS documentation on assuming roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use.html) for detailed information.
+
+#### Prerequisites
+
+- Completed [API Key Secret](#apikeysecret) connection setup (access key pair required)
+- Appropriate permissions to create IAM roles
+
+#### Setup Steps
+
+An IAM user with access keys is required to assume a role. If access keys have not been created, follow the [API Key Secret](#apikeysecret) setup steps first, then return here to create the IAM role.
+
+##### Create an IAM Role with Trust Policy
+
+1. From the [IAM Console](https://console.aws.amazon.com/iam/), navigate to **Roles** and select **Create Role**
+2. Select **Custom trust policy** as the trusted entity type
+3. Enter the trust policy below, replacing `USER_ARN` with the IAM user ARN:
+
+<details>
+<summary>View trust policy template</summary>
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "USER_ARN"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+</details>
+
+4. Click **Next** and attach the appropriate S3 permissions policy (e.g., **AmazonS3FullAccess** or **AmazonS3ReadOnlyAccess**)
+5. Complete the remaining steps and select **Create Role**
+6. Copy the **Role ARN** from the role summary (format: `arn:aws:iam::123456789012:role/role-name`)
+
+#### Configure the Connection
+
+- **Role ARN**: The ARN of the IAM role to assume
+- **Access Key ID**: From the IAM user (see [API Key Secret](#apikeysecret))
+- **Secret Access Key**: From the IAM user
+- **External ID** (optional): Shared secret for enhanced security
+
+:::note[External ID]
+The **External ID** provides additional security for cross-account access. Refer to the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html#id_roles_third-party_external-id) for more information.
+:::
+
+#### Verify Connection
+
+The IAM user credentials assume the role, which provides temporary credentials with the role's attached permissions. Ensure the trust policy correctly references the IAM user ARN.

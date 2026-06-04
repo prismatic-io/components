@@ -1,0 +1,33 @@
+A **Developer Token** is a short-lived (60-minute) token that can be used for testing purposes. Developer tokens allow access to the Box API for a personal Box account only.
+
+:::note[Production Authentication]
+When an integration is ready for production, an [OAuth 2.0](#oauth2) connection is required to authenticate customer Box accounts. Testing can also be performed with OAuth 2.0.
+:::
+
+#### Prerequisites
+
+- A [Box account](https://www.box.com/)
+- Access to the [Box Developer Console](https://app.box.com/developers/console)
+
+#### Setup Steps
+
+To generate a developer token:
+
+1. Navigate to the [Box Developer Console](https://app.box.com/developers/console)
+2. Select **Create New App**
+3. Choose **Custom App** and click **Next**
+4. Select **User Authentication (OAuth 2.0)** and click **Next**
+5. Enter an app name and click **Create App**
+6. In the app's **Configuration** tab, scroll to the **Developer Token** section
+7. Click **Generate Developer Token**
+8. Copy the generated token (valid for 60 minutes)
+
+For more information, refer to the [Box Developer Token documentation](https://developer.box.com/guides/authentication/tokens/developer-tokens/).
+
+#### Configure the Connection
+
+- Enter the developer token value into the **Developer Token** field of the connection configuration
+
+:::warning[Token Expiration]
+Developer tokens expire after 60 minutes. Generate a new token if authentication fails due to expiration.
+:::

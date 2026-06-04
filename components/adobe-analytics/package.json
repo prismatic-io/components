@@ -1,0 +1,24 @@
+{
+  "name": "@prismatic-io/adobe-analytics",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "webpack",
+    "publish": "npm run build && prism components:publish",
+    "test": "echo 'no tests'",
+    "lint": "biome check --write .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.10",
+    "@types/node": "^25",
+    "copy-webpack-plugin": "14.0.0",
+    "ts-loader": "9.5.4",
+    "typescript": "5.9.3",
+    "webpack": "5.105.4",
+    "webpack-cli": "7.0.2"
+  }
+}

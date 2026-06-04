@@ -1,0 +1,182 @@
+#### Webhook
+
+The **Webhook** trigger receives webhook requests from Mailchimp for manually configured webhooks. Use this trigger when configuring webhooks directly in the Mailchimp account rather than having them auto-managed by the integration.
+
+#### Configuration
+
+This trigger requires manual webhook setup in Mailchimp:
+
+1. Log in to the Mailchimp account
+2. Navigate to **Audience** > **Manage Audience** > **Settings**
+3. Select **Webhooks** from the settings menu
+4. Click **Create New Webhook**
+5. Enter the trigger's webhook URL from the integration instance
+6. Select the desired **Events** to monitor (subscribe, unsubscribe, profile, cleaned, upemail, campaign)
+7. Select the desired **Sources** (user, admin, api)
+8. Save the webhook configuration
+
+For more information, see [Mailchimp's list webhooks documentation](https://mailchimp.com/developer/marketing/api/list-webhooks/).
+
+#### Webhook Events
+
+The trigger receives webhook requests when any of the configured events occur:
+
+- **subscribe** - A subscriber is added to the list
+- **unsubscribe** - A subscriber is removed from the list
+- **profile** - A subscriber's profile information is updated
+- **cleaned** - An email address is cleaned (bounced) from the list
+- **upemail** - A subscriber's email address is changed
+- **campaign** - A campaign is sent to the list
+
+#### Webhook Sources
+
+Events can originate from three different sources:
+
+- **user** - Changes made directly by subscribers (e.g., through subscription forms or preference centers)
+- **admin** - Changes made by account administrators through the Mailchimp web interface
+- **api** - Changes made programmatically through the Mailchimp API
+
+Configure which sources trigger webhook notifications when setting up the webhook in Mailchimp.
+
+#### Returned Data
+
+The trigger returns the complete webhook payload from Mailchimp. The payload structure varies by event type but typically includes:
+
+<details>
+<summary>Subscribe Event Example</summary>
+
+```json
+{
+  "type": "subscribe",
+  "fired_at": "2024-12-05T14:30:00Z",
+  "data": {
+    "id": "8a25ff1d98",
+    "list_id": "a6b5da1054",
+    "email": "john.doe@example.com",
+    "email_type": "html",
+    "ip_opt": "192.168.1.100",
+    "ip_signup": "192.168.1.100",
+    "merges": {
+      "EMAIL": "john.doe@example.com",
+      "FNAME": "John",
+      "LNAME": "Doe",
+      "ADDRESS": "",
+      "PHONE": "",
+      "BIRTHDAY": ""
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Unsubscribe Event Example</summary>
+
+```json
+{
+  "type": "unsubscribe",
+  "fired_at": "2024-12-05T15:45:00Z",
+  "data": {
+    "action": "unsub",
+    "reason": "manual",
+    "id": "8a25ff1d98",
+    "list_id": "a6b5da1054",
+    "email": "john.doe@example.com",
+    "email_type": "html",
+    "ip_opt": "192.168.1.100",
+    "campaign_id": "cb398d21d2",
+    "merges": {
+      "EMAIL": "john.doe@example.com",
+      "FNAME": "John",
+      "LNAME": "Doe",
+      "ADDRESS": "",
+      "PHONE": "",
+      "BIRTHDAY": ""
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Profile Update Event Example</summary>
+
+```json
+{
+  "type": "profile",
+  "fired_at": "2024-12-05T16:20:00Z",
+  "data": {
+    "id": "8a25ff1d98",
+    "list_id": "a6b5da1054",
+    "email": "john.doe@example.com",
+    "email_type": "html",
+    "ip_opt": "192.168.1.100",
+    "merges": {
+      "EMAIL": "john.doe@example.com",
+      "FNAME": "John",
+      "LNAME": "Smith",
+      "ADDRESS": "123 Main St",
+      "PHONE": "+1-555-123-4567",
+      "BIRTHDAY": "01/15"
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Email Changed Event Example</summary>
+
+```json
+{
+  "type": "upemail",
+  "fired_at": "2024-12-05T17:00:00Z",
+  "data": {
+    "list_id": "a6b5da1054",
+    "new_id": "9b36gg2e09",
+    "new_email": "john.smith@example.com",
+    "old_email": "john.doe@example.com"
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Cleaned Event Example</summary>
+
+```json
+{
+  "type": "cleaned",
+  "fired_at": "2024-12-05T18:30:00Z",
+  "data": {
+    "list_id": "a6b5da1054",
+    "campaign_id": "cb398d21d2",
+    "reason": "hard",
+    "email": "bounced@example.com"
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Campaign Event Example</summary>
+
+```json
+{
+  "type": "campaign",
+  "fired_at": "2024-12-05T19:00:00Z",
+  "data": {
+    "id": "cb398d21d2",
+    "list_id": "a6b5da1054",
+    "subject": "Your Monthly Newsletter",
+    "status": "sent"
+  }
+}
+```
+
+</details>

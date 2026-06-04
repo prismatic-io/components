@@ -1,0 +1,23 @@
+To authenticate with Jira Service Management using Basic Authentication, an email address and an API token are required.
+
+#### Prerequisites
+
+- A Jira Cloud instance with Jira Service Management enabled
+- An Atlassian account with appropriate permissions
+
+#### Setup Steps
+
+1. Navigate to [Atlassian Account API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+2. Click **Create API token**
+3. Enter a label for the token and click **Create**
+4. Copy the generated API token value
+
+For more information on generating API tokens, refer to the [Atlassian documentation](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+
+#### Configure the Connection
+
+Create a connection of type **Basic Authentication** and configure the following fields:
+
+- For **Username**, enter the email address associated with the Atlassian account
+- For **API Key**, enter the API token generated in the previous step
+- For **Host**, enter the Atlassian site hostname without `https://` (e.g., `example-company.atlassian.net`)

@@ -1,0 +1,22 @@
+#import "../../fragments/FulfillmentServiceDetails.gql"
+mutation CreateFulfillmentService(
+  $name: String!
+  $callbackUrl: URL!
+  $trackingSupport: Boolean!
+  $inventoryManagement: Boolean!
+) {
+  fulfillmentServiceCreate(
+    callbackUrl: $callbackUrl
+    name: $name
+    trackingSupport: $trackingSupport
+    inventoryManagement: $inventoryManagement
+  ) {
+    fulfillmentService {
+      ...FulfillmentServiceDetails
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

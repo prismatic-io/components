@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://learn.microsoft.com/en-us/rest/api/power-bi/"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://learn.microsoft.com/en-us/power-bi/fundamentals/whats-new"
+  }
+]

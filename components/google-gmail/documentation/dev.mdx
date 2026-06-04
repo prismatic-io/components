@@ -1,0 +1,27 @@
+Documentation for the Node.js client used in this component can be found at https://googleapis.dev/nodejs/googleapis/latest/gmail/index.html
+
+Most actions in this component have a **Gmail User ID** input.
+You can safely leave this input blank, and the default value, `me` will be used, indicating that the user who authenticated is the user whose Gmail account your integration will use.
+
+:::tip[Use labels to organize messages]
+Gmail uses **labels** in place of folders to organize messages.
+Messages in a user's inbox have a label of `INBOX`.
+You can apply custom labels to a message (so, you can loop only over messages with a particular label, etc).
+:::
+
+## Receiving notifications from Gmail
+
+Gmail supports [push notifications](https://developers.google.com/gmail/api/guides/push) to let you know when a mailbox changes (new message arrives, message is deleted, message is labeled, etc.).
+
+This component provides two approaches for receiving Gmail push notifications:
+
+### Push Notifications
+
+For advanced use cases requiring manual control over the webhook lifecycle, use the **Push Notifications** trigger along with the manual setup actions:
+
+1. Create a Google Cloud IAM service account with the `Pub/Sub Admin` role in the same project as the Gmail OAuth app
+2. Create a Pub/Sub topic using the **Create Topic** action
+3. Create a Pub/Sub subscription using the **Create Webhook Subscription** action pointing to the trigger's webhook URL
+4. Create a Gmail watch request using the **Create Push Notification** action
+
+For a complete example integration demonstrating manual push notification setup, see the [Gmail with Webhooks example](https://github.com/prismatic-io/examples/blob/main/integrations/gmail-with-webhooks.yml).

@@ -1,0 +1,101 @@
+import { action } from "@prismatic-io/spectral";
+import { createClient } from "../../client";
+import {
+  argument,
+  connectionInput,
+  creationTime,
+  datasetId,
+  definitionBody,
+  description,
+  determinismLevel,
+  etag,
+  importedLibraries,
+  language,
+  lastModifiedTime,
+  projectId,
+  remoteFunctionOptions,
+  returnTableType,
+  returnType,
+  routineReference,
+  routineType,
+  sparkOptions,
+} from "../../inputs";
+
+export const updateRoutine = action({
+  display: {
+    description: "Updates information in an existing routine.",
+    label: "Update Routine",
+  },
+  inputs: {
+    connectionInput,
+    datasetId,
+    projectId,
+    routineReference,
+    routineType,
+    definitionBody,
+    etag,
+    argument,
+    returnTableType,
+    returnType,
+    creationTime,
+    lastModifiedTime,
+    language,
+    importedLibraries,
+    description: {
+      ...description,
+      comments: "Optional. The description of the routine, if defined.",
+    },
+    determinismLevel,
+    remoteFunctionOptions,
+    sparkOptions,
+  },
+  perform: async (
+    _context,
+    {
+      connectionInput,
+      datasetId,
+      projectId,
+      routineReference,
+      routineType,
+      definitionBody,
+      etag,
+      argument,
+      returnTableType,
+      returnType,
+      creationTime,
+      lastModifiedTime,
+      language,
+      importedLibraries,
+      description,
+      determinismLevel,
+      remoteFunctionOptions,
+      sparkOptions,
+    },
+  ) => {
+    const client = createClient(connectionInput);
+    const { data } = await client.routines.update({
+      datasetId: datasetId || undefined,
+      projectId: projectId || undefined,
+      requestBody: {
+        routineReference: routineReference || undefined,
+        routineType: routineType || undefined,
+        definitionBody: definitionBody || undefined,
+        etag: etag || undefined,
+        arguments: argument || undefined,
+        returnTableType: returnTableType || undefined,
+        returnType: returnType || undefined,
+        creationTime: creationTime || undefined,
+        lastModifiedTime: lastModifiedTime || undefined,
+        language: language || undefined,
+        importedLibraries: importedLibraries || undefined,
+        description: description || undefined,
+        determinismLevel: determinismLevel || undefined,
+        remoteFunctionOptions: remoteFunctionOptions || undefined,
+        sparkOptions: sparkOptions || undefined,
+      },
+    });
+    return {
+      data,
+    };
+  },
+});

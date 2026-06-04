@@ -1,0 +1,99 @@
+The Account Level Trigger manages [DocuSign Connect webhook subscriptions](https://developers.docusign.com/platform/webhooks/connect/) for an instance. Unlike traditional webhook setups that require manual configuration in the DocuSign dashboard, this trigger handles the entire webhook lifecycle automatically.
+
+#### How It Works
+
+When this trigger is used in a flow:
+
+- **On Instance Deploy**: The trigger automatically creates a Connect webhook configuration in the DocuSign account pointing to the instance's unique webhook URL. If a webhook with the same URL already exists, an error is thrown to prevent duplication.
+- **On Instance Deletion**: The trigger automatically removes the Connect webhook configuration from the DocuSign account.
+
+This trigger uses HMAC signature verification to ensure that incoming webhook requests are genuine and originate from DocuSign. When DocuSign sends a webhook notification, it includes an `x-docusign-signature` header containing an HMAC hash of the payload. The trigger validates this signature using the **Connect Key** configured in the trigger inputs. If the signature is invalid or missing, the webhook request is rejected.
+
+For details on generating an HMAC key, refer to the [DocuSign HMAC setup guide](https://developers.docusign.com/platform/webhooks/connect/setting-up-hmac/).
+
+#### Configuration
+
+The following inputs are required:
+
+1. **Connection**: The DocuSign OAuth 2.0 connection
+2. **Connect Key**: The HMAC secret key from the DocuSign Connect configuration, used to verify incoming webhook signatures
+3. **Webhook Events**: The specific event types to receive notifications for
+
+#### Event Types
+
+<details>
+<summary>Available Events (29)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `envelope-sent` | An envelope has been sent to recipients |
+| `envelope-delivered` | An envelope has been delivered to all recipients |
+| `envelope-completed` | All recipients have completed the envelope |
+| `envelope-created` | An envelope has been created |
+| `envelope-declined` | A recipient has declined to sign the envelope |
+| `envelope-voided` | The envelope has been voided |
+| `envelope-resent` | An envelope has been resent |
+| `envelope-corrected` | An envelope has been corrected |
+| `envelope-purge` | An envelope has been purged |
+| `envelope-deleted` | An envelope has been deleted |
+| `envelope-discard` | An envelope has been discarded |
+| `recipient-sent` | A recipient has been sent the envelope |
+| `recipient-autoresponded` | A recipient has auto-responded |
+| `recipient-delivered` | A recipient has received the envelope |
+| `recipient-completed` | A recipient has completed their action |
+| `recipient-declined` | A recipient has declined the envelope |
+| `recipient-authenticationfailed` | Recipient authentication has failed |
+| `recipient-resent` | The envelope has been resent to a recipient |
+| `recipient-delegate` | A recipient has delegated their action |
+| `recipient-reassign` | A recipient has been reassigned |
+| `recipient-finish-later` | A recipient has chosen to finish later |
+| `template-created` | A template has been created |
+| `template-modified` | A template has been modified |
+| `template-deleted` | A template has been deleted |
+| `click-agreed` | A clickwrap agreement has been accepted |
+| `click-declined` | A clickwrap agreement has been declined |
+| `sms-opt-in` | A user has opted in to SMS notifications |
+| `sms-opt-out` | A user has opted out of SMS notifications |
+| `identity-verification-completed` | Identity verification has been completed |
+| `identity-verification-pending` | Identity verification is pending |
+
+</details>
+
+For a complete and up-to-date list of available events, refer to the [DocuSign Webhook Event Triggers](https://developers.docusign.com/platform/webhooks/connect/event-triggers/) documentation.
+
+#### Returned Data
+
+The trigger returns the raw webhook payload sent by DocuSign Connect after validating the HMAC signature.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "event": "envelope-completed",
+  "apiVersion": "v2.1",
+  "uri": "/restapi/v2.1/accounts/12345/envelopes/abc-def-ghi",
+  "retryCount": 0,
+  "configurationId": 12345,
+  "generatedDateTime": "2024-01-15T10:30:00.0000000Z",
+  "data": {
+    "accountId": "12345",
+    "envelopeId": "abc-def-ghi",
+    "envelopeSummary": {
+      "status": "completed",
+      "emailSubject": "Please sign this document",
+      "recipients": {
+        "signers": [
+          {
+            "name": "Jane Doe",
+            "email": "jane@example.com",
+            "status": "completed"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>

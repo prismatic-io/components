@@ -1,0 +1,36 @@
+{
+  "name": "@prismatic-io/mongo",
+  "private": true,
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && webpack",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "test": "echo 'no tests'"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1",
+    "mongodb4": "npm:mongodb@4.1.1",
+    "mongodb": "6.6.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.4",
+    "@types/jest": "30.0.0",
+    "@types/node": "18.19.100",
+    "copy-webpack-plugin": "13.0.1",
+    "jest": "30.0.5",
+    "ts-jest": "29.4.1",
+    "ts-loader": "9.5.2",
+    "typescript": "5.9.2",
+    "webpack": "5.101.1",
+    "webpack-cli": "6.0.1",
+    "nock": "13.0.4"
+  }
+}

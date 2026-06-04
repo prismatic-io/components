@@ -1,0 +1,26 @@
+{
+  "name": "@prismatic-io/ukg-pro",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "description": "UKG Pro integration component for HR, payroll, and employee lifecycle management",
+  "scripts": {
+    "publish": "npm run build && prism components:publish",
+    "build": "npm run format && npm run lint && webpack",
+    "test": "echo 'no tests'",
+    "lint": "biome check --write .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.17.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.11",
+    "@types/node": "^18.19.130",
+    "copy-webpack-plugin": "13.0.1",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1"
+  }
+}

@@ -1,0 +1,12 @@
+This action will return a message from a given queue, if a message is available to get.
+If no message is available, this action will return `null`.
+
+Use a [If Condition is Met](components/branch.mdx) step to branch based on whether or not a message was fetched.
+You can check if the results of this step are non-null using the **exists** operator.
+
+You have two options for marking a message "acknowledged":
+
+1. You can set the `Acknowledge Message` input to `true`.
+   This will cause the message to be acknowledged immediately, and the message will be removed from the queue.
+1. You can choose to not acknowledge the message immediately, but instead process the message and then pass the message to a [Acknowledge Message](#acknowledgemessage) step instead.
+   This option is helpful if you would like to ensure the message is processed completely before removing it from the queue.

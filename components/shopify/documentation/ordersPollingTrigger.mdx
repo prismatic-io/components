@@ -1,0 +1,64 @@
+Checks for new and updated orders in a Shopify store on a configured schedule.
+
+#### How It Works
+
+The trigger operates by:
+1. Running on the configured schedule (e.g., every 5 minutes)
+2. Querying the [Shopify GraphQL API](https://shopify.dev/docs/api/admin-graphql) for orders modified since the last poll using the `updated_at` filter
+3. Categorizing orders as "created" or "updated" based on their `createdAt` timestamp compared to the last poll time
+4. Maintaining state automatically to track the last poll time
+5. Returning all orders on the first run (when no previous poll state exists)
+
+#### Configuration
+
+The trigger requires only a Shopify connection. Schedule configuration is handled by the platform.
+
+#### Returned Data
+
+The trigger returns data with orders categorized by change type:
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "gid://shopify/Order/10079785100",
+        "name": "#1001",
+        "email": "customer@example.com",
+        "createdAt": "2024-11-10T10:30:00Z",
+        "updatedAt": "2024-11-10T10:30:00Z",
+        "displayFinancialStatus": "PAID",
+        "displayFulfillmentStatus": "UNFULFILLED",
+        "totalPriceSet": {
+          "shopMoney": {
+            "amount": "199.99",
+            "currencyCode": "USD"
+          }
+        }
+      }
+    ],
+    "updated": [
+      {
+        "id": "gid://shopify/Order/10079785101",
+        "name": "#1002",
+        "email": "customer2@example.com",
+        "createdAt": "2024-11-08T09:00:00Z",
+        "updatedAt": "2024-11-10T14:22:00Z",
+        "displayFinancialStatus": "PAID",
+        "displayFulfillmentStatus": "FULFILLED",
+        "totalPriceSet": {
+          "shopMoney": {
+            "amount": "299.99",
+            "currencyCode": "USD"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>

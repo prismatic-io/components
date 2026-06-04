@@ -1,0 +1,29 @@
+To create a PagerDuty OAuth 2.0 connection, register an app in PagerDuty to obtain a Client ID and Client Secret. For background, refer to [OAuth 2.0 for PagerDuty](https://developer.pagerduty.com/docs/b2a19cce2867a-classic-user-o-auth).
+
+#### Prerequisites
+
+- A PagerDuty account with permissions to register apps
+- Access to the [PagerDuty App Registration page](https://developer.pagerduty.com/docs/dd91fbd09a1a1-register-an-app)
+
+#### Setup Steps
+
+1. [Log in to PagerDuty](https://app.pagerduty.com/) and navigate to [Integrations | App Registration](https://developer.pagerduty.com/docs/dd91fbd09a1a1-register-an-app).
+2. From the top menu, select **Integrations**.
+3. Select **App Registration** from the menu to navigate to the **My Apps** page.
+4. On the **My Apps** page, select **New App**. Enter a name for the app and a brief description.
+5. Check the box next to **OAuth 2.0** and/or **Events Integration**.
+6. For Authorization select one of the following:
+   1. [**Scoped OAuth**](https://developer.pagerduty.com/docs/f59fdbd94ceab-o-auth-functionality#scoped-oauth) - New OAuth client that allows granular read or write access to PagerDuty resources like incidents, services, users, with other benefits.
+      1. Use the table to select Read or Write access to each Resource the integration requires.
+   2. [**Classic User OAuth**](https://developer.pagerduty.com/docs/f59fdbd94ceab-o-auth-functionality#scoped-oauth) - Existing OAuth client that allows apps to act on behalf of users, with read or write to all PagerDuty resources.
+      1. Assign a permission scope of **Read** or **Read and Write**.
+7. In the **Redirect URL** field, enter <OauthCallbackUrl />.
+8. Select **Register App**.
+9. Copy and save the Client ID and Client Secret for use in the connection configuration.
+
+#### Configure the Connection
+
+- Create a connection of type **OAuth 2.0**.
+- Enter the **Scopes** granted to the app. Use `write` for read/write access or `read` for read-only access to all resources (Classic User OAuth).
+- Enter the **Client ID** copied from the PagerDuty OAuth application.
+- Enter the **Client Secret** copied from the PagerDuty OAuth application.

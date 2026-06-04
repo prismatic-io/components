@@ -1,0 +1,6 @@
+#import "../../fragments/CollectionDetails.gql"
+query GetCollection($id: ID!) {
+  collection(id: $id) {
+    ...CollectionDetails
+  }
+}

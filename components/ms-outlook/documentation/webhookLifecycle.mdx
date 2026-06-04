@@ -1,0 +1,43 @@
+The Calendar Event Webhook trigger can manage [Microsoft Graph webhook subscriptions](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview) for calendar events on an instance. Unlike traditional webhook setups that require manual subscription creation and management, this trigger handles the entire webhook lifecycle automatically.
+
+When the trigger is used in a flow:
+- **On Instance Deploy**: The trigger automatically creates a webhook subscription in Microsoft Graph for calendar events (`me/events`) with the `updated` change type. The subscription points to the instance's unique webhook URL. If the **Allow Duplicates** option is set to `false` and a matching subscription already exists, the trigger reuses the existing subscription instead of creating a new one.
+- **On Instance Deletion**: The trigger automatically removes the webhook subscription from Microsoft Graph, ensuring no orphaned subscriptions remain.
+- **On Scheduled Execution**: The trigger can renew the subscription before it expires, enabling continuous monitoring beyond Microsoft Graph's maximum subscription duration of approximately 7 days.
+
+#### Flow Branches
+
+This trigger routes incoming requests to different branches based on their type:
+- **Notification**: Receives actual calendar event notifications when events are modified
+- **URL Validation**: Handles Microsoft Graph's initial validation request when a subscription is created
+- **Scheduled Renewal**: Handles scheduled executions to renew the webhook subscription before expiration
+
+#### Configuration Options
+
+- **Connection**: OAuth 2.0 connection for authenticating with Microsoft Graph
+- **Expiration Date/Time**: When the subscription should expire (ISO 8601 format). Defaults to approximately 7 days from creation.
+- **Allow Duplicates**: When set to `true`, allows multiple webhook subscriptions for the same endpoint. When `false`, reuses existing subscriptions to prevent duplication.
+
+#### Supported Events
+
+This trigger monitors calendar events for the following change type:
+- `updated` - Triggered when calendar events are created, modified, or deleted
+
+For monitoring other Outlook resources or different change types, use the manual **Webhook** trigger with custom subscription configuration.
+
+#### Scheduled Renewal
+
+Microsoft Graph webhook subscriptions have a maximum lifetime of approximately 7 days. To maintain continuous monitoring:
+
+1. Configure the trigger with a schedule (e.g., daily)
+2. Scheduled executions route to the **Scheduled Renewal** branch
+3. The trigger automatically extends the subscription expiration
+
+This approach ensures uninterrupted calendar monitoring without manual intervention.
+
+#### Important Notes
+
+- **Resource Monitored**: This trigger specifically monitors `me/events` (calendar events for the authenticated user)
+- **Change Type**: Only the `updated` change type is configured, which captures creates, updates, and deletes
+
+Refer to the [Microsoft Graph change notifications for Outlook resources](https://learn.microsoft.com/en-us/graph/outlook-change-notifications-overview) for more details about subscription management and lifecycle.

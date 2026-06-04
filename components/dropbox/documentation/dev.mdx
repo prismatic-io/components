@@ -1,0 +1,10 @@
+A common integration pattern involves listing files in a file store, and performing a series of actions on the array of files that are returned.
+See our [looping over files](integrations/common-patterns/loop-over-files.mdx) quickstart for information about how to create a loop over an array of files.
+
+### Detecting changes in Dropbox
+
+The [List Changes](#listchanges) action allows you to detect changes in your user's Dropbox folders.
+Create a flow that runs [on a schedule](components/schedule-triggers.mdx) and begin your flow with a **List Changes** action.
+That action will return a list of changes that have occurred since the flow was last run.
+
+If you would like to detect and process changes to your customers' Dropbox accounts in real-time, see the [Single-Endpoint Webhook Integrations](integrations/triggers/single-endpoint-webhook-integrations.mdx) guide on handling webhook requests from apps that require you to specify a single webhook endpoint.

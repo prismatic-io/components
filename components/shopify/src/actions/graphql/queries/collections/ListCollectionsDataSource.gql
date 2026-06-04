@@ -1,0 +1,13 @@
+query ListCollectionsDataSource($first: Int!, $cursor: String) {
+  collections(first: $first, after: $cursor) {
+    nodes {
+      id
+      title
+      handle
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

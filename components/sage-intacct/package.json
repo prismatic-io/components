@@ -1,0 +1,31 @@
+{
+  "name": "sage-intacct",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "webpack",
+    "publish": "npm run build && prism components:publish",
+    "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
+    "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify",
+    "test": "echo 'no tests'",
+    "lint": "biome lint --write .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@intacct/intacct-sdk": "^2.2.1",
+    "@prismatic-io/spectral": "10.17.1",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.0.5",
+    "@types/jest": "30.0.0",
+    "@types/xml2js": "^0.4.14",
+    "copy-webpack-plugin": "13.0.0",
+    "jest": "30.0.3",
+    "ts-jest": "29.4.0",
+    "ts-loader": "9.5.2",
+    "typescript": "5.8.3",
+    "webpack": "5.99.9",
+    "webpack-cli": "6.0.1"
+  }
+}

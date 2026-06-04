@@ -1,0 +1,20 @@
+This component supports basic authentication, meaning that a **username** and **password** can be entered for authentication, or if the FTP server allows anonymous access, those values can be left blank.
+
+#### Prerequisites
+
+- An FTP or FTPS server with accessible credentials
+- Server hostname or IP address
+- Port number (typically 21 for FTP or 990 for FTPS)
+- SSL/TLS configuration details (if using FTPS)
+
+#### Configure the Connection
+
+Create a connection of type **Basic Authentication** and configure the following:
+
+- **Username**: Enter the FTP username (leave blank for anonymous access)
+- **Password**: Enter the FTP password (leave blank for anonymous access)
+- **Host**: You can enter either an IP address (e.g. `1.2.3.4`) or FQDN (e.g. `ftp.example.com`) for the FTP's **host** name
+- **Port**: Most FTP servers run on **port** 21 and most FTPS (secure) servers run on port 990, though ports are configurable and server administrators can choose to operate on different ports
+- **Secure**: Some FTP servers are **secure** (indicating that they use FTPS rather than FTP). If you are using plain, unsecured FTP select **false** for **secure** (though, we recommend encrypting your connection if possible). If your FTP server is set up to use SSL/TLS, you can select **true** (meaning use "explicit" FTPS) or **implicit** to use "implicit" FTPS. For information on "implicit" and "explicit" FTPS, see [this documentation](https://www.ssh.com/academy/ssh/ftp/ftps)
+
+If the connection fails, verify the hostname, port and security information with the server administrator.

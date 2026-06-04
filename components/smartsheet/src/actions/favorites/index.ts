@@ -1,0 +1,1 @@
+export { getFavorites } from "./getFavorites";

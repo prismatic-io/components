@@ -1,0 +1,56 @@
+The **New and Updated Records** polling trigger checks Pipedrive on a configured schedule for records of a selected resource type that were created or updated since the last poll. Unlike webhook-based triggers, polling does not require webhook subscription management and works reliably for low-frequency monitoring scenarios across the full range of Pipedrive resources (Deals, Persons, Organizations, Activities, Notes, Files, Products, Pipelines, Stages, Filters, Activity Types, and Users).
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads the last poll timestamp from the polling state (or uses the current execution time on the first run) and formats it as a Pipedrive-compatible timestamp.
+2. Calls the Pipedrive `GET /v1/recents` endpoint with the formatted `since_timestamp` and the selected resource type, walking all paginated results until every recent record has been retrieved.
+3. Partitions the returned records into **created** and **updated** buckets by comparing each record's `add_time` field against the last poll cutoff. Records whose `add_time` is after the cutoff land in the **created** bucket, and all others land in the **updated** bucket. For the **Users** resource type, the `created` and `modified` fields are used in place of `add_time`.
+4. Persists the current execution time as the new last-poll timestamp for the next run.
+5. Emits the partitioned results in the trigger payload, filtered by the **Show New Records** and **Show Updated Records** toggles.
+
+#### Returned Data
+
+The trigger emits a payload with two arrays, `created` and `updated`, each containing record resources of the selected resource type. The shape of each record varies depending on the **Resource Type** chosen (for example, a Deal record exposes `stage_id` and `pipeline_id`, while a Person record exposes contact fields), so refer to the relevant Pipedrive resource schema when mapping fields downstream.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 1,
+        "title": "New Deal",
+        "status": "open",
+        "add_time": "2026-05-20 14:00:00",
+        "update_time": "2026-05-20 14:00:00",
+        "stage_id": 1,
+        "pipeline_id": 1
+      }
+    ],
+    "updated": [
+      {
+        "id": 2,
+        "title": "Existing Deal",
+        "status": "open",
+        "add_time": "2026-04-01 09:00:00",
+        "update_time": "2026-05-20 15:00:00",
+        "stage_id": 2,
+        "pipeline_id": 1
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### When to Use Polling vs. Webhooks
+
+- Use the **New and Updated Records** polling trigger when the integration needs to run on a fixed schedule, when webhook subscription management is not desired, or when the volume of changes is low enough that polling latency is acceptable.
+- Use the **Pipedrive Webhook** trigger when near real-time delivery is required and the integration can manage subscription lifecycles in Pipedrive directly.

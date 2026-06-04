@@ -1,0 +1,18 @@
+If you're building a single-user custom integration, you can use the Personal Access Token (PAT) method. This generates a ready-to-use bearer-type token with full access to the merchant's account.
+
+You can generate credentials from the ShipBob dashboard.
+
+For Production Environment, [click here](https://web.shipbob.com/app/merchant/#/Integrations/token-management).
+For Sandbox Environment, [click here](https://webstage.shipbob.dev/app/merchant/#/Integrations/token-management).
+
+When you request your first PAT, ShipBob automatically generates an application (called "SMA" or single-merchant application) and [channel](https://developer.shipbob.com/api/channels/get-channels) to house all your future PATs. You can request as many as you like, and revoke them at any time.
+
+`NOTE: These tokens do not expire, so be extremely cautious when sharing them.`
+
+Your PAT should automatically have read and write access to the entire ShipBob account.
+
+To use your PAT, just provide the token as an Authorization header formatted like this:
+
+`bearer [your_api_token]`
+
+First you should use your PAT to hit the [GET Channel](https://developer.shipbob.com/api/channels/get-channels) endpoint, so you can use your channel ID in the headers of subsequent API calls. Your response will look like this:

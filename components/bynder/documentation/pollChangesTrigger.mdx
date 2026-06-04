@@ -1,0 +1,63 @@
+This trigger polls the [Bynder API](https://bynder.docs.apiary.io/) for new and updated records across a selected resource type on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (e.g., every 5 minutes)
+2. It fetches records from the selected Bynder resource type
+3. Records are categorized as **created** or **updated** based on their `dateCreated` and `dateModified` timestamp fields, compared against the last successful poll time
+4. The trigger updates its internal state after each poll, storing the poll timestamp for use in the next execution
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The Bynder connection used to authenticate API requests
+- **Resource Type**: The Bynder resource to monitor. Available options:
+
+  | Resource | Change Detection | Tracks New | Tracks Updated |
+  |----------|-----------------|------------|---------------|
+  | Assets | Timestamp (`dateCreated`, `dateModified`) | Yes | Yes |
+  | Collections | Timestamp (`dateCreated`, `dateModified`) | Yes | Yes |
+  | Campaigns | Timestamp (`dateCreated`, `dateModified`) | Yes | Yes |
+  | Jobs | Timestamp (`dateCreated`, `dateModified`) | Yes | Yes |
+  | Orders | Timestamp (`dateCreated`) | Yes | No |
+
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Applies only to resource types that support update tracking (Assets, Collections, Campaigns, Jobs). Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. For Orders, `updated` is always an empty array because the API does not expose an update timestamp.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+        "name": "Product Launch Banner",
+        "dateCreated": "2024-01-15T10:30:00Z",
+        "dateModified": "2024-01-15T10:30:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": "F9E8D7C6-B5A4-3210-FEDC-BA9876543210",
+        "name": "Brand Guidelines 2024",
+        "dateCreated": "2024-01-01T08:00:00Z",
+        "dateModified": "2024-01-16T14:22:00Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- A record is classified as **created** if its `dateCreated` exceeds the last poll time. If `dateCreated` does not exceed the cutoff but `dateModified` does, the record is classified as **updated**
+- Orders lack a `dateModified` field in the Bynder API response, so update tracking is not available for that resource type

@@ -1,0 +1,65 @@
+Checks for new and updated pages on a configured schedule.
+
+This trigger monitors Confluence pages for changes using the [Confluence Cloud REST API v2 pages endpoint](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/). Pages are categorized as either newly created or updated based on their timestamps.
+
+#### How It Works
+
+1. Runs on the configured schedule (e.g., every 5 minutes)
+2. Queries the Confluence API for pages sorted by modification date (`sort=-modified-date`)
+3. Filters pages based on their version `createdAt` timestamp compared to the last poll time
+4. Categorizes pages as "created" (page created since last poll) or "updated" (page modified but not created since last poll)
+5. Maintains state automatically to track the last poll time
+6. Returns all pages as "created" on the first run (when no previous poll state exists)
+
+The trigger uses cursor-based pagination to retrieve all modified pages across multiple API requests if necessary.
+
+#### Configuration
+
+**Inputs:**
+- **Connection**: Confluence OAuth 2.0 connection with appropriate permissions to view pages
+
+The schedule is configured in the integration's trigger configuration within the Prismatic platform.
+
+#### Returned Data
+
+The trigger returns pages categorized by change type:
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "12345678",
+        "title": "API Integration Guide",
+        "createdAt": "2026-01-27T10:30:00.000Z",
+        "version": {
+          "createdAt": "2026-01-27T10:30:00.000Z",
+          "message": "Initial version",
+          "number": 1,
+          "minorEdit": false,
+          "authorId": "user123"
+        }
+      }
+    ],
+    "updated": [
+      {
+        "id": "87654321",
+        "title": "Architecture Overview",
+        "createdAt": "2026-01-20T09:00:00.000Z",
+        "version": {
+          "createdAt": "2026-01-27T11:15:00.000Z",
+          "message": "Updated deployment section",
+          "number": 5,
+          "minorEdit": false,
+          "authorId": "user456"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>

@@ -1,0 +1,14 @@
+Many other SaaS apps allow you to configure webhook URLs on a per-customer basis.
+They allow you to say "when data is updated for Acme Corp, notify Acme Corp's instance webhook URL".
+
+Dropbox does not have customer-specific webhooks.
+Instead, they allow your OAuth application to designate a single webhook URL to be notified when updates occur.
+Whenever any of your users update data in Dropbox, your single webhook URL receives a request with an array of Dropbox account IDs that have changes.
+
+The best way to handle these Dropbox requests is to create a "Router Integration" that routes Dropbox webhook requests to the correct customer instance(s).
+
+- When an instance of your Dropbox integration is created, it notifies the "Router Integration" of a new mapping between the authenticated user's Dropbox Account ID and the instance's flow's webhook URL.
+- When a webhook request comes from Dropbox with a list of Dropbox Account IDs with changes, the "Router Integration" loops over the account IDs, looks up the mapping of account ID to webhook URL, and makes a request to the webhook URL of the appropriate instance, causing it to run a flow that queries for changes.
+
+An example "Router Integration" and a Dropbox integration that register itself with the router integration is available in [GitHub](https://github.com/prismatic-io/examples/tree/main/integrations/dropbox).
+You can [import](configure-prismatic/integrations-multiple-regions.mdx#importing-an-integrations-yaml-definition) and extend the integrations how you see fit.

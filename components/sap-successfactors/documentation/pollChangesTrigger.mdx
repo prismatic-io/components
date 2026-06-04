@@ -1,0 +1,72 @@
+This trigger polls the [SAP SuccessFactors OData V2 API](https://api.sap.com/package/SuccessFactorsRecruiting/odata) for new and updated records on a scheduled basis.
+
+#### How It Works
+
+<details>
+<summary>Polling Lifecycle (5 steps)</summary>
+
+1. The trigger runs on the configured schedule
+2. It fetches records from SAP SuccessFactors using a server-side OData `$filter` predicate (`lastModifiedDateTime gt datetime'YYYY-MM-DDTHH:mm:ss'`), passing the last poll time to retrieve only records modified since the previous execution
+3. Records are categorized as **created** or **updated** based on their `createdDateTime` relative to the last poll time — records whose `createdDateTime` exceeds the last poll time are classified as created; all other records returned by the query are classified as updated
+4. The trigger updates its internal state after each poll
+5. On the very first execution, the last poll time is initialized to the current time so historical records do not flood the workflow
+
+</details>
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The SAP SuccessFactors connection used to authenticate API requests
+- **Resource Type**: The SAP SuccessFactors resource type to poll for new or updated records — Candidate, Job Application, Job Requisition, or Onboarding Candidate Info
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes records that were updated after the last poll in the results. Defaults to `true`
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response (24 lines)</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "candidateId": "12345",
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "primaryEmail": "jane.doe@example.com",
+        "createdDateTime": "/Date(1705401000000)/",
+        "lastModifiedDateTime": "/Date(1705401000000)/"
+      }
+    ],
+    "updated": [
+      {
+        "candidateId": "67890",
+        "firstName": "John",
+        "lastName": "Smith",
+        "primaryEmail": "john.smith@example.com",
+        "createdDateTime": "/Date(1704672000000)/",
+        "lastModifiedDateTime": "/Date(1705493400000)/"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+<details>
+<summary>Behavior Notes (5)</summary>
+
+- The `$filter` predicate is applied server-side, so only records modified since the last poll are returned — this minimizes data transfer on each execution
+- SAP SuccessFactors returns timestamps in the Microsoft JSON date format (`/Date(<milliseconds>)/`); these values are passed through unchanged in the trigger output
+- If both **Show New Records** and **Show Updated Records** are disabled, the trigger short-circuits and skips the API call entirely
+- All four supported resource types expose the `lastModifiedDateTime` field, which drives the server-side filter
+- Refer to the [SAP SuccessFactors OData V2 API documentation](https://api.sap.com/package/SuccessFactorsRecruiting/odata) for rate limit details and available fields per resource type
+
+</details>

@@ -1,0 +1,55 @@
+The **New Service Requests** trigger polls the Jira Service Management API on a recurring schedule and fires the flow with any service requests created since the previous poll. State is tracked between executions so each request is only emitted once.
+
+#### How It Works
+
+On each scheduled run, the trigger:
+
+1. Reads the last polled timestamp from polling state (defaults to the current time on the first run)
+2. Fetches service requests from the [Get customer requests](https://developer.atlassian.com/cloud/jira/service-desk/rest/api-group-request/#api-rest-servicedeskapi-request-get) endpoint, optionally scoped to a specific service desk
+3. Filters results to requests with `createdDate.epochMillis` greater than the last polled timestamp
+4. Updates polling state to the current timestamp
+5. If no new requests are found, the flow is not executed (the trigger reports `polledNoChanges: true`)
+
+Because the `/request` endpoint does not support server-side date filtering, the trigger fetches all accessible requests and filters them client-side. On high-volume service desks, scope the trigger to a single **Service Desk ID** to limit the result set.
+
+#### Configuration
+
+| Input | Required | Description |
+|-------|----------|-------------|
+| **Connection** | Yes | An OAuth 2.0 or Basic Authentication connection to Jira Service Management |
+| **Service Desk ID** | No | Limits new requests to a specific service desk. When omitted, requests from all accessible service desks are returned. |
+
+#### Returned Data
+
+The trigger payload contains an array of new service requests in `body.data`. Each entry is a [customer request](https://developer.atlassian.com/cloud/jira/service-desk/rest/api-group-request/) object.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "body": {
+    "data": [
+      {
+        "issueId": "107001",
+        "issueKey": "HELPDESK-1",
+        "summary": "Request JSD help via REST",
+        "requestTypeId": "25",
+        "serviceDeskId": "10",
+        "createdDate": {
+          "epochMillis": 1444290120000,
+          "friendly": "Monday 14:42 PM",
+          "iso8601": "2015-10-08T14:42:00+0700",
+          "jira": "2015-10-08T14:42:00.000+0700"
+        },
+        "currentStatus": {
+          "status": "Waiting for Support",
+          "statusCategory": "NEW"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>

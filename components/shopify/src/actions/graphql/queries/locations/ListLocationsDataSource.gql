@@ -1,0 +1,12 @@
+query ListLocationsDataSource($first: Int!, $cursor: String) {
+  locations(first: $first, includeInactive: true, after: $cursor) {
+    nodes {
+      id
+      name
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

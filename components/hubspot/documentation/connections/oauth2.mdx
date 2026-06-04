@@ -1,0 +1,134 @@
+To connect to HubSpot using OAuth 2.0, create an app in the HubSpot developer platform. HubSpot offers two approaches: creating an app via CLI (recommended for new integrations), or creating a legacy app through the web interface.
+
+Refer to the [HubSpot app creation guide](https://developers.hubspot.com/docs/apps/developer-platform/build-apps/create-an-app) and [quick reference guide](https://developers.hubspot.com/docs/getting-started/quickstart) for detailed information.
+
+### Creating an App via the CLI
+
+The CLI-based approach is recommended for new HubSpot OAuth integrations as it provides access to the latest features and platform improvements.
+
+#### Prerequisites
+
+- A [HubSpot developer account](https://developers.hubspot.com/) is required
+- Node.js v20 or higher and npm installed (for CLI-based app creation)
+- HubSpot CLI version 8.6.0 or higher
+
+#### Setup Steps
+
+1. Install the HubSpot CLI:
+   ```bash
+   npm install -g @hubspot/cli
+   ```
+
+2. Authenticate the CLI with a HubSpot developer account:
+   ```bash
+   hs account auth
+   ```
+
+3. Create a new app project:
+   ```bash
+   hs project create
+   ```
+   - Select **App** as the project template
+   - Choose the distribution type (marketplace or private/specific accounts)
+   - Select **OAuth** as the authentication method
+   - Optionally select app features (**Card**, **App Function**, **Settings**, **Webhooks**, **Custom Workflow Action**)
+
+4. Configure the app by editing the generated `app-hsmeta.json` file (located at `src/app/app-hsmeta.json` within the project directory):
+   - Update the **name** and **description** fields
+   - In the **auth** section, add <OauthCallbackUrl /> to the **redirectUrls** array
+   - Update the **scopes** array with required OAuth permissions
+
+5. Upload the app project to HubSpot:
+   ```bash
+   hs project upload
+   ```
+   :::note[Directory Error]
+   If the error `[ERROR] Unable to locate a project configuration file` appears, change to the project folder where the app was created and run the command again.
+   :::
+
+6. Open the project in the HubSpot developer portal:
+   ```bash
+   hs project open
+   ```
+
+7. Navigate to the **Auth** tab in the developer portal
+8. Copy the **Client ID** and **Client Secret** from the Auth page
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the app's Auth page
+- For **Scopes**, choose from the available scopes based on integration needs
+  - Refer to [HubSpot OAuth documentation](https://developers.hubspot.com/docs/api/working-with-oauth) for scope details
+
+<details>
+<summary>Recommended Scopes</summary>
+
+The following scopes provide comprehensive access to HubSpot CRM functionality that this component supports:
+
+| Category | Scope | Description |
+|----------|-------|-------------|
+| **Essential** | `oauth` | Required for all OAuth apps (cannot be removed) |
+| **Essential** | `crm.objects.owners.read` | Read owner information |
+| **CRM Objects** | `crm.objects.contacts.read` | Read contacts |
+| **CRM Objects** | `crm.objects.contacts.write` | Create/update contacts |
+| **CRM Objects** | `crm.objects.companies.read` | Read companies |
+| **CRM Objects** | `crm.objects.companies.write` | Create/update companies |
+| **CRM Objects** | `crm.objects.deals.read` | Read deals |
+| **CRM Objects** | `crm.objects.deals.write` | Create/update deals |
+| **CRM Objects** | `crm.objects.custom.read` | Read custom objects |
+| **CRM Objects** | `crm.objects.custom.write` | Create/update custom objects |
+| **Additional Objects** | `crm.objects.line_items.read` | Read line items |
+| **Additional Objects** | `crm.objects.line_items.write` | Create/update line items |
+| **Additional Objects** | `crm.objects.quotes.read` | Read quotes |
+| **Additional Objects** | `crm.objects.quotes.write` | Create/update quotes |
+| **Additional Objects** | `tickets` | Ticket management |
+| **Schemas** | `crm.schemas.contacts.read` | Contact property definitions |
+| **Schemas** | `crm.schemas.companies.read` | Company property definitions |
+| **Schemas** | `crm.schemas.deals.read` | Deal property definitions |
+| **Webhooks** | `webhooks` | Webhook subscriptions (requires App ID and Developer API Key) |
+
+**Example minimal scope configuration:**
+```
+crm.objects.contacts.read crm.objects.contacts.write crm.objects.deals.read crm.objects.deals.write crm.objects.owners.read
+```
+
+For a complete list of available scopes, refer to the [HubSpot OAuth scopes documentation](https://developers.hubspot.com/docs/api/oauth/scopes).
+
+</details>
+
+### Creating a Legacy App
+
+:::warning[Legacy App Creation Ending]
+HubSpot is discontinuing legacy public app creation. Creation will be disabled for new developer accounts on **May 26, 2026** and for all accounts on **June 23, 2026**. Existing legacy apps will continue to work.
+
+For new integrations, use the CLI-based approach described above.
+:::
+
+#### Setup Steps
+
+1. Navigate to the [HubSpot developer account portal](https://app.hubspot.com/developer)
+2. Click **Create app** to create a new public app
+3. Fill in the app details (name, description, etc.)
+4. Navigate to the **Auth** tab of the newly created app
+5. Under **Redirect URLs**, add <OauthCallbackUrl />
+6. Configure the required scopes for the integration in the **Scopes** section
+7. Copy the **Client ID** and **Client Secret** from the Auth page
+
+#### Configure the Connection
+
+- Enter the **Client ID** and **Client Secret** from the app's Auth page
+- Configure scopes as needed (see Recommended Scopes above)
+
+### App Distribution
+
+HubSpot requires OAuth apps to commit to a distribution type that determines who can install the integration and whether a formal HubSpot review is required. Choosing incorrectly at creation is not recoverable (the app must be rebuilt), so understanding this before creating the app matters.
+
+The distribution type selected during `hs project create` determines who can install the app and whether a review process applies.
+
+**Private or specific accounts** (no review required):
+The app is accessible only to HubSpot accounts you explicitly add. Users from other HubSpot accounts cannot install it. To add accounts, navigate to the app's **Distribution** settings in the developer portal and enter each account's hub ID. This is the appropriate option for single-customer integrations or internal tools.
+
+**HubSpot App Marketplace** (HubSpot review required):
+The app is publicly listed in the [HubSpot App Marketplace](https://ecosystem.hubspot.com/marketplace/apps) and any HubSpot customer can install it. HubSpot reviews marketplace submissions for quality, security, and functionality before listing.
+
+For integrations deployed to multiple customers, each with their own HubSpot account, the marketplace path is the scalable option. For single-organization deployments, the private/specific accounts path avoids the review process entirely.

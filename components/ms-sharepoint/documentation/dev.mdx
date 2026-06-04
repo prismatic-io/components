@@ -1,0 +1,22 @@
+## Example SharePoint Integration
+
+The examples repo has an example integration that you can [import](configure-prismatic/integrations-multiple-regions.mdx#importing-an-integrations-yaml-definition) that demonstrates how to listen for changes to a SharePoint drive, or fetch lists and items from a SharePoint site.
+
+<ExampleIntegrationLink
+  href="https://github.com/prismatic-io/examples/blob/main/integrations/sharepoint.yml"
+  text="Example SharePoint Integration"
+/>
+
+This example integration contains five flows:
+
+- **Import SharePoint File on Event** -
+  Whenever a file is created/updated/deleted in your customer's selected Sharepoint drive, that file is fetched and uploaded to an "Acme" endpoint that your customer enters.
+- **Subscribe to SharePoint File Events** -
+  This flow runs every week and creates a subscription to a Sharepoint drive, instructing Sharepoint to send notifications to the **Import SharePoint File on Event** flow whenever files are updated.
+- **Run Subscription Flow on Deploy** -
+  This flow calls the **Subscribe to SharePoint File Events** once on instance deploy to ensure the subscription is configured immediately.
+- **Get Files from SharePoint** -
+  This is a synchronous flow that can be called from an external system to list files in a SharePoint drive.
+- **Fetch Events and Documents from Site Lists** -
+  This flow demonstrates how to fetch "lists" in a SharePoint site,.
+  A "list" can represent a calendar of events or a directory with files in it.

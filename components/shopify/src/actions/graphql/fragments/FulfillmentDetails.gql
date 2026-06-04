@@ -1,0 +1,131 @@
+fragment FulfillmentDetails on Fulfillment {
+  id
+  order {
+    id
+  }
+  status
+  createdAt
+  service {
+    type
+  }
+  updatedAt
+  trackingInfo {
+    company
+    number
+    url
+  }
+  #shipment_status
+  location {
+    id
+  }
+  originAddress {
+    address1
+    address2
+    city
+    zip
+    countryCode
+    provinceCode
+  }
+  fulfillmentLineItems(first: 250) {
+    nodes {
+      id
+
+      lineItem {
+        title
+        quantity
+        originalUnitPriceSet {
+          shopMoney {
+            amount
+            currencyCode
+          }
+          presentmentMoney {
+            amount
+            currencyCode
+          }
+        }
+        totalDiscountSet {
+          shopMoney {
+            amount
+            currencyCode
+          }
+          presentmentMoney {
+            amount
+            currencyCode
+          }
+        }
+        discountAllocations {
+          allocatedAmountSet {
+            shopMoney {
+              amount
+              currencyCode
+            }
+            presentmentMoney {
+              amount
+              currencyCode
+            }
+          }
+          discountApplication {
+            index
+          }
+        }
+        duties {
+          id
+          price {
+            shopMoney {
+              amount
+              currencyCode
+            }
+          }
+          taxLines {
+            rate
+            title
+            priceSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+              presentmentMoney {
+                amount
+                currencyCode
+              }
+            }
+            channelLiable
+          }
+        }
+        discountedTotalSet {
+          shopMoney {
+            amount
+          }
+        }
+
+        fulfillmentStatus #deprecated
+        variant {
+          title
+          id
+          price
+
+          product {
+            id
+            #product_exists
+            #grams
+          }
+          #fulfillable_quantity
+        }
+
+        requiresShipping
+        vendor
+        sku
+        taxable
+        isGiftCard
+        name
+        #variant_inventory_management
+        #properties
+      }
+
+      #fulfillment_service
+      #fulfillment_line_item_id
+    }
+  }
+  #receipt
+  name
+}

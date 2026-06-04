@@ -1,0 +1,35 @@
+import { connectionInput, getAlldata, limit, pageInfo, updatedAtMin } from "../common";
+import {
+  attributionAppId,
+  commaSeparatedIds,
+  created_at_min,
+  createdAtMax,
+  fields,
+  financialStatus,
+  fulfillmentStatus,
+  orderStatus,
+  processedAtMax,
+  processedAtMin,
+  sinceId,
+  updatedAtMax,
+} from "./common";
+
+export const listOrdersInputs = {
+  shopifyConnection: connectionInput,
+  getAlldata,
+  pageInfo,
+  limit,
+  attributionAppId,
+  createdAtMax,
+  created_at_min,
+  fields,
+  financialStatus,
+  fulfillmentStatus,
+  commaSeparatedIds,
+  processedAtMax,
+  processedAtMin,
+  sinceId,
+  orderStatus,
+  updatedAtMax,
+  updatedAtMin,
+};

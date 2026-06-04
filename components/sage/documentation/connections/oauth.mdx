@@ -1,0 +1,10 @@
+You will first need to create and configure a [Connected App](https://developer.sage.com/api/accounting/guides/client_app_registration/) within Sage Accounting.
+Be sure to enter the OAuth callback URL - <OauthCallbackUrl /> - as a **Callback URL**.
+Select **Require Secret for Web Server Flow** and **Require Secret for Refresh Token Flow**:
+
+Once the app has been created, you will be provided with a **Client Id** and **Client Secret**.
+
+Create a new connection for the Sage component and use the following values:
+
+- For **Client ID** and **Client Secret** enter the values that you received previously.
+- For **Scopes** enter either `full_access` or `readonly`. [Sage Authentication Documentation](https://developer.sage.com/api/accounting/guides/authentication/)

@@ -1,0 +1,30 @@
+[
+  {
+    "apiEventName": "UserDeleted",
+    "webhookSourceName": "webhook-source-event-user-deleted"
+  },
+  {
+    "apiEventName": "WorkbookUpdated",
+    "webhookSourceName": "webhook-source-event-workbook-updated"
+  },
+  {
+    "apiEventName": "WorkbookCreated",
+    "webhookSourceName": "webhook-source-event-workbook-created"
+  },
+  {
+    "apiEventName": "WorkbookDeleted",
+    "webhookSourceName": "webhook-source-event-workbook-deleted"
+  },
+  {
+    "apiEventName": "WorkbookRefreshStarted",
+    "webhookSourceName": "webhook-source-event-workbook-refresh-started"
+  },
+  {
+    "apiEventName": "WorkbookRefreshSucceeded",
+    "webhookSourceName": "webhook-source-event-workbook-refresh-succeeded"
+  },
+  {
+    "apiEventName": "WorkbookRefreshFailed",
+    "webhookSourceName": "webhook-source-event-workbook-refresh-failed"
+  }
+]

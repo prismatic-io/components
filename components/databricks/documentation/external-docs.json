@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.databricks.com/api/workspace/introduction"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://docs.databricks.com/aws/en/release-notes/product/"
+  }
+]

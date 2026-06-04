@@ -1,0 +1,30 @@
+To authenticate with Odoo, an API key is required. This component calls Odoo's JSON-2 HTTP API and requires Odoo 19.0 or later. Earlier versions, which only support the soon to be deprecated XML-RPC transport, are not supported.
+
+#### Prerequisites
+
+- An Odoo 19.0 or later instance (Odoo Online, Odoo.sh, or self-hosted)
+- An Odoo user account with permissions for the records the integration will manage
+- Developer mode enabled in Odoo (required to access the API Keys interface)
+
+#### Setup Steps
+
+1. Log in to the Odoo instance
+2. Click the user avatar in the top-right corner and select **My Profile**
+3. Open the **Account Security** tab
+4. Click **New API Key** and provide a descriptive name and expiration
+5. Copy the generated API key immediately (it is shown only once)
+
+For more details, refer to the [Odoo external API documentation](https://www.odoo.com/documentation/19.0/developer/reference/external_api.html).
+
+:::note[Service Account Recommended]
+Generate the API key from a dedicated service-account user (not a specific employee's account) so the integration is not tied to an individual's access.
+:::
+
+#### Configure the Connection
+
+Create a connection of type **API Key** and configure the following fields:
+
+- **Odoo Base URL**: Enter the URL used to log in to Odoo, for example `https://example-company.odoo.com`. Omit any trailing slash.
+- **Server Port**: Leave blank for default HTTP (80) or HTTPS (443). Set only when a self-hosted Odoo instance listens on a non-standard port.
+- **Odoo Database Name**: Click the user avatar in the top-right within Odoo and select **My Databases** to find the database name.
+- **API Key**: Enter the API key copied in the previous section.

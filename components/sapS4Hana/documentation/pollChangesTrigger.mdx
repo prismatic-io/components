@@ -1,0 +1,58 @@
+This trigger polls the [SAP S/4HANA Cloud OData API](https://api.sap.com/package/SAPS4HANACloud/odata) for new and updated records on a scheduled basis.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It fetches records from SAP S/4HANA using an OData `$filter` query on the resource's date field (e.g., `LastChangeDateTime ge <sapDateTime>`) to retrieve only records modified since the last poll
+3. Records are classified as **created** if their creation timestamp (`CreatedOn` or `CreationDateTime`) exceeds the last poll time; all other returned records are classified as **updated**
+4. The trigger updates its internal state after each poll
+
+#### Configuration
+
+Configure the following inputs:
+
+- **Connection**: The SAP S/4HANA connection used to authenticate API requests
+- **Resource Type**: The type of SAP S/4HANA record to monitor
+
+  | Resource | Filter Field | Tracks New | Tracks Updated |
+  |----------|-------------|------------|----------------|
+  | Change Records | `LastChangeDateTime` | Yes | Yes |
+  | Projects | `ChangedOn` | Yes | Yes |
+
+- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+
+#### Returned Data
+
+Returns an object with two arrays — `created` for new records and `updated` for modified records.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "ChangeRecord": "0000001234",
+        "LastChangeDateTime": "/Date(1705398600000)/",
+        "CreationDateTime": "/Date(1705398600000)/"
+      }
+    ],
+    "updated": [
+      {
+        "ChangeRecord": "0000001189",
+        "LastChangeDateTime": "/Date(1705484400000)/",
+        "CreationDateTime": "/Date(1704844800000)/"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- SAP S/4HANA uses OData datetime format internally. The trigger converts ISO timestamps to SAP datetime format before constructing the `$filter` query
+- The filter field varies by resource type — `LastChangeDateTime` is used for Change Records and `ChangedOn` for Projects

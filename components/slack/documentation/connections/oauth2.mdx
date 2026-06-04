@@ -1,0 +1,68 @@
+The vast majority of actions in this component use OAuth 2.0 for authentication.
+
+#### Prerequisites
+
+- A Slack workspace with administrator access
+- Access to the Slack [Developer App Portal](https://api.slack.com/apps)
+
+#### Setup Steps
+
+1. Navigate to the Slack [Developer App Portal](https://api.slack.com/apps)
+1. Click **Create New App**
+1. Choose to create the app **From scratch**
+1. Give the app a name and select the workspace. It will be configured to be multi-workspace capable in a moment
+1. Select **OAuth & Permissions** from the sidebar
+   1. Under **Redirect URLs**, add <OauthCallbackUrl />.
+   1. At the bottom, add some **User Token Scopes** if the integration will send messages on behalf of users, or **Bot Token Scopes** if a Slack "bot" will send the messages.
+      The [scopes](https://docs.slack.dev/reference/scopes) required depend on what types of things the Slack integration will need to do (create channels, send messages, etc).
+      For sending messages to a channel as a bot, add these scopes: `chat:write chat:write.public`. To send messages as a user, see the section [below](#sending-messages-as-a-user).
+1. Next, select **Distribute App** under **Manage Distribution**. Confirm that "removed hard coded information" is checked and select **Activate Public Distribution**.
+1. Finally, open **Basic Information**. Copy the **Client ID**, **Client Secret** and **Signing Secret**.
+
+#### Public Distribution Requirement
+
+**Activate public distribution before deploying to customers.** Without it, the app is locked to the single workspace. Users in any other Slack workspace cannot install or authenticate with the integration.
+
+**What users see without public distribution:** If a user in another workspace attempts to install the app, they reach a Slack error page before the OAuth consent screen loads. The installation is blocked entirely.
+
+This activation step does not require Slack's review or approval. It is a configuration toggle that must be explicitly enabled.
+
+Separately, if the app is intended to be listed in the [Slack App Directory](https://slack.com/apps), a formal Slack review is required. App Directory listing is optional. Apps with public distribution enabled can be distributed to customers and installed in any workspace without being listed in the directory.
+
+#### Configure the Connection
+
+Add a Slack step to the integration. This creates a connection config variable.
+Open the connection config variable.
+
+- Enter the **Client ID**, **Signing Secret** and **Client Secret** from the Slack app
+- For **Scopes**, enter the required scopes based on what Slack actions the integration includes:
+  - For sending messages to a channel, enter the scopes `chat:write chat:write.public` to assign a bot token that can write messages to public channels. See [below](#sending-messages-to-private-channels) for information on sending messages to private channels.
+  - Conversation and channel-related actions require `admin.conversations:write`.
+  - Enter scopes with spaces in between them (e.g. `chat:write users:read users:read.email`)
+
+A list of all Slack OAuth scopes and what each does are available in the [Slack documentation](https://docs.slack.dev/reference/scopes).
+
+#### Sending messages to private channels
+
+The `chat:write.public` scope allows the bot to send messages to public channels.
+To send messages to private channels, or to be more selective about what channels the bot can send messages to, the bot must be invited to specific channels.
+
+If a bot does not have `chat:write.public` or tries to write to a private channel it's not a part of, a `not_in_channel` error will be received from Slack when attempting to send a message to that channel.
+
+#### Sending messages as a user
+
+Slack applications typically send messages as bot users.
+To instead send messages as a user, edit the `Auth URL` and add `chat:write` to a user_scope query parameter on the Authorization URL to get a User token. To manage channels, add the `channels:write` scope.
+
+The `Auth URL`, then, will look something like this: `https://slack.com/oauth/v2/authorize?user_scope=chat:write`
+
+#### Dynamically changing the bot's name
+
+The bot's username and icon are set when creating the Slack app.
+To override the bot's username within the integration, request the `chat:write.customize` scope in addition to `chat:write`.
+
+#### GovSlack
+
+Slack offers [GovSlack](https://slack.com/solutions/govslack) for government organizations that require compliance with FIPS 140-2, FedRAMP, ITAR, etc.
+To use the Slack component with GovSlack, change the beginning of OAuth auth URL, token URL, and revoke URL from `https://slack.com` to `https://slack-gov.com`.
+The component will automatically point API requests towards the Slack Gov API endpoint.

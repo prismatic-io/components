@@ -1,0 +1,28 @@
+To authenticate ServiceTitan integrations with OAuth 2.0 requires a developer account and the configuration of an application from the [ServiceTitan Developer Portal](https://developer.servicetitan.io/).
+
+To Create an app:
+
+1. Login to the [Developer Portal](https://developer.servicetitan.io/)
+2. Select **My Apps** at the top of the page
+3. Select **+ New App**
+4. Fill all the required fields and scopes
+5. Under **Client Credentials Management**”, select **I, the app developer, will configure the credentials on behalf of each tenant**
+6. Click **Create App**
+
+For Existing apps:
+
+1. Login to the [Developer Portal](https://developer.servicetitan.io/)
+2. Select **My Apps** at the top of the page
+3. Click **Edit** on your application
+4. Under **Client Credentials Management**”, select **I, the app developer, will configure the credentials on behalf of each tenant**
+5. Click Save
+
+To obtain a Client Secret and Client ID:
+
+If you haven’t done so already, please add the client’s Tenant ID to your application. Once the Tenant Admin has allowed access and connected to your application through their “API Application Access” settings, you can begin the process of obtaining the tenant’s client ID and client secret in your developer portal:
+
+1. Login to the [Developer Portal](https://developer.servicetitan.io/)
+2. Select **My Apps** at the top of the page
+3. Click **View Connections** for your app
+4. Click **Generate** under Client Secret to create a new **Client Secret**
+5. Reference the tenant’s **Client ID** on this page as well

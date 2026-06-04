@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html"
+  },
+  {
+    "label": "Changelog",
+    "href": "https://github.com/aws/aws-sdk-js-v3/releases"
+  }
+]

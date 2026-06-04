@@ -1,0 +1,12 @@
+#import "../../fragments/MetafieldDetails.gql"
+mutation SetMetafield($metafields: [MetafieldsSetInput!]!) {
+  metafieldsSet(metafields: $metafields) {
+    metafields {
+      ...MetafieldDetails
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

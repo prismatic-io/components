@@ -1,0 +1,30 @@
+{
+  "name": "@prismatic-io/ms-dynamics",
+  "private": true,
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "npm run format && npm run lint && webpack",
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "publish": "npm run build && prism components:publish --no-confirm",
+    "test": "jest --maxWorkers=4"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.18.1",
+    "dynamics-web-api": "2.5.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.12",
+    "@types/jest": "30.0.0",
+    "@types/node": "^25",
+    "copy-webpack-plugin": "14.0.0",
+    "jest": "30.3.0",
+    "ts-jest": "29.4.9",
+    "ts-loader": "9.5.7",
+    "typescript": "6.0.3",
+    "webpack": "5.106.2",
+    "webpack-cli": "7.0.2"
+  }
+}

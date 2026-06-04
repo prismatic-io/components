@@ -1,0 +1,84 @@
+[HiBob](https://www.hibob.com/) can be configured to send [webhook notifications](https://apidocs.hibob.com/reference/getting-started-webhooks) to a flow's webhook URL when events occur in the system, such as employee creation, time-off requests, task assignments, and more.
+
+This trigger validates incoming webhook requests using HMAC SHA-512 signature verification to ensure that payloads are authentic.
+
+#### How It Works
+
+This trigger handles two types of incoming requests via separate branches:
+
+- **Ping Test**: When a webhook is first registered in HiBob, a ping test request is sent to verify the endpoint is reachable. The trigger automatically detects this request and responds with a `200 OK` status.
+- **Event Notification**: All subsequent webhook requests contain event data. The trigger verifies the HMAC SHA-512 signature in the `Bob-Signature` header against the configured **App Secret**. If the signature is valid, the payload is passed to this branch for processing. If the signature is invalid, an error is thrown and the flow does not execute.
+
+#### Configuration
+
+Configure the following input:
+
+- **App Secret**: The secret key used to validate webhook signatures from HiBob. This value is generated when creating a webhook subscription in the HiBob UI.
+
+#### Event Types
+
+<details>
+<summary>Available Events (28)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `employee.created` | A new employee is added |
+| `employee.updated` | Employee information is modified |
+| `employee.deleted` | An employee record is removed |
+| `employee.joined` | An employee officially starts work |
+| `employee.terminated` | Employment ends |
+| `employee.activated` | An employee account becomes active |
+| `employee.inactivated` | An employee account is deactivated |
+| `employee.temporary.leave` | Temporary leave status changes |
+| `table.entry.created` | A new row is added to an employee table |
+| `table.entry.updated` | An employee table row is modified |
+| `timeoff.request.requested` | A time-off request is submitted |
+| `timeoff.request.approved` | A time-off request is approved |
+| `timeoff.request.declined` | A time-off request is denied |
+| `timeoff.request.cancelled` | A time-off request is withdrawn |
+| `timeoff.request.deleted` | A time-off request is removed |
+| `timeoff.request.updated` | Time-off request details change |
+| `timeoff.request.imported` | A time-off request is imported from an external source |
+| `timeoff.request.set.end.date` | An end date is set on a time-off request |
+| `todo.assign` | A task is assigned to an employee |
+| `todo.changed.status` | Task completion status changes |
+| `documents.esign.completed` | Document signing is finalized |
+| `workforce.planning.position.created` | A new position is created |
+| `workforce.planning.position.updated` | A position is modified |
+| `workforce.planning.position.opening.created` | A new position opening is created |
+| `workforce.planning.position.opening.updated` | A position opening is modified |
+| `workforce.planning.position.opening.deleted` | A position opening is removed |
+| `workforce.planning.position.budget.created` | A new budget entry is created |
+| `workforce.planning.position.budget.updated` | A budget entry is modified |
+
+</details>
+
+Refer to the [HiBob Webhooks documentation](https://apidocs.hibob.com/reference/getting-started-webhooks) for the complete and up-to-date list of available events.
+
+#### Returned Data
+
+<details>
+<summary>Example Payload (Webhooks v2)</summary>
+
+```json
+{
+  "companyId": 12345,
+  "type": "employee.updated",
+  "appId": "app-id",
+  "employeeId": "3142451612119",
+  "data": {
+    "changedFields": ["root/work/title", "root/work/department"],
+    "employee": {
+      "id": "3142451612119",
+      "displayName": "Jane Smith"
+    }
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- HiBob webhooks v2 payloads contain metadata about changed fields rather than full record data. Use the [HiBob API](https://apidocs.hibob.com/reference/api-calls-for-webhook-events) to retrieve complete record details when needed.
+- The trigger rejects requests with missing or invalid signatures, preventing unauthorized payloads from executing the flow.

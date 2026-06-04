@@ -1,0 +1,12 @@
+#import "../../fragments/CustomerDetails.gql"
+mutation UpdateCustomer($input: CustomerInput!) {
+  customerUpdate(input: $input) {
+    userErrors {
+      field
+      message
+    }
+    customer {
+      ...CustomerDetails
+    }
+  }
+}

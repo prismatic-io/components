@@ -1,0 +1,37 @@
+QuickBooks uses OAuth 2.0 to authenticate requests against the QuickBooks Online API.
+
+#### Prerequisites
+
+- A QuickBooks account with access to the [Intuit Developer Portal](https://developer.intuit.com/)
+
+#### Setup Steps
+
+1. [Create an app](https://developer.intuit.com/app/developer/qbo/docs/develop/authentication-and-authorization/oauth-2.0-playground#get-the-access-token) within the Intuit developer portal.
+1. When creating the app, enter the OAuth callback URL <OauthCallbackUrl />.
+   1. Consult [QuickBooks OAuth scopes documentation](https://developer.intuit.com/app/developer/qbo/docs/learn/scopes) to determine the proper OAuth Scopes to assign.
+1. Once the app has been created, a **Client ID** and **Client Secret** will be provided.
+
+#### Configure the Connection
+
+Create a connection of type **QuickBooks OAuth 2.0** and enter:
+
+- **Client ID** and **Client Secret** from the Intuit developer portal
+- **Scopes**: Set to any of the values in [this list](https://developer.intuit.com/app/developer/qbo/docs/learn/scopes)
+- **Use Sandbox**: Enable to connect to the [QuickBooks Sandbox](https://developer.intuit.com/app/developer/qbo/docs/develop/sandboxes) for testing without affecting real customer data
+
+#### Production Access
+
+Intuit separates the QuickBooks development experience from production to protect real financial data. Apps are issued sandbox credentials by default that only connect to test data. Separate production credentials must be obtained before the integration can access live QuickBooks accounts.
+
+QuickBooks Online apps begin with sandbox credentials. To connect to live QuickBooks accounts, switch to production credentials within the Intuit Developer Portal.
+
+1. Navigate to the app in the [Intuit Developer Portal](https://developer.intuit.com/app/developer/dashboard)
+2. Select the **Production** tab (next to the **Sandbox** tab)
+3. Ensure the redirect URI is accessible over HTTPS. Intuit requires production apps to use HTTPS redirect URIs
+4. Copy the **Client ID** and **Client Secret** from the **Production Keys** section
+
+Update the connection configuration with the production **Client ID** and **Client Secret**, and disable the **Use Sandbox** toggle.
+
+:::note[App Store Listing]
+If distributing the integration through the [QuickBooks App Store](https://apps.intuit.com/), a formal listing review is required. For private integrations used within a single organization, App Store listing is not required and no formal review applies.
+:::

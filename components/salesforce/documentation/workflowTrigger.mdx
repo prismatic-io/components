@@ -1,0 +1,14 @@
+:::note[Action Required: Salesforce Workflow Rules Retiring December 31, 2025]
+
+Salesforce is [ending support](https://help.salesforce.com/s/articleView?id=001096524&type=1) for Workflow Rules and Process Builder on **December 31, 2025** and will no longer provide customer support or bug fixes for Workflow Rules and Process Builder. While existing webhook subscriptions may continue to function, they will become unsupported after the deadline. It is recommended to migrate webhook subscriptions to the [Flow Builder](https://help.salesforce.com/s/articleView?id=platform.flow.htm&type=5) by that time.
+
+As a solution, the Salesforce component now offers Flow based features to replace the workflow rule functionality. Outbound Message functionality will remain unaffected and Flows are compatible with Outbound Messages. For an overview of the new Flow trigger functionality please reference the following [Flow Outbound Message Webhook demonstration](https://vimeo.com/1118182531/9a2f82bf2e?share=copy).
+
+**Migrating Workflow Rules to Flows:**
+It is recommended to migrate current integrations to Flows before the end of the year.
+
+To migrate, update and configure existing integrations to the new **Flow Outbound Message Webhook** trigger. On deploy, the trigger will automatically create a brand new active Flow and Outbound Message. The original Outbound Message will be removed to disable the Workflow Rule automation.
+
+- The migration only removes the prior Outbound Message. The Workflow Rule will remain intact but is no longer active.
+- The payload returned by the new trigger will be different and may break integration references. Please review and update any input steps that reference the trigger payload.
+:::
