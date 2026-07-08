@@ -9,7 +9,7 @@ export const listSheets = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, includeAll, modifiedSince, page, pageSize },
+    { connection, includeAll, modifiedSince, pagination },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/sheets`, {
@@ -17,8 +17,8 @@ export const listSheets = action({
         include: "sheetVersion",
         includeAll,
         modifiedSince,
-        page,
-        pageSize,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
       },
     });
     return { data };

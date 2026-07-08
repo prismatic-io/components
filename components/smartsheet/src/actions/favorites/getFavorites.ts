@@ -9,11 +9,15 @@ export const getFavorites = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, includeAll, page, pageSize },
+    { connection, includeAll, pagination },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/favorites`, {
-      params: { includeAll, page, pageSize },
+      params: {
+        includeAll,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+      },
     });
     return { data };
   },

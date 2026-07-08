@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-07-08
+
+Restructured pagination inputs:
+
+- Grouped pagination inputs into a **Pagination** structured object across all actions that support paging; **List Events** groups stream-position and max-count inputs into **Pagination**, while **List Contacts**, **List Favorites**, **List Folders**, **List Groups**, **Get Report**, **List Attachments on Row**, **List Attachments on Sheet**, **List Columns**, **List Discussion Attachments**, **List Discussions**, **Get Sheet**, **List Sheets**, **List User Templates**, **List Public Templates**, **List Users**, and **List Workspaces** group **Page** and **Page Size** into **Pagination**; **Fetch All** stays a top-level toggle
+- Deprecated **List Public Templates**: Smartsheet removed the public templates endpoint with no replacement; the action now directs users to **List User Templates** with workspace or folder scoping
+
 ### 2026-05-26
 
 Added **New and Updated Sheets** polling trigger. The trigger polls `/sheets` with Smartsheet's server-side `modifiedSince` filter and partitions returned sheets locally into `created` and `updated` buckets by comparing each sheet's own `createdAt` / `modifiedAt` against the last-polled boundary. Inputs: connection, **Show New Records**, **Show Updated Records**. Polling state stores `lastPolledAt` (ISO 8601). Pagination reuses the existing `paginateByPage` helper — when Smartsheet migrates `/sheets` to token-based pagination ahead of the 2026-06-03 sunset, the helper call will be swapped for `paginateByToken`

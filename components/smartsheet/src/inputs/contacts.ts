@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { connectionInput, includeAll, page, pageSize } from "./common";
+import { connectionInput, includeAll, pagination } from "./common";
 const contactId = input({
   label: "Contact ID",
   type: "string",
@@ -16,6 +16,5 @@ export const getContactInputs = {
 export const listContactsInputs = {
   connection: connectionInput,
   includeAll,
-  page,
-  pageSize,
+  pagination,
 };

@@ -3,8 +3,7 @@ import {
   connectionInput,
   includeAll,
   modifiedSince,
-  page,
-  pageSize,
+  pagination,
   validateId,
 } from "./common";
 const userId = input({
@@ -32,8 +31,7 @@ export const getUserInputs = {
 export const listUsersInputs = {
   connection: connectionInput,
   includeAll,
-  page,
-  pageSize,
+  pagination,
   email,
   modifiedSince,
 };

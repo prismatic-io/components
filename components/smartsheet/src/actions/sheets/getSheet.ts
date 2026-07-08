@@ -9,13 +9,13 @@ export const getSheet = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, sheetId, pageSize, page },
+    { connection, sheetId, pagination },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/sheets/${sheetId}`, {
       params: {
-        pageSize,
-        page,
+        pageSize: pagination.pageSize,
+        page: pagination.page,
       },
     });
     return { data };

@@ -9,11 +9,15 @@ export const attachmentsListOnSheet = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, sheetId, page, pageSize, includeAll },
+    { connection, sheetId, pagination, includeAll },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/sheets/${sheetId}/attachments`, {
-      params: { page, pageSize, includeAll },
+      params: {
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        includeAll,
+      },
     });
     return { data };
   },

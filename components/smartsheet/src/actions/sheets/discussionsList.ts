@@ -9,14 +9,19 @@ export const discussionsList = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, sheetId, rowId, page, pageSize, includeAll },
+    { connection, sheetId, rowId, pagination, includeAll },
   ) => {
     const client = createClient(connection, debug);
     const endpoint = rowId
       ? `/sheets/${sheetId}/rows/${rowId}/discussions`
       : `/sheets/${sheetId}/discussions`;
     const { data } = await client.get(endpoint, {
-      params: { include: "attachments,comments", page, pageSize, includeAll },
+      params: {
+        include: "attachments,comments",
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        includeAll,
+      },
     });
     return { data };
   },

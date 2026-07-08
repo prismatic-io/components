@@ -10,7 +10,7 @@
     "publish": "npm run build && prism components:publish"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.18.5"
+    "@prismatic-io/spectral": "10.19.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.14",

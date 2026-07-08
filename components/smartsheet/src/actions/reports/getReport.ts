@@ -10,15 +10,15 @@ export const getReport = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, reportId, pageSize, page },
+    { connection, reportId, pagination },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/reports/${reportId}`, {
       params: {
         include:
           "attachments,discussions,format,objectValue,scope,source,sourceSheets",
-        pageSize,
-        page,
+        pageSize: pagination.pageSize,
+        page: pagination.page,
         level: 3,
       },
     });

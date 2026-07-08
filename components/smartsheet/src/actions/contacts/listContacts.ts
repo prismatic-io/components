@@ -9,11 +9,15 @@ export const listContacts = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, includeAll, page, pageSize },
+    { connection, includeAll, pagination },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/contacts`, {
-      params: { includeAll, page, pageSize },
+      params: {
+        includeAll,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+      },
     });
     return { data };
   },

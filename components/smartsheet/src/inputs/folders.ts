@@ -1,12 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  folderId,
-  includeAll,
-  page,
-  pageSize,
-  workspaceIdOptional,
-} from "./common";
+import { connectionInput, folderId, workspaceIdOptional } from "./common";
 const folderName = input({
   label: "Folder Name",
   type: "string",
@@ -53,9 +46,6 @@ export const listFoldersInputs = {
     comments:
       "The unique identifier of the workspace whose folders should be listed. Omit to list folders outside of a workspace.",
   },
-  includeAll,
-  page,
-  pageSize,
 };
 export const moveFolderInputs = {
   connection: connectionInput,

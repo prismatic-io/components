@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 export const validateId = (value: unknown, required = true) => {
   if (!value && !required) {
     return undefined;
@@ -12,32 +12,36 @@ export const validateId = (value: unknown, required = true) => {
   }
 };
 export const page = input({
-  label: "Pagination Page (Deprecated)",
+  label: "Pagination Page",
   type: "string",
   required: false,
   default: "1",
   clean: (value) => util.types.toNumber(value) || undefined,
-  comments:
-    "DEPRECATED — has no effect on actions migrated for the 2026-06-03 Smartsheet sunset. Preserved for backwards compatibility on those actions; will be removed in a future major release.",
+  comments: "The 1-based page number to return.",
   placeholder: "Enter page number",
 });
 export const pageSize = input({
-  label: "Pagination Page Size (Deprecated)",
+  label: "Pagination Page Size",
   type: "string",
   required: false,
   clean: (value) => util.types.toNumber(value) || undefined,
-  comments:
-    "DEPRECATED — has no effect on actions migrated for the 2026-06-03 Smartsheet sunset. Preserved for backwards compatibility on those actions; will be removed in a future major release.",
+  comments: "The maximum number of items to return per page.",
   placeholder: "Enter page size",
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { page, pageSize },
+});
 export const includeAll = input({
-  label: "Fetch All (Deprecated)",
+  label: "Fetch All",
   type: "boolean",
   required: false,
   default: "false",
   clean: util.types.toBool,
   comments:
-    "DEPRECATED — has no effect on actions migrated for the 2026-06-03 Smartsheet sunset. Preserved for backwards compatibility on those actions; will be removed in a future major release.",
+    "When true, automatically fetches all pages of results. When false, only the specified page is returned.",
 });
 export const connectionInput = input({
   label: "Connection",
@@ -87,14 +91,14 @@ export const sheetId = input({
   dataSource: "selectSheet",
 });
 export const sheetIdOptional = input({
-  label: "Sheet ID (Optional)",
+  label: "Sheet ID",
   type: "string",
   required: false,
   clean: (value) => validateId(value, false),
   comments:
     "The unique identifier for the sheet. Leave empty to apply to all sheets.",
   example: "4583173393803140",
-  placeholder: "Enter sheet ID (optional)",
+  placeholder: "Enter sheet ID",
 });
 export const columnId = input({
   label: "Column ID",
@@ -117,14 +121,14 @@ export const workspaceId = input({
   dataSource: "selectWorkspace",
 });
 export const workspaceIdOptional = input({
-  label: "Workspace ID (Optional)",
+  label: "Workspace ID",
   type: "string",
   required: false,
   clean: (value) => validateId(value, false),
   comments:
     "The unique identifier for the workspace. Leave empty to use the default context.",
   example: "843750385",
-  placeholder: "Enter workspace ID (optional)",
+  placeholder: "Enter workspace ID",
 });
 export const discussionId = input({
   label: "Discussion ID",
@@ -167,14 +171,14 @@ export const rowId = input({
   dataSource: "selectRow",
 });
 export const rowIdOptional = input({
-  label: "Row ID (Optional)",
+  label: "Row ID",
   type: "string",
   required: false,
   clean: (value) => validateId(value, false),
   comments:
     "The unique identifier for the row. Leave empty to apply to the sheet level.",
   example: "8908091207493508",
-  placeholder: "Enter row ID (optional)",
+  placeholder: "Enter row ID",
 });
 export const webhookId = input({
   label: "Webhook ID",

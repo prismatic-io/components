@@ -3,8 +3,7 @@ import {
   groupId,
   includeAll,
   modifiedSince,
-  page,
-  pageSize,
+  pagination,
 } from "./common";
 export const getGroupInputs = {
   connection: connectionInput,
@@ -13,7 +12,6 @@ export const getGroupInputs = {
 export const listGroupsInputs = {
   connection: connectionInput,
   includeAll,
-  page,
-  pageSize,
+  pagination,
   modifiedSince,
 };

@@ -9,7 +9,7 @@ export const listUsers = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, email, includeAll, modifiedSince, page, pageSize },
+    { connection, email, includeAll, modifiedSince, pagination },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/users`, {
@@ -18,8 +18,8 @@ export const listUsers = action({
         include: "lastLogin",
         includeAll,
         modifiedSince,
-        page,
-        pageSize,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
       },
     });
     return { data };

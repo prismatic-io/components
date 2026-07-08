@@ -1,21 +1,17 @@
 import { action } from "@prismatic-io/spectral";
-import { createClient } from "../../client";
 import { templatesListPublicExamplePayload } from "../../examplePayloads";
 import { templatesListPublicInputs } from "../../inputs";
 export const templatesListPublic = action({
   display: {
-    label: "List Public Templates",
-    description: "Lists publicly available templates.",
+    label: "List Public Templates (Deprecated)",
+    description:
+      'This action is deprecated. Smartsheet removed the GET /templates/public endpoint with no replacement. Use the "List User Templates" action with a Workspace ID instead.',
   },
-  perform: async (
-    { debug: { enabled: debug } },
-    { connection, includeAll, page, pageSize },
-  ) => {
-    const client = createClient(connection, debug);
-    const { data } = await client.get(`/templates/public`, {
-      params: { includeAll, page, pageSize },
-    });
-    return { data };
+  perform: async () => {
+    throw new Error(
+      "The Smartsheet GET /templates/public endpoint has been removed and has no replacement. " +
+        "Use the 'Templates: List' action scoped to a Workspace ID or Folder ID instead.",
+    );
   },
   inputs: templatesListPublicInputs,
   examplePayload: templatesListPublicExamplePayload,

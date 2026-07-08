@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connectionInput } from "./common";
 const since = input({
   label: "Since",
@@ -30,9 +30,14 @@ const maxCount = input({
   example: "100",
   placeholder: "Enter max count",
 });
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and result-count controls for paging through results.",
+  inputs: { streamPosition, maxCount },
+});
 export const listEventsInputs = {
   connection: connectionInput,
   since,
-  streamPosition,
-  maxCount,
+  pagination,
 };

@@ -9,13 +9,17 @@ export const discussionListAttachments = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, sheetId, discussionId, page, pageSize, includeAll },
+    { connection, sheetId, discussionId, pagination, includeAll },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(
       `/sheets/${sheetId}/discussions/${discussionId}/attachments`,
       {
-        params: { page, pageSize, includeAll },
+        params: {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+          includeAll,
+        },
       },
     );
     return { data };

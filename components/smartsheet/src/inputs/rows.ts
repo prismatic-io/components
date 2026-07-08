@@ -3,8 +3,7 @@ import { cleanObjectInput } from "../util";
 import {
   connectionInput,
   includeAll,
-  page,
-  pageSize,
+  pagination,
   rowId,
   rowIdOptional,
   sheetId,
@@ -100,8 +99,7 @@ export const attachmentsListOnRowInputs = {
   sheetId,
   rowId,
   includeAll,
-  page,
-  pageSize,
+  pagination,
 };
 export const copyRowsInputs = {
   connection: connectionInput,

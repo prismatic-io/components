@@ -10,11 +10,15 @@ export const listEvents = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, since, streamPosition, maxCount },
+    { connection, since, pagination },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/events`, {
-      params: { since, streamPosition, maxCount },
+      params: {
+        since,
+        streamPosition: pagination.streamPosition,
+        maxCount: pagination.maxCount,
+      },
     });
     return { data };
   },

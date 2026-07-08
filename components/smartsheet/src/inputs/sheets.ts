@@ -7,8 +7,7 @@ import {
   folderId,
   includeAll,
   modifiedSince,
-  page,
-  pageSize,
+  pagination,
   rowIdOptional,
   sheetId,
   validateId,
@@ -371,8 +370,7 @@ export const attachmentsListOnSheetInputs = {
   connection: connectionInput,
   sheetId,
   includeAll,
-  page,
-  pageSize,
+  pagination,
 };
 export const columnDeleteInputs = {
   connection: connectionInput,
@@ -402,8 +400,7 @@ export const columnsListOnSheetInputs = {
   connection: connectionInput,
   sheetId,
   includeAll,
-  page,
-  pageSize,
+  pagination,
 };
 export const commentDeleteInputs = {
   connection: connectionInput,
@@ -465,8 +462,7 @@ export const discussionListAttachmentsInputs = {
   sheetId,
   discussionId,
   includeAll,
-  page,
-  pageSize,
+  pagination,
 };
 export const discussionsCreateInputs = {
   connection: connectionInput,
@@ -478,15 +474,13 @@ export const discussionsListInputs = {
   connection: connectionInput,
   sheetId,
   includeAll,
-  page,
-  pageSize,
+  pagination,
   rowId: rowIdOptional,
 };
 export const getSheetInputs = {
   connection: connectionInput,
   sheetId,
-  page,
-  pageSize,
+  pagination,
 };
 export const getSheetPublishInputs = {
   connection: connectionInput,
@@ -499,8 +493,7 @@ export const getSheetVersionInputs = {
 export const listSheetsInputs = {
   connection: connectionInput,
   includeAll,
-  page,
-  pageSize,
+  pagination,
   modifiedSince,
 };
 export const moveSheetInputs = {

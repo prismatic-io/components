@@ -9,13 +9,17 @@ export const attachmentsListOnRow = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, sheetId, rowId, page, pageSize, includeAll },
+    { connection, sheetId, rowId, pagination, includeAll },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(
       `/sheets/${sheetId}/rows/${rowId}/attachments`,
       {
-        params: { page, pageSize, includeAll },
+        params: {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+          includeAll,
+        },
       },
     );
     return { data };

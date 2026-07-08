@@ -2,7 +2,6 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listFoldersExamplePayload } from "../../examplePayloads";
 import { listFoldersInputs } from "../../inputs";
-import { warnDeprecatedInputs } from "../../util/deprecation";
 import { CHILD_TYPE } from "../../util/mergeChildren";
 import { paginateByToken } from "../../util/pagination";
 export const listFolders = action({
@@ -10,11 +9,7 @@ export const listFolders = action({
     label: "List Folders",
     description: "Lists folders, subfolders, or workspace folders.",
   },
-  perform: async (
-    context,
-    { connection, folderId, workspaceId, includeAll },
-  ) => {
-    warnDeprecatedInputs(context, "listFolders", includeAll);
+  perform: async (context, { connection, folderId, workspaceId }) => {
     const client = createClient(connection, context.debug.enabled);
     if (workspaceId) {
       const items = await paginateByToken<Record<string, unknown>>(

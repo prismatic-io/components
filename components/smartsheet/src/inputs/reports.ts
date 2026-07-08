@@ -1,15 +1,8 @@
-import {
-  connectionInput,
-  modifiedSince,
-  page,
-  pageSize,
-  reportId,
-} from "./common";
+import { connectionInput, modifiedSince, pagination, reportId } from "./common";
 export const getReportInputs = {
   connection: connectionInput,
   reportId,
-  page,
-  pageSize,
+  pagination,
 };
 export const getReportsInputs = {
   connection: connectionInput,

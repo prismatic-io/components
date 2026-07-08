@@ -9,11 +9,16 @@ export const listGroups = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, includeAll, modifiedSince, page, pageSize },
+    { connection, includeAll, modifiedSince, pagination },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/groups`, {
-      params: { includeAll, modifiedSince, page, pageSize },
+      params: {
+        includeAll,
+        modifiedSince,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+      },
     });
     return { data };
   },

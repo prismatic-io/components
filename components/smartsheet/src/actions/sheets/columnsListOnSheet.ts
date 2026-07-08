@@ -9,11 +9,16 @@ export const columnsListOnSheet = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, sheetId, page, pageSize, includeAll },
+    { connection, sheetId, pagination, includeAll },
   ) => {
     const client = createClient(connection, debug);
     const { data } = await client.get(`/sheets/${sheetId}/columns`, {
-      params: { level: 1, page, pageSize, includeAll },
+      params: {
+        level: 1,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        includeAll,
+      },
     });
     return { data };
   },

@@ -1,11 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  includeAll,
-  page,
-  pageSize,
-  workspaceId,
-} from "./common";
+import { connectionInput, workspaceId } from "./common";
 const workspaceName = input({
   label: "Workspace Name",
   type: "string",
@@ -14,15 +8,6 @@ const workspaceName = input({
   clean: util.types.toString,
   comments: "The display name for the workspace.",
   placeholder: "Enter workspace name",
-});
-const loadAll = input({
-  label: "Load All",
-  type: "boolean",
-  required: false,
-  default: "false",
-  clean: util.types.toBool,
-  comments:
-    "Preserved for backward compatibility. Smartsheet's redesigned API no longer supports recursive nested expansion of folders/contents in a single response; this input has no effect on the migrated action.",
 });
 const updateWorkspaceName = input({
   label: "Name",
@@ -43,13 +28,9 @@ export const deleteWorkspaceInputs = {
 export const getWorkspaceInputs = {
   connection: connectionInput,
   workspaceId,
-  loadAll,
 };
 export const listWorkspacesInputs = {
   connection: connectionInput,
-  includeAll,
-  page,
-  pageSize,
 };
 export const updateWorkspaceInputs = {
   connection: connectionInput,
