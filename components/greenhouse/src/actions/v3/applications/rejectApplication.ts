@@ -15,9 +15,7 @@ export const rejectApplicationV3 = action({
       applicationId,
       rejectionReasonId,
       rejectionNotes,
-      sendEmailAt,
-      emailTemplateId,
-      emailFromUserId,
+      rejectionEmail: { sendEmailAt, emailTemplateId, emailFromUserId } = {},
       customFields,
     },
   ) => {

@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   toNumberArray,
   toOptionalBoolean,
@@ -131,6 +131,32 @@ export const application = input({
   example: JSON.stringify({ job_id: 215725, recruiter_id: 92120 }, null, 2),
   clean: toOptionalObject,
 });
+const nameInformation = structuredObjectInput({
+  label: "Name Information",
+  required: false,
+  comments: "The candidate's first name, last name, and preferred name.",
+  inputs: { firstNameOptional, lastNameOptional, preferredName },
+});
+const contactInformation = structuredObjectInput({
+  label: "Contact Information",
+  required: false,
+  comments:
+    "The candidate's contact details: phone numbers, addresses, email addresses, website addresses, and social media addresses.",
+  inputs: {
+    phoneNumbers: phone_numbers,
+    addresses,
+    emailAddresses: email_addresses,
+    websiteAddresses: website_addresses,
+    socialMediaAddresses: social_media_addresses,
+  },
+});
+const dateRangeFilters = structuredObjectInput({
+  label: "Date Range Filters",
+  required: false,
+  comments:
+    "Optional inclusive date-range filters. Narrow results by when candidates were created or last updated.",
+  inputs: { createdAtGte, createdAtLte, updatedAtGte, updatedAtLte },
+});
 export const listCandidatesV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
@@ -138,10 +164,7 @@ export const listCandidatesV3Inputs = {
   email: candidateEmail,
   tag,
   isPrivate,
-  createdAtGte,
-  createdAtLte,
-  updatedAtGte,
-  updatedAtLte,
+  dateRangeFilters,
 };
 export const getCandidateV3Inputs = {
   connection: connectionInput,
@@ -156,11 +179,7 @@ export const createCandidateV3Inputs = {
   title,
   timeZone,
   canEmail,
-  phoneNumbers: phone_numbers,
-  addresses,
-  emailAddresses: email_addresses,
-  websiteAddresses: website_addresses,
-  socialMediaAddresses: social_media_addresses,
+  contactInformation,
   tags,
   linkedUserIds,
   customFields: customFieldsV3,
@@ -169,19 +188,13 @@ export const createCandidateV3Inputs = {
 export const editCandidateV3Inputs = {
   connection: connectionInput,
   candidateId,
-  firstNameOptional,
-  lastNameOptional,
-  preferredName,
+  nameInformation,
+  contactInformation,
   company,
   title,
   timeZone,
   canEmail,
   isPrivateCandidate: is_private,
-  phoneNumbers: phone_numbers,
-  addresses,
-  emailAddresses: email_addresses,
-  websiteAddresses: website_addresses,
-  socialMediaAddresses: social_media_addresses,
   tags,
   linkedUserIds,
   customFields: customFieldsV3,

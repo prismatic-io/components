@@ -11,8 +11,7 @@ import {
   external_office_id,
   office_id,
   opening_id,
-  page,
-  per_page,
+  pagination,
   requisition_id,
   status,
   updated_after,
@@ -25,9 +24,16 @@ export const listJobs = action({
     label: "List Jobs (Harvest v1/v2)",
     description: "Retrieves a list of jobs.",
   },
-  perform: async (context, { connection, version, ...params }) => {
+  perform: async (
+    context,
+    { connection, version, pagination = {}, ...params },
+  ) => {
     const client = createClient(connection, version, context.debug.enabled);
-    const generatedParams = generatePayload(params);
+    const generatedParams = generatePayload({
+      ...params,
+      per_page: pagination.per_page,
+      page: pagination.page,
+    });
     const { data } = await client.get("/jobs", {
       params: generatedParams,
     });
@@ -36,8 +42,7 @@ export const listJobs = action({
   inputs: {
     connection: connectionInput,
     version,
-    per_page,
-    page,
+    pagination,
     created_before,
     created_after,
     updated_before,

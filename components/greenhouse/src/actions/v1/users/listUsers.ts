@@ -7,8 +7,7 @@ import {
   created_before,
   email,
   employee_id,
-  page,
-  per_page,
+  pagination,
   updated_after,
   updated_before,
   user_attributes,
@@ -25,8 +24,7 @@ export const listUsers = action({
     {
       connection,
       version,
-      per_page,
-      page,
+      pagination = {},
       employee_id,
       created_before,
       created_after,
@@ -38,8 +36,8 @@ export const listUsers = action({
   ) => {
     const client = createClient(connection, version, context.debug.enabled);
     const params = generatePayload({
-      per_page,
-      page,
+      per_page: pagination.per_page,
+      page: pagination.page,
       employee_id,
       created_before,
       created_after,
@@ -58,8 +56,7 @@ export const listUsers = action({
   inputs: {
     connection: connectionInput,
     version,
-    per_page,
-    page,
+    pagination,
     employee_id,
     created_before,
     created_after,

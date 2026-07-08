@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   toOptionalNumber,
   toOptionalObject,
@@ -34,10 +34,15 @@ export const cursor = input({
   example: "eyJwYWdlIjoyfQ",
   clean: toOptionalString,
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page-size and cursor controls for the results list.",
+  inputs: { perPage, cursor },
+});
 export const cursorPaginationInputs = {
   fetchAll,
-  perPage,
-  cursor,
+  pagination,
 };
 export const createTimestampOperatorInput = (
   field: string,

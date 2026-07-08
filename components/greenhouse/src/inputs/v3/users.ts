@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   toOptionalBoolean,
   toOptionalString,
@@ -200,19 +200,28 @@ export const interviewerTagIds = input({
   example: "42",
   clean: toStringArray,
 });
+const idFilters = structuredObjectInput({
+  label: "ID Filters",
+  required: false,
+  comments:
+    "Optional filters that narrow results to users matching specific record IDs: user, office, and department IDs. Each accepts a comma-separated list of up to 50 IDs.",
+  inputs: { ids, officeIds, departmentIds },
+});
+const dateRangeFilters = structuredObjectInput({
+  label: "Date Range Filters",
+  required: false,
+  comments:
+    "Optional inclusive date-range filters. Narrow results by when users were created or last updated.",
+  inputs: { createdAtGte, createdAtLte, updatedAtGte, updatedAtLte },
+});
 export const listUsersV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
-  ids,
-  officeIds,
-  departmentIds,
+  idFilters,
   deactivated,
   primaryEmail,
   showServiceAccounts,
-  createdAtGte,
-  createdAtLte,
-  updatedAtGte,
-  updatedAtLte,
+  dateRangeFilters,
 };
 export const getUserV3Inputs = {
   connection: connectionInput,

@@ -7,8 +7,7 @@ import {
   created_before,
   job_id,
   last_activity_after,
-  page,
-  per_page,
+  pagination,
   status,
   version,
 } from "../../../inputs";
@@ -23,8 +22,7 @@ export const listApplications = action({
     {
       connection,
       version,
-      per_page,
-      page,
+      pagination = {},
       created_before,
       created_after,
       last_activity_after,
@@ -34,8 +32,8 @@ export const listApplications = action({
   ) => {
     const client = createClient(connection, version, context.debug.enabled);
     const params = generatePayload({
-      per_page,
-      page,
+      per_page: pagination.per_page,
+      page: pagination.page,
       created_before,
       created_after,
       last_activity_after,
@@ -49,8 +47,7 @@ export const listApplications = action({
   },
   inputs: {
     connection: connectionInput,
-    per_page,
-    page,
+    pagination,
     job_id,
     created_before,
     created_after,

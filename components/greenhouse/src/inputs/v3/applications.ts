@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   toOptionalBoolean,
   toOptionalNumber,
@@ -219,26 +219,65 @@ const emailFromUserId = input({
   example: "92120",
   clean: toOptionalNumber,
 });
+const idFilters = structuredObjectInput({
+  label: "ID Filters",
+  required: false,
+  comments:
+    "Optional filters that narrow results to applications matching specific record IDs: application, candidate, job, prospective job, job post, source, referrer, and stage IDs. Each accepts a comma-separated list of up to 50 IDs.",
+  inputs: {
+    ids,
+    candidateIds,
+    jobIds,
+    prospectiveJobIds,
+    jobPostIds,
+    sourceIds,
+    referrerIds,
+    stageIds,
+  },
+});
+const dateRangeFilters = structuredObjectInput({
+  label: "Date Range Filters",
+  required: false,
+  comments:
+    "Optional inclusive date-range filters. Narrow results by when applications were created, last updated, or last active.",
+  inputs: {
+    createdAtGte,
+    createdAtLte,
+    updatedAtGte,
+    updatedAtLte,
+    lastActivityAtGte,
+    lastActivityAtLte,
+  },
+});
+const assignmentIds = structuredObjectInput({
+  label: "Assignment IDs",
+  required: false,
+  comments:
+    "Greenhouse IDs to associate with the application: source, referrer, recruiter, coordinator, prospect pool, and prospect stage IDs.",
+  inputs: {
+    sourceId: source_id,
+    referrerId,
+    recruiterId,
+    coordinatorId,
+    prospectPoolId: prospect_pool_id,
+    prospectStageId: prospect_stage_id,
+  },
+});
+const rejectionEmail = structuredObjectInput({
+  label: "Rejection Email",
+  required: false,
+  comments:
+    "Optional rejection email settings: when to send, which template to use, and which user to send it from. Provide at least one value to send a rejection email.",
+  inputs: { sendEmailAt, emailTemplateId, emailFromUserId },
+});
 export const listApplicationsV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
-  ids,
-  candidateIds,
-  jobIds,
-  prospectiveJobIds,
-  jobPostIds,
-  sourceIds,
-  referrerIds,
-  stageIds,
+  idFilters,
   status,
   stageName,
   prospect,
-  createdAtGte,
-  createdAtLte,
-  updatedAtGte,
-  updatedAtLte,
-  lastActivityAtGte,
-  lastActivityAtLte,
+  dateRangeFilters,
 };
 export const getApplicationV3Inputs = {
   connection: connectionInput,
@@ -247,12 +286,7 @@ export const getApplicationV3Inputs = {
 export const editApplicationV3Inputs = {
   connection: connectionInput,
   applicationId,
-  sourceId: source_id,
-  referrerId,
-  recruiterId,
-  coordinatorId,
-  prospectPoolId: prospect_pool_id,
-  prospectStageId: prospect_stage_id,
+  assignmentIds,
   rejectedAt,
   customFields: customFieldsV3,
 };
@@ -265,9 +299,7 @@ export const rejectApplicationV3Inputs = {
   applicationId,
   rejectionReasonId,
   rejectionNotes,
-  sendEmailAt,
-  emailTemplateId,
-  emailFromUserId,
+  rejectionEmail,
   customFields: customFieldsV3,
 };
 export const unrejectApplicationV3Inputs = {

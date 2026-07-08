@@ -18,13 +18,9 @@ export const listCandidatesV3 = action({
       email,
       tag,
       isPrivate,
-      createdAtGte,
-      createdAtLte,
-      updatedAtGte,
-      updatedAtLte,
+      dateRangeFilters = {},
       fetchAll,
-      perPage,
-      cursor,
+      pagination: { perPage, cursor } = {},
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);
@@ -33,10 +29,10 @@ export const listCandidatesV3 = action({
       email,
       tag,
       private: isPrivate,
-      "created_at[gte]": createdAtGte,
-      "created_at[lte]": createdAtLte,
-      "updated_at[gte]": updatedAtGte,
-      "updated_at[lte]": updatedAtLte,
+      "created_at[gte]": dateRangeFilters.createdAtGte,
+      "created_at[lte]": dateRangeFilters.createdAtLte,
+      "updated_at[gte]": dateRangeFilters.updatedAtGte,
+      "updated_at[lte]": dateRangeFilters.updatedAtLte,
     });
     const data = await paginateV3<V3Candidate>(
       client,

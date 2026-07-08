@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   toNumberArray,
   toOptionalBoolean,
@@ -91,7 +91,7 @@ const externalOfficeIds = input({
   collection: "valuelist",
   required: false,
   comments:
-    "Partner external identifiers for offices. Mutually exclusive with Office IDs — provide one or the other, never both.",
+    "Partner external identifiers for offices. Mutually exclusive with Office IDs; provide one or the other, never both.",
   placeholder: "Enter external office ID",
   example: "ext-office-1",
   clean: toStringArray,
@@ -99,7 +99,7 @@ const externalOfficeIds = input({
 const externalDepartmentId = {
   ...external_department_id,
   comments:
-    "Partner external identifier for the department. Mutually exclusive with Department ID — provide one or the other, never both.",
+    "Partner external identifier for the department. Mutually exclusive with Department ID; provide one or the other, never both.",
   example: "ext-dept-42",
 };
 const openingIds = input({
@@ -113,27 +113,36 @@ const openingIds = input({
   example: "OP-2026-001",
   clean: toStringArray,
 });
+const idFilters = structuredObjectInput({
+  label: "ID Filters",
+  required: false,
+  comments:
+    "Optional filters that narrow results to jobs matching specific record IDs: job, department, and office IDs.",
+  inputs: { ids, departmentId, officeId },
+});
+const dateRangeFilters = structuredObjectInput({
+  label: "Date Range Filters",
+  required: false,
+  comments:
+    "Optional inclusive date-range filters. Narrow results by when jobs were created or last updated.",
+  inputs: { createdAtGte, createdAtLte, updatedAtGte, updatedAtLte },
+});
 export const listJobsV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
-  ids,
+  idFilters,
   requisitionId: {
     ...requisition_id,
     comments:
-      "Filter by external requisition identifier. Non-unique — may match multiple jobs across the organization.",
+      "Filter by external requisition identifier. Non-unique; may match multiple jobs across the organization.",
   },
   status: {
     ...status,
     comments: "Filter by job lifecycle status. One of: open, draft, or closed.",
     example: "open",
   },
-  departmentId,
-  officeId,
   confidential,
-  createdAtGte,
-  createdAtLte,
-  updatedAtGte,
-  updatedAtLte,
+  dateRangeFilters,
 };
 export const getJobV3Inputs = {
   connection: connectionInput,
@@ -198,12 +207,12 @@ export const editJobV3Inputs = {
   officeIds: {
     ...officeIds,
     comments:
-      "Greenhouse office IDs to assign to this job. IMPORTANT: this is a WHOLESALE REPLACEMENT — the supplied list entirely replaces the existing office set. Send the complete desired list, not a delta.",
+      "Greenhouse office IDs to assign to this job. IMPORTANT: this is a WHOLESALE REPLACEMENT; the supplied list entirely replaces the existing office set. Send the complete desired list, not a delta.",
   },
   externalOfficeIds: {
     ...externalOfficeIds,
     comments:
-      "Partner external identifiers for offices — wholesale replacement. Mutually exclusive with Office IDs.",
+      "Partner external identifiers for offices; wholesale replacement. Mutually exclusive with Office IDs.",
   },
   departmentId: {
     ...departmentId,
@@ -214,7 +223,7 @@ export const editJobV3Inputs = {
   customFields: {
     ...customFieldsV3,
     comments:
-      "JSON array of custom field values. IMPORTANT: this is a WHOLESALE REPLACEMENT — the supplied array entirely replaces the existing custom field collection. Each item must include either name_key (string) or custom_field_id (integer), plus a value.",
+      "JSON array of custom field values. IMPORTANT: this is a WHOLESALE REPLACEMENT; the supplied array entirely replaces the existing custom field collection. Each item must include either name_key (string) or custom_field_id (integer), plus a value.",
     example:
       '[{"name_key": "target_salary", "value": {"amount": 130000, "currency_code": "USD"}}]',
   },

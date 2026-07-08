@@ -1,5 +1,3 @@
-**Deprecation Notice**: this connection authenticates against the Harvest v1/v2 API, which sunsets on August 31, 2026. Use the **OAuth 2.0 Client Credentials (Harvest V3)** connection for the Harvest v3 API instead.
-
 The Greenhouse Harvest API uses Basic Auth over HTTPS for authentication. The username is the Greenhouse API token and the password should be blank. Unauthenticated requests will return an HTTP 401 response.
 
 #### Prerequisites
@@ -24,7 +22,30 @@ The Greenhouse Harvest API uses Basic Auth over HTTPS for authentication. The us
    - Custom Field Options
 8. Optionally configure granular permissions for each section, then click **Save** to complete the setup.
 
-#### Configure the Connection
+### Notice of Deprecation
 
-1. Create a connection of type **API Key (Harvest v1/v2)**.
-2. Enter the generated API token in the **API Key** field.
+This connection authenticates against the Harvest v1/v2 API, which sunsets on **August 31, 2026**. Please migrate integrations to the **OAuth 2.0 Client Credentials (Harvest v3)** connection and accompanying actions to utilize the go forward the Harvest v3 API.
+
+#### Migrating to Harvest v3 (deadline August 31, 2026)
+
+The Harvest v1/v2 API sunsets on **August 31, 2026**. Before then, move to the
+**OAuth 2.0 Client Credentials (Harvest v3)** connection and update your actions and
+triggers to their v3 equivalents.
+
+1. In Greenhouse, open **API Credentials** > **Create new API credentials** and select
+   **Harvest v3 (OAuth)**. Choose the endpoints the credential may access, then copy the
+   **Client ID** and **Client Secret**.
+2. Create a connection of type **OAuth 2.0 Client Credentials (Harvest v3)** and enter the
+   client ID and secret. No browser-based authorization is required. Access tokens are
+   exchanged automatically at execution time.
+3. Replace each **(Harvest v1/v2)** action with its v3 counterpart. The v3 actions have the
+   same names without the **(Harvest v1/v2)** suffix, with these exceptions:
+   - **Enable User** / **Disable User** become **Activate User** / **Deactivate User**.
+   - Rejecting an application is no longer part of **Edit Application**. Use the dedicated
+     **Reject Application** and **Unreject Application** actions.
+   - Candidate attachments are now a dedicated resource. Use **List Attachments**,
+     **Create Attachment**, and **Delete Attachment**.
+4. If you poll for changes, replace the deprecated **New and Updated Applications** trigger
+   with its v3 version.
+5. Re-point any dynamic dropdowns (data sources) to the new v3 connection.
+6. Test the flow end to end, then remove this **API Key (Harvest v1/v2)** connection.

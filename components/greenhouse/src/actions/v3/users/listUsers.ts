@@ -15,18 +15,21 @@ export const listUsersV3 = action({
     {
       connection,
       fetchAll: shouldFetchAll,
-      perPage: perPageVal,
-      cursor: cursorVal,
-      ids: idsVal,
-      officeIds: officeIdsVal,
-      departmentIds: departmentIdsVal,
+      pagination: { perPage: perPageVal, cursor: cursorVal } = {},
+      idFilters: {
+        ids: idsVal,
+        officeIds: officeIdsVal,
+        departmentIds: departmentIdsVal,
+      } = {},
       deactivated: deactivatedVal,
       primaryEmail: primaryEmailVal,
       showServiceAccounts: showServiceAccountsVal,
-      createdAtGte: createdAtGteVal,
-      createdAtLte: createdAtLteVal,
-      updatedAtGte: updatedAtGteVal,
-      updatedAtLte: updatedAtLteVal,
+      dateRangeFilters: {
+        createdAtGte: createdAtGteVal,
+        createdAtLte: createdAtLteVal,
+        updatedAtGte: updatedAtGteVal,
+        updatedAtLte: updatedAtLteVal,
+      } = {},
     },
   ) => {
     const client = createV3Client(connection, context.debug.enabled);

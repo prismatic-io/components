@@ -1,5 +1,18 @@
 ## Changelog
 
+### 2026-07-08
+
+Restructured action inputs into structured objects for an improved configuration experience
+
+- **Create Candidate** and **Edit Candidate** group their contact inputs into **Contact Information**; **Edit Candidate** additionally groups its optional name inputs into **Name Information** (Create Candidate's name inputs are required and stay flat)
+- The list actions (**List Candidates**, **List Applications**, **List Jobs**, **List Users**, and **List Attachments**) group their created, updated, and last-activity date filters into **Date Range Filters**
+- **List Applications**, **List Attachments**, **List Users**, and **List Jobs** group their record-ID filters into **ID Filters**
+- **Edit Application** groups its source, referrer, recruiter, coordinator, and prospect IDs into an **Assignment IDs** structured object
+- **Reject Application** groups its rejection email inputs into a **Rejection Email** structured object
+- Grouped pagination inputs into a **Pagination** structured object across the list actions (breaking: input keys changed); update saved integration configurations to use the new nested keys:
+  - **List Jobs (Harvest v1/v2)**, **List Candidates (Harvest v1/v2)**, **List Applications (Harvest v1/v2)**, **List Users (Harvest v1/v2)**: `per_page` → `pagination.per_page`, `page` → `pagination.page`
+  - **List Jobs**, **List Candidates**, **List Applications**, **List Users**, **List Attachments** (Harvest v3): `perPage` → `pagination.perPage`, `cursor` → `pagination.cursor`; `fetchAll` stays a top-level input
+
 ### 2026-06-12
 
 - Added full Harvest v3 API support alongside the existing v1/v2 surface; the v1/v2 API sunsets on August 31, 2026, so existing actions keep working unchanged until then and their labels now carry a **(Harvest v1/v2)** suffix

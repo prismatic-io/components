@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   ATTACHMENT_TYPE_MODEL,
   ATTACHMENT_VISIBILITY_MODEL,
@@ -44,7 +44,7 @@ export const applicationIds = input({
 export const candidateIds = {
   ...candidate_ids,
   comments:
-    "Comma-separated list of candidate IDs — returns only attachments whose application belongs to one of these candidates. Maximum 50 items.",
+    "Comma-separated list of candidate IDs; returns only attachments whose application belongs to one of these candidates. Maximum 50 items.",
 };
 export const attachmentIds = input({
   label: "Attachment IDs",
@@ -113,17 +113,26 @@ export const visibility = input({
     "Access level for the attachment within Greenhouse. When omitted, the default is inferred from the attachment type.",
   clean: toOptionalString,
 });
+const idFilters = structuredObjectInput({
+  label: "ID Filters",
+  required: false,
+  comments:
+    "Optional filters that narrow results to attachments matching specific record IDs: attachment, application, and candidate IDs. Each accepts a comma-separated list of up to 50 IDs.",
+  inputs: { attachmentIds, applicationIds, candidateIds },
+});
+const dateRangeFilters = structuredObjectInput({
+  label: "Date Range Filters",
+  required: false,
+  comments:
+    "Optional inclusive date-range filters. Narrow results by when attachments were created or last updated.",
+  inputs: { createdAtGte, createdAtLte, updatedAtGte, updatedAtLte },
+});
 export const listAttachmentsV3Inputs = {
   connection: connectionInput,
   ...cursorPaginationInputs,
-  attachmentIds,
-  applicationIds,
-  candidateIds,
+  idFilters,
   attachmentTypeFilter,
-  createdAtGte,
-  createdAtLte,
-  updatedAtGte,
-  updatedAtLte,
+  dateRangeFilters,
 };
 export const createAttachmentV3Inputs = {
   connection: connectionInput,

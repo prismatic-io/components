@@ -8,8 +8,7 @@ import {
   created_before,
   email,
   job_id,
-  page,
-  per_page,
+  pagination,
   updated_after,
   updated_before,
   version,
@@ -25,8 +24,7 @@ export const listCandidates = action({
     {
       connection,
       version,
-      per_page,
-      page,
+      pagination = {},
       created_before,
       created_after,
       updated_before,
@@ -38,8 +36,8 @@ export const listCandidates = action({
   ) => {
     const client = createClient(connection, version, context.debug.enabled);
     const params = generatePayload({
-      per_page,
-      page,
+      per_page: pagination.per_page,
+      page: pagination.page,
       created_before,
       created_after,
       updated_before,
@@ -55,8 +53,7 @@ export const listCandidates = action({
   },
   inputs: {
     connection: connectionInput,
-    per_page,
-    page,
+    pagination,
     email: {
       ...email,
       comments:
