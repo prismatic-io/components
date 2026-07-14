@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-14
+
+Added an **OAuth 2.0 Client Credentials** connection, allowing authentication with ServiceNow system (service) accounts.
+
 ### 2026-05-21
 
 Added **Fetch All** toggle input to list actions (**List Incidents**, **List Table Records**, **List Tables**, **List Users**, **List Attachments**, **List CMDB Instances**, **List Knowledge Articles**, **List Featured Knowledge Articles**, **List Most Viewed Knowledge Articles**, **Get User By Username**) to automatically retrieve all pages of results, bypassing the offset and limit inputs

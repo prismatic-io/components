@@ -1,6 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { createClient as createAxiosClient } from "@prismatic-io/spectral/dist/clients/http";
-import { authorizationCode, basic } from "./connections";
+import { authorizationCode, basic, clientCredentials } from "./connections";
 export const getAuthHeaders = (
   connection: Connection,
 ):
@@ -15,7 +15,10 @@ export const getAuthHeaders = (
     const hash = Buffer.from(`${username}:${password}`).toString("base64");
     return { Authorization: `Basic ${hash}` };
   }
-  if (connection.key === authorizationCode.key) {
+  if (
+    connection.key === authorizationCode.key ||
+    connection.key === clientCredentials.key
+  ) {
     const token = util.types.toString(connection.token.access_token);
     return { Authorization: `Bearer ${token}` };
   }
