@@ -1,5 +1,6 @@
 import { type ActionContext, util } from "@prismatic-io/spectral";
 import { ClientType, createClient } from "../client";
+import { DEFAULT_POLLING_CRM_FIELDS } from "../constants";
 import type {
   BookRecord,
   CRMRecord,
@@ -10,6 +11,10 @@ import {
   disableSpecificNotificationEvents,
   enableNotificationChannel,
 } from "./notifications";
+export const mergeCRMPollingFields = (
+  additionalFields: string[] = [],
+): string[] =>
+  Array.from(new Set([...DEFAULT_POLLING_CRM_FIELDS, ...additionalFields]));
 export const getCRMModifiedOrCreatedRecords = (
   records: CRMRecord[],
   lastUpdated: string,

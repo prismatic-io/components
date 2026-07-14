@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-14
+
+Added an **Additional Fields** input to the **New and Updated CRM Leads** and **New and Updated CRM Contacts** triggers, letting you include extra CRM fields in the trigger results without making follow-up requests.
+
 ### 2026-04-30
 
 Updated spectral version

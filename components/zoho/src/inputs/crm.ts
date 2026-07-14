@@ -49,6 +49,13 @@ export const fields = input({
       util.types.toString(value),
     ),
 });
+export const crmPollingAdditionalFields = {
+  ...fields,
+  label: "Additional Fields",
+  example: "Email",
+  comments:
+    "Additional CRM field names to include in the trigger results. `Created_Time`, `Modified_Time`, and `Full_Name` are always requested because the trigger uses them to detect new and updated records.",
+};
 export const sort_order = input({
   label: "Sort Order",
   placeholder: "Select sort order",
@@ -72,7 +79,7 @@ export const sort_by = input({
     { label: "Modified Time", value: "Modified_Time" },
   ],
   comments: "The field to sort results by.",
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 export const crmGetRecordInputs = {
   connection: connectionInput,
@@ -107,4 +114,8 @@ export const crmRemoveRecordInputs = {
 export const selectCrmRecordInputs = {
   connection: connectionInput,
   recordType: crmRecordType,
+};
+export const crmPollingTriggerInputs = {
+  connection: connectionInput,
+  fields: crmPollingAdditionalFields,
 };
