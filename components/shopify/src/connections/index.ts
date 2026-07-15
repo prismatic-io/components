@@ -113,7 +113,7 @@ const shopifyTemplatedConnection = oauth2Connection({
         placeholder: "Enter Token URL",
         type: "template",
         templateValue:
-          "https://{{#domain}}.myshopify.com/admin/oauth/access_token",
+          "https://{{#domain}}.myshopify.com/admin/oauth/access_token?expiring=1",
         comments: "The OAuth 2.0 Token URL for Shopify.",
       },
       host: {
@@ -154,7 +154,7 @@ export const shopifyConnection = oauth2Connection({
       required: true,
       shown: true,
       default:
-        "https://YOUR-SHOPIFY-DOMAIN.myshopify.com/admin/oauth/access_token",
+        "https://YOUR-SHOPIFY-DOMAIN.myshopify.com/admin/oauth/access_token?expiring=1",
       comments: "The OAuth 2.0 Token URL for Shopify.",
     },
     scopes: scopeInput,
