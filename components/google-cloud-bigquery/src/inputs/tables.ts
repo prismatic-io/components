@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanString, jsonInputClean } from "../util";
 import {
   connectionInput,
@@ -8,15 +8,15 @@ import {
   description,
   encryptionConfiguration,
   expirationTime,
+  fetchAll,
   friendlyName,
   kind,
   labels,
-  maxResults,
-  pageToken,
   projectId,
   selectedFields,
   tableId,
 } from "./common";
+import { tableListPaginationFields } from "./pagination";
 export const requirePartitionFilter = input({
   label: "Require Partition Filter",
   type: "boolean",
@@ -290,26 +290,33 @@ export const tableConstraints = input({
   clean: jsonInputClean,
   required: false,
 });
+export const tableAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments: "Additional optional fields.",
+  inputs: {
+    kind,
+    friendlyName,
+    description,
+    labels,
+    schema,
+    timePartitioning,
+    rangePartitioning,
+    clustering,
+    requirePartitionFilter,
+    expirationTime,
+    view: tableView,
+    materializedView,
+    externalDataConfiguration,
+    encryptionConfiguration,
+    defaultCollation,
+    defaultRoundingMode,
+    maxStaleness,
+  },
+});
 export const createTableInputs = {
   connectionInput,
-  kind,
   tableReference,
-  friendlyName,
-  description,
-  labels,
-  schema,
-  timePartitioning,
-  rangePartitioning,
-  clustering,
-  requirePartitionFilter,
-  expirationTime,
-  view: tableView,
-  materializedView,
-  externalDataConfiguration,
-  encryptionConfiguration,
-  defaultCollation,
-  defaultRoundingMode,
-  maxStaleness,
   datasetId: input({
     ...datasetId,
     required: true,
@@ -320,6 +327,7 @@ export const createTableInputs = {
     required: true,
     comments: "Project ID of the table to update.",
   }),
+  additionalFields: tableAdditionalFields,
 };
 export const deleteTableInputs = {
   connectionInput,
@@ -344,35 +352,35 @@ export const getTableInputs = {
   datasetId: input({
     ...datasetId,
     required: true,
-    comments: "Dataset ID of the table to retrieve.",
+    comments: "Dataset ID of the requested table.",
   }),
   projectId: input({
     ...projectId,
     required: true,
-    comments: "Project ID of the table to retrieve.",
+    comments: "Project ID of the requested table.",
   }),
   tableId: input({
     ...tableId,
     required: true,
-    comments: "Table ID of the table to retrieve.",
+    comments: "Table ID of the requested table.",
   }),
   selectedFields,
   view,
 };
 export const listTablesInputs = {
   connectionInput,
-  datasetId: input({
-    ...datasetId,
-    required: true,
-    comments: "Dataset ID of the tables to list.",
-  }),
   projectId: input({
     ...projectId,
     required: true,
     comments: "Project ID of the tables to list.",
   }),
-  maxResults,
-  pageToken,
+  datasetId: input({
+    ...datasetId,
+    required: true,
+    comments: "Dataset ID of the tables to list.",
+  }),
+  fetchAll,
+  pagination: tableListPaginationFields,
 };
 export const patchTableInputs = {
   connectionInput,
@@ -391,24 +399,8 @@ export const patchTableInputs = {
     required: true,
     comments: "Table ID of the table to patch.",
   }),
-  kind,
   tableReference,
-  friendlyName,
-  description,
-  labels,
-  schema,
-  timePartitioning,
-  rangePartitioning,
-  clustering,
-  requirePartitionFilter,
-  expirationTime,
-  view: tableView,
-  materializedView,
-  externalDataConfiguration,
-  encryptionConfiguration,
-  defaultCollation,
-  defaultRoundingMode,
-  maxStaleness,
+  additionalFields: tableAdditionalFields,
 };
 export const updateTableInputs = {
   connectionInput,
@@ -427,22 +419,6 @@ export const updateTableInputs = {
     required: true,
     comments: "Table ID of the table to update.",
   }),
-  kind,
   tableReference,
-  friendlyName,
-  description,
-  labels,
-  schema,
-  timePartitioning,
-  rangePartitioning,
-  clustering,
-  requirePartitionFilter,
-  expirationTime,
-  view: tableView,
-  materializedView,
-  externalDataConfiguration,
-  encryptionConfiguration,
-  defaultCollation,
-  defaultRoundingMode,
-  maxStaleness,
+  additionalFields: tableAdditionalFields,
 };

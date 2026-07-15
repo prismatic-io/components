@@ -1,17 +1,12 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, jobId, location, projectId } from "../../inputs";
+import { cancelJobInputs } from "../../inputs";
 export const cancelJob = action({
   display: {
     description: "Requests that a job be cancelled.",
     label: "Cancel Job",
   },
-  inputs: {
-    connectionInput,
-    projectId,
-    jobId,
-    location,
-  },
+  inputs: cancelJobInputs,
   perform: async (
     _context,
     { connectionInput, projectId, jobId, location },

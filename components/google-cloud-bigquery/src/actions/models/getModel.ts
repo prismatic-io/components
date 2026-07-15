@@ -1,17 +1,12 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, datasetId, modelId, projectId } from "../../inputs";
+import { getModelInputs } from "../../inputs";
 export const getModel = action({
   display: {
     description: "Gets the specified model resource by model ID.",
     label: "Get Model",
   },
-  inputs: {
-    connectionInput,
-    projectId,
-    datasetId,
-    modelId,
-  },
+  inputs: getModelInputs,
   perform: async (
     _context,
     { connectionInput, projectId, datasetId, modelId },

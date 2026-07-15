@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { jsonInputClean, valueListInputClean } from "../util";
 import {
   connectionInput,
@@ -8,14 +8,14 @@ import {
   encryptionConfiguration,
   etag,
   expirationTime,
+  fetchAll,
   friendlyName,
   labels,
   lastModifiedTime,
   location,
-  maxResults,
-  pageToken,
   projectId,
 } from "./common";
+import { paginationFields } from "./pagination";
 export const modelId = input({
   label: "Model ID",
   type: "string",
@@ -177,6 +177,30 @@ export const remoteModelInfo = input({
   clean: jsonInputClean,
   required: false,
 });
+export const updateModelAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments: "Additional optional fields.",
+  inputs: {
+    etag,
+    creationTime,
+    lastModifiedTime,
+    description,
+    friendlyName,
+    labels,
+    expirationTime,
+    location,
+    encryptionConfiguration,
+    modelType,
+    trainingRuns,
+    featureColumns,
+    labelColumns,
+    hparamSearchSpaces,
+    defaultTrialId,
+    hparamTrials,
+    optimalTrialIds,
+  },
+});
 export const deleteModelInputs = {
   connectionInput,
   projectId,
@@ -193,8 +217,8 @@ export const listModelsInputs = {
   connectionInput,
   projectId,
   datasetId,
-  pageToken,
-  maxResults,
+  fetchAll,
+  pagination: paginationFields,
 };
 export const updateModelInputs = {
   connectionInput,
@@ -202,21 +226,5 @@ export const updateModelInputs = {
   datasetId,
   modelId,
   modelReference,
-  etag,
-  creationTime,
-  lastModifiedTime,
-  description,
-  friendlyName,
-  labels,
-  expirationTime,
-  location,
-  encryptionConfiguration,
-  modelType,
-  trainingRuns,
-  featureColumns,
-  labelColumns,
-  hparamSearchSpaces,
-  defaultTrialId,
-  hparamTrials,
-  optimalTrialIds,
+  additionalFields: updateModelAdditionalFields,
 };

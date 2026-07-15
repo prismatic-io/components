@@ -1,31 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  datasetId,
-  fetchAll,
-  filter,
-  maxResults,
-  pageToken,
-  projectId,
-  readMask,
-} from "../../inputs";
+import { listRoutinesInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 export const listRoutines = action({
   display: {
     description: "Lists all routines in the specified dataset.",
     label: "List Routines",
   },
-  inputs: {
-    connectionInput,
-    projectId,
-    datasetId,
-    filter,
-    pageToken,
-    maxResults,
-    readMask,
-    fetchAll,
-  },
+  inputs: listRoutinesInputs,
   perform: async (
     _context,
     {
@@ -33,9 +15,8 @@ export const listRoutines = action({
       datasetId,
       projectId,
       filter,
-      pageToken,
-      maxResults,
       readMask,
+      pagination = {},
       fetchAll,
     },
   ) => {
@@ -46,8 +27,8 @@ export const listRoutines = action({
         datasetId: datasetId || undefined,
         projectId: projectId || undefined,
         filter: filter || undefined,
-        pageToken: pageToken || undefined,
-        maxResults: maxResults || undefined,
+        pageToken: pagination.pageToken || undefined,
+        maxResults: pagination.maxResults || undefined,
         readMask: readMask || undefined,
       },
       fetchAll,

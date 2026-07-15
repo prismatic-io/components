@@ -1,24 +1,12 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  datasetId,
-  projectId,
-  readMask,
-  routineId,
-} from "../../inputs";
+import { getRoutineInputs } from "../../inputs";
 export const getRoutine = action({
   display: {
     description: "Gets the specified routine resource by routine ID.",
     label: "Get Routine",
   },
-  inputs: {
-    connectionInput,
-    datasetId,
-    projectId,
-    readMask,
-    routineId,
-  },
+  inputs: getRoutineInputs,
   perform: async (
     _context,
     { connectionInput, datasetId, projectId, readMask, routineId },

@@ -1,18 +1,18 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanString, jsonInputClean, valueListInputClean } from "../util";
 import {
   connectionInput,
   etag,
+  fetchAll,
   id,
   kind,
   labels,
   location,
   maxResults,
-  pageToken,
   projectId,
   selfLink,
-  startIndex,
 } from "./common";
+import { paginationFields, paginationFieldsWithStartIndex } from "./pagination";
 export const jobId = input({
   label: "Job ID",
   type: "string",
@@ -301,6 +301,53 @@ export const connectionProperties = input({
   clean: jsonInputClean,
   required: false,
 });
+export const listJobsFilters = structuredObjectInput({
+  label: "Filters",
+  required: false,
+  comments: "Optional query controls to sort and refine the results.",
+  inputs: {
+    allUsers,
+    minCreationTime,
+    maxCreationTime,
+    projection,
+    parentJobId,
+  },
+});
+export const createJobAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments: "Additional optional fields.",
+  inputs: {
+    kind,
+    etag,
+    id,
+    selfLink,
+    userEmail,
+    statistics,
+    status,
+  },
+});
+export const queryJobAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments: "Additional optional fields.",
+  inputs: {
+    kind,
+    defaultDataset,
+    timeoutMs,
+    dryRun,
+    useQueryCache,
+    useLegacySql,
+    parameterMode,
+    queryParameters,
+    location,
+    connectionProperties,
+    labels,
+    maximumBytesBilled,
+    requestId,
+    createSession,
+  },
+});
 export const cancelJobInputs = {
   connectionInput,
   projectId,
@@ -311,14 +358,8 @@ export const createJobInputs = {
   connectionInput,
   projectId,
   configuration,
-  kind,
-  etag,
-  id,
-  selfLink,
-  userEmail,
   jobReference,
-  statistics,
-  status,
+  additionalFields: createJobAdditionalFields,
 };
 export const deleteJobInputs = {
   connectionInput,
@@ -336,41 +377,22 @@ export const getQueryJobResultInputs = {
   connectionInput,
   projectId,
   jobId,
-  startIndex,
-  pageToken,
-  maxResults,
   timeoutMs,
   location,
+  pagination: paginationFieldsWithStartIndex,
 };
 export const listJobsInputs = {
   connectionInput,
   projectId,
-  pageToken,
-  allUsers,
-  maxResults,
-  minCreationTime,
-  maxCreationTime,
-  projection,
+  fetchAll,
+  pagination: paginationFields,
+  filters: listJobsFilters,
   stateFilter,
-  parentJobId,
 };
 export const queryJobInputs = {
   connectionInput,
   projectId,
-  kind,
   query,
   maxResults,
-  defaultDataset,
-  timeoutMs,
-  dryRun,
-  useQueryCache,
-  useLegacySql,
-  parameterMode,
-  queryParameters,
-  location,
-  connectionProperties,
-  labels,
-  maximumBytesBilled,
-  requestId,
-  createSession,
+  additionalFields: queryJobAdditionalFields,
 };

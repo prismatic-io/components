@@ -1,17 +1,12 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, jobId, location, projectId } from "../../inputs";
+import { getJobInputs } from "../../inputs";
 export const getJob = action({
   display: {
     description: "Returns information about a specific job.",
     label: "Get Job",
   },
-  inputs: {
-    connectionInput,
-    projectId,
-    jobId,
-    location,
-  },
+  inputs: getJobInputs,
   perform: async (
     _context,
     { connectionInput, projectId, jobId, location },

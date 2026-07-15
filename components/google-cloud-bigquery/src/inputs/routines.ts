@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanString, jsonInputClean, valueListInputClean } from "../util";
 import {
   connectionInput,
@@ -6,12 +6,12 @@ import {
   datasetId,
   description,
   etag,
+  fetchAll,
   filter,
   lastModifiedTime,
-  maxResults,
-  pageToken,
   projectId,
 } from "./common";
+import { paginationFields } from "./pagination";
 export const routineId = input({
   label: "Routine ID",
   type: "string",
@@ -170,6 +170,28 @@ export const sparkOptions = input({
   clean: jsonInputClean,
   required: false,
 });
+export const routineAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments: "Additional optional fields.",
+  inputs: {
+    etag,
+    argument,
+    returnTableType,
+    returnType,
+    creationTime,
+    lastModifiedTime,
+    language,
+    importedLibraries,
+    description: {
+      ...description,
+      comments: "Optional. The description of the routine, if defined.",
+    },
+    determinismLevel,
+    remoteFunctionOptions,
+    sparkOptions,
+  },
+});
 export const createRoutineInputs = {
   connectionInput,
   datasetId,
@@ -177,21 +199,7 @@ export const createRoutineInputs = {
   routineReference,
   routineType,
   definitionBody,
-  etag,
-  argument,
-  returnTableType,
-  returnType,
-  creationTime,
-  lastModifiedTime,
-  language,
-  importedLibraries,
-  description: {
-    ...description,
-    comments: "Optional. The description of the routine, if defined.",
-  },
-  determinismLevel,
-  remoteFunctionOptions,
-  sparkOptions,
+  additionalFields: routineAdditionalFields,
 };
 export const deleteRoutineInputs = {
   connectionInput,
@@ -210,9 +218,9 @@ export const listRoutinesInputs = {
   connectionInput,
   projectId,
   datasetId,
+  fetchAll,
+  pagination: paginationFields,
   filter,
-  pageToken,
-  maxResults,
   readMask,
 };
 export const updateRoutineInputs = {
@@ -222,19 +230,5 @@ export const updateRoutineInputs = {
   routineReference,
   routineType,
   definitionBody,
-  etag,
-  argument,
-  returnTableType,
-  returnType,
-  creationTime,
-  lastModifiedTime,
-  language,
-  importedLibraries,
-  description: {
-    ...description,
-    comments: "Optional. The description of the routine, if defined.",
-  },
-  determinismLevel,
-  remoteFunctionOptions,
-  sparkOptions,
+  additionalFields: routineAdditionalFields,
 };

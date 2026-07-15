@@ -1,42 +1,16 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  datasetId,
-  fetchAll,
-  maxResults,
-  pageToken,
-  projectId,
-} from "../../inputs";
+import { listTablesInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 export const listTables = action({
   display: {
     description: "Lists all tables in the specified dataset.",
     label: "List Tables",
   },
-  inputs: {
-    connectionInput,
-    datasetId: input({
-      ...datasetId,
-      required: true,
-      comments: "Dataset ID of the tables to list.",
-    }),
-    projectId: input({
-      ...projectId,
-      required: true,
-      comments: "Project ID of the tables to list.",
-    }),
-    maxResults: input({
-      ...maxResults,
-      required: false,
-      clean: util.types.toString,
-    }),
-    pageToken,
-    fetchAll,
-  },
+  inputs: listTablesInputs,
   perform: async (
     _context,
-    { connectionInput, datasetId, projectId, maxResults, pageToken, fetchAll },
+    { connectionInput, datasetId, projectId, pagination = {}, fetchAll },
   ) => {
     const client = createClient(connectionInput);
     return await paginateResults(
@@ -44,8 +18,10 @@ export const listTables = action({
       {
         datasetId,
         projectId,
-        ...(maxResults && { maxResults: util.types.toNumber(maxResults) }),
-        ...(pageToken && { pageToken }),
+        ...(pagination.maxResults && {
+          maxResults: util.types.toNumber(pagination.maxResults),
+        }),
+        ...(pagination.pageToken && { pageToken: pagination.pageToken }),
       },
       fetchAll,
       "tables",

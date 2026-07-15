@@ -1,17 +1,12 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, policy, resource, updateMask } from "../../inputs";
+import { setPolicyInputs } from "../../inputs";
 export const setPolicy = action({
   display: {
     description: "Sets the access control policy on the specified resource.",
     label: "Set Policy",
   },
-  inputs: {
-    connectionInput,
-    resource,
-    policy,
-    updateMask,
-  },
+  inputs: setPolicyInputs,
   perform: async (
     _context,
     { connectionInput, resource, policy, updateMask },

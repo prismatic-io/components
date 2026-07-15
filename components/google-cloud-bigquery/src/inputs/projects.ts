@@ -1,10 +1,11 @@
-import { connectionInput, maxResults, pageToken, projectId } from "./common";
+import { connectionInput, fetchAll, projectId } from "./common";
+import { paginationFields } from "./pagination";
 export const getServiceAccountInputs = {
   connectionInput,
   projectId,
 };
 export const listProjectsInputs = {
   connectionInput,
-  pageToken,
-  maxResults,
+  fetchAll,
+  pagination: paginationFields,
 };

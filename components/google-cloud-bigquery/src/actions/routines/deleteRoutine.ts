@@ -1,18 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, datasetId, projectId, routineId } from "../../inputs";
+import { deleteRoutineInputs } from "../../inputs";
 export const deleteRoutine = action({
   display: {
     description:
       "Deletes the routine specified by routine ID from the dataset.",
     label: "Delete Routine",
   },
-  inputs: {
-    connectionInput,
-    datasetId,
-    projectId,
-    routineId,
-  },
+  inputs: deleteRoutineInputs,
   perform: async (
     _context,
     { connectionInput, datasetId, projectId, routineId },

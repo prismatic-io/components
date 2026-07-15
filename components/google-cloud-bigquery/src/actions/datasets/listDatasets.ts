@@ -1,14 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  all,
-  connectionInput,
-  fetchAll,
-  filter,
-  maxResults,
-  pageToken,
-  projectId,
-} from "../../inputs";
+import { listDatasetsInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 export const listDatasets = action({
   display: {
@@ -16,36 +8,20 @@ export const listDatasets = action({
       "Lists all datasets in the specified project to which the user has been granted the READER dataset role.",
     label: "List Datasets",
   },
-  inputs: {
-    connectionInput,
-    projectId,
-    pageToken,
-    all,
-    filter,
-    maxResults,
-    fetchAll,
-  },
+  inputs: listDatasetsInputs,
   perform: async (
     _context,
-    {
-      connectionInput,
-      projectId,
-      pageToken,
-      all,
-      filter,
-      maxResults,
-      fetchAll,
-    },
+    { connectionInput, projectId, all, filter, pagination = {}, fetchAll },
   ) => {
     const client = createClient(connectionInput);
     return await paginateResults(
       (params) => client.datasets.list(params),
       {
         projectId: projectId || undefined,
-        pageToken: pageToken || undefined,
+        pageToken: pagination.pageToken || undefined,
         all,
         filter: filter || undefined,
-        maxResults: maxResults || undefined,
+        maxResults: pagination.maxResults || undefined,
       },
       fetchAll,
       "datasets",

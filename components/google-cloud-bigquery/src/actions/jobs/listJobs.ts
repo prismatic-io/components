@@ -1,50 +1,21 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  allUsers,
-  connectionInput,
-  fetchAll,
-  maxCreationTime,
-  maxResults,
-  minCreationTime,
-  pageToken,
-  parentJobId,
-  projectId,
-  projection,
-  stateFilter,
-} from "../../inputs";
+import { listJobsInputs } from "../../inputs";
 import { paginateResults } from "../../utils/pagination";
 export const listJobs = action({
   display: {
     description: "Lists all jobs that you started in the specified project.",
     label: "List Jobs",
   },
-  inputs: {
-    connectionInput,
-    projectId,
-    pageToken,
-    allUsers,
-    maxResults,
-    minCreationTime,
-    maxCreationTime,
-    projection,
-    stateFilter,
-    parentJobId,
-    fetchAll,
-  },
+  inputs: listJobsInputs,
   perform: async (
     _context,
     {
       connectionInput,
       projectId,
-      pageToken,
-      allUsers,
-      maxResults,
-      minCreationTime,
-      maxCreationTime,
-      projection,
+      filters = {},
       stateFilter,
-      parentJobId,
+      pagination = {},
       fetchAll,
     },
   ) => {
@@ -53,14 +24,14 @@ export const listJobs = action({
       (params) => client.jobs.list(params),
       {
         projectId: projectId || undefined,
-        pageToken: pageToken || undefined,
-        allUsers,
-        maxResults: maxResults || undefined,
-        minCreationTime: minCreationTime || undefined,
-        maxCreationTime: maxCreationTime || undefined,
-        projection: projection || undefined,
+        pageToken: pagination.pageToken || undefined,
+        allUsers: filters.allUsers,
+        maxResults: pagination.maxResults || undefined,
+        minCreationTime: filters.minCreationTime || undefined,
+        maxCreationTime: filters.maxCreationTime || undefined,
+        projection: filters.projection || undefined,
         stateFilter: stateFilter || undefined,
-        parentJobId: parentJobId || undefined,
+        parentJobId: filters.parentJobId || undefined,
       },
       fetchAll,
       "jobs",

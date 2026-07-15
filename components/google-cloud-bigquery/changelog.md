@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-07-15
+
+Grouped related optional inputs into structured objects across BigQuery actions to reduce clutter in the configuration UI
+
+- Grouped the pagination inputs on the **List Jobs**, **List Datasets**, **List Models**, **List Routines**, **List Projects**, and **List Tables** actions into a **Pagination** group, with **Fetch All** remaining a top-level toggle
+- Grouped the pagination inputs on **Get Query Job Results** and **List Table Data (Deprecated)** into a **Pagination** group
+- Grouped the **List Jobs** filter inputs into a **Filters** group, with **State Filter** remaining top-level
+- Grouped the optional body fields on **Create Dataset**, **Update Dataset**, **Create Table**, **Patch Table**, **Update Table**, **Update Model**, **Create Routine**, **Update Routine**, **Create Job**, **Query Job**, and **Table Data Insert All** into an **Additional Fields** group
+
 ### 2026-06-09
 
 Added **New Jobs** polling trigger that surfaces BigQuery jobs created
