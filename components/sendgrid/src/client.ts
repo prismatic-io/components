@@ -1,7 +1,7 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import { sendGridConnection } from "./connections";
 import client from "@sendgrid/client";
 import SendGrid from "@sendgrid/mail";
+import { sendGridConnection } from "./connections";
 import { validateConnection } from "./util";
 export const createAuthorizedClient = (connection: Connection) => {
   validateConnection(connection);

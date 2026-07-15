@@ -1,12 +1,12 @@
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
-import { updateWebhookInputs } from "../../inputs";
 import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { eventsBuilder, updateWebhookHelper } from "../../helpers";
+import { updateWebhookInputs } from "../../inputs";
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
-    description: "Update an existing Event Webhook configuration.",
+    description: "Updates an existing Event Webhook configuration.",
   },
   inputs: updateWebhookInputs,
   perform: async (

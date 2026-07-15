@@ -1,4 +1,4 @@
-import { createPayload } from "./payload";
+import { createPayload } from "../util";
 describe("verifyPayload", () => {
   test("ensure payload is properly formatted", () => {
     const params = {

@@ -1,8 +1,8 @@
-import type { Client } from "@sendgrid/client";
-import { extractMetadata } from "../../util";
-import { MAX_PAGE_SIZE } from "../../constants";
 import { util } from "@prismatic-io/spectral";
+import type { Client } from "@sendgrid/client";
+import { MAX_PAGE_SIZE } from "../../constants";
 import type { FetchPaginatedDataQueryParams } from "../../types";
+import { extractMetadata } from "../../util";
 export const fetchPaginatedData = async (
   client: Client,
   url: string,

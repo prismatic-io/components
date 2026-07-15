@@ -1,44 +1,14 @@
-import {
-  sendEmail,
-  sendMultipleEmails,
-  sendEmailWithDynamicTemplate,
-  createList,
-  getAllLists,
-  getListById,
-  addOrUpdateContact,
-  getContactsByEmails,
-  initiateContactsImport,
-  getImportStatus,
-  getAllFieldDefinitions,
-} from "./emails";
-import { rawRequest } from "./rawRequest";
-import {
-  createWebhook,
-  updateWebhook,
-  getWebhook,
-  listWebhooks,
-  deleteWebhook,
-  testWebhook,
-  toggleSignatureVerification,
-} from "./webhooks";
+import contactsActions from "./contacts";
+import customFieldsActions from "./customFields";
+import emailsActions from "./emails";
+import listsActions from "./lists";
+import miscActions from "./misc";
+import webhooksActions from "./webhooks";
 export default {
-  sendEmail,
-  sendMultipleEmails,
-  sendEmailWithDynamicTemplate,
-  rawRequest,
-  createList,
-  getAllLists,
-  getListById,
-  addOrUpdateContact,
-  getContactsByEmails,
-  initiateContactsImport,
-  getImportStatus,
-  getAllFieldDefinitions,
-  createWebhook,
-  updateWebhook,
-  getWebhook,
-  listWebhooks,
-  deleteWebhook,
-  testWebhook,
-  toggleSignatureVerification,
+  ...emailsActions,
+  ...contactsActions,
+  ...listsActions,
+  ...customFieldsActions,
+  ...miscActions,
+  ...webhooksActions,
 };

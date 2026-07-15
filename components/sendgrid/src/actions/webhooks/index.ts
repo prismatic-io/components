@@ -1,7 +1,16 @@
-export { createWebhook } from "./createWebhook";
-export { updateWebhook } from "./updateWebhook";
-export { getWebhook } from "./getWebhook";
-export { listWebhooks } from "./listWebhooks";
-export { deleteWebhook } from "./deleteWebhook";
-export { testWebhook } from "./testWebhook";
-export { toggleSignatureVerification } from "./toggleSignatureVerification";
+import { createWebhook } from "./createWebhook";
+import { deleteWebhook } from "./deleteWebhook";
+import { getWebhook } from "./getWebhook";
+import { listWebhooks } from "./listWebhooks";
+import { testWebhook } from "./testWebhook";
+import { toggleSignatureVerification } from "./toggleSignatureVerification";
+import { updateWebhook } from "./updateWebhook";
+export default {
+  createWebhook,
+  deleteWebhook,
+  getWebhook,
+  listWebhooks,
+  testWebhook,
+  toggleSignatureVerification,
+  updateWebhook,
+};

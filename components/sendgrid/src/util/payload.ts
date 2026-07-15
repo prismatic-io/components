@@ -1,6 +1,6 @@
-import type { MailDataRequired } from "@sendgrid/mail";
-import type { MailData } from "@sendgrid/helpers/classes/mail";
 import type { EmailJSON } from "@sendgrid/helpers/classes/email-address";
+import type { MailData } from "@sendgrid/helpers/classes/mail";
+import type { MailDataRequired } from "@sendgrid/mail";
 export const createPayload = ({
   to,
   cc,

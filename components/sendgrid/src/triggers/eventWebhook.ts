@@ -1,8 +1,7 @@
 import { trigger, util } from "@prismatic-io/spectral";
 import { EventWebhook } from "@sendgrid/eventwebhook";
-import { eventWebhookInputs } from "../inputs";
-import { getBase64FromUrl } from "../util";
 import { createAuthorizedClient } from "../client";
+import { eventWebhookTriggerExamplePayload } from "../examplePayloads";
 import {
   createWebhookHelper,
   deleteWebhookHelper,
@@ -11,8 +10,9 @@ import {
   toggleSignatureVerificationHelper,
   updateWebhookHelper,
 } from "../helpers";
+import { eventWebhookInputs } from "../inputs";
 import type { WebhookState } from "../types";
-import { eventWebhookTriggerExamplePayload } from "../examplePayloads";
+import { getBase64FromUrl } from "../util";
 export const eventWebhook = trigger({
   display: {
     label: "Managed Webhook Events",
@@ -86,7 +86,7 @@ export const eventWebhook = trigger({
         });
         logger.info("Signature verification enabled successfully");
         if (debug.enabled) logger.info(JSON.stringify(data));
-        crossFlowState[encodedId]["publicKey"] = data.public_key;
+        (crossFlowState[encodedId] as WebhookState).publicKey = data.public_key;
       } catch (e) {
         handleWebhookError(
           e,

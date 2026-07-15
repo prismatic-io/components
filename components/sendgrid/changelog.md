@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-15
+
+Resolved **Send Email** and **Send Multiple Emails** action issue related to sending a message without attachments.
+
 ### 2026-06-04
 
 Added the **New and Updated Messages** polling trigger that retrieves email activity events from the SendGrid Email Activity Feed

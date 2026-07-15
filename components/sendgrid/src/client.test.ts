@@ -1,5 +1,5 @@
-import { createAuthorizedClient } from "./client";
 import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createAuthorizedClient } from "./client";
 import { sendGridConnection } from "./connections";
 describe("createAuthorizedClient", () => {
   test("returns client with valid connection", () => {

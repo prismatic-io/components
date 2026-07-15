@@ -13,7 +13,7 @@ export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Messages",
     description:
-      "Checks for new and updated messages in SendGrid's Email Activity Feed (`GET /v3/messages`) on a configured schedule, emitting messages whose `last_event_time` falls within the polling window. Webhooks (the Managed Webhook Events trigger) are the recommended primary mechanism for event delivery — this polling trigger is a fallback for historical or backfill ingestion. Requires the paid Email Activity History add-on and an API key with the `Email Activity` permission. SendGrid retains Email Activity for only 30 days, and events surface a few minutes after the underlying send (the trigger handles both: bootstrap is clamped to the retention window and a small overlap is subtracted from `now` to avoid tail-cutting in-flight events). Because the bulk Email Activity Feed exposes a single `last_event_time` per message (no per-event timeline), the created/updated split is best-effort: all records are emitted on the `updated` branch.",
+      "Checks for new and updated messages in SendGrid on a configured schedule.",
   },
   examplePayload: pollChangesTriggerExamplePayload,
   inputs: pollChangesInputs,

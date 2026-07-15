@@ -1,13 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
-import { toggleSignatureVerificationInputs } from "../../inputs";
 import { toggleSignatureVerificationExamplePayload } from "../../examplePayloads";
 import { toggleSignatureVerificationHelper } from "../../helpers";
+import { toggleSignatureVerificationInputs } from "../../inputs";
 export const toggleSignatureVerification = action({
   display: {
     label: "Toggle Signature Verification",
     description:
-      "Enable or disable signature verification for an Event Webhook.",
+      "Enables or disables signature verification for an Event Webhook.",
   },
   inputs: toggleSignatureVerificationInputs,
   perform: async (_context, { sendGridConnection, webhookId, enabled }) => {

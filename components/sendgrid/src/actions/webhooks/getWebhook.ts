@@ -1,11 +1,11 @@
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
-import { getWebhookInputs } from "../../inputs";
 import { getWebhookExamplePayload } from "../../examplePayloads";
+import { getWebhookInputs } from "../../inputs";
 export const getWebhook = action({
   display: {
     label: "Get Webhook",
-    description: "Retrieve an Event Webhook configuration by ID.",
+    description: "Retrieves an Event Webhook configuration by ID.",
   },
   inputs: getWebhookInputs,
   perform: async (_context, { sendGridConnection, webhookId }) => {

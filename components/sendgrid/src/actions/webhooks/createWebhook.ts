@@ -1,13 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
-import { createWebhookInputs } from "../../inputs";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookHelper, eventsBuilder } from "../../helpers";
+import { createWebhookInputs } from "../../inputs";
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
     description:
-      "Create a new Event Webhook configuration to receive email event data.",
+      "Creates a new Event Webhook configuration to receive email event data.",
   },
   inputs: createWebhookInputs,
   perform: async (

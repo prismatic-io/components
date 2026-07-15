@@ -1,9 +1,10 @@
 import { trigger } from "@prismatic-io/spectral";
+import { webhookTriggerExamplePayload } from "../examplePayloads";
 export const webhook = trigger({
   display: {
-    label: "Manual Webhook",
+    label: "Webhook",
     description:
-      "Receive and validate webhook requests from SendGrid for manually configured webhooks.",
+      "Receives and validates webhook requests from SendGrid for manually configured webhook subscriptions.",
   },
   perform: async (_context, payload) => {
     return Promise.resolve({
@@ -13,4 +14,5 @@ export const webhook = trigger({
   inputs: {},
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
+  examplePayload: webhookTriggerExamplePayload,
 });
