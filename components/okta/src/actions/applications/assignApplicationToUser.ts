@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { assignUserToGroupExamplePayload } from "../../examplePayloads/groups";
+import { assignApplicationToUserExamplePayload } from "../../examplePayloads/applications";
 import { assignApplicationToUserInputs } from "../../inputs/applications";
 export const assignApplicationToUser = action({
   display: {
@@ -11,7 +11,7 @@ export const assignApplicationToUser = action({
   inputs: assignApplicationToUserInputs,
   perform: async (
     context,
-    { applicationId, userId, connection, password, scope, username, profile },
+    { applicationId, userId, connection, scope, assignmentDetails = {} },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const { data } = await client.post(
@@ -20,13 +20,15 @@ export const assignApplicationToUser = action({
         id: userId,
         scope,
         credentials: {
-          userName: username,
-          password: password ? { value: password } : undefined,
+          userName: assignmentDetails.username,
+          password: assignmentDetails.password
+            ? { value: assignmentDetails.password }
+            : undefined,
         },
-        profile,
+        profile: assignmentDetails.profile,
       },
     );
     return { data };
   },
-  examplePayload: assignUserToGroupExamplePayload,
+  examplePayload: assignApplicationToUserExamplePayload,
 });

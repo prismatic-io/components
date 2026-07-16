@@ -333,6 +333,34 @@ export const getApplicationUserAssignmentsExamplePayload = {
     },
   },
 };
+export const assignApplicationToUserExamplePayload = {
+  data: {
+    id: "00u1dnq5S0CfjlkpABCD",
+    scope: "USER",
+    status: "PROVISIONED",
+    created: "2024-01-31T18:25:01.000Z",
+    lastUpdated: "2024-01-31T18:25:03.000Z",
+    statusChanged: "2024-01-31T18:25:03.000Z",
+    passwordChanged: null,
+    syncState: "SYNCHRONIZED",
+    lastSync: "2024-01-31T18:25:03.000Z",
+    credentials: {
+      userName: "saml.test@example.com",
+    },
+    profile: {
+      email: "saml.test@example.com",
+      role: "Tester",
+    },
+    _links: {
+      app: {
+        href: "https://{yourOktaDomain}/api/v1/apps/0oajiqIRNXPPJBNZMGYL",
+      },
+      user: {
+        href: "https://{yourOktaDomain}/api/v1/users/00u1dnq5S0CfjlkpABCD",
+      },
+    },
+  },
+};
 export const updateApplicationUserAssignmentsExamplePayload = {
   data: {
     credentials: {

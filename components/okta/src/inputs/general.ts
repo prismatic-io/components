@@ -1,4 +1,9 @@
-import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import {
+  input,
+  type KeyValuePair,
+  structuredObjectInput,
+  util,
+} from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
 export const connection = input({
   label: "Connection",
@@ -17,7 +22,7 @@ export const search = input({
   clean: cleanString,
 });
 export const q = input({
-  label: "q",
+  label: "Query",
   type: "string",
   comments:
     "Searches for apps with name or label properties that starts with the q value using the startsWith operation.",
@@ -78,6 +83,12 @@ export const sortOrder = input({
   ],
   clean: cleanString,
 });
+export const sorting = structuredObjectInput({
+  label: "Sorting",
+  required: false,
+  comments: "Field and direction to sort results by (for search queries only).",
+  inputs: { sortBy, sortOrder },
+});
 export const extraParameters = input({
   label: "Extra Parameters",
   type: "string",
@@ -137,35 +148,43 @@ export const fetchAll = input({
   required: false,
   clean: util.types.toBool,
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and limit controls for paging through results.",
+  inputs: { after, limit },
+});
+export const filters = structuredObjectInput({
+  label: "Filters",
+  required: false,
+  comments: "Search, filter, and query controls to refine the results.",
+  inputs: { search, filter, q },
+});
+export const systemLogFilters = structuredObjectInput({
+  label: "Filters",
+  required: false,
+  comments: "Time bounds, filter, and query controls to refine the results.",
+  inputs: { since, until, filter, q },
+});
 export const listInputs = {
   fetchAll,
-  search,
-  filter,
-  q,
-  after,
-  limit,
-  sortBy,
-  sortOrder,
+  filters,
+  pagination,
+  sorting,
   extraParameters,
   connection,
 };
 export const getSystemLogInputs = {
   fetchAll,
-  since,
-  until,
-  filter,
-  q,
-  after,
-  limit,
+  filters: systemLogFilters,
+  pagination,
   sortOrder,
   connection,
 };
 export const listRealmsInputs = {
   fetchAll,
-  limit,
-  after,
+  pagination,
   search,
-  sortBy,
-  sortOrder,
+  sorting,
   connection,
 };

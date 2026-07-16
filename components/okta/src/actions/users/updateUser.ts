@@ -13,24 +13,17 @@ export const updateUser = action({
     context,
     {
       connection,
-      answer,
-      department,
-      email,
-      employeeNumber,
-      firstName,
-      hashPassword,
-      lastName,
-      locale,
-      login,
-      mobilePhone,
-      password,
-      profileExtraInputs,
-      question,
       id,
+      login,
+      email,
+      firstName,
+      lastName,
       realmId,
+      additionalFields = {},
     },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
+    const { password, question, answer, hashPassword } = additionalFields;
     const credentials =
       password || (question && answer)
         ? {
@@ -47,11 +40,13 @@ export const updateUser = action({
         lastName,
         email,
         login,
-        mobilePhone,
-        department,
-        employeeNumber,
-        locale,
-        ...(profileExtraInputs ? profileExtraInputs : {}),
+        mobilePhone: additionalFields.mobilePhone,
+        department: additionalFields.department,
+        employeeNumber: additionalFields.employeeNumber,
+        locale: additionalFields.locale,
+        ...(additionalFields.profileExtraInputs
+          ? additionalFields.profileExtraInputs
+          : {}),
       },
       credentials,
       realmId,

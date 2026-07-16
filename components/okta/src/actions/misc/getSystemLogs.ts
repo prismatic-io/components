@@ -7,22 +7,22 @@ export const getSystemLogs = action({
   display: {
     label: "Get System Logs",
     description:
-      "Retrieves system log events for security monitoring and compliance auditing. Max 10000 records can be fetched at once.",
+      "Retrieves system log events for security monitoring and compliance auditing, up to a maximum of 10000 records per request.",
   },
   inputs: getSystemLogInputs,
   perform: async (
     context,
-    { connection, after, filter, limit, q, since, sortOrder, until, fetchAll },
+    { connection, filters = {}, sortOrder, fetchAll, pagination = {} },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const data = await paginateRecordsWithLink(client, "/logs", fetchAll, {
-      after,
-      filter,
-      limit: limit || 1000,
-      q,
-      since,
+      after: pagination.after,
+      filter: filters.filter,
+      limit: pagination.limit || 1000,
+      q: filters.q,
+      since: filters.since,
       sortOrder: sortOrder || "ASCENDING",
-      until,
+      until: filters.until,
     });
     return { data };
   },

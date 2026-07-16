@@ -13,16 +13,12 @@ export const listUsers = action({
   perform: async (
     context,
     {
-      after,
       connection,
       extraParameters,
-      filter,
-      limit,
-      search,
-      sortBy,
-      sortOrder,
-      q,
+      filters = {},
+      sorting = {},
       fetchAll,
+      pagination = {},
     },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
@@ -31,13 +27,13 @@ export const listUsers = action({
       "/users",
       fetchAll,
       {
-        after,
-        filter,
-        limit,
-        search,
-        sortBy,
-        sortOrder,
-        q,
+        after: pagination.after,
+        filter: filters.filter,
+        limit: pagination.limit,
+        search: filters.search,
+        sortBy: sorting.sortBy,
+        sortOrder: sorting.sortOrder,
+        q: filters.q,
         ...extraParameters,
       },
     );

@@ -1,6 +1,12 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanObject, cleanString } from "../util/clean";
 import { connection, expand, extraBody, listInputs } from "./general";
+const profileExtraInputs = {
+  ...extraBody,
+  label: "Profile Extra Attributes",
+  comments:
+    "List of additional profile attributes to include in the request. This can be used to include attributes that are not explicitly supported by this component. See [Okta's API documentation](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/User/#tag/User/operation/updateUser!path=profile&t=request) for a list of supported attributes.",
+};
 export const id = input({
   label: "ID",
   type: "string",
@@ -40,31 +46,31 @@ export const login = input({
 export const employeeNumber = input({
   label: "Employee Number",
   type: "string",
-  required: true,
+  required: false,
   example: "12345",
   comments: "The user's employee number.",
   placeholder: "Enter employee number",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const department = input({
   label: "Department",
   type: "string",
-  required: true,
+  required: false,
   example: "Engineering",
   comments: "The user's department.",
   placeholder: "Enter department",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const locale = input({
   label: "Locale",
   type: "string",
-  required: true,
+  required: false,
   example: "en_US",
   default: "en_US",
   comments:
     "The user's default location for purposes of localizing items such as currency, date time format, numerical representations, and so on. A locale value is a concatenation of the ISO 639-1 two-letter language code, an underscore, and the ISO 3166-1 two-letter country code.",
   placeholder: "Enter the user's locale",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const firstName = input({
   label: "First Name",
@@ -330,6 +336,23 @@ export const suspendUserInputs = {
   },
   connection,
 };
+const updateUserAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Department, Employee Number, Locale, Mobile Phone, Password, Hash Password, Question, Answer, and Profile Extra Attributes.",
+  inputs: {
+    department,
+    employeeNumber,
+    locale,
+    mobilePhone,
+    password,
+    hashPassword,
+    question,
+    answer,
+    profileExtraInputs,
+  },
+});
 export const updateUserInputs = {
   id: {
     ...id,
@@ -345,43 +368,42 @@ export const updateUserInputs = {
     required: false,
     clean: cleanString,
   },
-  department: {
-    ...department,
-    required: false,
-    clean: cleanString,
-  },
-  employeeNumber: {
-    ...employeeNumber,
-    required: false,
-    clean: cleanString,
-  },
-  locale: {
-    ...locale,
-    required: false,
-    clean: cleanString,
-  },
   firstName,
   lastName,
-  mobilePhone,
-  password,
-  hashPassword,
-  question,
-  answer,
   realmId,
-  profileExtraInputs: {
-    ...extraBody,
-    label: "Profile Extra Attributes",
-    comments:
-      "List of additional profile attributes to include in the request. This can be used to include attributes that are not explicitly supported by this component. See [Okta's API documentation](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/User/#tag/User/operation/updateUser!path=profile&t=request) for a list of supported attributes.",
-  },
+  additionalFields: updateUserAdditionalFields,
   connection,
 };
+const createUserProvisioningOptions = structuredObjectInput({
+  label: "Provisioning Options",
+  required: false,
+  comments:
+    "Options that control activation and authentication provider behavior on creation.",
+  inputs: { activate, nextLogin, provider },
+});
+const createUserAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Department, Employee Number, Locale, Mobile Phone, Password, Hash Password, Question, Answer, Provider Name, Provider Type, Type, and Profile Extra Attributes.",
+  inputs: {
+    department,
+    employeeNumber,
+    locale,
+    mobilePhone,
+    password,
+    hashPassword,
+    question,
+    answer,
+    providerName,
+    providerType,
+    type,
+    profileExtraInputs,
+  },
+});
 export const createUserInputs = {
   login,
   email,
-  department,
-  employeeNumber,
-  locale,
   firstName: {
     ...firstName,
     required: true,
@@ -390,25 +412,10 @@ export const createUserInputs = {
     ...lastName,
     required: true,
   },
-  mobilePhone,
-  password,
-  hashPassword,
-  question,
-  answer,
-  providerName,
-  providerType,
   groupIds,
   realmId,
-  type,
-  nextLogin,
-  provider,
-  activate,
-  profileExtraInputs: {
-    ...extraBody,
-    label: "Profile Extra Attributes",
-    comments:
-      "List of additional profile attributes to include in the request. This can be used to include attributes that are not explicitly supported by this component. See [Okta's API documentation](https://developer.okta.com/docs/api/openapi/okta-management/management/tag/User/#tag/User/operation/updateUser!path=profile&t=request) for a list of supported attributes.",
-  },
+  provisioningOptions: createUserProvisioningOptions,
+  additionalFields: createUserAdditionalFields,
   connection,
 };
 export const resetUserPasswordInputs = {

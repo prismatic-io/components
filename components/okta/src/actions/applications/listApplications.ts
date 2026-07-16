@@ -12,17 +12,7 @@ export const listApplications = action({
   inputs: listApplicationsInputs,
   perform: async (
     context,
-    {
-      after,
-      connection,
-      expand,
-      filter,
-      includeNonDeleted,
-      limit,
-      q,
-      useOptimization,
-      fetchAll,
-    },
+    { connection, filter, q, resultOptions = {}, fetchAll, pagination = {} },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const data = await paginateRecordsWithLink<Application>(
@@ -30,13 +20,13 @@ export const listApplications = action({
       "/apps",
       fetchAll,
       {
-        after,
-        expand,
+        after: pagination.after,
+        expand: resultOptions.expand,
         filter,
-        includeNonDeleted,
-        limit,
+        includeNonDeleted: resultOptions.includeNonDeleted,
+        limit: pagination.limit,
         q,
-        useOptimization,
+        useOptimization: resultOptions.useOptimization,
       },
     );
     return {

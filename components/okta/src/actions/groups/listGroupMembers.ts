@@ -9,15 +9,18 @@ export const listGroupMembers = action({
     description: "Retrieves all users who are members of the specified group.",
   },
   inputs: listGroupUsersInputs,
-  perform: async (context, { after, connection, limit, groupId, fetchAll }) => {
+  perform: async (
+    context,
+    { connection, groupId, fetchAll, pagination = {} },
+  ) => {
     const client = await createClient(connection, context.debug.enabled);
     const data = await paginateRecordsWithLink(
       client,
       `/groups/${encodeURIComponent(groupId)}/users`,
       fetchAll,
       {
-        after,
-        limit,
+        after: pagination.after,
+        limit: pagination.limit,
       },
     );
     return {

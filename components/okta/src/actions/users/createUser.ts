@@ -13,27 +13,14 @@ export const createUser = action({
     context,
     {
       connection,
-      answer,
-      department,
       email,
-      employeeNumber,
       firstName,
-      hashPassword,
       lastName,
-      locale,
       login,
-      mobilePhone,
-      password,
-      profileExtraInputs,
-      question,
       realmId,
       groupIds,
-      providerName,
-      providerType,
-      type,
-      nextLogin,
-      provider,
-      activate,
+      provisioningOptions = {},
+      additionalFields = {},
     },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
@@ -43,29 +30,46 @@ export const createUser = action({
         lastName,
         email,
         login,
-        mobilePhone,
-        department,
-        employeeNumber,
-        locale,
-        ...(profileExtraInputs ? profileExtraInputs : {}),
+        mobilePhone: additionalFields.mobilePhone,
+        department: additionalFields.department,
+        employeeNumber: additionalFields.employeeNumber,
+        locale: additionalFields.locale,
+        ...(additionalFields.profileExtraInputs
+          ? additionalFields.profileExtraInputs
+          : {}),
       },
       credentials: {
-        password: password
-          ? { value: password, hash: hashPassword }
+        password: additionalFields.password
+          ? {
+              value: additionalFields.password,
+              hash: additionalFields.hashPassword,
+            }
           : undefined,
         recovery_question:
-          question && answer ? { question, answer } : undefined,
+          additionalFields.question && additionalFields.answer
+            ? {
+                question: additionalFields.question,
+                answer: additionalFields.answer,
+              }
+            : undefined,
         provider:
-          providerName && providerType
-            ? { name: providerName, type: providerType }
+          additionalFields.providerName && additionalFields.providerType
+            ? {
+                name: additionalFields.providerName,
+                type: additionalFields.providerType,
+              }
             : undefined,
       },
       realmId,
       groupIds,
-      type: type ? { id: type } : undefined,
+      type: additionalFields.type ? { id: additionalFields.type } : undefined,
     };
     const { data } = await client.post<User>(`/users`, body, {
-      params: { nextLogin, provider, activate },
+      params: {
+        nextLogin: provisioningOptions.nextLogin,
+        provider: provisioningOptions.provider,
+        activate: provisioningOptions.activate,
+      },
     });
     return { data };
   },

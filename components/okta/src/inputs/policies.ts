@@ -1,15 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
 import { TYPE_MODEL } from "../util/constants";
-import {
-  after,
-  connection,
-  expand,
-  fetchAll,
-  limit,
-  q,
-  sortBy,
-} from "./general";
+import { connection, expand, fetchAll, pagination, q, sortBy } from "./general";
 export const type = input({
   label: "Type",
   type: "string",
@@ -46,8 +38,7 @@ export const listPoliciesInputs = {
   q,
   expand,
   sortBy,
-  limit,
-  after,
+  pagination,
   resourceId,
   connection,
 };

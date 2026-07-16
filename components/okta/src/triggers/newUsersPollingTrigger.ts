@@ -18,13 +18,9 @@ export const newUsersPollingTrigger = pollingTrigger({
       : undefined;
     const params = {
       connection,
-      after: undefined,
-      limit: undefined,
-      q: undefined,
-      search: undefined,
-      sortBy: undefined,
-      sortOrder: undefined,
-      filter,
+      pagination: { after: undefined, limit: undefined },
+      sorting: { sortBy: undefined, sortOrder: undefined },
+      filters: { search: undefined, filter, q: undefined },
       fetchAll: true,
       extraParameters: {},
     };

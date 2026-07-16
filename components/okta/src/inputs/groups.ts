@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util/clean";
-import { after, connection, fetchAll, limit, listInputs } from "./general";
+import { connection, fetchAll, listInputs, pagination } from "./general";
 import { userId } from "./users";
 export const groupId = input({
   label: "Group ID",
@@ -65,8 +65,7 @@ export const listGroupsInputs = {
 export const listGroupUsersInputs = {
   groupId,
   fetchAll,
-  after,
-  limit,
+  pagination,
   connection,
 };
 export const getGroupInputs = {

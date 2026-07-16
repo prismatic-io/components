@@ -1,14 +1,6 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanObject, cleanString } from "../util/clean";
-import {
-  after,
-  connection,
-  expand,
-  fetchAll,
-  filter,
-  limit,
-  q,
-} from "./general";
+import { connection, expand, fetchAll, filter, pagination, q } from "./general";
 import { password, sendEmail, userId } from "./users";
 export const applicationId = input({
   label: "Application ID",
@@ -76,15 +68,32 @@ export const profile = input({
   ),
   clean: cleanObject,
 });
+export const resultOptions = structuredObjectInput({
+  label: "Result Options",
+  required: false,
+  comments:
+    "Options that control which records are returned and how the response is shaped.",
+  inputs: { useOptimization, expand, includeNonDeleted },
+});
+export const assignmentDetails = structuredObjectInput({
+  label: "Assignment Details",
+  required: false,
+  comments: "App-specific username, password, and profile for the assignment.",
+  inputs: {
+    username,
+    password: {
+      ...password,
+      comments: "The user's password.",
+    },
+    profile,
+  },
+});
 export const listApplicationsInputs = {
   fetchAll,
   q,
-  after,
-  limit,
-  useOptimization,
+  pagination,
+  resultOptions,
   filter,
-  expand,
-  includeNonDeleted,
   connection,
 };
 export const getApplicationInputs = {
@@ -122,12 +131,7 @@ export const updateApplicationUserAssignmentsInputs = {
 export const assignApplicationToUserInputs = {
   applicationId,
   userId,
-  username,
-  password: {
-    ...password,
-    comments: "The user's password.",
-  },
+  assignmentDetails,
   scope,
-  profile,
   connection,
 };

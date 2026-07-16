@@ -13,16 +13,15 @@ export const listPolicies = action({
   perform: async (
     context,
     {
-      after,
       connection,
       expand,
-      limit,
       q,
       resourceId,
       sortBy,
       status,
       type,
       fetchAll,
+      pagination = {},
     },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
@@ -31,9 +30,9 @@ export const listPolicies = action({
       "/policies",
       fetchAll,
       {
-        after,
+        after: pagination.after,
         expand,
-        limit,
+        limit: pagination.limit,
         q,
         resourceId,
         sortBy,

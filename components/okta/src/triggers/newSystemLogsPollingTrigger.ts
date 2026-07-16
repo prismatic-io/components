@@ -14,13 +14,8 @@ export const newSystemLogsPollingTrigger = pollingTrigger({
     const since = lastState.lastUpdated || undefined;
     const params = {
       connection,
-      since,
-      filter,
-      until: undefined,
-      after: undefined,
-      limit: undefined,
-      q: undefined,
-      search: undefined,
+      filters: { since, until: undefined, filter, q: undefined },
+      pagination: { after: undefined, limit: undefined },
       sortOrder: "ASCENDING",
       fetchAll: true,
     };
