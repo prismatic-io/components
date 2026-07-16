@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanSqlParameters,
   toOptionalNumber,
@@ -130,6 +130,19 @@ const status = input({
   default: "ALL",
   clean: (value: unknown) => util.types.toString(value) as StatusString,
 });
+const additionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Statement Name, Result Format, Session Keep Alive (seconds), Client Token, and Session ID.",
+  inputs: {
+    statementName,
+    resultFormat,
+    sessionKeepAliveSeconds,
+    clientToken,
+    sessionId,
+  },
+});
 export const executeStatementInputs = {
   awsConnection,
   sqlStatement,
@@ -138,14 +151,10 @@ export const executeStatementInputs = {
   workgroupName,
   clusterIdentifier,
   getStatementResult,
-  statementName,
   databaseUser,
   secretArn,
   sqlParameters,
-  resultFormat,
-  sessionId,
-  sessionKeepAliveSeconds,
-  clientToken,
+  additionalFields,
 };
 export const getStatementResultInputs = {
   awsConnection,
@@ -166,36 +175,50 @@ const maxResults = input({
   placeholder: "100",
   clean: toOptionalNumber,
 });
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { nextToken, maxResults },
+});
+const filters = structuredObjectInput({
+  label: "Filters",
+  required: false,
+  comments:
+    "Optional filters to narrow the returned statements by database, workgroup, cluster, and statement name.",
+  inputs: {
+    databaseName: {
+      ...databaseName,
+      required: false,
+      comments:
+        "The name of the database when listing statements run against a <code>ClusterIdentifier</code> or <code>WorkgroupName</code>.",
+    },
+    workgroupName: {
+      ...workgroupName,
+      required: false,
+      comments:
+        "The serverless workgroup name or Amazon Resource Name (ARN). Only statements that ran on this workgroup are returned. When providing <code>WorkgroupName</code>, then <code>ClusterIdentifier</code> can't be specified.",
+    },
+    clusterIdentifier: {
+      ...clusterIdentifier,
+      required: false,
+      comments:
+        "The cluster identifier. Only statements that ran on this cluster are returned. When providing <code>ClusterIdentifier</code>, then <code>WorkgroupName</code> can't be specified.",
+    },
+    statementName: {
+      ...statementName,
+      comments:
+        "The name of the SQL statement specified as input to <code>BatchExecuteStatement</code> or <code>ExecuteStatement</code> to identify the query. Multiple statements can be matched by providing a prefix that matches the beginning of the statement name.",
+    },
+  },
+});
 export const listStatementsInputs = {
   awsConnection,
   awsRegion,
   status,
-  databaseName: {
-    ...databaseName,
-    required: false,
-    comments:
-      "The name of the database when listing statements run against a <code>ClusterIdentifier</code> or <code>WorkgroupName</code>.",
-  },
-  workgroupName: {
-    ...workgroupName,
-    required: false,
-    comments:
-      "The serverless workgroup name or Amazon Resource Name (ARN). Only statements that ran on this workgroup are returned. When providing <code>WorkgroupName</code>, then <code>ClusterIdentifier</code> can't be specified.",
-  },
-  clusterIdentifier: {
-    ...clusterIdentifier,
-    required: false,
-    comments:
-      "The cluster identifier. Only statements that ran on this cluster are returned. When providing <code>ClusterIdentifier</code>, then <code>WorkgroupName</code> can't be specified.",
-  },
-  statementName: {
-    ...statementName,
-    comments:
-      "The name of the SQL statement specified as input to <code>BatchExecuteStatement</code> or <code>ExecuteStatement</code> to identify the query. Multiple statements can be matched by providing a prefix that matches the beginning of the statement name.",
-  },
+  filters,
   fetchAll,
-  nextToken,
-  maxResults,
+  pagination,
 };
 export const describeStatementInputs = {
   awsConnection,

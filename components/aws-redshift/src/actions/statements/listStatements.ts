@@ -19,13 +19,9 @@ export const listStatements = action({
       awsConnection,
       awsRegion,
       status,
-      databaseName,
-      workgroupName,
-      clusterIdentifier,
-      statementName,
       fetchAll,
-      nextToken,
-      maxResults,
+      filters = {},
+      pagination = {},
     },
   ) => {
     const client = await createRedshiftClient(
@@ -36,11 +32,11 @@ export const listStatements = action({
     if (fetchAll) {
       const { allStatements, lastResponse } = await getAllStatements({
         client,
-        databaseName,
-        workgroupName,
-        clusterIdentifier,
+        databaseName: filters.databaseName,
+        workgroupName: filters.workgroupName,
+        clusterIdentifier: filters.clusterIdentifier,
         status,
-        statementName,
+        statementName: filters.statementName,
       });
       return {
         data: {
@@ -50,13 +46,13 @@ export const listStatements = action({
       };
     }
     const command = new ListStatementsCommand({
-      Database: databaseName,
-      WorkgroupName: workgroupName,
-      ClusterIdentifier: clusterIdentifier,
+      Database: filters.databaseName,
+      WorkgroupName: filters.workgroupName,
+      ClusterIdentifier: filters.clusterIdentifier,
       Status: status,
-      StatementName: statementName,
-      NextToken: nextToken,
-      MaxResults: maxResults,
+      StatementName: filters.statementName,
+      NextToken: pagination.nextToken,
+      MaxResults: pagination.maxResults,
     });
     const response = await client.send(command);
     return { data: response };

@@ -11,7 +11,7 @@ export interface RedshiftDataApiClientResult {
 }
 export interface GetAllStatementsParams {
   client: RedshiftDataClient;
-  databaseName: string;
+  databaseName: string | undefined;
   status: StatusString;
   workgroupName: string | undefined;
   clusterIdentifier: string | undefined;
