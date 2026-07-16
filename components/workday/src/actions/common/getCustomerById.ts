@@ -6,7 +6,7 @@ import { getCustomerByIdInputs } from "../../inputs";
 export const getCustomerById = action({
   display: {
     label: "Get Customer by ID",
-    description: "Retrieves customer by ID.",
+    description: "Retrieves a customer by ID.",
   },
   perform: async (context, { connection, customerId }) => {
     const client = getClient(connection, context.debug.enabled);

@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { SERVICES } from "../constants";
 import { cleanArrayCodeInput, cleanCodeInput, cleanStringInput } from "../util";
 import {
@@ -173,10 +173,10 @@ export const listMessageTemplatesInputs = {
 };
 export const postMessageTemplatesInputs = {
   connection,
+  messageTemplateName,
   createdById,
   emailDetail,
   pushDetail,
-  messageTemplateName,
   referenceId,
   templateInactive,
   temaplateDescriptor,
@@ -187,18 +187,22 @@ export const postMessageTemplatesInputs = {
     comments: postMessageTemplatesAdditionalFieldsComments,
   },
 };
+const messageDetails = structuredObjectInput({
+  label: "Message Details",
+  required: false,
+  comments: "Email, push notification, and recipient details for the message.",
+  inputs: { emailDetail, pushDetail, contacts },
+});
 export const sendMessageInputs = {
   connection,
   senderOverrideId,
   commId,
-  emailDetail,
-  contacts,
+  messageDetails,
   messageTemplateId: {
     ...messageTemplateId,
     required: false,
   },
   notificationTypeId,
-  pushDetail,
 };
 export const updateMessageTemplateByIdInputs = {
   messageTemplateId,

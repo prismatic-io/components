@@ -8,10 +8,10 @@ export const listPeople = action({
     label: "List People",
     description: "Retrieves all people in the Workday tenant.",
   },
-  perform: async (context, { connection, params, limit, offset }) => {
+  perform: async (context, { connection, params, pagination = {} }) => {
     const client = getClient(connection, context.debug.enabled);
     const { data } = await client.get(`${SERVICES.person}/people`, {
-      params: { limit, offset, ...params },
+      params: { limit: pagination.limit, offset: pagination.offset, ...params },
     });
     return {
       data,

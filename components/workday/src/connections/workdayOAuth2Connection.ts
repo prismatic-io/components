@@ -43,7 +43,7 @@ export const workdayOAuth2Connection = oauth2Connection({
         "The OAuth 2.0 client ID issued by Workday for the registered API client.",
     },
     clientSecret: {
-      label: "Client secret",
+      label: "Client Secret",
       type: "password",
       required: true,
       shown: true,

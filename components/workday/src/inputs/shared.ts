@@ -1,4 +1,9 @@
-import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import {
+  input,
+  type KeyValuePair,
+  structuredObjectInput,
+  util,
+} from "@prismatic-io/spectral";
 import {
   cleanBooleanInput,
   cleanCodeInput,
@@ -9,6 +14,7 @@ export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
+  comments: "The Workday connection to use.",
 });
 export const additionalFields = input({
   label: "Additional Fields",
@@ -103,27 +109,36 @@ export const fetchAll = input({
   required: false,
   default: "false",
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  comments:
+    "Page-size and starting-position controls for the result collection.",
+  required: false,
+  inputs: {
+    limit: input({
+      label: "Limit",
+      comments:
+        "The maximum number of objects in a single response. The default is 20. The maximum is 100.",
+      type: "string",
+      example: "5",
+      placeholder: "5",
+      required: false,
+      clean: cleanNumberInput,
+    }),
+    offset: input({
+      label: "Offset",
+      comments: `The zero-based index of the first object in a response collection. The default is 0. Use Offset with the Limit input to control paging of a response collection. Example: If Limit is 5 and Offset is 9, the response returns a collection of 5 objects starting with the 10th object.`,
+      type: "string",
+      example: "5",
+      placeholder: "5",
+      required: false,
+      clean: cleanNumberInput,
+    }),
+  },
+});
 export const paginationQueryStringInputs = {
   fetchAll,
-  limit: input({
-    label: "Limit",
-    comments:
-      "The maximum number of objects in a single response. The default is 20. The maximum is 100.",
-    type: "string",
-    example: "5",
-    placeholder: "5",
-    required: false,
-    clean: cleanNumberInput,
-  }),
-  offset: input({
-    label: "Offset",
-    comments: `The zero-based index of the first object in a response collection. The default is 0. Use Offset with the Limit input to control paging of a response collection. Example: If Limit is 5 and Offset is 9, the response returns a collection of 5 objects starting with the 10th object.`,
-    type: "string",
-    example: "5",
-    placeholder: "5",
-    required: false,
-    clean: cleanNumberInput,
-  }),
+  pagination,
 };
 export const modelBooleanUpdateInput = input({
   label: "",

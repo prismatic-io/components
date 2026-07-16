@@ -2,7 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { listTablesExamplePayload } from "../../examplePayloads";
-import { paginateResults } from "../../helpers/pagination";
+import { paginateResults } from "../../util/pagination";
 import { listTablesInputs } from "../../inputs";
 export const listTables = action({
   display: {
@@ -12,7 +12,7 @@ export const listTables = action({
   },
   perform: async (
     context,
-    { connection, tenant, params, fetchAll, limit, offset },
+    { connection, tenant, params, fetchAll, pagination = {} },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     return await paginateResults({
@@ -20,8 +20,8 @@ export const listTables = action({
       endpoint: `${SERVICES.prismAnalytics}/${tenant}/tables`,
       params,
       fetchAll,
-      limit,
-      offset,
+      limit: pagination.limit,
+      offset: pagination.offset,
     });
   },
   inputs: listTablesInputs,

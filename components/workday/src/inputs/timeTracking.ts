@@ -269,7 +269,7 @@ const comment = input({
   placeholder: "Enter comment",
   clean: cleanStringInput,
 });
-const getWorkersParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) at https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.timeTracking.slice(1)}/get-/workers`;
+const getWorkersParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.timeTracking.slice(1)}/get-/workers).`;
 const updateTimeClockEventsByIdAdditionalFieldsExample = JSON.stringify(
   {
     businessUnit: {
@@ -326,6 +326,9 @@ export const postWorkerTimeBlockInputs = {
 export const updateTimeClockEventsByIdInputs = {
   connection,
   timeClockEventId,
+  instanceDescriptor,
+  instanceHref,
+  instanceId,
   clockEventDateTime,
   clockEventTimeZoneId,
   clockEventOverrideRate,
@@ -339,9 +342,6 @@ export const updateTimeClockEventsByIdInputs = {
     comments: updateTimeClockEventsByIdAdditionalFieldsComments,
     example: updateTimeClockEventsByIdAdditionalFieldsExample,
   },
-  instanceDescriptor,
-  instanceHref,
-  instanceId,
 };
 export const updateWorkerTimeBlockInputs = {
   workerTimeBlockId,

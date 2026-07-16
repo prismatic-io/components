@@ -11,7 +11,7 @@ const personId = input({
   clean: util.types.toString,
   dataSource: "selectPerson",
 });
-const listPeopleParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) at https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.person.slice(1)}/get-/people`;
+const listPeopleParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.person.slice(1)}/get-/people).`;
 export const getPersonByIdInputs = {
   connection,
   personId,

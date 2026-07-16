@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanArrayCodeInput, cleanStringInput } from "../util";
 import {
   connection,
@@ -148,9 +148,37 @@ const fields = input({
   ),
   clean: (value: unknown) => cleanArrayCodeInput(value, "Fields"),
 });
-const getTableByIdParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) at https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#prismAnalytics/v3/get-/tables/-id-`;
-const listDataChangesParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) at https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#prismAnalytics/v3/get-/dataChanges`;
-const listTablesParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) at https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#prismAnalytics/v3/get-/tables`;
+const additionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  comments:
+    "Additional optional fields: includes Description, Documentation, Enable For Analysis, and Tags.",
+  required: false,
+  inputs: {
+    description,
+    documentation,
+    enableForAnalysis,
+    tags,
+  },
+});
+const updateTableAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  comments:
+    "Additional optional fields: includes Description, Documentation, Enable For Analysis, and Tags.",
+  required: false,
+  inputs: {
+    description,
+    documentation,
+    enableForAnalysis: {
+      ...enableForAnalysis,
+      ...modelBooleanUpdateInput,
+      label: enableForAnalysis.label,
+    },
+    tags,
+  },
+});
+const getTableByIdParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#prismAnalytics/v3/get-/tables/-id-).`;
+const listDataChangesParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#prismAnalytics/v3/get-/dataChanges).`;
+const listTablesParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#prismAnalytics/v3/get-/tables).`;
 export const getDataChangesByIdInputs = {
   connection,
   tenant,
@@ -193,27 +221,21 @@ export const postTableInputs = {
   connection,
   tenant,
   displayName,
-  description,
-  documentation,
-  enableForAnalysis,
   name,
-  tags,
   fields,
+  additionalFields,
 };
 export const updateTableByIdInputs = {
+  connection,
+  tenant,
   tableId,
-  ...postTableInputs,
-  displayName: { ...postTableInputs.displayName, required: false },
-  name: { ...postTableInputs.name, required: false },
+  displayName: { ...displayName, required: false },
+  name: { ...name, required: false },
   fields: {
-    ...postTableInputs.fields,
+    ...fields,
     required: false,
     comments:
       "The fields of the table. An array of objects. See [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#prismAnalytics/v3/put-/tables/-id-) for more information.",
   },
-  enableForAnalysis: {
-    ...postTableInputs.enableForAnalysis,
-    ...modelBooleanUpdateInput,
-    label: postTableInputs.enableForAnalysis.label,
-  },
+  additionalFields: updateTableAdditionalFields,
 };

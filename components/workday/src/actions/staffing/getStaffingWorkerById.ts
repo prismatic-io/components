@@ -5,7 +5,7 @@ import { getStaffingWorkerByIdExamplePayload } from "../../examplePayloads";
 import { getStaffingWorkerByIdInputs } from "../../inputs";
 export const getStaffingWorkerById = action({
   display: {
-    label: "Get Staffing Worker By ID",
+    label: "Get Staffing Worker by ID",
     description:
       "Retrieves a worker with the specified ID and current staffing information from the Staffing service.",
   },

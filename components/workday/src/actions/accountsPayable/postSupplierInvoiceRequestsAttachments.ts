@@ -14,19 +14,17 @@ export const postSupplierInvoiceRequestsAttachments = action({
     {
       connection,
       supplierInvoiceRequestId,
-      fileLength,
+      attachmentDetails,
       contentTypeId,
-      fileName,
-      supplierInvoiceRequestAttachmentDescriptor,
       supplierInvoiceRequestAttachmentId,
     },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
-      fileLength,
+      fileLength: attachmentDetails.fileLength,
       contentType: getIdObject(contentTypeId),
-      fileName,
-      descriptor: supplierInvoiceRequestAttachmentDescriptor,
+      fileName: attachmentDetails.fileName,
+      descriptor: attachmentDetails.supplierInvoiceRequestAttachmentDescriptor,
       id: supplierInvoiceRequestAttachmentId,
     };
     const { data } = await client.post(

@@ -2,7 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { getWorkerExplicitSkillsExamplePayload } from "../../examplePayloads";
-import { paginateResults } from "../../helpers/pagination";
+import { paginateResults } from "../../util/pagination";
 import { getWorkerExplicitSkillsInputs } from "../../inputs";
 export const getWorkerExplicitSkills = action({
   display: {
@@ -12,7 +12,7 @@ export const getWorkerExplicitSkills = action({
   },
   perform: async (
     context,
-    { connection, workerId, params, fetchAll, limit, offset },
+    { connection, workerId, params, fetchAll, pagination = {} },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     return await paginateResults({
@@ -20,8 +20,8 @@ export const getWorkerExplicitSkills = action({
       endpoint: `${SERVICES.staffing}/workers/${workerId}/explicitSkills`,
       params,
       fetchAll,
-      limit,
-      offset,
+      limit: pagination.limit,
+      offset: pagination.offset,
     });
   },
   inputs: getWorkerExplicitSkillsInputs,

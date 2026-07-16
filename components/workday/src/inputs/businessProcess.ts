@@ -11,7 +11,7 @@ const eventId = input({
   clean: util.types.toString,
   dataSource: "selectEvent",
 });
-const listEventsParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) at https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.businessProcess.slice(1)}/get-/events`;
+const listEventsParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.businessProcess.slice(1)}/get-/events).`;
 export const getEventAttachmentsInputs = {
   connection,
   eventId,

@@ -76,8 +76,8 @@ const reasonId = input({
   required: true,
   clean: util.types.toString,
 });
-const getStaffingWorkersParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) at https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.staffing.slice(1)}/get-/workers`;
-const getWorkerExplicitSkillsParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) at https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.staffing.slice(1)}/get-/workers/-ID-/explicitSkills`;
+const getStaffingWorkersParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.staffing.slice(1)}/get-/workers).`;
+const getWorkerExplicitSkillsParamsComments = `${params.comments} See optional (QUERY-STRING PARAMETERS) in the [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.staffing.slice(1)}/get-/workers/-ID-/explicitSkills).`;
 const initiateJobChangeAdditionalFieldsComments = `${additionalFields.comments} See [Workday API documentation](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html#${SERVICES.staffing.slice(1)}/post-/workers/-ID-/jobChanges) for more information.`;
 const initiateJobChangeAdditionalFieldsExample = JSON.stringify(
   {

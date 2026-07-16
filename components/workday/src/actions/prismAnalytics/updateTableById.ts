@@ -14,11 +14,8 @@ export const updateTableById = action({
       connection,
       tenant,
       displayName,
-      description,
-      documentation,
-      enableForAnalysis,
+      additionalFields,
       name,
-      tags,
       fields,
       tableId,
     },
@@ -26,11 +23,11 @@ export const updateTableById = action({
     const client = getClient(connection, context.debug.enabled);
     const body = {
       displayName,
-      description,
-      documentation,
-      enableForAnalysis,
+      description: additionalFields.description,
+      documentation: additionalFields.documentation,
+      enableForAnalysis: additionalFields.enableForAnalysis,
       name,
-      tags,
+      tags: additionalFields.tags,
       fields,
     };
     const { data } = await client.put(

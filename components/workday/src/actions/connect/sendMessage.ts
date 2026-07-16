@@ -15,22 +15,20 @@ export const sendMessage = action({
       connection,
       senderOverrideId,
       commId,
-      emailDetail,
-      contacts,
+      messageDetails,
       messageTemplateId,
       notificationTypeId,
-      pushDetail,
     },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
       senderOverride: getIdObject(senderOverrideId),
       commID: getIdObject(commId),
-      emailDetail,
-      recipients: contacts,
+      emailDetail: messageDetails.emailDetail,
+      recipients: messageDetails.contacts,
       messageTemplate: getIdObject(messageTemplateId),
       notificationType: getIdObject(notificationTypeId),
-      pushDetail,
+      pushDetail: messageDetails.pushDetail,
     };
     const { data } = await client.post(`${SERVICES.connect}/sendMessage`, body);
     return {

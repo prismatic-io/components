@@ -2,7 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { getEventAttachmentsExamplePayload } from "../../examplePayloads";
-import { paginateResults } from "../../helpers/pagination";
+import { paginateResults } from "../../util/pagination";
 import { getEventAttachmentsInputs } from "../../inputs";
 export const getEventAttachments = action({
   display: {
@@ -12,15 +12,15 @@ export const getEventAttachments = action({
   },
   perform: async (
     context,
-    { connection, eventId, fetchAll, limit, offset },
+    { connection, eventId, fetchAll, pagination = {} },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     return await paginateResults({
       client,
       endpoint: `${SERVICES.businessProcess}/events/${eventId}/attachments`,
       fetchAll,
-      limit,
-      offset,
+      limit: pagination.limit,
+      offset: pagination.offset,
     });
   },
   inputs: getEventAttachmentsInputs,

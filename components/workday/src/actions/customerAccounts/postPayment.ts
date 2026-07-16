@@ -15,30 +15,26 @@ export const postPayment = action({
     {
       connection,
       remitFromCustomerId,
-      readyToAutoApply,
-      reference,
-      transactionNumber,
+      additionalFields,
       amount,
       typeId,
       date,
       companyId,
-      memo,
-      paymentDescriptor,
       paymentId,
     },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
-      memo,
+      memo: additionalFields.memo,
       remitFromCustomer: getIdObject(remitFromCustomerId),
-      readyToAutoApply,
-      reference,
-      transactionNumber,
+      readyToAutoApply: additionalFields.readyToAutoApply,
+      reference: additionalFields.reference,
+      transactionNumber: additionalFields.transactionNumber,
       amount,
       type: getIdObject(typeId),
       date,
       company: getIdObject(companyId),
-      descriptor: paymentDescriptor,
+      descriptor: additionalFields.paymentDescriptor,
       id: paymentId,
     };
     const { data } = await client.post(

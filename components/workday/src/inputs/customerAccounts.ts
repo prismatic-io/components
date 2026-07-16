@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanDate, cleanStringInput } from "../util";
 import { companyId, connection, memo, params } from "./shared";
 const invoiceId = input({
@@ -109,6 +109,19 @@ const paymentIdOptional = input({
   placeholder: "Enter payment ID",
   clean: cleanStringInput,
 });
+const additionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  comments:
+    "Additional optional fields: includes Ready to Auto Apply, Reference, Transaction Number, Memo, and Payment Descriptor.",
+  required: false,
+  inputs: {
+    readyToAutoApply,
+    reference,
+    transactionNumber,
+    memo,
+    paymentDescriptor,
+  },
+});
 export const getInvoiceByIdInputs = { connection, invoiceId };
 export const getInvoicePdfInputs = {
   connection,
@@ -122,14 +135,10 @@ export const listInvoicesInputs = { connection, params };
 export const postPaymentInputs = {
   connection,
   remitFromCustomerId,
-  readyToAutoApply,
-  reference,
-  transactionNumber,
   amount,
   typeId,
   date,
   companyId,
-  memo,
-  paymentDescriptor,
   paymentId: paymentIdOptional,
+  additionalFields,
 };

@@ -6,7 +6,7 @@ import { postTimeOffRequestInputs } from "../../inputs";
 import { getIdObject } from "../../util";
 export const postTimeOffRequest = action({
   display: {
-    label: "Post Time Off Request",
+    label: "Create Time Off Request",
     description:
       "Creates a time off request for the specified worker ID and initiates the Request Time Off business process.",
   },

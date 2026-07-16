@@ -10,26 +10,16 @@ export const postTable = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      tenant,
-      displayName,
-      description,
-      documentation,
-      enableForAnalysis,
-      name,
-      tags,
-      fields,
-    },
+    { connection, tenant, displayName, additionalFields, name, fields },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
       displayName,
-      description,
-      documentation,
-      enableForAnalysis,
+      description: additionalFields.description,
+      documentation: additionalFields.documentation,
+      enableForAnalysis: additionalFields.enableForAnalysis,
       name,
-      tags,
+      tags: additionalFields.tags,
       fields,
     };
     const { data } = await client.post(

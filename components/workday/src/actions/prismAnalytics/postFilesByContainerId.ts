@@ -8,7 +8,7 @@ export const postFilesByContainerId = action({
   display: {
     label: "Upload Files by Container ID",
     description:
-      "This resource loads the file into a file container. Creates temporary location to store file, and saves file metadata like size, checksum.",
+      "Loads a file into the specified file container. Creates a temporary location to store the file and saves file metadata such as size and checksum.",
   },
   perform: async (context, { connection, tenant, fileContainerId, file }) => {
     const client = getClient(connection, context.debug.enabled);

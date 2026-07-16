@@ -132,9 +132,9 @@ export const getTimeOffDetailsInputs = {
 export const postTimeOffRequestInputs = {
   connection,
   workerId,
+  days,
   actionId,
   overallBusinessProcessId,
-  days,
   timeOffComment,
   transactionStatusId,
   timeOffAttachments,

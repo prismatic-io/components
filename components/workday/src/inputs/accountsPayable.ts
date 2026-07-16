@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { SERVICES } from "../constants";
 import { cleanStringInput } from "../util";
 import {
@@ -272,13 +272,17 @@ export const postSupplierInvoiceRequestsInputs = {
     comments: postSupplierInvoiceRequestsAdditionalFieldsComments,
   },
 };
+const attachmentDetails = structuredObjectInput({
+  label: "Attachment Details",
+  required: false,
+  comments: "File length, file name, and descriptor for the attachment.",
+  inputs: { fileLength, fileName, supplierInvoiceRequestAttachmentDescriptor },
+});
 export const postSupplierInvoiceRequestsAttachmentsInputs = {
   connection,
   supplierInvoiceRequestId,
-  fileLength,
+  attachmentDetails,
   contentTypeId,
-  fileName,
-  supplierInvoiceRequestAttachmentDescriptor,
   supplierInvoiceRequestAttachmentId,
 };
 export const submitSupplierInvoiceRequestInputs = {

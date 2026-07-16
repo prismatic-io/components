@@ -2,7 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { getSupplierInvoiceRequestAttachmentsExamplePayload } from "../../examplePayloads";
-import { paginateResults } from "../../helpers/pagination";
+import { paginateResults } from "../../util/pagination";
 import { getSupplierInvoiceRequestAttachmentsInputs } from "../../inputs";
 export const getSupplierInvoiceRequestAttachments = action({
   display: {
@@ -11,15 +11,15 @@ export const getSupplierInvoiceRequestAttachments = action({
   },
   perform: async (
     context,
-    { connection, supplierInvoiceRequestId, fetchAll, limit, offset },
+    { connection, supplierInvoiceRequestId, fetchAll, pagination = {} },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     return await paginateResults({
       client,
       endpoint: `${SERVICES.accountsPayable}/supplierInvoiceRequests/${supplierInvoiceRequestId}/attachments`,
       fetchAll,
-      limit,
-      offset,
+      limit: pagination.limit,
+      offset: pagination.offset,
     });
   },
   inputs: getSupplierInvoiceRequestAttachmentsInputs,

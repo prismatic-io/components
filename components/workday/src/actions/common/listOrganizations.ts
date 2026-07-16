@@ -6,7 +6,7 @@ import { listOrganizationsInputs } from "../../inputs";
 export const listOrganizations = action({
   display: {
     label: "List Organizations",
-    description: "Retrieves list of Organizations.",
+    description: "Retrieves a list of organizations.",
   },
   perform: async (context, { connection, params }) => {
     const client = getClient(connection, context.debug.enabled);
