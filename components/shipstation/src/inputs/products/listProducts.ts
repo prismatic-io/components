@@ -1,11 +1,9 @@
 import {
   connectionInput,
   endDate,
-  page,
-  pageSize,
+  pagination,
   showInactive,
-  sortBy,
-  sortDir,
+  sorting,
   startDate,
   tagId,
 } from "../common";
@@ -19,9 +17,7 @@ export const listProductsInputs = {
   tagId,
   startDate,
   endDate,
-  sortBy,
-  sortDir,
-  page,
-  pageSize,
+  sorting,
+  pagination,
   showInactive,
 };

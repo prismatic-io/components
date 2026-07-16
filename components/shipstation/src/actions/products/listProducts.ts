@@ -19,10 +19,8 @@ export const listProducts = action({
       tagId,
       startDate,
       endDate,
-      sortBy,
-      sortDir,
-      page,
-      pageSize,
+      sorting = {},
+      pagination = {},
       showInactive,
     },
   ) => {
@@ -38,10 +36,10 @@ export const listProducts = action({
       tagId,
       startDate,
       endDate,
-      sortBy,
-      sortDir,
-      page,
-      pageSize,
+      sortBy: sorting.sortBy,
+      sortDir: sorting.sortDir,
+      page: pagination.page,
+      pageSize: pagination.pageSize,
       showInactive,
     };
     const { data } = await client.get("/products", { params });

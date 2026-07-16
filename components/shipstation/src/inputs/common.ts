@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanKeyValueListInput,
   cleanStringInput,
@@ -26,6 +26,12 @@ export const sortDir = input({
   placeholder: "Enter sort direction",
   clean: cleanStringInput,
 });
+export const sorting = structuredObjectInput({
+  label: "Sorting",
+  required: false,
+  comments: "Field and direction to sort results by.",
+  inputs: { sortBy, sortDir },
+});
 export const page = input({
   label: "Page",
   type: "string",
@@ -41,6 +47,12 @@ export const pageSize = input({
   comments: "The maximum number of results to return per page. Maximum: 500.",
   placeholder: "Enter page size",
   clean: util.types.toNumber,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page number and page size controls for the returned results.",
+  inputs: { page, pageSize },
 });
 export const startDate = input({
   label: "Start Date",

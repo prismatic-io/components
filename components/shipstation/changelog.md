@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-07-16
+
+Grouped related list-action inputs into structured objects for clearer configuration
+
+- **List Products**: grouped inputs into **Pagination** and **Sorting** structured objects
+- **List Customers**: grouped inputs into **Pagination** and **Sorting** structured objects
+- **List Shipments**: grouped inputs into **Pagination**, **Date Range Filters**, and **Shipment Filters** structured objects
+
 ### 2026-04-30
 
 Updated spectral version

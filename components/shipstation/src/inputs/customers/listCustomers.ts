@@ -1,10 +1,8 @@
 import {
   connectionInput,
   marketplaceId,
-  page,
-  pageSize,
-  sortBy,
-  sortDir,
+  pagination,
+  sorting,
   tagId,
 } from "../common";
 import { countryCode, stateCode } from "./common";
@@ -14,8 +12,6 @@ export const listCustomersInputs = {
   countryCode,
   marketplaceId,
   tagId,
-  sortBy,
-  sortDir,
-  page,
-  pageSize,
+  sorting,
+  pagination,
 };

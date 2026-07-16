@@ -7,7 +7,10 @@ export const listCustomers = action({
     label: "List Customers",
     description: "Retrieves a list of customers based on specified criteria.",
   },
-  perform: async (context, { connectionInput, ...params }) => {
+  perform: async (
+    context,
+    { connectionInput, pagination = {}, sorting = {}, ...params },
+  ) => {
     const client = createShipStationClient(
       connectionInput,
       context.debug.enabled,
@@ -17,10 +20,10 @@ export const listCustomers = action({
       countryCode: params.countryCode || undefined,
       marketplaceId: params.marketplaceId || undefined,
       tagId: params.tagId || undefined,
-      sortBy: params.sortBy || undefined,
-      sortDir: params.sortDir || undefined,
-      page: params.page || undefined,
-      pageSize: params.pageSize || undefined,
+      sortBy: sorting.sortBy || undefined,
+      sortDir: sorting.sortDir || undefined,
+      page: pagination.page || undefined,
+      pageSize: pagination.pageSize || undefined,
     };
     const { data } = await client.get("/customers", {
       params: queryParameters,

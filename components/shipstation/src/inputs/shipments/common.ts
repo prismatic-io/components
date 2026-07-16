@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanKeyValueListInput,
   cleanStringInput,
@@ -61,6 +61,12 @@ export const shipDateEnd = input({
   placeholder: "Enter end date (YYYY-MM-DD)",
   clean: cleanStringInput,
 });
+export const dateRangeFilters = structuredObjectInput({
+  label: "Date Range Filters",
+  required: false,
+  comments: "Create date and ship date ranges to filter results by.",
+  inputs: { createDateStart, createDateEnd, shipDateStart, shipDateEnd },
+});
 export const recipientName = input({
   label: "Recipient Name",
   type: "string",
@@ -77,6 +83,13 @@ export const recipientCountryCode = input({
     "The two-letter ISO country code to filter shipments by recipient country.",
   placeholder: "Enter country code",
   clean: cleanStringInput,
+});
+export const shipmentFilters = structuredObjectInput({
+  label: "Shipment Filters",
+  required: false,
+  comments:
+    "Tracking number, recipient name, and recipient country code to filter results by.",
+  inputs: { trackingNumber, recipientName, recipientCountryCode },
 });
 export const weightInput = input({
   label: "Shipment's Weight",

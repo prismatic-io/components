@@ -12,15 +12,9 @@ export const listShipments = action({
     context,
     {
       connectionInput,
-      trackingNumber,
-      createDateStart,
-      createDateEnd,
-      shipDateStart,
-      shipDateEnd,
-      recipientName,
-      recipientCountryCode,
-      page,
-      pageSize,
+      shipmentFilters = {},
+      dateRangeFilters = {},
+      pagination = {},
     },
   ) => {
     const client = createShipStationClient(
@@ -28,15 +22,15 @@ export const listShipments = action({
       context.debug.enabled,
     );
     const params = {
-      trackingNumber,
-      createDateStart,
-      createDateEnd,
-      shipDateStart,
-      shipDateEnd,
-      recipientName,
-      recipientCountryCode,
-      page,
-      pageSize,
+      trackingNumber: shipmentFilters.trackingNumber,
+      createDateStart: dateRangeFilters.createDateStart,
+      createDateEnd: dateRangeFilters.createDateEnd,
+      shipDateStart: dateRangeFilters.shipDateStart,
+      shipDateEnd: dateRangeFilters.shipDateEnd,
+      recipientName: shipmentFilters.recipientName,
+      recipientCountryCode: shipmentFilters.recipientCountryCode,
+      page: pagination.page,
+      pageSize: pagination.pageSize,
     };
     const { data } = await client.get("/shipments", { params });
     return { data };
