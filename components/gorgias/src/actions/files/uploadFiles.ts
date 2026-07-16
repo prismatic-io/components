@@ -1,9 +1,9 @@
 import { action } from "@prismatic-io/spectral";
 import FormData from "form-data";
 import { createClient } from "../../client";
+import { uploadFilesExamplePayload as examplePayload } from "../../examplePayloads/files";
 import { postApiUploadInputs as inputs } from "../../inputs/files";
 import type { UploadFilesResponse } from "../../interfaces/files";
-import { uploadFilesExamplePayload as examplePayload } from "../../examplePayloads/files";
 export const uploadFiles = action({
   display: {
     label: "Upload Files",

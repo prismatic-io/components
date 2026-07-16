@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { listEventsExamplePayload as examplePayload } from "../../examplePayloads/events";
 import { listEventsInputs as inputs } from "../../inputs/events";
 import type { ListEventsResponse } from "../../interfaces/events";
-import { listEventsExamplePayload as examplePayload } from "../../examplePayloads/events";
 import { fetchAllWithPagination } from "../../utils/fetchAllWithPagination";
 export const listEvents = action({
   display: {
@@ -10,11 +10,12 @@ export const listEvents = action({
     description:
       "List events, paginated, and ordered by their creation date, with the most recently created first.",
   },
-  perform: async (context, { connection, fetchAll, ...configVars }) => {
+  perform: async (context, { connection, fetchAll, pagination, ...rest }) => {
     const client = createClient({
       connection,
       debug: context.debug.enabled,
     });
+    const configVars = { ...rest, ...pagination };
     const { data } = fetchAll
       ? await fetchAllWithPagination<ListEventsResponse>({
           client,

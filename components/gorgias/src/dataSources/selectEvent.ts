@@ -1,8 +1,8 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { selectEventExamplePayload as examplePayload } from "../examplePayloads/dataSources";
 import { selectEventInputs as inputs } from "../inputs/events";
 import type { ListEventsResponse } from "../interfaces/events";
-import { selectEventExamplePayload as examplePayload } from "../examplePayloads/dataSources";
 import { fetchAllWithPagination } from "../utils/fetchAllWithPagination";
 export const selectEvent = dataSource({
   display: {

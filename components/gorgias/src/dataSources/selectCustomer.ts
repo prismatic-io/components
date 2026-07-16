@@ -1,8 +1,8 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { selectCustomerExamplePayload as examplePayload } from "../examplePayloads/dataSources";
 import { selectCustomerInputs as inputs } from "../inputs/customers";
 import type { ListCustomersResponse } from "../interfaces/customers";
-import { selectCustomerExamplePayload as examplePayload } from "../examplePayloads/dataSources";
 import { fetchAllWithPagination } from "../utils/fetchAllWithPagination";
 export const selectCustomer = dataSource({
   display: {

@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { getEventExamplePayload as examplePayload } from "../../examplePayloads/events";
 import { getEventInputs as inputs } from "../../inputs/events";
 import type { GetEventResponse } from "../../interfaces/events";
-import { getEventExamplePayload as examplePayload } from "../../examplePayloads/events";
 export const getEvent = action({
   display: {
     label: "Get Event",

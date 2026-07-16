@@ -1,7 +1,7 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { pollChangesInputs } from "../inputs/polling";
 import { RESOURCE_CONFIG } from "../constants";
+import { pollChangesInputs } from "../inputs/polling";
 import type {
   CreateApiPaginationResponse,
   GorgiasRecord,

@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { downloadFileExamplePayload as examplePayload } from "../../examplePayloads/files";
 import { downloadFileInputs as inputs } from "../../inputs/files";
 import type { DownloadFileResponse } from "../../interfaces/files";
-import { downloadFileExamplePayload as examplePayload } from "../../examplePayloads/files";
 export const downloadFile = action({
   display: {
     label: "Download File",

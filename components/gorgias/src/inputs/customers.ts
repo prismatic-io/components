@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { LANGUAGE_MODEL, TIMEZONE_MODEL } from "../constants";
 import { cleanArrayCodeInput } from "../utils/cleanCode";
 import { toInt } from "../utils/toInt";
@@ -130,23 +130,30 @@ export const listCustomersInputs = {
     default: "false",
     clean: util.types.toBool,
   }),
-  cursor: input({
-    label: "Cursor",
-    comments:
-      "Value indicating your position in the list of all customers. If omitted, the first customers of the list will be returned.",
-    type: "string",
+  pagination: structuredObjectInput({
+    label: "Pagination",
     required: false,
-    clean: toStr,
-    placeholder: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
-  }),
-  limit: input({
-    label: "Limit",
-    comments:
-      "Maximum number of customers to return. The max number allowed is 100.",
-    type: "string",
-    required: false,
-    clean: validateLimit,
-    placeholder: "30",
+    comments: "Cursor and limit controls for paging through results.",
+    inputs: {
+      cursor: input({
+        label: "Cursor",
+        comments:
+          "Value indicating your position in the list of all customers. If omitted, the first customers of the list will be returned.",
+        type: "string",
+        required: false,
+        clean: toStr,
+        placeholder: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
+      }),
+      limit: input({
+        label: "Limit",
+        comments:
+          "Maximum number of customers to return. The max number allowed is 100.",
+        type: "string",
+        required: false,
+        clean: validateLimit,
+        placeholder: "30",
+      }),
+    },
   }),
   order_by: input({
     label: "Order By",

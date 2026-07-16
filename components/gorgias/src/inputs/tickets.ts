@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   ATTACHMENTS_EXAMPLE,
   BOOLEAN_MODEL,
@@ -56,8 +56,8 @@ const assignee_user = input({
   clean: (value: unknown) => cleanCodeInput(value, "Assignee User"),
 });
 const channel = input({
-  label: "Assignee User ID",
-  comments: "The team assigned to the ticket.",
+  label: "Channel",
+  comments: "The channel used to initiate the conversation with the customer.",
   type: "string",
   required: false,
   model: CHANNEL_MODEL,
@@ -284,29 +284,47 @@ const ticket_id = input({
   example: "1234567890",
   placeholder: "1234567890",
 });
+const createTicketTimestamps = structuredObjectInput({
+  label: "Ticket Timestamps",
+  required: false,
+  comments:
+    "Datetime fields for tracking ticket lifecycle events such as open, close, snooze, and last message times.",
+  inputs: {
+    closed_datetime,
+    created_datetime,
+    last_message_datetime,
+    last_received_message_datetime,
+    opened_datetime,
+    snooze_datetime,
+    trashed_datetime,
+    updated_datetime,
+  },
+});
+const createTicketAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Assignee Team, Assignee User, Channel, Customer, From Agent, Language, Spam, and Via.",
+  inputs: {
+    assignee_team,
+    assignee_user,
+    channel,
+    customer,
+    from_agent,
+    language,
+    spam,
+    via,
+  },
+});
 export const createTicketInputs = {
   messages,
-  assignee_team,
-  assignee_user,
-  channel,
-  closed_datetime,
-  created_datetime,
-  customer,
   external_id,
-  from_agent,
-  language,
-  last_message_datetime,
-  last_received_message_datetime,
   meta,
-  opened_datetime,
-  snooze_datetime,
-  spam,
   status,
   subject,
   tags,
-  trashed_datetime,
-  updated_datetime,
-  via,
+  ticketTimestamps: createTicketTimestamps,
+  additionalFields: createTicketAdditionalFields,
   ...sharedInputs,
 };
 export const deleteTicketInputs = {
@@ -387,25 +405,32 @@ export const listTicketsInputs = {
     placeholder: "true",
     clean: util.types.toBool,
   }),
-  cursor: input({
-    label: "Cursor",
-    comments:
-      "Value indicating your position in the list of all tickets. If omitted, the first tickets of the list will be returned.",
-    type: "string",
+  pagination: structuredObjectInput({
+    label: "Pagination",
     required: false,
-    example: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
-    placeholder: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
-    clean: toStr,
-  }),
-  limit: input({
-    label: "Limit",
-    comments:
-      "Maximum number of tickets to return. The max number allowed is 100.",
-    type: "string",
-    required: false,
-    clean: validateLimit,
-    placeholder: "30",
-    example: "30",
+    comments: "Cursor and limit controls for paging through results.",
+    inputs: {
+      cursor: input({
+        label: "Cursor",
+        comments:
+          "Value indicating your position in the list of all tickets. If omitted, the first tickets of the list will be returned.",
+        type: "string",
+        required: false,
+        example: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
+        placeholder: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
+        clean: toStr,
+      }),
+      limit: input({
+        label: "Limit",
+        comments:
+          "Maximum number of tickets to return. The max number allowed is 100.",
+        type: "string",
+        required: false,
+        clean: validateLimit,
+        placeholder: "30",
+        example: "30",
+      }),
+    },
   }),
   order_by: input({
     label: "Order By",
@@ -442,37 +467,56 @@ export const selectTicketInputs = {
   rule_id: listTicketsInputs.rule_id,
   connection: sharedInputs.connection,
 };
+const is_unread = input({
+  label: "Is Unread",
+  comments: "Whether the ticket is unread for you.",
+  type: "string",
+  required: false,
+  example: "true",
+  placeholder: "true",
+  model: BOOLEAN_MODEL,
+  clean: util.types.toBool,
+});
+const updateTicketTimestamps = structuredObjectInput({
+  label: "Ticket Timestamps",
+  required: false,
+  comments:
+    "Datetime fields for tracking ticket lifecycle events such as open, close, snooze, and last message times.",
+  inputs: {
+    closed_datetime,
+    last_message_datetime,
+    last_received_message_datetime,
+    opened_datetime,
+    snooze_datetime,
+    trashed_datetime,
+    updated_datetime,
+  },
+});
+const updateTicketAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Assignee Team, Assignee User, Channel, Customer, From Agent, Is Unread, Language, Spam, and Via.",
+  inputs: {
+    assignee_team,
+    assignee_user,
+    channel,
+    customer,
+    from_agent,
+    is_unread,
+    language,
+    spam,
+    via,
+  },
+});
 export const updateTicketInputs = {
   id,
-  assignee_team,
-  assignee_user,
-  channel,
-  closed_datetime,
-  customer,
   external_id,
-  from_agent,
-  is_unread: input({
-    label: "Is Unread",
-    comments: "Whether the ticket is unread for you.",
-    type: "string",
-    required: false,
-    example: "true",
-    placeholder: "true",
-    model: BOOLEAN_MODEL,
-    clean: util.types.toBool,
-  }),
-  language,
-  last_message_datetime,
-  last_received_message_datetime,
   meta,
-  opened_datetime,
-  snooze_datetime,
-  spam,
   status,
   tags,
-  trashed_datetime,
-  updated_datetime,
-  via,
+  ticketTimestamps: updateTicketTimestamps,
+  additionalFields: updateTicketAdditionalFields,
   ...sharedInputs,
 };
 export const listTicketCustomFieldsInputs = {

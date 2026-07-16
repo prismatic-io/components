@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   ATTACHMENTS_EXAMPLE,
   BOOLEAN_MODEL,
@@ -105,7 +105,7 @@ const message_id = input({
   example: "<123345676453.2445.234@web>",
 });
 const receiver = input({
-  label: "Receiver ID",
+  label: "Receiver",
   comments:
     "The primary receiver of the message. It can be a user or a customer. Optional when the source type is 'internal-note'.",
   type: "code",
@@ -195,24 +195,42 @@ const id = input({
   example: "353768814",
   placeholder: "353768814",
 });
+const messageTimestamps = structuredObjectInput({
+  label: "Message Timestamps",
+  required: false,
+  comments:
+    "Datetime fields for tracking message lifecycle events such as creation, send, and failure times.",
+  inputs: {
+    created_datetime,
+    failed_datetime,
+    sent_datetime,
+  },
+});
+const createMessageAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes From Agent, Action, Attachments, Receiver, and Sender.",
+  inputs: {
+    from_agent: input({ ...from_agent, type: "boolean", required: false }),
+    action,
+    attachments,
+    receiver,
+    sender,
+  },
+});
 export const createTicketMessageInputs = {
   ticket_id,
   channel,
-  from_agent: input({ ...from_agent, type: "boolean", required: false }),
   source,
   via,
-  action,
-  attachments,
   body_html,
   body_text,
-  created_datetime,
   external_id,
-  failed_datetime,
   message_id,
-  receiver,
-  sender,
-  sent_datetime,
   subject,
+  messageTimestamps,
+  additionalFields: createMessageAdditionalFields,
   ...sharedInputs,
 };
 export const getTicketMessageInputs = {
@@ -264,25 +282,32 @@ export const listMessagesInputs = {
     placeholder: "353768814",
     example: "353768814",
   }),
-  cursor: input({
-    label: "Cursor",
-    comments:
-      "Value indicating your position in the list of all messages. If omitted, the first messages of the list will be returned.",
-    type: "string",
+  pagination: structuredObjectInput({
+    label: "Pagination",
     required: false,
-    clean: toStr,
-    placeholder: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
-    example: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
-  }),
-  limit: input({
-    label: "Limit",
-    comments:
-      "Maximum number of messages to return. The max number allowed is 100.",
-    type: "string",
-    required: false,
-    clean: validateLimit,
-    placeholder: "30",
-    example: "30",
+    comments: "Cursor and limit controls for paging through results.",
+    inputs: {
+      cursor: input({
+        label: "Cursor",
+        comments:
+          "Value indicating your position in the list of all messages. If omitted, the first messages of the list will be returned.",
+        type: "string",
+        required: false,
+        clean: toStr,
+        placeholder: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
+        example: "cHJldl9fNl9fMjAyMS0wMy0wMyAwNjowMDowMA==",
+      }),
+      limit: input({
+        label: "Limit",
+        comments:
+          "Maximum number of messages to return. The max number allowed is 100.",
+        type: "string",
+        required: false,
+        clean: validateLimit,
+        placeholder: "30",
+        example: "30",
+      }),
+    },
   }),
   order_by: input({
     label: "Order By",

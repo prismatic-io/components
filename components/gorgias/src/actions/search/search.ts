@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { searchExamplePayload as examplePayload } from "../../examplePayloads/search";
 import { searchInputs as inputs } from "../../inputs/search";
 import type { SearchResponse } from "../../interfaces/search";
-import { searchExamplePayload as examplePayload } from "../../examplePayloads/search";
 export const search = action({
   display: {
     label: "Search",

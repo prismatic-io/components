@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
+import { updateTicketCustomFieldsExamplePayload as examplePayload } from "../../examplePayloads/tickets";
 import { updateTicketCustomFieldsInputs as inputs } from "../../inputs/tickets";
 import type { UpdateTicketCustomFieldsResponse } from "../../interfaces/tickets";
-import { updateTicketCustomFieldsExamplePayload as examplePayload } from "../../examplePayloads/tickets";
 export const updateTicketCustomFields = action({
   display: {
     label: "Update Ticket Custom Fields",
