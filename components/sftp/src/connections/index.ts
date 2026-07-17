@@ -71,6 +71,18 @@ const commonInputs = {
     required: false,
     type: "string",
   },
+  customKexAlgorithms: {
+    label: "Custom KEX Algorithms",
+    comments:
+      "A comma-separated list of custom key exchange algorithms. Algorithm order matters. Advanced setting.",
+    placeholder: "Enter KEX algorithms",
+    example: [
+      "diffie-hellman-group14-sha1",
+      "diffie-hellman-group14-sha256",
+    ].join(", "),
+    required: false,
+    type: "string",
+  },
 } as OnPremConnectionDefinition["inputs"];
 export const basic = onPremConnection({
   key: "basic",

@@ -7,7 +7,11 @@ import {
   unsecureCipherAlgorithms,
   unsecureServerHostKeyAlgorithms,
 } from "./constants";
-import type { CipherAlgorithm, ServerHostKeyAlgorithm } from "ssh2";
+import type {
+  CipherAlgorithm,
+  KexAlgorithm,
+  ServerHostKeyAlgorithm,
+} from "ssh2";
 export const getAuthParams = (connection: Connection) => {
   switch (connection.key) {
     case basic.key:
@@ -50,6 +54,7 @@ export const getSftpClient = async (connection: Connection, debug: boolean) => {
     enableUnsecureServerHostKeyAlgorithms,
     customServerHostKeyAlgorithms,
     customCiphers,
+    customKexAlgorithms,
   } = connection.fields;
   try {
     let cipher = util.types.toBool(enableUnsecureCiphers)
@@ -72,6 +77,12 @@ export const getSftpClient = async (connection: Connection, debug: boolean) => {
         .replace(/\s+/g, "")
         .split(",") as CipherAlgorithm[];
     }
+    const customKexAlgorithmsString = util.types.toString(customKexAlgorithms);
+    const kex = customKexAlgorithmsString
+      ? (customKexAlgorithmsString
+          .replace(/\s+/g, "")
+          .split(",") as KexAlgorithm[])
+      : undefined;
     await sftp.connect({
       host: util.types.toString(host),
       port: util.types.toInt(port),
@@ -85,6 +96,7 @@ export const getSftpClient = async (connection: Connection, debug: boolean) => {
       algorithms: {
         serverHostKey,
         cipher,
+        ...(kex ? { kex } : {}),
       },
       ...getAuthParams(connection),
     });

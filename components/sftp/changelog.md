@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-17
+
+Added **Custom KEX Algorithms** connection input to allow specifying custom key exchange algorithms
+
 ### 2026-04-30
 
 Updated spectral version
