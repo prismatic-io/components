@@ -18,9 +18,7 @@ export const createProblem = action({
       priority,
       status,
       impact,
-      category,
-      subCategory,
-      itemCategory,
+      categorization,
       problemsAdditionalFields,
     },
   ) => {
@@ -33,9 +31,9 @@ export const createProblem = action({
       priority,
       status,
       impact,
-      category,
-      sub_category: subCategory,
-      item_category: itemCategory,
+      category: categorization.category,
+      sub_category: categorization.subCategory,
+      item_category: categorization.itemCategory,
       ...problemsAdditionalFields,
     };
     const { data } = await client.post(`/problems`, payload);

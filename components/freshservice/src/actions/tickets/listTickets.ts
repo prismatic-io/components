@@ -10,7 +10,7 @@ export const listTickets = action({
   },
   perform: async (
     context,
-    { connection, filter, fetchAll, perPage, page, additionalQueryParams },
+    { connection, filter, fetchAll, pagination, additionalQueryParams },
   ) => {
     const client = createFreshserviceClient(connection, context.debug.enabled);
     const { data } = await getListData(
@@ -20,8 +20,8 @@ export const listTickets = action({
       fetchAll,
       {
         ...additionalQueryParams,
-        per_page: perPage,
-        page,
+        per_page: pagination.perPage,
+        page: pagination.page,
         filter,
       },
     );

@@ -1,3 +1,4 @@
+import { structuredObjectInput } from "@prismatic-io/spectral";
 import { connection } from "../common";
 import {
   address,
@@ -12,17 +13,20 @@ import {
   secondaryEmails,
   workPhoneNumber,
 } from "./common";
+const contactInfo = structuredObjectInput({
+  label: "Contact Information",
+  required: false,
+  comments: "Email, phone, and other contact channel details.",
+  inputs: { secondaryEmails, workPhoneNumber, mobilePhoneNumber, address },
+});
 export const createRequesterInputs = {
   connection,
   firstName,
-  primaryEmail,
   lastName,
+  primaryEmail,
   jobTitle,
-  workPhoneNumber,
-  mobilePhoneNumber,
+  contactInfo,
   reportingManagerId,
-  secondaryEmails,
   departmentIds,
-  address,
   requestersAdditionalFields,
 };

@@ -10,13 +10,13 @@ export const listAgents = action({
   },
   perform: async (
     context,
-    { connection, fetchAll, perPage, page, additionalQueryParams },
+    { connection, fetchAll, pagination, additionalQueryParams },
   ) => {
     const client = createFreshserviceClient(connection, context.debug.enabled);
     const { data } = await getListData(client, `/agents`, "agents", fetchAll, {
       ...additionalQueryParams,
-      per_page: perPage,
-      page,
+      per_page: pagination.perPage,
+      page: pagination.page,
     });
     return {
       data,

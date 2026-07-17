@@ -9,26 +9,18 @@ export const updateTicket = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      ticketId,
-      priority,
-      status,
-      source,
-      bypassMandatory,
-      ticketsAdditionalFields,
-    },
+    { connection, ticketId, additionalFields, ticketsAdditionalFields },
   ) => {
     const client = createFreshserviceClient(connection, context.debug.enabled);
     const payload = {
-      priority,
-      status,
-      source,
+      priority: additionalFields.priority,
+      status: additionalFields.status,
+      source: additionalFields.source,
       ...ticketsAdditionalFields,
     };
     const { data } = await client.put(`/tickets/${ticketId}`, payload, {
       params: {
-        bypass_mandatory: bypassMandatory,
+        bypass_mandatory: additionalFields.bypassMandatory,
       },
     });
     return {

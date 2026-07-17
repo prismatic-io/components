@@ -2,13 +2,11 @@ import {
   additionalQueryParams,
   connection,
   fetchAll,
-  page,
-  perPage,
+  pagination,
 } from "../common";
 export const listProblemsInputs = {
   connection,
   fetchAll,
-  perPage,
-  page,
+  pagination,
   additionalQueryParams,
 };

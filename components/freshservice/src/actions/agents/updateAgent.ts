@@ -12,28 +12,24 @@ export const updateAgent = action({
     {
       connection,
       agentId,
-      email,
       roles,
       scoreboardLevelId,
-      address,
-      occasional,
-      signature,
       departmentIds,
-      canSeeAllTicketsFromAssociatedDepartments,
+      additionalFields,
       agentsAdditionalFields,
     },
   ) => {
     const client = createFreshserviceClient(connection, context.debug.enabled);
     const payload = {
-      email,
+      email: additionalFields.email,
       roles,
       scoreboard_level_id: scoreboardLevelId,
-      address,
-      occasional,
-      signature,
+      address: additionalFields.address,
+      occasional: additionalFields.occasional,
+      signature: additionalFields.signature,
       department_ids: departmentIds,
       can_see_all_tickets_from_associated_departments:
-        canSeeAllTicketsFromAssociatedDepartments,
+        additionalFields.canSeeAllTicketsFromAssociatedDepartments,
       ...agentsAdditionalFields,
     };
     const { data } = await client.put(`/agents/${agentId}`, payload);

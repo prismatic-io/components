@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../util";
 import { connection } from "../common";
 import {
@@ -15,25 +15,37 @@ import {
   secondaryEmails,
   workPhoneNumber,
 } from "./common";
+const contactInfo = structuredObjectInput({
+  label: "Contact Information",
+  required: false,
+  comments: "Email, phone, and other contact channel details.",
+  inputs: {
+    primaryEmail: input({
+      ...primaryEmail,
+      required: false,
+      clean: cleanStringInput,
+    }),
+    secondaryEmails,
+    workPhoneNumber,
+    mobilePhoneNumber,
+    address,
+  },
+});
 export const updateRequesterInputs = {
   connection,
   requesterId: input({
     ...requesterId,
     comments: "Unique ID of the requester to update.",
   }),
-  firstName: input({ ...firstName, required: false, clean: cleanStringInput }),
-  primaryEmail: input({
-    ...primaryEmail,
+  jobTitle,
+  firstName: input({
+    ...firstName,
     required: false,
     clean: cleanStringInput,
   }),
   lastName,
-  jobTitle,
-  workPhoneNumber,
-  mobilePhoneNumber,
+  contactInfo,
   reportingManagerId,
-  secondaryEmails,
   departmentIds,
-  address,
   requestersAdditionalFields,
 };

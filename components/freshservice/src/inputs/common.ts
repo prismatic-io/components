@@ -1,4 +1,9 @@
-import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import {
+  input,
+  type KeyValuePair,
+  structuredObjectInput,
+  util,
+} from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanNumberInput } from "../util";
 export const connection = input({
   label: "Connection",
@@ -39,6 +44,12 @@ export const fetchAll = input({
   comments: "When true, automatically fetches all pages of results.",
   default: "false",
   clean: util.types.toBool,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { perPage, page },
 });
 export const additionalQueryParams = input({
   label: "Additional Query Parameters",

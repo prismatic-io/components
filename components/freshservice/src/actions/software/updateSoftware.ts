@@ -12,28 +12,22 @@ export const updateSoftware = action({
     {
       connection,
       applicationId,
-      name,
-      description,
-      applicationType,
-      status,
       managedById,
-      notes,
-      category,
-      source,
+      additionalFields,
       softwareAdditionalFields,
     },
   ) => {
     const client = createFreshserviceClient(connection, context.debug.enabled);
     const payload = {
       application: {
-        name,
-        description,
-        application_type: applicationType,
-        category,
-        status,
-        source,
+        name: additionalFields.name,
+        description: additionalFields.description,
+        application_type: additionalFields.applicationType,
+        category: additionalFields.category,
+        status: additionalFields.status,
+        source: additionalFields.source,
         managed_by_id: managedById,
-        notes,
+        notes: additionalFields.notes,
         ...softwareAdditionalFields,
       },
     };
