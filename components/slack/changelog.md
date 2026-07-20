@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-07-20
+
+Grouped related inputs into structured objects across list, search, and conversation actions:
+
+- Grouped **Limit** and **Cursor** into a **Pagination** structured object on **Get Conversation History**, **List Conversations**, **List Conversation Members**, **Search Conversation**, **List Users**, and **List User Conversations**; the **Fetch All** input stays flat
+- Grouped **Count** and **Page** into a **Pagination** structured object on **Search Messages**, **Search Files**, and **Search All**
+- Grouped **Include Public Channels**, **Include Private Channels**, **Include Multi-Party IM Channels**, and **Include IM Channels** into a **Channel Types** structured object on **List Conversations**
+- Grouped **Oldest**, **Latest**, and **Inclusive** into a **Time Range** structured object on **Get Conversation History**
+
 ### 2026-05-28
 
 Added **New and Updated Records** polling trigger that monitors a channel for new messages on a configured schedule. Messages are emitted in the `created` bucket; the `updated` bucket is always empty because Slack's `conversations.history` API does not surface message edits as separate records — use the webhook trigger to receive `message_changed` events

@@ -12,16 +12,15 @@ export const getConversationsHistory = action({
     { debug: { enabled: debug } },
     {
       connection,
-      cursor,
+      pagination,
       includeAllMetadata,
-      limit,
       channelName,
-      oldest,
-      inclusive,
-      latest,
+      timeRange,
       fetchAll,
     },
   ) => {
+    const { cursor, limit } = pagination;
+    const { oldest, latest, inclusive } = timeRange;
     debugLogger({
       debug,
       channelName,

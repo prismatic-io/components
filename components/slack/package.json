@@ -11,7 +11,7 @@
     "publish": "npm run build && prism components:publish"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1",
+    "@prismatic-io/spectral": "10.19.0",
     "@slack/bolt": "4.2.0",
     "@slack/webhook": "6.1.0"
   },

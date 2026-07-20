@@ -9,20 +9,24 @@ export const listConversations = action({
     description: "List all conversations.",
   },
   perform: async ({ debug: { enabled: debug } }, params) => {
-    debugLogger({ ...params, debug });
+    const { pagination, ...rest } = params;
+    const { cursor, limit } = pagination;
+    debugLogger({ ...rest, cursor, limit, debug });
     const client = await createOauthClient({
       slackConnection: params.connection,
     });
     const parameters = {
-      cursor: params.cursor || undefined,
+      cursor: cursor || undefined,
       exclude_archived: params.excludeArchived || undefined,
-      limit: params.limit || undefined,
+      limit: limit || undefined,
       team_id: params.teamId || undefined,
-      includePublicChannels: params.includePublicChannels || undefined,
-      includePrivateChannels: params.includePrivateChannels || undefined,
+      includePublicChannels:
+        params.channelTypes.includePublicChannels || undefined,
+      includePrivateChannels:
+        params.channelTypes.includePrivateChannels || undefined,
       includeMultiPartyImchannels:
-        params.includeMultiPartyImchannels || undefined,
-      includeImChannels: params.includeImChannels || undefined,
+        params.channelTypes.includeMultiPartyImchannels || undefined,
+      includeImChannels: params.channelTypes.includeImChannels || undefined,
     };
     const data = await getChannels(client, parameters, params.fetchAll);
     return { data };

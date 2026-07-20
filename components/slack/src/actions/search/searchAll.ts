@@ -10,8 +10,9 @@ export const searchAll = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, query, sort, sort_dir, count, team_id, highlight, page },
+    { connection, query, sort, sort_dir, pagination, team_id, highlight },
   ) => {
+    const { count, page } = pagination;
     debugLogger({
       debug,
       query,

@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   connectionInput,
   cursor,
@@ -24,18 +24,28 @@ export const getUserByIdInputs = {
   connection: connectionInput,
   user: userId,
 };
+const listUsersPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { limit, cursor },
+});
 export const listUsersInputs = {
   connection: connectionInput,
   fetchAll,
-  limit,
-  cursor,
+  pagination: listUsersPagination,
   teamId,
 };
+const listUsersConversationsPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { limit, cursor },
+});
 export const listUsersConversationsInputs = {
   connection: connectionInput,
   userId,
   fetchAll,
-  limit,
-  cursor,
+  pagination: listUsersConversationsPagination,
   teamId,
 };

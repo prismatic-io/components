@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   channelId,
   channelName,
@@ -132,15 +132,23 @@ export const postBlockMessageInputs = {
 export const listScheduledMessagesInputs = {
   connection: connectionInput,
 };
+const searchMessagesPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: {
+    count: {
+      ...limit,
+      label: "Count",
+      comments: "The number of items to return per page.",
+    },
+    page,
+  },
+});
 export const searchMessagesInputs = {
   connection: connectionInput,
   query,
-  count: {
-    ...limit,
-    label: "Count",
-    comments: "The number of items to return per page.",
-  },
-  page,
+  pagination: searchMessagesPagination,
   highlight,
   sort: sortSearch,
   sort_dir,

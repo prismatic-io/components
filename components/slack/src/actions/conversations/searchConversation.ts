@@ -14,8 +14,7 @@ export const searchConversation = action({
     {
       connection,
       connected_team_ids,
-      cursor,
-      limit,
+      pagination,
       query,
       search_channel_types,
       sort,
@@ -24,6 +23,7 @@ export const searchConversation = action({
       total_count_only,
     },
   ) => {
+    const { cursor, limit } = pagination;
     debugLogger({
       debug,
       connected_team_ids,

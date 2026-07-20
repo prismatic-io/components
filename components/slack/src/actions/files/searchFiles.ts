@@ -10,8 +10,9 @@ export const searchFiles = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { connection, query, sort, sort_dir, count, highlight, page, team_id },
+    { connection, query, sort, sort_dir, pagination, highlight, team_id },
   ) => {
+    const { count, page } = pagination;
     debugLogger({
       debug,
       query,

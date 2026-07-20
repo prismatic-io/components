@@ -10,8 +10,9 @@ export const listUsers = action({
   },
   perform: async (
     { debug: { enabled: debug } },
-    { fetchAll, connection, cursor, limit, teamId },
+    { fetchAll, connection, pagination, teamId },
   ) => {
+    const { cursor, limit } = pagination;
     debugLogger({ cursor, limit, teamId, debug });
     const client = await createOauthClient({
       slackConnection: connection,

@@ -1,3 +1,4 @@
+import { structuredObjectInput } from "@prismatic-io/spectral";
 import {
   connectionInput,
   highlight,
@@ -8,15 +9,23 @@ import {
   sortSearch,
   team_id,
 } from "./common";
+const searchAllPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: {
+    count: {
+      ...limit,
+      label: "Count",
+      comments: "The number of items to return per page.",
+    },
+    page,
+  },
+});
 export const searchAllInputs = {
   connection: connectionInput,
   query,
-  count: {
-    ...limit,
-    label: "Count",
-    comments: "The number of items to return per page.",
-  },
-  page,
+  pagination: searchAllPagination,
   highlight,
   sort: sortSearch,
   sort_dir,

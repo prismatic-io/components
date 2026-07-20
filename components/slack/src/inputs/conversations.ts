@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import type { Sort } from "../types";
 import { valueListInputClean } from "../util";
 import {
@@ -172,39 +172,68 @@ export const renameConversationInputs = {
     label: "New Conversation Name",
   },
 };
+const getConversationsHistoryPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { limit, cursor },
+});
+const getConversationsHistoryTimeRange = structuredObjectInput({
+  label: "Time Range",
+  required: false,
+  comments:
+    "Timestamp bounds and inclusivity for the messages returned in results.",
+  inputs: { oldest, latest, inclusive },
+});
 export const getConversationsHistoryInputs = {
   connection: connectionInput,
   channelName,
   fetchAll,
-  limit,
-  cursor,
+  pagination: getConversationsHistoryPagination,
   includeAllMetadata,
-  inclusive,
-  latest,
-  oldest,
+  timeRange: getConversationsHistoryTimeRange,
 };
+const listConversationsPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { limit, cursor },
+});
+const listConversationsChannelTypes = structuredObjectInput({
+  label: "Channel Types",
+  required: false,
+  comments:
+    "Which channel types to include in results: public, private, multi-party IM, and IM channels.",
+  inputs: {
+    includePublicChannels,
+    includePrivateChannels,
+    includeMultiPartyImchannels,
+    includeImChannels,
+  },
+});
 export const listConversationsInputs = {
   connection: connectionInput,
   fetchAll,
-  limit,
-  cursor,
+  pagination: listConversationsPagination,
   teamId,
   excludeArchived,
-  includePublicChannels,
-  includePrivateChannels,
-  includeMultiPartyImchannels,
-  includeImChannels,
+  channelTypes: listConversationsChannelTypes,
 };
 export const leaveConversationInputs = {
   connection: connectionInput,
   channelName,
 };
+const listConversationMembersPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { limit, cursor },
+});
 export const listConversationMembersInputs = {
   connection: connectionInput,
   channelName,
   fetchAll,
-  limit,
-  cursor,
+  pagination: listConversationMembersPagination,
 };
 export const archiveConversationInputs = {
   connection: connectionInput,
@@ -230,11 +259,16 @@ export const setConversationTopicInputs = {
   userId,
   topic: conversationTopic,
 };
+const searchConversationPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { limit, cursor },
+});
 export const searchConversationInputs = {
   connection: connectionInput,
   query: channelName,
-  cursor,
-  limit,
+  pagination: searchConversationPagination,
   connected_team_ids,
   search_channel_types,
   sort,

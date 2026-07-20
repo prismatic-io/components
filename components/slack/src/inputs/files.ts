@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanString,
   connectionInput,
@@ -81,15 +81,23 @@ export const uploadFileInputs = {
   initialComment,
   thread,
 };
+const searchFilesPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: {
+    count: {
+      ...limit,
+      label: "Count",
+      comments: "The number of items to return per page.",
+    },
+    page,
+  },
+});
 export const searchFilesInputs = {
   connection: connectionInput,
   query,
-  count: {
-    ...limit,
-    label: "Count",
-    comments: "The number of items to return per page.",
-  },
-  page,
+  pagination: searchFilesPagination,
   highlight,
   sort: sortSearch,
   sort_dir,
