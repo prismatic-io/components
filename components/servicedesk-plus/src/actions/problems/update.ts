@@ -16,18 +16,16 @@ export const updateProblem = action({
       toUpdateProblemId,
       problemTitle,
       problemDescription,
-      problemReportedTime,
-      problemDueByTime,
-      problemClosedTime,
+      problemTimes,
       additionalFields,
     },
   ) => {
     const client = createClient(connectionInput, context.debug.enabled);
     const payload = createPayload({
       problem: {
-        reported_time: problemReportedTime,
-        due_by_time: problemDueByTime,
-        closed_time: problemClosedTime,
+        reported_time: problemTimes.problemReportedTime,
+        due_by_time: problemTimes.problemDueByTime,
+        closed_time: problemTimes.problemClosedTime,
         title: problemTitle,
         description: problemDescription,
         ...additionalFields,

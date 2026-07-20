@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   CRITERIA_TYPES,
   pollResourceModel,
@@ -124,6 +124,13 @@ export const stateHistoryComments = input({
   placeholder: "Sample Content",
   clean: cleanString,
 });
+export const assetAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Asset Tag, State History Comments, Bar Code.",
+  inputs: { assetTag, stateHistoryComments, barCode },
+});
 export const productType = input({
   label: "Product Type",
   type: "code",
@@ -194,6 +201,12 @@ export const partNo = input({
   example: "test-part_no",
   placeholder: "test-part_no",
   clean: cleanString,
+});
+export const productDetails = structuredObjectInput({
+  label: "Product Details",
+  required: false,
+  comments: "Manufacturer, laptop indicator, and part number.",
+  inputs: { manufacturer, isLaptop, partNo },
 });
 export const category = input({
   label: "Category",
@@ -294,6 +307,12 @@ export const fetchAll = input({
   default: "true",
   clean: cleanBool,
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page number and number of rows to return per page.",
+  inputs: { page, rowCount },
+});
 export const conditionsCriteria = input({
   label: "Conditions Criteria",
   type: "string",
@@ -342,7 +361,7 @@ const problemDescription = input({
   clean: cleanString,
 });
 const problemReportedTime = input({
-  label: "Problem Reported Time",
+  label: "Reported Time",
   type: "code",
   language: "json",
   required: false,
@@ -358,7 +377,7 @@ const problemReportedTime = input({
   clean: cleanObject,
 });
 const problemDueByTime = input({
-  label: "Problem Due By Time",
+  label: "Due By Time",
   type: "code",
   language: "json",
   required: false,
@@ -370,7 +389,7 @@ const problemDueByTime = input({
   clean: cleanObject,
 });
 const problemClosedTime = input({
-  label: "Problem Closed Time",
+  label: "Closed Time",
   type: "code",
   language: "json",
   required: false,
@@ -380,6 +399,12 @@ const problemClosedTime = input({
     display_value: "2017-03-02T12:00:00Z",
   }),
   clean: cleanObject,
+});
+const problemTimes = structuredObjectInput({
+  label: "Problem Times",
+  required: false,
+  comments: "Reported, due by, and closed times.",
+  inputs: { problemReportedTime, problemDueByTime, problemClosedTime },
 });
 const additionalFields = input({
   label: "Additional Fields",
@@ -394,9 +419,7 @@ export const createProblemInputs = {
   connectionInput,
   problemTitle,
   problemDescription,
-  problemReportedTime,
-  problemDueByTime,
-  problemClosedTime,
+  problemTimes,
   additionalFields: input({
     ...additionalFields,
     comments: `${additionalFields.comments} ${problemsDocumentationText}`,
@@ -416,9 +439,7 @@ export const updateProblemInputs = {
   toUpdateProblemId,
   problemTitle: input({ ...problemTitle, required: false, clean: cleanString }),
   problemDescription,
-  problemReportedTime,
-  problemDueByTime,
-  problemClosedTime,
+  problemTimes,
   additionalFields: input({
     ...additionalFields,
     comments: `${additionalFields.comments} ${problemsDocumentationText}`,
@@ -440,8 +461,7 @@ export const getProblemInputs = {
 export const listProblemsInputs = {
   connectionInput,
   fetchAll,
-  rowCount,
-  page,
+  pagination,
   conditionsCriteria,
   conditionsCriteriaValue,
 };
@@ -545,8 +565,7 @@ export const listProblemNotesInputs = {
   connectionInput,
   noteProblemId,
   fetchAll,
-  page,
-  rowCount,
+  pagination,
   conditionsCriteria,
   conditionsCriteriaValue,
 };
@@ -625,7 +644,7 @@ const taskOwner = input({
   clean: cleanObject,
 });
 const estimatedEffortMinutes = input({
-  label: "Estimated Effort Minutes",
+  label: "Minutes",
   type: "string",
   required: false,
   comments: "Estimated number of minutes to finish the task.",
@@ -634,7 +653,7 @@ const estimatedEffortMinutes = input({
   clean: cleanNumber,
 });
 const estimatedEffortHours = input({
-  label: "Estimated Effort Hours",
+  label: "Hours",
   type: "string",
   required: false,
   comments: "Estimated number of hours to finish the task.",
@@ -643,13 +662,19 @@ const estimatedEffortHours = input({
   clean: cleanNumber,
 });
 const estimatedEffortDays = input({
-  label: "Estimated Effort Days",
+  label: "Days",
   type: "string",
   required: false,
   comments: "Estimated number of days to finish the task.",
   example: "234759602834500",
   placeholder: "234759602834500",
   clean: cleanNumber,
+});
+const estimatedEffort = structuredObjectInput({
+  label: "Estimated Effort",
+  required: false,
+  comments: "Estimated minutes, hours, and days to finish.",
+  inputs: { estimatedEffortMinutes, estimatedEffortHours, estimatedEffortDays },
 });
 const percentageCompletion = input({
   label: "Percentage Completion",
@@ -683,9 +708,7 @@ export const createProblemTaskInputs = {
   taskDescription,
   taskType,
   taskOwner,
-  estimatedEffortMinutes,
-  estimatedEffortHours,
-  estimatedEffortDays,
+  estimatedEffort,
   percentageCompletion,
   group,
   additionalFields: input({
@@ -725,8 +748,7 @@ export const listProblemTasksInputs = {
   connectionInput,
   taskProblemId,
   fetchAll,
-  page,
-  rowCount,
+  pagination,
   conditionsCriteria,
   conditionsCriteriaValue,
 };
@@ -747,9 +769,7 @@ export const updateProblemTaskInputs = {
   taskDescription,
   taskType,
   taskOwner,
-  estimatedEffortMinutes,
-  estimatedEffortHours,
-  estimatedEffortDays,
+  estimatedEffort,
   percentageCompletion,
   group,
   additionalFields: input({
@@ -847,8 +867,7 @@ export const getRequestInputs = {
 export const listRequestsInputs = {
   connectionInput,
   fetchAll,
-  rowCount,
-  page,
+  pagination,
   conditionsCriteria,
   conditionsCriteriaValue,
 };
@@ -1018,8 +1037,7 @@ export const listRequestTasksInputs = {
   connectionInput,
   taskRequestId,
   fetchAll,
-  rowCount,
-  page,
+  pagination,
   conditionsCriteria,
   conditionsCriteriaValue,
 };

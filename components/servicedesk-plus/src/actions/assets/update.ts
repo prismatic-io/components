@@ -2,15 +2,13 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createAssetResponse as updateAssetResponse } from "../../examplePayloads";
 import {
+  assetAdditionalFields,
   assetId,
   assetName,
-  assetTag,
   attributes,
-  barCode,
   connectionInput,
   product,
   state,
-  stateHistoryComments,
 } from "../../inputs";
 import { createPayload } from "../../util";
 export const updateAsset = action({
@@ -29,9 +27,7 @@ export const updateAsset = action({
       required: false,
     },
     product,
-    assetTag,
-    stateHistoryComments,
-    barCode,
+    additionalFields: assetAdditionalFields,
     attributes,
     connectionInput,
   },
@@ -41,23 +37,21 @@ export const updateAsset = action({
       connectionInput,
       assetId,
       assetName,
-      barCode,
+      additionalFields,
       attributes,
-      assetTag,
       product,
       state,
-      stateHistoryComments,
     },
   ) => {
     const client = createClient(connectionInput, context.debug.enabled);
     const payload = createPayload({
       asset: {
         name: assetName,
-        barcode: barCode,
-        asset_tag: assetTag,
+        barcode: additionalFields.barCode,
+        asset_tag: additionalFields.assetTag,
         product,
         state,
-        state_history_comments: stateHistoryComments,
+        state_history_comments: additionalFields.stateHistoryComments,
         ...attributes,
       },
     });

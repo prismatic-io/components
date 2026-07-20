@@ -1,5 +1,15 @@
 ## Changelog
 
+### 2026-07-20
+
+Restructured action inputs into structured objects for an improved user experience.
+
+- List actions (**List Problems**, **List Problem Notes**, **List Problem Tasks**, **List Requests**, **List Request Tasks**, **List Assets**, **List Configuration Items**, **List Products**, **List Product Types**) group their paging inputs into **Pagination**; **Fetch All** stays a top-level toggle
+- **Create Problem** and **Update Problem** group their problem-time inputs into **Problem Times**
+- **Create Problem Task** and **Update Problem Task** group their effort inputs into **Estimated Effort**
+- **Create Product** and **Update Product** group their product-spec inputs into **Product Details**
+- **Create Asset** and **Update Asset** group their **Asset Tag**, **State History Comments**, and **Bar Code** inputs into **Additional Fields**
+
 ### 2026-05-20
 
 Applied automated security patches and code formatting updates

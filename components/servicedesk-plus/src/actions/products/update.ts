@@ -5,10 +5,8 @@ import {
   attributes,
   connectionInput,
   id,
-  isLaptop,
-  manufacturer,
   name,
-  partNo,
+  productDetails,
   productType,
 } from "../../inputs";
 import { createPayload } from "../../util";
@@ -24,33 +22,22 @@ export const updateProduct = action({
     },
     productType,
     name,
-    manufacturer,
-    isLaptop,
-    partNo,
+    productDetails,
     attributes,
     connectionInput,
   },
   perform: async (
     context,
-    {
-      connectionInput,
-      id,
-      attributes,
-      name,
-      productType,
-      isLaptop,
-      manufacturer,
-      partNo,
-    },
+    { connectionInput, id, attributes, name, productType, productDetails },
   ) => {
     const client = createClient(connectionInput, context.debug.enabled);
     const payload = createPayload({
       product: {
         name,
         product_type: productType,
-        is_laptop: isLaptop,
-        manufacturer,
-        parto_no: partNo,
+        is_laptop: productDetails.isLaptop,
+        manufacturer: productDetails.manufacturer,
+        parto_no: productDetails.partNo,
         ...attributes,
       },
     });

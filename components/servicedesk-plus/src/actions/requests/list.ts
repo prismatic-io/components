@@ -14,8 +14,7 @@ export const listRequests = action({
     {
       connectionInput,
       fetchAll,
-      page,
-      rowCount,
+      pagination = {},
       conditionsCriteria,
       conditionsCriteriaValue,
     },
@@ -28,8 +27,8 @@ export const listRequests = action({
     const data = await paginateData(
       client,
       "requests",
-      rowCount,
-      page,
+      pagination.rowCount,
+      pagination.page,
       fetchAll,
       criteriaData,
     );

@@ -7,8 +7,7 @@ import {
   conditionsCriteriaValue,
   connectionInput,
   fetchAll,
-  page,
-  rowCount,
+  pagination,
 } from "../../inputs";
 import { buildCriteriaObject, paginateData } from "../../util";
 export const listConfigurationItems = action({
@@ -20,8 +19,7 @@ export const listConfigurationItems = action({
     ciTypeApiName,
     conditionsCriteria,
     conditionsCriteriaValue,
-    rowCount,
-    page,
+    pagination,
     fetchAll,
     connectionInput,
   },
@@ -31,8 +29,7 @@ export const listConfigurationItems = action({
       connectionInput,
       ciTypeApiName,
       fetchAll,
-      page,
-      rowCount,
+      pagination = {},
       conditionsCriteria,
       conditionsCriteriaValue,
     },
@@ -45,8 +42,8 @@ export const listConfigurationItems = action({
     const data = await paginateData(
       client,
       ciTypeApiName as string,
-      rowCount,
-      page,
+      pagination.rowCount,
+      pagination.page,
       fetchAll,
       criteriaData,
       true,

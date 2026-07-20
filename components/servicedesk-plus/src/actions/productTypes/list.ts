@@ -6,8 +6,7 @@ import {
   conditionsCriteriaValue,
   connectionInput,
   fetchAll,
-  page,
-  rowCount,
+  pagination,
 } from "../../inputs";
 import { buildCriteriaObject, paginateData } from "../../util";
 export const listProductTypes = action({
@@ -18,8 +17,7 @@ export const listProductTypes = action({
   inputs: {
     conditionsCriteria,
     conditionsCriteriaValue,
-    rowCount,
-    page,
+    pagination,
     fetchAll,
     connectionInput,
   },
@@ -28,8 +26,7 @@ export const listProductTypes = action({
     {
       connectionInput,
       fetchAll,
-      rowCount,
-      page,
+      pagination = {},
       conditionsCriteria,
       conditionsCriteriaValue,
     },
@@ -42,8 +39,8 @@ export const listProductTypes = action({
     const data = await paginateData(
       client,
       "product_types",
-      rowCount,
-      page,
+      pagination.rowCount,
+      pagination.page,
       fetchAll,
       criteriaData,
     );

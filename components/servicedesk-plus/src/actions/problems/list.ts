@@ -14,8 +14,7 @@ export const listProblems = action({
     {
       connectionInput,
       fetchAll,
-      page,
-      rowCount,
+      pagination = {},
       conditionsCriteria,
       conditionsCriteriaValue,
     },
@@ -28,8 +27,8 @@ export const listProblems = action({
     const data = await paginateData(
       client,
       "problems",
-      rowCount,
-      page,
+      pagination.rowCount,
+      pagination.page,
       fetchAll,
       criteriaData,
     );

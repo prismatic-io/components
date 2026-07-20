@@ -1,7 +1,6 @@
 {
   "name": "servicedesk-plus",
   "private": true,
-  "license": "Apache-2.0",
   "scripts": {
     "build": "npm run format && npm run lint && webpack",
     "lint": "biome check --write .",
@@ -10,10 +9,10 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1"
+    "@prismatic-io/spectral": "10.19.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.6",
+    "@biomejs/biome": "2.5.0",
     "@types/jest": "30.0.0",
     "@types/node": "^25",
     "copy-webpack-plugin": "14.0.0",
