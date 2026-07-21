@@ -6,8 +6,7 @@ import {
   endTimezoneInput,
   eventIdInput,
   fetchAllInput,
-  pageLimitInput,
-  pageSkipInput,
+  pagination,
   startInput,
   startTimezoneInput,
 } from "./common";
@@ -100,8 +99,7 @@ const cancelCommentInput = input({
 export const listEventsInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
-  pageLimit: pageLimitInput,
-  pageSkip: pageSkipInput,
+  pagination,
   calendarId: eventCalendarIdInput,
 };
 export const createEventInputs = {

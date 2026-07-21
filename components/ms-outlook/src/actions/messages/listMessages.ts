@@ -20,11 +20,11 @@ export const listMessages = action({
         : "/me/messages",
     );
     const queryParams: ODataQueryParams = {};
-    if (params.pageLimit) {
-      queryParams.$top = params.pageLimit;
+    if (params.pagination?.pageLimit) {
+      queryParams.$top = params.pagination.pageLimit;
     }
-    if (params.pageSkip) {
-      queryParams.$skip = params.pageSkip;
+    if (params.pagination?.pageSkip) {
+      queryParams.$skip = params.pagination.pageSkip;
     }
     if (params.search) {
       queryParams.$search = params.search;

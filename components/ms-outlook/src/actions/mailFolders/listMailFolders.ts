@@ -21,11 +21,11 @@ export const listMailFolders = action({
         : "/me/mailFolders",
     );
     const queryParams: ODataQueryParams = {};
-    if (params.pageLimit) {
-      queryParams.$top = params.pageLimit;
+    if (params.pagination?.pageLimit) {
+      queryParams.$top = params.pagination.pageLimit;
     }
-    if (params.pageSkip) {
-      queryParams.$skip = params.pageSkip;
+    if (params.pagination?.pageSkip) {
+      queryParams.$skip = params.pagination.pageSkip;
     }
     const data = await fetchAllData<MailSearchFolder & ODataAttrs>(
       client,

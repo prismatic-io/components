@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-06-24
+
+Grouped the OData query inputs into structured objects on the List Rows, List Columns, List Tables, and List Worksheets actions (breaking: these input keys are now nested). Paging controls (`$top`, `$skip`, `$skipToken`) are nested under **Pagination**, and sort/filter controls (`$filter`, `$orderBy`, `$search`) under **Filters**. The response-shaping inputs (`$select`, `$expand`, `$format`) and `fetchAll` remain top-level inputs.
+
 ### 2026-04-30
 
 Updated spectral version

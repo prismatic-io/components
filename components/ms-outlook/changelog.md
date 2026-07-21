@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-21
+
+Grouped the **Page Limit** and **Page Skip** inputs into a single **Pagination** structured object on the **List Events**, **List Mail Messages**, **List Calendars**, and **List Mail Folders** actions
+
 ### 2026-05-26
 
 Added **New and Updated Messages** polling trigger that checks for new and updated mail messages in Microsoft Outlook on a configured schedule, with optional filtering by mail folder and toggles for showing new or updated messages

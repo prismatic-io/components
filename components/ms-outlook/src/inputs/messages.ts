@@ -10,8 +10,7 @@ import {
   connectionInput,
   fetchAllInput,
   folderIdInput,
-  pageLimitInput,
-  pageSkipInput,
+  pagination,
 } from "./common";
 export const messageIdInput = input({
   label: "Message ID",
@@ -139,8 +138,7 @@ const sendBodyContentTypeInput = input({
 export const listMessagesInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
-  pageLimit: pageLimitInput,
-  pageSkip: pageSkipInput,
+  pagination,
   folderId: folderIdInput,
   search: searchInput,
   filter: filterInput,

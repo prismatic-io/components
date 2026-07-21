@@ -14,7 +14,7 @@
     "format": "biome format --write ."
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1"
+    "@prismatic-io/spectral": "10.19.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.3",

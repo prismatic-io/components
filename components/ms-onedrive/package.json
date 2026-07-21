@@ -10,7 +10,7 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1",
+    "@prismatic-io/spectral": "10.19.0",
     "ms-utils": "file:../../packages/ms-utils"
   },
   "devDependencies": {

@@ -20,11 +20,11 @@ export const listEvents = action({
         : "/me/events",
     );
     const queryParams: ODataQueryParams = {};
-    if (params.pageLimit) {
-      queryParams.$top = params.pageLimit;
+    if (params.pagination?.pageLimit) {
+      queryParams.$top = params.pagination.pageLimit;
     }
-    if (params.pageSkip) {
-      queryParams.$skip = params.pageSkip;
+    if (params.pagination?.pageSkip) {
+      queryParams.$skip = params.pagination.pageSkip;
     }
     const data = await fetchAllData<Event & ODataAttrs>(
       client,

@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanString,
   cleanStringValueListInput,
@@ -230,17 +230,34 @@ export const fetchAll = input({
   default: "false",
   clean: util.types.toBool,
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments:
+    "Result paging controls: page size, number of items to skip, and next-page token.",
+  inputs: {
+    $top,
+    $skip,
+    $skipToken,
+  },
+});
+export const filters = structuredObjectInput({
+  label: "Filters",
+  required: false,
+  comments: "Optional query controls to sort and refine the results.",
+  inputs: {
+    $filter,
+    $orderBy,
+    $search,
+  },
+});
 export const oDataParams = {
   fetchAll,
-  $expand,
-  $filter,
-  $format,
-  $orderBy,
-  $search,
+  pagination,
+  filters,
   $select,
-  $skip,
-  $skipToken,
-  $top,
+  $expand,
+  $format,
 };
 export const driveOrSiteId = input({
   label: "Drive or Site ID",

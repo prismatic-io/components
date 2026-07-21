@@ -14,11 +14,11 @@ export const listCalendars = action({
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const queryParams: ODataQueryParams = {};
-    if (params.pageLimit) {
-      queryParams.$top = params.pageLimit;
+    if (params.pagination?.pageLimit) {
+      queryParams.$top = params.pagination.pageLimit;
     }
-    if (params.pageSkip) {
-      queryParams.$skip = params.pageSkip;
+    if (params.pagination?.pageSkip) {
+      queryParams.$skip = params.pagination.pageSkip;
     }
     const data = await fetchAllData<Calendar & ODataAttrs>(
       client,

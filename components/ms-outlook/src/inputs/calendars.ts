@@ -5,8 +5,7 @@ import {
   endTimezoneInput,
   eventIdInput,
   fetchAllInput,
-  pageLimitInput,
-  pageSkipInput,
+  pagination,
   startInput,
   startTimezoneInput,
 } from "./common";
@@ -70,8 +69,7 @@ const schedulesInput = input({
 export const listCalendarsInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
-  pageLimit: pageLimitInput,
-  pageSkip: pageSkipInput,
+  pagination,
 };
 export const createCalendarInputs = {
   connection: connectionInput,

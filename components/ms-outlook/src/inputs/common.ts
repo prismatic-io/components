@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { RENEWAL_EXPIRATION_MINUTES } from "../constants";
 export const connectionInput = input({
@@ -68,6 +68,15 @@ export const pageSkipInput = input({
   placeholder: "Enter number of records to skip",
   comments: "The number of records to skip before returning results.",
   clean: cleanStringInput,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page size and offset controls for the result set.",
+  inputs: {
+    pageLimit: pageLimitInput,
+    pageSkip: pageSkipInput,
+  },
 });
 export const fetchAllInput = input({
   label: "Fetch All",

@@ -1,11 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
-import {
-  connectionInput,
-  fetchAllInput,
-  pageLimitInput,
-  pageSkipInput,
-} from "./common";
+import { connectionInput, fetchAllInput, pagination } from "./common";
 export const parentFolderIdInput = input({
   label: "Parent Folder ID",
   type: "string",
@@ -39,8 +34,7 @@ const deleteFolderIdInput = input({
 export const listMailFoldersInputs = {
   connection: connectionInput,
   fetchAll: fetchAllInput,
-  pageLimit: pageLimitInput,
-  pageSkip: pageSkipInput,
+  pagination,
   parentFolderId: {
     ...parentFolderIdInput,
     comments:

@@ -12,7 +12,7 @@
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1",
+    "@prismatic-io/spectral": "10.19.0",
     "ms-utils": "file:../../packages/ms-utils"
   },
   "devDependencies": {

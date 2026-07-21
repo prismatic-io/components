@@ -13,16 +13,12 @@ export const listTables = action({
     context,
     {
       connection,
-      $skipToken,
       fetchAll,
-      $expand,
-      $orderBy,
+      pagination = {},
+      filters = {},
       $select,
-      $top,
-      $filter,
+      $expand,
       $format,
-      $search,
-      $skip,
       workbookId,
       worksheetId,
       driveOrSiteId,
@@ -30,22 +26,11 @@ export const listTables = action({
   ) => {
     const { client, source } = createClient(connection, context.debug.enabled);
     const baseUrl = getDriveOrSiteBaseUrl(source, driveOrSiteId, workbookId);
-    const params = {
-      $skipToken,
-      $expand,
-      $orderBy,
-      $select,
-      $top,
-      $filter,
-      $format,
-      $search,
-      $skip,
-    };
     const data = await paginateResults(
       client,
       `${baseUrl}/worksheets/${worksheetId}/tables`,
       fetchAll,
-      params,
+      { ...pagination, ...filters, $select, $expand, $format },
     );
     return {
       data,
