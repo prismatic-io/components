@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanCodeInput,
   cleanStringInput,
@@ -134,20 +134,25 @@ const startDate = input({
   placeholder: "2015-10-10T06:00:00.000+0000",
   clean: cleanStringInput,
 });
+const listShiftsDateRange = structuredObjectInput({
+  label: "Date Range",
+  required: false,
+  comments: "Start and end date and time of the time period to match shifts.",
+  inputs: { startDate, endDate },
+});
 export const listShiftsInputs = {
   connection,
   restaurantExternalId,
-  startDate,
-  endDate,
+  dateRange: listShiftsDateRange,
   shiftIds,
 };
 export const updateShiftInputs = {
   connection,
   restaurantExternalId,
   shiftId,
-  jobReference,
   employeeReference,
   inDate,
   outDate,
+  jobReference,
   additionalFields: shiftAdditionalFields,
 };

@@ -1,5 +1,15 @@
 ## Changelog
 
+### 2026-07-21
+
+Grouped related inputs into structured objects across restaurant, employee, shift, and time entry actions:
+
+- Grouped the **Page Size** and **Page Token** inputs into a **Pagination** structured object on **List Connected Restaurants**, with the **Fetch All** input remaining a top-level toggle
+- Grouped the **First Name**, **Last Name**, and **Chosen Name** inputs into a **Name** structured object on **Create Employee** and **Update Employee**
+- Grouped the **Start Date** and **End Date** inputs into a **Date Range** structured object on **List Shifts** and **List Time Entries**
+- Grouped the **Modified Start Date** and **Modified End Date** inputs into a **Modified Date Range** structured object on **List Time Entries**
+- Grouped the **In Date** and **Out Date** inputs into a **Shift Window** structured object on **Create Shift** and **Update Shift**
+
 ### 2026-06-03
 
 Added the **New and Updated Time Entries** polling trigger to detect newly created and recently modified time entries on a configured schedule

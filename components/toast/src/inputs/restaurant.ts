@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../utils";
 import { connection } from "./shared";
 const fetchAll = input({
@@ -45,6 +45,12 @@ const pageToken = input({
   placeholder: "cDoyLHM6MQ==",
   clean: cleanStringInput,
 });
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page size and page token controls for paginated results.",
+  inputs: { pageSize, pageToken },
+});
 export const listConnectedRestaurantsInputs = {
   connection,
   lastModified: input({
@@ -53,6 +59,5 @@ export const listConnectedRestaurantsInputs = {
       "Limits the return data to restaurants that changed their access configuration for your partner service after a specific date and time. You can use this parameter to identify new or updated restaurants connected to your partner service.",
   }),
   fetchAll,
-  pageSize,
-  pageToken,
+  pagination,
 };

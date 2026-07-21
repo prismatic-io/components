@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanArrayCodeInput,
   cleanStringInput,
@@ -179,13 +179,25 @@ const currentPasscode = input({
   placeholder: "1234",
   clean: cleanStringInput,
 });
+const updateEmployeeName = structuredObjectInput({
+  label: "Name",
+  required: false,
+  comments: "First name, last name, and chosen name of the employee.",
+  inputs: {
+    firstName: input({
+      ...firstName,
+      required: false,
+      clean: cleanStringInput,
+    }),
+    lastName: input({ ...lastName, required: false, clean: cleanStringInput }),
+    chosenName,
+  },
+});
 export const updateEmployeeInputs = {
   connection,
   restaurantExternalId,
   employeeId,
-  firstName: input({ ...firstName, required: false, clean: cleanStringInput }),
-  chosenName,
-  lastName: input({ ...lastName, required: false, clean: cleanStringInput }),
+  name: updateEmployeeName,
   externalEmployeeId,
   passcode,
   currentPasscode,

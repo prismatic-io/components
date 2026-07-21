@@ -11,9 +11,10 @@ export const listConnectedRestaurants = action({
   },
   perform: async (
     context,
-    { connection, fetchAll, lastModified, pageSize, pageToken },
+    { connection, fetchAll, lastModified, pagination },
   ) => {
     const client = await createToastClient(connection, context.debug.enabled);
+    const { pageSize, pageToken } = pagination;
     return await paginateResults({
       client,
       endpoint: "/partners/v1/connectedRestaurants",

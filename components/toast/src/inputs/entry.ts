@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput, cleanValueListInput } from "../utils";
 import { connection, restaurantExternalId } from "./shared";
 const timeEntryId = input({
@@ -101,6 +101,20 @@ const timeEntryIds = input({
   placeholder: "12345678-1234-1234-1234-123456789012",
   clean: cleanValueListInput,
 });
+const listTimeEntriesDateRange = structuredObjectInput({
+  label: "Date Range",
+  required: false,
+  comments:
+    "Start and end date and time of the time period to match time entries.",
+  inputs: { startDate, endDate },
+});
+const listTimeEntriesModifiedDateRange = structuredObjectInput({
+  label: "Modified Date Range",
+  required: false,
+  comments:
+    "Start and end date and time of the time period to match modified time entries.",
+  inputs: { modifiedStartDate, modifiedEndDate },
+});
 export const listTimeEntriesInputs = {
   connection,
   restaurantExternalId,
@@ -110,8 +124,7 @@ export const listTimeEntriesInputs = {
     comments:
       "Optional date to match time entries. A time entry matches the business date if its clock-in inDate is during the business date. The cutoff from one Business Date to the next is the Closeout Hour for the restaurant.",
   }),
-  startDate,
-  endDate,
+  dateRange: listTimeEntriesDateRange,
   includeArchived: input({
     ...includeArchived,
     comments:
@@ -122,7 +135,6 @@ export const listTimeEntriesInputs = {
     comments:
       "Indicate whether missed breaks should be returned in the breaks array for the time entries.",
   }),
-  modifiedEndDate,
-  modifiedStartDate,
+  modifiedDateRange: listTimeEntriesModifiedDateRange,
   timeEntryIds,
 };

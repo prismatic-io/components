@@ -11,13 +11,14 @@ export const listShifts = action({
   },
   perform: async (
     context,
-    { connection, restaurantExternalId, endDate, shiftIds, startDate },
+    { connection, restaurantExternalId, dateRange, shiftIds },
   ) => {
     const client = await createToastClient(
       connection,
       context.debug.enabled,
       restaurantExternalId,
     );
+    const { startDate, endDate } = dateRange;
     const serializedshiftIds = serializeRepeatedParam(
       shiftIds || [],
       "shiftIds",

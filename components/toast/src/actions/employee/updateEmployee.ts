@@ -13,9 +13,7 @@ export const updateEmployee = action({
       connection,
       restaurantExternalId,
       employeeId,
-      firstName,
-      chosenName,
-      lastName,
+      name,
       externalEmployeeId,
       passcode,
       currentPasscode,
@@ -27,6 +25,7 @@ export const updateEmployee = action({
       context.debug.enabled,
       restaurantExternalId,
     );
+    const { firstName, chosenName, lastName } = name;
     const payload = {
       firstName,
       chosenName,

@@ -15,12 +15,10 @@ export const listTimeEntries = action({
       connection,
       restaurantExternalId,
       businessDate,
-      endDate,
+      dateRange,
       includeArchived,
       includeMissedBreaks,
-      modifiedEndDate,
-      modifiedStartDate,
-      startDate,
+      modifiedDateRange,
       timeEntryIds,
     },
   ) => {
@@ -29,6 +27,8 @@ export const listTimeEntries = action({
       context.debug.enabled,
       restaurantExternalId,
     );
+    const { startDate, endDate } = dateRange;
+    const { modifiedStartDate, modifiedEndDate } = modifiedDateRange;
     const serializedTimeEntryIds = serializeRepeatedParam(
       timeEntryIds || [],
       "timeEntryIds",
