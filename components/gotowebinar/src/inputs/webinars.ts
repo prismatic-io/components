@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   AVAILABLE_EXPERIENCES_MODEL,
   MODEL_FOR_OPTIONAL_BOOLEAN_INPUTS,
@@ -180,39 +180,62 @@ export const notifyParticipants = input({
   required: true,
   clean: util.types.toBool,
 });
+const emailSettings = structuredObjectInput({
+  label: "Email Settings",
+  required: false,
+  comments:
+    "Configure which automated emails are sent to registrants for the webinar.",
+  inputs: {
+    confirmationEmail,
+    reminderEmail,
+    absenteeFollowUpEmail,
+    attendeeFollowUpEmail,
+  },
+});
+const createWebinarAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Recording Asset Key, Is On Demand, Is Breakout, Is Password Protected, and Locale.",
+  inputs: {
+    recordingAssetKey,
+    isOndemand,
+    isBreakout,
+    isPasswordProtected,
+    locale,
+  },
+});
 export const createWebinarInputs = {
   connection,
   subject,
-  description,
   webinarType,
-  experienceType,
   times,
+  description,
+  experienceType,
   timeZone: timezone,
-  locale,
-  recordingAssetKey,
-  isOndemand,
-  isBreakout,
-  isPasswordProtected,
-  confirmationEmail,
-  reminderEmail,
-  absenteeFollowUpEmail,
-  attendeeFollowUpEmail,
+  emailSettings,
+  additionalFields: createWebinarAdditionalFields,
 };
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page number and page size for paginated results.",
+  inputs: { page: pageNumber, size: pageSize },
+});
 export const getWebinarInputs = {
   connection,
   fromTime,
   toTime,
-  fetchAll,
-  page: pageNumber,
-  size: pageSize,
   accountKey: {
     ...accountKey,
     clean: toOptionalString,
     required: false,
     comments:
-      "The unique identifier for the account. When provided instead of the" +
-      " organizer key, the action retrieves webinars scoped to this account.",
+      "The key of the account. If using this input instead of " +
+      "the organizer key, the action will retrieve the webinars by Account Key",
   },
+  fetchAll,
+  pagination,
 };
 export const updateWebinarInputs = {
   connection,
@@ -235,10 +258,7 @@ export const updateWebinarInputs = {
   },
   timeZone: timezone,
   locale,
-  confirmationEmail,
-  reminderEmail,
-  absenteeFollowUpEmail,
-  attendeeFollowUpEmail,
+  emailSettings,
 };
 export const deleteWebinarInputs = {
   connection,

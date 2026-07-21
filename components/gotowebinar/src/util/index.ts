@@ -113,13 +113,13 @@ export const getFromTime = (): string => {
   const from = new Date(now);
   from.setMonth(from.getMonth() - 3);
   from.setHours(0, 0, 0, 0);
-  return from.toISOString().slice(0, 19) + "Z";
+  return `${from.toISOString().slice(0, 19)}Z`;
 };
 export const getEndTime = (): string => {
   const now = new Date();
   const end = new Date(now);
   end.setHours(23, 59, 59, 999);
-  return end.toISOString().slice(0, 19) + "Z";
+  return `${end.toISOString().slice(0, 19)}Z`;
 };
 export const fetchAllResults = async <T>(
   client: HttpClient,

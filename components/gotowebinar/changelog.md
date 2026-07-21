@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-07-21
+
+Restructured action inputs into structured objects for an improved user experience
+
+- **Create Registrant** groups address inputs into **Address**, name inputs into **Name**, contact-channel inputs into **Contact Information**, and professional/survey inputs into **Additional Fields**
+- **Create Webinar** and **Update Webinar** group email-notification inputs into **Email Settings**; **Create Webinar** also groups miscellaneous settings into **Additional Fields**
+- **Get Webinars** groups page and size inputs into **Pagination** and time-range inputs into **Date Range**; **Fetch All** stays a top-level toggle
+- **List Registrants** groups page and limit inputs into **Pagination**
+
 ### 2026-06-29
 
 Various modernizations and documentation updates

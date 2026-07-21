@@ -15,13 +15,15 @@ export const generateVideo = action({
       connection,
       model,
       prompt,
-      aspectRatio,
+      videoSettings: {
+        fps,
+        numberOfVideos,
+        personGeneration,
+        resolution,
+        aspectRatio,
+        durationSeconds,
+      },
       extraParameters,
-      fps,
-      numberOfVideos,
-      personGeneration,
-      resolution,
-      durationSeconds,
     },
   ) => {
     const client = createGeminiClient(connection);

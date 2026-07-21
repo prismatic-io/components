@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalObject, toOptionalString } from "../util";
 import {
   connection,
@@ -176,27 +176,38 @@ export const responses = input({
   ),
   clean: toOptionalObject,
 });
+export const mailingAddress = structuredObjectInput({
+  label: "Address",
+  required: false,
+  comments: "Street address, city, state, zip code, and country.",
+  inputs: { address, city, state, zipCode, country },
+});
+const additionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Organization, Job Title, Industry, Number of Employees, Purchasing Time Frame, Purchasing Role, Questions and Comments, and Responses.",
+  inputs: {
+    organization,
+    jobTitle,
+    industry,
+    numberOfEmployees,
+    purchasingTimeFrame,
+    purchasingRole,
+    questionAndComments,
+    responses,
+  },
+});
 export const createRegistrantInputs = {
   connection,
-  webinarKey,
   firstName,
   lastName,
+  webinarKey,
   email,
-  source,
-  address,
-  city,
-  state,
-  zipCode,
-  country,
   phone,
-  organization,
-  jobTitle,
-  questionAndComments,
-  industry,
-  numberOfEmployees,
-  purchasingTimeFrame,
-  purchasingRole,
-  responses,
+  source,
+  mailingAddress,
+  additionalFields,
 };
 export const getRegistrantInputs = {
   connection,
@@ -204,9 +215,14 @@ export const getRegistrantInputs = {
   registrantKey,
 };
 export const deleteRegistrantInputs = getRegistrantInputs;
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page number and page size for paginated results.",
+  inputs: { page: pageNumber, limit: pageSize },
+});
 export const listRegistrantsInputs = {
   connection,
   webinarKey,
-  page: pageNumber,
-  limit: pageSize,
+  pagination,
 };

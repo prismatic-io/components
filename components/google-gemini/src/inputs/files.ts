@@ -1,6 +1,12 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanString } from "../util";
 import { connection, fetchAll, pageSize, pageToken } from "./common";
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page size and page token for paginating through results.",
+  inputs: { pageSize, pageToken },
+});
 const fileName = input({
   label: "File Name",
   type: "string",
@@ -43,8 +49,7 @@ export const getFileInputs = {
 };
 export const listFilesInputs = {
   fetchAll,
-  pageSize,
-  pageToken,
+  pagination,
   connection,
 };
 export const uploadFileInputs = {

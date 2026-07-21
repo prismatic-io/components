@@ -15,10 +15,7 @@ export const generateText = action({
       connection,
       model,
       prompt,
-      temperature,
-      maxOutputTokens,
-      topK,
-      topP,
+      generationConfig: { temperature, maxOutputTokens, topK, topP },
       extraParameters,
     },
   ) => {

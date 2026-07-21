@@ -14,13 +14,13 @@ export const listRegistrants = action({
   examplePayload: LIST_REGISTRANTS_EXAMPLE_PAYLOAD,
   perform: async (
     { debug: { enabled: debug } },
-    { connection, webinarKey, page, limit },
+    { connection, webinarKey, pagination },
   ) => {
     const { client, organizerKey } = createGotoWebinarClient(connection, debug);
     const url = `/organizers/${organizerKey}/webinars/${webinarKey}/registrants`;
     const params = {
-      page,
-      limit,
+      page: pagination.page,
+      limit: pagination.limit,
     };
     const { data } = await client.get<Registrant[]>(url, {
       params,

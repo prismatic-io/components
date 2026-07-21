@@ -14,12 +14,9 @@ export const updateWebinar = action({
     { debug: { enabled: debug } },
     {
       subject,
-      reminderEmail,
-      absenteeFollowUpEmail,
-      attendeeFollowUpEmail,
+      emailSettings,
       times,
       locale,
-      confirmationEmail,
       description,
       connection,
       webinarKey,
@@ -34,10 +31,10 @@ export const updateWebinar = action({
       times,
       locale,
       emailSettings: {
-        confirmationEmail,
-        reminderEmail,
-        absenteeFollowUpEmail,
-        attendeeFollowUpEmail,
+        confirmationEmail: emailSettings.confirmationEmail,
+        reminderEmail: emailSettings.reminderEmail,
+        absenteeFollowUpEmail: emailSettings.absenteeFollowUpEmail,
+        attendeeFollowUpEmail: emailSettings.attendeeFollowUpEmail,
       },
     };
     const params = {

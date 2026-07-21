@@ -12,8 +12,9 @@ export const listModels = action({
   inputs: listModelsInputs,
   perform: async (
     context,
-    { connection, pageSize, pageToken, filter, extraParameters, fetchAll },
+    { connection, pagination, filter, extraParameters, fetchAll },
   ) => {
+    const { pageSize, pageToken } = pagination;
     const client = createGeminiClient(connection);
     const data = await listModelsFN(client, fetchAll, {
       pageSize,

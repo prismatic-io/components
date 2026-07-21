@@ -15,9 +15,7 @@ export const generateImage = action({
       connection,
       model,
       prompt,
-      numberOfImages,
-      language,
-      aspectRatio,
+      imageSettings: { numberOfImages, language, aspectRatio },
       extraParameters,
     },
   ) => {

@@ -1,5 +1,5 @@
 import { ImagePromptLanguage } from "@google/genai";
-import { input } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { cleanNumber, cleanString } from "../util";
 import {
   connection,
@@ -101,14 +101,44 @@ const durationSeconds = input({
   placeholder: "Enter duration in seconds",
   clean: cleanNumber,
 });
+const generationConfig = structuredObjectInput({
+  label: "Generation Config",
+  required: false,
+  comments:
+    "Sampling parameters and safety settings for controlling model output.",
+  inputs: { temperature, maxOutputTokens, topK, topP, safetySettings },
+});
+const imageSettings = structuredObjectInput({
+  label: "Image Settings",
+  required: false,
+  comments:
+    "Output configuration for image generation including count, language, and aspect ratio.",
+  inputs: { numberOfImages, language, aspectRatio },
+});
+const videoSettings = structuredObjectInput({
+  label: "Video Settings",
+  required: false,
+  comments:
+    "Output configuration for video generation including frame rate, count, resolution, and duration.",
+  inputs: {
+    fps,
+    numberOfVideos,
+    personGeneration,
+    resolution,
+    aspectRatio: {
+      ...aspectRatio,
+      model: [
+        { label: "16:9 (landscape)", value: "16:9" },
+        { label: "9:16 (portrait)", value: "9:16" },
+      ],
+    },
+    durationSeconds,
+  },
+});
 export const generateTextInputs = {
   prompt,
   model,
-  temperature,
-  maxOutputTokens,
-  topK,
-  topP,
-  safetySettings,
+  generationConfig,
   extraParameters,
   connection,
 };
@@ -118,9 +148,7 @@ export const generateImageInputs = {
     ...prompt,
     comments: "Text prompt that typically describes the images to output.",
   },
-  numberOfImages,
-  language,
-  aspectRatio,
+  imageSettings,
   extraParameters,
   connection,
 };
@@ -130,18 +158,7 @@ export const generateVideoInputs = {
     ...prompt,
     comments: "Text prompt that typically describes the video to output.",
   },
-  fps,
-  numberOfVideos,
-  personGeneration,
-  resolution,
-  aspectRatio: {
-    ...aspectRatio,
-    model: [
-      { label: "16:9 (landscape)", value: "16:9" },
-      { label: "9:16 (portrait)", value: "9:16" },
-    ],
-  },
-  durationSeconds,
+  videoSettings,
   extraParameters,
   connection,
 };

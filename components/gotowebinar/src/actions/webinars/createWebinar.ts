@@ -17,28 +17,21 @@ export const createWebinar = action({
       connection,
       timeZone,
       times,
-      locale,
       experienceType,
-      isPasswordProtected,
       webinarType,
-      absenteeFollowUpEmail,
-      attendeeFollowUpEmail,
-      confirmationEmail,
-      reminderEmail,
-      isBreakout,
-      isOndemand,
-      recordingAssetKey,
+      emailSettings,
+      additionalFields,
       subject,
       description,
     },
   ) => {
     const { client, organizerKey } = createGotoWebinarClient(connection, debug);
     const url = `/organizers/${organizerKey}/webinars`;
-    const emailSettings = {
-      confirmationEmail,
-      reminderEmail,
-      absenteeFollowUpEmail,
-      attendeeFollowUpEmail,
+    const emailSettingsPayload = {
+      confirmationEmail: emailSettings.confirmationEmail,
+      reminderEmail: emailSettings.reminderEmail,
+      absenteeFollowUpEmail: emailSettings.absenteeFollowUpEmail,
+      attendeeFollowUpEmail: emailSettings.attendeeFollowUpEmail,
     };
     const payload = {
       subject,
@@ -46,14 +39,16 @@ export const createWebinar = action({
       times,
       timeZone,
       type: webinarType,
-      locale,
-      isPasswordProtected,
-      recordingAssetKey,
-      isOndemand,
-      isBreakout,
+      locale: additionalFields.locale,
+      isPasswordProtected: additionalFields.isPasswordProtected,
+      recordingAssetKey: additionalFields.recordingAssetKey,
+      isOndemand: additionalFields.isOndemand,
+      isBreakout: additionalFields.isBreakout,
       experienceType,
       emailSettings:
-        Object.keys(emailSettings).length > 0 ? emailSettings : undefined,
+        Object.keys(emailSettingsPayload).length > 0
+          ? emailSettingsPayload
+          : undefined,
     };
     const { data } = await client.post(url, payload);
     return {

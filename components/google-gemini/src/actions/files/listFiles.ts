@@ -8,7 +8,8 @@ export const listFiles = action({
     description: "Lists all files in the current project from Google Gemini.",
   },
   inputs: listFilesInputs,
-  perform: async (context, { connection, pageSize, pageToken, fetchAll }) => {
+  perform: async (context, { connection, pagination, fetchAll }) => {
+    const { pageSize, pageToken } = pagination;
     const client = createGeminiClient(connection);
     const listedFiles = await client.files.list({
       config: {

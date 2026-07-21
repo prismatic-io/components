@@ -15,7 +15,7 @@ export const getWebinars = action({
   examplePayload: GET_WEBINARS_EXAMPLE_PAYLOAD,
   perform: async (
     { debug: { enabled: debug } },
-    { connection, size, page, accountKey, toTime, fromTime, fetchAll },
+    { connection, pagination, accountKey, fromTime, toTime, fetchAll },
   ) => {
     const { client, organizerKey } = createGotoWebinarClient(connection, debug);
     const url = accountKey
@@ -32,8 +32,8 @@ export const getWebinars = action({
     const params = {
       fromTime,
       toTime,
-      size,
-      page,
+      size: pagination.size,
+      page: pagination.page,
     };
     const { data } = await client.get<GoToWebinarResponse<Webinar>>(url, {
       params,

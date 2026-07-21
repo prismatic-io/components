@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { cleanCode } from "../util";
 import {
   connection,
@@ -29,18 +29,20 @@ const history = input({
   placeholder: "Enter chat history JSON",
   clean: cleanCode,
 });
+const generationConfig = structuredObjectInput({
+  label: "Generation Config",
+  required: false,
+  comments:
+    "Sampling parameters, safety settings, and conversation history for controlling model output.",
+  inputs: { temperature, maxOutputTokens, topK, topP, safetySettings, history },
+});
 export const sendMessageInputs = {
   prompt: {
     ...prompt,
     comments: "The text prompt to send as a message to the model.",
   },
-  history,
   model,
-  temperature,
-  maxOutputTokens,
-  topK,
-  topP,
-  safetySettings,
+  generationConfig,
   extraParameters,
   connection,
 };
