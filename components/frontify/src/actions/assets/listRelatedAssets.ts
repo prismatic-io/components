@@ -12,7 +12,7 @@ export const listRelatedAssets = action({
   },
   perform: async (
     context,
-    { connection, assetId, page, limit, fetchAll },
+    { connection, assetId, pagination, fetchAll },
   ): Promise<{
     data: ListRelatedAssetsResponse;
   }> => {
@@ -174,8 +174,8 @@ export const listRelatedAssets = action({
     }
     const response: ListRelatedAssetsResponse = await client.request(query, {
       assetId,
-      page,
-      limit,
+      page: pagination.page,
+      limit: pagination.limit,
     });
     return {
       data: response,

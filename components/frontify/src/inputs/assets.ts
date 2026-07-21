@@ -1,10 +1,69 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanNumberInput } from "../utils/cleanNumberInput";
 import { cleanStringInput } from "../utils/cleanStringInput";
 import { cleanTagsInput } from "../utils/cleanTagsInput";
 import { cleanValueListInput } from "../utils/cleanValueListInput";
-import { paginationInputs } from "./pagination";
+import { fetchAll, limit, page } from "./pagination";
 import { connection } from "./sharedInputs";
+const description = input({
+  label: "Description",
+  comments: "Asset description.",
+  type: "string",
+  placeholder: "Some description",
+  example: "Some description",
+  required: false,
+  clean: cleanStringInput,
+});
+const copyrightStatus = input({
+  label: "Copyright Status",
+  comments: "Asset copyright status.",
+  example: "UNKNOWN",
+  placeholder: "UNKNOWN",
+  required: false,
+  model: [
+    {
+      label: "Unknown",
+      value: "UNKNOWN",
+    },
+    {
+      label: "Copyrighted",
+      value: "COPYRIGHTED",
+    },
+    {
+      label: "Public",
+      value: "PUBLIC",
+    },
+  ],
+  type: "string",
+  clean: cleanStringInput,
+});
+const copyrightNotice = input({
+  label: "Copyright Notice",
+  comments: "Asset copyright notice. Supports medium text length.",
+  type: "text",
+  required: false,
+  placeholder: "© 2021 My Company",
+  example: "© 2021 My Company",
+  clean: cleanStringInput,
+});
+const expiresAt = input({
+  label: "Expires At",
+  comments: "Asset will expire once the defined date is reached.",
+  type: "string",
+  required: false,
+  example: "2001-12-31T22:10:30.000+00:00",
+  placeholder: "2001-12-31T22:10:30.000+00:00",
+  clean: cleanStringInput,
+});
+const author = input({
+  label: "Author",
+  comments: "Represents the Author of the Asset.",
+  example: "Photographer Name",
+  placeholder: "Photographer Name",
+  type: "string",
+  required: false,
+  clean: cleanStringInput,
+});
 export const createAssetInputs = {
   connection,
   fileId: input({
@@ -35,15 +94,6 @@ export const createAssetInputs = {
     placeholder: "eyJpZG...",
     clean: cleanStringInput,
   }),
-  description: input({
-    label: "Description",
-    comments: "Asset description.",
-    type: "string",
-    placeholder: "Some description",
-    example: "Some description",
-    required: false,
-    clean: cleanStringInput,
-  }),
   externalId: input({
     label: "External ID",
     comments: "Asset external ID.",
@@ -51,38 +101,6 @@ export const createAssetInputs = {
     required: false,
     placeholder: "12345",
     example: "12345",
-    clean: cleanStringInput,
-  }),
-  copyrightStatus: input({
-    label: "Copyright Status",
-    comments: "Asset copyright status.",
-    example: "UNKNOWN",
-    placeholder: "UNKNOWN",
-    required: false,
-    model: [
-      {
-        label: "Unknown",
-        value: "UNKNOWN",
-      },
-      {
-        label: "Copyrighted",
-        value: "COPYRIGHTED",
-      },
-      {
-        label: "Public",
-        value: "PUBLIC",
-      },
-    ],
-    type: "string",
-    clean: cleanStringInput,
-  }),
-  copyrightNotice: input({
-    label: "Copyright Notice",
-    comments: "Asset copyright notice. Supports medium text length.",
-    type: "text",
-    required: false,
-    placeholder: "© 2021 My Company",
-    example: "© 2021 My Company",
     clean: cleanStringInput,
   }),
   tags: input({
@@ -95,14 +113,6 @@ export const createAssetInputs = {
     placeholder: "tag1",
     clean: cleanTagsInput,
   }),
-  skipFileMetadata: input({
-    label: "Skip File Metadata",
-    comments:
-      "Skip file's EXIF metadata. When true, it will ignore all file metadata contents.",
-    type: "boolean",
-    default: "false",
-    clean: util.types.toBool,
-  }),
   directory: input({
     label: "Directory",
     comments:
@@ -113,23 +123,26 @@ export const createAssetInputs = {
     type: "string",
     clean: cleanValueListInput,
   }),
-  expiresAt: input({
-    label: "Expires At",
-    comments: "Asset will expire once the defined date is reached.",
-    type: "string",
+  additionalFields: structuredObjectInput({
+    label: "Additional Fields",
     required: false,
-    example: "2001-12-31T22:10:30.000+00:00",
-    placeholder: "2001-12-31T22:10:30.000+00:00",
-    clean: cleanStringInput,
-  }),
-  author: input({
-    label: "Author",
-    comments: "Represents the Author of the Asset.",
-    example: "Photographer Name",
-    placeholder: "Photographer Name",
-    type: "string",
-    required: false,
-    clean: cleanStringInput,
+    comments:
+      "Additional optional fields: includes Description, Copyright Status, Copyright Notice, Skip File Metadata, Expires At, and Author.",
+    inputs: {
+      description,
+      copyrightStatus,
+      copyrightNotice,
+      skipFileMetadata: input({
+        label: "Skip File Metadata",
+        comments:
+          "Skip file's EXIF metadata. When true, it will ignore all file metadata contents.",
+        type: "boolean",
+        default: "false",
+        clean: util.types.toBool,
+      }),
+      expiresAt,
+      author,
+    },
   }),
 };
 export const uploadFileInputs = {
@@ -257,7 +270,6 @@ export const getAssetsByIdsInputs = {
 };
 export const listAssetCommentsInputs = {
   connection,
-  ...paginationInputs,
   assetId: input({
     label: "Asset ID",
     type: "string",
@@ -268,20 +280,29 @@ export const listAssetCommentsInputs = {
     clean: util.types.toString,
     dataSource: "libraryAssetDataSource",
   }),
-  replyLimit: input({
-    label: "Reply Limit",
-    comments: "The limit of how may replies to show per comment.",
-    type: "string",
-    default: "50",
+  fetchAll,
+  pagination: structuredObjectInput({
+    label: "Pagination",
     required: false,
-    example: "50",
-    placeholder: "50",
-    clean: util.types.toInt,
+    comments: "Page navigation controls.",
+    inputs: {
+      page,
+      limit,
+      replyLimit: input({
+        label: "Reply Limit",
+        comments: "The limit of how may replies to show per comment.",
+        type: "string",
+        default: "50",
+        required: false,
+        example: "50",
+        placeholder: "50",
+        clean: util.types.toInt,
+      }),
+    },
   }),
 };
 export const listRelatedAssetsInputs = {
   connection,
-  ...paginationInputs,
   assetId: input({
     label: "Asset ID",
     type: "string",
@@ -291,6 +312,13 @@ export const listRelatedAssetsInputs = {
     placeholder: "eyJpZG...",
     clean: util.types.toString,
     dataSource: "libraryAssetDataSource",
+  }),
+  fetchAll,
+  pagination: structuredObjectInput({
+    label: "Pagination",
+    required: false,
+    comments: "Page navigation controls.",
+    inputs: { page, limit },
   }),
 };
 export const moveAssetsInputs = {
@@ -342,9 +370,17 @@ export const updateAssetInputs = {
     required: false,
     clean: cleanStringInput,
   }),
-  description: createAssetInputs.description,
-  copyrightStatus: createAssetInputs.copyrightStatus,
-  copyrightNotice: createAssetInputs.copyrightNotice,
-  expiresAt: createAssetInputs.expiresAt,
-  author: createAssetInputs.author,
+  additionalFields: structuredObjectInput({
+    label: "Additional Fields",
+    required: false,
+    comments:
+      "Additional optional fields: includes Description, Copyright Status, Copyright Notice, Expires At, and Author.",
+    inputs: {
+      description,
+      copyrightStatus,
+      copyrightNotice,
+      expiresAt,
+      author,
+    },
+  }),
 };

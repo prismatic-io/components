@@ -31,7 +31,7 @@ export const listBrandWorkspaceProjects = action({
   },
   perform: async (
     context,
-    { connection, page, limit, brandId, fetchAll },
+    { connection, pagination, brandId, fetchAll },
   ): Promise<{
     data: ListBrandWorkspaceProjectsResponse;
   }> => {
@@ -73,8 +73,8 @@ export const listBrandWorkspaceProjects = action({
     const response: ListBrandWorkspaceProjectsResponse = await client.request(
       listBrandWorkspaceProjectsQuery,
       {
-        page,
-        limit,
+        page: pagination.page,
+        limit: pagination.limit,
         brandId,
       },
     );

@@ -13,7 +13,7 @@ export const listUserGroups = action({
   },
   perform: async (
     context,
-    { connection, limit, page, userPage, userPageLimit, fetchAll },
+    { connection, pagination, fetchAll },
   ): Promise<{
     data: ListUserGroupsResponse;
   }> => {
@@ -90,10 +90,10 @@ export const listUserGroups = action({
       return data;
     }
     const response: ListUserGroupsResponse = await client.request(query, {
-      limit,
-      page,
-      userPage,
-      userPageLimit,
+      limit: pagination.limit,
+      page: pagination.page,
+      userPage: pagination.userPage,
+      userPageLimit: pagination.userPageLimit,
     });
     return {
       data: response,

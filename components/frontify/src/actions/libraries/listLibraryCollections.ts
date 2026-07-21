@@ -12,7 +12,7 @@ export const listLibraryCollections = action({
   },
   perform: async (
     context,
-    { connection, libraryId, page, limit, fetchAll, assetPage, assetLimit },
+    { connection, libraryId, pagination, fetchAll },
   ): Promise<{
     data: ListLibraryCollectionsResponse;
   }> => {
@@ -58,8 +58,8 @@ export const listLibraryCollections = action({
           query,
           params: {
             libraryId,
-            assetPage,
-            assetLimit,
+            assetPage: pagination.assetPage,
+            assetLimit: pagination.assetLimit,
           },
           hasNextPath,
         },
@@ -88,7 +88,7 @@ export const listLibraryCollections = action({
     }
     const response: ListLibraryCollectionsResponse = await client.request(
       query,
-      { libraryId, page, limit },
+      { libraryId, page: pagination.page, limit: pagination.limit },
     );
     return {
       data: response,

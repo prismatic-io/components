@@ -146,8 +146,7 @@ export const listWorkspaceProjectAssets = action({
     {
       connection,
       projectId,
-      page,
-      limit,
+      pagination,
       fetchAll,
       assetSearch,
       assetExternalId,
@@ -190,7 +189,7 @@ export const listWorkspaceProjectAssets = action({
     }
     const response: ListWorkspaceProjectAssetsResponse = await client.request(
       listWorkspaceProjectAssetsQuery,
-      { projectId, page, limit, query },
+      { projectId, page: pagination.page, limit: pagination.limit, query },
     );
     return {
       data: response,

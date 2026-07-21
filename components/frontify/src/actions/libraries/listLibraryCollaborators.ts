@@ -12,7 +12,7 @@ export const listLibraryCollaborators = action({
   },
   perform: async (
     context,
-    { connection, libraryId, page, limit, fetchAll },
+    { connection, libraryId, pagination, fetchAll },
   ): Promise<{
     data: ListLibraryCollaboratorsResponse;
   }> => {
@@ -74,7 +74,7 @@ export const listLibraryCollaborators = action({
     }
     const response: ListLibraryCollaboratorsResponse = await client.request(
       query,
-      { libraryId, page, limit },
+      { libraryId, page: pagination.page, limit: pagination.limit },
     );
     return {
       data: response,

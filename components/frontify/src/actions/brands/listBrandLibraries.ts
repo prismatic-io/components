@@ -13,7 +13,7 @@ export const listBrandLibraries = action({
   },
   perform: async (
     context,
-    { connection, page, limit, brandId, fetchAll },
+    { connection, pagination, brandId, fetchAll },
   ): Promise<{
     data: ListBrandLibrariesResponse;
   }> => {
@@ -51,8 +51,8 @@ export const listBrandLibraries = action({
     const response: ListBrandLibrariesResponse = await client.request(
       LIST_BRAND_LIBRARIES_QUERY,
       {
-        page,
-        limit,
+        page: pagination.page,
+        limit: pagination.limit,
         brandId,
       },
     );

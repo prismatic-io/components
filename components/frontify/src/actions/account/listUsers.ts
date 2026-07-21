@@ -12,7 +12,7 @@ export const listUsers = action({
   },
   perform: async (
     context,
-    { connection, limit, page, fetchAll },
+    { connection, pagination, fetchAll },
   ): Promise<{
     data: ListUsersResponse;
   }> => {
@@ -65,8 +65,8 @@ export const listUsers = action({
       return formattedResponse;
     }
     const response: ListUsersResponse = await client.request(query, {
-      limit,
-      page,
+      limit: pagination.limit,
+      page: pagination.page,
     });
     return {
       data: response,

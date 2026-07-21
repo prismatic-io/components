@@ -1,5 +1,5 @@
-import { input, util } from "@prismatic-io/spectral";
-import { paginationInputs } from "./pagination";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import { fetchAll, limit, page } from "./pagination";
 import { connection } from "./sharedInputs";
 export const installWebhookInputs = {
   connection,
@@ -35,7 +35,13 @@ export const installWebhookInputs = {
 };
 export const listWebhooksInputs = {
   connection,
-  ...paginationInputs,
+  fetchAll,
+  pagination: structuredObjectInput({
+    label: "Pagination",
+    required: false,
+    comments: "Page navigation controls.",
+    inputs: { page, limit },
+  }),
 };
 export const uninstallWebhookInputs = {
   connection,

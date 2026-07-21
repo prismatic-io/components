@@ -12,18 +12,20 @@ export const createAsset = action({
     context,
     {
       connection,
-      copyrightNotice,
-      copyrightStatus,
       tags,
-      author,
-      description,
       directory,
       externalId,
       fileId,
       parentId,
-      expiresAt,
-      skipFileMetadata,
       title,
+      additionalFields: {
+        copyrightNotice,
+        copyrightStatus,
+        author,
+        description,
+        expiresAt,
+        skipFileMetadata,
+      },
     },
   ) => {
     const createCopyrightInput = {

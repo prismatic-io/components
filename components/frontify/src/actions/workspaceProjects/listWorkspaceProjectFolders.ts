@@ -17,7 +17,7 @@ export const listWorkspaceProjectFolders = action({
   ): Promise<{
     data: ListWorkspaceProjectFoldersResponse;
   }> => {
-    const { projectId, page, limit, fetchAll } = configVars;
+    const { projectId, pagination, fetchAll } = configVars;
     const client = createClient({ connection, debug: context.debug.enabled });
     const query = gql`
       query listWorkspaceProjectFolders($projectId: ID!) {
@@ -99,7 +99,7 @@ export const listWorkspaceProjectFolders = action({
     }
     const response: ListWorkspaceProjectFoldersResponse = await client.request(
       query,
-      { projectId, page, limit },
+      { projectId, page: pagination.page, limit: pagination.limit },
     );
     return {
       data: response,

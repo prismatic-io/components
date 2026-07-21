@@ -12,7 +12,7 @@ export const listAssetComments = action({
   },
   perform: async (
     context,
-    { connection, assetId, page, limit, fetchAll, replyLimit },
+    { connection, assetId, pagination, fetchAll },
   ): Promise<{
     data: ListAssetCommentsResponse;
   }> => {
@@ -110,7 +110,7 @@ export const listAssetComments = action({
       const responses: ListAssetCommentsResponse[] = await graphqlFetchAll({
         client,
         query,
-        params: { assetId, replyLimit },
+        params: { assetId, replyLimit: pagination.replyLimit },
         hasNextPath,
       });
       if (responses.length === 1) {
@@ -137,9 +137,9 @@ export const listAssetComments = action({
     }
     const response: ListAssetCommentsResponse = await client.request(query, {
       assetId,
-      page,
-      limit,
-      replyLimit,
+      page: pagination.page,
+      limit: pagination.limit,
+      replyLimit: pagination.replyLimit,
     });
     return {
       data: response,

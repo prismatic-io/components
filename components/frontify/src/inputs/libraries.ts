@@ -1,5 +1,5 @@
-import { input, util } from "@prismatic-io/spectral";
-import { paginationInputs } from "./pagination";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import { fetchAll, limit, page } from "./pagination";
 import {
   assetExternalId,
   assetSearch,
@@ -51,43 +51,34 @@ export const getLibraryInputs = {
 };
 export const listLibraryAssetsInputs = {
   connection,
-  ...paginationInputs,
-  brandId: { ...brandId, required: false },
   libraryId,
+  brandId: { ...brandId, required: false },
   assetSearch,
   assetExternalId,
+  fetchAll,
+  pagination: structuredObjectInput({
+    label: "Pagination",
+    required: false,
+    comments: "Page navigation controls.",
+    inputs: { page, limit },
+  }),
 };
 export const listLibraryCollaboratorsInputs = {
   connection,
-  ...paginationInputs,
-  brandId: { ...brandId, required: false },
   libraryId,
+  brandId: { ...brandId, required: false },
+  fetchAll,
+  pagination: structuredObjectInput({
+    label: "Pagination",
+    required: false,
+    comments: "Page navigation controls.",
+    inputs: { page, limit },
+  }),
 };
 export const listLibraryCollectionsInputs = {
   connection,
-  ...paginationInputs,
-  brandId: { ...brandId, required: false },
   libraryId,
-  assetPage: input({
-    label: "Page (Assets)",
-    comments:
-      "Assets are paginated within collections. Use this to control the nested Asset pagination.",
-    type: "string",
-    default: "1",
-    example: "1",
-    placeholder: "1",
-    clean: util.types.toInt,
-  }),
-  assetLimit: input({
-    label: "Page Size (Assets)",
-    comments:
-      "Assets are paginated within collections. Use this to control the nested Asset pagination.",
-    type: "string",
-    default: "50",
-    example: "50",
-    placeholder: "50",
-    clean: util.types.toInt,
-  }),
+  brandId: { ...brandId, required: false },
   fetchAll: input({
     label: "Fetch All",
     type: "boolean",
@@ -96,12 +87,47 @@ export const listLibraryCollectionsInputs = {
       "If true, it will fetch all top-level Collections records and ignore parameters like page and page size. This toggle will not affect the Asset pagination within each Collection.",
     clean: util.types.toBool,
   }),
+  pagination: structuredObjectInput({
+    label: "Pagination",
+    required: false,
+    comments: "Page navigation controls.",
+    inputs: {
+      page,
+      limit,
+      assetPage: input({
+        label: "Page (Assets)",
+        comments:
+          "Assets are paginated within collections. Use this to control the nested Asset pagination.",
+        type: "string",
+        default: "1",
+        example: "1",
+        placeholder: "1",
+        clean: util.types.toInt,
+      }),
+      assetLimit: input({
+        label: "Page Size (Assets)",
+        comments:
+          "Assets are paginated within collections. Use this to control the nested Asset pagination.",
+        type: "string",
+        default: "50",
+        example: "50",
+        placeholder: "50",
+        clean: util.types.toInt,
+      }),
+    },
+  }),
 };
 export const listLibraryFoldersInputs = {
   connection,
-  ...paginationInputs,
-  brandId: { ...brandId, required: false },
   libraryId,
+  brandId: { ...brandId, required: false },
+  fetchAll,
+  pagination: structuredObjectInput({
+    label: "Pagination",
+    required: false,
+    comments: "Page navigation controls.",
+    inputs: { page, limit },
+  }),
 };
 export const updateCollectionInputs = {
   connection,

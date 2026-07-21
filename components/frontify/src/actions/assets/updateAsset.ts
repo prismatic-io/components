@@ -14,12 +14,14 @@ export const updateAsset = action({
       connection,
       filename,
       title,
-      description,
-      author,
       assetId,
-      copyrightNotice,
-      copyrightStatus,
-      expiresAt,
+      additionalFields: {
+        description,
+        author,
+        copyrightNotice,
+        copyrightStatus,
+        expiresAt,
+      },
     },
   ) => {
     const mutation = gql`

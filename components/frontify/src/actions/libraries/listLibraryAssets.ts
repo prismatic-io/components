@@ -145,8 +145,7 @@ export const listLibraryAssets = action({
     {
       connection,
       libraryId,
-      page,
-      limit,
+      pagination,
       fetchAll,
       assetExternalId,
       assetSearch,
@@ -188,7 +187,7 @@ export const listLibraryAssets = action({
     }
     const response: ListLibraryAssetsResponse = await client.request(
       listLibraryAssetsQuery,
-      { libraryId, page, limit, query },
+      { libraryId, page: pagination.page, limit: pagination.limit, query },
     );
     return {
       data: response,

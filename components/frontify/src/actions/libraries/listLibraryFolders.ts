@@ -13,7 +13,7 @@ export const listLibraryFolders = action({
   },
   perform: async (
     context,
-    { connection, libraryId, page, limit, fetchAll },
+    { connection, libraryId, pagination, fetchAll },
   ): Promise<{
     data: ListLibraryFoldersResponse;
   }> => {
@@ -92,8 +92,8 @@ export const listLibraryFolders = action({
     }
     const response: ListLibraryFoldersResponse = await client.request(query, {
       libraryId,
-      page,
-      limit,
+      page: pagination.page,
+      limit: pagination.limit,
     });
     return {
       data: response,

@@ -1,4 +1,5 @@
-import { paginationInputs } from "./pagination";
+import { structuredObjectInput } from "@prismatic-io/spectral";
+import { fetchAll, limit, page } from "./pagination";
 import {
   assetExternalId,
   assetSearch,
@@ -11,13 +12,25 @@ export const getWorkspaceProjectInputs = {
 };
 export const listWorkspaceProjectAssetsInputs = {
   connection,
-  ...paginationInputs,
   projectId,
   assetSearch,
   assetExternalId,
+  fetchAll,
+  pagination: structuredObjectInput({
+    label: "Pagination",
+    required: false,
+    comments: "Page navigation controls.",
+    inputs: { page, limit },
+  }),
 };
 export const listWorkspaceProjectFoldersInputs = {
   connection,
-  ...paginationInputs,
   projectId,
+  fetchAll,
+  pagination: structuredObjectInput({
+    label: "Pagination",
+    required: false,
+    comments: "Page navigation controls.",
+    inputs: { page, limit },
+  }),
 };

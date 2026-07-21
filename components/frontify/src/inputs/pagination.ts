@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 export const DEFAULT_PAGE_SIZE = 25;
-const page = input({
+export const page = input({
   label: "Page",
   type: "string",
   required: false,
@@ -10,7 +10,7 @@ const page = input({
   placeholder: "1",
   clean: util.types.toInt,
 });
-const limit = input({
+export const limit = input({
   label: "Page Size",
   type: "string",
   required: false,
@@ -20,7 +20,7 @@ const limit = input({
   placeholder: "25",
   clean: util.types.toInt,
 });
-const fetchAll = input({
+export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
   required: false,

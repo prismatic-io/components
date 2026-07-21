@@ -12,7 +12,7 @@ export const listWebhooks = action({
   },
   perform: async (
     context,
-    { connection, page, limit, fetchAll },
+    { connection, pagination, fetchAll },
   ): Promise<{
     data: ListWebhooksResponse;
   }> => {
@@ -86,8 +86,8 @@ export const listWebhooks = action({
       return formattedResponse;
     }
     const response: ListWebhooksResponse = await client.request(query, {
-      page,
-      limit,
+      page: pagination.page,
+      limit: pagination.limit,
     });
     return {
       data: response,
