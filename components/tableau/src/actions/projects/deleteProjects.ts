@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { deleteProjectsInputs } from "../../inputs";
 import { deleteProjectsExamplePayload } from "../../examplePayloads";
+import { deleteProjectsInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const deleteProjects = action({
   display: {
     label: "Delete Project",

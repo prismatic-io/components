@@ -7,22 +7,13 @@ export const assignDevice = action({
     label: "Assign Device",
     description: "Assigns a device to a user account.",
   },
-  perform: async (
-    context,
-    {
-      connection,
-      assign_mode,
-      current_device_password,
-      enable_easy_access,
-      device_id,
-    },
-  ) => {
+  perform: async (context, { connection, assignmentOptions, device_id }) => {
     const client = createClient(connection, context.debug.enabled);
     const body = {
-      assign_mode,
-      current_device_password,
+      assign_mode: assignmentOptions.assign_mode,
+      current_device_password: assignmentOptions.current_device_password,
       device_id,
-      enable_easy_access,
+      enable_easy_access: assignmentOptions.enable_easy_access,
     };
     const { data } = await client.post(`/devices/assign`, body);
     return {

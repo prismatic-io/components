@@ -1,6 +1,6 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { getTableauClient } from "../util";
 import { selectWorkbookInputs } from "../inputs";
+import { getTableauClient } from "../util";
 export const selectWorkbook = dataSource({
   display: {
     label: "Select Workbook",

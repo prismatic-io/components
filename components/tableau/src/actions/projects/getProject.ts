@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { getProjectInputs } from "../../inputs";
 import { getProjectExamplePayload } from "../../examplePayloads";
+import { getProjectInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const getProject = action({
   display: {
     label: "Get Project",

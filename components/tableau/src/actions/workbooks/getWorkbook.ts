@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { getWorkbookInputs } from "../../inputs";
 import { getWorkbookExamplePayload } from "../../examplePayloads";
+import { getWorkbookInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const getWorkbook = action({
   display: {
     label: "Get Workbook",

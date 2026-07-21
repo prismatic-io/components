@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { deleteWorkbookInputs } from "../../inputs";
 import { deleteWorkbookExamplePayload } from "../../examplePayloads";
+import { deleteWorkbookInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const deleteWorkbook = action({
   display: {
     label: "Delete Workbook",

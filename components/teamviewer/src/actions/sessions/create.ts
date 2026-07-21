@@ -10,16 +10,16 @@ export const createSession = action({
   },
   perform: async (
     context,
-    { connection, customBody, customId, description, groupid, groupname },
+    { connection, customBody, customId, description, group },
   ) => {
     const client = createClient(connection, context.debug.enabled);
-    validGroupIdOrName(groupid, groupname);
+    validGroupIdOrName(group.groupid, group.groupname);
     const body = {
       ...customBody,
       customId,
       description,
-      groupid,
-      groupname,
+      groupid: group.groupid,
+      groupname: group.groupname,
     };
     const { data } = await client.post(`/sessions`, body);
     return {

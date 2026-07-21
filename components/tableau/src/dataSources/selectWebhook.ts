@@ -1,6 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../util";
 import { selectWebhookInputs } from "../inputs";
+import { getTableauClient } from "../util";
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",

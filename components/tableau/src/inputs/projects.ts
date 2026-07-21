@@ -2,8 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import {
   connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
   projectId,
   searchString,
   timeout,
@@ -71,8 +70,7 @@ const projectSearchField = input({
 });
 export const listProjectsInputs = {
   timeout,
-  pageSize,
-  pageNumber,
+  pagination,
   tableauConnection: connectionInput,
 };
 export const searchProjectsInputs = {
@@ -80,8 +78,7 @@ export const searchProjectsInputs = {
   searchField: projectSearchField,
   timeout,
   tableauConnection: connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
 };
 export const getProjectInputs = {
   projectName,

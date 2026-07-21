@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { customBody, defaultInputs } from "./general";
 import { cleanString } from "../util";
 export const sessionId = input({
@@ -54,9 +54,17 @@ export const description = input({
   placeholder: "This is my session.",
   clean: cleanString,
 });
+const group = structuredObjectInput({
+  label: "Group",
+  required: false,
+  comments: "Group ID or group name the record belongs to.",
+  inputs: {
+    groupid: groupId,
+    groupname: groupName,
+  },
+});
 export const createSessionInputs = {
-  groupid: groupId,
-  groupname: groupName,
+  group,
   customId,
   description,
   customBody,

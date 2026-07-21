@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { defaultInputs, defaultListActionsInputs } from "./general";
 import { cleanString } from "../util";
 export const deviceId = input({
@@ -94,11 +94,20 @@ export const assignMode = input({
   placeholder: "auto",
   clean: cleanString,
 });
+export const assignmentOptions = structuredObjectInput({
+  label: "Assignment Options",
+  required: false,
+  comments:
+    "Options controlling how the device is assigned, including the current password, easy access, and assign mode.",
+  inputs: {
+    current_device_password: currentDevicePassword,
+    enable_easy_access: enableEasyAccess,
+    assign_mode: assignMode,
+  },
+});
 export const assignDeviceInputs = {
   device_id: deviceId,
-  current_device_password: currentDevicePassword,
-  enable_easy_access: enableEasyAccess,
-  assign_mode: assignMode,
+  assignmentOptions,
   ...defaultInputs,
 };
 export const getDeviceInputs = {

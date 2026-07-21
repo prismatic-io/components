@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { listConnectionsInputs } from "../../inputs";
 import { listConnectionsExamplePayload } from "../../examplePayloads";
+import { listConnectionsInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const listConnections = action({
   display: {
     label: "List Connections",
@@ -18,8 +18,10 @@ export const listConnections = action({
       `/workbooks/${params.workbookId}/connections/`,
       {
         params: {
-          pageSize: util.types.toNumber(params.pageSize) || undefined,
-          pageNumber: util.types.toNumber(params.pageNumber) || undefined,
+          pageSize:
+            util.types.toNumber(params.pagination?.pageSize) || undefined,
+          pageNumber:
+            util.types.toNumber(params.pagination?.pageNumber) || undefined,
         },
       },
     );

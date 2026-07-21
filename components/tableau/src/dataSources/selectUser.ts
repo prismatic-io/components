@@ -1,6 +1,6 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { getTableauClient } from "../util";
 import { selectUserInputs } from "../inputs";
+import { getTableauClient } from "../util";
 export const selectUser = dataSource({
   display: {
     label: "Select User",

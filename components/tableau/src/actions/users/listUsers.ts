@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { listUsersInputs } from "../../inputs";
 import { listUsersExamplePayload } from "../../examplePayloads";
+import { listUsersInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -16,8 +16,9 @@ export const listUsers = action({
     });
     const response = await client.get("/users", {
       params: {
-        pageSize: util.types.toNumber(params.pageSize) || undefined,
-        pageNumber: util.types.toNumber(params.pageNumber) || undefined,
+        pageSize: util.types.toNumber(params.pagination?.pageSize) || undefined,
+        pageNumber:
+          util.types.toNumber(params.pagination?.pageNumber) || undefined,
       },
     });
     return {

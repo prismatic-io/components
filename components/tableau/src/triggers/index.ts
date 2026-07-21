@@ -1,6 +1,6 @@
 import { pollChangesTrigger } from "./pollChangesTrigger";
 import { tableauTrigger } from "./tableauTrigger";
-export { tableauTrigger, pollChangesTrigger };
+export { pollChangesTrigger, tableauTrigger };
 export default {
   tableauTrigger,
   pollChangesTrigger,

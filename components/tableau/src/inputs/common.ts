@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 export const connectionInput = input({
   label: "Connection",
@@ -31,6 +31,12 @@ export const pageNumber = input({
   example: "3",
   placeholder: "Enter page number",
   clean: util.types.toNumber,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page size and page number controls for paginated results.",
+  inputs: { pageSize, pageNumber },
 });
 export const apiVersion = input({
   label: "API Version",

@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { searchProjectsInputs } from "../../inputs";
 import { searchProjectsExamplePayload } from "../../examplePayloads";
+import { searchProjectsInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const searchProjects = action({
   display: {
     label: "Search Projects",
@@ -18,8 +18,9 @@ export const searchProjects = action({
     });
     const response = await client.get("/projects", {
       params: {
-        pageSize: util.types.toNumber(params.pageSize) || undefined,
-        pageNumber: util.types.toNumber(params.pageNumber) || undefined,
+        pageSize: util.types.toNumber(params.pagination?.pageSize) || undefined,
+        pageNumber:
+          util.types.toNumber(params.pagination?.pageNumber) || undefined,
         filter: `${searchField}:eq:${searchString}`,
       },
     });

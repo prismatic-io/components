@@ -1,8 +1,7 @@
-import { getTableauClient } from "../../util";
 import { action } from "@prismatic-io/spectral";
-import { deleteWebhookInputs } from "../../inputs";
-import { deleteWebhook } from "../../util";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
+import { deleteWebhookInputs } from "../../inputs";
+import { deleteWebhook, getTableauClient } from "../../util";
 export const deleteWebhookAction = action({
   display: {
     label: "Delete Webhook",

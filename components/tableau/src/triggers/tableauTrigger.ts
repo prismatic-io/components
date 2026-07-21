@@ -3,16 +3,16 @@ import {
   type TriggerPayload,
   trigger,
 } from "@prismatic-io/spectral";
-import { getTableauClient } from "../util";
-import {
-  deleteWebhooksInstance,
-  createWebhookSubscriptions,
-  getEventInfo,
-} from "../util";
+import { tableauWebhookExamplePayload } from "../examplePayloads";
+import { tableauTriggerInputs } from "../inputs";
 import tableauEvents from "../tableauEvents.json";
 import type { TableauTriggerPayload } from "../types";
-import { tableauTriggerInputs } from "../inputs";
-import { tableauWebhookExamplePayload } from "../examplePayloads";
+import {
+  createWebhookSubscriptions,
+  deleteWebhooksInstance,
+  getEventInfo,
+  getTableauClient,
+} from "../util";
 const performFunction = async (
   context: ActionContext,
   payload: TriggerPayload,

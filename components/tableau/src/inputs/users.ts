@@ -2,8 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import {
   connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
   searchString,
   timeout,
   userId,
@@ -68,8 +67,7 @@ const userSearchField = input({
 });
 export const listUsersInputs = {
   timeout,
-  pageSize,
-  pageNumber,
+  pagination,
   tableauConnection: connectionInput,
 };
 export const searchUsersInputs = {
@@ -77,8 +75,7 @@ export const searchUsersInputs = {
   searchString: { ...searchString, example: "john.doe@test.com" },
   timeout,
   tableauConnection: connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
 };
 export const getUserInputs = {
   userId,

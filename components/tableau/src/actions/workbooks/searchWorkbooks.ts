@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { searchWorkbooksInputs } from "../../inputs";
 import { searchWorkbooksExamplePayload } from "../../examplePayloads";
+import { searchWorkbooksInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const searchWorkbooks = action({
   display: {
     label: "Search Workbooks",
@@ -18,11 +18,13 @@ export const searchWorkbooks = action({
     const searchField = util.types.toString(params.searchField);
     const filterOperator = util.types.toString(params.filterOperator);
     const response = await client.get(
-      `/workbooks?filter=${searchField}:${filterOperator}:${filterOperator !== "in" ? searchString : "[" + searchString + "]"}`,
+      `/workbooks?filter=${searchField}:${filterOperator}:${filterOperator !== "in" ? searchString : `[${searchString}]`}`,
       {
         params: {
-          pageSize: util.types.toNumber(params.pageSize) || undefined,
-          pageNumber: util.types.toNumber(params.pageNumber) || undefined,
+          pageSize:
+            util.types.toNumber(params.pagination?.pageSize) || undefined,
+          pageNumber:
+            util.types.toNumber(params.pagination?.pageNumber) || undefined,
         },
       },
     );

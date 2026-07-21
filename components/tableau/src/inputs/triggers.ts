@@ -10,7 +10,7 @@ export const tableauTriggerInputs = {
     collection: "valuelist" as const,
     comments: "The events to subscribe to.",
     clean: (value: unknown) => {
-      if (value instanceof Array) {
+      if (Array.isArray(value)) {
         return value;
       }
       return [value];

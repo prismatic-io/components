@@ -1,9 +1,8 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalBoolean, toOptionalString } from "../util";
 import {
   connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
   searchString,
   timeout,
   workbookId,
@@ -69,6 +68,20 @@ const queryTaggingEnabled = input({
     "When true, associates a server log query event with the Tableau resource that made the query.",
   clean: toOptionalBoolean,
 });
+const connectionSettings = structuredObjectInput({
+  label: "Connection Settings",
+  required: false,
+  comments:
+    "Server address, credentials, and query behavior for the connection.",
+  inputs: {
+    serverAddress,
+    serverPort,
+    connectionUsername,
+    connectionPassword,
+    embedPassword,
+    queryTaggingEnabled,
+  },
+});
 const connectionSearchField = input({
   label: "Search Field",
   type: "string",
@@ -81,8 +94,7 @@ const connectionSearchField = input({
 export const listConnectionsInputs = {
   workbookId,
   timeout,
-  pageSize,
-  pageNumber,
+  pagination,
   tableauConnection: connectionInput,
 };
 export const searchConnectionsInputs = {
@@ -91,18 +103,12 @@ export const searchConnectionsInputs = {
   searchField: connectionSearchField,
   timeout,
   tableauConnection: connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
 };
 export const updateConnectionInputs = {
   workbookId,
   connectionId,
-  serverAddress,
-  serverPort,
-  connectionUsername,
-  connectionPassword,
-  embedPassword,
-  queryTaggingEnabled,
+  connectionSettings,
   timeout,
   tableauConnection: connectionInput,
 };

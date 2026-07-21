@@ -1,8 +1,8 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
 import FormData from "form-data";
-import { publishWorkbookInputs } from "../../inputs";
 import { publishWorkbookExamplePayload } from "../../examplePayloads";
+import { publishWorkbookInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const publishWorkbook = action({
   display: {
     label: "Publish Workbook",
@@ -17,13 +17,15 @@ export const publishWorkbook = action({
       multipartMixed: true,
     });
     const queryParams = {
-      ...(params.uploadSessionId && {
-        uploadSessionId: params.uploadSessionId,
+      ...(params.publishOptions.uploadSessionId && {
+        uploadSessionId: params.publishOptions.uploadSessionId,
       }),
-      ...(params.workbookType && { workbookType: params.workbookType }),
-      overwrite: params.overwrite,
-      asJob: params.asJob,
-      skipConnectionCheck: params.skipConnectionCheck,
+      ...(params.publishOptions.workbookType && {
+        workbookType: params.publishOptions.workbookType,
+      }),
+      overwrite: params.publishOptions.overwrite,
+      asJob: params.publishOptions.asJob,
+      skipConnectionCheck: params.publishOptions.skipConnectionCheck,
     };
     const form = new FormData();
     form.append("request_payload", params.workbookXml, {
@@ -35,7 +37,7 @@ export const publishWorkbook = action({
     const response = await client.post("/workbooks", form.getBuffer(), {
       params: queryParams,
       headers: {
-        "content-type": "multipart/mixed; boundary=" + form.getBoundary(),
+        "content-type": `multipart/mixed; boundary=${form.getBoundary()}`,
       },
       maxBodyLength: Number.POSITIVE_INFINITY,
     });

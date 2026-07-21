@@ -1,8 +1,7 @@
-import { getTableauClient } from "../../util";
 import { action } from "@prismatic-io/spectral";
-import { createWebhookInputs } from "../../inputs";
-import { createWebhookSubscription } from "../../util";
 import { createWebhookExamplePayload } from "../../examplePayloads";
+import { createWebhookInputs } from "../../inputs";
+import { createWebhookSubscription, getTableauClient } from "../../util";
 export const createWebhook = action({
   display: {
     label: "Create Webhook",

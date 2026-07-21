@@ -1,13 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
+import tableauEvents from "../tableauEvents.json";
 import {
   apiVersion,
   connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
   timeout,
   webhookId,
 } from "./common";
-import tableauEvents from "../tableauEvents.json";
 const webhookName = input({
   label: "Webhook Name",
   type: "string",
@@ -57,8 +56,7 @@ const webhookDisableReason = input({
 });
 export const listWebhooksInputs = {
   timeout,
-  pageSize,
-  pageNumber,
+  pagination,
   tableauConnection: connectionInput,
   apiVersion,
 };

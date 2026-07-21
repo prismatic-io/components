@@ -1,8 +1,8 @@
-import { getTableauClient } from "./auth";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
-import { signIn } from "./signIn";
-import { tableauConnection } from "../connections";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { tableauConnection } from "../connections";
+import { getTableauClient } from "./auth";
+import { signIn } from "./signIn";
 const connection = createConnection(tableauConnection, {
   token: process.env.TABLEAU_TOKEN,
   tokenName: "firstToken",

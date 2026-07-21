@@ -1,9 +1,8 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalBoolean, toOptionalString } from "../util";
 import {
   connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
   projectId,
   searchString,
   timeout,
@@ -103,6 +102,19 @@ const skipConnectionCheck = input({
   default: "false",
   clean: util.types.toBool,
 });
+const publishOptions = structuredObjectInput({
+  label: "Publish Options",
+  required: false,
+  comments:
+    "Upload session, file type, and publishing behavior controls for the workbook.",
+  inputs: {
+    uploadSessionId,
+    workbookType,
+    overwrite,
+    asJob,
+    skipConnectionCheck,
+  },
+});
 const workbookXml = input({
   label: "Workbook XML",
   type: "code",
@@ -126,8 +138,7 @@ const workbookFileContents = input({
 });
 export const listWorkbooksInputs = {
   timeout,
-  pageSize,
-  pageNumber,
+  pagination,
   tableauConnection: connectionInput,
 };
 export const searchWorkbooksInputs = {
@@ -136,8 +147,7 @@ export const searchWorkbooksInputs = {
   searchString: { ...searchString, example: "Tag 1, Tag 2, My 3rd Tag" },
   timeout,
   tableauConnection: connectionInput,
-  pageNumber,
-  pageSize,
+  pagination,
 };
 export const getWorkbookInputs = {
   workbookId,
@@ -152,11 +162,7 @@ export const deleteWorkbookInputs = {
 export const publishWorkbookInputs = {
   timeout,
   tableauConnection: connectionInput,
-  uploadSessionId,
-  workbookType,
-  overwrite,
-  asJob,
-  skipConnectionCheck,
+  publishOptions,
   workbookXml,
   workbookFileContents,
 };

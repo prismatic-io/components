@@ -9,23 +9,15 @@ export const updateSession = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      sessionId,
-      customBody,
-      customId,
-      description,
-      groupid,
-      groupname,
-    },
+    { connection, sessionId, customBody, customId, description, group },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const body = {
       ...customBody,
       customId,
       description,
-      groupid,
-      groupname,
+      groupid: group.groupid,
+      groupname: group.groupname,
     };
     await client.put(`/sessions/${sessionId}`, body);
     return {

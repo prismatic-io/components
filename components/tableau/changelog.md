@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-07-21
+
+Restructured action inputs into structured objects for an improved user experience.
+
+- The **List/Search** actions for **Users**, **Projects**, **Workbooks**, and **Connections**, plus **List Webhooks**, group their **Page Size** and **Page Number** inputs into **Pagination**
+- **Publish Workbook** groups its **Upload Session ID**, **Workbook Type**, **Overwrite**, **As Job**, and **Skip Connection Check** inputs into **Publish Options**
+- **Update Connection** groups its **Server Address**, **Server Port**, **Connection Username**, **Connection Password**, **Embed Password**, and **Query Tagging Enabled** inputs into **Connection Settings**
+
 ### 2026-06-29
 
 Various modernizations and documentation updates

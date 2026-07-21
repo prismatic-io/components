@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { updateWorkbookInputs } from "../../inputs";
 import { updateWorkbookExamplePayload } from "../../examplePayloads";
+import { updateWorkbookInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const updateWorkbook = action({
   display: {
     label: "Update Workbook",

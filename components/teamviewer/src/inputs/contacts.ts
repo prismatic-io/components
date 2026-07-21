@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { defaultInputs } from "./general";
 import { cleanString } from "../util";
 import { groupId } from "./devices";
@@ -60,12 +60,12 @@ const invite = input({
 });
 export const createContactInputs = {
   email,
-  name,
   groupid: {
     ...groupId,
     comments:
       "The ID of the group to which the contact belongs. Either groupid or groupName is required.",
   },
+  name,
   groupname: {
     ...groupName,
     comments:

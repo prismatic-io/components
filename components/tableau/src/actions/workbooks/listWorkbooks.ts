@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { listWorkbooksInputs } from "../../inputs";
 import { listWorkbooksExamplePayload } from "../../examplePayloads";
+import { listWorkbooksInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const listWorkbooks = action({
   display: {
     label: "List Workbooks",
@@ -16,8 +16,9 @@ export const listWorkbooks = action({
     });
     const response = await client.get("/workbooks", {
       params: {
-        pageSize: util.types.toNumber(params.pageSize) || undefined,
-        pageNumber: util.types.toNumber(params.pageNumber) || undefined,
+        pageSize: util.types.toNumber(params.pagination?.pageSize) || undefined,
+        pageNumber:
+          util.types.toNumber(params.pagination?.pageNumber) || undefined,
       },
     });
     return {

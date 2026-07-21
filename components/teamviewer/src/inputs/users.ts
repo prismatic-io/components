@@ -1,5 +1,5 @@
 import { defaultInputs } from "./general";
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanCodeToArray, cleanString } from "../util";
 export const deleteCompanyUserInputs = {
   ...defaultInputs,
@@ -179,6 +179,27 @@ export const ignorePredefinedRole = input({
   required: false,
   clean: util.types.toBool,
 });
+const license = structuredObjectInput({
+  label: "License",
+  required: false,
+  comments: "License and meeting license keys.",
+  inputs: {
+    licenseKey,
+    meetingLicenseKey,
+  },
+});
+const createUserAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Secondary account preference settings for the new user, including newsletter subscription, session logging, comment window display, and predefined role override.",
+  inputs: {
+    subscribeNewsletter,
+    logSessions,
+    showCommentWindow,
+    ignorePredefinedRole,
+  },
+});
 export const createUserInputs = {
   email: {
     ...userEmail,
@@ -190,18 +211,14 @@ export const createUserInputs = {
     required: true,
     clean: util.types.toString,
   },
+  language,
   password,
   userRoleId,
-  language,
-  subscribeNewsletter,
-  logSessions,
-  showCommentWindow,
   customQuickSupportId,
   customQuickJoinId,
-  licenseKey,
-  meetingLicenseKey,
+  license,
   ssoCustomerId,
-  ignorePredefinedRole,
+  additionalFields: createUserAdditionalFields,
   ...defaultInputs,
 };
 export const isUserActive = input({
@@ -244,6 +261,19 @@ export const unassignUserRoleIds = input({
   required: false,
   clean: cleanCodeToArray,
 });
+const updateUserAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Secondary settings for the user, including activation status, session logging, comment window display, license key, and TFA enforcement.",
+  inputs: {
+    active: isUserActive,
+    log_sessions: logSessions,
+    show_comment_window: showCommentWindow,
+    license_key: licenseKey,
+    tfa_enforced: isTFAEnforced,
+  },
+});
 export const updateUserInputs = {
   userId,
   email: {
@@ -259,13 +289,9 @@ export const updateUserInputs = {
   AssignUserRoleIds: assignUserRoleIds,
   UnassignUserRoleIds: unassignUserRoleIds,
   password,
-  active: isUserActive,
-  log_sessions: logSessions,
-  show_comment_window: showCommentWindow,
   custom_quicksupport_id: customQuickSupportId,
   custom_quickjoin_id: customQuickJoinId,
-  license_key: licenseKey,
   sso_customer_id: ssoCustomerId,
-  tfa_enforced: isTFAEnforced,
+  additionalFields: updateUserAdditionalFields,
   ...defaultInputs,
 };

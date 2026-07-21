@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { updateConnectionInputs } from "../../inputs";
 import { updateConnectionExamplePayload } from "../../examplePayloads";
+import { updateConnectionInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const updateConnection = action({
   display: {
     label: "Update Connection",
@@ -19,12 +19,13 @@ export const updateConnection = action({
       `/workbooks/${params.workbookId}/connections/${params.connectionId}`,
       {
         connection: {
-          serverAddress: params.serverAddress || undefined,
-          serverPort: params.serverPort || undefined,
-          userName: params.connectionUsername || undefined,
-          password: params.connectionPassword || undefined,
-          embedPassword: params.embedPassword || undefined,
-          queryTaggingEnabled: params.queryTaggingEnabled || undefined,
+          serverAddress: params.connectionSettings.serverAddress || undefined,
+          serverPort: params.connectionSettings.serverPort || undefined,
+          userName: params.connectionSettings.connectionUsername || undefined,
+          password: params.connectionSettings.connectionPassword || undefined,
+          embedPassword: params.connectionSettings.embedPassword || undefined,
+          queryTaggingEnabled:
+            params.connectionSettings.queryTaggingEnabled || undefined,
         },
       },
     );

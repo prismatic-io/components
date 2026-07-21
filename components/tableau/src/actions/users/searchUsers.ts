@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { searchUsersInputs } from "../../inputs";
 import { searchUsersExamplePayload } from "../../examplePayloads";
+import { searchUsersInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const searchUsers = action({
   display: {
     label: "Search Users",
@@ -20,8 +20,10 @@ export const searchUsers = action({
       `/users?filter=${searchField}:eq:${searchString}`,
       {
         params: {
-          pageSize: util.types.toNumber(params.pageSize) || undefined,
-          pageNumber: util.types.toNumber(params.pageNumber) || undefined,
+          pageSize:
+            util.types.toNumber(params.pagination?.pageSize) || undefined,
+          pageNumber:
+            util.types.toNumber(params.pagination?.pageNumber) || undefined,
         },
       },
     );

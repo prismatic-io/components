@@ -1,6 +1,6 @@
 import { action, util } from "@prismatic-io/spectral";
-import { searchConnectionsInputs } from "../../inputs";
 import { searchConnectionsExamplePayload } from "../../examplePayloads";
+import { searchConnectionsInputs } from "../../inputs";
 import { listConnections } from "./listConnections";
 export const searchConnections = action({
   display: {
@@ -14,8 +14,7 @@ export const searchConnections = action({
     const projectsResult = await listConnections.perform(context, {
       tableauConnection: params.tableauConnection,
       workbookId: params.workbookId,
-      pageNumber: params.pageNumber || undefined,
-      pageSize: params.pageSize || undefined,
+      pagination: params.pagination,
       timeout: params.timeout || undefined,
     });
     const filteredResponse = projectsResult.data.connections.connection.filter(

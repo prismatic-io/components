@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { getTableauClient } from "../../util";
-import { createUserInputs } from "../../inputs";
 import { createUserExamplePayload } from "../../examplePayloads";
+import { createUserInputs } from "../../inputs";
+import { getTableauClient } from "../../util";
 export const createUser = action({
   display: {
     label: "Create User",
