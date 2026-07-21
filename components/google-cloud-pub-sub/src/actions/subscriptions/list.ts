@@ -11,15 +11,15 @@ export const listSubscriptions = action({
   inputs: listSubscriptionsInputs,
   perform: async (
     _context,
-    { connectionInput, projectId, pageToken, pageSize, fetchAll },
+    { connectionInput, projectId, pagination = {}, fetchAll },
   ) => {
     const client = createClient(connectionInput);
     const data = (await paginateAll(
       (params) => client.projects.subscriptions.list(params),
       {
         project: `projects/${projectId}`,
-        pageSize,
-        pageToken,
+        pageSize: pagination.pageSize,
+        pageToken: pagination.pageToken,
       },
       "subscriptions",
       fetchAll,

@@ -6,14 +6,9 @@ import {
 } from "../../examplePayloads";
 import {
   connectionInput,
-  kmsKeyName,
-  labels,
-  messageRetentionDuration,
-  messageStoragePolicy,
   projectId,
-  satisfiesPzs,
-  schemaSettings,
   topic,
+  topicAdditionalFields,
 } from "../../inputs";
 export const createTopic = action({
   display: {
@@ -24,38 +19,25 @@ export const createTopic = action({
     connectionInput,
     projectId,
     topic: { ...topic, comments: "Name of the new topic" },
-    labels,
-    messageStoragePolicy,
-    kmsKeyName,
-    schemaSettings,
-    satisfiesPzs,
-    messageRetentionDuration,
+    additionalFields: topicAdditionalFields,
   },
   perform: async (
     { logger },
-    {
-      connectionInput,
-      projectId,
-      topic,
-      labels,
-      messageStoragePolicy,
-      kmsKeyName,
-      schemaSettings,
-      satisfiesPzs,
-      messageRetentionDuration,
-    },
+    { connectionInput, projectId, topic, additionalFields },
   ) => {
     const client = createClient(connectionInput);
     try {
       const { data } = await client.projects.topics.create({
         name: `projects/${projectId}/topics/${topic}`,
         requestBody: {
-          labels: labels || undefined,
-          messageStoragePolicy: messageStoragePolicy || undefined,
-          kmsKeyName: kmsKeyName || undefined,
-          schemaSettings: schemaSettings || undefined,
-          satisfiesPzs: satisfiesPzs || undefined,
-          messageRetentionDuration: messageRetentionDuration || undefined,
+          labels: additionalFields.labels || undefined,
+          messageStoragePolicy:
+            additionalFields.messageStoragePolicy || undefined,
+          kmsKeyName: additionalFields.kmsKeyName || undefined,
+          schemaSettings: additionalFields.schemaSettings || undefined,
+          satisfiesPzs: additionalFields.satisfiesPzs || undefined,
+          messageRetentionDuration:
+            additionalFields.messageRetentionDuration || undefined,
         },
       });
       return { data: { ...data, alreadyExisted: false } };

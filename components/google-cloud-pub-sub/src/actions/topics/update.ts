@@ -3,14 +3,9 @@ import { createClient } from "../../client";
 import { updateTopicExamplePayload } from "../../examplePayloads";
 import {
   connectionInput,
-  kmsKeyName,
-  labels,
-  messageRetentionDuration,
-  messageStoragePolicy,
   projectId,
-  satisfiesPzs,
-  schemaSettings,
   topic,
+  topicAdditionalFields,
   topicNameOrFullFormat,
   updateMask,
 } from "../../inputs";
@@ -26,12 +21,7 @@ export const updateTopic = action({
     topic: { ...topic, comments: "Name of the topic" },
     topicNameOrFullFormat,
     updateMask,
-    labels,
-    messageStoragePolicy,
-    kmsKeyName,
-    schemaSettings,
-    satisfiesPzs,
-    messageRetentionDuration,
+    additionalFields: topicAdditionalFields,
   },
   perform: async (
     _context,
@@ -41,12 +31,7 @@ export const updateTopic = action({
       topic,
       topicNameOrFullFormat,
       updateMask,
-      labels,
-      messageStoragePolicy,
-      kmsKeyName,
-      schemaSettings,
-      satisfiesPzs,
-      messageRetentionDuration,
+      additionalFields,
     },
   ) => {
     const client = createClient(connectionInput);
@@ -58,12 +43,14 @@ export const updateTopic = action({
       requestBody: {
         updateMask: updateMask || undefined,
         topic: {
-          labels: labels || undefined,
-          messageStoragePolicy: messageStoragePolicy || undefined,
-          kmsKeyName: kmsKeyName || undefined,
-          schemaSettings: schemaSettings || undefined,
-          satisfiesPzs: satisfiesPzs || undefined,
-          messageRetentionDuration: messageRetentionDuration || undefined,
+          labels: additionalFields.labels || undefined,
+          messageStoragePolicy:
+            additionalFields.messageStoragePolicy || undefined,
+          kmsKeyName: additionalFields.kmsKeyName || undefined,
+          schemaSettings: additionalFields.schemaSettings || undefined,
+          satisfiesPzs: additionalFields.satisfiesPzs || undefined,
+          messageRetentionDuration:
+            additionalFields.messageRetentionDuration || undefined,
           name,
         },
       },

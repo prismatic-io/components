@@ -1,11 +1,9 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import {
-  attributes,
   connectionInput,
-  oidcToken,
   projectId,
-  pushEndpoint,
+  pushConfiguration,
   subscription,
   subscriptionNameOrFullFormat,
 } from "../../inputs";
@@ -20,9 +18,7 @@ export const updatePushConfig = action({
     projectId,
     subscription,
     subscriptionNameOrFullFormat,
-    pushEndpoint,
-    attributes,
-    oidcToken,
+    pushConfiguration,
   },
   perform: async (
     _context,
@@ -30,9 +26,7 @@ export const updatePushConfig = action({
       connectionInput,
       projectId,
       subscription,
-      pushEndpoint,
-      attributes,
-      oidcToken,
+      pushConfiguration,
       subscriptionNameOrFullFormat,
     },
   ) => {
@@ -44,9 +38,9 @@ export const updatePushConfig = action({
       subscription: subscriptionName,
       requestBody: {
         pushConfig: {
-          pushEndpoint: pushEndpoint || undefined,
-          attributes: attributes || undefined,
-          oidcToken: oidcToken || undefined,
+          pushEndpoint: pushConfiguration.pushEndpoint || undefined,
+          attributes: pushConfiguration.attributes || undefined,
+          oidcToken: pushConfiguration.oidcToken || undefined,
         },
       },
     });

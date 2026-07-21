@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { jsonInputClean } from "./util";
 export const connectionInput = input({
   label: "Connection",
@@ -67,6 +67,28 @@ export const pageSize = input({
   required: false,
   example: "100",
   placeholder: "Enter page size",
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page token and page size to page through results.",
+  inputs: { pageToken, pageSize },
+});
+export const subscriptionsPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page token and page size to page through results.",
+  inputs: {
+    pageToken: {
+      ...pageToken,
+      comments:
+        "The value returned by the last ListSubscriptionsResponse; indicates that this is a continuation of a prior subscriptions.list call, and that the system should return the next page of data.",
+    },
+    pageSize: {
+      ...pageSize,
+      comments: "Maximum number of subscriptions to return.",
+    },
+  },
 });
 export const labels = input({
   label: "Labels",
@@ -519,24 +541,58 @@ export const fetchAll = input({
   comments: "When true, fetches all pages of results using pagination.",
   default: "false",
 });
+export const pushConfiguration = structuredObjectInput({
+  label: "Push Configuration",
+  required: false,
+  comments: "Endpoint, attributes, and OIDC token settings for push delivery.",
+  inputs: { pushEndpoint, attributes, oidcToken },
+});
+export const subscriptionAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Push Config, BigQuery Config, Ack Deadline Seconds, Retain Acked Messages, Message Retention Duration, Labels, Enable Message Ordering, Expiration Policy, Filter, Dead Letter Policy, Retry Policy, Detached, Enable Exactly Once Delivery, Topic Message Retention Duration, and State.",
+  inputs: {
+    pushConfig,
+    bigqueryConfig,
+    ackDeadlineSeconds,
+    retainAckedMessages,
+    messageRetentionDuration,
+    labels,
+    enableMessageOrdering,
+    expirationPolicy,
+    filter,
+    deadLetterPolicy,
+    retryPolicy,
+    detached,
+    enableExactlyOnceDelivery,
+    topicMessageRetentionDuration,
+    state,
+  },
+});
+export const topicAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Labels, Message Storage Policy, KMS Key Name, Schema Settings, Satisfies PZS, and Message Retention Duration.",
+  inputs: {
+    labels,
+    messageStoragePolicy,
+    kmsKeyName,
+    schemaSettings,
+    satisfiesPzs,
+    messageRetentionDuration,
+  },
+});
 export const listSubscriptionsInputs = {
   connectionInput,
   projectId,
   fetchAll,
-  pageToken: {
-    ...pageToken,
-    comments:
-      "The value returned by the last ListSubscriptionsResponse; indicates that this is a continuation of a prior subscriptions.list call, and that the system should return the next page of data.",
-  },
-  pageSize: {
-    ...pageSize,
-    comments: "Maximum number of subscriptions to return.",
-  },
+  pagination: subscriptionsPagination,
 };
 export const listTopicsInputs = {
   connectionInput,
   projectId,
   fetchAll,
-  pageToken,
-  pageSize,
+  pagination,
 };
