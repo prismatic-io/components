@@ -16,6 +16,10 @@ export const createPackage = action({
       packageName,
       packageFileName,
       packageCategoryId,
+      additionalFields,
+    },
+  ) => {
+    const {
       packagePriority,
       packageInfo,
       packageNotes,
@@ -26,8 +30,7 @@ export const createPackage = action({
       packageSuppressEula,
       packageSuppressFromDock,
       packageSuppressRegistration,
-    },
-  ) => {
+    } = additionalFields;
     const client = await createClient(connection, context.debug.enabled);
     const body = {
       packageName,

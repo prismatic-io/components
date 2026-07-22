@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-07-21
+
+Restructured action inputs into structured objects for an improved user experience:
+
+- List actions (**List Categories**, **List Departments**, **List Packages**, **List Scripts**, **List Users**, **List Computers**, and **List Mobile Devices**) group their pagination inputs into **Pagination**; **Fetch All** stays a top-level toggle
+- **Create Package**, **Update Package**, **Create Script**, **Update Script**, **Create Webhook**, and **Update Webhook** group their optional inputs into **Additional Fields**
+
 ### 2026-06-16
 
 Enhanced **List Mobile Devices** with full inventory detail

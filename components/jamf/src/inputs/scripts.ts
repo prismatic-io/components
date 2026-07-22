@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import {
   connection,
@@ -72,14 +72,23 @@ const scriptNotes = input({
   placeholder: "Enter notes",
   example: "Updated 2026-01-15 to support macOS 15.",
 });
+const createScriptAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Script Contents, Priority, Info, and Notes.",
+  inputs: {
+    scriptContents,
+    scriptPriority,
+    scriptInfo,
+    scriptNotes,
+  },
+});
 export const createScriptInputs = {
   connection,
   scriptName,
-  scriptContents,
   scriptCategoryId,
-  scriptPriority,
-  scriptInfo,
-  scriptNotes,
+  additionalFields: createScriptAdditionalFields,
 };
 const scriptResourceId = {
   ...resourceId,
@@ -89,13 +98,18 @@ const scriptResourceId = {
 };
 export const deleteScriptInputs = { connection, resourceId: scriptResourceId };
 export const getScriptInputs = { connection, resourceId: scriptResourceId };
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { page, pageSize },
+});
 export const listScriptsInputs = {
   connection,
-  page,
-  pageSize,
+  fetchAll,
+  pagination,
   sort,
   filter,
-  fetchAll,
 };
 const updateScriptName = {
   ...scriptName,
@@ -103,13 +117,22 @@ const updateScriptName = {
   clean: toOptionalString,
 };
 const updateScriptPriority = { ...scriptPriority, default: undefined };
+const updateScriptAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Name, Script Contents, Priority, Info, and Notes.",
+  inputs: {
+    scriptName: updateScriptName,
+    scriptContents,
+    scriptPriority: updateScriptPriority,
+    scriptInfo,
+    scriptNotes,
+  },
+});
 export const updateScriptInputs = {
   connection,
   resourceId: scriptResourceId,
-  scriptName: updateScriptName,
-  scriptContents,
   scriptCategoryId,
-  scriptPriority: updateScriptPriority,
-  scriptInfo,
-  scriptNotes,
+  additionalFields: updateScriptAdditionalFields,
 };

@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { asStringArray } from "../util";
 import {
   connection,
@@ -44,14 +44,19 @@ const mobileDeviceResourceId = {
   comments: "The unique identifier of the mobile device.",
   dataSource: "selectMobileDevice",
 };
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { page, pageSize },
+});
 export const listMobileDevicesInputs = {
   connection,
-  page,
-  pageSize,
+  fetchAll,
+  pagination,
   sort,
   filter,
   section,
-  fetchAll,
 };
 export const getMobileDeviceInputs = {
   connection,

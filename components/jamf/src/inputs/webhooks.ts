@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalBool, toOptionalString, webhookEventOptions } from "../util";
 import { connection, resourceId } from "./common";
 const optionalBoolean = (label: string, comments: string) =>
@@ -100,16 +100,25 @@ const webhookResourceId = {
   comments: "The unique identifier of the webhook.",
   dataSource: "selectWebhook",
 };
+const createWebhookAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Content Type, Enabled, Authentication Type, Auth Header Name, and Auth Header Value.",
+  inputs: {
+    webhookContentType,
+    webhookEnabled,
+    webhookAuthType,
+    webhookAuthHeaderName,
+    webhookAuthHeaderValue,
+  },
+});
 export const createWebhookInputs = {
   connection,
   webhookName,
   webhookEvent,
   webhookUrl,
-  webhookContentType,
-  webhookEnabled,
-  webhookAuthType,
-  webhookAuthHeaderName,
-  webhookAuthHeaderValue,
+  additionalFields: createWebhookAdditionalFields,
 };
 export const getWebhookInputs = { connection, resourceId: webhookResourceId };
 export const listWebhooksInputs = { connection };
@@ -142,12 +151,21 @@ const updateWebhookEnabled = optionalBoolean(
   "Enabled",
   "Whether the webhook is active and delivering events.",
 );
+const updateWebhookAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Name, Event, URL, Content Type, and Enabled.",
+  inputs: {
+    webhookName: updateWebhookName,
+    webhookEvent: updateWebhookEvent,
+    webhookUrl: updateWebhookUrl,
+    webhookContentType: updateWebhookContentType,
+    webhookEnabled: updateWebhookEnabled,
+  },
+});
 export const updateWebhookInputs = {
   connection,
   resourceId: webhookResourceId,
-  webhookName: updateWebhookName,
-  webhookEvent: updateWebhookEvent,
-  webhookUrl: updateWebhookUrl,
-  webhookContentType: updateWebhookContentType,
-  webhookEnabled: updateWebhookEnabled,
+  additionalFields: updateWebhookAdditionalFields,
 };

@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalBool, toOptionalNumber, toOptionalString } from "../util";
 import {
   connection,
@@ -130,21 +130,30 @@ const packageSuppressRegistration = input({
   comments: "Whether to suppress the registration window during installation.",
   clean: util.types.toBool,
 });
+const createPackageAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Priority, Info, Notes, Reboot Required, OS Install, Fill User Template, Suppress Updates, Suppress EULA, Suppress From Dock, and Suppress Registration.",
+  inputs: {
+    packagePriority,
+    packageInfo,
+    packageNotes,
+    packageRebootRequired,
+    packageOsInstall,
+    packageFillUserTemplate,
+    packageSuppressUpdates,
+    packageSuppressEula,
+    packageSuppressFromDock,
+    packageSuppressRegistration,
+  },
+});
 export const createPackageInputs = {
   connection,
   packageName,
   packageFileName,
   packageCategoryId,
-  packagePriority,
-  packageInfo,
-  packageNotes,
-  packageRebootRequired,
-  packageOsInstall,
-  packageFillUserTemplate,
-  packageSuppressUpdates,
-  packageSuppressEula,
-  packageSuppressFromDock,
-  packageSuppressRegistration,
+  additionalFields: createPackageAdditionalFields,
 };
 const packageResourceId = {
   ...resourceId,
@@ -157,13 +166,18 @@ export const deletePackageInputs = {
   resourceId: packageResourceId,
 };
 export const getPackageInputs = { connection, resourceId: packageResourceId };
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { page, pageSize },
+});
 export const listPackagesInputs = {
   connection,
-  page,
-  pageSize,
+  fetchAll,
+  pagination,
   sort,
   filter,
-  fetchAll,
 };
 const updatePackageName = {
   ...packageName,
@@ -203,20 +217,29 @@ const updatePackageSuppressRegistration = optionalBoolean(
   "Suppress Registration",
   "Whether to suppress the registration window during installation.",
 );
+const updatePackageAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Package Name, File Name, Priority, Info, Notes, Reboot Required, OS Install, Fill User Template, Suppress Updates, Suppress EULA, Suppress From Dock, and Suppress Registration.",
+  inputs: {
+    packageName: updatePackageName,
+    packageFileName: updatePackageFileName,
+    packagePriority,
+    packageInfo,
+    packageNotes,
+    packageRebootRequired: updatePackageRebootRequired,
+    packageOsInstall: updatePackageOsInstall,
+    packageFillUserTemplate: updatePackageFillUserTemplate,
+    packageSuppressUpdates: updatePackageSuppressUpdates,
+    packageSuppressEula: updatePackageSuppressEula,
+    packageSuppressFromDock: updatePackageSuppressFromDock,
+    packageSuppressRegistration: updatePackageSuppressRegistration,
+  },
+});
 export const updatePackageInputs = {
   connection,
   resourceId: packageResourceId,
-  packageName: updatePackageName,
-  packageFileName: updatePackageFileName,
   packageCategoryId,
-  packagePriority,
-  packageInfo,
-  packageNotes,
-  packageRebootRequired: updatePackageRebootRequired,
-  packageOsInstall: updatePackageOsInstall,
-  packageFillUserTemplate: updatePackageFillUserTemplate,
-  packageSuppressUpdates: updatePackageSuppressUpdates,
-  packageSuppressEula: updatePackageSuppressEula,
-  packageSuppressFromDock: updatePackageSuppressFromDock,
-  packageSuppressRegistration: updatePackageSuppressRegistration,
+  additionalFields: updatePackageAdditionalFields,
 };

@@ -11,16 +11,10 @@ export const createScript = action({
   inputs: createScriptInputs,
   perform: async (
     context,
-    {
-      connection,
-      scriptName,
-      scriptContents,
-      scriptCategoryId,
-      scriptPriority,
-      scriptInfo,
-      scriptNotes,
-    },
+    { connection, scriptName, scriptCategoryId, additionalFields },
   ) => {
+    const { scriptContents, scriptPriority, scriptInfo, scriptNotes } =
+      additionalFields;
     const client = await createClient(connection, context.debug.enabled);
     const body = {
       name: scriptName,

@@ -9,18 +9,14 @@ export const updateWebhook = action({
     description: "Update an existing webhook subscription.",
   },
   inputs: updateWebhookInputs,
-  perform: async (
-    context,
-    {
-      connection,
-      resourceId,
+  perform: async (context, { connection, resourceId, additionalFields }) => {
+    const {
       webhookName,
       webhookEvent,
       webhookUrl,
       webhookContentType,
       webhookEnabled,
-    },
-  ) => {
+    } = additionalFields;
     const client = await createClassicClient(connection, context.debug.enabled);
     const body = toWebhookXml({
       name: webhookName,

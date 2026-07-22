@@ -11,18 +11,15 @@ export const createWebhook = action({
   inputs: createWebhookInputs,
   perform: async (
     context,
-    {
-      connection,
-      webhookName,
-      webhookEvent,
-      webhookUrl,
+    { connection, webhookName, webhookEvent, webhookUrl, additionalFields },
+  ) => {
+    const {
       webhookContentType,
       webhookEnabled,
       webhookAuthType,
       webhookAuthHeaderName,
       webhookAuthHeaderValue,
-    },
-  ) => {
+    } = additionalFields;
     const client = await createClassicClient(connection, context.debug.enabled);
     let authFields: Record<string, string> = {};
     if (webhookAuthType === "HEADER") {

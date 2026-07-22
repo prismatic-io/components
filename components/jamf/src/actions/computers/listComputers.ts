@@ -13,14 +13,20 @@ export const listComputers = action({
   inputs: listComputersInputs,
   perform: async (
     context,
-    { connection, page, pageSize, sort, filter, section, fetchAll },
+    { connection, pagination, sort, filter, section, fetchAll },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const data = await paginateResults<ComputerInventory>(
       client,
       "/v3/computers-inventory",
       fetchAll,
-      { page, "page-size": pageSize, sort, filter, section },
+      {
+        page: pagination.page,
+        "page-size": pagination.pageSize,
+        sort,
+        filter,
+        section,
+      },
     );
     return { data };
   },

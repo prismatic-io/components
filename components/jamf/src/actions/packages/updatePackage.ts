@@ -12,12 +12,11 @@ export const updatePackage = action({
   inputs: updatePackageInputs,
   perform: async (
     context,
-    {
-      connection,
-      resourceId,
+    { connection, resourceId, packageCategoryId, additionalFields },
+  ) => {
+    const {
       packageName,
       packageFileName,
-      packageCategoryId,
       packagePriority,
       packageInfo,
       packageNotes,
@@ -28,8 +27,7 @@ export const updatePackage = action({
       packageSuppressEula,
       packageSuppressFromDock,
       packageSuppressRegistration,
-    },
-  ) => {
+    } = additionalFields;
     const client = await createClient(connection, context.debug.enabled);
     const { data: existing } = await client.get<Package>(
       `/v1/packages/${resourceId}`,

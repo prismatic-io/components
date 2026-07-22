@@ -12,14 +12,14 @@ export const listPackages = action({
   inputs: listPackagesInputs,
   perform: async (
     context,
-    { connection, page, pageSize, sort, filter, fetchAll },
+    { connection, pagination, sort, filter, fetchAll },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const data = await paginateResults<Package>(
       client,
       "/v1/packages",
       fetchAll,
-      { page, "page-size": pageSize, sort, filter },
+      { page: pagination.page, "page-size": pagination.pageSize, sort, filter },
     );
     return { data };
   },

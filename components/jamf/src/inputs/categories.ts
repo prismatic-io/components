@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
 import {
   connection,
@@ -41,13 +41,18 @@ export const deleteCategoryInputs = {
   resourceId: categoryResourceId,
 };
 export const getCategoryInputs = { connection, resourceId: categoryResourceId };
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { page, pageSize },
+});
 export const listCategoriesInputs = {
   connection,
-  page,
-  pageSize,
+  fetchAll,
+  pagination,
   sort,
   filter,
-  fetchAll,
 };
 const updateCategoryName = {
   ...categoryName,

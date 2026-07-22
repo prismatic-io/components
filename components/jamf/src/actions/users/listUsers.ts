@@ -13,14 +13,14 @@ export const listUsers = action({
   inputs: listUsersInputs,
   perform: async (
     context,
-    { connection, page, pageSize, sort, filter, fetchAll },
+    { connection, pagination, sort, filter, fetchAll },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const data = await paginateResults<JamfUser, RichPagedResponse<JamfUser>>(
       client,
       "/v1/users",
       fetchAll,
-      { page, "page-size": pageSize, sort, filter },
+      { page: pagination.page, "page-size": pagination.pageSize, sort, filter },
     );
     return { data };
   },

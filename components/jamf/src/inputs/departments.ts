@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   connection,
   fetchAll,
@@ -32,13 +32,18 @@ export const getDepartmentInputs = {
   connection,
   resourceId: departmentResourceId,
 };
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { page, pageSize },
+});
 export const listDepartmentsInputs = {
   connection,
-  page,
-  pageSize,
+  fetchAll,
+  pagination,
   sort,
   filter,
-  fetchAll,
 };
 export const updateDepartmentInputs = {
   connection,

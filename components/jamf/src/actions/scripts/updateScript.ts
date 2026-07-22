@@ -12,17 +12,15 @@ export const updateScript = action({
   inputs: updateScriptInputs,
   perform: async (
     context,
-    {
-      connection,
-      resourceId,
+    { connection, resourceId, scriptCategoryId, additionalFields },
+  ) => {
+    const {
       scriptName,
       scriptContents,
-      scriptCategoryId,
       scriptPriority,
       scriptInfo,
       scriptNotes,
-    },
-  ) => {
+    } = additionalFields;
     const client = await createClient(connection, context.debug.enabled);
     const { data: existing } = await client.get<Script>(
       `/v1/scripts/${resourceId}`,
