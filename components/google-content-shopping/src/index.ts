@@ -1,8 +1,9 @@
 import { component } from "@prismatic-io/spectral";
+import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import actions from "./actions";
+import { googleConnection } from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
-import { googleConnection } from "./connections";
 export default component({
   key: "google-content-shopping",
   public: true,
@@ -19,4 +20,7 @@ export default component({
   dataSources,
   triggers,
   connections: [googleConnection],
+  hooks: {
+    error: handleErrors,
+  },
 });

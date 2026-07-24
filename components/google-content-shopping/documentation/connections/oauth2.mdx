@@ -55,7 +55,7 @@ Google requires OAuth apps that request access to user data to pass a verificati
 
 Google OAuth apps pass through three stages before they are ready for production use.
 
-**Testing (unpublished):** The app is only accessible to users manually added as test users in the OAuth consent screen. Up to 100 test users are allowed — all other users receive an error. This is the expected state during initial development.
+**Testing (unpublished):** The app is only accessible to users manually added as test users in the OAuth consent screen. Up to 100 test users are allowed. All other users receive an error. This is the expected state during initial development.
 
 **Published, unverified:** After publishing the app, all Google users can authenticate. However, for sensitive scopes, users see a **"This app isn't verified"** warning. Users can proceed by clicking **Advanced** → **Go to [app name] (unsafe)**, but this warning reduces trust and may be blocked by organizations with strict Google Workspace policies.
 
@@ -74,6 +74,12 @@ The scopes used by this component are classified as **sensitive** by Google. Sub
 
 1. On the **OAuth consent screen**, click **Prepare for verification**
 2. Provide a privacy policy URL, authorized domain, and app logo
-3. Submit for review — Google typically responds within several weeks
+3. Submit for review. Google typically responds within several weeks
 
-Refer to [Google's OAuth consent screen documentation](https://support.google.com/cloud/answer/10311615) for the full verification requirements.
+Refer to [Google's OAuth consent screen documentation](https://support.google.com/cloud/answer/15549049) for the full verification requirements.
+
+### Migrating to the Merchant API
+
+Google is replacing the Content API for Shopping with the Merchant API, its official successor. The Content API for Shopping will be sunset on **August 18, 2026**, after which the v2.1-based actions built on the Content API will stop working. Migrate any flows that use v2.1 (Content API) actions to their Merchant API (v1) equivalents before that date. Refer to the [Merchant API migration guide](https://developers.google.com/merchant/api/guides/compatibility/overview) for detailed guidance.
+
+Merchants who need more time can apply for extended access to the Content API for Shopping using the request form linked from the [Merchant API migration guide](https://developers.google.com/merchant/api/guides/compatibility/overview).

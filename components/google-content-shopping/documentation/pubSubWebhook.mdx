@@ -12,7 +12,7 @@ Google Shopping push notifications use [Google Cloud Pub/Sub](https://docs.cloud
 4. When events occur in the Merchant Center (order creation, etc.), Google publishes messages to the topic
 5. Cloud Pub/Sub delivers the messages to this trigger via HTTP POST
 
-#### Configuration Requirements
+#### Configuration
 
 To use this trigger, configure the following components externally:
 
@@ -57,13 +57,17 @@ Cloud Pub/Sub will now push messages from the topic to this trigger's webhook UR
 
 The following event types can be registered for notifications:
 
-- **OrderStatusChangeEvent** - Triggered when an order status changes in Merchant Center
+- **PRODUCT_STATUS_CHANGE** - Triggered when a product's status changes in Merchant Center (Merchant API).
+- **OrderStatusChangeEvent** - Triggered when an order status changes (legacy Content API for Shopping v2.1).
 
-Additional event types may be available. Refer to the [Content API for Shopping documentation](https://developers.google.com/shopping-content) for the complete list of supported events.
+Refer to the [Merchant API notification subscriptions reference](https://developers.google.com/merchant/api/reference/rest/notifications_v1/accounts.notificationsubscriptions) for the complete list of supported events.
 
 #### Notification Payload
 
 Cloud Pub/Sub delivers notifications as HTTP POST requests with a JSON payload containing:
+
+<details>
+<summary>Example Payload</summary>
 
 ```json
 {
@@ -76,7 +80,12 @@ Cloud Pub/Sub delivers notifications as HTTP POST requests with a JSON payload c
 }
 ```
 
+</details>
+
 The `message.data` field contains base64-encoded event information that can be decoded to access:
+
+<details>
+<summary>Decoded Event Data Fields (5)</summary>
 
 - Event type
 - Merchant ID
@@ -84,7 +93,9 @@ The `message.data` field contains base64-encoded event information that can be d
 - Timestamp
 - Additional event-specific data
 
-#### Return Data
+</details>
+
+#### Returned Data
 
 The trigger returns the complete notification payload, including:
 
@@ -99,7 +110,6 @@ Process the `message.data` field using a **Base64 Decode** action or custom code
 - Google Cloud Pub/Sub retries delivery if the endpoint is unreachable or returns an error
 - Subscriptions can be configured with message retention, retry policies, and expiration settings
 - The **Get PubSub Notification Settings** action retrieves current notification configuration for a merchant account
-- This trigger supports both webhook delivery and scheduled execution modes
 
 #### Related Actions
 

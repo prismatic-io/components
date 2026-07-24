@@ -1,10 +1,10 @@
 [
   {
     "label": "API Docs",
-    "href": "https://developers.google.com/shopping-content/reference/rest/v2.1"
+    "href": "https://developers.google.com/merchant/api/reference/rest"
   },
   {
     "label": "API Changelog",
-    "href": "https://developers.google.com/shopping-content/guides/rel-notes"
+    "href": "https://developers.google.com/merchant/api/guides/versioning"
   }
 ]

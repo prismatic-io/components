@@ -1,12 +1,6 @@
-import accounts from "./accounts";
-import orders from "./orders";
-import products from "./products";
-import pubsubNotifications from "./pubsubNotifications";
-import rawRequest from "./rawRequest";
+import v1Actions from "./v1";
+import v2_1Actions from "./v2_1";
 export default {
-  ...accounts,
-  ...products,
-  ...orders,
-  ...pubsubNotifications,
-  rawRequest,
+  ...v2_1Actions,
+  ...v1Actions,
 };
