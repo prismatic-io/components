@@ -43,7 +43,9 @@ export const listPurchaseReceipts = action({
       $search,
       $select,
     };
-    return await paginateResults({
+    return await paginateResults<
+      (typeof examplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: `/companies(${companyId})/purchaseReceipts`,
       params,

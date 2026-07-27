@@ -10,7 +10,9 @@ export const listGroups = action({
   },
   perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listGroupsExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: "/groups",
       fetchAll,

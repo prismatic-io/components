@@ -10,7 +10,9 @@ export const listSites = action({
   },
   perform: async (context, { connection, fetchAll, pageLimit, pageToken }) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listSitesExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: "/sites",
       fetchAll,

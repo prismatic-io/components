@@ -13,7 +13,9 @@ export const listDrivesByGroup = action({
     { connection, groupId, fetchAll, pageLimit, pageToken },
   ) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listDrivesExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: `/groups/${groupId}/drives`,
       fetchAll,

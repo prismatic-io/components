@@ -44,7 +44,9 @@ export const listPurchaseInvoices = action({
       $orderBy,
       $select,
     };
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listPurchaseInvoicesExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: `/companies(${companyId})/purchaseInvoices`,
       params,

@@ -14,7 +14,9 @@ export const listChildren = action({
     { connection, driveId, itemId, fetchAll, pageLimit, pageToken },
   ) => {
     const client = getOneDriveClient(connection, context.debug.enabled);
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listChildrenExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: `/drives/${driveId}/items/${itemId}/children`,
       fetchAll,

@@ -18,7 +18,9 @@ export const listDriveItems = action({
       dir === "/"
         ? "/me/drive/root/children"
         : `/me/drive/root:${dir}:/children`;
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listDriveItemsExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: path,
       fetchAll,

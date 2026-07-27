@@ -44,7 +44,9 @@ export const listGeneralLedgerEntries = action({
       $orderBy,
       $select,
     };
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listGeneralLedgerEntriesExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: `/companies(${companyId})/generalLedgerEntries`,
       params,

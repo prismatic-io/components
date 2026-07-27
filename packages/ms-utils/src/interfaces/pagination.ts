@@ -1,8 +1,8 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-export interface ODataResponse {
-  value: unknown[];
+export interface ODataResponse<T = unknown> {
+  value: T[];
   "@odata.nextLink"?: string;
-  "@odata.context"?: string;
+  "@odata.context": string;
   nextLink?: string;
 }
 export interface PaginateOptions {

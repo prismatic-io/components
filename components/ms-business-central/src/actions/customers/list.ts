@@ -44,7 +44,9 @@ export const listCustomers = action({
       $orderBy,
       $select,
     };
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listCustomersExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: `/companies(${companyId})/customers`,
       params,

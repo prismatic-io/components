@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-27
+
+Updated the **Fetch All** option on list actions so results are returned in the same `{ value: [ ... ] }` shape as a single-page call; previously enabling Fetch All returned a bare array, so integrations that read the `value` property received no items
+
 ### 2026-06-11
 
 Added **Fetch All** toggle to all list actions (List Companies, List Customers, List Vendors, List Items, List Sales Orders, List Sales Invoices, List Sales Shipments, List Sales Shipment Line Items, List Purchase Orders, List Purchase Order Lines, List Purchase Invoices, List Purchase Receipts, List Purchase Receipt Lines, List General Ledger Entries, List Item Ledger Entries) that automatically follows `@odata.nextLink` pagination to retrieve all pages of results in a single call; when disabled, existing single-page behavior with Top, Skip, and Skip Token inputs is preserved

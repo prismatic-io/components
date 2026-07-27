@@ -42,7 +42,9 @@ export const listCompanies = action({
       $skipToken,
       $filter,
     };
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listCompaniesExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: "/companies",
       params,

@@ -44,7 +44,9 @@ export const listSalesInvoices = action({
       $search,
       $select,
     };
-    return await paginateResults({
+    return await paginateResults<
+      (typeof listSalesInvoicesExamplePayload)["data"]["value"][number]
+    >({
       client,
       endpoint: `/companies(${companyId})/salesInvoices`,
       params,

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-27
+
+Updated the **Fetch All** option on list actions so results are returned in the same `{ value: [ ... ] }` shape as a single page call; previously enabling Fetch All returned a bare array, so integrations that read the `value` property received no items
+
 ### 2026-06-26
 
 - Notice of Deprecation the **List Files Shared With Me** action; its underlying Microsoft Graph endpoint is degraded and scheduled for removal around November 2026, so use the **List Shared** action instead. Added a deprecation notice to the action description

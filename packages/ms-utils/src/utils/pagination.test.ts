@@ -128,7 +128,40 @@ describe("paginateResults", () => {
         "https://api.example.com/next?skiptoken=def",
       ]);
       expect(result).toEqual({
-        data: [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }, { id: "5" }],
+        data: {
+          value: [
+            { id: "1" },
+            { id: "2" },
+            { id: "3" },
+            { id: "4" },
+            { id: "5" },
+          ],
+        },
+      });
+    });
+    it("wraps accumulated items in a { value } envelope and preserves @odata.context without leaking the nextLink", async () => {
+      getMock
+        .mockResolvedValueOnce({
+          data: {
+            "@odata.context":
+              "https://graph.microsoft.com/v1.0/$metadata#drives",
+            value: [{ id: "1" }, { id: "2" }],
+            "@odata.nextLink": "https://api.example.com/next?skiptoken=abc",
+          },
+        })
+        .mockResolvedValueOnce({
+          data: { value: [{ id: "3" }] },
+        });
+      const result = await paginateResults({
+        client: createMockClient(getMock) as any,
+        endpoint: "/me/drives",
+        fetchAll: true,
+      });
+      expect(result).toEqual({
+        data: {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#drives",
+          value: [{ id: "1" }, { id: "2" }, { id: "3" }],
+        },
       });
     });
     it("handles single page with no nextLink", async () => {
@@ -143,7 +176,7 @@ describe("paginateResults", () => {
         fetchAll: true,
       });
       expect(getMock).toHaveBeenCalledTimes(1);
-      expect(result).toEqual({ data: [{ id: "1" }] });
+      expect(result).toEqual({ data: { value: [{ id: "1" }] } });
     });
     it("handles empty results", async () => {
       getMock.mockResolvedValueOnce({
@@ -157,7 +190,7 @@ describe("paginateResults", () => {
         fetchAll: true,
       });
       expect(getMock).toHaveBeenCalledTimes(1);
-      expect(result).toEqual({ data: [] });
+      expect(result).toEqual({ data: { value: [] } });
     });
     it("uses default page size of 100 when not provided", async () => {
       getMock.mockResolvedValueOnce({
@@ -183,7 +216,13 @@ describe("paginateResults", () => {
         fetchAll: true,
       });
       expect(getMock).toHaveBeenCalledTimes(100);
-      expect((result.data as unknown[]).length).toBe(100);
+      expect(
+        (
+          result.data as {
+            value: unknown[];
+          }
+        ).value.length,
+      ).toBe(100);
     });
     it("preserves filter params on initial request only", async () => {
       getMock
@@ -241,7 +280,7 @@ describe("paginateResults", () => {
       expect(getMock.mock.calls[1]).toEqual([
         "https://management.azure.com/next?skip=1",
       ]);
-      expect(result).toEqual({ data: [{ id: "1" }, { id: "2" }] });
+      expect(result).toEqual({ data: { value: [{ id: "1" }, { id: "2" }] } });
     });
     it("treats null nextLink as end of results", async () => {
       getMock.mockResolvedValueOnce({
@@ -256,7 +295,7 @@ describe("paginateResults", () => {
         fetchAll: true,
       });
       expect(getMock).toHaveBeenCalledTimes(1);
-      expect(result).toEqual({ data: [{ id: "1" }] });
+      expect(result).toEqual({ data: { value: [{ id: "1" }] } });
     });
   });
 });
