@@ -16,10 +16,11 @@ export const uploadCompanyFile = action({
     formData.append("fileName", params.fileName);
     formData.append("share", params.share);
     formData.append("file", params.file.data, params.fileName);
-    await client.post(`/v1/files`, formData.getBuffer(), {
+    const response = await client.post(`/v1/files`, formData.getBuffer(), {
       headers: formData.getHeaders(),
     });
-    return { data: null };
+    const location = response.headers.location || response.headers.Location;
+    return { data: { location } };
   },
   examplePayload: uploadCompanyFileExamplePayload,
 });

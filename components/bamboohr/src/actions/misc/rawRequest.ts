@@ -26,13 +26,13 @@ export const rawRequest = action({
     const encodedAuth = Buffer.from(`${connection.fields.apiKey}:x`).toString(
       "base64",
     );
-    const { data } = await sendRawRequest(
+    const { data, headers } = await sendRawRequest(
       `https://api.bamboohr.com/api/gateway.php/${util.types.toString(connection.fields.companyDomain)}/`,
       { ...rawRequestInputs, debugRequest: context.debug.enabled },
       {
         Authorization: `Basic ${encodedAuth}`,
       },
     );
-    return { data };
+    return { data: { data, headers } };
   },
 });

@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+import { MESSAGES } from "./constants";
 export const getEmployeeExamplePayload = {
   data: {
     id: "5",
@@ -146,12 +147,17 @@ export const listCompanyFilesExamplePayload = {
 export const getCompanyFileExamplePayload = {
   data: Buffer.from("BambooHR file contents", "utf8"),
   contentType: "application/pdf",
+  contentDisposition: 'attachment; filename="example.pdf"',
 };
 export const addCompanyFileCategoryExamplePayload = {
-  data: {},
+  data: {
+    message: MESSAGES.CATEGORY_CREATED,
+  },
 };
 export const uploadCompanyFileExamplePayload = {
-  data: null,
+  data: {
+    location: "https://api.bamboohr.com/api/gateway.php/exampleco/v1/files/123",
+  },
 };
 export const deleteCompanyFileExamplePayload = {
   data: {},
@@ -209,12 +215,18 @@ export const listEmployeeFilesExamplePayload = {
 export const getEmployeeFileExamplePayload = {
   data: Buffer.from("Employee file contents", "utf8"),
   contentType: "application/pdf",
+  contentDisposition: 'attachment; filename="example.pdf"',
 };
 export const addEmployeeFileCategoryExamplePayload = {
-  data: {},
+  data: {
+    message: MESSAGES.CATEGORY_CREATED,
+  },
 };
 export const uploadEmployeeFileExamplePayload = {
-  data: null,
+  data: {
+    location:
+      "https://api.bamboohr.com/api/gateway.php/exampleco/v1/employees/5/files/123",
+  },
 };
 export const deleteEmployeeFileExamplePayload = {
   data: {},
@@ -253,7 +265,7 @@ export const getTabularFieldsExamplePayload = {
 };
 export const addEmployeeTableRowExamplePayload = {
   data: {
-    id: "15",
+    message: MESSAGES.ROW_ADDED,
   },
 };
 export const updateEmployeeTableRowExamplePayload = {
@@ -364,19 +376,22 @@ export const deleteInstanceWebhooksExamplePayload = {
 };
 export const rawRequestExamplePayload = {
   data: {
-    fields: [
-      { id: "displayName", type: "text", name: "Display Name" },
-      { id: "firstName", type: "text", name: "First Name" },
-      { id: "lastName", type: "text", name: "Last Name" },
-    ],
-    employees: [
-      {
-        id: 123,
-        displayName: "John Doe",
-        firstName: "John",
-        lastName: "Doe",
-      },
-    ],
+    data: {
+      fields: [
+        { id: "displayName", type: "text", name: "Display Name" },
+        { id: "firstName", type: "text", name: "First Name" },
+        { id: "lastName", type: "text", name: "Last Name" },
+      ],
+      employees: [
+        {
+          id: 123,
+          displayName: "John Doe",
+          firstName: "John",
+          lastName: "Doe",
+        },
+      ],
+    },
+    headers: {},
   },
 };
 export const bamboohrTriggerExamplePayload = {

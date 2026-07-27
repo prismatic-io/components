@@ -14,7 +14,11 @@ export const getEmployeeFile = action({
       `/v1/employees/${params.employeeId}/files/${params.employeeFileId}`,
       { responseType: "arraybuffer" },
     );
-    return { data, contentType: headers["content-type"] };
+    return {
+      data,
+      contentType: headers["content-type"],
+      contentDisposition: headers["content-disposition"],
+    };
   },
   examplePayload: getEmployeeFileExamplePayload,
 });

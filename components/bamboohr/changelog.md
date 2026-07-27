@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-07-27
+
+Enhanced multiple actions to return more informative API responses:
+
+- Updated **Upload Employee File** and **Upload Company File** actions to return the `Location` header from the API response
+- Updated **Create Employee** action to return the employee `id` and `Location` header from the API response
+- Updated **Add Employee Table Row** action to return a descriptive success message instead of an empty response
+- Updated **Create Employee File Category** and **Create Company File Category** actions to return status-based success messages reflecting the API response code
+
 ### 2026-05-26
 
 Added **Changed Employees** polling trigger to detect new, updated, and deleted employees in BambooHR on a configured schedule

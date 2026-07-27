@@ -1,5 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createBambooClient } from "../../client";
+import { MESSAGES } from "../../constants";
 import { addEmployeeTableRowExamplePayload } from "../../examplePayloads";
 import { addEmployeeTableRowInputs } from "../../inputs";
 export const addEmployeeTableRow = action({
@@ -9,11 +10,11 @@ export const addEmployeeTableRow = action({
   },
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
-    const { data } = await client.post(
+    await client.post(
       `/v1/employees/${params.employeeId}/tables/${params.tableName}`,
       params.tableFieldValues,
     );
-    return { data };
+    return { data: { message: MESSAGES.ROW_ADDED } };
   },
   inputs: addEmployeeTableRowInputs,
   examplePayload: addEmployeeTableRowExamplePayload,

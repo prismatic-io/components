@@ -13,7 +13,11 @@ export const getCompanyFile = action({
     const { data, headers } = await client.get(`/v1/files/${params.fileId}`, {
       responseType: "arraybuffer",
     });
-    return { data, contentType: headers["content-type"] };
+    return {
+      data,
+      contentType: headers["content-type"],
+      contentDisposition: headers["content-disposition"],
+    };
   },
   examplePayload: getCompanyFileExamplePayload,
 });

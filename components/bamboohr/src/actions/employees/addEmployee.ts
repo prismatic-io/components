@@ -9,12 +9,15 @@ export const addEmployee = action({
   },
   perform: async (context, params) => {
     const client = createBambooClient(params.connection, context.debug.enabled);
-    const { data } = await client.post("/v1/employees/", {
+    const response = await client.post("/v1/employees/", {
       firstName: params.firstName,
       lastName: params.lastName,
       ...params.employeeFieldValues,
     });
-    return { data };
+    const location =
+      response.headers.location || response.headers.Location || "";
+    const id = location.split("/").pop() || "";
+    return { data: { id, location } };
   },
   inputs: addEmployeeInputs,
   examplePayload: addEmployeeExamplePayload,
