@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-27
+
+Updated list of Event Objects for webhook configuration 
+
 ### 2026-05-26
 
 - Added **New and Updated Records** polling trigger powered by the `GET /v1/recents` endpoint. The trigger monitors a single Pipedrive item type (Deals, Persons, Activities, Organizations, etc.) and separates results into `created` and `updated` buckets so integrations can branch on the type of change
