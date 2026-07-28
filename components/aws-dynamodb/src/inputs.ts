@@ -1,6 +1,6 @@
 import { util, input } from "@prismatic-io/spectral";
 import { toOptionalString } from "aws-utils";
-import { cleanKeyValueListInput, cleanObject } from "./util";
+import { cleanKeyValueListInput, cleanObject, toOptionalNumber } from "./util";
 const valueTypes = {
   S: "String",
   N: "Number",
@@ -108,7 +108,7 @@ export const attributeDefinition = input({
   type: "code",
   language: "json",
   required: true,
-  default: JSON.stringify(
+  example: JSON.stringify(
     [
       {
         AttributeName: "customerId",
@@ -124,14 +124,14 @@ export const attributeDefinition = input({
   ),
   comments:
     "Array of attribute definitions. Each object must contain an AttributeName and AttributeType. See [DynamoDB data types](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html#HowItWorks.DataTypes).",
-  clean: cleanObject,
+  clean: util.types.toObject,
 });
 export const keySchema = input({
   label: "Key Schema",
   type: "code",
   required: true,
   language: "json",
-  default: JSON.stringify(
+  example: JSON.stringify(
     [
       {
         KeyType: "HASH",
@@ -147,7 +147,7 @@ export const keySchema = input({
   ),
   comments:
     "Array of key schema elements. Each object must contain a KeyType (HASH or RANGE) and an AttributeName. Learn more about [key schemas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey).",
-  clean: cleanObject,
+  clean: util.types.toObject,
 });
 export const billingMode = input({
   label: "Billing Mode",
@@ -161,28 +161,27 @@ export const billingMode = input({
   placeholder: "Select billing mode",
   comments:
     "The billing mode for the table. Learn more about [billing modes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html).",
+  clean: util.types.toString,
 });
 export const readCapacityUnits = input({
   label: "Read Capacity Units",
   type: "string",
-  required: true,
+  required: false,
   example: "6000",
-  default: "5",
   placeholder: "Enter read capacity units",
   comments:
     "The number of read capacity units. One unit = one strongly consistent read/sec or two eventually consistent reads/sec for items up to 4 KB. Learn more about [read capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html).",
-  clean: (val) => util.types.toInt(val, 5),
+  clean: toOptionalNumber,
 });
 export const writeCapacityUnits = input({
   label: "Write Capacity Units",
   type: "string",
-  required: true,
+  required: false,
   example: "6000",
-  default: "5",
   placeholder: "Enter write capacity units",
   comments:
     "The number of write capacity units. One unit = one write/sec for items up to 1 KB. Larger items consume additional units. Learn more about [write capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html).",
-  clean: (val) => util.types.toInt(val, 5),
+  clean: toOptionalNumber,
 });
 export const conditionExpression = input({
   label: "Condition Expression",

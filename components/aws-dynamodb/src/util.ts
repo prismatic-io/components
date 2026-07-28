@@ -153,4 +153,6 @@ transformDynamoDBValue = (value: DynamoDBValue): unknown => {
   }
   return null;
 };
+export const toOptionalNumber = (value: unknown): number | undefined =>
+  value ? util.types.toNumber(value) : undefined;
 export { transformDynamoDBObject };

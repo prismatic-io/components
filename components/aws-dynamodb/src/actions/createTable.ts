@@ -17,6 +17,7 @@ import {
   type KeySchemaElement,
 } from "@aws-sdk/client-dynamodb";
 import { createTableExamplePayload } from "../examplePayloads";
+import { toOptionalString } from "aws-utils";
 export const createTable = action({
   display: {
     label: "Create Table",
@@ -46,19 +47,22 @@ export const createTable = action({
       AttributeDefinitions: attributeDefinition as AttributeDefinition[],
       KeySchema: keySchema as KeySchemaElement[],
       BillingMode: billingMode as BillingMode,
-      ProvisionedThroughput: {
-        ReadCapacityUnits: readCapacityUnits,
-        WriteCapacityUnits: writeCapacityUnits,
-      },
+      ProvisionedThroughput:
+        readCapacityUnits || writeCapacityUnits
+          ? {
+              ReadCapacityUnits: readCapacityUnits,
+              WriteCapacityUnits: writeCapacityUnits,
+            }
+          : undefined,
     });
     const data = await client.send(command);
     return { data };
   },
   inputs: {
     awsRegion,
-    tableName,
-    attributeDefinition,
+    tableName: { ...tableName, dataSource: undefined },
     keySchema,
+    attributeDefinition,
     billingMode,
     readCapacityUnits,
     writeCapacityUnits,
