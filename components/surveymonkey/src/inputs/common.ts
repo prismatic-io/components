@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 export const connectionInput = input({
   label: "Connection",
@@ -32,6 +32,12 @@ export const perPage = input({
   example: "50",
   placeholder: "Enter results per page",
   clean: util.types.toNumber,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page number and results-per-page page-navigation controls.",
+  inputs: { page, perPage },
 });
 export const extraBody = input({
   label: "Extra Body Fields",

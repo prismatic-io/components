@@ -12,26 +12,16 @@ export const createCollector = action({
   inputs: createCollectorInputs,
   perform: async (
     context,
-    {
-      connection,
-      surveyId,
-      type,
-      name,
-      thankYouMessage,
-      closeDate,
-      redirectUrl,
-      allowMultipleResponses,
-      extraBody,
-    },
+    { connection, surveyId, type, name, collectorSettings = {}, extraBody },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const body: CreateCollectorInput = {
       type: type as CreateCollectorInput["type"],
       name,
-      thank_you_message: thankYouMessage,
-      close_date: closeDate,
-      redirect_url: redirectUrl,
-      allow_multiple_responses: allowMultipleResponses,
+      thank_you_message: collectorSettings.thankYouMessage,
+      close_date: collectorSettings.closeDate,
+      redirect_url: collectorSettings.redirectUrl,
+      allow_multiple_responses: collectorSettings.allowMultipleResponses,
       ...extraBody,
     };
     const { data } = await client.post<Collector>(

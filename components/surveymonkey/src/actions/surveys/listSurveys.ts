@@ -10,11 +10,11 @@ export const listSurveys = action({
     description: "List all surveys accessible to the authenticated user.",
   },
   inputs: listSurveysInputs,
-  perform: async (context, { connection, fetchAll, page, perPage }) => {
+  perform: async (context, { connection, fetchAll, pagination = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const data = await paginateResults<Survey>(client, "/surveys", fetchAll, {
-      page,
-      per_page: perPage,
+      page: pagination.page,
+      per_page: pagination.perPage,
     });
     return { data };
   },

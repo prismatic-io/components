@@ -2,7 +2,7 @@ import { input, util } from "@prismatic-io/spectral";
 import type { WebhookEventType } from "../types";
 import { toArrayOfStrings, toOptionalString } from "../util";
 import { WEBHOOK_EVENT_TYPES } from "../constants";
-import { connectionInput, fetchAll, page, perPage } from "./common";
+import { connectionInput, fetchAll, pagination } from "./common";
 export const webhookId = input({
   label: "Webhook ID",
   type: "string",
@@ -69,8 +69,7 @@ export const webhookSubscriptionUrl = input({
 export const listWebhooksInputs = {
   connection: connectionInput,
   fetchAll,
-  page,
-  perPage,
+  pagination,
 };
 export const getWebhookInputs = {
   connection: connectionInput,

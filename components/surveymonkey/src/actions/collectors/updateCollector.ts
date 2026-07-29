@@ -11,25 +11,16 @@ export const updateCollector = action({
   inputs: updateCollectorInputs,
   perform: async (
     context,
-    {
-      connection,
-      collectorId,
-      name,
-      thankYouMessage,
-      closeDate,
-      redirectUrl,
-      allowMultipleResponsesModel,
-      extraBody,
-    },
+    { connection, collectorId, name, collectorSettings = {}, extraBody },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const body: Record<string, unknown> = {
       name,
-      thank_you_message: thankYouMessage,
-      close_date: closeDate,
-      redirect_url: redirectUrl,
-      allow_multiple_responses: allowMultipleResponsesModel
-        ? util.types.toBool(allowMultipleResponsesModel)
+      thank_you_message: collectorSettings.thankYouMessage,
+      close_date: collectorSettings.closeDate,
+      redirect_url: collectorSettings.redirectUrl,
+      allow_multiple_responses: collectorSettings.allowMultipleResponsesModel
+        ? util.types.toBool(collectorSettings.allowMultipleResponsesModel)
         : undefined,
       ...extraBody,
     };

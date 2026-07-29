@@ -10,11 +10,11 @@ export const listContacts = action({
     description: "List all contacts in your account.",
   },
   inputs: listContactsInputs,
-  perform: async (context, { connection, fetchAll, page, perPage }) => {
+  perform: async (context, { connection, fetchAll, pagination = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const data = await paginateResults<Contact>(client, "/contacts", fetchAll, {
-      page,
-      per_page: perPage,
+      page: pagination.page,
+      per_page: pagination.perPage,
     });
     return { data };
   },

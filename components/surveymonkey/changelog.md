@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-07-29
+
+Reorganized action inputs for a more consistent configuration experience:
+
+- Grouped the **Page** and **Per Page** inputs into a single **Pagination** structured object across the **List Contacts**, **List Responses**, **List Responses Bulk**, **List Collectors**, **List Surveys**, **List Contact Lists**, and **List Webhooks** actions 
+- Grouped the **Thank You Message**, **Close Date**, **Redirect URL**, and **Allow Multiple Responses** inputs on the **Create Collector** and **Update Collector** actions into a single **Collector Settings** structured object
+- The **Email**, **First Name**, and **Last Name** inputs now appear as top-level inputs on the **Update Contact** action, matching the **Create Contact** layout
+
 ### 2026-05-27
 
 Added the **New and Updated Records** polling trigger that monitors a survey for new and modified responses:

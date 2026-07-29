@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
-import { connectionInput, fetchAll, page, perPage, extraBody } from "./common";
+import { connectionInput, fetchAll, pagination, extraBody } from "./common";
 import { surveyId } from "./surveys";
 export const responseId = input({
   label: "Response ID",
@@ -86,8 +86,7 @@ export const listResponsesInputs = {
   surveyId,
   status: responseStatus,
   fetchAll,
-  page,
-  perPage,
+  pagination,
 };
 export const getResponseInputs = {
   connection: connectionInput,

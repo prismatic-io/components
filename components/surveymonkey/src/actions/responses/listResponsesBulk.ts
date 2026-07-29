@@ -13,7 +13,7 @@ export const listResponsesBulk = action({
   inputs: listResponsesInputs,
   perform: async (
     context,
-    { connection, surveyId, status, fetchAll, page, perPage },
+    { connection, surveyId, status, fetchAll, pagination = {} },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const endpoint = `/surveys/${surveyId}/responses/bulk`;
@@ -27,8 +27,8 @@ export const listResponsesBulk = action({
       fetchAll,
       {
         ...params,
-        page,
-        per_page: perPage,
+        page: pagination.page,
+        per_page: pagination.perPage,
       },
     );
     return { data };

@@ -1,7 +1,7 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import type { CollectorType } from "../types";
 import { toOptionalString } from "../util";
-import { connectionInput, fetchAll, page, perPage, extraBody } from "./common";
+import { connectionInput, fetchAll, pagination, extraBody } from "./common";
 import { surveyId } from "./surveys";
 export const collectorId = input({
   label: "Collector ID",
@@ -85,12 +85,35 @@ export const allowMultipleResponsesModel = input({
   comments: "When true, respondents can submit multiple responses.",
   clean: toOptionalString,
 });
+export const createCollectorSettings = structuredObjectInput({
+  label: "Collector Settings",
+  required: false,
+  comments:
+    "Thank you message, close date, redirect URL, and multiple-response setting.",
+  inputs: {
+    thankYouMessage: collectorThankYouMessage,
+    closeDate: collectorCloseDate,
+    redirectUrl: collectorRedirectUrl,
+    allowMultipleResponses,
+  },
+});
+export const updateCollectorSettings = structuredObjectInput({
+  label: "Collector Settings",
+  required: false,
+  comments:
+    "Thank you message, close date, redirect URL, and multiple-response setting.",
+  inputs: {
+    thankYouMessage: collectorThankYouMessage,
+    closeDate: collectorCloseDate,
+    redirectUrl: collectorRedirectUrl,
+    allowMultipleResponsesModel,
+  },
+});
 export const listCollectorsInputs = {
   connection: connectionInput,
   surveyId,
   fetchAll,
-  page,
-  perPage,
+  pagination,
 };
 export const getCollectorInputs = {
   connection: connectionInput,
@@ -101,20 +124,14 @@ export const createCollectorInputs = {
   surveyId,
   type: collectorType,
   name: collectorName,
-  thankYouMessage: collectorThankYouMessage,
-  closeDate: collectorCloseDate,
-  redirectUrl: collectorRedirectUrl,
-  allowMultipleResponses,
+  collectorSettings: createCollectorSettings,
   extraBody,
 };
 export const updateCollectorInputs = {
   connection: connectionInput,
   collectorId,
   name: collectorName,
-  thankYouMessage: collectorThankYouMessage,
-  closeDate: collectorCloseDate,
-  redirectUrl: collectorRedirectUrl,
-  allowMultipleResponsesModel,
+  collectorSettings: updateCollectorSettings,
   extraBody,
 };
 export const deleteCollectorInputs = {

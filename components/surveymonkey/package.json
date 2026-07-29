@@ -1,7 +1,6 @@
 {
   "name": "@prismatic-io/surveymonkey",
   "private": true,
-  "license": "Apache-2.0",
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
@@ -14,13 +13,13 @@
     "cleanup:testdata": "node cleanup-test-data.js"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1"
+    "@prismatic-io/spectral": "10.19.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.14",
+    "@biomejs/biome": "2.5.0",
     "@types/jest": "30.0.0",
     "@types/node": "18.19.130",
-    "copy-webpack-plugin": "13.0.1",
+    "copy-webpack-plugin": "14.0.0",
     "jest": "30.2.0",
     "ts-jest": "29.4.6",
     "ts-loader": "9.5.4",

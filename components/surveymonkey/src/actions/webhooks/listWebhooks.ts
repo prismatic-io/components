@@ -10,11 +10,11 @@ export const listWebhooks = action({
     description: "List all webhooks in your account.",
   },
   inputs: listWebhooksInputs,
-  perform: async (context, { connection, fetchAll, page, perPage }) => {
+  perform: async (context, { connection, fetchAll, pagination = {} }) => {
     const client = createClient(connection, context.debug.enabled);
     const data = await paginateResults<Webhook>(client, "/webhooks", fetchAll, {
-      page,
-      per_page: perPage,
+      page: pagination.page,
+      per_page: pagination.perPage,
     });
     return { data };
   },
