@@ -55,6 +55,15 @@ export const fileIdInput = input({
   example: "123",
   placeholder: "Enter File ID",
 });
+export const fieldCodeInput = input({
+  label: "Field Code",
+  type: "string",
+  required: true,
+  clean: util.types.toString,
+  comments: "The field code of the field.",
+  example: "d4de1c1518b4531717c676029a45911c340390a6",
+  placeholder: "Enter field code",
+});
 export const filterIdInput = input({
   label: "Filter ID",
   type: "string",

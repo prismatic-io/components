@@ -1,5 +1,6 @@
 import {
   connectionInput,
+  fieldCodeInput,
   paginationLimitInput,
   paginationStartInput,
   personFieldIdInput,
@@ -16,4 +17,18 @@ export const getPersonFieldInputs = {
 export const deletePersonFieldInputs = {
   connection: connectionInput,
   id: personFieldIdInput,
+};
+export const getPersonFieldV2Inputs = {
+  connection: connectionInput,
+  fieldCode: {
+    ...fieldCodeInput,
+    comments: "The field code of the person field.",
+  },
+};
+export const deletePersonFieldV2Inputs = {
+  connection: connectionInput,
+  fieldCode: {
+    ...fieldCodeInput,
+    comments: "The field code of the person field.",
+  },
 };

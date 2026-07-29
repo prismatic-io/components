@@ -1,2 +1,3 @@
 import { getActivityFields } from "./getActivityFields";
-export default { getActivityFields };
+import { getActivityFieldsV2 } from "./getActivityFieldsV2";
+export default { getActivityFields, getActivityFieldsV2 };

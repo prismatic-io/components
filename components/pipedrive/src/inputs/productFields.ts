@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import {
   connectionInput,
+  fieldCodeInput,
   paginationLimitInput,
   paginationStartInput,
 } from "./common";
@@ -25,4 +26,18 @@ export const deleteProductFieldInputs = {
 export const getProductFieldInputs = {
   connection: connectionInput,
   id: productFieldId,
+};
+export const getProductFieldV2Inputs = {
+  connection: connectionInput,
+  fieldCode: {
+    ...fieldCodeInput,
+    comments: "The field code of the product field.",
+  },
+};
+export const deleteProductFieldV2Inputs = {
+  connection: connectionInput,
+  fieldCode: {
+    ...fieldCodeInput,
+    comments: "The field code of the product field.",
+  },
 };

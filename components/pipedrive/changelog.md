@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-07-29
+
+Added 10 new V2 actions for the Pipedrive Fields API v2 endpoints. V2 actions use cursor-based pagination with **Fetch All** support and identify fields by **Field Code** (string key) instead of numeric ID. Existing v1 actions are preserved for backwards compatibility.
+
+- Deal fields: **Get Deal Fields (V2)**, **Get Deal Field (V2)**, **Delete Deal Field (V2)**
+- Person fields: **Get Person Fields (V2)**, **Get Person Field (V2)**, **Delete Person Field (V2)**
+- Product fields: **Get Product Fields (V2)**, **Get Product Field (V2)**, **Delete Product Field (V2)**
+- Activity fields: **Get Activity Fields (V2)**
+
 ### 2026-07-27
 
 Updated list of Event Objects for webhook configuration 

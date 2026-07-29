@@ -1,6 +1,7 @@
 import {
   connectionInput,
   dealFieldIdInput,
+  fieldCodeInput,
   paginationLimitInput,
   paginationStartInput,
 } from "./common";
@@ -16,4 +17,18 @@ export const getDealFieldInputs = {
 export const deleteDealFieldInputs = {
   connection: connectionInput,
   id: dealFieldIdInput,
+};
+export const getDealFieldV2Inputs = {
+  connection: connectionInput,
+  fieldCode: {
+    ...fieldCodeInput,
+    comments: "The field code of the deal field.",
+  },
+};
+export const deleteDealFieldV2Inputs = {
+  connection: connectionInput,
+  fieldCode: {
+    ...fieldCodeInput,
+    comments: "The field code of the deal field.",
+  },
 };
