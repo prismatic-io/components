@@ -13,11 +13,8 @@ export const validateConnection = (connection: Connection) => {
     baseUrl: util.types.toString(baseUrl),
   };
 };
-export function createDeepSeekClient(
-  acmeConnection: Connection,
-  debug = false,
-) {
-  const { apiKey, baseUrl } = validateConnection(acmeConnection);
+export function createDeepSeekClient(connection: Connection, debug = false) {
+  const { apiKey, baseUrl } = validateConnection(connection);
   return createClient({
     baseUrl,
     headers: {

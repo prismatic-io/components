@@ -12,7 +12,7 @@ export const CREATE_CHAT_COMPLETION_EXAMPLE_PAYLOAD = {
       },
     ],
     created: 1705651092,
-    model: "deepseek-chat",
+    model: "deepseek-v4-flash",
     object: "chat.completion",
     usage: {
       completion_tokens: 10,
@@ -26,12 +26,12 @@ export const LIST_MODELS_EXAMPLE_PAYLOAD = {
     object: "list",
     data: [
       {
-        id: "deepseek-chat",
+        id: "deepseek-v4-flash",
         object: "model",
         owned_by: "deepseek",
       },
       {
-        id: "deepseek-reasoner",
+        id: "deepseek-v4-pro",
         object: "model",
         owned_by: "deepseek",
       },
