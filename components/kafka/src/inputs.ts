@@ -122,6 +122,14 @@ const heartbeatInterval = input({
   placeholder: "Enter heartbeat interval in milliseconds",
   clean: util.types.toInt,
 });
+const deserializeKeys = input({
+  label: "Deserialize Keys as Avro",
+  type: "boolean",
+  default: "false",
+  comments:
+    "When Avro deserialization is enabled on the connection, also deserialize message keys from Avro format.",
+  clean: util.types.toBool,
+});
 export const kafkaConsumerInputs = {
   connection,
   clientId,
@@ -133,6 +141,7 @@ export const kafkaConsumerInputs = {
   heartbeatInterval,
   fromBeginning,
   autoCommit,
+  deserializeKeys,
 };
 export const selectTopicInputs = {
   connection,

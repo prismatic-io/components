@@ -1,5 +1,11 @@
 ## Changelog
 
+### 2026-07-30
+
+Added Confluent Schema Registry Avro deserialization support for the **Kafka Consumer** trigger:
+- Automatically decoded consumed Avro-encoded message values to JSON objects
+- Added optional **Deserialize Keys as Avro** input for key deserialization
+
 ### 2026-04-30
 
 Updated spectral version

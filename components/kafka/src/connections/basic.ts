@@ -58,5 +58,31 @@ export const basic = connection({
       comments:
         "Client private key in PEM format (if required by the Kafka cluster).",
     },
+    avroEnabled: {
+      label: "Enable Avro Deserialization",
+      type: "boolean",
+      default: "false",
+      comments:
+        "Enable Confluent Schema Registry Avro decoding for consumed messages.",
+    },
+    schemaRegistryUrl: {
+      label: "Schema Registry URL",
+      type: "string",
+      required: false,
+      comments:
+        "The Confluent Schema Registry endpoint (e.g., https://psrc-xxxxx.region.confluent.cloud).",
+    },
+    schemaRegistryApiKey: {
+      label: "Schema Registry API Key",
+      type: "string",
+      required: false,
+      comments: "API key for authenticating with the Schema Registry.",
+    },
+    schemaRegistryApiSecret: {
+      label: "Schema Registry API Secret",
+      type: "password",
+      required: false,
+      comments: "API secret for authenticating with the Schema Registry.",
+    },
   },
 });

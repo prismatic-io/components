@@ -1,3 +1,4 @@
+import type { TriggerPayload } from "@prismatic-io/spectral";
 export const getConsumerGroupStatusExamplePayload = {
   data: {
     groupId: "order-processing-group",
@@ -32,5 +33,74 @@ export const getConsumerGroupStatusExamplePayload = {
       },
     ],
     totalLag: "5",
+  },
+};
+export const kafkaConsumerExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    headers: {},
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: {
+        messages: [
+          {
+            topic: "order-events",
+            partition: 0,
+            offset: "142",
+            key: "order-12345",
+            value: {
+              orderId: "order-12345",
+              customerId: "cust-67890",
+              amount: 99.99,
+              currency: "USD",
+              status: "COMPLETED",
+            },
+            timestamp: "1720281600000",
+            headers: {},
+          },
+          {
+            topic: "order-events",
+            partition: 0,
+            offset: "143",
+            key: "order-12346",
+            value: {
+              orderId: "order-12346",
+              customerId: "cust-11111",
+              amount: 149.5,
+              currency: "EUR",
+              status: "PENDING",
+            },
+            timestamp: "1720281601000",
+            headers: {},
+          },
+        ],
+        messageCount: 2,
+        consumerGroupId: "order-processing-group",
+        topics: ["order-events"],
+      },
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "",
+    customer: { id: "", name: "", externalId: "" },
+    instance: { id: "", name: "" },
+    user: { id: "", name: "", email: "", externalId: "" },
+    integration: {
+      id: "",
+      name: "",
+      versionSequenceId: "",
+      externalVersion: "",
+    },
+    flow: {
+      id: "",
+      name: "",
+      stableId: "",
+    },
+    startedAt: "",
+    globalDebug: false,
   },
 };

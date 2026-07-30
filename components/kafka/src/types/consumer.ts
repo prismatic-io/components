@@ -23,12 +23,13 @@ export interface ConsumerGroupStatus {
   topicsWithOffsets: TopicLag[];
   totalLag: string;
 }
+export type DeserializedValue = string | Record<string, unknown>;
 export interface KafkaMessage {
   topic: string;
   partition: number;
   offset: string;
-  key: string | null;
-  value: string | null;
+  key: DeserializedValue | null;
+  value: DeserializedValue | null;
   timestamp: string;
   headers?: Record<string, unknown>;
 }

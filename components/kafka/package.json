@@ -12,7 +12,8 @@
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1",
+    "@kafkajs/confluent-schema-registry": "^3.9.0",
+    "@prismatic-io/spectral": "10.22.0",
     "kafkajs": "2.2.4"
   },
   "devDependencies": {
