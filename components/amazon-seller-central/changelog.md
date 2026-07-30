@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-30
+
+Removed deprecated **ORDER_STATUS_CHANGE** notification type from subscription actions and replaced it with **ORDER_CHANGE**
+
 ### 2026-04-30
 
 Updated spectral version
