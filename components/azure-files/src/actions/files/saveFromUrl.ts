@@ -1,4 +1,3 @@
-import type { FileCreateResponse } from "@azure/storage-file-share";
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { createAuthorizedClient } from "../../client";
@@ -29,7 +28,7 @@ export const saveFromUrl = action({
     );
     await fileClient.uploadStream(response.data, fileSize, 4 * 1024 * 1024, 4);
     return {
-      data: fileCreateResponse as Omit<FileCreateResponse, "_response">,
+      data: fileCreateResponse,
     };
   },
   inputs: saveFromUrlInputs,

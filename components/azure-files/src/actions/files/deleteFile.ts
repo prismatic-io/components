@@ -1,4 +1,3 @@
-import type { FileDeleteResponse } from "@azure/storage-file-share";
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { deleteFileInputs } from "../../inputs";
@@ -12,7 +11,7 @@ export const deleteFile = action({
     const client = createAuthorizedClient(azureConnection);
     const shareClient = client.getShareClient(shareName);
     const response = await shareClient.deleteFile(path);
-    return { data: response as Omit<FileDeleteResponse, "_response"> };
+    return { data: response };
   },
   inputs: deleteFileInputs,
   examplePayload: deleteFileExamplePayload,

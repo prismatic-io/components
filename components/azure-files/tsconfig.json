@@ -5,8 +5,10 @@
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node"
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["jest", "node"],
+    "isolatedModules": true
   },
   "include": ["src"]
 }

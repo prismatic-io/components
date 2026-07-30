@@ -12,19 +12,19 @@
     "test": "jest --maxWorkers=4"
   },
   "dependencies": {
-    "@azure/storage-file-share": "12.24.0",
-    "@prismatic-io/spectral": "10.21.0"
+    "@azure/storage-file-share": "12.32.0",
+    "@prismatic-io/spectral": "10.22.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.1",
+    "@biomejs/biome": "2.5.3",
     "@types/jest": "30.0.0",
-    "@types/node": "22.10.7",
+    "@types/node": "^26",
     "copy-webpack-plugin": "14.0.0",
     "jest": "30.4.2",
     "ts-jest": "29.4.11",
     "ts-loader": "9.6.2",
-    "typescript": "5.9.3",
-    "webpack": "5.108.2",
-    "webpack-cli": "7.1.0"
+    "typescript": "6.0.3",
+    "webpack": "5.108.4",
+    "webpack-cli": "7.2.1"
   }
 }

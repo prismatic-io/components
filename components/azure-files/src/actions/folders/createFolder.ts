@@ -1,4 +1,3 @@
-import type { DirectoryCreateResponse } from "@azure/storage-file-share";
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { createFolderInputs } from "../../inputs";
@@ -13,10 +12,7 @@ export const createFolder = action({
     const shareClient = client.getShareClient(shareName);
     const { directoryCreateResponse } = await shareClient.createDirectory(path);
     return {
-      data: directoryCreateResponse as Omit<
-        DirectoryCreateResponse,
-        "_response"
-      >,
+      data: directoryCreateResponse,
     };
   },
   inputs: createFolderInputs,

@@ -1,4 +1,3 @@
-import type { ShareCreateResponse } from "@azure/storage-file-share";
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { createShareInputs } from "../../inputs";
@@ -12,7 +11,7 @@ export const createShare = action({
     const client = createAuthorizedClient(azureConnection);
     const { shareCreateResponse } = await client.createShare(shareName);
     return {
-      data: shareCreateResponse as Omit<ShareCreateResponse, "_response">,
+      data: shareCreateResponse,
     };
   },
   inputs: createShareInputs,

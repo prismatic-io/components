@@ -1,4 +1,3 @@
-import type { FileCreateResponse } from "@azure/storage-file-share";
 import { action } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { uploadFileInputs } from "../../inputs";
@@ -25,7 +24,7 @@ export const uploadFile = action({
       },
     });
     return {
-      data: fileCreateResponse as Omit<FileCreateResponse, "_response">,
+      data: fileCreateResponse,
     };
   },
   inputs: uploadFileInputs,

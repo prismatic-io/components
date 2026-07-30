@@ -1,7 +1,12 @@
 import type {
+  DirectoryCreateResponse,
   DirectoryItem,
+  FileCreateResponse,
+  FileDeleteResponse,
   FileItem,
   FileStartCopyHeaders,
+  ShareCreateResponse,
+  ShareDeleteResponse,
   ShareItem,
 } from "@azure/storage-file-share";
 const staticDate = new Date("2024-01-01");
@@ -25,7 +30,9 @@ export const listSharesExamplePayload = {
     },
   ] as ShareItem[],
 };
-export const createShareExamplePayload = {
+export const createShareExamplePayload: {
+  data: Omit<ShareCreateResponse, "_response">;
+} = {
   data: {
     etag: '"0x8DCBC8DAE40E4E3"',
     lastModified: staticDate,
@@ -35,7 +42,9 @@ export const createShareExamplePayload = {
     errorCode: undefined,
   },
 };
-export const deleteShareExamplePayload = {
+export const deleteShareExamplePayload: {
+  data: Omit<ShareDeleteResponse, "_response">;
+} = {
   data: {
     requestId: "59c230c3-201a-003c-0a78-eee158000000",
     version: "2024-08-04",
@@ -63,7 +72,9 @@ export const listFolderExamplePayload = {
     },
   ] as ListedEntry[],
 };
-export const createFolderExamplePayload = {
+export const createFolderExamplePayload: {
+  data: Omit<DirectoryCreateResponse, "_response">;
+} = {
   data: {
     etag: '"0x8DCBC8DAE40E4E3"',
     lastModified: staticDate,
@@ -89,7 +100,9 @@ export const deleteFolderExamplePayload = {
     errorCode: "",
   },
 };
-export const uploadFileExamplePayload = {
+export const uploadFileExamplePayload: {
+  data: Omit<FileCreateResponse, "_response">;
+} = {
   data: {
     etag: '"0x8DCBC8DAE40E4E3"',
     lastModified: staticDate,
@@ -107,7 +120,9 @@ export const uploadFileExamplePayload = {
     errorCode: "",
   },
 };
-export const saveFromUrlExamplePayload = {
+export const saveFromUrlExamplePayload: {
+  data: Omit<FileCreateResponse, "_response">;
+} = {
   data: {
     etag: '"0x8DCBC8DAE40E4E3"',
     lastModified: staticDate,
@@ -129,7 +144,9 @@ export const downloadFileExamplePayload = {
   data: Buffer.from("example"),
   contentType: "application/octet",
 };
-export const deleteFileExamplePayload = {
+export const deleteFileExamplePayload: {
+  data: Omit<FileDeleteResponse, "_response">;
+} = {
   data: {
     requestId: "5301e6a9-601a-0012-3591-eeb34f000000",
     version: "2024-08-04",
