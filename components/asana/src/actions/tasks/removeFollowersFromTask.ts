@@ -1,6 +1,11 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, taskId, followersList } from "../../inputs";
+import {
+  connectionInput,
+  taskId,
+  followersList,
+  optFields,
+} from "../../inputs";
 export const removeFollowersFromTask = action({
   display: {
     label: "Remove Followers from Task",
@@ -20,8 +25,7 @@ export const removeFollowersFromTask = action({
       },
       {
         params: {
-          opt_fields:
-            "resource_type,gid,created_at,followers,name,color,workspace",
+          opt_fields: params.optFields,
         },
       },
     );
@@ -31,6 +35,10 @@ export const removeFollowersFromTask = action({
     asanaConnection: connectionInput,
     taskId,
     followersList,
+    optFields: {
+      ...optFields,
+      default: "resource_type,gid,created_at,followers,name,color,workspace",
+    },
   },
   examplePayload: {
     data: {

@@ -15,6 +15,7 @@ import {
   connectionInput,
   htmlNotes,
   privacySetting,
+  optFields,
 } from "../../inputs";
 import { PROJECT_OPT_FIELDS } from "../../util";
 export const createProjects = action({
@@ -49,16 +50,17 @@ export const createProjects = action({
       : "/projects";
     const { data } = await client.post(endpoint, projectData, {
       params: {
-        opt_fields: PROJECT_OPT_FIELDS,
+        opt_fields: params.optFields,
       },
     });
     return { data };
   },
   inputs: {
     asanaConnection: connectionInput,
+    team: { ...team, required: true },
     owner,
-    projectColor,
     defaultView,
+    projectColor,
     privacySetting,
     dueOn,
     archived,
@@ -73,7 +75,7 @@ export const createProjects = action({
       comments:
         "Include this value if you would like this project to be included in a workspace.",
     },
-    team: { ...team, required: true },
+    optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
   },
   examplePayload: {
     data: {

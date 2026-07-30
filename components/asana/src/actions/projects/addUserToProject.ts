@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, projectId, members } from "../../inputs";
+import { connectionInput, projectId, members, optFields } from "../../inputs";
 export const addUserToProject = action({
   display: {
     label: "Add Users to Project",
@@ -20,8 +20,7 @@ export const addUserToProject = action({
       },
       {
         params: {
-          opt_fields:
-            "layout,team,workspace,html_notes,notes,color,custom_field_settings,custom_fields,followers,members,privacy_setting,archived,modified_at,created_at,start_on,due_on,current_status,owner,name,resource_type,gid",
+          opt_fields: params.optFields,
         },
       },
     );
@@ -31,6 +30,11 @@ export const addUserToProject = action({
     asanaConnection: connectionInput,
     projectId,
     members,
+    optFields: {
+      ...optFields,
+      default:
+        "layout,team,workspace,html_notes,notes,color,custom_field_settings,custom_fields,followers,members,privacy_setting,archived,modified_at,created_at,start_on,due_on,current_status,owner,name,resource_type,gid",
+    },
   },
   examplePayload: {
     data: {

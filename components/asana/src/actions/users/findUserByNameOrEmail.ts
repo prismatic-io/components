@@ -1,6 +1,6 @@
 import { action, input } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, workspaceId } from "../../inputs";
+import { connectionInput, workspaceId, optFields } from "../../inputs";
 interface Workspace {
   gid: string;
   name: string;
@@ -40,7 +40,7 @@ export const findUserByNameOrEmail = action({
         params: {
           offset,
           workspace: params.workspaceId || undefined,
-          opt_fields: "gid,name,resource_type,email,workspaces",
+          opt_fields: params.optFields,
         },
       });
       const filteredData = response.data.data.filter(
@@ -78,6 +78,10 @@ export const findUserByNameOrEmail = action({
         "Note: if multiple users share an email address, only one user will be returned.",
     }),
     workspaceId,
+    optFields: {
+      ...optFields,
+      default: "gid,name,resource_type,email,workspaces",
+    },
   },
   examplePayload: {
     data: {

@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, members, portfolioId } from "../../inputs";
+import { connectionInput, members, portfolioId, optFields } from "../../inputs";
 export const removeUserFromPortfolio = action({
   display: {
     label: "Remove Users from Portfolio",
@@ -20,8 +20,7 @@ export const removeUserFromPortfolio = action({
       },
       {
         params: {
-          opt_fields:
-            "resource_type,gid,name,created_at,created_by,custom_field_settings,color,workspace,members",
+          opt_fields: params.optFields,
         },
       },
     );
@@ -31,6 +30,11 @@ export const removeUserFromPortfolio = action({
     asanaConnection: connectionInput,
     portfolioId,
     members,
+    optFields: {
+      ...optFields,
+      default:
+        "resource_type,gid,name,created_at,created_by,custom_field_settings,color,workspace,members",
+    },
   },
   examplePayload: {
     data: {

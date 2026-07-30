@@ -6,6 +6,7 @@ import {
   insertBefore,
   sectionName,
   projectId,
+  optFields,
 } from "../../inputs";
 import { SECTION_OPT_FIELDS } from "../../util";
 export const createSection = action({
@@ -27,7 +28,7 @@ export const createSection = action({
           name: params.sectionName,
         },
       },
-      { params: { opt_fields: SECTION_OPT_FIELDS } },
+      { params: { opt_fields: params.optFields } },
     );
     return { data };
   },
@@ -38,6 +39,7 @@ export const createSection = action({
     insertAfter,
     insertBefore,
     sectionName,
+    optFields: { ...optFields, default: SECTION_OPT_FIELDS },
   },
   examplePayload: {
     data: {

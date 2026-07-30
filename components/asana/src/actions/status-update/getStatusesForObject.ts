@@ -5,6 +5,7 @@ import {
   limit,
   offset,
   statusParentIdInput,
+  optFields,
 } from "../../inputs";
 export const getStatusesForObject = action({
   display: {
@@ -21,8 +22,7 @@ export const getStatusesForObject = action({
         parent: params.parent,
         limit: params.limit,
         offset: params.offset,
-        opt_fields:
-          "gid,resource_type,resource_subtype,title,text,status_type,parent,created_at",
+        opt_fields: params.optFields,
       },
     });
     return { data };
@@ -32,6 +32,11 @@ export const getStatusesForObject = action({
     parent: statusParentIdInput,
     limit,
     offset,
+    optFields: {
+      ...optFields,
+      default:
+        "gid,resource_type,resource_subtype,title,text,status_type,parent,created_at",
+    },
   },
   examplePayload: {
     data: {

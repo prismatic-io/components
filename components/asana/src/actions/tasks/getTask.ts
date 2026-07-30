@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { taskId, connectionInput } from "../../inputs";
+import { taskId, connectionInput, optFields } from "../../inputs";
 import { TASK_OPT_FIELDS } from "../../util";
 export const getTask = action({
   display: {
@@ -14,12 +14,16 @@ export const getTask = action({
     );
     const { data } = await client.get(`/tasks/${params.taskId}`, {
       params: {
-        opt_fields: TASK_OPT_FIELDS,
+        opt_fields: params.optFields,
       },
     });
     return { data };
   },
-  inputs: { asanaConnection: connectionInput, taskId },
+  inputs: {
+    asanaConnection: connectionInput,
+    taskId,
+    optFields: { ...optFields, default: TASK_OPT_FIELDS },
+  },
   examplePayload: {
     data: {
       data: {

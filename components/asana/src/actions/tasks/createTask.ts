@@ -21,6 +21,7 @@ import {
   dueAt,
   dueOn,
   connectionInput,
+  optFields,
 } from "../../inputs";
 import { TASK_OPT_FIELDS } from "../../util";
 export const createTask = action({
@@ -58,7 +59,7 @@ export const createTask = action({
     };
     const { data } = await client.post(`/tasks`, taskData, {
       params: {
-        opt_fields: TASK_OPT_FIELDS,
+        opt_fields: params.optFields,
       },
     });
     return { data };
@@ -84,6 +85,7 @@ export const createTask = action({
     followersList,
     dueAt,
     dueOn,
+    optFields: { ...optFields, default: TASK_OPT_FIELDS },
   },
   examplePayload: {
     data: {

@@ -20,6 +20,7 @@ import {
   connectionInput,
   htmlNotes,
   startAt,
+  optFields,
 } from "../../inputs";
 import { TASK_OPT_FIELDS } from "../../util";
 export const updateTask = action({
@@ -57,7 +58,7 @@ export const updateTask = action({
     };
     const { data } = await client.put(`/tasks/${params.taskId}`, taskData, {
       params: {
-        opt_fields: TASK_OPT_FIELDS,
+        opt_fields: params.optFields,
       },
     });
     return { data };
@@ -82,6 +83,7 @@ export const updateTask = action({
     isLiked,
     dueAt,
     dueOn,
+    optFields: { ...optFields, default: TASK_OPT_FIELDS },
   },
   examplePayload: {
     data: {

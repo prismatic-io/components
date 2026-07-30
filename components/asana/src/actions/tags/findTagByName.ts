@@ -1,6 +1,6 @@
 import { action, input } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, workspaceId } from "../../inputs";
+import { connectionInput, workspaceId, optFields } from "../../inputs";
 import { TAG_OPT_FIELDS } from "../../util";
 interface Tag {
   gid: string;
@@ -37,7 +37,7 @@ export const findTagByName = action({
         {
           params: {
             offset,
-            opt_fields: TAG_OPT_FIELDS,
+            opt_fields: params.optFields,
           },
         },
       );
@@ -64,6 +64,7 @@ export const findTagByName = action({
         "Note: if multiple tags share a name, only one tag will be returned.",
     }),
     workspaceId,
+    optFields: { ...optFields, default: TAG_OPT_FIELDS },
   },
   examplePayload: {
     data: {

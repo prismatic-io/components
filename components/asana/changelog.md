@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-30
+
+Added **Optional Properties** input to 21 actions across projects, tags, sections, custom fields, users, attachments, portfolios, status updates, and subtasks to customize which fields the API returns
+
 ### 2026-05-26
 
 Added **New and Updated Tasks** polling trigger that monitors a project for changes via the `modified_since` parameter on Asana's `/tasks` endpoint. Results are partitioned into `created` and `updated` buckets based on each task's `created_at`/`modified_at` ISO 8601 timestamps

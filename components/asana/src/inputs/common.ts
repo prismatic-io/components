@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { colorInputOptions } from "../util";
+import { cleanCommaSeparatedList, colorInputOptions } from "../util";
 export const validateId = (value: unknown) => {
   const strValue = util.types.toString(value).trim();
   if (/[0-9]*/.test(strValue)) {
@@ -782,4 +782,14 @@ export const showUpdatedRecords = input({
   clean: util.types.toBool,
   comments:
     "When true, tasks modified since the last poll are returned in the trigger payload.",
+});
+export const optFields = input({
+  label: "Optional Properties",
+  type: "string",
+  required: false,
+  example: "name,created_at",
+  placeholder: "Enter comma-separated field names",
+  comments:
+    "A comma-separated list of fields to include in the API response. The default value contains the standard fields for this action. Add or remove fields as needed.",
+  clean: cleanCommaSeparatedList,
 });

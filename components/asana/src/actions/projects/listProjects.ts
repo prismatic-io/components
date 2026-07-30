@@ -1,6 +1,12 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { offset, limit, workspaceId, connectionInput } from "../../inputs";
+import {
+  offset,
+  limit,
+  workspaceId,
+  connectionInput,
+  optFields,
+} from "../../inputs";
 import { PROJECT_OPT_FIELDS } from "../../util";
 export const listProjects = action({
   display: {
@@ -17,7 +23,7 @@ export const listProjects = action({
         offset: params.offset,
         limit: params.limit,
         workspace: params.workspaceId || undefined,
-        opt_fields: PROJECT_OPT_FIELDS,
+        opt_fields: params.optFields,
       },
     });
     return { data };
@@ -27,6 +33,7 @@ export const listProjects = action({
     offset,
     limit,
     workspaceId: { ...workspaceId, required: false },
+    optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
   },
   examplePayload: {
     data: {

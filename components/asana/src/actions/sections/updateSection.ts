@@ -6,6 +6,7 @@ import {
   insertAfter,
   insertBefore,
   sectionName,
+  optFields,
 } from "../../inputs";
 import { SECTION_OPT_FIELDS } from "../../util";
 export const updateSection = action({
@@ -27,7 +28,7 @@ export const updateSection = action({
           name: params.sectionName,
         },
       },
-      { params: { opt_fields: SECTION_OPT_FIELDS } },
+      { params: { opt_fields: params.optFields } },
     );
     return { data };
   },
@@ -37,6 +38,7 @@ export const updateSection = action({
     sectionName,
     insertAfter,
     insertBefore,
+    optFields: { ...optFields, default: SECTION_OPT_FIELDS },
   },
   examplePayload: {
     data: {

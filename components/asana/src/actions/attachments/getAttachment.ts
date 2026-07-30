@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, attachmentId } from "../../inputs";
+import { connectionInput, attachmentId, optFields } from "../../inputs";
 export const getAttachment = action({
   display: {
     label: "Get Attachment",
@@ -13,8 +13,7 @@ export const getAttachment = action({
     );
     const { data } = await client.get(`/attachments/${params.attachmentId}`, {
       params: {
-        opt_fields:
-          "gid,resource_type,created_at,download_url,host,name,parent,view_url",
+        opt_fields: params.optFields,
       },
     });
     return { data };
@@ -22,6 +21,11 @@ export const getAttachment = action({
   inputs: {
     asanaConnection: connectionInput,
     attachmentId,
+    optFields: {
+      ...optFields,
+      default:
+        "gid,resource_type,created_at,download_url,host,name,parent,view_url",
+    },
   },
   examplePayload: {
     data: {

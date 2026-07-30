@@ -7,6 +7,7 @@ import {
   name,
   notes,
   workspaceId,
+  optFields,
 } from "../../inputs";
 import { TAG_OPT_FIELDS } from "../../util";
 export const createTag = action({
@@ -32,7 +33,7 @@ export const createTag = action({
       },
       {
         params: {
-          opt_fields: TAG_OPT_FIELDS,
+          opt_fields: params.optFields,
         },
       },
     );
@@ -45,6 +46,7 @@ export const createTag = action({
     color,
     name,
     notes,
+    optFields: { ...optFields, default: TAG_OPT_FIELDS },
   },
   examplePayload: {
     data: {

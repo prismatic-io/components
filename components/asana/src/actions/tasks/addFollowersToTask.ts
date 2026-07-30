@@ -1,6 +1,11 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, taskId, followersList } from "../../inputs";
+import {
+  connectionInput,
+  taskId,
+  followersList,
+  optFields,
+} from "../../inputs";
 export const addFollowersToTask = action({
   display: {
     label: "Add Followers to Task",
@@ -20,8 +25,7 @@ export const addFollowersToTask = action({
       },
       {
         params: {
-          opt_fields:
-            "resource_type,gid,created_at,followers,name,color,workspace",
+          opt_fields: params.optFields,
         },
       },
     );
@@ -31,6 +35,7 @@ export const addFollowersToTask = action({
     asanaConnection: connectionInput,
     taskId,
     followersList,
+    optFields: { ...optFields, default: "created_at,followers,name,workspace" },
   },
   examplePayload: {
     data: {

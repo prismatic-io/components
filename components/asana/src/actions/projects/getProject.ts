@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, projectId } from "../../inputs";
+import { connectionInput, projectId, optFields } from "../../inputs";
 import { PROJECT_OPT_FIELDS } from "../../util";
 export const getProject = action({
   display: {
@@ -14,12 +14,16 @@ export const getProject = action({
     );
     const { data } = await client.get(`/projects/${params.projectId}`, {
       params: {
-        opt_fields: PROJECT_OPT_FIELDS,
+        opt_fields: params.optFields,
       },
     });
     return { data };
   },
-  inputs: { projectId, asanaConnection: connectionInput },
+  inputs: {
+    projectId,
+    asanaConnection: connectionInput,
+    optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
+  },
   examplePayload: {
     data: {
       data: {

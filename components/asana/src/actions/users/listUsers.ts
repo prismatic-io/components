@@ -1,6 +1,12 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { workspaceId, offset, limit, connectionInput } from "../../inputs";
+import {
+  workspaceId,
+  offset,
+  limit,
+  connectionInput,
+  optFields,
+} from "../../inputs";
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -16,7 +22,7 @@ export const listUsers = action({
         offset: params.offset,
         limit: params.limit,
         workspace: params.workspaceId || undefined,
-        opt_fields: "gid,name,resource_type,email,workspaces",
+        opt_fields: params.optFields,
       },
     });
     return { data };
@@ -30,6 +36,10 @@ export const listUsers = action({
     limit,
     offset,
     asanaConnection: connectionInput,
+    optFields: {
+      ...optFields,
+      default: "gid,name,resource_type,email,workspaces",
+    },
   },
   examplePayload: {
     data: {

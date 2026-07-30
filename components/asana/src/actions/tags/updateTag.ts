@@ -1,6 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, color, name, notes, tagId } from "../../inputs";
+import {
+  connectionInput,
+  color,
+  name,
+  notes,
+  tagId,
+  optFields,
+} from "../../inputs";
 import { TAG_OPT_FIELDS } from "../../util";
 export const updateTag = action({
   display: {
@@ -23,7 +30,7 @@ export const updateTag = action({
       },
       {
         params: {
-          opt_fields: TAG_OPT_FIELDS,
+          opt_fields: params.optFields,
         },
       },
     );
@@ -35,6 +42,7 @@ export const updateTag = action({
     color,
     name,
     notes,
+    optFields: { ...optFields, default: TAG_OPT_FIELDS },
   },
   examplePayload: {
     data: {

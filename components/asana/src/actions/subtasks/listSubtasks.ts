@@ -6,6 +6,7 @@ import {
   connectionInput,
   taskId,
   listAllNestedSubtasks,
+  optFields,
 } from "../../inputs";
 import { optionalFields } from "../../constants";
 import { getSubtasks } from "../../helpers";
@@ -23,7 +24,7 @@ export const listSubtasks = action({
     let subtasks = await getSubtasks(client, params.taskId, {
       limit: params.limit,
       offset: params.offset,
-      opt_fields: optionalFields,
+      opt_fields: params.optFields,
     });
     if (params.listAllNestedSubtasks) {
       const allSubtasks = [...subtasks];
@@ -34,7 +35,7 @@ export const listSubtasks = action({
             if (subtask.num_subtasks > 0) {
               getSubtasksAccumulator.push(
                 getSubtasks(client, subtask.gid, {
-                  opt_fields: optionalFields,
+                  opt_fields: params.optFields,
                 }),
               );
             }
@@ -61,6 +62,7 @@ export const listSubtasks = action({
     limit,
     offset,
     listAllNestedSubtasks,
+    optFields: { ...optFields, default: optionalFields },
   },
   examplePayload: {
     data: {

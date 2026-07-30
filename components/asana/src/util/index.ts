@@ -59,6 +59,14 @@ export const fetchMoreData = async <T>(
 };
 export const cleanString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
+export const cleanCommaSeparatedList = (value: unknown): string => {
+  const str = util.types.toString(value);
+  return str
+    .split(",")
+    .map((field) => field.trim())
+    .filter(Boolean)
+    .join(",");
+};
 export const handleMultipleWorkspacesError = (err: unknown) => {
   const error = err as {
     response: {

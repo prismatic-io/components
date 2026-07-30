@@ -7,6 +7,7 @@ import {
   offset,
   connectionInput,
   projectId,
+  optFields,
 } from "../../inputs";
 import { TASK_OPT_FIELDS } from "../../util";
 export const listTasks = action({
@@ -26,7 +27,7 @@ export const listTasks = action({
         assignee: params.assigneeId || undefined,
         project: params.projectId || undefined,
         workspace: params.workspaceId || undefined,
-        opt_fields: TASK_OPT_FIELDS,
+        opt_fields: params.optFields,
       },
     });
     return { data };
@@ -38,6 +39,7 @@ export const listTasks = action({
     limit,
     offset,
     asanaConnection: connectionInput,
+    optFields: { ...optFields, default: TASK_OPT_FIELDS },
   },
   examplePayload: {
     data: {
