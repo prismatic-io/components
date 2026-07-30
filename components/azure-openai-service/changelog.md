@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-30
+
+Updated Azure Open AI SDK to v6.45.0
+
 ### 2026-04-30
 
 Updated spectral version

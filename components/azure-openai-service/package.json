@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@prismatic-io/spectral": "10.17.1",
-    "openai": "^4.47.2"
+    "openai": "^6.45.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.6",
