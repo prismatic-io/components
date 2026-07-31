@@ -8,6 +8,8 @@ export const publishView = action({
     label: "Publish View",
     description: "Publish a static view for a user.",
   },
+  inputs: publishViewInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, userId, view },
@@ -22,7 +24,18 @@ export const publishView = action({
     });
     return { data };
   },
-  inputs: publishViewInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { view },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...publishViewExamplePayload,
+      view: { ...publishViewExamplePayload.view, ...view },
+    },
+  }),
   examplePayload: {
     data: publishViewExamplePayload as unknown,
   },

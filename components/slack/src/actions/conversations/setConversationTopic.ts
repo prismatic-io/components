@@ -8,6 +8,8 @@ export const setConversationTopic = action({
     label: "Set Conversation Topic",
     description: "Set the topic of an existing conversation.",
   },
+  inputs: setConversationTopicInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, channelName, topic },
@@ -22,7 +24,24 @@ export const setConversationTopic = action({
     });
     return { data };
   },
-  inputs: setConversationTopicInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { topic },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...setConversationTopicResponse,
+      channel: {
+        ...setConversationTopicResponse.channel,
+        topic: {
+          ...setConversationTopicResponse.channel.topic,
+          value: topic,
+        },
+      },
+    },
+  }),
   examplePayload: {
     data: setConversationTopicResponse,
   },

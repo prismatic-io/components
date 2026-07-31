@@ -8,6 +8,8 @@ export const createConversation = action({
     label: "Create Conversation",
     description: "Create a new conversation.",
   },
+  inputs: createConversationInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, isPrivate, conversationName, teamId },
@@ -21,7 +23,32 @@ export const createConversation = action({
     });
     return { data };
   },
-  inputs: createConversationInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { conversationName, isPrivate },
+  ): Promise<{
+    data: unknown;
+  }> => {
+    const name = conversationName
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80);
+    return {
+      data: {
+        ...createConversationExamplePayload,
+        channels: [
+          {
+            ...createConversationExamplePayload.channels[0],
+            name,
+            name_normalized: name,
+            is_private: isPrivate,
+          },
+        ],
+      },
+    };
+  },
   examplePayload: {
     data: createConversationExamplePayload,
   },

@@ -9,6 +9,8 @@ export const uploadFile = action({
     label: "Upload File",
     description: "Upload a new file to a Slack conversation.",
   },
+  inputs: uploadFileInputs,
+  performSafety: "notAllowed",
   perform: async ({ debug: { enabled: debug } }, params) => {
     debugLogger({ ...params, debug });
     const client = await createOauthClient({
@@ -25,7 +27,25 @@ export const uploadFile = action({
     });
     return { data };
   },
-  inputs: uploadFileInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { fileName, title, channels },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...uploadFileExamplePayload,
+      file: {
+        ...uploadFileExamplePayload.file,
+        name: fileName,
+        title: title || uploadFileExamplePayload.file.title,
+        ...(channels
+          ? { channels: channels.split(",").map((channel) => channel.trim()) }
+          : {}),
+      },
+    },
+  }),
   examplePayload: {
     data: uploadFileExamplePayload,
   },

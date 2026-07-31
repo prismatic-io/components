@@ -8,6 +8,8 @@ export const pushView = action({
     label: "Push View",
     description: "Push a view onto the stack of a root view.",
   },
+  inputs: pushViewInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, trigger_id, view },
@@ -22,7 +24,18 @@ export const pushView = action({
     });
     return { data };
   },
-  inputs: pushViewInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { view },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...pushViewResponse,
+      view: { ...pushViewResponse.view, ...view },
+    },
+  }),
   examplePayload: {
     data: pushViewResponse as unknown,
   },

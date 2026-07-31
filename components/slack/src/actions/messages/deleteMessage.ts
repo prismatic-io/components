@@ -8,6 +8,8 @@ export const deleteMessage = action({
     label: "Delete Message",
     description: "Delete the content and metadata of an existing message.",
   },
+  inputs: deleteMessageInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, messageId, channelId },
@@ -22,7 +24,19 @@ export const deleteMessage = action({
     });
     return { data };
   },
-  inputs: deleteMessageInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { messageId, channelId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...deleteMessageExamplePayload,
+      channel: channelId,
+      ts: messageId,
+    },
+  }),
   examplePayload: {
     data: deleteMessageExamplePayload,
   },

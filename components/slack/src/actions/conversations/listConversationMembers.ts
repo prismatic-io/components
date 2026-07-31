@@ -8,6 +8,8 @@ export const listConversationMembers = action({
     label: "List Conversation Members",
     description: "List all members of a conversation.",
   },
+  inputs: listConversationMembersInputs,
+  performSafety: "safe",
   perform: async (
     { debug: { enabled: debug } },
     { fetchAll, connection, channelName, pagination },
@@ -34,7 +36,6 @@ export const listConversationMembers = action({
     const data = await client.conversations.members(params);
     return { data };
   },
-  inputs: listConversationMembersInputs,
   examplePayload: {
     data: listConversationMembersExamplePayload,
   },

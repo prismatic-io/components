@@ -8,6 +8,8 @@ export const leaveConversation = action({
     label: "Leave Conversation",
     description: "Leave an existing conversation.",
   },
+  inputs: leaveConversationInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, channelName },
@@ -21,7 +23,12 @@ export const leaveConversation = action({
     });
     return { data };
   },
-  inputs: leaveConversationInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: leaveConversationExamplePayload,
+  }),
   examplePayload: {
     data: leaveConversationExamplePayload,
   },

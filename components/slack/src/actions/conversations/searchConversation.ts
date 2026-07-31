@@ -9,6 +9,8 @@ export const searchConversation = action({
     description:
       "Search for public or private channels in an Enterprise organization.",
   },
+  inputs: searchConversationInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     {
@@ -52,7 +54,12 @@ export const searchConversation = action({
     });
     return { data };
   },
-  inputs: searchConversationInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: closeConversationExamplePayload,
+  }),
   examplePayload: {
     data: closeConversationExamplePayload,
   },

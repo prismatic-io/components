@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-31
+
+Added inline action calling support across all actions so the app builder can show example output during configuration
+
 ### 2026-07-20
 
 Grouped related inputs into structured objects across list, search, and conversation actions:

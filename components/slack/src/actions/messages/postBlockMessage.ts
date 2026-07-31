@@ -8,6 +8,8 @@ export const postBlockMessage = action({
     label: "Post Block Message",
     description: "Post a block-formatted message to a Slack channel.",
   },
+  inputs: postBlockMessageInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, blocks, message, channelName, username, messageId },
@@ -25,7 +27,24 @@ export const postBlockMessage = action({
     });
     return { data };
   },
-  inputs: postBlockMessageInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { channelName, message, username, messageId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...postBlockMessageExamplePayload,
+      channel: channelName,
+      message: {
+        ...postBlockMessageExamplePayload.message,
+        text: message,
+        username: username || postBlockMessageExamplePayload.message.username,
+        ...(messageId ? { thread_ts: messageId } : {}),
+      },
+    },
+  }),
   examplePayload: {
     data: postBlockMessageExamplePayload,
   },

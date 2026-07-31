@@ -5,7 +5,6 @@ export const webhookUrlConnection = connection({
     label: "Webhook URL",
     description: "Authenticate requests to Slack using a Webhook URL.",
   },
-  comments: "Slack Webhook URL hosting",
   inputs: {
     webhookUrl: {
       label: "Webhook URL",

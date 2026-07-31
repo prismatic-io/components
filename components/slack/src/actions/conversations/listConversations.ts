@@ -8,6 +8,8 @@ export const listConversations = action({
     label: "List Conversations",
     description: "List all conversations.",
   },
+  inputs: listConversationsInputs,
+  performSafety: "safe",
   perform: async ({ debug: { enabled: debug } }, params) => {
     const { pagination, ...rest } = params;
     const { cursor, limit } = pagination;
@@ -31,7 +33,6 @@ export const listConversations = action({
     const data = await getChannels(client, parameters, params.fetchAll);
     return { data };
   },
-  inputs: listConversationsInputs,
   examplePayload: {
     data: listConversationsExamplePayload,
   },

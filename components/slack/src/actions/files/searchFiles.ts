@@ -8,6 +8,8 @@ export const searchFiles = action({
     label: "Search Files",
     description: "Searches for files matching a query.",
   },
+  inputs: searchFilesInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, query, sort, sort_dir, pagination, highlight, team_id },
@@ -37,7 +39,15 @@ export const searchFiles = action({
     });
     return { data };
   },
-  inputs: searchFilesInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { query },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: { ...searchFilesExamplePayload, query },
+  }),
   examplePayload: {
     data: searchFilesExamplePayload as unknown,
   },

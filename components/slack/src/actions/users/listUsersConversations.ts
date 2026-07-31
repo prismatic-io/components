@@ -8,6 +8,8 @@ export const listUsersConversations = action({
     label: "List User Conversations",
     description: "List all conversations for a user.",
   },
+  inputs: listUsersConversationsInputs,
+  performSafety: "safe",
   perform: async (
     { debug: { enabled: debug } },
     { connection, pagination, teamId, userId, fetchAll },
@@ -35,7 +37,6 @@ export const listUsersConversations = action({
     const data = await client.users.conversations(params);
     return { data };
   },
-  inputs: listUsersConversationsInputs,
   examplePayload: {
     data: listUserConversationsExamplePayload,
   },

@@ -8,6 +8,8 @@ export const postSlackMessage = action({
     label: "Post Slack Message From Webhook",
     description: "Post a message to a Slack channel from a webhook URL.",
   },
+  inputs: postSlackMessageInputs,
+  performSafety: "notAllowed",
   perform: async ({ debug: { enabled: debug } }, { connection, message }) => {
     debugLogger({ message, debug });
     const webhook = createWebhookClient(connection);
@@ -17,6 +19,11 @@ export const postSlackMessage = action({
       }),
     };
   },
-  inputs: postSlackMessageInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: webhookDefaultExamplePayload,
+  }),
   examplePayload: { data: webhookDefaultExamplePayload },
 });

@@ -7,6 +7,8 @@ export const listScheduledMessages = action({
     label: "List Scheduled Messages",
     description: "List all scheduled messages.",
   },
+  inputs: listScheduledMessagesInputs,
+  performSafety: "safe",
   perform: async (context, { connection }) => {
     const client = await createOauthClient({
       slackConnection: connection,
@@ -14,7 +16,6 @@ export const listScheduledMessages = action({
     const data = await client.chat.scheduledMessages.list();
     return { data };
   },
-  inputs: listScheduledMessagesInputs,
   examplePayload: {
     data: listScheduledMessagesExamplePayload as unknown,
   },

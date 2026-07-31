@@ -8,6 +8,8 @@ export const listFiles = action({
     label: "List Files",
     description: "List all available files.",
   },
+  inputs: listFilesInputs,
+  performSafety: "safe",
   perform: async ({ debug: { enabled: debug } }, params) => {
     debugLogger({ ...params, debug });
     const client = await createOauthClient({
@@ -21,7 +23,6 @@ export const listFiles = action({
     });
     return { data };
   },
-  inputs: listFilesInputs,
   examplePayload: {
     data: listFilesExamplePayload as unknown,
   },

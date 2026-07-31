@@ -7,6 +7,8 @@ export const conversationExists = action({
     label: "Conversation Exists",
     description: "Returns true if the conversation already exists.",
   },
+  inputs: conversationExistsInputs,
+  performSafety: "safe",
   perform: async (
     { debug: { enabled: debug } },
     { connection, channelName },
@@ -22,7 +24,6 @@ export const conversationExists = action({
     }
     return { data: false };
   },
-  inputs: conversationExistsInputs,
   examplePayload: {
     data: true,
   },

@@ -8,6 +8,8 @@ export const setConversationPurpose = action({
     label: "Set Conversation Purpose",
     description: "Set the purpose of an existing conversation.",
   },
+  inputs: setConversationPurposeInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, channelName, purpose },
@@ -22,7 +24,18 @@ export const setConversationPurpose = action({
     });
     return { data };
   },
-  inputs: setConversationPurposeInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { purpose },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...setConversationPurposeResponse,
+      purpose,
+    },
+  }),
   examplePayload: {
     data: setConversationPurposeResponse,
   },

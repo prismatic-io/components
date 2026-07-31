@@ -8,6 +8,8 @@ export const renameConversation = action({
     label: "Rename Conversation",
     description: "Rename an existing conversation.",
   },
+  inputs: renameConversationInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, newConversationName, conversationName },
@@ -22,7 +24,29 @@ export const renameConversation = action({
     });
     return { data };
   },
-  inputs: renameConversationInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { newConversationName },
+  ): Promise<{
+    data: unknown;
+  }> => {
+    const name = newConversationName
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80);
+    return {
+      data: {
+        ...renameConversationExamplePayload,
+        channel: {
+          ...renameConversationExamplePayload.channel,
+          name,
+          name_normalized: name,
+        },
+      },
+    };
+  },
   examplePayload: {
     data: renameConversationExamplePayload,
   },

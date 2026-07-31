@@ -8,6 +8,7 @@ export const rawRequest = action({
     description: "Send raw HTTP request to Slack.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, ...rawRequestParams },

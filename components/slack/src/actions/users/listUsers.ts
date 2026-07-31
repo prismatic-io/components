@@ -8,6 +8,8 @@ export const listUsers = action({
     label: "List Users",
     description: "List all users in the workspace.",
   },
+  inputs: listUsersInputs,
+  performSafety: "safe",
   perform: async (
     { debug: { enabled: debug } },
     { fetchAll, connection, pagination, teamId },
@@ -28,7 +30,6 @@ export const listUsers = action({
     const data = await client.users.list(params);
     return { data };
   },
-  inputs: listUsersInputs,
   examplePayload: {
     data: listUsersExamplePayload,
   },

@@ -8,6 +8,8 @@ export const postEphemeralMessage = action({
     label: "Post Ephemeral Message",
     description: "Post an ephemeral message to a user or channel.",
   },
+  inputs: postEphemeralMessageInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, channelName, userId, username, message },
@@ -24,7 +26,12 @@ export const postEphemeralMessage = action({
     });
     return { data };
   },
-  inputs: postEphemeralMessageInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: postEphemeralMessageExamplePayload,
+  }),
   examplePayload: {
     data: postEphemeralMessageExamplePayload,
   },

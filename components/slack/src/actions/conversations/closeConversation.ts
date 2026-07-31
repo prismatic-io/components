@@ -8,6 +8,8 @@ export const closeConversation = action({
     label: "Close Conversation",
     description: "Close an existing conversation.",
   },
+  inputs: closeConversationInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, conversationName },
@@ -21,7 +23,12 @@ export const closeConversation = action({
     });
     return { data };
   },
-  inputs: closeConversationInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: closeConversationExamplePayload,
+  }),
   examplePayload: {
     data: closeConversationExamplePayload,
   },

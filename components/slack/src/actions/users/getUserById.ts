@@ -8,6 +8,8 @@ export const getUserById = action({
     label: "Get User By ID",
     description: "Get a user's information by ID.",
   },
+  inputs: getUserByIdInputs,
+  performSafety: "safe",
   perform: async ({ debug: { enabled: debug } }, { connection, user }) => {
     debugLogger({ debug, user });
     const client = await createOauthClient({
@@ -18,7 +20,6 @@ export const getUserById = action({
     });
     return { data };
   },
-  inputs: getUserByIdInputs,
   examplePayload: {
     data: getUserExamplePayload,
   },

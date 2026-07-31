@@ -8,6 +8,8 @@ export const updateMessage = action({
     label: "Update Message",
     description: "Update the contents of an existing message.",
   },
+  inputs: updateMessageInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, message, channelId, messageId },
@@ -23,7 +25,24 @@ export const updateMessage = action({
     });
     return { data };
   },
-  inputs: updateMessageInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { channelId, messageId, message },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateMessageExamplePayload,
+      channel: channelId,
+      ts: messageId,
+      text: message,
+      message: {
+        ...updateMessageExamplePayload.message,
+        text: message,
+      },
+    },
+  }),
   examplePayload: {
     data: updateMessageExamplePayload,
   },

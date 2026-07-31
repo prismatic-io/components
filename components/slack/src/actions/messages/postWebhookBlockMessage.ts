@@ -9,6 +9,8 @@ export const postWebhookBlockMessage = action({
     description:
       "Post a block-formatted message to a Slack channel from a webhook URL.",
   },
+  inputs: postWebhookBlockMessageInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, message, blocks },
@@ -22,6 +24,11 @@ export const postWebhookBlockMessage = action({
       }),
     };
   },
-  inputs: postWebhookBlockMessageInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: webhookDefaultExamplePayload,
+  }),
   examplePayload: { data: webhookDefaultExamplePayload },
 });

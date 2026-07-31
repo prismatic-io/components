@@ -8,6 +8,8 @@ export const archiveConversation = action({
     label: "Archive Conversation",
     description: "Archive an existing conversation.",
   },
+  inputs: archiveConversationInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, channelName },
@@ -21,7 +23,12 @@ export const archiveConversation = action({
     });
     return { data };
   },
-  inputs: archiveConversationInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: archiveConversationExamplePayload,
+  }),
   examplePayload: {
     data: archiveConversationExamplePayload,
   },

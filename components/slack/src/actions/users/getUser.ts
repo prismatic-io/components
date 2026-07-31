@@ -8,6 +8,8 @@ export const getUser = action({
     label: "Get User By Email",
     description: "Get a user's information by email.",
   },
+  inputs: getUserInputs,
+  performSafety: "safe",
   perform: async ({ debug: { enabled: debug } }, { connection, email }) => {
     debugLogger({ debug, email });
     const client = await createOauthClient({
@@ -18,7 +20,6 @@ export const getUser = action({
     });
     return { data };
   },
-  inputs: getUserInputs,
   examplePayload: {
     data: getUserExamplePayload,
   },

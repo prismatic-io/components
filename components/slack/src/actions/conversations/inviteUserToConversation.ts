@@ -8,6 +8,8 @@ export const inviteUserToConversation = action({
     label: "Invite User to Conversation",
     description: "Invite a user to an existing conversation.",
   },
+  inputs: inviteUserToConversationInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, channelName, userId },
@@ -22,7 +24,12 @@ export const inviteUserToConversation = action({
     });
     return { data };
   },
-  inputs: inviteUserToConversationInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: inviteUserToConversationExamplePayload,
+  }),
   examplePayload: {
     data: inviteUserToConversationExamplePayload,
   },

@@ -8,6 +8,8 @@ export const searchAll = action({
     label: "Search All",
     description: "Searches for messages and files matching a query.",
   },
+  inputs: searchAllInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, query, sort, sort_dir, pagination, team_id, highlight },
@@ -37,7 +39,15 @@ export const searchAll = action({
     });
     return { data };
   },
-  inputs: searchAllInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { query },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: { ...searchAllExamplePayload, query },
+  }),
   examplePayload: {
     data: searchAllExamplePayload as unknown,
   },

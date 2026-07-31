@@ -8,6 +8,8 @@ export const searchMessages = action({
     label: "Search Messages",
     description: "Searches for messages matching a query.",
   },
+  inputs: searchMessagesInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, pagination, highlight, query, sort, sort_dir, team_id },
@@ -37,7 +39,18 @@ export const searchMessages = action({
     });
     return { data };
   },
-  inputs: searchMessagesInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { query },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...searchMessagesExamplePayload,
+      query,
+    },
+  }),
   examplePayload: {
     data: searchMessagesExamplePayload,
   },

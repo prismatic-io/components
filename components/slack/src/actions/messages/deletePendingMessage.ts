@@ -9,6 +9,8 @@ export const deletePendingMessage = action({
     description:
       "Delete the content and metadata of a pending scheduled message from a queue.",
   },
+  inputs: deletePendingMessageInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, messageId, channelId },
@@ -23,7 +25,12 @@ export const deletePendingMessage = action({
     });
     return { data };
   },
-  inputs: deletePendingMessageInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deletePendingMessageExamplePayload,
+  }),
   examplePayload: {
     data: deletePendingMessageExamplePayload,
   },

@@ -8,6 +8,8 @@ export const openView = action({
     label: "Open View",
     description: "Open a view for a user.",
   },
+  inputs: openViewInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, trigger_id, view },
@@ -22,7 +24,18 @@ export const openView = action({
     });
     return { data };
   },
-  inputs: openViewInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { view },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...openViewExamplePayload,
+      view: { ...openViewExamplePayload.view, ...view },
+    },
+  }),
   examplePayload: {
     data: openViewExamplePayload as unknown,
   },

@@ -8,6 +8,8 @@ export const postMessage = action({
     label: "Post Message",
     description: "Post a message to a Slack channel.",
   },
+  inputs: postMessageInputs,
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, message, channelName, username, messageId },
@@ -31,7 +33,24 @@ export const postMessage = action({
     });
     return { data };
   },
-  inputs: postMessageInputs,
+  examplePerformSafety: "safe",
+  examplePerform: async (
+    _context,
+    { channelName, message, username, messageId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...sendMessageExamplePayload,
+      channel: channelName,
+      message: {
+        ...sendMessageExamplePayload.message,
+        text: message,
+        username: username || sendMessageExamplePayload.message.username,
+        ...(messageId ? { thread_ts: messageId } : {}),
+      },
+    },
+  }),
   examplePayload: {
     data: sendMessageExamplePayload,
   },

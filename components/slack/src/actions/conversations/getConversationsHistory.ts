@@ -8,6 +8,8 @@ export const getConversationsHistory = action({
     label: "Get Conversation History",
     description: "Get the history of a conversation.",
   },
+  inputs: getConversationsHistoryInputs,
+  performSafety: "safe",
   perform: async (
     { debug: { enabled: debug } },
     {
@@ -55,7 +57,6 @@ export const getConversationsHistory = action({
     const data = await client.conversations.history(params);
     return { data };
   },
-  inputs: getConversationsHistoryInputs,
   examplePayload: {
     data: getConversationHistoryExamplePayload,
   },
