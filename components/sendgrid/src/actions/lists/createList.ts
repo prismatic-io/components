@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { createListExamplePayload } from "../../examplePayloads";
 import { createListInputs } from "../../inputs";
+import { createListOutputSchema } from "../../outputSchemas";
 export const createList = action({
   display: {
     label: "Create List",
@@ -18,5 +19,9 @@ export const createList = action({
     });
     return { data: body };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createListOutputSchema,
+  }),
   examplePayload: createListExamplePayload,
 });

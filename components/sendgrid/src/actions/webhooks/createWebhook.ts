@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookHelper, eventsBuilder } from "../../helpers";
 import { createWebhookInputs } from "../../inputs";
+import { createWebhookOutputSchema } from "../../outputSchemas";
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -26,5 +27,9 @@ export const createWebhook = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createWebhookOutputSchema,
+  }),
   examplePayload: createWebhookExamplePayload,
 });

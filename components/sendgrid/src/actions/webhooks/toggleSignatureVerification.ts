@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { toggleSignatureVerificationExamplePayload } from "../../examplePayloads";
 import { toggleSignatureVerificationHelper } from "../../helpers";
 import { toggleSignatureVerificationInputs } from "../../inputs";
+import { toggleSignatureVerificationOutputSchema } from "../../outputSchemas";
 export const toggleSignatureVerification = action({
   display: {
     label: "Toggle Signature Verification",
@@ -20,5 +21,9 @@ export const toggleSignatureVerification = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: toggleSignatureVerificationOutputSchema,
+  }),
   examplePayload: toggleSignatureVerificationExamplePayload,
 });

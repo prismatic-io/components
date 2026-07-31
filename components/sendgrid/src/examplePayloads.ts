@@ -170,9 +170,9 @@ export const getImportStatusExamplePayload = {
       errored_count: 0,
       errors_url:
         "https://api.sendgrid.com/v3/marketing/contacts/imports/errors/d9f0c7e2-5a14-4b8e-9c3d-6f1e2a7b8c9d",
-      started_at: "2024-08-01T10:00:00Z",
-      finished_at: "2024-08-01T10:01:30Z",
     },
+    started_at: "2024-08-01T10:00:00Z",
+    finished_at: "2024-08-01T10:01:30Z",
   },
 };
 export const initiateContactsImportExamplePayload = {

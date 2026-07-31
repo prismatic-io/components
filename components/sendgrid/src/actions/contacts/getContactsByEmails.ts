@@ -1,8 +1,9 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { getContactsByEmailsExamplePayload } from "../../examplePayloads";
 import { getContactsByEmailsInputs } from "../../inputs";
+import { getContactsByEmailsOutputSchema } from "../../outputSchemas";
 export const getContactsByEmails = action({
   display: {
     label: "Get Contacts by Emails",
@@ -59,5 +60,9 @@ export const getContactsByEmails = action({
       );
     }
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getContactsByEmailsOutputSchema,
+  }),
   examplePayload: getContactsByEmailsExamplePayload,
 });

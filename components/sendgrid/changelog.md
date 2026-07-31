@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-23
+
+Added output schemas to 14 actions to improve the low-code designer reference picker experience, and aligned the **Get Import Status** example payload to the documented response shape
+
 ### 2026-07-15
 
 Resolved **Send Email** and **Send Multiple Emails** action issue related to sending a message without attachments.

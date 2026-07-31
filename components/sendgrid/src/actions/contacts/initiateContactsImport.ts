@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { initiateContactsImportExamplePayload } from "../../examplePayloads";
 import { initiateContactsImportInputs } from "../../inputs";
+import { initiateContactsImportOutputSchema } from "../../outputSchemas";
 export const initiateContactsImport = action({
   display: {
     label: "Initiate Contacts Import",
@@ -38,5 +39,9 @@ export const initiateContactsImport = action({
     });
     return { data: body };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: initiateContactsImportOutputSchema,
+  }),
   examplePayload: initiateContactsImportExamplePayload,
 });

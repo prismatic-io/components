@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { addOrUpdateContactExamplePayload } from "../../examplePayloads";
 import { addOrUpdateContactInputs } from "../../inputs";
+import { addOrUpdateContactOutputSchema } from "../../outputSchemas";
 export const addOrUpdateContact = action({
   display: {
     label: "Add or Update Contact",
@@ -31,5 +32,9 @@ export const addOrUpdateContact = action({
     });
     return { data: body };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addOrUpdateContactOutputSchema,
+  }),
   examplePayload: addOrUpdateContactExamplePayload,
 });

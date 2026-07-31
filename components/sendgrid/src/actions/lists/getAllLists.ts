@@ -1,9 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { getAllListsExamplePayload } from "../../examplePayloads";
 import { fetchPaginatedData } from "../../helpers";
 import { getAllListsInputs } from "../../inputs";
+import { getAllListsOutputSchema } from "../../outputSchemas";
 export const getAllLists = action({
   display: {
     label: "Get All Lists",
@@ -25,5 +26,9 @@ export const getAllLists = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getAllListsOutputSchema,
+  }),
   examplePayload: getAllListsExamplePayload,
 });
