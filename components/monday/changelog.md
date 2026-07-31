@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-07-31
+
+Updated to Monday API version 2026-07
+
 ### 2026-05-26
 
 Added the **New and Updated Items** polling trigger for Monday.com boards. The trigger filters items via the `__last_updated__` column using GraphQL `items_page` (cursor pagination) and partitions records into created and updated buckets based on each item's `created_at` and `updated_at` timestamps
