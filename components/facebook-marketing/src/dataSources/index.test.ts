@@ -1,6 +1,6 @@
 import { testing } from "@prismatic-io/spectral";
-import { oauth } from "../connections";
 import component from "..";
+import { oauth } from "../connections";
 const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
   ? describe
   : describe.skip;

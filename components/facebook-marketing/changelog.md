@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-08-03
+
+Updated to Facebook Graph API v25
+
+Grouped the **Limit**, **Before**, and **After** inputs into a **Pagination** structured object on **List Ads In Account**, **List Ad Creatives**, **List Ad Sets In Account**, **List Ad Accounts**, **List Campaigns In Account**, **List Ad Leads**, **Update Ad Creative**, and **Add URL Tags To Ad Creative**
+
+Grouped optional inputs into an **Additional Fields** structured object on **Create Campaign** and **Create Ad**
+
 ### 2026-04-30
 
 Updated spectral version

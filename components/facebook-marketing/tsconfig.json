@@ -6,8 +6,9 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
-    "strictNullChecks": false,
+    "moduleResolution": "bundler",
+    "types": ["node", "jest"],
+    "strictNullChecks": true,
     "noImplicitAny": false
   },
   "include": ["src"]

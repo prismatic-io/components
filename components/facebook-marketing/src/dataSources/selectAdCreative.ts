@@ -1,6 +1,7 @@
-import { type Element, dataSource } from "@prismatic-io/spectral";
+import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { adAccountId, myConnectionField, version } from "../inputs";
+import { selectAdCreativeResponse } from "../examplePayloads";
+import { selectAdCreativeInputs } from "../inputs";
 import { getPaginatedData } from "../util";
 export const selectAdCreative = dataSource({
   display: {
@@ -24,26 +25,14 @@ export const selectAdCreative = dataSource({
         label: `${creative.name} - (${creative.id})`,
         key: creative.id.toString(),
       }))
-      .sort((a: Element, b: Element) => (a.label < b.label ? -1 : 1));
+      .sort((a: Element, b: Element) =>
+        (a.label || "") < (b.label || "") ? -1 : 1,
+      );
     return {
       result,
     };
   },
   dataSourceType: "picklist",
-  inputs: {
-    adAccountId: {
-      ...adAccountId,
-      dataSource: undefined,
-    },
-    connection: myConnectionField,
-    version,
-  },
-  examplePayload: {
-    result: [
-      {
-        label: "My Ad Creative - (23849551358310668)",
-        key: "23849551358310668",
-      },
-    ],
-  },
+  inputs: selectAdCreativeInputs,
+  examplePayload: selectAdCreativeResponse,
 });

@@ -1,6 +1,7 @@
-import { type Element, dataSource } from "@prismatic-io/spectral";
+import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { adAccountId, myConnectionField, version } from "../inputs";
+import { selectAdSetResponse } from "../examplePayloads";
+import { selectAdSetInputs } from "../inputs";
 import { getPaginatedData } from "../util";
 export const selectAdSet = dataSource({
   display: {
@@ -19,23 +20,14 @@ export const selectAdSet = dataSource({
         label: `${adSet.name} - (${adSet.id})`,
         key: adSet.id.toString(),
       }))
-      .sort((a: Element, b: Element) => (a.label < b.label ? -1 : 1));
+      .sort((a: Element, b: Element) =>
+        (a.label || "") < (b.label || "") ? -1 : 1,
+      );
     return {
       result,
     };
   },
   dataSourceType: "picklist",
-  inputs: {
-    adAccountId: {
-      ...adAccountId,
-      dataSource: undefined,
-    },
-    connection: myConnectionField,
-    version,
-  },
-  examplePayload: {
-    result: [
-      { label: "My Ad Set - (23849551358310668)", key: "23849551358310668" },
-    ],
-  },
+  inputs: selectAdSetInputs,
+  examplePayload: selectAdSetResponse,
 });

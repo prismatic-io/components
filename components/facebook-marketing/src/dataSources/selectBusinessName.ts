@@ -1,16 +1,13 @@
-import { type Element, dataSource } from "@prismatic-io/spectral";
+import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { myConnectionField, version } from "../inputs";
+import { selectBusinessNameInputs } from "../inputs";
 export const businessNames = dataSource({
   display: {
     label: "Business Names",
     description: "A picklist of business names",
   },
-  inputs: {
-    connection: myConnectionField,
-    version,
-  },
-  perform: async (context, { version, connection }) => {
+  inputs: selectBusinessNameInputs,
+  perform: async (_context, { version, connection }) => {
     const client = createClient(connection, false, version);
     const { data } = await client.get("/me/businesses");
     const result = (

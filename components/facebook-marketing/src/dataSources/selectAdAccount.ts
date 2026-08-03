@@ -1,14 +1,14 @@
-import { type Element, dataSource } from "@prismatic-io/spectral";
+import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { myConnectionField, version } from "../inputs";
-import type { AdAccount } from "../types/AdAccount";
+import { selectAdAccountInputs } from "../inputs";
+import type { AdAccount } from "../types";
 import { getPaginatedData } from "../util";
 export const selectAdAccount = dataSource({
   display: {
     label: "Select Ad Account",
     description: "Select an ad account from the current user's ad accounts.",
   },
-  perform: async (context, params) => {
+  perform: async (_context, params) => {
     const client = createClient(params.connection, false, params.version);
     const {
       data: { data },
@@ -24,8 +24,5 @@ export const selectAdAccount = dataSource({
     };
   },
   dataSourceType: "picklist",
-  inputs: {
-    connection: myConnectionField,
-    version,
-  },
+  inputs: selectAdAccountInputs,
 });

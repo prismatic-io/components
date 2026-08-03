@@ -1,7 +1,7 @@
 import type { Connection } from "@prismatic-io/spectral";
 import {
-  type HttpClient,
   createClient as createHttpClient,
+  type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { DEFAULT_VERSION } from "./constants";
 import { getAuthHeaders, getBaseUrl, validateConnection } from "./util";

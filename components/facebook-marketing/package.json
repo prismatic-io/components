@@ -12,19 +12,19 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1"
+    "@prismatic-io/spectral": "10.23.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.2",
+    "@biomejs/biome": "2.5.5",
     "@types/jest": "30.0.0",
     "@types/mime-types": "2.1.0",
-    "@types/node": "18.19.120",
-    "copy-webpack-plugin": "13.0.0",
-    "jest": "30.0.5",
-    "ts-jest": "29.4.0",
-    "ts-loader": "9.5.2",
-    "typescript": "5.8.3",
-    "webpack": "5.100.2",
-    "webpack-cli": "6.0.1"
+    "@types/node": "^26.1.1",
+    "copy-webpack-plugin": "14.0.0",
+    "jest": "30.4.2",
+    "ts-jest": "29.4.11",
+    "ts-loader": "9.6.2",
+    "typescript": "6.0.3",
+    "webpack": "5.108.4",
+    "webpack-cli": "7.2.1"
   }
 }

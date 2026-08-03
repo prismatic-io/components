@@ -1,5 +1,5 @@
 export const API_URL = "https://graph.facebook.com";
-export const DEFAULT_VERSION = 22;
+export const DEFAULT_VERSION = 25;
 export const COUNTRY_CODES = [
   {
     label: "Aruba",
@@ -1140,6 +1140,14 @@ export enum TriggerBranches {
   Notification = "Notification",
   URLValidation = "URL Validation",
 }
+export const AD_CREATIVE_DEFAULTS =
+  "name, object_story_spec, adlabels, body, object_id, url_tags";
+export const AD_SET_DEFAULTS =
+  "name,account_id,adlabels,adset_schedule,asset_feed_id,attribution_spec,bid_adjustments,bid_amount,bid_constraints,bid_info,billing_event,budget_remaining,campaign,configured_status,created_time,creative_sequence,daily_budget,daily_min_spend_target,daily_spend_cap,destination_type,effective_status,end_time,optimization_goal,optimization_sub_event,pacing_type,promoted_object,recommendations,status,targeting,start_time,targeting_optimization_types,updated_time";
+export const AD_ACCOUNT_DEFAULTS =
+  "name,age,balance,is_personal,account_status,line_numbers,adcreatives";
+export const AD_DEFAULTS =
+  "name,adset,account_id,ad_review_feedback,adlabels,adset_id,bid_amount,campaign,campaign_id,configured_status,conversion_domain,created_time,creative,effective_status,issues_info,last_updated_by_app_id,preview_shareable_link,recommendations,status,tracking_specs";
 export const DELETE_RESPONSE = "Webhook deleted successfully";
 export const PAGE_FIELDS = [
   { label: "Affiliation", value: "affiliation" },
