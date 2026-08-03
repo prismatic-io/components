@@ -1,7 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
-import Box from "box-node-sdk";
-import type BoxClient from "box-node-sdk/lib/box-client";
+import { BoxClient, BoxDeveloperTokenAuth } from "box-node-sdk";
 import { BASE_URL } from "./constants";
 interface CreateAuthorizedClientProps {
   boxConnection: Connection;
@@ -26,7 +25,8 @@ export const getAccessToken = ({
 export const createAuthorizedClient = (
   params: CreateAuthorizedClientProps,
 ): BoxClient => {
-  return Box.getBasicClient(getAccessToken(params));
+  const auth = new BoxDeveloperTokenAuth({ token: getAccessToken(params) });
+  return new BoxClient({ auth });
 };
 export const createBoxHttpClient = (connection: Connection, debug: boolean) => {
   const client = createClient({

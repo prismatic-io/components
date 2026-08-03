@@ -40,8 +40,8 @@ export const selectContent = dataSource({
     }
     return {
       result: allEntries.map((entry) => ({
-        label: `${entry.name} (${entry.type})`,
-        key: entry.id,
+        label: `${util.types.toString(entry.name)} (${util.types.toString(entry.type)})`,
+        key: util.types.toString(entry.id),
       })),
     };
   },

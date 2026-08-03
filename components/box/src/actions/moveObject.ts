@@ -31,16 +31,24 @@ export const moveObject = action({
     if (destType !== "folder") {
       throw Error(`'${destName} is not a folder`);
     }
-    let result: unknown;
+    let data: unknown;
     if (sourceType === "folder") {
-      result = await client.folders.move(sourceId, destId);
+      const result = await client.folders.updateFolderById(
+        util.types.toString(sourceId),
+        { requestBody: { parent: { id: util.types.toString(destId) } } },
+      );
+      data = result.rawData;
     } else if (sourceType === "file") {
-      result = await client.files.move(sourceId, destId);
+      const result = await client.files.updateFileById(
+        util.types.toString(sourceId),
+        { requestBody: { parent: { id: util.types.toString(destId) } } },
+      );
+      data = result.rawData;
     } else {
       throw Error(`'${sourceName}' is neither a file nor a folder`);
     }
     return {
-      data: result,
+      data,
     };
   },
   inputs: { fromPath, toPath, boxConnection: connectionInput },

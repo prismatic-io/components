@@ -1,30 +1,33 @@
+import type { BoxClient } from "box-node-sdk";
 import { getPathEntries } from "./utils";
 import folderTree from "../tests/fixtures/files.json";
-import BoxSDKNode from "box-node-sdk";
-jest.mock("box-node-sdk", () => {
-  return {
-    __esModule: false,
-    getBasicClient: jest.fn(() => ({
-      folders: {
-        getItems: jest.fn().mockImplementation((id, { marker }) => {
-          const result = { entries: [], next_marker: null };
+const buildMockClient = () =>
+  ({
+    folders: {
+      getFolderItems: jest
+        .fn()
+        .mockImplementation((id: string, { queryParams }) => {
+          const result: {
+            entries: {
+              rawData: Record<string, unknown>;
+            }[];
+            nextMarker: string | null;
+          } = { entries: [], nextMarker: null };
           const allEntries = folderTree.files.filter(
             (entry) => entry.parent === id,
           );
           if (!allEntries.length) return Promise.reject(new Error("Not found"));
-          let index = parseInt(marker);
-          if (isNaN(index)) index = 0;
+          let index = Number.parseInt(queryParams?.marker);
+          if (Number.isNaN(index)) index = 0;
           const { id: fileId, name, type } = allEntries[index];
-          result.entries.push({ id: fileId, name, type });
+          result.entries.push({ rawData: { id: fileId, name, type } });
           index += 1;
-          if (index < allEntries.length) result.next_marker = index.toString();
+          if (index < allEntries.length) result.nextMarker = index.toString();
           return Promise.resolve(result);
         }),
-      },
-    })),
-  };
-});
-const client = BoxSDKNode.getBasicClient("dummy_token");
+    },
+  }) as unknown as BoxClient;
+const client = buildMockClient();
 describe("getPathEntries", () => {
   test('throws error when path does not start with "/"', async () => {
     await expect(getPathEntries(client, "path_without_slash")).rejects.toThrow(

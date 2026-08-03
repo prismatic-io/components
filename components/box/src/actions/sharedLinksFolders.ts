@@ -13,6 +13,9 @@ import { createBoxHttpClient } from "../client";
 import {
   findFolderForSharedLinkExamplePayload,
   getSharedLinkForFolderExamplePayload,
+  addSharedLinkToFolderExamplePayload,
+  updateSharedLinkOnFolderExamplePayload,
+  removeSharedLinkFromFolderExamplePayload,
 } from "../examplePayloads";
 export const findFolderForSharedLink = action({
   display: {
@@ -129,6 +132,7 @@ export const addSharedLinkToFolder = action({
     sharedLinkVanityName: sharedLinkVanityNameInput,
     boxConnection: connectionInput,
   },
+  examplePayload: addSharedLinkToFolderExamplePayload,
 });
 export const updateSharedLinkOnFolder = action({
   display: {
@@ -180,6 +184,7 @@ export const updateSharedLinkOnFolder = action({
     sharedLinkVanityName: sharedLinkVanityNameInput,
     boxConnection: connectionInput,
   },
+  examplePayload: updateSharedLinkOnFolderExamplePayload,
 });
 export const removeSharedLinkFromFolder = action({
   display: {
@@ -211,4 +216,5 @@ export const removeSharedLinkFromFolder = action({
     folderId: folderIdInput,
     boxConnection: connectionInput,
   },
+  examplePayload: removeSharedLinkFromFolderExamplePayload,
 });

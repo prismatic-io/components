@@ -16,7 +16,9 @@ export const downloadFile = action({
     if (type !== "file") {
       throw Error(`'${name}' is not a file`);
     }
-    const url = await client.files.getDownloadURL(id);
+    const url = await client.downloads.getDownloadFileUrl(
+      util.types.toString(id),
+    );
     const {
       data,
       headers: { "content-type": contentType },
@@ -26,7 +28,7 @@ export const downloadFile = action({
     }).get("");
     return {
       data,
-      contentType,
+      contentType: util.types.toString(contentType),
     };
   },
   inputs: { path, boxConnection: connectionInput },

@@ -1,5 +1,4 @@
 import { type ActionContext, trigger, util } from "@prismatic-io/spectral";
-import Box from "box-node-sdk";
 import {
   connectionInput,
   signatureKey,
@@ -10,7 +9,11 @@ import {
 import { createAuthorizedClient } from "../client";
 import { listWebhooks } from "../actions/webhooks";
 import type { StoreState, WebhookTriggerType } from "../interfaces";
-import { createWebhookFN, getStoreKey } from "../utils";
+import {
+  createWebhookFN,
+  getStoreKey,
+  validateBoxWebhookSignature,
+} from "../utils";
 export const managedWebhook = trigger({
   display: {
     label: "Managed Webhook",
@@ -48,11 +51,27 @@ export const managedWebhook = trigger({
           },
         );
         const existingInstanceWebhook = existingInstanceWebhooks.entries?.find(
-          ({ id }) => id === state?.existingWebhookId,
+          (entry) =>
+            util.types.toString(
+              (
+                entry as {
+                  id?: unknown;
+                }
+              ).id,
+            ) === state?.existingWebhookId,
         );
+        const target = (
+          existingInstanceWebhook as
+            | {
+                target?: {
+                  id?: string;
+                  type?: string;
+                };
+              }
+            | undefined
+        )?.target;
         const hasChanges =
-          existingInstanceWebhook.target.id !== targetId ||
-          existingInstanceWebhook.target.type !== targetType;
+          target?.id !== targetId || target?.type !== targetType;
         if (!hasChanges) {
           logger.info("No changes found, skipping...");
           return;
@@ -60,7 +79,9 @@ export const managedWebhook = trigger({
           logger.info(
             "Changes found, deleting previous webhook and creating a new one...",
           );
-          await client.webhooks.delete(state.existingWebhookId);
+          await client.webhooks.deleteWebhookById(
+            util.types.toString(state.existingWebhookId),
+          );
           const { crossFlowState: newCrossFlowState } = await createWebhookFN(
             client,
             targetId,
@@ -100,7 +121,9 @@ export const managedWebhook = trigger({
       logger.info("Checking for existing webhook...");
       if (state?.existingWebhookId) {
         logger.info("Existing webhook found, deleting...");
-        await client.webhooks.delete(state.existingWebhookId);
+        await client.webhooks.deleteWebhookById(
+          util.types.toString(state.existingWebhookId),
+        );
         crossFlowState[storeKey] = undefined;
         return { crossFlowState };
       } else {
@@ -123,12 +146,12 @@ export const managedWebhook = trigger({
         .primarySignatureKey as string;
       const secondarySignatureKey = context.crossFlowState
         .secondarySignatureKey as string;
-      const isValid = Box.validateWebhookMessage(
-        util.types.toString(rawBody.data),
-        headers,
-        primarySignatureKey,
-        secondarySignatureKey,
-      );
+      const isValid = validateBoxWebhookSignature({
+        body: util.types.toString(rawBody.data),
+        headers: lowerHeaders,
+        primaryKey: primarySignatureKey,
+        secondaryKey: secondarySignatureKey,
+      });
       if (!isValid) {
         throw new Error(
           "The request has failed Box signature validation. Rejecting.",

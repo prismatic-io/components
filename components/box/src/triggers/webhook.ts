@@ -1,5 +1,5 @@
 import { trigger, util } from "@prismatic-io/spectral";
-import Box from "box-node-sdk";
+import { validateBoxWebhookSignature } from "../utils";
 export const webhook = trigger({
   display: {
     label: "Manual Webhook",
@@ -21,12 +21,12 @@ export const webhook = trigger({
         .primarySignatureKey as string;
       const secondarySignatureKey = context.crossFlowState
         .secondarySignatureKey as string;
-      const isValid = Box.validateWebhookMessage(
-        util.types.toString(rawBody.data),
-        headers,
-        primarySignatureKey,
-        secondarySignatureKey,
-      );
+      const isValid = validateBoxWebhookSignature({
+        body: util.types.toString(rawBody.data),
+        headers: lowerHeaders,
+        primaryKey: primarySignatureKey,
+        secondaryKey: secondarySignatureKey,
+      });
       if (!isValid) {
         throw new Error(
           "The request has failed Box signature validation. Rejecting.",

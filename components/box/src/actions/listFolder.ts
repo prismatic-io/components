@@ -71,7 +71,7 @@ export const listFolderWithPagination = action({
         limit: 1000,
         marker: undefined,
         offset: 0,
-        fields: params.fields,
+        fields: params.fields ? util.types.toString(params.fields) : undefined,
       });
       return {
         data: {
@@ -80,19 +80,26 @@ export const listFolderWithPagination = action({
         },
       };
     }
-    const { limit, next_marker, entries } = await client.folders.getItems(id, {
-      usemarker: "true",
-      marker: util.types.toString(params.marker) || undefined,
-      limit: util.types.toInt(params.limit) || undefined,
-      offset: util.types.toInt(params.offset) || undefined,
-      fields: params.fields,
-    });
+    const result = await client.folders.getFolderItems(
+      util.types.toString(id),
+      {
+        queryParams: {
+          usemarker: true,
+          marker: util.types.toString(params.marker) || undefined,
+          limit: util.types.toInt(params.limit) || undefined,
+          offset: util.types.toInt(params.offset) || undefined,
+          fields: params.fields
+            ? util.types.toString(params.fields).split(",")
+            : undefined,
+        },
+      },
+    );
     return {
       data: {
-        entries,
+        entries: (result.entries ?? []).map((entry) => entry.rawData),
         pagination: {
-          next_marker: next_marker,
-          limit,
+          next_marker: result.nextMarker,
+          limit: result.limit,
         },
       },
     };

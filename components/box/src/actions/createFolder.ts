@@ -20,9 +20,12 @@ export const createFolder = action({
     if (type !== "folder") {
       throw Error(`'${name}' is not a folder`);
     }
-    const result = await client.folders.create(id, newFolderName);
+    const result = await client.folders.createFolder({
+      name: util.types.toString(newFolderName),
+      parent: { id: util.types.toString(id) },
+    });
     return {
-      data: result,
+      data: result.rawData,
     };
   },
   inputs: { path, boxConnection: connectionInput },

@@ -1,8 +1,7 @@
-import { dataSource } from "@prismatic-io/spectral";
+import { dataSource, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
 import { connectionInput } from "../inputs";
 import { getAllWebhookEntries } from "../utils";
-import type { Webhook } from "../interfaces";
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",
@@ -12,13 +11,15 @@ export const selectWebhook = dataSource({
   perform: async (context, { boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const { entries } = await getAllWebhookEntries(client);
-    const webhooks: Webhook[] = await Promise.all(
-      (entries || []).map((entry) => client.webhooks.get(entry.id)),
+    const webhooks = await Promise.all(
+      (entries || []).map((entry) =>
+        client.webhooks.getWebhookById(util.types.toString(entry.id)),
+      ),
     );
     return {
       result: (webhooks || []).map((webhook) => ({
-        label: webhook.address,
-        key: webhook.id,
+        label: util.types.toString(webhook.address),
+        key: util.types.toString(webhook.id),
       })),
     };
   },

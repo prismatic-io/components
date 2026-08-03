@@ -14,6 +14,9 @@ import { createBoxHttpClient } from "../client";
 import {
   findFileForSharedLinkExamplePayload,
   getSharedLinkForFileExamplePayload,
+  addSharedLinkToFileExamplePayload,
+  updateSharedLinkToFileExamplePayload,
+  removeSharedLinkFromFileExamplePayload,
 } from "../examplePayloads";
 export const findFileForSharedLink = action({
   display: {
@@ -115,6 +118,7 @@ export const addSharedLinkToFile = action({
     sharedLinkVanityName: sharedLinkVanityNameInput,
     boxConnection: connectionInput,
   },
+  examplePayload: addSharedLinkToFileExamplePayload,
 });
 export const updateSharedLinkToFile = action({
   display: {
@@ -133,7 +137,7 @@ export const updateSharedLinkToFile = action({
       context.debug.enabled,
     );
     const { data } = await client.put(
-      `/2.0/files/${fileId}`,
+      `/files/${fileId}`,
       {
         shared_link: {
           access: sharedLinkAccess,
@@ -162,6 +166,7 @@ export const updateSharedLinkToFile = action({
     sharedLinkVanityName: sharedLinkVanityNameInput,
     boxConnection: connectionInput,
   },
+  examplePayload: updateSharedLinkToFileExamplePayload,
 });
 export const removeSharedLinkFromFile = action({
   display: {
@@ -199,4 +204,5 @@ export const removeSharedLinkFromFile = action({
     fileId: fileIdInput,
     boxConnection: connectionInput,
   },
+  examplePayload: removeSharedLinkFromFileExamplePayload,
 });

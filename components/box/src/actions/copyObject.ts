@@ -33,16 +33,27 @@ export const copyObject = action({
     if (destType !== "folder") {
       throw Error(`'${destName} is not a folder`);
     }
-    let result: unknown;
+    let data: unknown;
     if (sourceType === "folder") {
-      result = await client.folders.copy(sourceId, destId, { name: newName });
+      const result = await client.folders.copyFolder(
+        util.types.toString(sourceId),
+        { parent: { id: util.types.toString(destId) }, name: newName },
+      );
+      data = result.rawData;
     } else if (sourceType === "file") {
-      result = await client.files.copy(sourceId, destId, { name: newName });
+      const result = await client.files.copyFile(
+        util.types.toString(sourceId),
+        {
+          parent: { id: util.types.toString(destId) },
+          name: newName,
+        },
+      );
+      data = result.rawData;
     } else {
       throw Error(`'${sourceName}' is neither a file nor a folder`);
     }
     return {
-      data: result,
+      data,
     };
   },
   inputs: { fromPath, toPath, boxConnection: connectionInput },

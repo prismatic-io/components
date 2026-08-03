@@ -1,4 +1,4 @@
-import { pollingTrigger } from "@prismatic-io/spectral";
+import { pollingTrigger, util } from "@prismatic-io/spectral";
 import { connectionInput, fileIdInput } from "../inputs";
 import { createAuthorizedClient } from "../client";
 import {
@@ -21,14 +21,20 @@ export const newFileComments = pollingTrigger({
     context.logger.debug(
       `Polling for comments from: ${lastPolledAt} to ${now}`,
     );
-    const response = await client.files.getComments(fileId, {
-      fields: "created_at,id,message",
-    });
+    const response = await client.comments.getFileComments(
+      util.types.toString(fileId),
+      { queryParams: { fields: ["created_at", "id", "message"] } },
+    );
     context.logger.info("Polled comments: ", JSON.stringify(response, null, 2));
     context.logger.info("Normalizing comment dates...");
-    const normalizedComments = normalizeDatesBetweenEntries(
-      response.entries || [],
+    const commentEntries = (response.entries ?? []).map(
+      (entry) =>
+        entry.rawData as {
+          created_at?: string;
+          modified_at?: string;
+        },
     );
+    const normalizedComments = normalizeDatesBetweenEntries(commentEntries);
     context.logger.info("Computing new comments...");
     const newComments = computeNewEntries(normalizedComments, lastPolledAt);
     context.logger.info("Setting polling state...");

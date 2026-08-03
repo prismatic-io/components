@@ -9,7 +9,18 @@ export const downloadFileExamplePayload = {
   contentType: "application/octet",
 };
 export const uploadFileExamplePayload = {
-  data: [{ id: "54321", type: "folder", name: "Uploads" }],
+  data: {
+    total_count: 1,
+    entries: [
+      {
+        id: "54321",
+        type: "file",
+        name: "report.pdf",
+        sha1: "85136c79cbf9fe36bb9d05d0639c70c265c18d37",
+        parent: { id: "0", type: "folder", name: "All Files" },
+      },
+    ],
+  },
 };
 export const copyObjectExamplePayload = {
   data: [{ id: "98765", type: "folder", name: "Documents Backup" }],
@@ -113,4 +124,104 @@ export const getCurrentUserExamplePayload = {
 };
 export const getFileDownloadUrlExamplePayload = {
   data: "https://dl.boxcloud.com/d/1/b1!abc123-example-download-url/download",
+};
+export const addSharedLinkToFileExamplePayload = {
+  data: {
+    type: "file",
+    id: "53286756412",
+    name: "Contract_2024.pdf",
+    shared_link: {
+      url: "https://app.box.com/s/abbvr71aw8a4gb7u2541hlv45l806u5h",
+      download_url:
+        "https://app.box.com/shared/static/abbvr71aw8a4gb7u2541hlv45l806u5h.pdf",
+      vanity_url: null,
+      effective_access: "open",
+      effective_permission: "can_download",
+      is_password_enabled: false,
+      access: "open",
+      permissions: { can_download: true, can_preview: true, can_edit: false },
+      download_count: 0,
+      preview_count: 0,
+    },
+  },
+};
+export const updateSharedLinkToFileExamplePayload = {
+  data: {
+    type: "file",
+    id: "53286756412",
+    name: "Contract_2024.pdf",
+    shared_link: {
+      url: "https://app.box.com/s/abbvr71aw8a4gb7u2541hlv45l806u5h",
+      download_url:
+        "https://app.box.com/shared/static/abbvr71aw8a4gb7u2541hlv45l806u5h.pdf",
+      vanity_url: null,
+      effective_access: "company",
+      effective_permission: "can_download",
+      is_password_enabled: true,
+      access: "company",
+      permissions: { can_download: true, can_preview: true, can_edit: false },
+      download_count: 3,
+      preview_count: 12,
+    },
+  },
+};
+export const removeSharedLinkFromFileExamplePayload = {
+  data: {
+    type: "file",
+    id: "53286756412",
+    name: "Contract_2024.pdf",
+    shared_link: null,
+  },
+};
+export const addSharedLinkToFolderExamplePayload = {
+  data: {
+    type: "folder",
+    id: "84759261038",
+    name: "Shared Documents",
+    shared_link: {
+      url: "https://app.box.com/s/9f2a1c7be4d84e0fa1b2c3d4e5f60718",
+      download_url: null,
+      vanity_url: null,
+      effective_access: "open",
+      effective_permission: "can_download",
+      is_password_enabled: false,
+      access: "open",
+      permissions: { can_download: true, can_preview: true, can_edit: false },
+      download_count: 0,
+      preview_count: 0,
+    },
+  },
+};
+export const updateSharedLinkOnFolderExamplePayload = {
+  data: {
+    type: "folder",
+    id: "84759261038",
+    name: "Shared Documents",
+    shared_link: {
+      url: "https://app.box.com/s/9f2a1c7be4d84e0fa1b2c3d4e5f60718",
+      download_url: null,
+      vanity_url: null,
+      effective_access: "company",
+      effective_permission: "can_preview",
+      is_password_enabled: true,
+      access: "company",
+      permissions: { can_download: false, can_preview: true, can_edit: false },
+      download_count: 5,
+      preview_count: 42,
+    },
+  },
+};
+export const removeSharedLinkFromFolderExamplePayload = {
+  data: {
+    type: "folder",
+    id: "84759261038",
+    name: "Shared Documents",
+    shared_link: null,
+  },
+};
+export const deleteObjectExamplePayload = {
+  data: {},
+};
+export const deleteInstanceWebhooksExamplePayload = {
+  data: {},
 };

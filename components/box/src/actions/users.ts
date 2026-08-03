@@ -10,8 +10,8 @@ export const getCurrentUser = action({
   },
   perform: async (context, { boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
-    const result = await client.users.get(client.CURRENT_USER_ID);
-    return { data: result };
+    const result = await client.users.getUserMe();
+    return { data: result.rawData };
   },
   inputs: { boxConnection: connectionInput },
   examplePayload: getCurrentUserExamplePayload,

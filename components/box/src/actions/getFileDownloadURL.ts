@@ -15,7 +15,9 @@ export const getFileDownloadUrl = action({
     if (type !== "file") {
       throw Error(`'${name}' is not a file`);
     }
-    const url = await client.files.getDownloadURL(id);
+    const url = await client.downloads.getDownloadFileUrl(
+      util.types.toString(id),
+    );
     return {
       data: url,
     };

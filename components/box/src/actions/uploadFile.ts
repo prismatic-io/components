@@ -1,3 +1,4 @@
+import { Readable } from "node:stream";
 import { action, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
 import { path, fileContents, connectionInput } from "../inputs";
@@ -21,9 +22,15 @@ export const uploadFile = action({
       throw Error(`'${name}' is not a folder`);
     }
     const { data } = util.types.toData(fileContents);
-    const result = await client.files.uploadFile(id, fileName, data);
+    const result = await client.uploads.uploadFile({
+      attributes: {
+        name: util.types.toString(fileName),
+        parent: { id: util.types.toString(id) },
+      },
+      file: Readable.from(data),
+    });
     return {
-      data: result,
+      data: result.rawData,
     };
   },
   inputs: { path, fileContents, boxConnection: connectionInput },

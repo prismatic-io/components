@@ -12,24 +12,30 @@ import {
   signatureKey,
   fetchAll,
 } from "../inputs";
-import type { WebhookTriggerType } from "../interfaces";
-import { getAllWebhookEntries } from "../utils";
+import { getAllWebhookEntries, type CreateWebhookBody } from "../utils";
 import {
   listWebhooksExamplePayload,
   createWebhookExamplePayload,
   deleteWebhookExamplePayload,
+  deleteInstanceWebhooksExamplePayload,
 } from "../examplePayloads";
 const getInstanceWebhookIds = async (
   client,
   entries,
   webhookUrls: Record<string, string>,
 ): Promise<Set<string>> => {
+  const detailed = await Promise.all(
+    (entries || []).map((entry) =>
+      client.webhooks.getWebhookById(util.types.toString(entry.id)),
+    ),
+  );
   const webhookDetails: {
     id: string;
     address: string;
-  }[] = await Promise.all(
-    (entries || []).map(({ id }) => client.webhooks.get(id)),
-  );
+  }[] = detailed.map((webhook) => ({
+    id: util.types.toString(webhook.id),
+    address: util.types.toString(webhook.address),
+  }));
   const instanceWebhookUrls = new Set(Object.values(webhookUrls));
   return new Set(
     webhookDetails
@@ -61,32 +67,34 @@ export const listWebhooks = action({
     { boxConnection, limit, marker, showOnlyInstanceWebhooks, fetchAll },
   ) => {
     const client = createAuthorizedClient({ boxConnection });
-    const options: Record<string, unknown> = {};
-    if (limit && !fetchAll) {
-      options.limit = limit;
+    let entries: Record<string, unknown>[];
+    let extra: Record<string, unknown> = {};
+    if (fetchAll) {
+      ({ entries } = await getAllWebhookEntries(client));
+    } else {
+      const options: {
+        limit?: number;
+        marker?: string;
+      } = {};
+      if (limit) options.limit = util.types.toInt(limit);
+      if (marker) options.marker = util.types.toString(marker);
+      const result = await client.webhooks.getWebhooks(options);
+      entries = (result.entries ?? []).map(
+        (entry) => entry.rawData as Record<string, unknown>,
+      );
+      extra = { limit: result.limit, next_marker: result.nextMarker };
     }
-    if (marker && !fetchAll) {
-      options.marker = marker;
-    }
-    const webhooks = fetchAll
-      ? await getAllWebhookEntries(client)
-      : await client.webhooks.getAll(options);
     if (showOnlyInstanceWebhooks) {
       const instanceWebhookIds = await getInstanceWebhookIds(
         client,
-        webhooks?.entries,
+        entries,
         webhookUrls,
       );
-      return {
-        data: {
-          ...webhooks,
-          entries: (webhooks.entries || []).filter(({ id }) =>
-            instanceWebhookIds.has(id),
-          ),
-        },
-      };
+      entries = entries.filter((entry) =>
+        instanceWebhookIds.has(util.types.toString(entry.id)),
+      );
     }
-    return { data: webhooks };
+    return { data: { ...extra, entries } };
   },
   examplePayload: listWebhooksExamplePayload,
 });
@@ -122,12 +130,15 @@ export const createWebhook = action({
     const client = createAuthorizedClient({ boxConnection });
     let data = null;
     try {
-      data = await client.webhooks.create(
-        targetId,
-        targetType,
+      const created = await client.webhooks.createWebhook({
+        target: {
+          id: targetId,
+          type: targetType as CreateWebhookBody["target"]["type"],
+        },
         address,
-        triggerTypes as WebhookTriggerType[],
-      );
+        triggers: triggerTypes as CreateWebhookBody["triggers"],
+      });
+      data = created.rawData;
     } catch (error) {
       if ((error as Record<string, unknown>)?.statusCode === 409) {
         logger.warn(
@@ -158,7 +169,7 @@ export const deleteWebhook = action({
   },
   perform: async (context, { boxConnection, webhookId }) => {
     const client = createAuthorizedClient({ boxConnection });
-    await client.webhooks.delete(webhookId);
+    await client.webhooks.deleteWebhookById(util.types.toString(webhookId));
     return { data: null };
   },
   examplePayload: deleteWebhookExamplePayload,
@@ -172,15 +183,19 @@ export const deleteInstanceWebhooks = action({
   inputs: { boxConnection: connectionInput },
   perform: async ({ logger, webhookUrls }, { boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
-    const entries = [];
+    const entries: Record<string, unknown>[] = [];
     let stop = false;
-    let marker = null;
+    let marker: string | undefined;
     while (!stop) {
       const options = marker ? { marker } : {};
-      const webhooks = await client.webhooks.getAll(options);
-      entries.push(...(webhooks?.entries || []));
+      const webhooks = await client.webhooks.getWebhooks(options);
+      entries.push(
+        ...(webhooks?.entries ?? []).map(
+          (entry) => entry.rawData as Record<string, unknown>,
+        ),
+      );
       stop = !marker;
-      marker = webhooks?.next_marker;
+      marker = webhooks?.nextMarker;
     }
     const instanceWebhookIds = await getInstanceWebhookIds(
       client,
@@ -189,10 +204,11 @@ export const deleteInstanceWebhooks = action({
     );
     for (const webhookId of instanceWebhookIds) {
       logger.info(`Deleting webhook ${webhookId}...`);
-      await client.webhooks.delete(webhookId);
+      await client.webhooks.deleteWebhookById(util.types.toString(webhookId));
     }
     return { data: {} };
   },
+  examplePayload: deleteInstanceWebhooksExamplePayload,
 });
 export default {
   createWebhook,
