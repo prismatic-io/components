@@ -13,7 +13,6 @@ describe("listdirectory", () => {
   test("test listdirectory action", async () => {
     const { result } = await invoke(listDirectory, {
       connection,
-      verbose: false,
       path: "/",
     });
     expect(result.data.length).toStrictEqual(2);

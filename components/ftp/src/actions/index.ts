@@ -1,2 +1,3 @@
+import directories from "./directories";
 import files from "./files";
-export default { ...files };
+export default { ...directories, ...files };

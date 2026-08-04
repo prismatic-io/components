@@ -12,18 +12,14 @@ The trigger checks for:
 4. Files are categorized as "new" or "modified" based on their presence and attributes
 5. The trigger updates its state with the current file map for the next poll
 
-#### Configuration
-
-Configure the following inputs:
-
-- **Connection**: The FTP connection with server credentials
-- **Path**: The directory path to monitor on the FTP server
-- **Pattern**: Optional glob pattern to filter files (e.g., `*.csv`)
-- **Include Subdirectories**: Enable to recursively monitor subdirectories
-
 #### Returned Data
 
-The trigger returns an object with two arrays:
+The trigger returns an object with two arrays.
+
+Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Payload</summary>
 
 ```json
 {
@@ -45,6 +41,8 @@ The trigger returns an object with two arrays:
   }
 }
 ```
+
+</details>
 
 #### Notes
 

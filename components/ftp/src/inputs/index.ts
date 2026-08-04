@@ -1,7 +1,4 @@
-export {
-  connection,
-  includeSubdirectories,
-  path,
-  pattern,
-  verbose,
-} from "./common";
+export * from "./common";
+export * from "./directories";
+export * from "./files";
+export * from "./triggers";

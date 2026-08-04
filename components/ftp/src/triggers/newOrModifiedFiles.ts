@@ -1,12 +1,7 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { connect } from "../client";
-import {
-  connection,
-  includeSubdirectories,
-  path,
-  pattern,
-  verbose,
-} from "../inputs";
+import { createClient } from "../client";
+import { newOrModifiedFilesExamplePayload } from "../examplePayloads";
+import { newOrModifiedFilesInputs } from "../inputs";
 import type { FileMap, PollingState } from "../types";
 import { computeFileChanges, listFilesRecursive } from "../util";
 export const newOrModifiedFiles = pollingTrigger({
@@ -15,19 +10,14 @@ export const newOrModifiedFiles = pollingTrigger({
     description:
       "Checks for new and modified files in a directory on an FTP server on a configured schedule.",
   },
-  inputs: {
-    connection,
-    verbose,
-    path,
-    pattern,
-    includeSubdirectories,
-  },
+  inputs: newOrModifiedFilesInputs,
+  examplePayload: newOrModifiedFilesExamplePayload,
   perform: async (
     context,
     payload,
-    { connection, verbose, path, pattern, includeSubdirectories },
+    { connection, path, pattern, includeSubdirectories },
   ) => {
-    const client = await connect(connection, verbose);
+    const client = await createClient(connection, context.debug.enabled);
     try {
       const currentFileMap: FileMap = {};
       await listFilesRecursive(

@@ -1,7 +1,7 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import * as ftp from "basic-ftp";
 import { basic } from "./connections";
-export const connect = async (
+export const createClient = async (
   connection: Connection,
   verbose: boolean,
 ): Promise<ftp.Client> => {

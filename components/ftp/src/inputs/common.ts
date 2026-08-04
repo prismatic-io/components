@@ -1,37 +1,40 @@
 import { input, util } from "@prismatic-io/spectral";
+import { cleanString } from "../util/clean";
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
-});
-export const verbose = input({
-  label: "Verbose Logging",
-  placeholder: "Enable Verbose Logging",
-  default: "false",
-  comments: "Enables verbose logging for debugging purposes.",
-  type: "boolean",
-  example: "false",
-  clean: util.types.toBool,
+  comments: "The FTP connection to use.",
 });
 export const path = input({
   label: "Path",
-  placeholder: "Path of directory on FTP server to monitor",
+  placeholder: "Enter directory path",
   type: "string",
   required: true,
   comments:
-    "Path of directory on FTP server to monitor for new or modified files.",
+    "The directory path on the FTP server to monitor for new or modified files.",
   example: "/path/to/directory",
   clean: util.types.toString,
 });
 export const pattern = input({
   label: "Pattern",
   default: "*",
-  placeholder: "Glob-style string for filtering specific files",
+  placeholder: "Enter file pattern",
   type: "string",
   required: false,
-  comments: "Glob-style string for filtering specific files.",
+  comments:
+    "A glob-style pattern to filter files by name. Use wildcards like *.csv or report_*.txt to match specific file types or naming conventions.",
   example: "*.csv",
-  clean: util.types.toString,
+  clean: cleanString,
+});
+export const recursive = input({
+  label: "Include Subfolders",
+  comments:
+    "When true, recursively creates any missing directories in the path.",
+  type: "boolean",
+  required: false,
+  default: "true",
+  clean: util.types.toBool,
 });
 export const includeSubdirectories = input({
   label: "Include Subdirectories",
