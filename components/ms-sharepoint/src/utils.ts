@@ -5,7 +5,12 @@ import {
   util,
 } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { DriveItem, DriveResponse, DriveTriggerItem } from "./interfaces";
+import type {
+  DriveItem,
+  DriveResponse,
+  DriveTriggerItem,
+  PaginateOptions,
+} from "./interfaces";
 import connections, { certificateCredentials } from "./connections";
 import { ConfidentialClientApplication } from "@azure/msal-node";
 export const validateConnection = (connection: Connection): void => {
@@ -20,9 +25,11 @@ export const validateConnection = (connection: Connection): void => {
 export const paginateResults = async <T>(
   client: HttpClient,
   endpoint: string,
-  returnFullData = false,
-  useTop = true,
-  excludeParents = false,
+  {
+    returnFullData = false,
+    useTop = true,
+    excludeParents = false,
+  }: PaginateOptions = {},
 ) => {
   const results = [];
   let nextLink = endpoint;
@@ -57,8 +64,12 @@ export const getFilesFromDriveFN = async (
   client: HttpClient,
   driveId: string,
   drives: DriveItem[] = [],
-): Promise<DriveItem[]> => {
+): Promise<{
+  value: DriveItem[];
+  "@odata.context"?: string;
+}> => {
   const allFiles: DriveItem[] = [];
+  let rootContext: string | undefined;
   const processFolder = async (folderId: string): Promise<DriveItem[]> => {
     const folderFiles: DriveItem[] = [];
     let nextLink: string | undefined;
@@ -68,6 +79,9 @@ export const getFilesFromDriveFN = async (
           ? `/drives/${driveId}/root/children`
           : `/drives/${driveId}/items/${folderId}/children`;
       const { data } = await client.get<DriveResponse>(nextLink || endpoint);
+      if (folderId === "root" && !rootContext) {
+        rootContext = data["@odata.context"];
+      }
       const folders: DriveItem[] = [];
       for (const item of data.value) {
         if (item.folder) {
@@ -100,7 +114,10 @@ export const getFilesFromDriveFN = async (
     const rootFiles = await processFolder("root");
     allFiles.push(...rootFiles);
   }
-  return allFiles;
+  return {
+    value: allFiles,
+    ...(rootContext ? { "@odata.context": rootContext } : {}),
+  };
 };
 export const getAccessToken = async (connection: Connection) => {
   if (connection.key === certificateCredentials.key) {

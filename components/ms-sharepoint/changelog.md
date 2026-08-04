@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-08-04
+
+Updated the **Fetch All** option on the **List Sites**, **List Followed Sites**, **List Site Lists**, **List Drives**, **List Files in Drive**, and **List Folder Files in Drive** actions so results are returned in the same `{ value: [ ... ] }` shape as a single-page call; previously enabling **Fetch All** returned a bare array, so integrations that read the `value` property received no items. The **List Files in Drive** action now also returns this shape when **Recursive** is enabled alongside **Fetch All**
+
 ### 2026-05-21
 
 Updated the **List Site Lists** action to include a search query parameter when fetching all lists, ensuring complete results when using delegated authentication

@@ -35,13 +35,11 @@ export const pollSiteChanges = pollingTrigger({
       const endpoint = deltaLink
         ? deltaLink
         : `/sites/${siteId}/drives/${drive.id}/root/delta`;
-      allChanges[drive.name] = paginateResults(
-        client,
-        endpoint as string,
-        true,
-        false,
-        true,
-      );
+      allChanges[drive.name] = paginateResults(client, endpoint as string, {
+        returnFullData: true,
+        useTop: false,
+        excludeParents: true,
+      });
     }
     const allChangesResults = (await Promise.all(
       Object.values(allChanges),

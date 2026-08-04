@@ -33,7 +33,9 @@ const listSiteLists = action({
     const client = await createClient(params.connection, debug);
     const endpoint = `/sites/${params.siteId}/lists`;
     if (params.fetchAll) {
-      const results = await paginateResults(client, endpoint);
+      const results = await paginateResults(client, endpoint, {
+        returnFullData: true,
+      });
       return { data: results };
     }
     const { data } = await client.get(endpoint);

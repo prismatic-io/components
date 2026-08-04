@@ -32,7 +32,9 @@ const listDrives = action({
     const client = await createClient(params.connection, debug);
     const endpoint = `/sites/${params.siteId}/drives`;
     if (params.fetchAll) {
-      const results = await paginateResults(client, endpoint);
+      const results = await paginateResults(client, endpoint, {
+        returnFullData: true,
+      });
       return { data: results };
     }
     const { data } = await client.get(endpoint, {
@@ -172,7 +174,9 @@ const getFilesFromDriveWithPagination = action({
         });
         return { data };
       }
-      const results = await paginateResults(client, endpoint);
+      const results = await paginateResults(client, endpoint, {
+        returnFullData: true,
+      });
       return {
         data: results,
       };
@@ -188,7 +192,11 @@ const getFilesFromDriveWithPagination = action({
       data["@odata.nextToken"] = nextLink.searchParams.get("$skipToken");
     }
     if (recursive) {
-      const allFiles = await getFilesFromDriveFN(client, driveId, data.value);
+      const { value: allFiles } = await getFilesFromDriveFN(
+        client,
+        driveId,
+        data.value,
+      );
       return {
         data: {
           ...data,
@@ -221,7 +229,9 @@ const getFilesFromDriveFolderWithPagination = action({
     const endpoint = `/drives/${driveId}/items/${folderId}/children`;
     const client = await createClient(connection, debug);
     if (fetchAll) {
-      const results = await paginateResults(client, endpoint);
+      const results = await paginateResults(client, endpoint, {
+        returnFullData: true,
+      });
       return {
         data: results,
       };

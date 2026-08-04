@@ -17,7 +17,9 @@ const listFollowedSites = action({
     const client = await createClient(params.connection, debug);
     const endpoint = "/me/followedSites";
     if (params.fetchAll) {
-      const results = await paginateResults(client, endpoint);
+      const results = await paginateResults(client, endpoint, {
+        returnFullData: true,
+      });
       return { data: results };
     }
     const { data } = await client.get("/me/followedSites", {
@@ -60,7 +62,9 @@ const listSites = action({
     const client = await createClient(params.connection, debug);
     const endpoint = "/sites";
     if (params.fetchAll) {
-      const results = await paginateResults(client, `${endpoint}?search=`);
+      const results = await paginateResults(client, `${endpoint}?search=`, {
+        returnFullData: true,
+      });
       return { data: results };
     }
     const { data } = await client.get(endpoint, {

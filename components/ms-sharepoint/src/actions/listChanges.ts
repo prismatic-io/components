@@ -29,13 +29,11 @@ export const listChanges = action({
   ) => {
     const client = await createClient(connection, debug);
     if (fetchAll) {
-      const results = await paginateResults(
-        client,
-        deltaURL,
-        true,
-        false,
-        true,
-      );
+      const results = await paginateResults(client, deltaURL, {
+        returnFullData: true,
+        useTop: false,
+        excludeParents: true,
+      });
       return { data: results };
     }
     const { data } = await client.get(deltaURL, {

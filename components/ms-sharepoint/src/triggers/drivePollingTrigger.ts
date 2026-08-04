@@ -29,9 +29,11 @@ export const drivePollingTrigger = pollingTrigger({
     const data = (await paginateResults<DriveDeltaResponse>(
       client,
       endpoint as string,
-      true,
-      false,
-      true,
+      {
+        returnFullData: true,
+        useTop: false,
+        excludeParents: true,
+      },
     )) as DriveDeltaResponse;
     const newPollingState: PollingState = {};
     if (data.value.length > 0) {

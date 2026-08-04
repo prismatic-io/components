@@ -28,6 +28,11 @@ export interface DriveResponse {
 export interface DriveDeltaResponse extends DriveResponse {
   "@odata.deltaLink": string;
 }
+export interface PaginateOptions {
+  returnFullData?: boolean;
+  useTop?: boolean;
+  excludeParents?: boolean;
+}
 export interface ListItem {
   id: string;
   fields: {

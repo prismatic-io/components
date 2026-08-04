@@ -27,13 +27,11 @@ export const folderPollingTrigger = pollingTrigger({
     const deltaLink = state[stateKey];
     let folderPath = state[pathKey] as string | undefined;
     const endpoint = deltaLink ? deltaLink : `/drives/${driveId}/root/delta`;
-    const data = (await paginateResults(
-      client,
-      endpoint as string,
-      true,
-      false,
-      true,
-    )) as unknown as DriveDeltaResponse;
+    const data = (await paginateResults(client, endpoint as string, {
+      returnFullData: true,
+      useTop: false,
+      excludeParents: true,
+    })) as unknown as DriveDeltaResponse;
     const newPollingState: PollingState = {};
     if (data.value.length > 0) {
       const separatedChanges: PollSiteChangesSeparatedChanges = {};
