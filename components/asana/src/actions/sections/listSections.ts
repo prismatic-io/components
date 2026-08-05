@@ -1,13 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  connectionInput,
-  projectId,
-  offset,
-  limit,
-  optFields,
-} from "../../inputs";
-import { SECTION_OPT_FIELDS } from "../../util";
+import { listSectionsExamplePayload } from "../../examplePayloads";
+import { listSectionsInputs } from "../../inputs";
 export const listSections = action({
   display: {
     label: "List Sections",
@@ -22,39 +16,14 @@ export const listSections = action({
       `/projects/${params.projectId}/sections`,
       {
         params: {
-          offset: params.offset,
-          limit: params.limit,
+          offset: params.pagination.offset,
+          limit: params.pagination.limit,
           opt_fields: params.optFields,
         },
       },
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    projectId,
-    offset,
-    limit,
-    optFields: { ...optFields, default: SECTION_OPT_FIELDS },
-  },
-  examplePayload: {
-    data: {
-      data: [
-        {
-          gid: "1202178854270533",
-          created_at: "2022-04-25T19:28:56.749Z",
-          name: "Discussion topics",
-          project: { gid: "1202178854270532", resource_type: "project" },
-          resource_type: "section",
-        },
-        {
-          gid: "1202178854270541",
-          created_at: "2022-04-25T19:28:59.950Z",
-          name: "FYIs",
-          project: { gid: "1202178854270532", resource_type: "project" },
-          resource_type: "section",
-        },
-      ],
-    },
-  },
+  inputs: listSectionsInputs,
+  examplePayload: listSectionsExamplePayload,
 });

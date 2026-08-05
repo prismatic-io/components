@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-08-05
+
+Removed the deprecated `webhookNotificationApplicableUsers` field from the webhook trigger's example payload, aligning the documentation with Adobe Acrobat Sign's July 2025 webhook payload change
+
 ### 2026-07-01
 
 Restructured action inputs into structured objects for an improved user experience.

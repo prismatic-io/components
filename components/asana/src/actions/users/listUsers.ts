@@ -1,12 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  workspaceId,
-  offset,
-  limit,
-  connectionInput,
-  optFields,
-} from "../../inputs";
+import { listUsersExamplePayload } from "../../examplePayloads";
+import { listUsersInputs } from "../../inputs";
 export const listUsers = action({
   display: {
     label: "List Users",
@@ -19,56 +14,14 @@ export const listUsers = action({
     );
     const { data } = await client.get(`/users`, {
       params: {
-        offset: params.offset,
-        limit: params.limit,
+        offset: params.pagination.offset,
+        limit: params.pagination.limit,
         workspace: params.workspaceId || undefined,
         opt_fields: params.optFields,
       },
     });
     return { data };
   },
-  inputs: {
-    workspaceId: {
-      ...workspaceId,
-      required: false,
-      comments: "Optionally filter by workspace ID",
-    },
-    limit,
-    offset,
-    asanaConnection: connectionInput,
-    optFields: {
-      ...optFields,
-      default: "gid,name,resource_type,email,workspaces",
-    },
-  },
-  examplePayload: {
-    data: {
-      data: [
-        {
-          gid: "1126508793140155",
-          name: "Example User 1",
-          resource_type: "user",
-          email: "user-1@example.com",
-          workspaces: [
-            {
-              gid: "1126509132283071",
-              resource_type: "workspace",
-            },
-          ],
-        },
-        {
-          gid: "1126508793140156",
-          name: "Example User2 ",
-          resource_type: "user",
-          email: "user-2@example.com",
-          workspaces: [
-            {
-              gid: "1126509132283071",
-              resource_type: "workspace",
-            },
-          ],
-        },
-      ],
-    },
-  },
+  inputs: listUsersInputs,
+  examplePayload: listUsersExamplePayload,
 });

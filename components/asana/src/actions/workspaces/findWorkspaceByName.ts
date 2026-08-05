@@ -1,21 +1,8 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput } from "../../inputs";
-interface Workspace {
-  gid: string;
-  name: string;
-  resource_type: string;
-}
-interface WorkspaceReturn {
-  data: {
-    data: Workspace[];
-    next_page: {
-      offset: string;
-      path: string;
-      uri: string;
-    };
-  };
-}
+import { findWorkspaceByNameExamplePayload } from "../../examplePayloads";
+import { findWorkspaceByNameInputs } from "../../inputs";
+import type { PaginatedResponse, Workspace } from "../../types";
 export const findWorkspaceByName = action({
   display: {
     label: "Find Workspace by Name",
@@ -29,9 +16,12 @@ export const findWorkspaceByName = action({
     let offset: string | undefined;
     let stop = false;
     while (!stop) {
-      const response: WorkspaceReturn = await client.get("/workspaces", {
-        params: { offset },
-      });
+      const response: PaginatedResponse<Workspace> = await client.get(
+        "/workspaces",
+        {
+          params: { offset },
+        },
+      );
       const filteredData = response.data.data.filter(
         (workspace) => params.workspaceName === workspace.name,
       );
@@ -45,19 +35,6 @@ export const findWorkspaceByName = action({
     }
     throw new Error(`No workspace named "${params.workspaceName}" found.`);
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    workspaceName: input({
-      label: "Workspace Name",
-      type: "string",
-      required: true,
-    }),
-  },
-  examplePayload: {
-    data: {
-      gid: "1126509132283071",
-      name: "Example Workspace",
-      resource_type: "workspace",
-    },
-  },
+  inputs: findWorkspaceByNameInputs,
+  examplePayload: findWorkspaceByNameExamplePayload,
 });

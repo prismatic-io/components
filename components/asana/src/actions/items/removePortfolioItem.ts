@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, portfolioId, itemId } from "../../inputs";
+import { removePortfolioItemExamplePayload } from "../../examplePayloads";
+import { removePortfolioItemInputs } from "../../inputs";
 export const removePortfolioItem = action({
   display: {
     label: "Remove Portfolio Item",
@@ -21,10 +22,6 @@ export const removePortfolioItem = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    portfolioId,
-    itemId,
-  },
-  examplePayload: { data: { data: {} } },
+  inputs: removePortfolioItemInputs,
+  examplePayload: removePortfolioItemExamplePayload,
 });

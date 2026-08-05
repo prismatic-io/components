@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { limit, offset, connectionInput, tagId } from "../../inputs";
+import { deleteTagExamplePayload } from "../../examplePayloads";
+import { deleteTagInputs } from "../../inputs";
 export const deleteTag = action({
   display: {
     label: "Delete Tag",
@@ -14,6 +15,6 @@ export const deleteTag = action({
     const { data } = await client.delete(`/tags/${params.tagId}`);
     return { data };
   },
-  inputs: { asanaConnection: connectionInput, limit, offset, tagId },
-  examplePayload: { data: { data: {} } },
+  inputs: deleteTagInputs,
+  examplePayload: deleteTagExamplePayload,
 });

@@ -1,37 +1,22 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
-import { connectionInput, teamId, workspaceId } from "../inputs";
-import {
-  cleanString,
-  fetchMoreData,
-  mapToLabelKey,
-  handleMultipleWorkspacesError,
-} from "../util";
+import { selectProjectInputs } from "../inputs";
 import type { DataSource } from "../types/Project";
+import {
+  fetchMoreData,
+  handleMultipleWorkspacesError,
+  mapToLabelKey,
+} from "../util";
 const selectProject = dataSource({
   display: {
     label: "Select Project",
     description: "Select a project from a dropdown menu.",
   },
-  inputs: {
-    connection: connectionInput,
-    workspace: {
-      ...workspaceId,
-      required: false,
-      clean: cleanString,
-      dataSource: undefined,
-    },
-    team: {
-      ...teamId,
-      required: false,
-      clean: cleanString,
-      dataSource: undefined,
-    },
-  },
+  inputs: selectProjectInputs,
   perform: async (_context, { connection, team, workspace }) => {
     try {
       const client = await createAsanaClient(connection, false);
-      const canPaginate = workspace || team ? true : false;
+      const canPaginate = !!(workspace || team);
       const data = await fetchMoreData<DataSource>(
         client,
         "/projects",

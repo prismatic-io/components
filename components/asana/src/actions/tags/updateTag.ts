@@ -1,14 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  connectionInput,
-  color,
-  name,
-  notes,
-  tagId,
-  optFields,
-} from "../../inputs";
-import { TAG_OPT_FIELDS } from "../../util";
+import { updateTagExamplePayload } from "../../examplePayloads";
+import { updateTagInputs } from "../../inputs";
 export const updateTag = action({
   display: {
     label: "Update Tag",
@@ -36,26 +29,6 @@ export const updateTag = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    tagId,
-    color,
-    name,
-    notes,
-    optFields: { ...optFields, default: TAG_OPT_FIELDS },
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202461644189657",
-        resource_type: "tag",
-        created_at: "2022-06-16T22:04:33.095Z",
-        name: "My Updated Tag Name",
-        notes: "My Updated Notes",
-        workspace: { gid: "1126509132283071", resource_type: "workspace" },
-        color: "dark-green",
-        followers: [],
-      },
-    },
-  },
+  inputs: updateTagInputs,
+  examplePayload: updateTagExamplePayload,
 });

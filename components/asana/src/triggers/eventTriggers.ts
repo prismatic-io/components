@@ -1,9 +1,20 @@
 import type {
   ActionContext,
-  TriggerPayload,
   Connection,
+  TriggerPayload,
 } from "@prismatic-io/spectral";
 import { trigger, util } from "@prismatic-io/spectral";
+import { WEBHOOK_SECRET_LEGACY_KEY } from "../constants";
+import {
+  projectTasksTriggerExamplePayload,
+  storiesTriggerExamplePayload,
+  workspaceProjectsTriggerExamplePayload,
+} from "../examplePayloads";
+import {
+  projectTasksTriggerInputs,
+  storiesTriggerInputs,
+  workspaceProjectsTriggerInputs,
+} from "../inputs";
 import {
   createWebhook,
   deleteWebhook,
@@ -13,23 +24,7 @@ import {
   resolveWebhookSecret,
   validateHmac,
   webhookSecretStateKey,
-} from "./utils";
-import {
-  projectTasksTriggerExamplePayload,
-  storiesTriggerExamplePayload,
-  workspaceProjectsTriggerExamplePayload,
-} from "../examplePayloads";
-import {
-  connectionInput,
-  projectId,
-  workspaceId,
-  triggerWhenAdded,
-  triggerWhenChanged,
-  triggerWhenDeleted,
-  triggerWhenRemoved,
-  triggerWhenUndeleted,
-} from "../inputs";
-import { WEBHOOK_SECRET_LEGACY_KEY } from "../constants";
+} from "../util";
 const performFunction = async (
   context: ActionContext,
   payload: TriggerPayload,
@@ -89,35 +84,7 @@ const workspaceProjectsTrigger = trigger({
   allowsBranching: true,
   staticBranchNames: ["Notification", "URL Verify"],
   examplePayload: workspaceProjectsTriggerExamplePayload,
-  inputs: {
-    asanaConnection: connectionInput,
-    workspaceId,
-    triggerWhenAdded: {
-      ...triggerWhenAdded,
-      comments:
-        "Determines if the webhook will trigger when a project is added.",
-    },
-    triggerWhenChanged: {
-      ...triggerWhenChanged,
-      comments:
-        "Determines if the webhook will trigger when a project is changed.",
-    },
-    triggerWhenDeleted: {
-      ...triggerWhenDeleted,
-      comments:
-        "Determines if the webhook will trigger when a project is deleted.",
-    },
-    triggerWhenRemoved: {
-      ...triggerWhenRemoved,
-      comments:
-        "Determines if the webhook will trigger when a project is removed.",
-    },
-    triggerWhenUndeleted: {
-      ...triggerWhenUndeleted,
-      comments:
-        "Determines if the webhook will trigger when a project is undeleted.",
-    },
-  },
+  inputs: workspaceProjectsTriggerInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
   perform: performFunction,
@@ -170,34 +137,7 @@ const projectTasksTrigger = trigger({
   allowsBranching: true,
   staticBranchNames: ["Notification", "URL Verify"],
   examplePayload: projectTasksTriggerExamplePayload,
-  inputs: {
-    asanaConnection: connectionInput,
-    projectId,
-    triggerWhenAdded: {
-      ...triggerWhenAdded,
-      comments: "Determines if the webhook will trigger when a task is added.",
-    },
-    triggerWhenChanged: {
-      ...triggerWhenChanged,
-      comments:
-        "Determines if the webhook will trigger when a task is changed.",
-    },
-    triggerWhenDeleted: {
-      ...triggerWhenDeleted,
-      comments:
-        "Determines if the webhook will trigger when a task is deleted.",
-    },
-    triggerWhenRemoved: {
-      ...triggerWhenRemoved,
-      comments:
-        "Determines if the webhook will trigger when a task is removed.",
-    },
-    triggerWhenUndeleted: {
-      ...triggerWhenUndeleted,
-      comments:
-        "Determines if the webhook will trigger when a task is undeleted.",
-    },
-  },
+  inputs: projectTasksTriggerInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
   perform: performFunction,
@@ -250,35 +190,7 @@ const storiesTrigger = trigger({
   allowsBranching: true,
   staticBranchNames: ["Notification", "URL Verify"],
   examplePayload: storiesTriggerExamplePayload,
-  inputs: {
-    asanaConnection: connectionInput,
-    projectId,
-    triggerWhenAdded: {
-      ...triggerWhenAdded,
-      comments:
-        "Determines if the webhook will trigger when a comment or activity is added.",
-    },
-    triggerWhenChanged: {
-      ...triggerWhenChanged,
-      comments:
-        "Determines if the webhook will trigger when a comment or activity is changed.",
-    },
-    triggerWhenDeleted: {
-      ...triggerWhenDeleted,
-      comments:
-        "Determines if the webhook will trigger when a comment or activity is deleted.",
-    },
-    triggerWhenRemoved: {
-      ...triggerWhenRemoved,
-      comments:
-        "Determines if the webhook will trigger when a comment or activity is removed.",
-    },
-    triggerWhenUndeleted: {
-      ...triggerWhenUndeleted,
-      comments:
-        "Determines if the webhook will trigger when a comment or activity is undeleted.",
-    },
-  },
+  inputs: storiesTriggerInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
   perform: performFunction,

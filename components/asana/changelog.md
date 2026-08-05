@@ -1,5 +1,15 @@
 ## Changelog
 
+### 2026-08-05
+
+Removed **gid**, **resource_type**, and **layout** from **Optional Properties** default values (Asana returns these fields automatically, so requesting them is unnecessary)
+
+Restructured action inputs into structured objects for an improved user experience:
+
+- List actions (**List Tasks**, **List Projects**, **List Portfolios**, **List Users**, **List Sections**, and 11 others) group **Limit** and **Offset** into **Pagination**
+- **Create Task** and **Update Task** group **Due At**, **Due On**, **Start At**, and **Start On** into **Scheduling**, and status-related inputs into **Task Status**
+- **Create Project** and **Update Project** group settings inputs into **Project Settings**
+
 ### 2026-07-30
 
 Added **Optional Properties** input to 21 actions across projects, tags, sections, custom fields, users, attachments, portfolios, status updates, and subtasks to customize which fields the API returns

@@ -1,12 +1,7 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
-import {
-  connectionInput,
-  projectId,
-  showNewRecords,
-  showUpdatedRecords,
-} from "../inputs";
+import { pollChangesTriggerInputs } from "../inputs";
 import type { PollingState } from "../types/PollingState";
 import { fetchTasksSince, partitionTasksByTimestamp } from "../util";
 export const pollChangesTrigger = pollingTrigger({
@@ -15,12 +10,7 @@ export const pollChangesTrigger = pollingTrigger({
     description:
       "Checks for new and updated tasks in a selected Asana project on a configured schedule.",
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    projectId,
-    showNewRecords,
-    showUpdatedRecords,
-  },
+  inputs: pollChangesTriggerInputs,
   examplePayload: pollChangesTriggerExamplePayload,
   perform: async (
     context,

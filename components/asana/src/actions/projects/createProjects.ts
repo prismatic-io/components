@@ -1,23 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  projectColor,
-  defaultView,
-  dueOn,
-  archived,
-  followers,
-  name,
-  notes,
-  owner,
-  startOn,
-  team,
-  workspaceId,
-  connectionInput,
-  htmlNotes,
-  privacySetting,
-  optFields,
-} from "../../inputs";
-import { PROJECT_OPT_FIELDS } from "../../util";
+import { createProjectsExamplePayload } from "../../examplePayloads";
+import { createProjectsInputs } from "../../inputs";
 export const createProjects = action({
   display: {
     label: "Create Project",
@@ -31,8 +15,8 @@ export const createProjects = action({
     );
     const projectData = {
       data: {
-        archived: params.archived,
-        color: params.projectColor,
+        archived: params.projectSettings.archived,
+        color: params.projectSettings.projectColor,
         default_view: params.defaultView,
         due_on: params.dueOn,
         followers: params.followers,
@@ -42,7 +26,7 @@ export const createProjects = action({
         start_on: params.startOn,
         team: params.team,
         html_notes: params.htmlNotes || undefined,
-        privacy_setting: params.privacySetting,
+        privacy_setting: params.projectSettings.privacySetting,
       },
     };
     const endpoint = params.workspaceId
@@ -55,49 +39,6 @@ export const createProjects = action({
     });
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    team: { ...team, required: true },
-    owner,
-    defaultView,
-    projectColor,
-    privacySetting,
-    dueOn,
-    archived,
-    followers,
-    name,
-    htmlNotes,
-    notes,
-    startOn,
-    workspaceId: {
-      ...workspaceId,
-      required: false,
-      comments:
-        "Include this value if you would like this project to be included in a workspace.",
-    },
-    optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202461772995112",
-        resource_type: "project",
-        created_at: "2022-06-16T22:53:48.986Z",
-        modified_at: "2022-06-16T22:53:48.986Z",
-        members: [{ gid: "1202178852626547", resource_type: "user" }],
-        owner: { gid: "1202178852626547", resource_type: "user" },
-        due_on: null,
-        current_status: null,
-        name: "My Cool Project",
-        notes: "Some notes on my project",
-        archived: false,
-        workspace: { gid: "1126509132283071", resource_type: "workspace" },
-        team: { gid: "1202178854270529", resource_type: "team" },
-        start_on: null,
-        color: "light-green",
-        followers: [{ gid: "1202178852626547", resource_type: "user" }],
-        html_notes: "<body>Some notes on my project</body>",
-      },
-    },
-  },
+  inputs: createProjectsInputs,
+  examplePayload: createProjectsExamplePayload,
 });

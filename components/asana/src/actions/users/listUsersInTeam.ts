@@ -1,12 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  workspaceId,
-  offset,
-  limit,
-  connectionInput,
-  teamId,
-} from "../../inputs";
+import { listUsersInTeamExamplePayload } from "../../examplePayloads";
+import { listUsersInTeamInputs } from "../../inputs";
 export const listUsersInTeam = action({
   display: {
     label: "List Users in Team",
@@ -26,30 +21,6 @@ export const listUsersInTeam = action({
     });
     return { data };
   },
-  inputs: {
-    workspaceId: { ...workspaceId, required: false },
-    teamId,
-    limit,
-    offset,
-    asanaConnection: connectionInput,
-  },
-  examplePayload: {
-    data: [
-      {
-        gid: "54630745323",
-        name: "Example User",
-        resource_type: "user",
-      },
-      {
-        gid: "54630745323",
-        name: "Example User",
-        resource_type: "user",
-      },
-      {
-        gid: "54630745323",
-        name: "Example User",
-        resource_type: "user",
-      },
-    ],
-  },
+  inputs: listUsersInTeamInputs,
+  examplePayload: listUsersInTeamExamplePayload,
 });

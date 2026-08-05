@@ -1,24 +1,8 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, workspaceId, optFields } from "../../inputs";
-import { TAG_OPT_FIELDS } from "../../util";
-interface Tag {
-  gid: string;
-  name: string;
-  color: string;
-  created_at: string;
-  resource_type: string;
-}
-interface TagReturn {
-  data: {
-    data: Tag[];
-    next_page: {
-      offset: string;
-      path: string;
-      uri: string;
-    };
-  };
-}
+import { findTagByNameExamplePayload } from "../../examplePayloads";
+import { findTagByNameInputs } from "../../inputs";
+import type { PaginatedResponse, Tag } from "../../types";
 export const findTagByName = action({
   display: {
     label: "Find Tag by Name",
@@ -32,7 +16,7 @@ export const findTagByName = action({
     let offset: string | undefined;
     let stop = false;
     while (!stop) {
-      const response: TagReturn = await client.get(
+      const response: PaginatedResponse<Tag> = await client.get(
         `workspaces/${params.workspaceId}/tags`,
         {
           params: {
@@ -54,25 +38,6 @@ export const findTagByName = action({
     }
     throw new Error(`No tag named "${params.tagName}" found.`);
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    tagName: input({
-      label: "Tag Name",
-      type: "string",
-      required: true,
-      comments:
-        "Note: if multiple tags share a name, only one tag will be returned.",
-    }),
-    workspaceId,
-    optFields: { ...optFields, default: TAG_OPT_FIELDS },
-  },
-  examplePayload: {
-    data: {
-      gid: "1202467057873527",
-      color: "dark-green",
-      created_at: "2022-06-17T20:28:26.601Z",
-      name: "My Example Tag Name",
-      resource_type: "tag",
-    },
-  },
+  inputs: findTagByNameInputs,
+  examplePayload: findTagByNameExamplePayload,
 });

@@ -1,0 +1,73 @@
+The **Project Tasks** trigger receives task notifications from Asana. It automatically creates and manages a webhook subscription for task events in the selected project.
+
+#### How It Works
+
+This is a lifecycle-managed webhook trigger:
+
+- **On Instance Deploy**: The trigger creates an Asana webhook subscription targeting the instance's flow URL, filtered to task events in the configured project. If a matching webhook already exists, creation is skipped.
+- **On Instance Deletion**: The trigger finds and deletes the corresponding Asana webhook subscription.
+
+When Asana delivers a webhook notification, the trigger:
+
+1. Handles the initial handshake challenge by echoing the `X-Hook-Secret` header and storing it for HMAC validation
+2. Validates the HMAC-SHA256 signature on subsequent requests
+3. Skips heartbeat events (empty `events` array) by routing them to the **URL Verify** branch
+4. Enriches notification events with full task data fetched from the Asana API, then routes to the **Notification** branch
+
+#### Branches
+
+| Branch | Routed When |
+|--------|-------------|
+| **URL Verify** | Handshake challenge or heartbeat event |
+| **Notification** | Task change events |
+
+#### Returned Data
+
+The **Notification** branch receives the Asana webhook payload with each event enriched with the full task object.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "events": [
+    {
+      "user": {
+        "gid": "1202178852626547",
+        "resource_type": "user"
+      },
+      "created_at": "2026-05-20T14:00:00.000Z",
+      "action": "changed",
+      "resource": {
+        "gid": "1202178854270531",
+        "resource_type": "task",
+        "resource_subtype": "default_task"
+      },
+      "parent": {
+        "gid": "1202178854270500",
+        "resource_type": "project",
+        "resource_subtype": "default_project"
+      },
+      "task": {
+        "gid": "1202178854270531",
+        "name": "Design review",
+        "resource_type": "task",
+        "completed": false,
+        "assignee": {
+          "gid": "1202178852626547",
+          "resource_type": "user"
+        }
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### Notes
+
+- The trigger filter inputs (**Trigger When Added**, **Trigger When Changed**, etc.) control which event actions are subscribed to. Only selected actions generate webhook deliveries.
+- If a task referenced in an event has been deleted before the trigger can fetch its details, the `task` field is set to an empty object and a warning is logged.

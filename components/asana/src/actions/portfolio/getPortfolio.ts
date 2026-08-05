@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, portfolioId } from "../../inputs";
-import { portfolioExamplePayload } from "./portfolioPayload";
+import { portfolioExamplePayload } from "../../examplePayloads";
+import { getPortfolioInputs } from "../../inputs";
 export const getPortfolio = action({
   display: {
     label: "Get Portfolio",
@@ -15,9 +15,6 @@ export const getPortfolio = action({
     const { data } = await client.get(`/portfolios/${params.portfolioId}`);
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    portfolioId,
-  },
+  inputs: getPortfolioInputs,
   examplePayload: portfolioExamplePayload,
 });

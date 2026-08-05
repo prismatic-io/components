@@ -1,7 +1,8 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action } from "@prismatic-io/spectral";
 import FormData from "form-data";
 import { createAsanaClient } from "../../client";
-import { connectionInput, taskId } from "../../inputs";
+import { attachFileToTaskExamplePayload } from "../../examplePayloads";
+import { attachFileToTaskInputs } from "../../inputs";
 export const attachFileToTask = action({
   display: {
     label: "Attach File to Task",
@@ -21,33 +22,6 @@ export const attachFileToTask = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    file: input({
-      label: "File",
-      comments: "File to attach. This should be a reference to a previous step",
-      type: "data",
-      required: true,
-      clean: util.types.toBufferDataPayload,
-    }),
-    fileName: input({
-      label: "File Name",
-      comments: "Name of the file to attach",
-      type: "string",
-      required: true,
-      example: "my-image.png",
-      clean: util.types.toString,
-    }),
-    taskId,
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "12345",
-        resource_type: "attachment",
-        name: "Screenshot.png",
-        resource_subtype: "asana",
-      },
-    },
-  },
+  inputs: attachFileToTaskInputs,
+  examplePayload: attachFileToTaskExamplePayload,
 });

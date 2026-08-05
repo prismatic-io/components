@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, taskId, tagId, optFields } from "../../inputs";
-import { TAG_OPT_FIELDS } from "../../util";
+import { addTagToTaskExamplePayload } from "../../examplePayloads";
+import { addTagToTaskInputs } from "../../inputs";
 export const addTagToTask = action({
   display: {
     label: "Add Tag to Task",
@@ -27,11 +27,6 @@ export const addTagToTask = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    taskId,
-    tagId,
-    optFields: { ...optFields, default: TAG_OPT_FIELDS },
-  },
-  examplePayload: { data: { data: {} } },
+  inputs: addTagToTaskInputs,
+  examplePayload: addTagToTaskExamplePayload,
 });

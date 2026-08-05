@@ -1,0 +1,59 @@
+The **Webhook** trigger receives and validates incoming webhook requests from Asana for manually configured webhook subscriptions. It handles the full Asana webhook lifecycle including the initial handshake challenge, HMAC signature verification, and heartbeat detection.
+
+#### How It Works
+
+Asana webhooks follow a two-phase protocol:
+
+1. **Handshake (URL Verify)**: When a webhook subscription is first created, Asana sends a request with an `X-Hook-Secret` header. The trigger echoes the secret back, stores it for future HMAC validation, and routes the execution to the **URL Verify** branch.
+
+2. **Notification delivery**: Subsequent requests carry an `X-Hook-Signature` header containing an HMAC-SHA256 digest of the request body. The trigger verifies the signature against the stored secret before processing:
+   - **Heartbeat events** (empty `events` array) are routed to the **URL Verify** branch and logged as debug messages.
+   - **Notification events** (non-empty `events` array) are routed to the **Notification** branch for processing.
+
+#### Branches
+
+| Branch | Routed When |
+|--------|-------------|
+| **URL Verify** | Handshake challenge or heartbeat event |
+| **Notification** | Actual resource change events |
+
+#### Returned Data
+
+The **Notification** branch receives the full Asana webhook payload containing an array of event objects.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "events": [
+    {
+      "user": {
+        "gid": "1202178852626547",
+        "resource_type": "user"
+      },
+      "created_at": "2026-05-20T14:00:00.000Z",
+      "action": "changed",
+      "resource": {
+        "gid": "1202178854270531",
+        "resource_type": "task",
+        "resource_subtype": "default_task"
+      },
+      "parent": {
+        "gid": "1202178854270500",
+        "resource_type": "project",
+        "resource_subtype": "default_project"
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### Notes
+
+- This trigger is intended for **manually configured** webhook subscriptions created via the Asana API or the **Create Webhook** action. For automatic webhook lifecycle management, use the **Workspace Projects**, **Project Tasks**, or **Comments and Activity** triggers instead.
+- The trigger stores webhook secrets in cross-flow state and supports multiple secrets for scenarios where a resource has more than one active subscription.

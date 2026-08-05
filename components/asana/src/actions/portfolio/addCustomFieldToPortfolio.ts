@@ -1,13 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  connectionInput,
-  portfolioId,
-  fieldId,
-  insertAfter,
-  insertBefore,
-  isImportant,
-} from "../../inputs";
+import { addCustomFieldToPortfolioExamplePayload } from "../../examplePayloads";
+import { addCustomFieldToPortfolioInputs } from "../../inputs";
 export const addCustomFieldToPortfolio = action({
   display: {
     label: "Add Custom Field to Portfolio",
@@ -31,13 +25,6 @@ export const addCustomFieldToPortfolio = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    portfolioId,
-    fieldId,
-    insertAfter,
-    insertBefore,
-    isImportant,
-  },
-  examplePayload: { data: { data: {} } },
+  inputs: addCustomFieldToPortfolioInputs,
+  examplePayload: addCustomFieldToPortfolioExamplePayload,
 });

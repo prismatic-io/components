@@ -1,21 +1,8 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, workspaceId } from "../../inputs";
-interface Team {
-  gid: string;
-  name: string;
-  resource_type: string;
-}
-interface TeamReturn {
-  data: {
-    data: Team[];
-    next_page: {
-      offset: string;
-      path: string;
-      uri: string;
-    };
-  };
-}
+import { findTeamByNameExamplePayload } from "../../examplePayloads";
+import { findTeamByNameInputs } from "../../inputs";
+import type { PaginatedResponse, Team } from "../../types";
 export const findTeamByName = action({
   display: {
     label: "Find Team by Name",
@@ -29,7 +16,7 @@ export const findTeamByName = action({
     let offset: string | undefined;
     let stop = false;
     while (!stop) {
-      const response: TeamReturn = await client.get(
+      const response: PaginatedResponse<Team> = await client.get(
         `/workspaces/${params.workspaceId}/teams`,
         {
           params: { offset },
@@ -48,22 +35,6 @@ export const findTeamByName = action({
     }
     throw new Error(`No team named "${params.teamName}" found.`);
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    teamName: input({
-      label: "Team Name",
-      type: "string",
-      required: true,
-      comments:
-        "Note: if multiple teams share a name, only one team will be returned.",
-    }),
-    workspaceId,
-  },
-  examplePayload: {
-    data: {
-      gid: "1126509132283071",
-      name: "Example Team",
-      resource_type: "team",
-    },
-  },
+  inputs: findTeamByNameInputs,
+  examplePayload: findTeamByNameExamplePayload,
 });

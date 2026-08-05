@@ -1,22 +1,20 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
-import { connectionInput, workspaceId } from "../inputs";
-import { fetchMoreData, mapToLabelKey } from "../util";
+import { selectCustomFieldExamplePayload } from "../examplePayloads";
+import { selectCustomFieldInputs } from "../inputs";
 import type { DataSource } from "../types/Project";
-const selectTag = dataSource({
+import { fetchMoreData, mapToLabelKey } from "../util";
+const selectCustomField = dataSource({
   display: {
-    label: "Select Tag",
-    description: "Select a tag from a dropdown menu.",
+    label: "Select Custom Field",
+    description: "Select a custom field from a dropdown menu.",
   },
-  inputs: {
-    connection: connectionInput,
-    workspaceId: { ...workspaceId, dataSource: undefined },
-  },
+  inputs: selectCustomFieldInputs,
   perform: async (_context, { connection, workspaceId }) => {
     const client = await createAsanaClient(connection, false);
     const data = await fetchMoreData<DataSource>(
       client,
-      `/workspaces/${workspaceId}/tags`,
+      `/workspaces/${workspaceId}/custom_fields`,
       [],
       true,
     );
@@ -24,7 +22,8 @@ const selectTag = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
+  examplePayload: selectCustomFieldExamplePayload,
 });
 export default {
-  selectTag,
+  selectCustomField,
 };

@@ -6,7 +6,7 @@ import {
   resolveWebhookSecrets,
   validateHmac,
   webhookSecretsStateKey,
-} from "./utils";
+} from "../util";
 export const webhook = trigger({
   display: {
     label: "Webhook",

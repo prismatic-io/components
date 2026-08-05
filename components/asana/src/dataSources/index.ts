@@ -1,22 +1,22 @@
-import attachments from "./attachments";
-import customFields from "./customFields";
-import portfolios from "./portfolios";
-import projects from "./projects";
-import sections from "./sections";
-import tags from "./tags";
-import tasks from "./tasks";
-import teams from "./teams";
-import users from "./users";
-import workspaces from "./workspaces";
+import selectAttachment from "./selectAttachment";
+import selectCustomField from "./selectCustomField";
+import selectPortfolio from "./selectPortfolio";
+import selectProject from "./selectProject";
+import selectSection from "./selectSection";
+import selectTag from "./selectTag";
+import selectTask from "./selectTask";
+import selectTeam from "./selectTeam";
+import selectUser from "./selectUser";
+import selectWorkspace from "./selectWorkspace";
 export default {
-  ...attachments,
-  ...customFields,
-  ...portfolios,
-  ...projects,
-  ...sections,
-  ...tags,
-  ...tasks,
-  ...teams,
-  ...users,
-  ...workspaces,
+  ...selectAttachment,
+  ...selectCustomField,
+  ...selectPortfolio,
+  ...selectProject,
+  ...selectSection,
+  ...selectTag,
+  ...selectTask,
+  ...selectTeam,
+  ...selectUser,
+  ...selectWorkspace,
 };

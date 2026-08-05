@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, sectionId } from "../../inputs";
+import { deleteSectionExamplePayload } from "../../examplePayloads";
+import { deleteSectionInputs } from "../../inputs";
 export const deleteSection = action({
   display: {
     label: "Delete Section",
@@ -14,9 +15,6 @@ export const deleteSection = action({
     const { data } = await client.delete(`/sections/${params.sectionId}`);
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    sectionId,
-  },
-  examplePayload: { data: { data: {} } },
+  inputs: deleteSectionInputs,
+  examplePayload: deleteSectionExamplePayload,
 });

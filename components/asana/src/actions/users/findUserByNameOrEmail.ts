@@ -1,28 +1,8 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, workspaceId, optFields } from "../../inputs";
-interface Workspace {
-  gid: string;
-  name: string;
-  resource_type: string;
-}
-interface User {
-  gid: string;
-  name: string;
-  email: string;
-  resource_type: string;
-  workspaces: Workspace[];
-}
-interface UserReturn {
-  data: {
-    data: User[];
-    next_page: {
-      offset: string;
-      path: string;
-      uri: string;
-    };
-  };
-}
+import { findUserByNameOrEmailExamplePayload } from "../../examplePayloads";
+import { findUserByNameOrEmailInputs } from "../../inputs";
+import type { PaginatedResponse, User } from "../../types";
 export const findUserByNameOrEmail = action({
   display: {
     label: "Find User by Name or Email",
@@ -36,7 +16,7 @@ export const findUserByNameOrEmail = action({
     let offset: string | undefined;
     let stop = false;
     while (!stop) {
-      const response: UserReturn = await client.get(`/users`, {
+      const response: PaginatedResponse<User> = await client.get(`/users`, {
         params: {
           offset,
           workspace: params.workspaceId || undefined,
@@ -59,43 +39,6 @@ export const findUserByNameOrEmail = action({
       `No user could be found with name "${params.userName}" or email "${params.userEmail}".`,
     );
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    userName: input({
-      label: "User's Full Name",
-      type: "string",
-      example: "John Doe",
-      required: false,
-      comments:
-        "Note: if multiple users share a name, only one user will be returned.",
-    }),
-    userEmail: input({
-      label: "User's Email",
-      type: "string",
-      example: "john.doe@example.com",
-      required: false,
-      comments:
-        "Note: if multiple users share an email address, only one user will be returned.",
-    }),
-    workspaceId,
-    optFields: {
-      ...optFields,
-      default: "gid,name,resource_type,email,workspaces",
-    },
-  },
-  examplePayload: {
-    data: {
-      gid: "1126508793140155",
-      email: "user@example.com",
-      name: "Example User",
-      resource_type: "user",
-      workspaces: [
-        {
-          gid: "1126509132283071",
-          name: "Example Workspace",
-          resource_type: "workspace",
-        },
-      ],
-    },
-  },
+  inputs: findUserByNameOrEmailInputs,
+  examplePayload: findUserByNameOrEmailExamplePayload,
 });

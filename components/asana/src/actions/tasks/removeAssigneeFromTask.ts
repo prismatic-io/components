@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, taskId } from "../../inputs";
+import { removeAssigneeFromTaskExamplePayload } from "../../examplePayloads";
+import { removeAssigneeFromTaskInputs } from "../../inputs";
 export const removeAssigneeFromTask = action({
   display: {
     label: "Remove Assignee from Task",
@@ -18,9 +19,6 @@ export const removeAssigneeFromTask = action({
     });
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    taskId,
-  },
-  examplePayload: { data: { data: {} } },
+  inputs: removeAssigneeFromTaskInputs,
+  examplePayload: removeAssigneeFromTaskExamplePayload,
 });

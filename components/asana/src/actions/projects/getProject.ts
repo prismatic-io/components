@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, projectId, optFields } from "../../inputs";
-import { PROJECT_OPT_FIELDS } from "../../util";
+import { getProjectExamplePayload } from "../../examplePayloads";
+import { getProjectInputs } from "../../inputs";
 export const getProject = action({
   display: {
     label: "Get Project",
@@ -19,33 +19,6 @@ export const getProject = action({
     });
     return { data };
   },
-  inputs: {
-    projectId,
-    asanaConnection: connectionInput,
-    optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202461773653662",
-        archived: false,
-        color: "light-green",
-        created_at: "2022-06-16T22:55:11.208Z",
-        current_status: null,
-        custom_fields: [],
-        due_on: null,
-        followers: [{ gid: "1202178852626547", resource_type: "user" }],
-        html_notes: "<body>My new project notes</body>",
-        members: [{ gid: "1202178852626547", resource_type: "user" }],
-        modified_at: "2022-06-16T22:55:13.275Z",
-        name: "My new project name",
-        notes: "My new project notes",
-        owner: { gid: "1202178852626547", resource_type: "user" },
-        resource_type: "project",
-        start_on: null,
-        team: { gid: "1202178854270529", resource_type: "team" },
-        workspace: { gid: "1126509132283071", resource_type: "workspace" },
-      },
-    },
-  },
+  inputs: getProjectInputs,
+  examplePayload: getProjectExamplePayload,
 });

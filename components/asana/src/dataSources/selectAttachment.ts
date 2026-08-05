@@ -1,17 +1,15 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
-import { connectionInput, taskId } from "../inputs";
-import { fetchMoreData, mapToLabelKey } from "../util";
+import { selectAttachmentExamplePayload } from "../examplePayloads";
+import { selectAttachmentInputs } from "../inputs";
 import type { DataSource } from "../types/Project";
+import { fetchMoreData, mapToLabelKey } from "../util";
 const selectAttachment = dataSource({
   display: {
     label: "Select Attachment",
     description: "Select an attachment from a dropdown menu.",
   },
-  inputs: {
-    connection: connectionInput,
-    taskId: { ...taskId, dataSource: undefined },
-  },
+  inputs: selectAttachmentInputs,
   perform: async (_context, { connection, taskId }) => {
     const client = await createAsanaClient(connection, false);
     const data = await fetchMoreData<DataSource>(
@@ -24,9 +22,7 @@ const selectAttachment = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "Screenshot.png", key: "12345" }],
-  },
+  examplePayload: selectAttachmentExamplePayload,
 });
 export default {
   selectAttachment,

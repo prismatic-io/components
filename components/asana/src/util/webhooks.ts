@@ -1,26 +1,38 @@
+import crypto from "node:crypto";
 import {
+  type ActionContext,
   type Connection,
   type TriggerPayload,
   util,
-  type ActionContext,
 } from "@prismatic-io/spectral";
-import crypto from "crypto";
 import { createAsanaClient } from "../client";
-import type { WebhookFilterSettings } from "../types/WebhookFilterSettings";
-import type { Event } from "../types/Event";
-import type { CachedTasks } from "../types/CachedTasks";
-import type { CachedStories } from "../types/CachedStories";
-import type { ResolvedWebhookSecret, ResolvedWebhookSecrets } from "../types";
 import {
-  WEBHOOK_SECRETS_STATE_KEY_PREFIX,
+  WEBHOOK_SECRET_LEGACY_KEY,
   WEBHOOK_SECRET_STATE_KEY_PREFIX,
   WEBHOOK_SECRETS_LEGACY_KEY,
-  WEBHOOK_SECRET_LEGACY_KEY,
+  WEBHOOK_SECRETS_STATE_KEY_PREFIX,
 } from "../constants";
-export const isHeartbeatData = (data: any): boolean =>
-  typeof data === "object" &&
-  Array.isArray(data.events) &&
-  data.events.length === 0;
+import type {
+  AsanaFilter,
+  AsanaWebhook,
+  CachedStories,
+  CachedTasks,
+  CreateWebhookParams,
+  DeleteWebhookParams,
+  Event,
+  ResolvedWebhookSecret,
+  ResolvedWebhookSecrets,
+  WebhookFilterSettings,
+} from "../types";
+export const isHeartbeatData = (data: unknown): boolean => {
+  const obj = data as Record<string, unknown> | null;
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    Array.isArray(obj.events) &&
+    obj.events.length === 0
+  );
+};
 export const webhookSecretsStateKey = (context: ActionContext): string =>
   `${WEBHOOK_SECRETS_STATE_KEY_PREFIX}:${context.flow.stableId}`;
 export const webhookSecretStateKey = (context: ActionContext): string =>
@@ -78,32 +90,6 @@ export const validateHmac = (
     "The included signing signature does not match a known Asana signing key. Rejecting.",
   );
 };
-interface AsanaFilter {
-  resource_type?: string;
-  resource_subtype?: string;
-  action: string;
-  fields?: string[];
-}
-interface CreateWebhookParams {
-  endpoint: string;
-  resourceId: string;
-  filters?: AsanaFilter[];
-  asanaConnection: Connection;
-}
-interface DeleteWebhookParams {
-  endpoint: string;
-  resourceId: string;
-  asanaConnection: Connection;
-}
-interface AsanaWebhook {
-  gid: string;
-  resource: {
-    gid: string;
-    name: string;
-  };
-  target: string;
-  active: boolean;
-}
 export const findWebhook = async ({
   asanaConnection,
   endpoint,

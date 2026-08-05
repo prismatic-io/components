@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, limit, offset, taskId } from "../../inputs";
+import { listAttachmentsExamplePayload } from "../../examplePayloads";
+import { listAttachmentsInputs } from "../../inputs";
 export const listAttachments = action({
   display: {
     label: "List Task Attachments",
@@ -13,28 +14,12 @@ export const listAttachments = action({
     );
     const { data } = await client.get(`/tasks/${params.taskId}/attachments`, {
       params: {
-        offset: params.offset,
-        limit: params.limit,
+        offset: params.pagination.offset,
+        limit: params.pagination.limit,
       },
     });
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    taskId,
-    limit,
-    offset,
-  },
-  examplePayload: {
-    data: {
-      data: [
-        {
-          gid: "12345",
-          resource_type: "attachment",
-          name: "Screenshot.png",
-          resource_subtype: "dropbox",
-        },
-      ],
-    },
-  },
+  inputs: listAttachmentsInputs,
+  examplePayload: listAttachmentsExamplePayload,
 });

@@ -1,12 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  connectionInput,
-  sectionId,
-  insertAfter,
-  insertBefore,
-  taskId,
-} from "../../inputs";
+import { addTaskToSectionExamplePayload } from "../../examplePayloads";
+import { addTaskToSectionInputs } from "../../inputs";
 export const addTaskToSection = action({
   display: {
     label: "Add Task to Section",
@@ -29,12 +24,6 @@ export const addTaskToSection = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    sectionId,
-    taskId,
-    insertAfter,
-    insertBefore,
-  },
-  examplePayload: { data: { data: {} } },
+  inputs: addTaskToSectionInputs,
+  examplePayload: addTaskToSectionExamplePayload,
 });

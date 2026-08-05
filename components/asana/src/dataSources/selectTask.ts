@@ -1,33 +1,14 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
-import { connectionInput, workspaceId, projectId, assigneeId } from "../inputs";
-import { cleanString, fetchMoreData, mapToLabelKey } from "../util";
+import { selectTaskInputs } from "../inputs";
 import type { DataSource } from "../types/Project";
+import { fetchMoreData, mapToLabelKey } from "../util";
 const selectTask = dataSource({
   display: {
     label: "Select Task",
     description: "Select a task from a dropdown menu.",
   },
-  inputs: {
-    connection: connectionInput,
-    project: {
-      ...projectId,
-      required: false,
-      clean: cleanString,
-      dataSource: undefined,
-    },
-    workspace: {
-      ...workspaceId,
-      required: false,
-      clean: cleanString,
-      dataSource: undefined,
-      comments: `${workspaceId.comments} Workspace ID must be provided with an Assignee ID.`,
-    },
-    assignee: {
-      ...assigneeId,
-      comments: `${assigneeId.comments} Assignee ID must be provided with a Workspace ID.`,
-    },
-  },
+  inputs: selectTaskInputs,
   perform: async (_context, { connection, workspace, project, assignee }) => {
     const client = await createAsanaClient(connection, false);
     if (!workspace && !assignee && !project) {

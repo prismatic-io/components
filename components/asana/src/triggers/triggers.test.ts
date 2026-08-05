@@ -1,9 +1,9 @@
 import {
-  createHarness,
   createConnection,
+  createHarness,
 } from "@prismatic-io/spectral/dist/testing";
-import { asanaApiKeyConnection } from "../connections";
 import component from "..";
+import { asanaApiKeyConnection } from "../connections";
 jest.setTimeout(30000);
 const harness = createHarness(component);
 const asanaConnection = createConnection(asanaApiKeyConnection, {
@@ -18,7 +18,11 @@ describe("Test event triggers", () => {
       { asanaConnection, workspaceId: WORKSPACE_ID },
       {
         webhookUrls: { myFlow: TRIGGER_ENDPOINT },
-        flow: { id: "myId", name: "myFlow" },
+        flow: {
+          id: "myId",
+          name: "myFlow",
+          stableId: "",
+        },
       },
     );
     console.log({ result });

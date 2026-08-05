@@ -1,27 +1,19 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
-import { connectionInput, workspaceId } from "../inputs";
+import { selectPortfolioExamplePayload } from "../examplePayloads";
+import { selectPortfolioInputs } from "../inputs";
+import type { DataSource } from "../types/Project";
 import {
-  cleanString,
   fetchMoreData,
   handleMultipleWorkspacesError,
   mapToLabelKey,
 } from "../util";
-import type { DataSource } from "../types/Project";
 const selectPortfolio = dataSource({
   display: {
     label: "Select Portfolio",
     description: "Select a portfolio from a dropdown menu.",
   },
-  inputs: {
-    connection: connectionInput,
-    workspaceId: {
-      ...workspaceId,
-      required: false,
-      dataSource: undefined,
-      clean: cleanString,
-    },
-  },
+  inputs: selectPortfolioInputs,
   perform: async (_context, { connection, workspaceId }) => {
     try {
       const client = await createAsanaClient(connection, false);
@@ -48,9 +40,7 @@ const selectPortfolio = dataSource({
     }
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "Example Portfolio", key: "12345" }],
-  },
+  examplePayload: selectPortfolioExamplePayload,
 });
 export default {
   selectPortfolio,

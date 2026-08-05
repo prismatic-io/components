@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, limit, offset } from "../../inputs";
+import { listWorkspacesExamplePayload } from "../../examplePayloads";
+import { listWorkspacesInputs } from "../../inputs";
 export const listWorkspaces = action({
   display: {
     label: "List Workspaces",
@@ -13,27 +14,12 @@ export const listWorkspaces = action({
     );
     const { data } = await client.get("/workspaces", {
       params: {
-        limit: params.limit,
-        offset: params.offset,
+        limit: params.pagination.limit,
+        offset: params.pagination.offset,
       },
     });
     return { data };
   },
-  inputs: { asanaConnection: connectionInput, limit, offset },
-  examplePayload: {
-    data: {
-      data: [
-        {
-          gid: "1126509132283071",
-          name: "Example Workspace 1",
-          resource_type: "workspace",
-        },
-        {
-          gid: "1126509132283072",
-          name: "Example Workspace 2",
-          resource_type: "workspace",
-        },
-      ],
-    },
-  },
+  inputs: listWorkspacesInputs,
+  examplePayload: listWorkspacesExamplePayload,
 });

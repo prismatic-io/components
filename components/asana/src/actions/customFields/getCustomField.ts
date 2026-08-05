@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, fieldId, optFields } from "../../inputs";
-import { CUSTOM_FIELD_OPT_FIELDS } from "../../util";
+import { getCustomFieldExamplePayload } from "../../examplePayloads";
+import { getCustomFieldInputs } from "../../inputs";
 export const getCustomField = action({
   display: {
     label: "Get Custom Field",
@@ -20,43 +20,6 @@ export const getCustomField = action({
     });
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    fieldId,
-    optFields: { ...optFields, default: CUSTOM_FIELD_OPT_FIELDS },
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202467472002610",
-        enum_options: [
-          {
-            gid: "1202467472002611",
-            color: "red",
-            enabled: true,
-            name: "High",
-            resource_type: "enum_option",
-          },
-          {
-            gid: "1202467472002612",
-            color: "orange",
-            enabled: true,
-            name: "Medium",
-            resource_type: "enum_option",
-          },
-          {
-            gid: "1202467472002613",
-            color: "yellow-orange",
-            enabled: true,
-            name: "Low",
-            resource_type: "enum_option",
-          },
-        ],
-        name: "Priority",
-        description: "Asana-created. Track the priority of each task.",
-        resource_subtype: "enum",
-        resource_type: "custom_field",
-      },
-    },
-  },
+  inputs: getCustomFieldInputs,
+  examplePayload: getCustomFieldExamplePayload,
 });

@@ -1,12 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  connectionInput,
-  limit,
-  offset,
-  statusParentIdInput,
-  optFields,
-} from "../../inputs";
+import { getStatusesForObjectExamplePayload } from "../../examplePayloads";
+import { getStatusesForObjectInputs } from "../../inputs";
 export const getStatusesForObject = action({
   display: {
     label: "Get Status Updates from Object",
@@ -20,54 +15,13 @@ export const getStatusesForObject = action({
     const { data } = await client.get(`/status_updates`, {
       params: {
         parent: params.parent,
-        limit: params.limit,
-        offset: params.offset,
+        limit: params.pagination.limit,
+        offset: params.pagination.offset,
         opt_fields: params.optFields,
       },
     });
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    parent: statusParentIdInput,
-    limit,
-    offset,
-    optFields: {
-      ...optFields,
-      default:
-        "gid,resource_type,resource_subtype,title,text,status_type,parent,created_at",
-    },
-  },
-  examplePayload: {
-    data: {
-      data: [
-        {
-          gid: "1202466843571433",
-          created_at: "2022-06-17T19:22:53.380Z",
-          resource_type: "status_update",
-          resource_subtype: "project_status_update",
-          status_type: "at_risk",
-          text: "We accidentally force-pushed over our repo!",
-          title: "It's going terribly!",
-          parent: {
-            gid: "1202178854270532",
-            resource_type: "project",
-          },
-        },
-        {
-          gid: "1202466947841625",
-          created_at: "2022-06-17T19:17:33.744Z",
-          resource_type: "status_update",
-          resource_subtype: "project_status_update",
-          status_type: "on_track",
-          text: "It'll be completed on time!",
-          title: "Example project is going well",
-          parent: {
-            gid: "1202178854270532",
-            resource_type: "project",
-          },
-        },
-      ],
-    },
-  },
+  inputs: getStatusesForObjectInputs,
+  examplePayload: getStatusesForObjectExamplePayload,
 });

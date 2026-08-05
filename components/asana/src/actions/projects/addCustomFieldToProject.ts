@@ -1,13 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  connectionInput,
-  projectId,
-  insertAfter,
-  insertBefore,
-  fieldId,
-  isImportant,
-} from "../../inputs";
+import { addCustomFieldToProjectExamplePayload } from "../../examplePayloads";
+import { addCustomFieldToProjectInputs } from "../../inputs";
 export const addCustomFieldToProject = action({
   display: {
     label: "Add Custom Field to Project",
@@ -31,66 +25,6 @@ export const addCustomFieldToProject = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    projectId,
-    fieldId,
-    insertAfter,
-    insertBefore,
-    isImportant,
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202476446247138",
-        resource_type: "custom_field_setting",
-        custom_field: {
-          gid: "1202476274909067",
-          resource_type: "custom_field",
-          created_by: {
-            gid: "1202467472237333",
-            resource_type: "user",
-            name: "Example User",
-          },
-          resource_subtype: "multi_enum",
-          type: "multi_enum",
-          name: "Do you want these things?",
-          enum_options: [
-            {
-              gid: "1202476274909068",
-              resource_type: "enum_option",
-              enabled: true,
-              name: "My First Option",
-              color: "green",
-            },
-            {
-              gid: "1202476274909069",
-              resource_type: "enum_option",
-              enabled: true,
-              name: "My Second Option",
-              color: "red",
-            },
-            {
-              gid: "1202476274909070",
-              resource_type: "enum_option",
-              enabled: true,
-              name: "My Third Option",
-              color: "orange",
-            },
-          ],
-        },
-        is_important: true,
-        parent: {
-          gid: "1202467472002605",
-          resource_type: "project",
-          name: "Brand redesign campaign",
-        },
-        project: {
-          gid: "1202467472002605",
-          resource_type: "project",
-          name: "Brand redesign campaign",
-        },
-      },
-    },
-  },
+  inputs: addCustomFieldToProjectInputs,
+  examplePayload: addCustomFieldToProjectExamplePayload,
 });

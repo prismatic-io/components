@@ -1,15 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  connectionInput,
-  followersList,
-  color,
-  name,
-  notes,
-  workspaceId,
-  optFields,
-} from "../../inputs";
-import { TAG_OPT_FIELDS } from "../../util";
+import { createTagExamplePayload } from "../../examplePayloads";
+import { createTagInputs } from "../../inputs";
 export const createTag = action({
   display: {
     label: "Create Tag",
@@ -39,29 +31,6 @@ export const createTag = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    workspaceId,
-    followersList,
-    color,
-    name,
-    notes,
-    optFields: { ...optFields, default: TAG_OPT_FIELDS },
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202453507919841",
-        resource_type: "tag",
-        create_at: "2022-06-15T17:03:26.911Z",
-        name: "My Example Tag",
-        workspace: {
-          gid: 1126509132283071,
-          resource_type: "workspace",
-        },
-        color: "light-green",
-        followers: [],
-      },
-    },
-  },
+  inputs: createTagInputs,
+  examplePayload: createTagExamplePayload,
 });

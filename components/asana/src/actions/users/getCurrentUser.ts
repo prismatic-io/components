@@ -1,35 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput } from "../../inputs";
-const examplePayload = {
-  data: {
-    data: {
-      gid: "1126508793140155",
-      email: "user@example.com",
-      name: "Example User",
-      photo: {
-        image_21x21:
-          "https://s3.amazonaws.com/profile_photos/1126508793140155.1126509132283075.joZwntHYCrotR7QnI82A_21x21.png",
-        image_27x27:
-          "https://s3.amazonaws.com/profile_photos/1126508793140155.1126509132283075.joZwntHYCrotR7QnI82A_27x27.png",
-        image_36x36:
-          "https://s3.amazonaws.com/profile_photos/1126508793140155.1126509132283075.joZwntHYCrotR7QnI82A_36x36.png",
-        image_60x60:
-          "https://s3.amazonaws.com/profile_photos/1126508793140155.1126509132283075.joZwntHYCrotR7QnI82A_60x60.png",
-        image_128x128:
-          "https://s3.amazonaws.com/profile_photos/1126508793140155.1126509132283075.joZwntHYCrotR7QnI82A_128x128.png",
-      },
-      resource_type: "user",
-      workspaces: [
-        {
-          gid: "1126509132283071",
-          name: "Example Workspace",
-          resource_type: "workspace",
-        },
-      ],
-    },
-  },
-};
+import { getCurrentUserExamplePayload } from "../../examplePayloads";
+import { getCurrentUserInputs } from "../../inputs";
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -43,6 +15,6 @@ export const getCurrentUser = action({
     const { data } = await client.get("/users/me");
     return { data };
   },
-  inputs: { asanaConnection: connectionInput },
-  examplePayload,
+  inputs: getCurrentUserInputs,
+  examplePayload: getCurrentUserExamplePayload,
 });

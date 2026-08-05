@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { teamId, userId, connectionInput } from "../../inputs";
+import { addUserToTeamExamplePayload } from "../../examplePayloads";
+import { addUserToTeamInputs } from "../../inputs";
 export const addUserToTeam = action({
   display: {
     label: "Add User to Team",
@@ -16,24 +17,6 @@ export const addUserToTeam = action({
     });
     return { data };
   },
-  inputs: { teamId, userId, asanaConnection: connectionInput },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202178854270530",
-        resource_type: "team_membership",
-        team: {
-          gid: "1202178854270529",
-          resource_type: "team",
-          name: "Engineering",
-        },
-        user: {
-          gid: "1202178852626547",
-          resource_type: "user",
-          name: "Example User",
-        },
-        is_guest: false,
-      },
-    },
-  },
+  inputs: addUserToTeamInputs,
+  examplePayload: addUserToTeamExamplePayload,
 });

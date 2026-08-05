@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { teamId, connectionInput } from "../../inputs";
+import { getTeamExamplePayload } from "../../examplePayloads";
+import { getTeamInputs } from "../../inputs";
 export const getTeam = action({
   display: {
     label: "Get Team",
@@ -14,20 +15,6 @@ export const getTeam = action({
     const { data } = await client.get(`/teams/${params.teamId}`);
     return { data };
   },
-  inputs: { asanaConnection: connectionInput, teamId },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1126509132283073",
-        name: "Example Team",
-        organization: {
-          gid: "1126509132283071",
-          name: "Example Org",
-          resource_type: "workspace",
-        },
-        permalink_url: "https://app.asana.com/0/1126509132283073",
-        resource_type: "team",
-      },
-    },
-  },
+  inputs: getTeamInputs,
+  examplePayload: getTeamExamplePayload,
 });

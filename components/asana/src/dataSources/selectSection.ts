@@ -1,17 +1,14 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
-import { connectionInput, projectId } from "../inputs";
-import { fetchMoreData, mapToLabelKey } from "../util";
+import { selectSectionInputs } from "../inputs";
 import type { DataSource } from "../types/Project";
+import { fetchMoreData, mapToLabelKey } from "../util";
 const selectSection = dataSource({
   display: {
     label: "Select Section",
     description: "Select a section from a dropdown menu.",
   },
-  inputs: {
-    connection: connectionInput,
-    projectId: { ...projectId, dataSource: undefined },
-  },
+  inputs: selectSectionInputs,
   perform: async (_context, { connection, projectId }) => {
     const client = await createAsanaClient(connection, false);
     const data = await fetchMoreData<DataSource>(

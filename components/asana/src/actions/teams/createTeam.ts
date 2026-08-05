@@ -1,11 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  teamDescription,
-  teamName,
-  organizationId,
-  connectionInput,
-} from "../../inputs";
+import { createTeamExamplePayload } from "../../examplePayloads";
+import { createTeamInputs } from "../../inputs";
 export const createTeam = action({
   display: {
     label: "Create Team",
@@ -25,25 +21,6 @@ export const createTeam = action({
     });
     return { data };
   },
-  inputs: {
-    teamDescription,
-    teamName,
-    organizationId,
-    asanaConnection: connectionInput,
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202466032099844",
-        resource_type: "team",
-        name: "My New Team",
-        permalink_url: "https://app.asana.com/0/1202466032099844",
-        organization: {
-          gid: "1126509132283071",
-          resource_type: "workspace",
-          name: "Acme",
-        },
-      },
-    },
-  },
+  inputs: createTeamInputs,
+  examplePayload: createTeamExamplePayload,
 });

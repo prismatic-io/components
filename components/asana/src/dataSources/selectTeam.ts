@@ -1,6 +1,6 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
-import { connectionInput, workspaceId } from "../inputs";
+import { selectTeamInputs } from "../inputs";
 import type { DataSource } from "../types/Project";
 import { mapToLabelKey } from "../util";
 const selectTeam = dataSource({
@@ -8,10 +8,7 @@ const selectTeam = dataSource({
     label: "Select Team",
     description: "Select a team from a dropdown menu.",
   },
-  inputs: {
-    connection: connectionInput,
-    workspaceId: { ...workspaceId, dataSource: undefined },
-  },
+  inputs: selectTeamInputs,
   perform: async (_context, { connection, workspaceId }) => {
     const client = await createAsanaClient(connection, false);
     const { data } = await client.get<{

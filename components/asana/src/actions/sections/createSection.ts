@@ -1,14 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import {
-  connectionInput,
-  insertAfter,
-  insertBefore,
-  sectionName,
-  projectId,
-  optFields,
-} from "../../inputs";
-import { SECTION_OPT_FIELDS } from "../../util";
+import { createSectionExamplePayload } from "../../examplePayloads";
+import { createSectionInputs } from "../../inputs";
 export const createSection = action({
   display: {
     label: "Create Section",
@@ -32,24 +25,6 @@ export const createSection = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    projectId,
-    connectionInput,
-    insertAfter,
-    insertBefore,
-    sectionName,
-    optFields: { ...optFields, default: SECTION_OPT_FIELDS },
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202465892953048",
-        resource_type: "section",
-        created_at: "2022-06-17T15:53:48.455Z",
-        name: "My Example Section",
-        project: { gid: "1202178854270532", resource_type: "project" },
-      },
-    },
-  },
+  inputs: createSectionInputs,
+  examplePayload: createSectionExamplePayload,
 });

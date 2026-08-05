@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, members, portfolioId, optFields } from "../../inputs";
+import { removeUserFromPortfolioExamplePayload } from "../../examplePayloads";
+import { removeUserFromPortfolioInputs } from "../../inputs";
 export const removeUserFromPortfolio = action({
   display: {
     label: "Remove Users from Portfolio",
@@ -26,32 +27,6 @@ export const removeUserFromPortfolio = action({
     );
     return { data };
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    portfolioId,
-    members,
-    optFields: {
-      ...optFields,
-      default:
-        "resource_type,gid,name,created_at,created_by,custom_field_settings,color,workspace,members",
-    },
-  },
-  examplePayload: {
-    data: {
-      data: {
-        gid: "1202476367473313",
-        resource_type: "portfolio",
-        created_at: "2022-06-20T18:18:47.435Z",
-        created_by: { gid: "1202467472237333", resource_type: "user" },
-        name: "Example Portfolio",
-        members: [
-          { gid: "1202467472237333", resource_type: "user" },
-          { gid: "1202467584678838", resource_type: "user" },
-        ],
-        custom_field_settings: [],
-        workspace: { gid: "1202467471973207", resource_type: "workspace" },
-        color: "light-green",
-      },
-    },
-  },
+  inputs: removeUserFromPortfolioInputs,
+  examplePayload: removeUserFromPortfolioExamplePayload,
 });

@@ -1,22 +1,13 @@
 import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, validateId } from "../../inputs";
+import { deleteWebhookExamplePayload } from "../../examplePayloads";
+import { deleteWebhookInputs } from "../../inputs";
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
     description: "Delete an existing webhook by ID.",
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    webhookId: {
-      label: "Webhook ID",
-      type: "string",
-      example: "375893453",
-      comments: "The gid of the workspace",
-      required: true,
-      clean: validateId,
-    },
-  },
+  inputs: deleteWebhookInputs,
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -25,5 +16,5 @@ export const deleteWebhook = action({
     const { data } = await client.delete(`/webhooks/${params.webhookId}`);
     return { data };
   },
-  examplePayload: { data: {} },
+  examplePayload: deleteWebhookExamplePayload,
 });

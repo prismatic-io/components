@@ -1,36 +1,15 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
-import { connectionInput, limit, offset, workspaceId } from "../../inputs";
-interface AsanaWebhook {
-  gid: string;
-  active: boolean;
-  resource: {
-    gid: string;
-    name: string;
-    resource_type: string;
-  };
-  resource_type: string;
-  target: string;
-}
+import { listWebhooksExamplePayload } from "../../examplePayloads";
+import { listWebhooksInputs } from "../../inputs";
+import type { AsanaWebhook } from "../../types";
 export const listWebhooks = action({
   display: {
     label: "List Workspace Webhooks",
     description:
       "List all webhooks configured in Asana, including those for other integrations.",
   },
-  inputs: {
-    asanaConnection: connectionInput,
-    workspaceId,
-    showOnlyInstanceWebhooks: input({
-      label: "Show only instance webhooks",
-      comments: "Show only webhooks that point to this instance",
-      type: "boolean",
-      default: "true",
-      clean: util.types.toBool,
-    }),
-    limit,
-    offset,
-  },
+  inputs: listWebhooksInputs,
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -39,8 +18,8 @@ export const listWebhooks = action({
     const { data } = await client.get("/webhooks", {
       params: {
         workspace: params.workspaceId,
-        limit: params.limit,
-        offset: params.offset,
+        limit: params.pagination.limit,
+        offset: params.pagination.offset,
       },
     });
     if (params.showOnlyInstanceWebhooks) {
@@ -53,19 +32,5 @@ export const listWebhooks = action({
     }
     return { data: data.data };
   },
-  examplePayload: {
-    data: [
-      {
-        gid: "1202700984385446",
-        active: true,
-        resource: {
-          gid: "1202467472002605",
-          name: "Brand redesign campaign",
-          resource_type: "project",
-        },
-        resource_type: "webhook",
-        target: "https://hooks.example.com/trigger/EXAMPLE",
-      },
-    ],
-  },
+  examplePayload: listWebhooksExamplePayload,
 });
