@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "aws-utils": "file:../../packages/aws-utils",
-    "@aws-sdk/client-lambda": "3.1055.0",
-    "@prismatic-io/spectral": "10.18.6"
+    "@aws-sdk/client-lambda": "3.1088.0",
+    "@prismatic-io/spectral": "10.22.1"
   },
   "author": "Prismatic",
   "license": "Apache-2.0",

@@ -10,8 +10,8 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "3.1055.0",
-    "@prismatic-io/spectral": "10.18.6",
+    "@aws-sdk/client-sns": "3.1088.0",
+    "@prismatic-io/spectral": "10.22.1",
     "aws-utils": "file:../../packages/aws-utils",
     "sns-validator": "^0.3.5"
   },

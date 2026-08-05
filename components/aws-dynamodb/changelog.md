@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-08-05
+
+Various modernizations and documentation updates
+
 ### 2026-07-28
 
 Updated the **Create Table** action to support on-demand (PAY_PER_REQUEST) billing mode by making provisioned capacity inputs optional

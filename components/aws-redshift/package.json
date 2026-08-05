@@ -11,8 +11,8 @@
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
   },
   "dependencies": {
-    "@aws-sdk/client-redshift-data": "3.1055.0",
-    "@prismatic-io/spectral": "10.19.0",
+    "@aws-sdk/client-redshift-data": "3.1088.0",
+    "@prismatic-io/spectral": "10.22.1",
     "aws-utils": "file:../../packages/aws-utils",
     "aws4": "^1.13.2"
   },

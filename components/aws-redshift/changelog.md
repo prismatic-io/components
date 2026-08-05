@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-08-05
+
+Various modernizations and documentation updates
+
 ### 2026-07-16
 
 Restructured action inputs into structured objects for an improved user experience.

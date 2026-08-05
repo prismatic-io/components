@@ -10,8 +10,8 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.18.6",
-    "@aws-sdk/client-sqs": "3.1055.0",
+    "@prismatic-io/spectral": "10.22.1",
+    "@aws-sdk/client-sqs": "3.1088.0",
     "aws-utils": "file:../../packages/aws-utils"
   },
   "devDependencies": {

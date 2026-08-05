@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-08-05
+
+Various modernizations and documentation updates
+
 ### 2026-05-28
 
 Various modernizations and documentation updates
