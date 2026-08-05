@@ -1,7 +1,7 @@
-import { createProject } from "./create";
-import { getProject } from "./get";
-import { listProjects } from "./list";
-import { updateProject } from "./update";
+import { createProject } from "./createProject";
+import { getProject } from "./getProject";
+import { listProjects } from "./listProjects";
+import { updateProject } from "./updateProject";
 export default {
   createProject,
   getProject,

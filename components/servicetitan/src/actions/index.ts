@@ -5,12 +5,10 @@ import customers from "./customers";
 import installedEquipment from "./installedEquipment";
 import invoices from "./invoices";
 import jobs from "./jobs";
-import { listBusinessUnits } from "./listBusinessUnits";
-import { listUserRoles } from "./listUserRoles";
 import locations from "./locations";
+import misc from "./misc";
 import payments from "./payments";
 import projects from "./projects";
-import { rawRequest } from "./rawRequest";
 import technician from "./technician";
 export default {
   ...appointmentAssignments,
@@ -20,11 +18,9 @@ export default {
   ...installedEquipment,
   ...invoices,
   ...jobs,
-  listBusinessUnits,
-  listUserRoles,
   ...locations,
+  ...misc,
   ...payments,
   ...projects,
   ...technician,
-  rawRequest,
 };

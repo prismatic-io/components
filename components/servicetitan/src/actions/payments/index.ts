@@ -1,7 +1,7 @@
-import { createPayment } from "./create";
-import { listPayments } from "./list";
-import { updatePayment } from "./update";
-import { updatePaymentCustomFields } from "./updateCustomField";
+import { createPayment } from "./createPayment";
+import { listPayments } from "./listPayments";
+import { updatePayment } from "./updatePayment";
+import { updatePaymentCustomFields } from "./updatePaymentCustomFields";
 export default {
   createPayment,
   listPayments,

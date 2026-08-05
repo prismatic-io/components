@@ -7,31 +7,9 @@ This trigger polls the [ServiceTitan API](https://developer.servicetitan.io/) fo
 3. Records are classified as **created** if `createdOn` exceeds the last poll time; all other returned records are classified as **updated**
 4. The trigger updates its internal state after each poll
 
-#### Configuration
-
-Configure the following inputs:
-
-- **Connection**: The ServiceTitan connection used to authenticate API requests
-- **Resource Type**: The type of ServiceTitan record to monitor
-
-  | Resource | Tracks New | Tracks Updated |
-  |----------|------------|----------------|
-  | Jobs | Yes | Yes |
-  | Appointments | Yes | Yes |
-  | Projects | Yes | Yes |
-  | Invoices | Yes | Yes |
-  | Payments | Yes | Yes |
-  | Customers | Yes | Yes |
-  | Locations | Yes | Yes |
-  | Installed Equipment | Yes | Yes |
-  | Technicians | Yes | Yes |
-
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
-
 #### Returned Data
 
-Returns an object with two arrays — `created` for new records and `updated` for modified records.
+Returns an object with two arrays: `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>

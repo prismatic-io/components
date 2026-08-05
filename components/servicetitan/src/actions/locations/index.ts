@@ -1,7 +1,7 @@
-import { createLocation } from "./create";
-import { getLocation } from "./get";
-import { listLocations } from "./list";
-import { updateLocation } from "./update";
+import { createLocation } from "./createLocation";
+import { getLocation } from "./getLocation";
+import { listLocations } from "./listLocations";
+import { updateLocation } from "./updateLocation";
 export default {
   createLocation,
   updateLocation,

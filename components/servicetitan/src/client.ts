@@ -1,16 +1,11 @@
 import type { Connection } from "@prismatic-io/spectral";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import { serviceTitanConnection } from "./connections";
 import {
   getApplicationKeyFromConnection,
   getTokenFromConnection,
   getURLFromConnection,
+  validateConnection,
 } from "./util";
-export const validateConnection = (connection: Connection) => {
-  if (connection.key !== serviceTitanConnection.key) {
-    throw new Error("Connection is not authorized");
-  }
-};
 export const createClient = (
   connection: Connection,
   urlType: string,

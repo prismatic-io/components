@@ -1,6 +1,6 @@
-import { assignTechnicians } from "./assignTechnician";
-import { listAppointmentsAssignment } from "./list";
-import { unassignTechnicians } from "./unassignTechnician";
+import { assignTechnicians } from "./assignTechnicians";
+import { listAppointmentsAssignment } from "./listAppointmentsAssignment";
+import { unassignTechnicians } from "./unassignTechnicians";
 export default {
   assignTechnicians,
   unassignTechnicians,

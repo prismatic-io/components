@@ -1,7 +1,7 @@
-import { createAppointment } from "./create";
-import { deleteAppointment } from "./delete";
-import { getAppointment } from "./get";
-import { listAppointments } from "./list";
+import { createAppointment } from "./createAppointment";
+import { deleteAppointment } from "./deleteAppointment";
+import { getAppointment } from "./getAppointment";
+import { listAppointments } from "./listAppointments";
 export default {
   createAppointment,
   getAppointment,

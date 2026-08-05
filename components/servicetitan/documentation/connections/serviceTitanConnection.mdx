@@ -1,28 +1,46 @@
-To authenticate ServiceTitan integrations with OAuth 2.0 requires a developer account and the configuration of an application from the [ServiceTitan Developer Portal](https://developer.servicetitan.io/).
+Authenticating with ServiceTitan using OAuth 2.0 Client Credentials requires a developer account and an application configured in the [ServiceTitan Developer Portal](https://developer.servicetitan.io/).
 
-To Create an app:
+#### Prerequisites
 
-1. Login to the [Developer Portal](https://developer.servicetitan.io/)
+- A ServiceTitan developer account
+- Access to the [ServiceTitan Developer Portal](https://developer.servicetitan.io/)
+
+#### Setup Steps
+
+**Creating a new app:**
+
+1. Log in to the [Developer Portal](https://developer.servicetitan.io/)
 2. Select **My Apps** at the top of the page
 3. Select **+ New App**
-4. Fill all the required fields and scopes
-5. Under **Client Credentials Management**”, select **I, the app developer, will configure the credentials on behalf of each tenant**
+4. Fill in all required fields and scopes
+5. Under **Client Credentials Management**, select **I, the app developer, will configure the credentials on behalf of each tenant**
 6. Click **Create App**
 
-For Existing apps:
+**For existing apps:**
 
-1. Login to the [Developer Portal](https://developer.servicetitan.io/)
+1. Log in to the [Developer Portal](https://developer.servicetitan.io/)
 2. Select **My Apps** at the top of the page
-3. Click **Edit** on your application
-4. Under **Client Credentials Management**”, select **I, the app developer, will configure the credentials on behalf of each tenant**
-5. Click Save
+3. Click **Edit** on the application
+4. Under **Client Credentials Management**, select **I, the app developer, will configure the credentials on behalf of each tenant**
+5. Click **Save**
 
-To obtain a Client Secret and Client ID:
+**Obtaining a Client Secret and Client ID:**
 
-If you haven’t done so already, please add the client’s Tenant ID to your application. Once the Tenant Admin has allowed access and connected to your application through their “API Application Access” settings, you can begin the process of obtaining the tenant’s client ID and client secret in your developer portal:
+Add the client’s Tenant ID to the application. Once the Tenant Admin has allowed access and connected to the application through their **API Application Access** settings, obtain the tenant’s Client ID and Client Secret from the developer portal:
 
-1. Login to the [Developer Portal](https://developer.servicetitan.io/)
+1. Log in to the [Developer Portal](https://developer.servicetitan.io/)
 2. Select **My Apps** at the top of the page
-3. Click **View Connections** for your app
+3. Click **View Connections** for the app
 4. Click **Generate** under Client Secret to create a new **Client Secret**
 5. Reference the tenant’s **Client ID** on this page as well
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 2.0 Client Credentials** and configure the following fields:
+
+- **Token URL**: Select the appropriate environment token URL (Production or Integration)
+- **Client ID**: Enter the Client ID obtained from the developer portal
+- **Client Secret**: Enter the Client Secret generated in the developer portal
+- **Tenant**: Enter the Tenant ID used to scope API requests to a specific account
+- **Application Key**: Enter the application key found in the developer portal
+- **Environment**: Select **Production** for live data or **Integration** for testing

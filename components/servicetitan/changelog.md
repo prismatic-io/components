@@ -1,8 +1,18 @@
 ## Changelog
 
+### 2026-08-05
+
+Deprecated the **Create Payment** action and restructured action inputs into structured objects for an improved user experience:
+
+- List actions group page and page-size inputs into **Pagination**; **Fetch All** stays a top-level toggle
+- **Create Invoices** and **Update Invoice** group royalty-related inputs into **Royalty Details**
+- **Update Invoice Items** groups miscellaneous optional inputs into **Additional Fields**
+- **Create Installed Equipment** and **Update Installed Equipment** group warranty date inputs into **Warranty Dates**
+- **Create Technician** and **Update Technician** group optional profile inputs into **Additional Fields**
+
 ### 2026-05-20
 
-Applied automated security patches and code formatting updates
+Various modernizations and documentation updates
 
 ### 2026-04-30
 

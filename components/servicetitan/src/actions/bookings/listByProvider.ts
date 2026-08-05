@@ -1,41 +1,22 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { listBookingByProviderResponse } from "../../examplePayloads";
-import {
-  bookingProvider,
-  connection,
-  customQueryParams,
-  fetchAll,
-  includeTotal,
-  page,
-  pageSize,
-  sort,
-} from "../../inputs";
-import type { Booking } from "../../interfaces";
+import { listBookingByProviderExamplePayload } from "../../examplePayloads";
+import { listByProviderInputs } from "../../inputs";
+import type { Booking } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listBookingByProvider = action({
   display: {
     label: "List Bookings by Provider",
     description: "Retrieves a list of bookings",
   },
-  inputs: {
-    connection,
-    bookingProvider: bookingProvider,
-    fetchAll,
-    page,
-    pageSize,
-    includeTotal,
-    sort,
-    customQueryParams,
-  },
+  inputs: listByProviderInputs,
   perform: async (
     context,
     {
       connection,
       bookingProvider,
       includeTotal,
-      page,
-      pageSize,
+      pagination,
       sort,
       fetchAll,
       customQueryParams,
@@ -61,8 +42,8 @@ export const listBookingByProvider = action({
       {
         params: {
           includeTotal,
-          page,
-          pageSize,
+          page: pagination.page,
+          pageSize: pagination.pageSize,
           sort,
           ...customQueryParams,
         },
@@ -72,7 +53,5 @@ export const listBookingByProvider = action({
       data,
     };
   },
-  examplePayload: {
-    data: listBookingByProviderResponse,
-  },
+  examplePayload: listBookingByProviderExamplePayload,
 });

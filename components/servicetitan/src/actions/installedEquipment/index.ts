@@ -1,9 +1,9 @@
-import { createInstalledEquipment } from "./create";
-import { createInstalledEquipmentAttachment } from "./createAttachments";
-import { getInstalledEquipment } from "./get";
-import { listInstalledEquipment } from "./list";
-import { listInstalledEquipmentAttachments } from "./listAttachments";
-import { updateInstalledEquipment } from "./update";
+import { createInstalledEquipment } from "./createInstalledEquipment";
+import { createInstalledEquipmentAttachment } from "./createInstalledEquipmentAttachment";
+import { getInstalledEquipment } from "./getInstalledEquipment";
+import { listInstalledEquipment } from "./listInstalledEquipment";
+import { listInstalledEquipmentAttachments } from "./listInstalledEquipmentAttachments";
+import { updateInstalledEquipment } from "./updateInstalledEquipment";
 export default {
   createInstalledEquipment,
   createInstalledEquipmentAttachment,

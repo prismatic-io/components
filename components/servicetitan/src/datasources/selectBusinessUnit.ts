@@ -1,0 +1,40 @@
+import { dataSource, type Element } from "@prismatic-io/spectral";
+import { createClient } from "../client";
+import { selectBusinessUnitExamplePayload } from "../examplePayloads";
+import { selectBusinessUnitInputs } from "../inputs";
+import type { BusinessUnits } from "../types";
+export const selectBusinessUnit = dataSource({
+  display: {
+    label: "Select Business Unit",
+    description:
+      "Select a business unit from a dropdown menu (up to 10,000 business units)",
+  },
+  inputs: selectBusinessUnitInputs,
+  perform: async (_context, { connection }) => {
+    const client = createClient(connection, "settings");
+    let businessUnits: BusinessUnits[] = [];
+    let cursor = false;
+    let page = 1;
+    do {
+      const { data } = await client.get(`/business-units`, {
+        params: {
+          includeTotal: true,
+          page,
+          pageSize: 1000,
+        },
+      });
+      businessUnits = [...businessUnits, ...data.data];
+      cursor = data.hasMore;
+      page++;
+    } while (cursor && page < 10);
+    const objects = businessUnits
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map<Element>((bu) => ({
+        key: bu.id.toString(),
+        label: `${bu.name} (ID: ${bu.id})`,
+      }));
+    return { result: objects };
+  },
+  dataSourceType: "picklist",
+  examplePayload: selectBusinessUnitExamplePayload,
+});

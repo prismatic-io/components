@@ -1,4 +1,4 @@
-export const createPaymentResponse = {
+const createPaymentPayload = {
   id: 0,
   typeId: 0,
   active: true,
@@ -16,67 +16,70 @@ export const createPaymentResponse = {
     },
   ],
 };
-export const listPaymentsResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [
-    {
-      id: 0,
-      syncStatus: "string",
-      referenceNumber: "string",
-      date: "string",
-      type: "string",
-      typeId: "string",
-      total: "string",
-      unappliedAmount: "string",
-      memo: "string",
-      customer: {
+export const createPaymentExamplePayload = { data: createPaymentPayload };
+export const listPaymentsExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [
+      {
         id: 0,
-        name: "string",
-      },
-      businessUnit: {
-        id: 0,
-        name: "string",
-      },
-      batch: {
-        id: 0,
-        number: "string",
-        name: "string",
-      },
-      createdBy: "string",
-      generalLedgerAccount: {
-        id: 0,
-        name: "string",
-        number: "string",
+        syncStatus: "string",
+        referenceNumber: "string",
+        date: "string",
         type: "string",
-        detailType: "string",
-      },
-      appliedTo: [
-        {
-          appliedId: 0,
-          appliedTo: 0,
-          appliedAmount: "string",
-          appliedOn: "string",
-          appliedBy: "string",
-          appliedToReferenceNumber: "string",
-        },
-      ],
-      customFields: [
-        {
+        typeId: "string",
+        total: "string",
+        unappliedAmount: "string",
+        memo: "string",
+        customer: {
+          id: 0,
           name: "string",
-          value: "string",
         },
-      ],
-      authCode: "string",
-      checkNumber: "string",
-      modifiedOn: "string",
-      createdOn: "string",
-    },
-  ],
+        businessUnit: {
+          id: 0,
+          name: "string",
+        },
+        batch: {
+          id: 0,
+          number: "string",
+          name: "string",
+        },
+        createdBy: "string",
+        generalLedgerAccount: {
+          id: 0,
+          name: "string",
+          number: "string",
+          type: "string",
+          detailType: "string",
+        },
+        appliedTo: [
+          {
+            appliedId: 0,
+            appliedTo: 0,
+            appliedAmount: "string",
+            appliedOn: "string",
+            appliedBy: "string",
+            appliedToReferenceNumber: "string",
+          },
+        ],
+        customFields: [
+          {
+            name: "string",
+            value: "string",
+          },
+        ],
+        authCode: "string",
+        checkNumber: "string",
+        modifiedOn: "string",
+        createdOn: "string",
+      },
+    ],
+  },
 };
-export const getInvoiceResponse = {
+const getInvoicePayload = {
   id: 0,
   syncStatus: "string",
   summary: "string",
@@ -218,14 +221,16 @@ export const getInvoiceResponse = {
     },
   ],
 };
-export const listInvoiceResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [getInvoiceResponse, getInvoiceResponse],
+export const listInvoicesExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [getInvoicePayload, getInvoicePayload],
+  },
 };
-export const createBookingResponse = {
+const createBookingPayload = {
   id: 0,
   source: "string",
   createdOn: "string",
@@ -255,14 +260,17 @@ export const createBookingResponse = {
   bookingProviderId: 0,
   modifiedOn: "string",
 };
-export const listBookingByProviderResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [createBookingResponse, createBookingResponse],
+export const createBookingExamplePayload = { data: createBookingPayload };
+export const listBookingByProviderExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [createBookingPayload, createBookingPayload],
+  },
 };
-export const createCustomerResponse = {
+const createCustomerPayload = {
   id: 0,
   active: true,
   name: "string",
@@ -353,7 +361,8 @@ export const createCustomerResponse = {
     },
   ],
 };
-export const getCustomerResponse = {
+export const createCustomerExamplePayload = { data: createCustomerPayload };
+const getCustomerPayload = {
   id: 0,
   active: true,
   name: "string",
@@ -390,14 +399,17 @@ export const getCustomerResponse = {
     },
   ],
 };
-export const listCustomersResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [getCustomerResponse, getCustomerResponse],
+export const getCustomerExamplePayload = { data: getCustomerPayload };
+export const listCustomersExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [getCustomerPayload, getCustomerPayload],
+  },
 };
-export const createCustomerContactResponse = {
+const createCustomerContactPayload = {
   id: 0,
   type: {},
   value: "string",
@@ -408,14 +420,19 @@ export const createCustomerContactResponse = {
     doNotText: true,
   },
 };
-export const listCustomerContactsResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [createCustomerContactResponse, createCustomerContactResponse],
+export const createCustomerContactExamplePayload = {
+  data: createCustomerContactPayload,
 };
-export const getJobResponse = {
+export const listCustomerContactsExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [createCustomerContactPayload, createCustomerContactPayload],
+  },
+};
+const getJobPayload = {
   id: 0,
   jobNumber: "string",
   projectId: 0,
@@ -461,15 +478,18 @@ export const getJobResponse = {
   ],
   customerPo: "string",
 };
-export const listJobsResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [getJobResponse, getJobResponse],
+export const getJobExamplePayload = { data: getJobPayload };
+export const listJobsExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [getJobPayload, getJobPayload],
+  },
 };
-export const createJobResponse = getJobResponse;
-export const getAppointmentResponse = {
+export const createJobExamplePayload = getJobExamplePayload;
+const getAppointmentPayload = {
   id: 0,
   jobId: 0,
   appointmentNumber: "string",
@@ -484,14 +504,17 @@ export const getAppointmentResponse = {
   customerId: 0,
   unused: true,
 };
-export const listAppointmentsResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [getAppointmentResponse, getAppointmentResponse],
+export const getAppointmentExamplePayload = { data: getAppointmentPayload };
+export const listAppointmentsExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [getAppointmentPayload, getAppointmentPayload],
+  },
 };
-export const getProjectResponse = {
+const getProjectPayload = {
   id: 0,
   number: "string",
   name: "string",
@@ -524,14 +547,17 @@ export const getProjectResponse = {
   ],
   jobIds: [0],
 };
-export const listProjectsResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [getProjectResponse, getProjectResponse],
+export const getProjectExamplePayload = { data: getProjectPayload };
+export const listProjectsExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [getProjectPayload, getProjectPayload],
+  },
 };
-export const getLocationResponse = {
+const getLocationPayload = {
   id: 0,
   customerId: 0,
   active: true,
@@ -567,25 +593,30 @@ export const getLocationResponse = {
   ],
   taxZoneId: 0,
 };
-export const createLocationResponse = {
-  ...getLocationResponse,
-  contacts: [
-    {
-      id: 0,
-      type: {},
-      value: "string",
-      memo: "string",
-    },
-  ],
+export const getLocationExamplePayload = { data: getLocationPayload };
+export const createLocationExamplePayload = {
+  data: {
+    ...getLocationPayload,
+    contacts: [
+      {
+        id: 0,
+        type: {},
+        value: "string",
+        memo: "string",
+      },
+    ],
+  },
 };
-export const listLocationsResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [getLocationResponse, getLocationResponse],
+export const listLocationsExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [getLocationPayload, getLocationPayload],
+  },
 };
-export const getTechnicianResponse = {
+const getTechnicianPayload = {
   id: 0,
   userId: 0,
   name: "string",
@@ -624,375 +655,439 @@ export const getTechnicianResponse = {
   team: "string",
   jobFilter: {},
 };
-export const listTechniciansResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [getTechnicianResponse, getTechnicianResponse],
+export const getTechnicianExamplePayload = { data: getTechnicianPayload };
+export const listTechniciansExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [getTechnicianPayload, getTechnicianPayload],
+  },
 };
-export const createTechnicianResponse = {
-  id: 0,
+export const createTechnicianExamplePayload = {
+  data: {
+    id: 0,
+  },
 };
-export const getInstalledEquipmentResponse = {
-  id: 0,
-  equipmentId: 0,
-  locationId: 0,
-  customerId: 0,
-  invoiceItemId: 0,
-  name: "string",
-  installedOn: "string",
-  createdOn: "string",
-  modifiedOn: "string",
-  serialNumber: "string",
-  memo: "string",
-  manufacturer: "string",
-  model: "string",
-  cost: 0,
-  manufacturerWarrantyStart: "string",
-  manufacturerWarrantyEnd: "string",
-  serviceProviderWarrantyStart: "string",
-  serviceProviderWarrantyEnd: "string",
-  tags: [
-    {
-      id: 0,
-      ownerId: 0,
-      typeId: 0,
-      typeName: "string",
-      memo: "string",
-      color: "string",
-      textColor: "string",
-      code: "string",
-    },
-  ],
-  customFields: [
-    {
-      id: 0,
-      typeId: 0,
-      name: "string",
-      value: "string",
-    },
-  ],
-  attachments: [
-    {
-      alias: "string",
-      fileName: "string",
-      type: {},
-      url: "string",
-    },
-  ],
-};
-export const listInstalledEquipmentResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [
-    {
-      id: 0,
-      equipmentId: 0,
-      locationId: 0,
-      customerId: 0,
-      invoiceItemId: 0,
-      name: "string",
-      installedOn: "string",
-      createdOn: "string",
-      modifiedOn: "string",
-      serialNumber: "string",
-      memo: "string",
-      manufacturer: "string",
-      model: "string",
-      cost: 0,
-      manufacturerWarrantyStart: "string",
-      manufacturerWarrantyEnd: "string",
-      serviceProviderWarrantyStart: "string",
-      serviceProviderWarrantyEnd: "string",
-      tags: [
-        {
-          id: 0,
-          ownerId: 0,
-          typeId: 0,
-          typeName: "string",
-          memo: "string",
-          color: "string",
-          textColor: "string",
-          code: "string",
-        },
-      ],
-    },
-  ],
-};
-export const createEquipmentResponse = {
-  id: 0,
-  equipmentId: 0,
-  locationId: 0,
-  customerId: 0,
-  invoiceItemId: 0,
-  name: "string",
-  installedOn: "string",
-  createdOn: "string",
-  modifiedOn: "string",
-  serialNumber: "string",
-  memo: "string",
-  manufacturer: "string",
-  model: "string",
-  cost: 0,
-  manufacturerWarrantyStart: "string",
-  manufacturerWarrantyEnd: "string",
-  serviceProviderWarrantyStart: "string",
-  serviceProviderWarrantyEnd: "string",
-  tags: [
-    {
-      id: 0,
-      ownerId: 0,
-      typeId: 0,
-      typeName: "string",
-      memo: "string",
-      color: "string",
-      textColor: "string",
-      code: "string",
-    },
-  ],
-  customFields: [
-    {
-      id: 0,
-      typeId: 0,
-      name: "string",
-      value: "string",
-    },
-  ],
-  attachments: [
-    {
-      alias: "string",
-      fileName: "string",
-      type: {},
-      url: "string",
-    },
-  ],
-};
-export const listAppointmentsAssignedResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [
-    {
-      id: 0,
-      technicianId: 0,
-      technicianName: "string",
-      assignedById: 0,
-      assignedOn: "string",
-      status: {},
-      isPaused: true,
-      jobId: 0,
-      appointmentId: 0,
-    },
-  ],
-};
-export const assignTechniciansResponse = {
-  id: 0,
-  jobId: 0,
-  appointmentNumber: "string",
-  start: "string",
-  end: "string",
-  arrivalWindowStart: "string",
-  arrivalWindowEnd: "string",
-  status: {},
-  specialInstructions: "string",
-  createdOn: "string",
-  modifiedOn: "string",
-};
-export const listJobCancelReasonsResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [
-    {
-      id: 0,
-      name: "string",
-      active: true,
-      createdOn: "string",
-      modifiedOn: "string",
-    },
-  ],
-};
-export const createInstalledEquipmentAttachmentResponse = {
-  path: "InstalledEquipment/Documents/e2374d0c-16b8-4bb7-b3b5-1bd0ac1df1f4.csv",
-};
-export const listBusinessUnitsResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [
-    {
-      id: 0,
-      active: true,
-      name: "string",
-      officialName: "string",
-      email: "string",
-      currency: "string",
-      phoneNumber: "string",
-      invoiceHeader: "string",
-      invoiceMessage: "string",
-      defaultTaxRate: 0,
-      authorizationParagraph: "string",
-      acknowledgementParagraph: "string",
-      address: {
-        street: "string",
-        unit: "string",
-        city: "string",
-        state: "string",
-        zip: "string",
-        country: "string",
+export const getInstalledEquipmentExamplePayload = {
+  data: {
+    id: 0,
+    equipmentId: 0,
+    locationId: 0,
+    customerId: 0,
+    invoiceItemId: 0,
+    name: "string",
+    installedOn: "string",
+    createdOn: "string",
+    modifiedOn: "string",
+    serialNumber: "string",
+    memo: "string",
+    manufacturer: "string",
+    model: "string",
+    cost: 0,
+    manufacturerWarrantyStart: "string",
+    manufacturerWarrantyEnd: "string",
+    serviceProviderWarrantyStart: "string",
+    serviceProviderWarrantyEnd: "string",
+    tags: [
+      {
+        id: 0,
+        ownerId: 0,
+        typeId: 0,
+        typeName: "string",
+        memo: "string",
+        color: "string",
+        textColor: "string",
+        code: "string",
       },
-      materialSku: "string",
-      quickbooksClass: "string",
-      accountCode: "string",
-      franchiseId: "string",
-      conceptCode: "string",
-      corporateContractNumber: "string",
-      tenant: {
+    ],
+    customFields: [
+      {
+        id: 0,
+        typeId: 0,
+        name: "string",
+        value: "string",
+      },
+    ],
+    attachments: [
+      {
+        alias: "string",
+        fileName: "string",
+        type: {},
+        url: "string",
+      },
+    ],
+  },
+};
+export const listInstalledEquipmentExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [
+      {
+        id: 0,
+        equipmentId: 0,
+        locationId: 0,
+        customerId: 0,
+        invoiceItemId: 0,
+        name: "string",
+        installedOn: "string",
+        createdOn: "string",
+        modifiedOn: "string",
+        serialNumber: "string",
+        memo: "string",
+        manufacturer: "string",
+        model: "string",
+        cost: 0,
+        manufacturerWarrantyStart: "string",
+        manufacturerWarrantyEnd: "string",
+        serviceProviderWarrantyStart: "string",
+        serviceProviderWarrantyEnd: "string",
+        tags: [
+          {
+            id: 0,
+            ownerId: 0,
+            typeId: 0,
+            typeName: "string",
+            memo: "string",
+            color: "string",
+            textColor: "string",
+            code: "string",
+          },
+        ],
+      },
+    ],
+  },
+};
+export const createEquipmentExamplePayload = {
+  data: {
+    id: 0,
+    equipmentId: 0,
+    locationId: 0,
+    customerId: 0,
+    invoiceItemId: 0,
+    name: "string",
+    installedOn: "string",
+    createdOn: "string",
+    modifiedOn: "string",
+    serialNumber: "string",
+    memo: "string",
+    manufacturer: "string",
+    model: "string",
+    cost: 0,
+    manufacturerWarrantyStart: "string",
+    manufacturerWarrantyEnd: "string",
+    serviceProviderWarrantyStart: "string",
+    serviceProviderWarrantyEnd: "string",
+    tags: [
+      {
+        id: 0,
+        ownerId: 0,
+        typeId: 0,
+        typeName: "string",
+        memo: "string",
+        color: "string",
+        textColor: "string",
+        code: "string",
+      },
+    ],
+    customFields: [
+      {
+        id: 0,
+        typeId: 0,
+        name: "string",
+        value: "string",
+      },
+    ],
+    attachments: [
+      {
+        alias: "string",
+        fileName: "string",
+        type: {},
+        url: "string",
+      },
+    ],
+  },
+};
+export const listAppointmentsAssignedExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [
+      {
+        id: 0,
+        technicianId: 0,
+        technicianName: "string",
+        assignedById: 0,
+        assignedOn: "string",
+        status: {},
+        isPaused: true,
+        jobId: 0,
+        appointmentId: 0,
+      },
+    ],
+  },
+};
+export const assignTechniciansExamplePayload = {
+  data: {
+    id: 0,
+    jobId: 0,
+    appointmentNumber: "string",
+    start: "string",
+    end: "string",
+    arrivalWindowStart: "string",
+    arrivalWindowEnd: "string",
+    status: {},
+    specialInstructions: "string",
+    createdOn: "string",
+    modifiedOn: "string",
+  },
+};
+export const listJobCancelReasonsExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [
+      {
         id: 0,
         name: "string",
+        active: true,
+        createdOn: "string",
+        modifiedOn: "string",
+      },
+    ],
+  },
+};
+export const createInstalledEquipmentAttachmentExamplePayload = {
+  data: {
+    path: "InstalledEquipment/Documents/e2374d0c-16b8-4bb7-b3b5-1bd0ac1df1f4.csv",
+  },
+};
+export const listBusinessUnitsExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [
+      {
+        id: 0,
+        active: true,
+        name: "string",
+        officialName: "string",
+        email: "string",
+        currency: "string",
+        phoneNumber: "string",
+        invoiceHeader: "string",
+        invoiceMessage: "string",
+        defaultTaxRate: 0,
+        authorizationParagraph: "string",
+        acknowledgementParagraph: "string",
+        address: {
+          street: "string",
+          unit: "string",
+          city: "string",
+          state: "string",
+          zip: "string",
+          country: "string",
+        },
+        materialSku: "string",
+        quickbooksClass: "string",
         accountCode: "string",
         franchiseId: "string",
         conceptCode: "string",
-        modifiedOn: "string",
-      },
-      createdOn: "string",
-      modifiedOn: "string",
-      externalData: [
-        {
-          key: "string",
-          value: "string",
+        corporateContractNumber: "string",
+        tenant: {
+          id: 0,
+          name: "string",
+          accountCode: "string",
+          franchiseId: "string",
+          conceptCode: "string",
+          modifiedOn: "string",
         },
-      ],
-    },
-  ],
+        createdOn: "string",
+        modifiedOn: "string",
+        externalData: [
+          {
+            key: "string",
+            value: "string",
+          },
+        ],
+      },
+    ],
+  },
 };
-export const listUserRolesResponse = {
-  page: 0,
-  pageSize: 0,
-  hasMore: true,
-  totalCount: 0,
-  data: [
+export const listUserRolesExamplePayload = {
+  data: {
+    page: 0,
+    pageSize: 0,
+    hasMore: true,
+    totalCount: 0,
+    data: [
+      {
+        id: 0,
+        active: true,
+        name: "string",
+        createdOn: "string",
+        employeeType: "Employee",
+      },
+    ],
+  },
+};
+export const listAttachmentExamplePayload = {
+  data: Buffer.from("ExampleFile"),
+};
+export const deleteAppointmentExamplePayload = { data: null };
+export const cancelJobExamplePayload = { data: null };
+export const deleteInvoiceItemExamplePayload = { data: null };
+export const createInvoicesExamplePayload = { data: {} };
+export const updateInvoiceExamplePayload = { data: {} };
+export const updateInvoiceCustomFieldsExamplePayload = { data: {} };
+export const updateInvoiceItemsExamplePayload = { data: {} };
+export const updatePaymentCustomFieldsExamplePayload = { data: {} };
+export const deleteCustomerContactExamplePayload = { data: null };
+export const selectAppointmentExamplePayload = {
+  result: [
     {
-      id: 0,
-      active: true,
-      name: "string",
-      createdOn: "string",
-      employeeType: "Employee",
+      key: "1",
+      label: "#1 (ID: 1)",
     },
   ],
 };
-export const listAttachmentResponse = Buffer.from("ExampleFile");
-export const appointmentDatasource = [
-  {
-    key: "1",
-    label: "#1 (ID: 1)",
-  },
-];
-export const bookingDatasource = [
-  {
-    key: "1",
-    label: "Booking 1 (ID: 1)",
-  },
-  {
-    key: "2",
-    label: "Booking 2 (ID: 2)",
-  },
-];
-export const customersDatasource = [
-  {
-    key: "1",
-    label: "John Doe (ID: 1)",
-  },
-  {
-    key: "2",
-    label: "Jane Doe (ID: 2)",
-  },
-];
-export const installedEquipmentDatasource = [
-  {
-    key: "1",
-    label: "Installed Equipment 1 (ID: 1)",
-  },
-  {
-    key: "2",
-    label: "Installed Equipment 2 (ID: 2)",
-  },
-];
-export const invoicesDatasource = [
-  {
-    key: "1",
-    label: "#1234",
-  },
-];
-export const jobDatasource = [
-  {
-    key: "1",
-    label: "#1",
-  },
-  {
-    key: "2",
-    label: "#2",
-  },
-  {
-    key: "3",
-    label: "#3",
-  },
-];
-export const locationDatasource = [
-  {
-    key: "1",
-    label: "Location 1 (ID: 1)",
-  },
-  {
-    key: "2",
-    label: "Location 2 (ID: 2)",
-  },
-  {
-    key: "3",
-    label: "Location 3 (ID: 3)",
-  },
-];
-export const projectsDatasource = [
-  {
-    key: "1",
-    label: "Project 1 (ID: 1)",
-  },
-  {
-    key: "2",
-    label: "Project 2 (ID: 2)",
-  },
-];
-export const businessUnitsDatasource = [
-  {
-    key: "1",
-    label: "Business Unit 1 (ID: 1)",
-  },
-];
-export const userRolesDatasource = [
-  {
-    key: "1",
-    label: "Admin (ID: 1)",
-  },
-];
-export const jobCancelReasonsDatasource = [
-  {
-    key: "1",
-    label: "Customer Request (ID: 1)",
-  },
-];
-export const techniciansDatasource = [
-  {
-    key: "1",
-    label: "John Doe (ID: 1)",
-  },
-  {
-    key: "2",
-    label: "Jane Doe (ID: 2)",
-  },
-];
+export const selectBookingExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "Booking 1 (ID: 1)",
+    },
+    {
+      key: "2",
+      label: "Booking 2 (ID: 2)",
+    },
+  ],
+};
+export const selectCustomersExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "John Doe (ID: 1)",
+    },
+    {
+      key: "2",
+      label: "Jane Doe (ID: 2)",
+    },
+  ],
+};
+export const selectInstalledEquipmentExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "Installed Equipment 1 (ID: 1)",
+    },
+    {
+      key: "2",
+      label: "Installed Equipment 2 (ID: 2)",
+    },
+  ],
+};
+export const selectInvoiceExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "#1234",
+    },
+  ],
+};
+export const selectJobExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "#1",
+    },
+    {
+      key: "2",
+      label: "#2",
+    },
+    {
+      key: "3",
+      label: "#3",
+    },
+  ],
+};
+export const selectLocationExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "Location 1 (ID: 1)",
+    },
+    {
+      key: "2",
+      label: "Location 2 (ID: 2)",
+    },
+    {
+      key: "3",
+      label: "Location 3 (ID: 3)",
+    },
+  ],
+};
+export const selectProjectExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "Project 1 (ID: 1)",
+    },
+    {
+      key: "2",
+      label: "Project 2 (ID: 2)",
+    },
+  ],
+};
+export const selectBusinessUnitExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "Business Unit 1 (ID: 1)",
+    },
+  ],
+};
+export const selectUserRoleExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "Admin (ID: 1)",
+    },
+  ],
+};
+export const selectJobCancelReasonExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "Customer Request (ID: 1)",
+    },
+  ],
+};
+export const selectTechnicianExamplePayload = {
+  result: [
+    {
+      key: "1",
+      label: "John Doe (ID: 1)",
+    },
+    {
+      key: "2",
+      label: "Jane Doe (ID: 2)",
+    },
+  ],
+};
+export const selectPaymentExamplePayload = {
+  result: [{ label: "#12345 - Check", key: "12345" }],
+};
+export const selectCustomerContactExamplePayload = {
+  result: [{ label: "Phone: 555-1234", key: "12345" }],
+};

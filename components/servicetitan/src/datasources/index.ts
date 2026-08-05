@@ -1,17 +1,17 @@
-import { selectAppointment } from "./appointments";
-import { selectBooking } from "./bookings";
-import { selectBusinessUnit } from "./businessUnits";
-import { selectCustomerContact } from "./customerContacts";
-import { selectCustomers } from "./customers";
-import { selectInstalledEquipment } from "./installedEquipment";
-import { selectInvoice } from "./invoices";
-import { selectJobCancelReason } from "./jobCancelReasons";
-import { selectJob } from "./jobs";
-import { selectLocation } from "./locations";
-import { selectPayment } from "./payments";
-import { selectProject } from "./project";
-import { selectTechnician } from "./technician";
-import { selectUserRole } from "./userRoles";
+import { selectAppointment } from "./selectAppointment";
+import { selectBooking } from "./selectBooking";
+import { selectBusinessUnit } from "./selectBusinessUnit";
+import { selectCustomerContact } from "./selectCustomerContact";
+import { selectCustomers } from "./selectCustomers";
+import { selectInstalledEquipment } from "./selectInstalledEquipment";
+import { selectInvoice } from "./selectInvoice";
+import { selectJob } from "./selectJob";
+import { selectJobCancelReason } from "./selectJobCancelReason";
+import { selectLocation } from "./selectLocation";
+import { selectPayment } from "./selectPayment";
+import { selectProject } from "./selectProject";
+import { selectTechnician } from "./selectTechnician";
+import { selectUserRole } from "./selectUserRole";
 export default {
   selectAppointment,
   selectBooking,

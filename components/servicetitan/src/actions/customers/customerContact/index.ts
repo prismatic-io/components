@@ -1,7 +1,7 @@
-import { createCustomerContact } from "./create";
-import { deletCustomersContact } from "./delete";
-import { listCustomersContact } from "./list";
-import { updateCustomerContact } from "./update";
+import { createCustomerContact } from "./createCustomerContact";
+import { deletCustomersContact } from "./deletCustomersContact";
+import { listCustomersContact } from "./listCustomersContact";
+import { updateCustomerContact } from "./updateCustomerContact";
 export default {
   createCustomerContact,
   updateCustomerContact,

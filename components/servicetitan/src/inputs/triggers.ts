@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { pollResourceModel } from "../constants";
+import { connection } from "./common";
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",
@@ -24,3 +25,9 @@ export const showUpdatedRecords = input({
   comments: "Include updated records in trigger results.",
   clean: util.types.toBool,
 });
+export const pollChangesTriggerInputs = {
+  connection,
+  resourceType: pollResourceType,
+  showNewRecords,
+  showUpdatedRecords,
+};

@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "ServiceTitan",
     description:
-      "ServiceTitan is a comprehensive field service management solution that helps businesses manage their operations, workforce, and customer service.",
+      "Manage jobs, customers, invoices, and technicians in ServiceTitan.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

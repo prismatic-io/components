@@ -1,7 +1,7 @@
-import { createTechnician } from "./create";
-import { getTechnician } from "./get";
-import { listTechnicians } from "./list";
-import { updateTechnician } from "./update";
+import { createTechnician } from "./createTechnician";
+import { getTechnician } from "./getTechnician";
+import { listTechnicians } from "./listTechnicians";
+import { updateTechnician } from "./updateTechnician";
 export default {
   createTechnician,
   updateTechnician,

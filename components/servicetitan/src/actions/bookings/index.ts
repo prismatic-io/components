@@ -1,9 +1,9 @@
-import { createBookingByProvider } from "./create";
+import { createBookingByProvider } from "./createBookingByProvider";
 import { getBookingByProvider } from "./getByProvider";
 import { getBookingByTenant } from "./getByTenant";
 import { listBookingByProvider } from "./listByProvider";
 import { listBookingByTenant } from "./listByTenant";
-import { updateBooking } from "./update";
+import { updateBooking } from "./updateBooking";
 export default {
   createBookingByProvider,
   getBookingByProvider,
