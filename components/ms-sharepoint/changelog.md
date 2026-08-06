@@ -1,8 +1,12 @@
 ## Changelog
 
-### 2026-08-04
+### 2026-08-05
 
-Updated the **Fetch All** option on the **List Sites**, **List Followed Sites**, **List Site Lists**, **List Drives**, **List Files in Drive**, and **List Folder Files in Drive** actions so results are returned in the same `{ value: [ ... ] }` shape as a single-page call; previously enabling **Fetch All** returned a bare array, so integrations that read the `value` property received no items. The **List Files in Drive** action now also returns this shape when **Recursive** is enabled alongside **Fetch All**
+Improved datasource filtering, drive scoping, and pagination consistency across drive actions and triggers:
+- Added **Site ID** and **List ID** datasource-scoping inputs so the **Drive** and **Item** dropdowns are pre-populated in the UI
+- Fixed the **List Drives** and **List Folders** datasources to query the correct SharePoint drive instead of defaulting to the user's personal OneDrive
+- Removed the unused **Directory** datasource input
+- Fixed the **Fetch All** option on the **List Sites**, **List Followed Sites**, **List Site Lists**, **List Drives**, **List Files in Drive**, and **List Folder Files in Drive** actions so results are returned in the same `{ value: [ ... ] }` shape as a single-page response
 
 ### 2026-05-21
 

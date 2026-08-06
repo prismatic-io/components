@@ -8,6 +8,7 @@ import {
   fileName,
   folderId,
   itemId,
+  listId,
   pageLimit,
   pageToken,
   recursive,
@@ -94,6 +95,7 @@ const getDrive = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
     driveId,
   },
   perform: async ({ debug: { enabled: debug } }, params) => {
@@ -111,6 +113,7 @@ const getFilesFromDrive = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
     driveId,
   },
   perform: async ({ debug: { enabled: debug } }, { connection, driveId }) => {
@@ -131,6 +134,7 @@ const getFilesFromDriveFolder = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
     driveId,
     folderId,
   },
@@ -154,6 +158,7 @@ const getFilesFromDriveWithPagination = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
     driveId,
     pageLimit,
     pageToken,
@@ -162,7 +167,7 @@ const getFilesFromDriveWithPagination = action({
   },
   perform: async (
     context,
-    { connection, driveId, pageLimit, pageToken, fetchAll, recursive },
+    { connection, siteId, driveId, pageLimit, pageToken, fetchAll, recursive },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const endpoint = `/drives/${driveId}/root/children`;
@@ -170,6 +175,7 @@ const getFilesFromDriveWithPagination = action({
       if (recursive) {
         const { data } = await getFilesFromDriveRecursive.perform(context, {
           connection,
+          siteId,
           driveId,
         });
         return { data };
@@ -216,6 +222,7 @@ const getFilesFromDriveFolderWithPagination = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
     driveId,
     folderId,
     pageLimit,
@@ -258,6 +265,8 @@ const getFile = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
+    listId: { ...listId, required: false },
     driveId,
     itemId,
   },
@@ -285,6 +294,7 @@ const uploadFile = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
     driveId,
     fileName,
     fileData,
@@ -312,6 +322,8 @@ const updateFile = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
+    listId: { ...listId, required: false },
     driveId,
     itemId,
     fileData,
@@ -338,6 +350,8 @@ const downloadFile = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
+    listId: { ...listId, required: false },
     driveId,
     itemId,
   },
@@ -370,6 +384,7 @@ const getFilesFromDriveRecursive = action({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
     driveId,
   },
   perform: async ({ debug: { enabled: debug } }, { connection, driveId }) => {

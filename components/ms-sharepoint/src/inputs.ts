@@ -241,18 +241,6 @@ export const $top = input({
   example: "5",
   clean: util.types.toString,
 });
-export const dir = input({
-  label: "Directory",
-  type: "string",
-  required: false,
-  placeholder: "Enter directory path",
-  comments:
-    "The Graph API path to list resources from. Replace {siteId} or {driveId} with relevant ID values. https://learn.microsoft.com/en-us/graph/api/drive-list?view=graph-rest-1.0&tabs=http",
-  example:
-    "Drives: /sites/{siteId}/drives - Folders: /drives/{driveId}/root/children",
-  default: "/me/drive/root/children",
-  clean: util.types.toString,
-});
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
@@ -309,6 +297,8 @@ export const createFolderInputs = {
 };
 export const moveFileInputs = {
   connection,
+  siteId: { ...siteId, required: false },
+  listId: { ...listId, required: false },
   driveId: {
     ...driveId,
     comments: "Provide the id of the drive to move the file in.",
@@ -326,6 +316,7 @@ export const moveFileInputs = {
 };
 export const listItemsInputs = {
   connection,
+  siteId: { ...siteId, required: false },
   driveId: {
     ...driveId,
     comments: "Provide the id of the drive to list the items in.",
@@ -460,6 +451,7 @@ export const renewSubscriptionInputs = {
 };
 export const folderPollingTriggerInputs = {
   connection,
+  siteId: { ...siteId, required: false },
   driveId,
   folderId: {
     ...folderId,

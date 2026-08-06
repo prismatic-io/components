@@ -1,5 +1,5 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { connection, driveId } from "../inputs";
+import { connection, driveId, siteId } from "../inputs";
 import { createClient } from "../client";
 import { addCreated, addDeleted, addUpdated, paginateResults } from "../utils";
 import type {
@@ -15,6 +15,7 @@ export const drivePollingTrigger = pollingTrigger({
   },
   inputs: {
     connection,
+    siteId: { ...siteId, required: false },
     driveId,
   },
   perform: async (

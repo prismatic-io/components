@@ -1,38 +1,35 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection, dir } from "../../inputs";
+import { connection, siteId } from "../../inputs";
+import type { Drive } from "../../interfaces";
 import { sortArray } from "../../utils";
 export const listDrives = dataSource({
   display: {
-    label: "List Drives from Source",
-    description: "A picklist of files in a given directory",
+    label: "List Drives",
+    description: "A picklist of drives for a given site",
   },
   inputs: {
     connection,
-    dir,
+    siteId: { ...siteId, dataSource: undefined },
   },
-  perform: async (_context, { connection, dir }) => {
+  perform: async (_context, { connection, siteId }) => {
     const client = await createClient(connection, false);
-    const path = dir === "/" ? "/me/drive/root/children" : dir;
-    const files: Record<string, string>[] = [];
+    const path = `/sites/${siteId}/drives`;
+    const drives: Drive[] = [];
     let nextLink = `${client.defaults.baseURL}${path}`;
     client.defaults.baseURL = undefined;
     do {
       const { data } = await client.get(nextLink);
-      files.push(...(data.value || []));
+      drives.push(...(data.value || []));
       nextLink = data?.["@odata.nextLink"];
     } while (nextLink);
     const result = sortArray(
-      files.map((record) => {
-        return {
-          key: record.id,
-          label: record.name,
-        };
-      }),
+      drives.map((drive) => ({
+        key: drive.id,
+        label: drive.name,
+      })),
     );
-    return {
-      result,
-    };
+    return { result };
   },
   dataSourceType: "picklist",
 });

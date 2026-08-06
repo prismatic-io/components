@@ -1,6 +1,6 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection, dir } from "../../inputs";
+import { connection, driveId } from "../../inputs";
 import { sortArray } from "../../utils";
 export const listFolders = dataSource({
   display: {
@@ -9,11 +9,11 @@ export const listFolders = dataSource({
   },
   inputs: {
     connection,
-    dir,
+    driveId: { ...driveId, dataSource: undefined },
   },
-  perform: async (_context, { connection, dir }) => {
+  perform: async (_context, { connection, driveId }) => {
     const client = await createClient(connection, false);
-    const path = dir === "/" ? "/me/drive/root/children" : dir;
+    const path = `/drives/${driveId}/root/children`;
     const files: Record<string, string>[] = [];
     let nextLink = `${client.defaults.baseURL}${path}`;
     client.defaults.baseURL = undefined;
@@ -28,12 +28,10 @@ export const listFolders = dataSource({
     } while (nextLink);
     return {
       result: sortArray(
-        files.map((record) => {
-          return {
-            key: record.id,
-            label: record.name,
-          };
-        }),
+        files.map((record) => ({
+          key: record.id,
+          label: record.name,
+        })),
       ),
     };
   },

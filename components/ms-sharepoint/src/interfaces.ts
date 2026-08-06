@@ -1,3 +1,7 @@
+export interface Drive {
+  id: string;
+  name: string;
+}
 export interface DriveItem {
   id: string;
   name: string;
