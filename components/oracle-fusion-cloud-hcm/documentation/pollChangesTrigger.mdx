@@ -1,0 +1,99 @@
+The **Atom Feed Notifications** trigger subscribes to an [Oracle HCM Atom feed](https://docs.oracle.com/en/cloud/paas/integration-cloud/hcm-adapter/subscribe-atom-feeds-scheduled-integration.html) and emits new and updated feed entries on a configured schedule.
+
+Atom feeds are the recommended mechanism for receiving lifecycle events from Oracle Fusion Cloud HCM (such as new hires, employee updates, assignment changes, and terminations) without polling REST resources directly.
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. Request the selected Atom feed using `GET /hcmRestApi/atomFeed/{feedName}` with an `updated-min` query parameter set to the timestamp of the last successful poll
+3. Parse the Atom 1.0 XML response into structured entries, including the inner HCM business object payload and the list of `changedAttributes`
+4. Persist the new poll timestamp to trigger state for use on the next run
+5. Return the parsed entries; if no new entries are found, return an empty array and set `polledNoChanges` to `true`
+
+On the first run, the trigger sets the poll timestamp to the current time and returns no entries. Subsequent runs return only entries published or updated after that timestamp.
+
+#### Event Types
+
+The trigger supports the following Oracle HCM Atom feeds out of the box:
+
+| Feed Name | Label | Description |
+|-----------|-------|-------------|
+| `NewHire` | New Hire | Emitted when a new worker is hired |
+| `EmployeeUpdate` | Employee Update | Emitted when an existing worker record is updated |
+| `Assignment` | Assignment | Emitted when a worker assignment is created or modified |
+| `Termination` | Termination | Emitted when a worker is terminated |
+
+Additional feed names exposed by the Oracle HCM Interface Catalog can be entered manually. Refer to the [Oracle HCM Atom feed documentation](https://docs.oracle.com/en/cloud/paas/integration-cloud/hcm-adapter/subscribe-atom-feeds-scheduled-integration.html) for the complete list of available feeds.
+
+#### Returned Data
+
+The trigger returns all Atom feed entries received since the last poll. When no entries are returned, the trigger sets `polledNoChanges` to `true` so downstream steps can short-circuit.
+
+Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example payload</summary>
+
+```json
+{
+  "payload": {
+    "body": {
+      "data": {
+        "entries": [
+          {
+            "id": "Workers-300100099990042-NewHire",
+            "feedName": "NewHire",
+            "updated": "2026-05-13T09:15:00.000Z",
+            "published": "2026-05-13T09:15:00.000Z",
+            "changedAttributes": [],
+            "content": {
+              "Workers": {
+                "PersonId": 300100099990042,
+                "PersonNumber": "EMP042",
+                "FirstName": "Maria",
+                "LastName": "Garcia",
+                "DisplayName": "Maria Garcia",
+                "PrimaryEmailAddress": "maria.garcia@example.com",
+                "PrimaryPhoneNumber": "+1-555-0142",
+                "HireDate": "2026-05-13",
+                "LegalEntityName": "Acme Corporation US LLC",
+                "CreationDate": "2026-05-13T09:15:00.000Z",
+                "LastUpdateDate": "2026-05-13T09:15:00.000Z"
+              }
+            }
+          },
+          {
+            "id": "Workers-300100099990042-EmployeeUpdate",
+            "feedName": "EmployeeUpdate",
+            "updated": "2026-05-13T10:30:00.000Z",
+            "published": "2026-05-13T09:15:00.000Z",
+            "changedAttributes": [
+              "PrimaryPhoneNumber",
+              "PrimaryEmailAddress",
+              "DisplayName"
+            ],
+            "content": {
+              "Workers": {
+                "PersonId": 300100099990042,
+                "PersonNumber": "EMP042",
+                "FirstName": "Maria",
+                "LastName": "Garcia-Lopez",
+                "DisplayName": "Maria Garcia-Lopez",
+                "PrimaryEmailAddress": "maria.garcia-lopez@example.com",
+                "PrimaryPhoneNumber": "+1-555-0199",
+                "HireDate": "2026-05-13",
+                "LegalEntityName": "Acme Corporation US LLC",
+                "CreationDate": "2026-05-13T09:15:00.000Z",
+                "LastUpdateDate": "2026-05-13T10:30:00.000Z"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "polledNoChanges": false
+}
+```
+
+</details>

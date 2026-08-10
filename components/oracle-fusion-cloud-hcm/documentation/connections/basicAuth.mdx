@@ -1,0 +1,28 @@
+To authenticate with Oracle Fusion Cloud HCM using Basic Authentication, an integration user account with REST API access is required. This connection type is suitable for development and testing. For production use, OAuth 2.0 Client Credentials is recommended.
+
+#### Prerequisites
+
+- An Oracle Fusion Cloud HCM instance
+- An integration user account with the **Integration Specialist** or **HCM Integration** role granted
+- The instance URL (e.g., `https://acme.fa.us2.oraclecloud.com`)
+
+#### Setup Steps
+
+1. Log in to Oracle Fusion Cloud HCM as an administrator
+2. Navigate to **Tools** > **Security Console** > **Users**
+3. Create a new user account (or identify an existing one) to act as the integration user
+4. Assign one of the following roles to the user:
+   - **Integration Specialist**
+   - **HCM Integration**
+5. Confirm the user can authenticate against the REST API by issuing a test request against the `workers/describe` endpoint, as documented in the [Oracle HCM REST API Quick Start](https://docs.oracle.com/en/cloud/saas/human-resources/farws/Quick_Start.html)
+6. Record the **Server URL**, **Username**, and **Password** for the integration user
+
+#### Configure the Connection
+
+- For **Server URL**, enter the Oracle HCM Cloud instance URL (e.g., `https://acme.fa.us2.oraclecloud.com`)
+- For **Username**, enter the Oracle HCM Cloud username of the integration user
+- For **Password**, enter the password for the integration user account
+
+:::warning[Security Note]
+Basic Authentication transmits credentials with every request. Use Basic Authentication only for development or testing. For production, configure the **OAuth 2.0 Client Credentials** connection instead.
+:::

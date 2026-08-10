@@ -1,0 +1,66 @@
+The **New and Updated Records** trigger checks for new and updated records in a selected Oracle HCM REST resource (Workers, Departments, Jobs, or Locations) based on the `LastUpdateDate` field on a configured schedule.
+
+This trigger is ideal for bulk data sync scenarios where a full picture of the underlying resource is needed in an external system, complementing the lifecycle-event-oriented Atom Feed Notifications trigger.
+
+For more information on Oracle HCM REST API filtering, refer to the [Oracle Fusion Cloud HCM REST API reference](https://docs.oracle.com/en/cloud/saas/human-resources/farws/rest-endpoints.html).
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. Issue a `GET` against the selected resource endpoint with the filter `q=LastUpdateDate>="<ISO8601>"`, where the timestamp is the time of the last successful poll
+3. Automatically fetch all matching records by paginating through results until `hasMore` is `false`
+4. Persist the new poll timestamp to trigger state for use on the next run
+5. Return the combined list of records along with the resource type; if no records are returned, set `polledNoChanges` to `true`
+
+On the first run, the trigger sets the poll timestamp to the current time and returns no records. Subsequent runs return only records updated after that timestamp.
+
+#### Event Types
+
+The trigger supports the following Oracle HCM REST resources out of the box:
+
+| Resource Type | Endpoint | Description |
+|---------------|----------|-------------|
+| `Workers` | `GET /publicWorkers` | Worker records (employees, contingent workers) |
+| `Departments` | `GET /organizations` | Department records |
+| `Jobs` | `GET /jobs` | Job definitions |
+| `Locations` | `GET /locationsV2` | Location records |
+
+Each supported resource exposes a `LastUpdateDate` field that enables server-side filtering. Refer to the [Oracle Fusion Cloud HCM REST API reference](https://docs.oracle.com/en/cloud/saas/human-resources/farws/rest-endpoints.html) for full resource schemas.
+
+#### Returned Data
+
+The trigger returns all records updated since the last poll, along with the resource type that was polled. When no records are returned, the trigger sets `polledNoChanges` to `true` so downstream steps can short-circuit.
+
+Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example payload</summary>
+
+```json
+{
+  "payload": {
+    "body": {
+      "data": {
+        "records": [
+          {
+            "PersonId": 300100099990042,
+            "PersonNumber": "EMP042",
+            "FirstName": "Maria",
+            "LastName": "Garcia-Lopez",
+            "DisplayName": "Maria Garcia-Lopez",
+            "PrimaryEmailAddress": "maria.garcia-lopez@example.com",
+            "PrimaryPhoneNumber": "+1-555-0199",
+            "DateOfBirth": null,
+            "CreationDate": "2026-05-13T09:15:00.000Z",
+            "LastUpdateDate": "2026-05-13T10:30:00.000Z"
+          }
+        ],
+        "resourceType": "Workers"
+      }
+    }
+  },
+  "polledNoChanges": false
+}
+```
+
+</details>
