@@ -6,18 +6,18 @@ export const connectionInput = input({
   comments: "The NetSuite connection to use.",
 });
 export const limitInput = input({
-  label: "Pagination Limit",
+  label: "Limit",
   type: "string",
   comments:
     "The maximum number of records to fetch per page. See [Record Collection Filtering](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545222128.html) for details.",
   default: "1000",
   example: "1000",
   placeholder: "Enter pagination limit",
-  required: true,
+  required: false,
   clean: (value) => util.types.toNumber(value, 1000),
 });
 export const offsetInput = input({
-  label: "Pagination Offset",
+  label: "Offset",
   type: "string",
   comments:
     "The number of records to skip before starting to fetch results. Used for pagination.",

@@ -1,14 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { updateCustomerExamplePayload } from "../../examplePayloads";
 import { updateRecordInputs } from "../../inputs";
+import { updateRecordOutputSchema } from "../../outputSchemas";
 import { parseLocationData } from "../../utils";
 export const updateRecord = action({
   display: {
     label: "Update Record",
-    description: "Update record of the specified type",
+    description: "Update record of the specified type.",
   },
   inputs: updateRecordInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateRecordOutputSchema,
+  }),
   examplePayload: updateCustomerExamplePayload,
   perform: async (context, params) => {
     const client = await createClient(

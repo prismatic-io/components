@@ -5,7 +5,7 @@ import { getRecordInputs } from "../../inputs";
 export const getRecord = action({
   display: {
     label: "Get Record",
-    description: "Get record of specified type",
+    description: "Get record of specified type.",
   },
   inputs: getRecordInputs,
   examplePayload: getCustomerExamplePayload,

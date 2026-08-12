@@ -1,5 +1,17 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { connectionInput, limitInput, offsetInput } from "./common";
+const queryPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { limitInput, offsetInput },
+});
+const selectPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { limit: limitInput, offset: offsetInput },
+});
 const suiteQLInput = input({
   label: "SuiteQL Payload",
   type: "code",
@@ -33,15 +45,13 @@ const labelInput = input({
 });
 export const suiteQLQueryInputs = {
   connection: connectionInput,
-  limitInput,
-  offsetInput,
   suiteQLInput,
+  pagination: queryPagination,
 };
 export const selectSuiteQlInputs = {
   connection: connectionInput,
   query: suiteQLInput,
   key: keyInput,
   label: labelInput,
-  limit: limitInput,
-  offset: offsetInput,
+  pagination: selectPagination,
 };

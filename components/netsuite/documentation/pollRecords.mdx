@@ -1,6 +1,6 @@
-The **New or Updated Records** trigger checks for new and updated records in NetSuite based on the `lastmodifieddate` field on a configured schedule.
+The **New and Updated Records** trigger checks for new and updated records in NetSuite based on the `lastmodifieddate` field on a configured schedule.
 
-For more information on NetSuite REST API filtering, see [Record Collection Filtering](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545222128.html) and [Searching by lastModifiedDate](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_N3518534.html).
+For more information on NetSuite REST API filtering, see [Record Collection Filtering](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1545222128.html).
 
 #### How It Works
 
@@ -12,15 +12,12 @@ For more information on NetSuite REST API filtering, see [Record Collection Filt
 
 On the first run, the trigger sets the poll timestamp to the current time and returns all matching records. Subsequent runs detect records created or modified after that timestamp.
 
-#### Configuration
+#### Notes
 
-- **Connection**: NetSuite OAuth 2.0 or OAuth 2.0 Client Credentials connection
-- **Record Type**: The type of NetSuite record to monitor (e.g., customer, invoice, salesOrder, contact)
-- **Additional Filter**: Optional WHERE clause conditions to append to the query (without 'AND' prefix)
+The query is built in the format `lastmodifieddate AFTER {lastPolledAt}`, and any additional filter conditions are appended to it.
 
-The trigger uses a query in the format: `lastmodifieddate AFTER {lastPolledAt}` and appends any additional filter conditions specified.
+Example additional filters:
 
-**Example Additional Filters:**
 - `isinactive = 'F'` - Only active records
 - `subsidiary.id = '2'` - Records from a specific subsidiary
 - `email IS NOT NULL` - Records with email addresses
@@ -29,7 +26,9 @@ See [Record Collection Filtering documentation](https://docs.oracle.com/en/cloud
 
 #### Returned Data
 
-The trigger returns all records that have been created or modified since the last poll. When no changes are detected, returns an empty array and sets `polledNoChanges` to `true`.
+The trigger returns all records that have been created or modified since the last poll, split into `createdRecords` and `updatedRecords`. Each array is present only when the corresponding option is enabled. When no changes are detected, the arrays are empty and `polledNoChanges` is set to `true`.
+
+Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>View example response</summary>
@@ -37,9 +36,7 @@ The trigger returns all records that have been created or modified since the las
 ```json
 {
   "data": {
-    "totalRecords": 2,
-    "recordType": "customer",
-    "records": [
+    "createdRecords": [
       {
         "id": "456",
         "entityid": "CUST-001",
@@ -52,7 +49,9 @@ The trigger returns all records that have been created or modified since the las
           "id": "1",
           "refName": "Parent Company"
         }
-      },
+      }
+    ],
+    "updatedRecords": [
       {
         "id": "457",
         "entityid": "CUST-002",

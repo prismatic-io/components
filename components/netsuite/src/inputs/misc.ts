@@ -4,7 +4,8 @@ import { connectionInput } from "./common";
 const serviceType = input({
   label: "Service Type",
   type: "string",
-  comments: "The type of service to use.",
+  comments:
+    "Selects which NetSuite REST service the request targets: the record service for CRUD operations, or the query service for SuiteQL.",
   model: [
     { label: "CRUD (Record)", value: "record" },
     { label: "Query", value: "query" },
@@ -22,7 +23,7 @@ export const rawRequestInputs = {
   url: {
     ...noDebugRawRequestInputs.url,
     comments:
-      "Input the path only (/contact), The base URL is already included (https://{accountId}.suitetalk.api.netsuite.com/services/rest/record/v1). For example, to connect to https://{accountId}.suitetalk.api.netsuite.com/services/rest/record/v1/contact, only /contact is entered in this field.",
+      "The request path only, relative to the base URL. The base URL is supplied automatically from the connection and the selected Service Type (https://{accountId}.suitetalk.api.netsuite.com/services/rest/record/v1 or .../query/v1). For example, enter /contact to reach the contact record endpoint.",
     example: "/contact",
     placeholder: "Enter path (e.g., /contact)",
   },

@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-08-11
+
+Restructured pagination inputs into structured objects and added output schemas for an improved user experience
+
+- The **List Records** and **SuiteQL Query** actions and the **Select Record** and **Select SuiteQL** data sources group their pagination inputs into a **Pagination** structured object
+- **Limit** is now optional on those actions and data sources, defaulting to 1000 records per page when left blank
+- Added output schemas to the **Create Record**, **Update Record**, and **List Records** actions for improved field mapping during configuration
+
 ### 2026-04-30
 
 Updated spectral version

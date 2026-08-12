@@ -5,7 +5,7 @@ import { deleteRecordInputs } from "../../inputs";
 export const deleteRecord = action({
   display: {
     label: "Delete Record",
-    description: "Delete record of the specified type",
+    description: "Delete record of the specified type.",
   },
   inputs: deleteRecordInputs,
   examplePayload: deleteCustomerExamplePayload,

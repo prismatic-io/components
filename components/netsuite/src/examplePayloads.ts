@@ -154,6 +154,18 @@ export const baseJournalEntryPayload = {
 export const createCustomerExamplePayload = {
   data: {
     data: {
+      recordType: "customer",
+      id: "12345",
+    },
+    headers: {
+      "content-type": "application/json",
+      location: "/services/rest/record/v1/customer/12345",
+    } as Record<string, string>,
+  },
+};
+export const getCustomerExamplePayload = {
+  data: {
+    data: {
       id: "12345",
       entityid: "CUST-001",
       companyname: "Acme Corporation",
@@ -192,49 +204,14 @@ export const createCustomerExamplePayload = {
     },
     headers: {
       "content-type": "application/json",
-      location: "/services/rest/record/v1/customer/12345",
     } as Record<string, string>,
   },
 };
-export const getCustomerExamplePayload = createCustomerExamplePayload;
 export const updateCustomerExamplePayload = {
   data: {
     data: {
-      id: "12345",
-      entityid: "CUST-001",
-      companyname: "Acme Corporation Inc.",
-      subsidiary: { id: "1", refName: "Parent Company" },
-      email: "info@acmecorp.example.com",
-      phone: "555-0123",
-      isperson: false,
-      salesRep: { id: "1047", refName: "John Sales" },
-      terms: { id: "5", refName: "Net 30" },
-      custentity_customer_type: { id: "3", refName: "Enterprise" },
-      billaddress: {
-        addr1: "123 Main Street",
-        addr2: "Suite 400",
-        city: "San Francisco",
-        state: "CA",
-        zip: "94105",
-        country: "US",
-      },
-      shipaddress: {
-        addr1: "123 Main Street",
-        addr2: "Suite 400",
-        city: "San Francisco",
-        state: "CA",
-        zip: "94105",
-        country: "US",
-      },
-      datecreated: "2024-10-20T15:30:00Z",
-      lastmodified: "2024-10-20T16:45:00Z",
       recordType: "customer",
-      links: [
-        {
-          rel: "self",
-          href: "/services/rest/record/v1/customer/12345",
-        },
-      ],
+      id: "12345",
     },
     headers: {
       "content-type": "application/json",
@@ -289,11 +266,7 @@ export const listCustomersExamplePayload = {
 };
 export const deleteCustomerExamplePayload = {
   data: {
-    data: {
-      status: "success",
-      message: "Record deleted successfully",
-      id: "12345",
-    },
+    data: {},
     headers: {
       "content-type": "application/json",
     } as Record<string, string>,

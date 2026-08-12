@@ -1,8 +1,14 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { startCase } from "lodash";
 import { recordTypes } from "../constants";
 import type { RecordType } from "../types/RecordType";
 import { connectionInput, limitInput, offsetInput } from "./common";
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { limit: limitInput, offset: offsetInput },
+});
 const recordTypeInput = input({
   label: "Record Type",
   type: "string",
@@ -164,8 +170,7 @@ export const listRecordInputs = {
   connection: connectionInput,
   recordType: recordTypeInput,
   query: queryInput,
-  limit: limitInput,
-  offset: offsetInput,
+  pagination,
 };
 export const getRecordInputs = {
   connection: connectionInput,
@@ -198,8 +203,7 @@ export const selectRecordInputs = {
   recordType: recordTypeInput,
   recordField: recordFieldInput,
   query: queryInput,
-  limit: limitInput,
-  offset: offsetInput,
+  pagination,
 };
 export const pollRecordsInputs = {
   showNewRecords: showNewRecordsInput,

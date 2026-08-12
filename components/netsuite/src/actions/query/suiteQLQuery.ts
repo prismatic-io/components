@@ -5,7 +5,8 @@ import { suiteQLQueryInputs } from "../../inputs";
 export const suiteQLQuery = action({
   display: {
     label: "SuiteQL Query",
-    description: "Execute a SuiteQL Query through Netsuite's REST Web Service",
+    description:
+      "Execute a SuiteQL query through NetSuite's REST Web Services.",
   },
   inputs: suiteQLQueryInputs,
   examplePayload: suiteQLQueryCustomersExamplePayload,
@@ -16,7 +17,7 @@ export const suiteQLQuery = action({
       context.debug.enabled,
     );
     const { data, headers } = await client.post(
-      `/suiteql?limit=${params.limitInput}&offset=${params.offsetInput}`,
+      `/suiteql?limit=${params.pagination.limitInput}&offset=${params.pagination.offsetInput}`,
       {
         q: params.suiteQLInput,
       },

@@ -6,7 +6,7 @@ import { rawRequestInputs } from "../../inputs";
 export const rawRequest = action({
   display: {
     label: "Raw Request",
-    description: "Send raw HTTP request to NetSuite",
+    description: "Send raw HTTP request to NetSuite.",
   },
   inputs: rawRequestInputs,
   examplePayload: rawRequestGETExamplePayload,

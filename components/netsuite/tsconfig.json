@@ -3,6 +3,8 @@
     "target": "es6",
     "lib": ["esnext"],
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
