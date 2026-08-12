@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { webhookExample } from "../../examplePayloads";
 import { updateWebhookInputs } from "../../inputs";
+import { updateWebhookOutputSchema } from "../../outputSchemas";
 import type { WebhooksIntegration } from "../../types";
 export const updateWebhook = action({
   display: {
@@ -10,6 +11,11 @@ export const updateWebhook = action({
       "Update the configuration of an existing Datadog webhook integration.",
   },
   inputs: updateWebhookInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateWebhookOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -33,5 +39,26 @@ export const updateWebhook = action({
     );
     return { data: response.data };
   },
+  examplePerform: async (
+    _context,
+    {
+      webhookName,
+      webhookUrl,
+      webhookCustomHeaders,
+      webhookEncodeAs,
+      webhookPayload,
+    },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...webhookExample.data,
+      name: webhookName,
+      url: webhookUrl || webhookExample.data.url,
+      custom_headers: webhookCustomHeaders ?? null,
+      encode_as: webhookEncodeAs ?? "json",
+      payload: webhookPayload ?? null,
+    },
+  }),
   examplePayload: webhookExample,
 });

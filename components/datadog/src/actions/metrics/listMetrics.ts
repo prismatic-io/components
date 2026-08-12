@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listMetricsExample } from "../../examplePayloads";
 import { listMetricsInputs } from "../../inputs";
+import { listMetricsOutputSchema } from "../../outputSchemas";
 import type { ListMetricsResponse } from "../../types";
 export const listMetrics = action({
   display: {
@@ -10,6 +11,11 @@ export const listMetrics = action({
       "List active metric names that have reported data since a given timestamp, with optional host and tag filtering.",
   },
   inputs: listMetricsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listMetricsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, metricsFrom, metricsHost, metricsTagFilter },
@@ -25,5 +31,16 @@ export const listMetrics = action({
     });
     return { data: response.data };
   },
+  examplePerform: async (
+    _context,
+    { metricsFrom },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...listMetricsExample.data,
+      from: String(metricsFrom),
+    },
+  }),
   examplePayload: listMetricsExample,
 });

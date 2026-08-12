@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { webhookExample } from "../../examplePayloads";
 import { getWebhookInputs } from "../../inputs";
+import { getWebhookOutputSchema } from "../../outputSchemas";
 import type { WebhooksIntegration } from "../../types";
 export const getWebhook = action({
   display: {
@@ -10,6 +11,11 @@ export const getWebhook = action({
       "Retrieve the configuration of a specific Datadog webhook integration by name.",
   },
   inputs: getWebhookInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getWebhookOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection, webhookName }) => {
     const client = createClient(connection, context.debug.enabled);
     const response = await client.get<WebhooksIntegration>(

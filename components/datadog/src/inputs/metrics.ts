@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { METRIC_TYPE_OPTIONS } from "../constants";
 import type { MetricIntakeType } from "../types";
 import { toOptionalNumber, toOptionalString } from "../utils";
@@ -157,17 +157,24 @@ export const submitMetricsInputs = {
   connection,
   metricSeries,
 };
+export const metricFields = structuredObjectInput({
+  label: "Metric Fields",
+  comments: "Optional metric configuration and resource details.",
+  inputs: {
+    metricType,
+    metricUnit,
+    metricInterval,
+    resourceName,
+    resourceType,
+  },
+});
 export const submitSingleMetricInputs = {
   connection,
   metricName,
   metricValue,
   metricTimestamp,
-  metricType,
   metricTags,
-  metricUnit,
-  metricInterval,
-  resourceName,
-  resourceType,
+  metricFields,
 };
 export const listMetricsInputs = {
   connection,

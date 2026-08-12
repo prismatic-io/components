@@ -26,7 +26,7 @@ export const webhook = trigger({
     { connection, webhookName, webhookPayload, webhookCustomHeaders },
   ) => {
     const client = createClient(connection, context.debug.enabled);
-    const webhookUrl = context.webhookUrls.Webhook;
+    const webhookUrl = context.webhookUrls[context.flow.name];
     await client.post("/api/v1/integration/webhooks/configuration/webhooks", {
       name: webhookName,
       url: webhookUrl,

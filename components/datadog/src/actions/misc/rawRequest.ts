@@ -21,6 +21,7 @@ export const rawRequest = action({
       example: "/api/v2/series",
     },
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection: conn, ...httpInputs }) => {
     validateConnection(conn);
     const { data } = await sendRawRequest(

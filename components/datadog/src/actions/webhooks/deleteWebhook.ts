@@ -9,6 +9,7 @@ export const deleteWebhook = action({
       "Delete a Datadog webhook integration by name. This action cannot be undone.",
   },
   inputs: deleteWebhookInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, webhookName }) => {
     const client = createClient(connection, context.debug.enabled);
     await client.delete(
@@ -16,5 +17,10 @@ export const deleteWebhook = action({
     );
     return { data: null };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    ...deleteWebhookExample,
+  }),
   examplePayload: deleteWebhookExample,
 });
