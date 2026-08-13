@@ -3,22 +3,13 @@ This trigger polls the [Ramp API](https://docs.ramp.com/developer-api/v1/overvie
 #### How It Works
 
 1. The trigger runs on the configured schedule
-2. It fetches records from Ramp for the selected resource type — timestamp-based resources are queried using `created_at` and/or `updated_at` filters anchored to the last poll time; ID-based resources fetch all records and compare against the known ID set
+2. It fetches records from Ramp for the selected resource type. Timestamp-based resources are queried using `created_at` and/or `updated_at` filters anchored to the last poll time; ID-based resources fetch all records and compare against the known ID set
 3. Records are categorized as **created** or **updated** based on their timestamps relative to the last poll time, or as **created** only for ID-based resources where update detection is not supported
 4. The trigger updates its internal state after each poll
 
-#### Configuration
-
-Configure the following inputs:
-
-- **Connection**: The Ramp connection used to authenticate API requests
-- **Resource Type**: The type of records to monitor — Transactions, Bills, Reimbursements, Vendors, Departments, Locations, Business Entities, General Ledger Accounts, or Custom Accounting Fields
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
-
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+The trigger returns an object with two arrays: `created` for new records and `updated` for modified records.
 
 <details>
 <summary>Example Response</summary>
@@ -50,8 +41,10 @@ The trigger returns an object with two arrays — `created` for new records and 
 
 </details>
 
+Fields shown are representative. The full response object includes additional properties.
+
 #### Notes
 
-- **Departments**, **Locations**, and **Business Entities** use ID-based change detection — the **Show Updated Records** toggle has no effect for these resource types, as update detection is not supported
+- **Departments**, **Locations**, and **Business Entities** use ID-based change detection: the **Show Updated Records** toggle has no effect for these resource types, as update detection is not supported
 - Timestamp-based resource types (Transactions, Bills, Reimbursements, Vendors, General Ledger Accounts, Custom Accounting Fields) support both new and updated record detection
 - Refer to the [Ramp API documentation](https://docs.ramp.com/developer-api/v1/overview/getting-started) for rate limit details and available fields per resource type

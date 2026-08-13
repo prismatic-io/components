@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   BOOLEAN_VALUES,
   INPUT_TYPE_VALUES,
@@ -31,112 +31,130 @@ export const id = input({
   required: true,
   comments: "The ID of the object to retrieve",
   example: "96bb7007-eec5-430f-8d09-e033cbc000c2",
-  placeholder: "96bb7007-eec5-430f-8d09-e033cbc000c2",
+  placeholder: "Enter ID",
   clean: util.types.toString,
 });
 export const billId = {
   ...id,
   label: "Bill ID",
   comments: "The ID of the bill to retrieve",
+  placeholder: "Enter bill ID",
 };
 export const businessEntityId = {
   ...id,
   label: "Business Entity ID",
   comments: "The ID of the business entity to retrieve",
+  placeholder: "Enter business entity ID",
 };
 export const accountingConnectionId = {
   ...id,
   label: "Accounting Connection ID",
   comments: "The ID of the accounting connection to delete",
+  placeholder: "Enter accounting connection ID",
 };
 export const customAccountingFieldId = {
   ...id,
   label: "Custom Accounting Field ID",
   comments: "The ID of the custom accounting field to retrieve",
+  placeholder: "Enter custom accounting field ID",
 };
 export const departmentId = {
   ...id,
   label: "Department ID",
   comments: "The ID of the department to retrieve",
+  placeholder: "Enter department ID",
 };
 export const generalLedgerAccountId = {
   ...id,
   label: "General Ledger Account ID",
   comments: "The ID of the general ledger account to retrieve",
+  placeholder: "Enter general ledger account ID",
 };
 export const locationId = {
   ...id,
   label: "Location ID",
   comments: "The ID of the location to retrieve",
+  placeholder: "Enter location ID",
 };
 export const entityId = {
   ...id,
   label: "Entity ID",
-  comments: "The ID of the entity to create the location",
+  comments: "The ID of the business entity to associate with the location",
+  placeholder: "Enter entity ID",
   required: false,
 };
 export const reimbursementId = {
   ...id,
   label: "Reimbursement ID",
   comments: "The ID of the reimbursement to retrieve",
+  placeholder: "Enter reimbursement ID",
 };
 export const transactionId = {
   ...id,
   label: "Transaction ID",
   comments: "The ID of the transaction to retrieve",
+  placeholder: "Enter transaction ID",
 };
 export const vendorId = {
   ...id,
   label: "Vendor ID",
   comments: "The ID of the vendor to retrieve",
+  placeholder: "Enter vendor ID",
 };
 export const customAccountingFieldOptionId = {
   ...id,
   label: "Custom Accounting Field Option ID",
   comments: "The ID of the custom field option to retrieve",
+  placeholder: "Enter custom accounting field option ID",
 };
 export const customQueryParams = input({
   label: "Custom Query Params",
   type: "string",
   collection: "keyvaluelist",
-  example: "key1=value1",
+  example: '{ "from_date": "2024-01-01" }',
   required: false,
   comments: "Custom query parameters to be included in the request",
-  placeholder: "key1=value1",
+  placeholder: "Enter a query parameter name and value",
   clean: cleanKeyValueList,
 });
 export const start = input({
   label: "Start",
   type: "string",
-  example: "1",
+  example: "2907e304-cac2-4abf-84c4-b3b454ae3b8c",
   required: false,
   comments:
-    "The starting point for the list of results. Is fetchAll is true, this option will be ignored",
-  placeholder: "2907e304-cac2-4abf-84c4-b3b454ae3b8c",
+    "The starting point for the list of results. If Fetch All is enabled, this option will be ignored",
+  placeholder: "Enter pagination cursor",
   clean: cleanString,
 });
 export const pageSize = input({
   label: "Page Size",
   type: "string",
   example: "50",
-  placeholder: "50",
-  default: "50",
+  placeholder: "Enter page size",
   required: false,
-  comments: "Number of results to retrieve per page. Default is 50",
+  comments: "Number of results to retrieve per page",
   clean: cleanNumber,
 });
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
   required: false,
-  comments: "If true, will fetch all results",
-  clean: cleanBoolean,
+  default: "false",
+  comments:
+    "When true, automatically fetches all pages of results using pagination.",
+  clean: util.types.toBool,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page size and starting point for paginated results.",
+  inputs: { start, pageSize },
 });
 export const defaultListInputs = {
   connection,
   fetchAll,
-  start,
-  pageSize,
+  pagination,
   customQueryParams,
 };
 export const code = input({
@@ -144,7 +162,7 @@ export const code = input({
   type: "string",
   required: false,
   comments:
-    "Code of the vendor; you could provide an empty string to reset the remote code",
+    "Code of the vendor; provide an empty string to reset the remote code.",
   example: "19566",
   placeholder: "19566",
   clean: cleanString,
@@ -182,7 +200,8 @@ export const subsidiaries = input({
   example: JSON.stringify(subsidiariesExample, null, 2),
   required: false,
   comments:
-    "IDs of a list of subsidiaries associated with the vendor. The Ramp-assigned IDs should be used here. You could provide an empty list to reset the subsidiaries list",
+    "IDs of a list of subsidiaries associated with the vendor. The Ramp-assigned IDs should be used here. Provide an empty list to reset the subsidiaries list.",
+  placeholder: "Enter a JSON array of subsidiary IDs",
   clean: cleanCode,
 });
 export const failedSyncs = input({
@@ -192,6 +211,7 @@ export const failedSyncs = input({
   example: JSON.stringify(failedSyncsExample, null, 2),
   required: false,
   comments: "A list of objects that failed to be synced",
+  placeholder: "Enter a JSON array of failed sync objects",
   clean: cleanCode,
 });
 export const idempotencyKey = input({
@@ -210,7 +230,8 @@ export const successfulSyncs = input({
   language: "json",
   example: JSON.stringify(successfulSyncsExample, null, 2),
   required: false,
-  comments: "A list of objects that failed to be synced",
+  comments: "A list of objects that were successfully synced",
+  placeholder: "Enter a JSON array of successful sync objects",
   clean: cleanCode,
 });
 export const syncType = input({
@@ -219,7 +240,7 @@ export const syncType = input({
   required: true,
   comments: "The type of object to sync",
   example: "TRANSACTION_SYNC",
-  placeholder: "TRANSACTION_SYNC",
+  placeholder: "Select a sync type",
   model: mapObjectModel(SYNC_TYPE_VALUES),
   clean: util.types.toString,
 });
@@ -227,13 +248,13 @@ export const remoteProviderName = input({
   label: "Remote Provider Name",
   type: "string",
   required: true,
-  comments: "Name of the ERP system that you are using",
+  comments: "The name of the ERP system in use.",
   example: "ACCOUNTING_SEED",
-  placeholder: "ACCOUNTING_SEED",
+  placeholder: "Enter remote provider name",
   clean: util.types.toString,
 });
 export const isSplittable = input({
-  label: "Is Splitable",
+  label: "Is Splittable",
   type: "string",
   required: false,
   comments:
@@ -247,7 +268,7 @@ export const inputType = input({
   required: true,
   comments: "The input type could be SINGLE_CHOICE, BOOLEAN or FREE_FORM_TEXT",
   model: mapModel(INPUT_TYPE_VALUES),
-  clean: cleanString,
+  clean: util.types.toString,
 });
 export const options = input({
   label: "Options",
@@ -256,7 +277,8 @@ export const options = input({
   example: JSON.stringify(optionsExample, null, 2),
   required: true,
   comments: "A list of field options for a given custom accounting field",
-  clean: cleanCode,
+  placeholder: "Enter a JSON array of field options",
+  clean: util.types.toObject,
 });
 export const pollResourceType = input({
   label: "Resource Type",

@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listLocationsResponse } from "../../examplePayloads/locations";
 import { defaultListInputs } from "../../inputs";
 import type { Location } from "../../interfaces/locations";
+import { listLocationsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
 export const listLocations = action({
   display: {
@@ -12,9 +13,14 @@ export const listLocations = action({
   inputs: {
     ...defaultListInputs,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listLocationsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, customQueryParams, fetchAll, pageSize, start },
+    { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const data = await fetchAllData<Location>(
@@ -22,8 +28,8 @@ export const listLocations = action({
       "locations",
       {
         ...customQueryParams,
-        page_size: pageSize,
-        start,
+        page_size: pagination.pageSize,
+        start: pagination.start,
       },
       fetchAll,
     );
@@ -31,6 +37,17 @@ export const listLocations = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { fetchAll },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...listLocationsResponse,
+      page: fetchAll ? null : listLocationsResponse.page,
+    },
+  }),
   examplePayload: {
     data: listLocationsResponse,
   },

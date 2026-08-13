@@ -1,17 +1,25 @@
-Create an OAuth application:
+#### Prerequisites
 
-Registering your application in the Ramp developer dashboard is the first step of building an integration based on Ramp API:
+A Ramp account with developer or admin access is required to register an application.
+
+#### Setup Steps
+
+Registering an application in the Ramp developer dashboard is the first step of building an integration based on Ramp API:
 
 1. From the [Ramp developer](https://app.ramp.com/settings/ramp-developer) settings page, click on **Create new app** to register a new application.
-2. Now you have registered a new application. Click into it and configure the following parameters:
-   1. Client ID and client secret: Credentials for your application; store securely.
+2. Once the application is registered, click into it and configure the following parameters:
+   1. Client ID and client secret: Credentials for the application; store securely.
    2. App name and description
    3. Grant types: A list of grant types that the application may use to get access token. See [authorization guide](https://docs.ramp.com/developer-api/v1/authorization) for more information.
    4. Scopes: Defines [scopes](https://docs.ramp.com/developer-api/v1/authorization/scopes) that may be granted to access token.
-   5. Redirect URIs: Enter<OauthCallbackUrl />.
+   5. Redirect URIs: Enter <OauthCallbackUrl />.
+
+#### Configure the Connection
 
 Supply the following values to the **OAuth 2.0** connection:
 
+- **Authorize URL**: Select the target environment, **Production** or **Sandbox**, for the OAuth 2.0 authorization endpoint
+- **Token URL**: Select the target environment, **Production** or **Sandbox**, for the OAuth 2.0 token endpoint. This must match the environment selected for **Authorize URL**
 - **Client ID**
 - **Client Secret**
 - **Scopes**

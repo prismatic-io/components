@@ -1,4 +1,5 @@
 export const getGeneralLedgerAccountResponse = {
+  accounting_connection_id: "ee8776c0-e190-4dc2-93bf-3bb19a0adf0e",
   classification: "EXPENSE",
   code: "6410",
   created_at: "2019-08-28T14:15:22+00:00",

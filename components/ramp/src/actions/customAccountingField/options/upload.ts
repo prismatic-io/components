@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { getCustomAccountingFieldOptionResponse as createCustomAccountingFieldOptionResponse } from "../../../examplePayloads/customAccountingFieldOption";
 import {
@@ -6,6 +6,7 @@ import {
   customAccountingFieldOptionId,
   options,
 } from "../../../inputs";
+import { uploadCustomAccountingFieldOptionOutputSchema } from "../../../outputSchemas";
 export const uploadCustomAccountingFieldOption = action({
   display: {
     label: "Upload Custom Accounting Field Option",
@@ -20,6 +21,11 @@ export const uploadCustomAccountingFieldOption = action({
     options,
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: uploadCustomAccountingFieldOptionOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, customAccountingFieldOptionId, options },
@@ -33,6 +39,11 @@ export const uploadCustomAccountingFieldOption = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createCustomAccountingFieldOptionResponse,
+  }),
   examplePayload: {
     data: createCustomAccountingFieldOptionResponse,
   },

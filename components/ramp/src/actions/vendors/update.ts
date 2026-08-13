@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getVendorResponse as updateVendorResponse } from "../../examplePayloads/vendors";
 import {
@@ -9,6 +9,7 @@ import {
   subsidiaries,
   vendorId,
 } from "../../inputs";
+import { updateVendorOutputSchema } from "../../outputSchemas";
 export const updateVendor = action({
   display: {
     label: "Update Vendor",
@@ -25,6 +26,11 @@ export const updateVendor = action({
     subsidiaries,
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateVendorOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, vendorId, code, name, reactivate, subsidiaries },
@@ -40,6 +46,18 @@ export const updateVendor = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { code, name },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateVendorResponse,
+      code: code ?? updateVendorResponse.code,
+      name: name ?? updateVendorResponse.name,
+    },
+  }),
   examplePayload: {
     data: updateVendorResponse,
   },

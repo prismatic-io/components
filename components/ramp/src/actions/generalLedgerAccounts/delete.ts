@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { GENERIC_DELETE_RESPONSE } from "../../constants";
 import { connection, generalLedgerAccountId } from "../../inputs";
+import { deleteGeneralLedgerAccountOutputSchema } from "../../outputSchemas";
 export const deleteGeneralLedgerAccount = action({
   display: {
     label: "Delete General Ledger Account",
@@ -14,6 +15,11 @@ export const deleteGeneralLedgerAccount = action({
     },
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteGeneralLedgerAccountOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, generalLedgerAccountId }) => {
     const client = createClient(connection, context.debug.enabled);
     await client.delete(`/accounting/accounts/${generalLedgerAccountId}`);
@@ -21,6 +27,11 @@ export const deleteGeneralLedgerAccount = action({
       data: GENERIC_DELETE_RESPONSE,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: GENERIC_DELETE_RESPONSE,
+  }),
   examplePayload: {
     data: GENERIC_DELETE_RESPONSE,
   },

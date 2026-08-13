@@ -5,6 +5,6 @@ export const getDepartmentResponse = {
 export const listDepartmentsResponse = {
   data: [getDepartmentResponse],
   page: {
-    next: "https://api.example.com/departments?page=2",
+    next: "https://api.ramp.com/developer/v1/<resources>?<new_params>",
   },
 };

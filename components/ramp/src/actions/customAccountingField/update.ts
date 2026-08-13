@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getCustomAccountingFieldResponse as updateCustomAccountingFieldResponse } from "../../examplePayloads/customAccountingFields";
 import {
@@ -7,6 +7,7 @@ import {
   isSplittable,
   name,
 } from "../../inputs";
+import { updateCustomAccountingFieldOutputSchema } from "../../outputSchemas";
 export const updateCustomAccountingField = action({
   display: {
     label: "Update Custom Accounting Field",
@@ -24,6 +25,11 @@ export const updateCustomAccountingField = action({
     isSplittable,
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateCustomAccountingFieldOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, customAccountingFieldId, name, isSplittable },
@@ -40,6 +46,20 @@ export const updateCustomAccountingField = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { customAccountingFieldId, name, isSplittable },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateCustomAccountingFieldResponse,
+      id: customAccountingFieldId,
+      is_splittable:
+        isSplittable ?? updateCustomAccountingFieldResponse.is_splittable,
+      name: name ?? updateCustomAccountingFieldResponse.name,
+    },
+  }),
   examplePayload: {
     data: updateCustomAccountingFieldResponse,
   },

@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getAccountingConnectionResponse as createAccountingConnectionResponse } from "../../examplePayloads/accountingConnection";
 import { connection, reactivate, remoteProviderName } from "../../inputs";
+import { createAccountingConnectionOutputSchema } from "../../outputSchemas";
 export const createAccountingConnection = action({
   display: {
     label: "Create Accounting Connection",
@@ -16,6 +17,11 @@ export const createAccountingConnection = action({
     },
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createAccountingConnectionOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, reactivate, remoteProviderName }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.post(`/accounting/connection`, {
@@ -26,6 +32,17 @@ export const createAccountingConnection = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { remoteProviderName },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...createAccountingConnectionResponse,
+      remote_provider_name: remoteProviderName,
+    },
+  }),
   examplePayload: {
     data: createAccountingConnectionResponse,
   },

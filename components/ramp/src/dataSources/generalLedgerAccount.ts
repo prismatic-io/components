@@ -7,7 +7,7 @@ import { fetchAllData } from "../util";
 export const selectLedgerAccount = dataSource({
   display: {
     label: "Select General Ledger Account",
-    description: "Select an General Ledger Account from a dropdown menu",
+    description: "Select a General Ledger Account from a dropdown menu.",
   },
   inputs: {
     connection,

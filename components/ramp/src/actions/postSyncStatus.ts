@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import {
   connection,
@@ -7,11 +7,11 @@ import {
   successfulSyncs,
   syncType,
 } from "../inputs";
+import { postSyncStatusOutputSchema } from "../outputSchemas";
 export const postSyncStatus = action({
   display: {
     label: "Post Sync Status",
-    description:
-      "This endpoint allows customers to notify Ramp of a list of sync results",
+    description: "Notify Ramp of a list of accounting sync results",
   },
   inputs: {
     idempotency_key: idempotencyKey,
@@ -20,6 +20,11 @@ export const postSyncStatus = action({
     successful_syncs: successfulSyncs,
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: postSyncStatusOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, failed_syncs, idempotency_key, successful_syncs, sync_type },
@@ -35,4 +40,11 @@ export const postSyncStatus = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      sync_id: "4d2f6e05-9a1c-4f3b-8c27-1b6ae95f0d84",
+    },
+  }),
 });

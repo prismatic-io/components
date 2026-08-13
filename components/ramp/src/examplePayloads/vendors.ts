@@ -1,7 +1,8 @@
 export const getVendorResponse = {
+  accounting_connection_id: "ee8776c0-e190-4dc2-93bf-3bb19a0adf0e",
   code: "19566",
   created_at: "2019-08-28T14:15:22+00:00",
-  id: "123",
+  id: "40218",
   is_active: true,
   is_synced: true,
   name: "Amazon",

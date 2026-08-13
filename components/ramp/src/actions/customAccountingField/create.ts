@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getCustomAccountingFieldResponse as createCustomAccountingFieldResponse } from "../../examplePayloads/customAccountingFields";
 import {
@@ -8,6 +8,7 @@ import {
   isSplittable,
   name,
 } from "../../inputs";
+import { createCustomAccountingFieldOutputSchema } from "../../outputSchemas";
 export const createCustomAccountingField = action({
   display: {
     label: "Create Custom Accounting Field",
@@ -27,6 +28,11 @@ export const createCustomAccountingField = action({
     isSplittable,
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createCustomAccountingFieldOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, customAccountingFieldId, inputType, isSplittable, name },
@@ -42,6 +48,21 @@ export const createCustomAccountingField = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { customAccountingFieldId, inputType, isSplittable, name },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...createCustomAccountingFieldResponse,
+      id: customAccountingFieldId,
+      input_type: inputType,
+      is_splittable:
+        isSplittable ?? createCustomAccountingFieldResponse.is_splittable,
+      name: name ?? createCustomAccountingFieldResponse.name,
+    },
+  }),
   examplePayload: {
     data: createCustomAccountingFieldResponse,
   },

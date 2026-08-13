@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getGeneralLedgerAccountResponse as updateGeneralLedgerAccountResponse } from "../../examplePayloads/ledgerAccounts";
 import {
@@ -9,6 +9,7 @@ import {
   reactivate,
   subsidiaries,
 } from "../../inputs";
+import { updateGeneralLedgerAccountOutputSchema } from "../../outputSchemas";
 export const updateGeneralLedgerAccount = action({
   display: {
     label: "Update General Ledger Account",
@@ -22,7 +23,7 @@ export const updateGeneralLedgerAccount = action({
     code: {
       ...code,
       comments:
-        "The code of the general ledger account; you could provide an empty string if you want to reset the remote code",
+        "The code of the general ledger account; provide an empty string to reset the remote code.",
     },
     name: {
       ...name,
@@ -35,10 +36,15 @@ export const updateGeneralLedgerAccount = action({
     subsidiaries: {
       ...subsidiaries,
       comments:
-        "IDs of a list of subsidiaries which a general ledger account can be used with. The Ramp-assigned IDs should be used here. you could provide an empty list if you want to reset the subsidiaries list for this general ledger account",
+        "IDs of a list of subsidiaries which a general ledger account can be used with. The Ramp-assigned IDs should be used here. Provide an empty list to reset the subsidiaries list for this general ledger account.",
     },
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateGeneralLedgerAccountOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -64,6 +70,18 @@ export const updateGeneralLedgerAccount = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { code, name },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateGeneralLedgerAccountResponse,
+      code: code ?? updateGeneralLedgerAccountResponse.code,
+      name: name ?? updateGeneralLedgerAccountResponse.name,
+    },
+  }),
   examplePayload: {
     data: updateGeneralLedgerAccountResponse,
   },

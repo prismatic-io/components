@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { getCustomAccountingFieldOptionResponse as updateCustomAccountingFieldOptionResponsev } from "../../../examplePayloads/customAccountingFieldOption";
 import {
@@ -7,6 +7,7 @@ import {
   reactivate,
   value,
 } from "../../../inputs";
+import { updateCustomAccountingFieldOptionOutputSchema } from "../../../outputSchemas";
 export const updateCustomAccountingFieldOption = action({
   display: {
     label: "Update Custom Accounting Field Option",
@@ -24,6 +25,11 @@ export const updateCustomAccountingFieldOption = action({
     value,
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateCustomAccountingFieldOptionOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, customAccountingFieldOptionId, reactivate, value },
@@ -40,6 +46,17 @@ export const updateCustomAccountingFieldOption = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { value },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateCustomAccountingFieldOptionResponsev,
+      value: value ?? updateCustomAccountingFieldOptionResponsev.value,
+    },
+  }),
   examplePayload: {
     data: updateCustomAccountingFieldOptionResponsev,
   },

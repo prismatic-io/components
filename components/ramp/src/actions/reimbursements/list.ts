@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listReimbursementsResponse } from "../../examplePayloads/reimbursements";
 import { defaultListInputs } from "../../inputs";
 import type { Reimbursement } from "../../interfaces/reimbursements";
+import { listReimbursementsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
 export const listReimbursements = action({
   display: {
@@ -12,9 +13,14 @@ export const listReimbursements = action({
   inputs: {
     ...defaultListInputs,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listReimbursementsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, customQueryParams, fetchAll, pageSize, start },
+    { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const data = await fetchAllData<Reimbursement>(
@@ -22,8 +28,8 @@ export const listReimbursements = action({
       "reimbursements",
       {
         ...customQueryParams,
-        page_size: pageSize,
-        start,
+        page_size: pagination.pageSize,
+        start: pagination.start,
       },
       fetchAll,
     );
@@ -31,6 +37,17 @@ export const listReimbursements = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { fetchAll },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...listReimbursementsResponse,
+      page: fetchAll ? null : listReimbursementsResponse.page,
+    },
+  }),
   examplePayload: {
     data: listReimbursementsResponse,
   },

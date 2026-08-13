@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
 import { lisCustomAccountingFieldOptionsResponse } from "../../../examplePayloads/customAccountingFieldOption";
 import { customAccountingFieldId, defaultListInputs } from "../../../inputs";
 import type { CustomAccountingFieldOption } from "../../../interfaces/customAccountingFieldOption";
+import { listCustomAccountingFieldOptionsOutputSchema } from "../../../outputSchemas";
 import { fetchAllData } from "../../../util";
 export const listCustomAccountingFieldOptions = action({
   display: {
@@ -16,14 +17,18 @@ export const listCustomAccountingFieldOptions = action({
     },
     ...defaultListInputs,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCustomAccountingFieldOptionsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       customQueryParams,
       fetchAll,
-      pageSize,
-      start,
+      pagination,
       customAccountingFieldId,
     },
   ) => {
@@ -33,8 +38,8 @@ export const listCustomAccountingFieldOptions = action({
       "/accounting/field-options",
       {
         ...customQueryParams,
-        page_size: pageSize,
-        start,
+        page_size: pagination.pageSize,
+        start: pagination.start,
         field_id: customAccountingFieldId,
       },
       fetchAll,
@@ -43,6 +48,17 @@ export const listCustomAccountingFieldOptions = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { fetchAll },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...lisCustomAccountingFieldOptionsResponse,
+      page: fetchAll ? null : lisCustomAccountingFieldOptionsResponse.page,
+    },
+  }),
   examplePayload: {
     data: lisCustomAccountingFieldOptionsResponse,
   },

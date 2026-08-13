@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getLocationResponse as createLocationResponse } from "../../examplePayloads/locations";
 import { connection, entityId, name } from "../../inputs";
+import { createLocationOutputSchema } from "../../outputSchemas";
 export const createLocation = action({
   display: {
     label: "Create Location",
@@ -16,6 +17,11 @@ export const createLocation = action({
     entityId,
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createLocationOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, entityId, name }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.post(`/locations`, {
@@ -26,6 +32,18 @@ export const createLocation = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { entityId, name },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...createLocationResponse,
+      entity_id: entityId || createLocationResponse.entity_id,
+      name: name ?? createLocationResponse.name,
+    },
+  }),
   examplePayload: {
     data: createLocationResponse,
   },

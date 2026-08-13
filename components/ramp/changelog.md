@@ -1,5 +1,15 @@
 ## Changelog
 
+### 2026-08-13
+
+Restructured list action pagination inputs, added output schemas, and enabled inline action calling:
+
+- Grouped the **Start** and **Page Size** inputs into a **Pagination** structured object across all list actions (**List Vendors**, **List Transactions**, **List Bills**, **List Reimbursements**, **List Departments**, **List Locations**, **List Business Entities**, **List General Ledger Accounts**, **List Custom Accounting Fields**, and **List Custom Accounting Field Options**); **Fetch All** stays a top-level toggle
+- Added output schemas to 38 actions for improved field mapping during configuration
+- Added inline action calling support across all actions so the app builder can show example output during configuration
+- Documented the **Authorize URL** and **Token URL** environment selection on the **OAuth 2.0** connection
+- List actions run without **Fetch All** now use the Ramp server-side default page size instead of 50
+
 ### 2026-05-20
 
 Applied automated security patches and code formatting updates

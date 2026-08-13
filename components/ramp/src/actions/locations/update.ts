@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getLocationResponse as updateLocationResponse } from "../../examplePayloads/locations";
 import { connection, entityId, locationId, name } from "../../inputs";
+import { updateLocationOutputSchema } from "../../outputSchemas";
 export const updateLocation = action({
   display: {
     label: "Update Location",
@@ -23,6 +24,11 @@ export const updateLocation = action({
     },
     connection,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateLocationOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, locationId, name, entityId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.patch(`/locations/${locationId}`, {
@@ -33,6 +39,19 @@ export const updateLocation = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { locationId, name, entityId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateLocationResponse,
+      entity_id: entityId || updateLocationResponse.entity_id,
+      id: locationId,
+      name: name ?? updateLocationResponse.name,
+    },
+  }),
   examplePayload: {
     data: updateLocationResponse,
   },

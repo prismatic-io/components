@@ -3,8 +3,8 @@ import {
   inputs as httpClientInputs,
   sendRawRequest,
 } from "@prismatic-io/spectral/dist/clients/http";
-import { connection } from "../inputs";
-import { getAuthHeaders, getBaseUrl, validConnection } from "../util";
+import { connection } from "../../inputs";
+import { getAuthHeaders, getBaseUrl, validConnection } from "../../util";
 const { debugRequest, ...rawRequestInputs } = httpClientInputs;
 export const rawRequest = action({
   display: {
@@ -22,6 +22,7 @@ export const rawRequest = action({
       example: "/departments",
     },
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...httpClientInputs }) => {
     validConnection(connection);
     const headers = getAuthHeaders(connection);

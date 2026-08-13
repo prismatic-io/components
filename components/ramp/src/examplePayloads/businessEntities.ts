@@ -6,7 +6,7 @@ export const getBusinessEntitiesResponse = {
 };
 export const listBusinessEntitiesResponse = {
   page: {
-    next: "",
+    next: null,
   },
   data: [
     {

@@ -5,7 +5,8 @@ export const getBillResponse = {
     currency_code: "USD",
   },
   created_at: "2024-05-12T01:37:27+00:00",
-  deep_link_url: null,
+  deep_link_url:
+    "https://app.ramp.com/bill-pay/bills/6e3816e3-0e53-42ae-b075-bdb0adff10c4",
   due_at: "2022-12-31T00:00:00+00:00",
   entity_id: "5bcc3734-f03a-4756-bc4b-afeb52d738ad",
   id: "6e3816e3-0e53-42ae-b075-bdb0adff10c4",
@@ -39,7 +40,7 @@ export const getBillResponse = {
     payment_date: "2024-05-13T00:00:00+00:00",
     payment_method: "ACH",
   },
-  remote_id: null,
+  remote_id: "5602",
   status: "OPEN",
   user: {
     first_name: "John",

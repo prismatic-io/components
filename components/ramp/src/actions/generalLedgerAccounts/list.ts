@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listGeneralLedgerAccountsResponse } from "../../examplePayloads/ledgerAccounts";
 import { defaultListInputs } from "../../inputs";
 import type { LedgerAccount } from "../../interfaces/ledgerAccount";
+import { listGeneralLedgerAccountsOutputSchema } from "../../outputSchemas";
 import { fetchAllData } from "../../util";
 export const listGeneralLedgerAccounts = action({
   display: {
@@ -12,9 +13,14 @@ export const listGeneralLedgerAccounts = action({
   inputs: {
     ...defaultListInputs,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listGeneralLedgerAccountsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, customQueryParams, fetchAll, pageSize, start },
+    { connection, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const data = await fetchAllData<LedgerAccount>(
@@ -22,8 +28,8 @@ export const listGeneralLedgerAccounts = action({
       "/accounting/accounts",
       {
         ...customQueryParams,
-        page_size: pageSize,
-        start,
+        page_size: pagination.pageSize,
+        start: pagination.start,
       },
       fetchAll,
     );
@@ -31,6 +37,17 @@ export const listGeneralLedgerAccounts = action({
       data,
     };
   },
+  examplePerform: async (
+    _context,
+    { fetchAll },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...listGeneralLedgerAccountsResponse,
+      page: fetchAll ? null : listGeneralLedgerAccountsResponse.page,
+    },
+  }),
   examplePayload: {
     data: listGeneralLedgerAccountsResponse,
   },
