@@ -1,7 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection } from "../../inputs/general";
-import removeAllDevicesFromUserInputs from "../../inputs/devices/removeAllDevicesFromUserInputs";
+import { ENDPOINTS } from "../../constants";
+import { removeAllDevicesFromUserExamplePayload } from "../../examplePayloads";
+import { removeAllDevicesFromUserInputs } from "../../inputs";
 export const removeAllDevicesFromUser = action({
   display: {
     label: "Remove All Devices From User",
@@ -13,15 +14,12 @@ export const removeAllDevicesFromUser = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.post(
-      `/deviceManagement/detectedApps/${detectedAppId}/managedDevices/${managedDeviceId}/users/${userId}/removeAllDevicesFromManagement`,
+      `${ENDPOINTS.DETECTED_APPS}/${detectedAppId}/managedDevices/${managedDeviceId}/users/${userId}/removeAllDevicesFromManagement`,
     );
     return {
       data,
     };
   },
-  inputs: {
-    connection,
-    ...removeAllDevicesFromUserInputs,
-  },
-  examplePayload: { data: {} },
+  inputs: removeAllDevicesFromUserInputs,
+  examplePayload: removeAllDevicesFromUserExamplePayload,
 });

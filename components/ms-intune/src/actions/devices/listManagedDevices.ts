@@ -1,7 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection, odataParams, fetchAll } from "../../inputs/general";
+import { ENDPOINTS } from "../../constants";
 import { listManagedDevicesExamplePayload } from "../../examplePayloads";
+import { listManagedDevicesInputs } from "../../inputs";
 import { paginateResults } from "../../util";
 export const listManagedDevices = action({
   display: {
@@ -9,39 +10,23 @@ export const listManagedDevices = action({
     description:
       "List properties and relationships of the Managed Device objects.",
   },
-  perform: async (
-    context,
-    {
-      connection,
-      fetchAll,
-      $filter,
-      $select,
-      $expand,
-      $orderBy,
-      $top,
-      $skip,
-      $count,
-      $search,
-      $format,
-      $skipToken,
-    },
-  ) => {
+  perform: async (context, { connection, fetchAll, pagination, filters }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
-      $filter,
-      $select,
-      $expand,
-      $orderBy,
-      $top,
-      $skip,
-      $count,
-      $search,
-      $format,
-      $skipToken,
+      $filter: filters.$filter,
+      $select: filters.$select,
+      $expand: filters.$expand,
+      $orderBy: filters.$orderBy,
+      $top: pagination.$top,
+      $skip: pagination.$skip,
+      $count: filters.$count,
+      $search: filters.$search,
+      $format: filters.$format,
+      $skipToken: pagination.$skipToken,
     };
     const data = await paginateResults(
       client,
-      "/deviceManagement/managedDevices",
+      ENDPOINTS.MANAGED_DEVICES,
       fetchAll,
       params,
     );
@@ -49,10 +34,6 @@ export const listManagedDevices = action({
       data,
     };
   },
-  inputs: {
-    connection,
-    fetchAll,
-    ...odataParams,
-  },
+  inputs: listManagedDevicesInputs,
   examplePayload: listManagedDevicesExamplePayload,
 });

@@ -1,6 +1,6 @@
 The Resource Trigger monitors Microsoft Intune resources for changes using Microsoft Graph [change notifications](https://learn.microsoft.com/en-us/graph/api/resources/change-notifications-api-overview). When a monitored resource is created, updated, or deleted, Microsoft Graph sends a notification to this trigger.
 
-#### Automatic Subscription Management
+#### How It Works
 
 This trigger uses lifecycle webhook handlers to automatically manage Microsoft Graph subscriptions:
 
@@ -30,7 +30,8 @@ When a subscription is created, Microsoft Graph sends a validation request conta
 
 #### Supported Resources
 
-Common resources that can be monitored include:
+<details>
+<summary>Common resources that can be monitored</summary>
 
 - `users` - User accounts
 - `groups` - Security and Microsoft 365 groups
@@ -38,9 +39,14 @@ Common resources that can be monitored include:
 - `applications` - Registered applications
 - `deviceManagement/managedDevices` - Intune managed devices
 
+</details>
+
 For a complete list of supported resources, refer to the [Microsoft Graph change notifications documentation](https://learn.microsoft.com/en-us/graph/change-notifications-delivery-webhooks).
 
-#### Example Notification Payload
+#### Returned Data
+
+<details>
+<summary>Example notification payload</summary>
 
 When a monitored resource changes, Microsoft Graph sends a notification in this format:
 
@@ -63,3 +69,5 @@ When a monitored resource changes, Microsoft Graph sends a notification in this 
   ]
 }
 ```
+
+</details>

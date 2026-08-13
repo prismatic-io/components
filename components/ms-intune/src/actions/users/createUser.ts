@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection } from "../../inputs/general";
-import createUserInputs from "../../inputs/users/createUserInputs";
+import { ENDPOINTS } from "../../constants";
 import { createUserExamplePayload } from "../../examplePayloads";
+import { createUserInputs } from "../../inputs";
 export const createUser = action({
   display: {
     label: "Create User",
@@ -33,14 +33,11 @@ export const createUser = action({
       userPrincipalName: `${userPrincipalName}@${domain}`,
       ...(additionalProperties || {}),
     };
-    const { data } = await client.post("/users", payload);
+    const { data } = await client.post(ENDPOINTS.USERS, payload);
     return {
       data,
     };
   },
-  inputs: {
-    connection,
-    ...createUserInputs,
-  },
+  inputs: createUserInputs,
   examplePayload: createUserExamplePayload,
 });

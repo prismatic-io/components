@@ -1,17 +1,16 @@
 import { dataSource } from "@prismatic-io/spectral";
-import { connection } from "../inputs/general";
 import { createClient } from "../client";
+import { ENDPOINTS } from "../constants";
 import { selectMobileAppExamplePayload } from "../examplePayloads";
+import { selectMobileAppInputs } from "../inputs";
 import { paginateResults } from "../util";
 export const selectMobileApp = dataSource({
   display: {
     label: "Select Mobile App",
-    description: "Select a mobile app from the list of mobile apps",
+    description: "Select a mobile app from the list of mobile apps.",
   },
-  inputs: {
-    connection,
-  },
-  perform: async (context, { connection }) => {
+  inputs: selectMobileAppInputs,
+  perform: async (_context, { connection }) => {
     const client = createClient(connection, false, true);
     const params = {
       $filter:
@@ -19,7 +18,7 @@ export const selectMobileApp = dataSource({
     };
     const data = await paginateResults(
       client,
-      "/deviceAppManagement/mobileApps",
+      ENDPOINTS.MOBILE_APPS,
       true,
       params,
     );
@@ -31,5 +30,5 @@ export const selectMobileApp = dataSource({
     });
   },
   dataSourceType: "picklist",
-  examplePayload: { result: selectMobileAppExamplePayload },
+  examplePayload: selectMobileAppExamplePayload,
 });

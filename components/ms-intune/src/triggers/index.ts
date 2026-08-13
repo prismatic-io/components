@@ -1,4 +1,4 @@
-import { resourceTrigger } from "./general";
+import { resourceTrigger } from "./resourceTrigger";
 export default {
   resourceTrigger,
 };

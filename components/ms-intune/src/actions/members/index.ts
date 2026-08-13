@@ -1,7 +1,7 @@
-import { addMemberToGroup } from "./add";
-import { addMembersToGroup } from "./addMultiple";
-import { deleteMemberFromGroup } from "./delete";
-import { listMembersFromGroup } from "./list";
+import { addMembersToGroup } from "./addMembersToGroup";
+import { addMemberToGroup } from "./addMemberToGroup";
+import { deleteMemberFromGroup } from "./deleteMemberFromGroup";
+import { listMembersFromGroup } from "./listMembersFromGroup";
 export default {
   addMembersToGroup,
   addMemberToGroup,

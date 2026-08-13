@@ -1,6 +1,9 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connection } from "../inputs/general";
+import { ENDPOINTS } from "../constants";
+import { selectDirectoryAuditExamplePayload } from "../examplePayloads";
+import { selectDirectoryAuditInputs } from "../inputs";
+import type { SelectableDirectoryAudit } from "../types";
 import { paginateResults } from "../util";
 export const selectDirectoryAudit = dataSource({
   display: {
@@ -8,22 +11,15 @@ export const selectDirectoryAudit = dataSource({
     description:
       "Select a directory audit entry from the list of directory audits.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: selectDirectoryAuditInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
     const data = await paginateResults(
       client,
-      "/auditLogs/directoryaudits",
+      ENDPOINTS.DIRECTORY_AUDITS,
       true,
     );
-    const result = (
-      data.value as {
-        id: string;
-        activityDisplayName: string;
-      }[]
-    )
+    const result = (data.value as SelectableDirectoryAudit[])
       .map<Element>((audit) => ({
         label: audit.activityDisplayName,
         key: audit.id.toString(),
@@ -32,12 +28,5 @@ export const selectDirectoryAudit = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "Add member to group",
-        key: "audit-id-123",
-      },
-    ],
-  },
+  examplePayload: selectDirectoryAuditExamplePayload,
 });

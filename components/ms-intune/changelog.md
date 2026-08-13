@@ -1,5 +1,18 @@
 ## Changelog
 
+### 2026-08-13
+
+Restructured action inputs into structured objects for an improved user experience.
+
+- List actions (**List Users**, **List Managed Devices**, **List Mobile Apps**, **List Managed Apps**, and **List Detected Apps**) group their OData inputs into **Pagination** and **Filters**; **Fetch All** stays a top-level toggle
+- **List Directory Audits** groups its OData inputs into **Pagination** and **Filters**; **Fetch All** stays a top-level toggle
+- **List Domains** groups its OData inputs into **Pagination** and **Filters**
+- **List Groups**, **List Group Members**, and **List Software Update Status Summary** group their OData query inputs into **Filters**
+- **Update User** groups **First Name** and **Last Name** into a **Name** structured object
+- **Update Software Update Status Summary** groups device-level compliance counts into **Device Counts** and user-level compliance counts into **User Counts**
+- **Create Managed App**, **Update Managed App**, **Create Group**, and **Update Group** group their secondary metadata inputs into **Additional Fields**
+- Renamed the **Resource Trigger** trigger to **Resource Change**
+
 ### 2026-04-30
 
 Updated spectral version

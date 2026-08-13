@@ -1,14 +1,24 @@
-export const selectManagedDeviceExamplePayload = [
-  { label: "Device Name value", key: "705c034c-034c-705c-4c03-5c704c035c70" },
-];
-export const selectManagedAppExamplePayload = [
-  { label: "Display Name value", key: "0177548a-548a-0177-8a54-77018a547701" },
-];
+export const selectManagedDeviceExamplePayload = {
+  result: [
+    {
+      label: "Device Name value",
+      key: "705c034c-034c-705c-4c03-5c704c035c70",
+    },
+  ],
+};
+export const selectManagedAppExamplePayload = {
+  result: [
+    {
+      label: "Display Name value",
+      key: "0177548a-548a-0177-8a54-77018a547701",
+    },
+  ],
+};
 export const selectMobileAppExamplePayload = selectManagedAppExamplePayload;
 export const selectGroupExamplePayload = selectMobileAppExamplePayload;
-export const selectMobileAppAssignmentExamplePayload = [
-  { label: "required", key: "591620b7-20b7-5916-b720-1659b7201659" },
-];
+export const selectMobileAppAssignmentExamplePayload = {
+  result: [{ label: "required", key: "591620b7-20b7-5916-b720-1659b7201659" }],
+};
 export const listManagedDevicesExamplePayload = {
   data: {
     value: [
@@ -430,9 +440,14 @@ export const createUserExamplePayload = {
     userPrincipalName: "AdeleV@contoso.com",
   },
 };
-export const selectDetectedAppExamplePayload = [
-  { label: "Display Name value", key: "caf60db6-0db6-caf6-b60d-f6cab60df6ca" },
-];
+export const selectDetectedAppExamplePayload = {
+  result: [
+    {
+      label: "Display Name value",
+      key: "caf60db6-0db6-caf6-b60d-f6cab60df6ca",
+    },
+  ],
+};
 export const listDetectedAppsExamplePayload = {
   data: {
     value: [
@@ -1107,4 +1122,104 @@ export const listMembersExamplePayload = {
       },
     ],
   },
+};
+export const retireDeviceExamplePayload = {
+  data: "Action successfully completed.",
+};
+export const deleteManagedDeviceExamplePayload = {
+  data: {},
+};
+export const updateManagedDeviceExamplePayload = {
+  data: {},
+};
+export const removeAllDevicesFromUserExamplePayload = {
+  data: {},
+};
+export const deleteUserExamplePayload = {
+  data: {},
+};
+export const updateUserExamplePayload = {
+  data: {},
+};
+export const deleteGroupExamplePayload = {
+  data: "Action successfully completed.",
+};
+export const updateGroupExamplePayload = {
+  data: "Action successfully completed.",
+};
+export const deleteSubscriptionExamplePayload = {
+  data: "Action successfully completed.",
+};
+export const deleteManagedAppExamplePayload = {
+  data: {},
+};
+export const deleteDetectedAppExamplePayload = {
+  data: {},
+};
+export const assignMobileAppExamplePayload = {
+  data: "Action successfully completed.",
+};
+export const deleteMobileAppAssignmentExamplePayload = {
+  data: "Action successfully completed.",
+};
+export const addMemberToGroupExamplePayload = {
+  data: {
+    message: "Sucessfully added member(s) to group.",
+  },
+};
+export const addMembersToGroupExamplePayload = {
+  data: {
+    message: "Sucessfully added member(s) to group.",
+  },
+};
+export const deleteMemberFromGroupExamplePayload = {
+  data: "Successfully deleted member from group.",
+};
+export const selectDeviceCompliancePolicyExamplePayload = {
+  result: [
+    {
+      label: "Display Name value",
+      key: "4214b716-b716-4214-16b7-144216b71442",
+    },
+  ],
+};
+export const selectDeviceConfigurationExamplePayload = {
+  result: [
+    {
+      label: "Display Name value",
+      key: "34977265-7265-3497-6572-973465729734",
+    },
+  ],
+};
+export const selectUserExamplePayload = {
+  result: [
+    { label: "Conf Room Adams", key: "6ea91a8d-e32e-41a1-b7bd-d2d185eed0e0" },
+  ],
+};
+export const selectDirectoryAuditExamplePayload = {
+  result: [{ label: "Add member to group", key: "audit-id-123" }],
+};
+export const selectSubscriptionExamplePayload = {
+  result: [
+    {
+      label: "Users (updated,deleted)",
+      key: "0fc0d6db-0073-42e5-a186-853da75fb308",
+    },
+  ],
+};
+export const selectDeviceCompliancePolicySettingStateSummaryExamplePayload = {
+  result: [
+    {
+      label: "Setting Name value",
+      key: "7474d6d5-d6d5-7474-d5d6-7474d5d67474",
+    },
+  ],
+};
+export const selectMemberExamplePayload = {
+  result: [
+    {
+      label: "user1@contoso.com",
+      key: "11111111-2222-3333-4444-555555555555",
+    },
+  ],
 };

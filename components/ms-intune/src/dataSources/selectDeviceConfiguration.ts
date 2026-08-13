@@ -1,26 +1,22 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connection } from "../inputs/general";
+import { ENDPOINTS } from "../constants";
+import { selectDeviceConfigurationExamplePayload } from "../examplePayloads";
+import { selectDeviceConfigurationInputs } from "../inputs";
+import type { SelectableResource } from "../types";
 export const selectDeviceConfiguration = dataSource({
   display: {
     label: "Select Device Configuration",
     description:
       "Select a device configuration from the list of device configurations.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: selectDeviceConfigurationInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
     const {
       data: { value },
-    } = await client.get("/deviceManagement/deviceConfigurations");
-    const result = (
-      value as {
-        id: string;
-        displayName: string;
-      }[]
-    )
+    } = await client.get(ENDPOINTS.DEVICE_CONFIGURATIONS);
+    const result = (value as SelectableResource[])
       .map<Element>((config) => ({
         label: config.displayName,
         key: config.id.toString(),
@@ -29,12 +25,5 @@ export const selectDeviceConfiguration = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "Display Name value",
-        key: "34977265-7265-3497-6572-973465729734",
-      },
-    ],
-  },
+  examplePayload: selectDeviceConfigurationExamplePayload,
 });

@@ -1,7 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection } from "../../inputs/general";
-import updateUserInputs from "../../inputs/users/updateUserInputs";
+import { ENDPOINTS } from "../../constants";
+import { updateUserExamplePayload } from "../../examplePayloads";
+import { updateUserInputs } from "../../inputs";
 export const updateUser = action({
   display: {
     label: "Update User",
@@ -16,8 +17,7 @@ export const updateUser = action({
       domain,
       accountEnabled,
       displayName,
-      givenName,
-      surname,
+      name,
       jobTitle,
       additionalProperties,
     },
@@ -40,19 +40,19 @@ export const updateUser = action({
       accountEnabled,
       displayName,
       userPrincipalName: updatedUserPrincipalName,
-      givenName,
-      surname,
+      givenName: name.givenName,
+      surname: name.surname,
       jobTitle,
       ...(additionalProperties || {}),
     };
-    const { data } = await client.patch(`/users/${userId}`, payload);
+    const { data } = await client.patch(
+      `${ENDPOINTS.USERS}/${userId}`,
+      payload,
+    );
     return {
       data,
     };
   },
-  inputs: {
-    connection,
-    ...updateUserInputs,
-  },
-  examplePayload: { data: {} },
+  inputs: updateUserInputs,
+  examplePayload: updateUserExamplePayload,
 });

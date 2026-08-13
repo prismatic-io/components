@@ -1,10 +1,8 @@
-import { assignMobileApp } from "./assign";
-import mobileAppAssignment from "./assignment";
-import { getMobileApp } from "./get";
-import { listMobileApps } from "./list";
+import { assignMobileApp } from "./assignMobileApp";
+import { getMobileApp } from "./getMobileApp";
+import { listMobileApps } from "./listMobileApps";
 export default {
   getMobileApp,
   listMobileApps,
   assignMobileApp,
-  ...mobileAppAssignment,
 };

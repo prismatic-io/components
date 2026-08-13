@@ -1,25 +1,20 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connection } from "../inputs/general";
+import { ENDPOINTS } from "../constants";
+import { selectSubscriptionExamplePayload } from "../examplePayloads";
+import { selectSubscriptionInputs } from "../inputs";
+import type { SelectableSubscription } from "../types";
 import { paginateResults } from "../util";
 export const selectSubscription = dataSource({
   display: {
     label: "Select Subscription",
     description: "Select a subscription from the list of subscriptions.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: selectSubscriptionInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
-    const data = await paginateResults(client, "/subscriptions", true);
-    const result = (
-      data.value as {
-        id: string;
-        resource: string;
-        changeType: string;
-      }[]
-    )
+    const data = await paginateResults(client, ENDPOINTS.SUBSCRIPTIONS, true);
+    const result = (data.value as SelectableSubscription[])
       .map<Element>((subscription) => ({
         label: `${subscription.resource} (${subscription.changeType})`,
         key: subscription.id.toString(),
@@ -28,12 +23,5 @@ export const selectSubscription = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "Users (updated,deleted)",
-        key: "0fc0d6db-0073-42e5-a186-853da75fb308",
-      },
-    ],
-  },
+  examplePayload: selectSubscriptionExamplePayload,
 });

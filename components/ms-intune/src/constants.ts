@@ -90,6 +90,29 @@ export const UPDATE_OFFICE_SUITE_APP_SPECIFIC_PROPERTIES_EXAMPLE =
     null,
     2,
   );
+export const ENDPOINTS = {
+  MANAGED_DEVICES: "/deviceManagement/managedDevices",
+  DETECTED_APPS: "/deviceManagement/detectedApps",
+  MOBILE_APPS: "/deviceAppManagement/mobileApps",
+  SOFTWARE_UPDATE_STATUS_SUMMARY:
+    "/deviceManagement/softwareUpdateStatusSummary",
+  DEVICE_COMPLIANCE_POLICIES: "/deviceManagement/deviceCompliancePolicies",
+  DEVICE_COMPLIANCE_POLICY_SETTING_STATE_SUMMARIES:
+    "/deviceManagement/deviceCompliancePolicySettingStateSummaries",
+  DEVICE_CONFIGURATIONS: "/deviceManagement/deviceConfigurations",
+  USERS: "/users",
+  GROUPS: "/groups",
+  SUBSCRIPTIONS: "/subscriptions",
+  DIRECTORY_AUDITS: "/auditLogs/directoryaudits",
+  DOMAINS: "/domains",
+};
+export const ODATA_TYPES = {
+  MANAGED_DEVICE: "#microsoft.graph.managedDevice",
+  DETECTED_APP: "#microsoft.graph.detectedApp",
+  COMPLIANCE_POLICY_ASSIGNMENT:
+    "#microsoft.graph.deviceCompliancePolicyAssignment",
+};
+export const MS_PER_MINUTE = 60 * 1000;
 export const MANAGED_APPS_FILTER =
   "(microsoft.graph.managedApp/appAvailability eq null or microsoft.graph.managedApp/appAvailability eq 'lineOfBusiness' or isAssigned eq true)";
 export const NO_RESPONSE_SUCCESSFULL_PAYLOAD = "Action successfully completed.";

@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection } from "../../inputs/general";
-import createManagedDeviceInputs from "../../inputs/devices/createManagedDeviceInputs";
+import { ENDPOINTS, ODATA_TYPES } from "../../constants";
 import { createManagedDeviceExamplePayload } from "../../examplePayloads";
+import { createManagedDeviceInputs } from "../../inputs";
 export const createManagedDevice = action({
   display: {
     label: "Create Managed Device",
@@ -70,7 +70,7 @@ export const createManagedDevice = action({
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const payload = {
-      "@odata.type": "#microsoft.graph.managedDevice",
+      "@odata.type": ODATA_TYPES.MANAGED_DEVICE,
       userId,
       deviceName,
       managedDeviceOwnerType,
@@ -126,17 +126,11 @@ export const createManagedDevice = action({
       physicalMemoryInBytes,
       enrollmentProfileName,
     };
-    const { data } = await client.post(
-      "/deviceManagement/managedDevices",
-      payload,
-    );
+    const { data } = await client.post(ENDPOINTS.MANAGED_DEVICES, payload);
     return {
       data,
     };
   },
-  inputs: {
-    connection,
-    ...createManagedDeviceInputs,
-  },
+  inputs: createManagedDeviceInputs,
   examplePayload: createManagedDeviceExamplePayload,
 });

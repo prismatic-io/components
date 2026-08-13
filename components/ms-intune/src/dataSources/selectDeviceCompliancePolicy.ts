@@ -1,26 +1,22 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connection } from "../inputs/general";
+import { ENDPOINTS } from "../constants";
+import { selectDeviceCompliancePolicyExamplePayload } from "../examplePayloads";
+import { selectDeviceCompliancePolicyInputs } from "../inputs";
+import type { SelectableResource } from "../types";
 export const selectDeviceCompliancePolicy = dataSource({
   display: {
     label: "Select Device Compliance Policy",
     description:
       "Select a device compliance policy from the list of compliance policies.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: selectDeviceCompliancePolicyInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
     const {
       data: { value },
-    } = await client.get("/deviceManagement/deviceCompliancePolicies");
-    const result = (
-      value as {
-        id: string;
-        displayName: string;
-      }[]
-    )
+    } = await client.get(ENDPOINTS.DEVICE_COMPLIANCE_POLICIES);
+    const result = (value as SelectableResource[])
       .map<Element>((policy) => ({
         label: policy.displayName,
         key: policy.id.toString(),
@@ -29,12 +25,5 @@ export const selectDeviceCompliancePolicy = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "Display Name value",
-        key: "4214b716-b716-4214-16b7-144216b71442",
-      },
-    ],
-  },
+  examplePayload: selectDeviceCompliancePolicyExamplePayload,
 });

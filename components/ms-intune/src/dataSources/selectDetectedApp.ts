@@ -1,21 +1,21 @@
 import { dataSource } from "@prismatic-io/spectral";
-import { connection } from "../inputs/general";
 import { createClient } from "../client";
+import { ENDPOINTS } from "../constants";
 import { selectDetectedAppExamplePayload } from "../examplePayloads";
+import { selectDetectedAppInputs } from "../inputs";
+import type { SelectableResource } from "../types";
 export const selectDetectedApp = dataSource({
   display: {
     label: "Select Detected App",
-    description: "Select a detected app from the list of detected apps",
+    description: "Select a detected app from the list of detected apps.",
   },
-  inputs: {
-    connection,
-  },
-  perform: async (context, { connection }) => {
+  inputs: selectDetectedAppInputs,
+  perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
     const {
       data: { value },
-    } = await client.get("/deviceManagement/detectedApps");
-    return value.map((detectedApp: { id: string; displayName: string }) => {
+    } = await client.get(ENDPOINTS.DETECTED_APPS);
+    return value.map((detectedApp: SelectableResource) => {
       return {
         label: detectedApp.displayName,
         key: detectedApp.id,
@@ -23,5 +23,5 @@ export const selectDetectedApp = dataSource({
     });
   },
   dataSourceType: "picklist",
-  examplePayload: { result: selectDetectedAppExamplePayload },
+  examplePayload: selectDetectedAppExamplePayload,
 });

@@ -1,25 +1,21 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connection } from "../inputs/general";
+import { ENDPOINTS } from "../constants";
+import { selectUserExamplePayload } from "../examplePayloads";
+import { selectUserInputs } from "../inputs";
+import type { SelectableResource } from "../types";
 export const selectUser = dataSource({
   display: {
     label: "Select User",
-    description: "Select a user from the list of users in your directory.",
+    description: "Select a user from the list of users in the directory.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: selectUserInputs,
   perform: async (_context, { connection }) => {
     const client = createClient(connection, false);
     const {
       data: { value },
-    } = await client.get("/users");
-    const result = (
-      value as {
-        id: string;
-        displayName: string;
-      }[]
-    )
+    } = await client.get(ENDPOINTS.USERS);
+    const result = (value as SelectableResource[])
       .map<Element>((user) => ({
         label: user.displayName,
         key: user.id.toString(),
@@ -28,12 +24,5 @@ export const selectUser = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "Conf Room Adams",
-        key: "6ea91a8d-e32e-41a1-b7bd-d2d185eed0e0",
-      },
-    ],
-  },
+  examplePayload: selectUserExamplePayload,
 });

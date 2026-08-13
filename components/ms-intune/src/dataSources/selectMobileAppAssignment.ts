@@ -1,23 +1,17 @@
 import { dataSource } from "@prismatic-io/spectral";
-import { connection } from "../inputs/general";
 import { createClient } from "../client";
+import { ENDPOINTS } from "../constants";
 import { selectMobileAppAssignmentExamplePayload } from "../examplePayloads";
+import { selectMobileAppAssignmentInputs } from "../inputs";
 import { paginateResults } from "../util";
-import { mobileAppId } from "../inputs/mobileApps/general";
 export const selectMobileAppAssignment = dataSource({
   display: {
     label: "Select Mobile App Assignment",
     description:
-      "Select a mobile app assignment from the list of mobile apps assignments",
+      "Select a mobile app assignment from the list of mobile app assignments.",
   },
-  inputs: {
-    mobileAppId: {
-      ...mobileAppId,
-      dataSource: undefined,
-    },
-    connection,
-  },
-  perform: async (context, { connection, mobileAppId }) => {
+  inputs: selectMobileAppAssignmentInputs,
+  perform: async (_context, { connection, mobileAppId }) => {
     const client = createClient(connection, false, true);
     const params = {
       $filter:
@@ -25,7 +19,7 @@ export const selectMobileAppAssignment = dataSource({
     };
     const data = await paginateResults(
       client,
-      `/deviceAppManagement/mobileApps/${mobileAppId}/assignments`,
+      `${ENDPOINTS.MOBILE_APPS}/${mobileAppId}/assignments`,
       true,
       params,
     );
@@ -39,5 +33,5 @@ export const selectMobileAppAssignment = dataSource({
     );
   },
   dataSourceType: "picklist",
-  examplePayload: { result: selectMobileAppAssignmentExamplePayload },
+  examplePayload: selectMobileAppAssignmentExamplePayload,
 });

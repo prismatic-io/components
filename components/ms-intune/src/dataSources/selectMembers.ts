@@ -1,25 +1,20 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connection } from "../inputs/general";
-import { groupIdForMembers } from "../inputs/members/general";
+import { ENDPOINTS } from "../constants";
+import { selectMemberExamplePayload } from "../examplePayloads";
+import { selectMemberInputs } from "../inputs";
 export const selectMember = dataSource({
   display: {
     label: "Select Group Member",
     description: "Select a member of a security or Microsoft 365 group.",
   },
-  inputs: {
-    connection,
-    groupId: {
-      ...groupIdForMembers,
-      dataSource: undefined,
-    },
-  },
+  inputs: selectMemberInputs,
   dataSourceType: "picklist",
-  perform: async (context, { connection, groupId }) => {
+  perform: async (_context, { connection, groupId }) => {
     const client = createClient(connection, false);
     const {
       data: { value: members },
-    } = await client.get(`/groups/${groupId}/members`);
+    } = await client.get(`${ENDPOINTS.GROUPS}/${groupId}/members`);
     return members.map((member: { id: string; mail: string }) => {
       return {
         label: member.mail,
@@ -27,4 +22,5 @@ export const selectMember = dataSource({
       };
     });
   },
+  examplePayload: selectMemberExamplePayload,
 });

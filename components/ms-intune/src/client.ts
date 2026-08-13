@@ -1,7 +1,7 @@
 import type { Connection } from "@prismatic-io/spectral";
 import {
-  type HttpClient,
   createClient as createAxiosClient,
+  type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { getBaseUrl, validateConnection } from "./util";
 export const createClient = (

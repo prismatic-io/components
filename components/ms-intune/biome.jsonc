@@ -1,12 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.0.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
   "files": {
-    "ignore": ["dist"]
+    "includes": ["**", "!**/dist"]
   },
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2
   },
-  "organizeImports": {},
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {}
 }

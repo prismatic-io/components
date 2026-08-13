@@ -1,7 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection } from "../../inputs/general";
-import updateManagedDeviceInputs from "../../inputs/devices/updateManagedDeviceInputs";
+import { ENDPOINTS, ODATA_TYPES } from "../../constants";
+import { updateManagedDeviceExamplePayload } from "../../examplePayloads";
+import { updateManagedDeviceInputs } from "../../inputs";
 export const updateManagedDevice = action({
   display: {
     label: "Update Managed Device",
@@ -13,22 +14,19 @@ export const updateManagedDevice = action({
   ) => {
     const client = createClient(connection, context.debug.enabled, true);
     const payload = {
-      "@odata.type": "#microsoft.graph.managedDevice",
+      "@odata.type": ODATA_TYPES.MANAGED_DEVICE,
       managedDeviceName,
       notes,
       ...(extraFields || {}),
     };
     const { data } = await client.patch(
-      `/deviceManagement/managedDevices/${managedDeviceId}`,
+      `${ENDPOINTS.MANAGED_DEVICES}/${managedDeviceId}`,
       payload,
     );
     return {
       data,
     };
   },
-  inputs: {
-    connection,
-    ...updateManagedDeviceInputs,
-  },
-  examplePayload: { data: {} },
+  inputs: updateManagedDeviceInputs,
+  examplePayload: updateManagedDeviceExamplePayload,
 });

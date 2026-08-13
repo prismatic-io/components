@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection } from "../../inputs/general";
-import getUserInputs from "../../inputs/users/getUserInputs";
+import { ENDPOINTS } from "../../constants";
 import { getUserExamplePayload } from "../../examplePayloads";
+import { getUserInputs } from "../../inputs";
 export const getUser = action({
   display: {
     label: "Get User",
@@ -11,14 +11,13 @@ export const getUser = action({
   perform: async (context, { connection, userId, $select }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = { $select };
-    const { data } = await client.get(`/users/${userId}`, { params });
+    const { data } = await client.get(`${ENDPOINTS.USERS}/${userId}`, {
+      params,
+    });
     return {
       data,
     };
   },
-  inputs: {
-    connection,
-    ...getUserInputs,
-  },
+  inputs: getUserInputs,
   examplePayload: getUserExamplePayload,
 });

@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connection } from "../../inputs/general";
-import getManagedDeviceInputs from "../../inputs/devices/getManagedDeviceInputs";
+import { ENDPOINTS } from "../../constants";
 import { getManagedDeviceExamplePayload } from "../../examplePayloads";
+import { getManagedDeviceInputs } from "../../inputs";
 export const getManagedDevice = action({
   display: {
     label: "Get Managed Device",
@@ -12,15 +12,12 @@ export const getManagedDevice = action({
   perform: async (context, { connection, managedDeviceId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(
-      `/deviceManagement/managedDevices/${managedDeviceId}`,
+      `${ENDPOINTS.MANAGED_DEVICES}/${managedDeviceId}`,
     );
     return {
       data,
     };
   },
-  inputs: {
-    connection,
-    ...getManagedDeviceInputs,
-  },
+  inputs: getManagedDeviceInputs,
   examplePayload: getManagedDeviceExamplePayload,
 });
