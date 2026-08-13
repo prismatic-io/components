@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema, PerformSafety } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { brokers, clientId, connection } from "../inputs";
 import { listTopicsExamplePayload } from "../examplePayloads";
+import { brokers, clientId, connection } from "../inputs";
+import { listTopicsOutputSchema } from "../outputSchemas";
 export const listTopics = action({
   display: {
     label: "List Topics",
@@ -39,7 +40,13 @@ export const listTopics = action({
       throw error;
     }
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
+  examplePerform: async () => listTopicsExamplePayload,
   inputs: { connection, clientId, brokers },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listTopicsOutputSchema,
+  }),
   examplePayload: listTopicsExamplePayload,
 });
 export default listTopics;

@@ -19,8 +19,7 @@ export const kafkaConsumer = trigger({
       fromBeginning,
       maxMessages,
       autoCommit,
-      sessionTimeout,
-      heartbeatInterval,
+      sessionTiming,
       deserializeKeys,
     } = params;
     const kafka = createClient(
@@ -38,8 +37,8 @@ export const kafkaConsumer = trigger({
         : undefined;
     const consumer = kafka.consumer({
       groupId: consumerGroupId,
-      sessionTimeout,
-      heartbeatInterval,
+      sessionTimeout: sessionTiming.sessionTimeout,
+      heartbeatInterval: sessionTiming.heartbeatInterval,
     });
     try {
       await consumer.connect();

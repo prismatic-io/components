@@ -4,8 +4,6 @@ export const publishMessagesExamplePayload = {
       topicName: "order-events",
       partition: 0,
       errorCode: 0,
-      offset: "142",
-      timestamp: "1711929600000",
       baseOffset: "142",
       logAppendTime: "-1",
       logStartOffset: "0",

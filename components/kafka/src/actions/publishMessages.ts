@@ -1,11 +1,12 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema, PerformSafety } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { brokers, clientId, connection, messages, topic } from "../inputs";
 import { publishMessagesExamplePayload } from "../examplePayloads";
+import { brokers, clientId, connection, messages, topic } from "../inputs";
+import { publishMessagesOutputSchema } from "../outputSchemas";
 export const publishMessages = action({
   display: {
     label: "Publish Messages",
-    description: "Publish a message to an Apache Kafka topic.",
+    description: "Publish one or more messages to an Apache Kafka topic.",
   },
   perform: async (
     context,
@@ -30,7 +31,18 @@ export const publishMessages = action({
     await producer.disconnect();
     return { data: result };
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
+  examplePerform: async (_context, { topic }) => ({
+    data: publishMessagesExamplePayload.data.map((record) => ({
+      ...record,
+      topicName: topic,
+    })),
+  }),
   inputs: { connection, clientId, brokers, topic, messages },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: publishMessagesOutputSchema,
+  }),
   examplePayload: publishMessagesExamplePayload,
 });
 export default publishMessages;

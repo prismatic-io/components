@@ -10,6 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "types": ["node", "jest"],
+    "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
     "isolatedModules": false,
     "strictNullChecks": true,

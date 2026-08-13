@@ -2,8 +2,8 @@ import { ConnectionError, util } from "@prismatic-io/spectral";
 import {
   Kafka,
   type KafkaConfig,
-  type SASLOptions,
   logLevel as KafkaLogLevel,
+  type SASLOptions,
 } from "kafkajs";
 import { basic } from "./connections/basic";
 import type { CreateClientProps } from "./types/client";

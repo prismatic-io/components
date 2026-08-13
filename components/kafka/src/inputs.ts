@@ -1,8 +1,9 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { asKeyValueList, asStringArray } from "./utils";
 export const connection = input({
   label: "Connection",
   type: "connection",
+  comments: "The Kafka connection to use.",
 });
 export const brokers = input({
   label: "Brokers",
@@ -14,16 +15,6 @@ export const brokers = input({
   placeholder: "Enter broker address (host:port)",
   required: true,
   clean: asStringArray,
-});
-export const broker = input({
-  label: "Broker",
-  type: "string",
-  required: true,
-  comments:
-    "A Kafka broker allows consumers to fetch messages by topic, partition and offset.",
-  example: "192.168.0.1",
-  placeholder: "Enter broker address",
-  clean: util.types.toString,
 });
 export const clientId = input({
   label: "Client ID",
@@ -40,7 +31,8 @@ export const messages = input({
   type: "string",
   collection: "keyvaluelist",
   required: true,
-  comments: "Provide a string for a message to be sent to the Kafka topic.",
+  comments:
+    "The messages to publish. Each entry's value is sent as the message body; keys are not used.",
   example: "Hello Kafka",
   placeholder: "Enter message content",
   clean: asKeyValueList,
@@ -80,7 +72,8 @@ const fromBeginning = input({
   label: "From Beginning",
   type: "boolean",
   default: "false",
-  comments: "Whether to start consuming from the beginning of the topic.",
+  comments:
+    "When true, starts consuming from the beginning of the topic instead of the last committed offset.",
   clean: util.types.toBool,
 });
 const maxMessages = input({
@@ -98,7 +91,7 @@ const autoCommit = input({
   type: "boolean",
   default: "true",
   comments:
-    "Whether to automatically commit offsets after processing messages.",
+    "When true, automatically commits offsets after processing messages.",
   clean: util.types.toBool,
 });
 const sessionTimeout = input({
@@ -122,12 +115,18 @@ const heartbeatInterval = input({
   placeholder: "Enter heartbeat interval in milliseconds",
   clean: util.types.toInt,
 });
+const sessionTiming = structuredObjectInput({
+  label: "Session Timing",
+  required: true,
+  comments: "Session timeout and heartbeat interval settings in milliseconds.",
+  inputs: { sessionTimeout, heartbeatInterval },
+});
 const deserializeKeys = input({
   label: "Deserialize Keys as Avro",
   type: "boolean",
   default: "false",
   comments:
-    "When Avro deserialization is enabled on the connection, also deserialize message keys from Avro format.",
+    "When true, also deserializes message keys from Avro format. Requires Avro deserialization to be enabled on the connection.",
   clean: util.types.toBool,
 });
 export const kafkaConsumerInputs = {
@@ -137,8 +136,7 @@ export const kafkaConsumerInputs = {
   consumerGroupId,
   topics,
   maxMessages,
-  sessionTimeout,
-  heartbeatInterval,
+  sessionTiming,
   fromBeginning,
   autoCommit,
   deserializeKeys,
@@ -146,7 +144,7 @@ export const kafkaConsumerInputs = {
 export const selectTopicInputs = {
   connection,
   clientId,
-  broker,
+  brokers,
 };
 const topicsToCheck = input({
   label: "Topics to Check",

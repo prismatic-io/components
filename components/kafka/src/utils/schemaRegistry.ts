@@ -1,5 +1,5 @@
 import { SchemaRegistry } from "@kafkajs/confluent-schema-registry";
-import { util, type Connection } from "@prismatic-io/spectral";
+import { type Connection, util } from "@prismatic-io/spectral";
 import type { DeserializedValue } from "../types/consumer";
 export const createSchemaRegistryClient = (
   connection: Connection,

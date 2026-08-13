@@ -8,11 +8,11 @@ export const selectTopic = dataSource({
   },
   inputs: selectTopicInputs,
   perform: async (_context, params) => {
-    const { connection, broker, clientId } = params;
+    const { connection, brokers, clientId } = params;
     const kafka = createClient(
       {
         clientId,
-        brokers: [broker],
+        brokers,
         connection,
       },
       false,

@@ -1,13 +1,19 @@
-import { action, util } from "@prismatic-io/spectral";
+import {
+  action,
+  outputSchema,
+  PerformSafety,
+  util,
+} from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { getConsumerGroupStatusExamplePayload } from "../examplePayloads";
 import { getConsumerGroupStatusInputs } from "../inputs";
+import { getConsumerGroupStatusOutputSchema } from "../outputSchemas";
 import type {
   ConsumerGroupMember,
   ConsumerGroupStatus,
   PartitionLag,
   TopicLag,
 } from "../types/consumer";
-import { getConsumerGroupStatusExamplePayload } from "../examplePayloads";
 export const getConsumerGroupStatus = action({
   display: {
     label: "Get Consumer Group Status",
@@ -118,7 +124,18 @@ export const getConsumerGroupStatus = action({
       throw error;
     }
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
+  examplePerform: async (_context, { consumerGroupId }) => ({
+    data: {
+      ...getConsumerGroupStatusExamplePayload.data,
+      groupId: consumerGroupId,
+    },
+  }),
   inputs: getConsumerGroupStatusInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getConsumerGroupStatusOutputSchema,
+  }),
   examplePayload: getConsumerGroupStatusExamplePayload,
 });
 export default getConsumerGroupStatus;
