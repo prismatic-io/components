@@ -1,14 +1,22 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createOdooClient } from "../../client";
+import { IR_MODEL_DATA } from "../../constants";
 import { createRecordExamplePayload } from "../../examplePayloads";
 import { createRecordInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
+import { json2Path } from "../../util";
+import { createRecordOutputSchema } from "../../outputSchemas";
 export const createRecord = action({
   display: {
     label: "Create Record",
     description: "Create a new record of a given type.",
   },
   inputs: createRecordInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createRecordOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     if (isLegacyConnection(params.connection)) {
       const legacyClient = await createOdooAwaitClient(params.connection);
@@ -24,7 +32,7 @@ export const createRecord = action({
       context.debug.enabled,
     );
     const { data: created } = await odooClient.post<number[]>(
-      `/json/2/${params.model}/create`,
+      json2Path(params.model, "create"),
       { vals_list: [params.parameters] },
     );
     const recordId = created[0];
@@ -41,7 +49,7 @@ export const createRecord = action({
           `External ID "${params.externalId}" is not in the expected "module.name" format.`,
         );
       }
-      await odooClient.post("/json/2/ir.model.data/create", {
+      await odooClient.post(json2Path(IR_MODEL_DATA, "create"), {
         vals_list: [
           {
             module: trimmed.slice(0, separatorIndex),
@@ -54,5 +62,8 @@ export const createRecord = action({
     }
     return { data: recordId };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createRecordExamplePayload,
   examplePayload: createRecordExamplePayload,
 });

@@ -1,14 +1,17 @@
 import { action } from "@prismatic-io/spectral";
 import { createOdooClient } from "../../client";
+import { IR_MODEL_DATA } from "../../constants";
 import { getRecordByExternalIdExamplePayload } from "../../examplePayloads";
 import { getRecordByExternalIdInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
+import { json2Path } from "../../util";
 export const getRecordByExternalId = action({
   display: {
     label: "Get Record by External ID",
     description: "Get a record by its external ID.",
   },
   inputs: getRecordByExternalIdInputs,
+  performSafety: "safe",
   perform: async (context, params) => {
     if (isLegacyConnection(params.connection)) {
       const legacyClient = await createOdooAwaitClient(params.connection);
@@ -33,7 +36,7 @@ export const getRecordByExternalId = action({
         res_id: number;
         model: string;
       }>
-    >("/json/2/ir.model.data/search_read", {
+    >(json2Path(IR_MODEL_DATA, "search_read"), {
       domain: [
         ["module", "=", trimmed.slice(0, separatorIndex)],
         ["name", "=", trimmed.slice(separatorIndex + 1)],
@@ -49,7 +52,7 @@ export const getRecordByExternalId = action({
     }
     const { data: records } = await odooClient.post<
       Array<Record<string, unknown>>
-    >(`/json/2/${lookup.model}/read`, {
+    >(json2Path(lookup.model, "read"), {
       ids: [lookup.res_id],
       fields: null,
     });

@@ -14,6 +14,7 @@ export const listRecords = action({
     description: "Fetch a list of records of a given type.",
   },
   inputs: listRecordsInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     if (isLegacyConnection(params.connection)) {
       const legacyClient = await createOdooAwaitClient(params.connection);
@@ -21,8 +22,8 @@ export const listRecords = action({
         client: legacyClient,
         model: params.model,
         params: {
-          limit: params.limit,
-          offset: params.offset,
+          limit: params.pagination.limit,
+          offset: params.pagination.offset,
         },
         fetchAll: params.fetchAll,
         filter: undefined,
@@ -38,8 +39,8 @@ export const listRecords = action({
       client: odooClient,
       model: params.model,
       params: {
-        limit: params.limit,
-        offset: params.offset,
+        limit: params.pagination.limit,
+        offset: params.pagination.offset,
       },
       fetchAll: params.fetchAll,
       filter: undefined,
@@ -47,5 +48,8 @@ export const listRecords = action({
     });
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listRecordsExamplePayload,
   examplePayload: listRecordsExamplePayload,
 });

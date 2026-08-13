@@ -1,14 +1,22 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createOdooClient } from "../../client";
+import { IR_MODEL_DATA } from "../../constants";
 import { setExternalIdExamplePayload } from "../../examplePayloads";
 import { setExternalIdInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
+import { json2Path } from "../../util";
+import { setExternalIdOutputSchema } from "../../outputSchemas";
 export const setExternalId = action({
   display: {
     label: "Set External ID",
     description: "Add an external ID to a record that does not have one.",
   },
   inputs: setExternalIdInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: setExternalIdOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     if (isLegacyConnection(params.connection)) {
       const legacyClient = await createOdooAwaitClient(params.connection);
@@ -31,7 +39,7 @@ export const setExternalId = action({
       );
     }
     const { data: created } = await odooClient.post<number[]>(
-      "/json/2/ir.model.data/create",
+      json2Path(IR_MODEL_DATA, "create"),
       {
         vals_list: [
           {
@@ -45,5 +53,8 @@ export const setExternalId = action({
     );
     return { data: created[0] };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => setExternalIdExamplePayload,
   examplePayload: setExternalIdExamplePayload,
 });

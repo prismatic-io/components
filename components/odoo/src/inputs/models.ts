@@ -1,17 +1,15 @@
 import {
   connection,
   fetchAll,
-  limit,
   model,
   modelSearch,
   nameSearch,
-  offset,
+  pagination,
 } from "./common";
 export const listModelsInputs = {
   connection,
   fetchAll,
-  limit,
-  offset,
+  pagination,
   nameSearch,
   modelSearch,
 };

@@ -1,6 +1,6 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createOdooClient } from "../client";
-import { DEFAULT_MODEL_FIELDS } from "../constants";
+import { DEFAULT_MODEL_FIELDS, IR_MODEL } from "../constants";
 import { selectModelExamplePayload } from "../examplePayloads";
 import { selectModelInputs } from "../inputs";
 import {
@@ -21,7 +21,7 @@ export const selectModel = dataSource({
     const data = isLegacyConnection(connection)
       ? await paginateSearchLegacy<Model>({
           client: await createOdooAwaitClient(connection),
-          model: "ir.model",
+          model: IR_MODEL,
           params: {},
           fetchAll: true,
           filter: filters,
@@ -29,7 +29,7 @@ export const selectModel = dataSource({
         })
       : await paginateSearch<Model>({
           client: createOdooClient(connection),
-          model: "ir.model",
+          model: IR_MODEL,
           params: {},
           fetchAll: true,
           filter: filters,

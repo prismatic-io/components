@@ -1,9 +1,11 @@
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { OdooRecord, Pagination } from "../types";
-import { MAX_POLL_PAGES, POLL_PAGE_SIZE } from "../constants";
-export const getFilters = (params: Record<string, unknown>) => {
-  const filters = [];
+import { DEFAULT_PAGE_SIZE, FETCH_ALL_PAGE_SIZE } from "../constants";
+import type { Pagination } from "../types";
+import { json2Path } from "./paths";
+export const getFilters = (
+  params: Record<string, unknown>,
+): Array<Array<unknown>> => {
+  const filters: Array<Array<unknown>> = [];
   if (params.nameSearch) {
     filters.push(["name", "ilike", params.nameSearch]);
   }
@@ -19,27 +21,27 @@ export const paginateSearch = async <T>({
   fetchAll,
   filter,
   fields,
-}: Pagination) => {
-  const limit = util.types.toNumber(params.limit) || 100;
+}: Pagination): Promise<T[]> => {
+  const limit = util.types.toNumber(params.limit) || DEFAULT_PAGE_SIZE;
   const records: T[] = [];
   let offset = util.types.toNumber(params.offset) || 0;
   let keepFetching = true;
   if (fetchAll) {
     do {
-      const { data } = await client.post<T[]>(`/json/2/${model}/search_read`, {
+      const { data } = await client.post<T[]>(json2Path(model, "search_read"), {
         domain: filter ?? [],
         fields: fields ?? null,
-        limit: 1000,
+        limit: FETCH_ALL_PAGE_SIZE,
         offset,
       });
-      offset += 1000;
-      if (data.length < 1000) {
+      offset += FETCH_ALL_PAGE_SIZE;
+      if (data.length < FETCH_ALL_PAGE_SIZE) {
         keepFetching = false;
       }
       records.push(...data);
     } while (keepFetching);
   } else {
-    const { data } = await client.post<T[]>(`/json/2/${model}/search_read`, {
+    const { data } = await client.post<T[]>(json2Path(model, "search_read"), {
       domain: filter ?? [],
       fields: fields ?? null,
       limit,
@@ -48,37 +50,4 @@ export const paginateSearch = async <T>({
     records.push(...data);
   }
   return records;
-};
-export const toOdooDate = (iso: string): string =>
-  iso
-    .replace("T", " ")
-    .replace(/\.\d+Z$/, "")
-    .replace(/Z$/, "");
-export const fetchOdooRecordsSince = async (
-  client: HttpClient,
-  model: string,
-  lastPolledAt: string,
-): Promise<{
-  records: OdooRecord[];
-  truncated: boolean;
-}> => {
-  const domain = [["write_date", ">=", toOdooDate(lastPolledAt)]];
-  const records: OdooRecord[] = [];
-  for (let page = 0; page < MAX_POLL_PAGES; page++) {
-    const { data: batch } = await client.post<OdooRecord[]>(
-      `/json/2/${model}/search_read`,
-      {
-        domain,
-        fields: [],
-        limit: POLL_PAGE_SIZE,
-        offset: page * POLL_PAGE_SIZE,
-        order: "write_date desc",
-      },
-    );
-    records.push(...batch);
-    if (batch.length < POLL_PAGE_SIZE) {
-      return { records, truncated: false };
-    }
-  }
-  return { records, truncated: true };
 };

@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-08-13
+
+Improved record polling and configuration-time support:
+
+- Corrected cursor advancement in the **New and Updated Records** polling trigger so records past the per-poll page cap are no longer skipped
+- Grouped the paging inputs on **List Records** and **List Models** into a **Pagination** structured object; **Fetch All** stays a top-level toggle
+- Added output schemas to the **List Models**, **Create Record**, **Update Record**, **Delete Record By ID**, and **Set External ID** actions for improved field mapping during configuration
+- Added inline action calling support across all actions for improved example output during configuration
+
 ### 2026-06-02
 
 Migration preparations for the soon to be deprecated XML-RPC API to Odoo's JSON-2 HTTP API (required for the Odoo 19.1 SaaS rollout in mid-2026)

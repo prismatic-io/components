@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
-import { connection, fetchAll, limit, model, offset } from "./common";
+import { connection, fetchAll, model, pagination } from "./common";
 const recordId = input({
   label: "Record ID",
   comments: "The numeric identifier of the target record assigned by Odoo.",
@@ -17,6 +17,7 @@ const parameters = input({
   language: "json",
   required: true,
   clean: util.types.toObject,
+  placeholder: "Enter field names and values as JSON",
   comments:
     "The field names and values to set on the record. Must be a JSON object keyed by Odoo field name.",
   example: JSON.stringify(
@@ -45,8 +46,7 @@ export const listRecordsInputs = {
   connection,
   model,
   fetchAll,
-  limit,
-  offset,
+  pagination,
 };
 export const getRecordByIdInputs = {
   connection,
@@ -55,7 +55,7 @@ export const getRecordByIdInputs = {
 };
 export const getRecordByExternalIdInputs = {
   connection,
-  externalId: { ...externalId, required: true },
+  externalId: { ...externalId, required: true, clean: util.types.toString },
 };
 export const deleteRecordByIdInputs = {
   connection,
@@ -78,5 +78,5 @@ export const setExternalIdInputs = {
   connection,
   model,
   id: recordId,
-  externalId: { ...externalId, required: true },
+  externalId: { ...externalId, required: true, clean: util.types.toString },
 };

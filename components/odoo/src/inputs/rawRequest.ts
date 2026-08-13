@@ -29,6 +29,7 @@ const parameters = input({
   required: true,
   default: JSON.stringify([["read"]]),
   clean: util.types.toObject,
+  placeholder: "Enter positional arguments as a JSON array",
   comments:
     "A JSON array of positional arguments to pass to `execute_kw`. See the Odoo XML-RPC documentation for argument shapes.",
   example: JSON.stringify([["read"]]),

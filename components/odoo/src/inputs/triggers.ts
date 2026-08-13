@@ -6,7 +6,7 @@ const showNewRecords = input({
   required: false,
   default: "true",
   comments:
-    "When enabled, records whose `create_date` falls after the last poll will be emitted on the `created` branch.",
+    "When true, records whose `create_date` falls after the last poll are emitted in the `created` bucket.",
   clean: util.types.toBool,
 });
 const showUpdatedRecords = input({
@@ -15,7 +15,7 @@ const showUpdatedRecords = input({
   required: false,
   default: "true",
   comments:
-    "When enabled, records whose `write_date` falls after the last poll but were created earlier will be emitted on the `updated` branch.",
+    "When true, records whose `write_date` falls after the last poll but were created earlier are emitted in the `updated` bucket.",
   clean: util.types.toBool,
 });
 export const pollChangesInputs = {

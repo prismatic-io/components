@@ -3,12 +3,14 @@ import { createOdooClient } from "../../client";
 import { getRecordByIdExamplePayload } from "../../examplePayloads";
 import { getRecordByIdInputs } from "../../inputs";
 import { createOdooAwaitClient, isLegacyConnection } from "../../legacy";
+import { json2Path } from "../../util";
 export const getRecordById = action({
   display: {
     label: "Get Record By ID",
     description: "Fetch a record by its numerical ID.",
   },
   inputs: getRecordByIdInputs,
+  performSafety: "safe",
   perform: async (context, params) => {
     if (isLegacyConnection(params.connection)) {
       const legacyClient = await createOdooAwaitClient(params.connection);
@@ -29,7 +31,7 @@ export const getRecordById = action({
     );
     const { data: records } = await odooClient.post<
       Array<Record<string, unknown>>
-    >(`/json/2/${params.model}/read`, { ids: [params.id], fields: null });
+    >(json2Path(params.model, "read"), { ids: [params.id], fields: null });
     const [record] = records;
     if (!record) {
       throw new Error(

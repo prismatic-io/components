@@ -3,7 +3,7 @@ import {
   createClient as createHttpClient,
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
-import { validateConnection } from "./util";
+import { requireApiKeyConnection, validateConnection } from "./util";
 const buildBaseUrl = (baseUrlInput: string, portInput?: string): string => {
   const baseUrl = baseUrlInput.replace(/\/+$/, "");
   if (!portInput) {
@@ -16,6 +16,8 @@ const buildBaseUrl = (baseUrlInput: string, portInput?: string): string => {
   return `${baseUrl}:${port}`;
 };
 export const getClientConfig = (connection: Connection) => {
+  validateConnection(connection);
+  requireApiKeyConnection(connection);
   const { baseUrl, port, db, apiKey } = connection.fields;
   const baseUrlString = util.types.toString(baseUrl);
   const portString = port ? util.types.toString(port) : undefined;
@@ -31,14 +33,15 @@ export const createOdooClient = (
   connection: Connection,
   debug = false,
 ): HttpClient => {
-  validateConnection(connection);
   const { baseUrl, authHeaders } = getClientConfig(connection);
   return createHttpClient({
     baseUrl,
     headers: {
       ...authHeaders,
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
+    responseType: "json",
     debug,
   });
 };

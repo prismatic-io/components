@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 export const connection = input({
   label: "Connection",
@@ -17,25 +17,29 @@ export const model = input({
   dataSource: "selectModel",
   clean: util.types.toString,
 });
-export const limit = input({
+const limit = input({
   label: "Limit",
   type: "string",
-  comments:
-    "The maximum number of records to return per page. See [Pagination](https://www.odoo.com/documentation/19.0/developer/reference/external_api.html#pagination).",
+  comments: "The maximum number of records to return per page.",
   example: "10",
   placeholder: "Enter the page size",
   required: false,
   clean: util.types.toNumber,
 });
-export const offset = input({
+const offset = input({
   label: "Offset",
   type: "string",
-  comments:
-    "The number of records to skip before starting the page (0-based). See [Pagination](https://www.odoo.com/documentation/19.0/developer/reference/external_api.html#pagination).",
+  comments: "The number of records to skip before starting the page (0-based).",
   example: "20",
   placeholder: "Enter the offset",
   required: false,
   clean: util.types.toNumber,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page size and starting offset for paging through results.",
+  inputs: { limit, offset },
 });
 export const fetchAll = input({
   label: "Fetch All",

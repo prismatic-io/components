@@ -13,7 +13,7 @@ export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Polls an Odoo model for records whose `write_date` is at or after the last poll. Records whose `create_date` is also after the last poll go to the `created` bucket; older records modified since the last poll go to `updated`.",
+      "Polls an Odoo model on a configured schedule for records whose `write_date` is at or after the last poll. Records whose `create_date` is also after the last poll go to the `created` bucket; older records modified since the last poll go to `updated`.",
   },
   examplePayload: pollChangesExamplePayload,
   inputs: pollChangesInputs,
@@ -53,10 +53,10 @@ export const pollChangesTrigger = pollingTrigger({
     }
     let nextCursor = now;
     if (truncated) {
-      const oldestWriteDate = records[records.length - 1]?.write_date;
+      const newestWriteDate = records[records.length - 1]?.write_date;
       nextCursor =
-        typeof oldestWriteDate === "string"
-          ? new Date(`${oldestWriteDate.replace(" ", "T")}Z`).toISOString()
+        typeof newestWriteDate === "string"
+          ? new Date(`${newestWriteDate.replace(" ", "T")}Z`).toISOString()
           : lastPolledAt;
       context.logger.warn(
         `Polling truncated at the page cap for Odoo ${params.model}. Advancing cursor to ${nextCursor}; next poll will resume from there.`,
