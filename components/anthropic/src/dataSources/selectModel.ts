@@ -1,19 +1,17 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createAnthropicClient } from "../client";
-import { selectModelExamplePayload } from "../examplePayloads/selectModel";
-import { connectionInput } from "../inputs/general";
-import type { Model } from "../interfaces/Model";
-import { getPaginatedResponse } from "../utils";
+import { selectModelExamplePayload } from "../examplePayloads";
+import { selectModelInputs } from "../inputs";
+import type { Model } from "../types";
+import { getPaginatedResponse } from "../util";
 export const selectModel = dataSource({
   display: {
     label: "List Models",
-    description: "List all available Claude models",
+    description: "List all available Claude models.",
   },
   dataSourceType: "picklist",
-  inputs: {
-    connection: connectionInput,
-  },
-  perform: async (context, { connection }) => {
+  inputs: selectModelInputs,
+  perform: async (_context, { connection }) => {
     const client = createAnthropicClient(connection, false);
     const { data } = await getPaginatedResponse<Model>(
       client,

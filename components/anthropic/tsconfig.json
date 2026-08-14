@@ -4,6 +4,8 @@
     "lib": ["esnext"],
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node"

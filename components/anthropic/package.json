@@ -3,22 +3,22 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "build": "webpack",
-    "lint": "biome check --write .",
+    "lint": "biome lint --write .",
     "format": "biome format --write .",
+    "build": "npm run format && npm run lint && webpack",
     "test": "echo 'no tests'",
     "publish": "npm run build && prism components:publish"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1"
+    "@prismatic-io/spectral": "10.25.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.6",
-    "@types/node": "^25.4.0",
-    "copy-webpack-plugin": "13.0.0",
-    "ts-loader": "9.5.4",
+    "@biomejs/biome": "2.5.8",
+    "@types/node": "^26.2.0",
+    "copy-webpack-plugin": "14.0.0",
+    "ts-loader": "9.6.2",
     "typescript": "5.9.3",
-    "webpack": "5.105.4",
-    "webpack-cli": "6.0.1"
+    "webpack": "5.109.2",
+    "webpack-cli": "7.2.2"
   }
 }

@@ -1,11 +1,11 @@
 import { input, util } from "@prismatic-io/spectral";
 import { DEFAULT_LIMIT, DEFAULT_MODEL, MAX_LIMIT } from "../constants";
-import { cleanStringInput } from "../utils";
+import { cleanNumberWithDefault, cleanStringInput } from "../util";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
-  comments: "Anthropic API connection.",
+  comments: "The Anthropic API connection to use.",
 });
 export const modelInput = input({
   label: "Model",
@@ -16,7 +16,7 @@ export const modelInput = input({
   dataSource: "selectModel",
   clean: util.types.toString,
   placeholder: "Enter a Claude model name",
-  example: "claude-3-opus-20240229",
+  example: "claude-sonnet-4-6",
 });
 export const beforeIdInput = input({
   label: "Before ID",
@@ -25,8 +25,8 @@ export const beforeIdInput = input({
   comments:
     "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
   clean: cleanStringInput,
-  placeholder: "Enter a message ID to paginate before",
-  example: "msg_123456789",
+  placeholder: "Enter a model ID to paginate before",
+  example: "claude-sonnet-4-6",
 });
 export const afterIdInput = input({
   label: "After ID",
@@ -35,16 +35,16 @@ export const afterIdInput = input({
   comments:
     "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
   clean: cleanStringInput,
-  placeholder: "Enter a message ID to paginate after",
-  example: "msg_123456789",
+  placeholder: "Enter a model ID to paginate after",
+  example: "claude-sonnet-4-6",
 });
 export const limitInput = input({
   label: "Limit",
   type: "string",
-  required: true,
+  required: false,
   default: util.types.toString(DEFAULT_LIMIT),
   comments: `Number of items to return per page. Defaults to ${DEFAULT_LIMIT}. Range: 1-${MAX_LIMIT}.`,
-  clean: util.types.toNumber,
+  clean: cleanNumberWithDefault(DEFAULT_LIMIT),
   placeholder: "Enter number of items per page",
   example: "10",
 });
@@ -54,7 +54,7 @@ export const fetchAllInput = input({
   required: false,
   default: "false",
   comments:
-    "Fetch all paginated results. Turning this On will ignore the Limit, After ID, and Before ID inputs.",
+    "When true, automatically fetches all pages of results. The Limit, After ID, and Before ID inputs are ignored.",
   clean: util.types.toBool,
 });
 export const messageInput = input({
@@ -63,6 +63,6 @@ export const messageInput = input({
   required: true,
   comments: "The message to send in the conversation.",
   clean: util.types.toString,
-  placeholder: "Enter your message to Claude",
+  placeholder: "Enter a message to Claude",
   example: "What is the capital of France?",
 });

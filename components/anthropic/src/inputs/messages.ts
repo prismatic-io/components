@@ -1,13 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
 import { DEFAULT_MAX_TOKENS, DEFAULT_TEMPERATURE } from "../constants";
-import { cleanNumberInput, cleanStringInput } from "../utils";
-import { connectionInput, messageInput, modelInput } from "./general";
+import { cleanNumberInput, cleanStringInput } from "../util";
+import { connectionInput, messageInput, modelInput } from "./common";
 const temperatureInput = input({
   label: "Temperature",
   type: "string",
   required: false,
   default: util.types.toString(DEFAULT_TEMPERATURE),
-  comments: `Randomness of the output (0-1, default: ${DEFAULT_TEMPERATURE}).`,
+  comments: `Randomness of the output (0-1, default: ${DEFAULT_TEMPERATURE}). Note: temperature is not supported on Claude Opus 4.7+ models and will return a 400 error if set to a non-default value.`,
   clean: cleanNumberInput,
   placeholder: "Enter a value between 0 and 1",
   example: "0.7",
@@ -17,7 +17,7 @@ const systemPromptInput = input({
   type: "string",
   required: false,
   comments:
-    "Optional system prompt to set the context and behavior for the chat.",
+    "A system prompt to set the context and behavior for the conversation.",
   clean: cleanStringInput,
   placeholder: "Enter a system prompt to guide Claude's behavior",
   example:
@@ -40,4 +40,9 @@ export const chatInputs = {
   systemPrompt: systemPromptInput,
   maxTokens: maxTokensInput,
   temperature: temperatureInput,
+};
+export const countTokensInputs = {
+  connection: connectionInput,
+  model: modelInput,
+  message: messageInput,
 };

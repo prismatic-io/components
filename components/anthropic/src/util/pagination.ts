@@ -1,22 +1,6 @@
-import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import connections from "./connections";
-import { MAX_LIMIT } from "./constants";
-import type { PaginatedResponse } from "./interfaces/PaginatedResponse";
-import type { PaginationParams } from "./interfaces/PaginationParams";
-export const cleanStringInput = (value: unknown): string | undefined =>
-  value ? util.types.toString(value) : undefined;
-export const cleanNumberInput = (value: unknown): number | undefined =>
-  value ? util.types.toNumber(value) : undefined;
-export const validateConnection = (connection: Connection): void => {
-  const connectionKeys = connections.map((c) => c.key);
-  if (!connectionKeys.includes(connection.key)) {
-    throw new ConnectionError(
-      connection,
-      `Unsupported connection ${connection.key}.`,
-    );
-  }
-};
+import { MAX_LIMIT } from "../constants";
+import type { PaginatedResponse, PaginationParams } from "../types";
 export const getPaginatedResponse = async <T>(
   client: HttpClient,
   path: string,

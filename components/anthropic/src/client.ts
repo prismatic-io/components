@@ -4,7 +4,7 @@ import {
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { ANTHROPIC_VERSION, BASE_URL } from "./constants";
-import { validateConnection } from "./utils";
+import { validateConnection } from "./util";
 export const createAnthropicClient = (
   connection: Connection,
   debug: boolean,

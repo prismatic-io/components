@@ -4,3 +4,8 @@ export interface PaginatedResponse<T> {
   has_more: boolean;
   last_id: string | null;
 }
+export interface PaginationParams {
+  before_id?: string;
+  after_id?: string;
+  limit?: number;
+}
