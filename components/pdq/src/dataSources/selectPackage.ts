@@ -1,20 +1,24 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createHttpClient } from "../client";
-import { packageDatasource } from "../examplePayloads/dataSources";
-import { connection } from "../inputs/general";
-import type { Package } from "../interfaces";
+import { PACKAGES_ENDPOINT } from "../constants";
+import { selectPackageExamplePayload } from "../examplePayloads/dataSources";
+import { selectPackageInputs } from "../inputs";
+import type { Package } from "../types";
 import { fetchAllData, TComparator } from "../util";
 export const selectPackage = dataSource({
   display: {
     label: "Select Package",
     description: "Select a Package from a dropdown menu.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: selectPackageInputs,
   perform: async (_context, { connection }) => {
     const client = createHttpClient(connection, false);
-    const { data } = (await fetchAllData(client, "/packages", {}, true)) as {
+    const { data } = (await fetchAllData(
+      client,
+      PACKAGES_ENDPOINT,
+      {},
+      true,
+    )) as {
       data: Package[];
     };
     const packages = data
@@ -26,7 +30,5 @@ export const selectPackage = dataSource({
     return { result: packages };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: packageDatasource,
-  },
+  examplePayload: selectPackageExamplePayload,
 });

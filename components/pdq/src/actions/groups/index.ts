@@ -1,4 +1,4 @@
-import { listGroups } from "./list";
+import { listGroups } from "./listGroups";
 export default {
   listGroups,
 };

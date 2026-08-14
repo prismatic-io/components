@@ -1,4 +1,4 @@
-import { createDeployment } from "./create";
+import { createDeployment } from "./createDeployment";
 export default {
   createDeployment,
 };

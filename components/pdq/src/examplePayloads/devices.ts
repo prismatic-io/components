@@ -1,16 +1,55 @@
-export const getDeviceExamplePayload = {
+const deviceExampleRecord = {
+  agentVersion: "4.6.2",
   architecture: "64-bit",
+  biosAssetTag: "LAB01-ASSET-4471",
+  biosManufacturer: "Phoenix Technologies",
+  biosVersion: "2.18.0",
+  chassis: "Desktop",
+  currentUser: "someuser",
+  dotNetVersions: "4.8.4515.0",
+  family: "Enterprise Desktop",
+  freePercent: 42,
   hostname: "LAB01",
   id: "dvc_1bced782734040a581d",
   insertedAt: "2024-01-01T00:00:00.000000Z",
+  isOnline: true,
+  lastBootUpTime: "2023-12-31T22:10:04.000000Z",
+  lastSeenAt: "2024-01-01T00:00:00.000000Z",
   lastUser: "someuser",
+  lastUserShortName: "someuser",
+  macAddress: "00:1A:2B:3C:4D:5E",
+  manufacturer: "Example Manufacturing",
+  memory: 16,
   model: "8884664217",
   name: "LAB01",
+  os: "windows",
+  osFullName: "Windows 10 Pro",
+  osInstallDate: "2023-06-14T09:12:00.000000Z",
+  osProductType: "Workstation",
   osVersion: "10.0.17328",
+  powershellVersion: "5.1.19041.1",
   publicIpAddress: "451E:6414:DEC9:2428:7154:D717:8D0F:7D2C",
+  requireReboot: false,
   serialNumber: "56701fc8-de8f-4ccb-9a4d-3b97676d04d2",
   servicePack: "wav",
+  sku: "0A9C",
+  smbVersionOne: false,
+  systemVersion: "1.4.2",
+  timezone: "America/Chicago",
+  updatedAt: "2024-01-01T06:32:11.000000Z",
+};
+export const getDeviceExamplePayload = {
+  data: {
+    data: deviceExampleRecord,
+  },
 };
 export const listDevicesExamplePayload = {
-  data: [getDeviceExamplePayload],
+  data: {
+    data: [deviceExampleRecord],
+    meta: {
+      page: 1,
+      pageSize: 20,
+      totalPages: 5,
+    },
+  },
 };

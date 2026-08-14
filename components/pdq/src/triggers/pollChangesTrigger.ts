@@ -1,9 +1,10 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createHttpClient } from "../client";
 import { POLL_RESOURCE_CONFIG } from "../constants";
-import { pollChangesInputs } from "../inputs/triggers";
-import type { PollableRecord, PollingState } from "../interfaces";
-import { fetchAllData, filterRecordsInsertedAfter } from "../util";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads/triggers";
+import { pollChangesInputs } from "../inputs";
+import type { PollingState } from "../types";
+import { fetchAllInsertedAfter, filterRecordsInsertedAfter } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Records",
@@ -27,19 +28,16 @@ export const pollChangesTrigger = pollingTrigger({
     }
     const { lastPolledAt } = pollState;
     const client = createHttpClient(params.connection, context.debug.enabled);
-    const { data: fetched } = (await fetchAllData(
+    const fetched = await fetchAllInsertedAfter(
       client,
       config.endpoint,
-      { sort: "insertedAtDesc" },
-      true,
-    )) as {
-      data: PollableRecord[];
-    };
-    const records = filterRecordsInsertedAfter(fetched ?? [], lastPolledAt);
+      lastPolledAt,
+    );
+    const records = filterRecordsInsertedAfter(fetched, lastPolledAt);
     context.polling.setState({ lastPolledAt: now });
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled PDQ ${params.pollResourceType}: ${(fetched ?? []).length} fetched, ${records.length} new`,
+        `Polled PDQ ${params.pollResourceType}: ${fetched.length} fetched, ${records.length} new`,
       );
     }
     return {
@@ -47,4 +45,5 @@ export const pollChangesTrigger = pollingTrigger({
       polledNoChanges: records.length === 0,
     };
   },
+  examplePayload: pollChangesTriggerExamplePayload,
 });

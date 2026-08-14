@@ -5,7 +5,13 @@ module.exports = {
   target: "node",
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: "assets", to: path.resolve(__dirname, "dist") }],
+      patterns: [
+        {
+          from: "assets",
+          to: path.resolve(__dirname, "dist"),
+          noErrorOnMissing: true,
+        },
+      ],
     }),
   ],
   module: {

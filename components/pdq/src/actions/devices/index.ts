@@ -1,5 +1,5 @@
-import { getDevice } from "./get";
-import { listDevices } from "./list";
+import { getDevice } from "./getDevice";
+import { listDevices } from "./listDevices";
 export default {
   listDevices,
   getDevice,

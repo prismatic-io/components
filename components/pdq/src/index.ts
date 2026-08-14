@@ -10,8 +10,7 @@ export default component({
   documentationUrl: "https://prismatic.io/docs/components/pdq/",
   display: {
     label: "PDQ",
-    description:
-      "PDQ provides a suite of management tools to automate software deployment, manage patches, and track inventory across a company’s networks. Use the PDQ component to manage deployments, devices, groups, and packages.",
+    description: "Manage deployments, devices, groups, and packages in PDQ.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

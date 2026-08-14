@@ -1,20 +1,24 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createHttpClient } from "../client";
-import { groupDatasource } from "../examplePayloads/dataSources";
-import { connection } from "../inputs/general";
-import type { Group } from "../interfaces";
+import { GROUPS_ENDPOINT } from "../constants";
+import { selectGroupExamplePayload } from "../examplePayloads/dataSources";
+import { selectGroupInputs } from "../inputs";
+import type { Group } from "../types";
 import { fetchAllData, TComparator } from "../util";
 export const selectGroup = dataSource({
   display: {
     label: "Select Group",
     description: "Select a Group from a dropdown menu.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: selectGroupInputs,
   perform: async (_context, { connection }) => {
     const client = createHttpClient(connection, false);
-    const { data } = (await fetchAllData(client, "/groups", {}, true)) as {
+    const { data } = (await fetchAllData(
+      client,
+      GROUPS_ENDPOINT,
+      {},
+      true,
+    )) as {
       data: Group[];
     };
     const objects = data
@@ -26,7 +30,5 @@ export const selectGroup = dataSource({
     return { result: objects };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: groupDatasource,
-  },
+  examplePayload: selectGroupExamplePayload,
 });

@@ -1,5 +1,5 @@
-import { getPackage } from "./get";
-import { listPackages } from "./list";
+import { getPackage } from "./getPackage";
+import { listPackages } from "./listPackages";
 export default {
   listPackages,
   getPackage,

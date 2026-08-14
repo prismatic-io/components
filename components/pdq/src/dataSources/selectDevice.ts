@@ -1,20 +1,24 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createHttpClient } from "../client";
-import { deviceDatasource } from "../examplePayloads/dataSources";
-import { connection } from "../inputs/general";
-import type { Device } from "../interfaces";
+import { DEVICES_ENDPOINT } from "../constants";
+import { selectDeviceExamplePayload } from "../examplePayloads/dataSources";
+import { selectDeviceInputs } from "../inputs";
+import type { Device } from "../types";
 import { fetchAllData, TComparator } from "../util";
 export const selectDevice = dataSource({
   display: {
     label: "Select Device",
     description: "Select a Device from a dropdown menu.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: selectDeviceInputs,
   perform: async (_context, { connection }) => {
     const client = createHttpClient(connection, false);
-    const { data } = (await fetchAllData(client, "/devices", {}, true)) as {
+    const { data } = (await fetchAllData(
+      client,
+      DEVICES_ENDPOINT,
+      {},
+      true,
+    )) as {
       data: Device[];
     };
     const objects = data
@@ -26,7 +30,5 @@ export const selectDevice = dataSource({
     return { result: objects };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: deviceDatasource,
-  },
+  examplePayload: selectDeviceExamplePayload,
 });
