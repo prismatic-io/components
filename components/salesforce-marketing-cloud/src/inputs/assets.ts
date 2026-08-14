@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
-import { connection, fetchAll, page, pageSize } from "./common";
+import { connection, fetchAll, pagination } from "./common";
 const assetId = input({
   label: "Asset ID",
   type: "string",
@@ -106,15 +106,13 @@ const assetExtraBody = input({
 export const listAssetsInputs = {
   connection,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };
 export const queryAssetsInputs = {
   connection,
   assetQuery,
   assetFields,
-  pageSize,
-  page,
+  pagination,
 };
 export const getAssetInputs = {
   connection,

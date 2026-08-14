@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { EMAIL_MESSAGES_PATH } from "../../constants";
 import { sendEmailExamplePayload } from "../../examplePayloads";
 import { sendEmailInputs } from "../../inputs";
+import { sendEmailOutputSchema } from "../../outputSchemas";
 export const sendEmail = action({
   examplePayload: sendEmailExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const sendEmail = action({
       "Send a transactional email to a single recipient using a send definition.",
   },
   inputs: sendEmailInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: sendEmailOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -37,4 +43,20 @@ export const sendEmail = action({
     );
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { messageKey },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...sendEmailExamplePayload.data,
+      responses: [
+        {
+          messageKey:
+            messageKey ?? sendEmailExamplePayload.data.responses[0].messageKey,
+        },
+      ],
+    },
+  }),
 });

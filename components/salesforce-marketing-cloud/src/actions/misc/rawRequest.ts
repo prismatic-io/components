@@ -11,6 +11,7 @@ export const rawRequest = action({
       "Send a raw HTTP request to the Salesforce Marketing Cloud REST API.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...rawRequestInputs }) => {
     const { accessToken, baseUrl } =
       getAuthenticatedConnectionDetails(connection);

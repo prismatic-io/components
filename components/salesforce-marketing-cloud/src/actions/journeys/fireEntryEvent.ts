@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { JOURNEY_EVENTS_PATH } from "../../constants";
 import { fireEntryEventExamplePayload } from "../../examplePayloads";
 import { fireEntryEventInputs } from "../../inputs";
+import { fireEntryEventOutputSchema } from "../../outputSchemas";
 export const fireEntryEvent = action({
   examplePayload: fireEntryEventExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const fireEntryEvent = action({
       "Fire a journey entry event to inject a contact into a journey.",
   },
   inputs: fireEntryEventInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: fireEntryEventOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, eventDefinitionKey, eventContactKey, eventData },
@@ -24,4 +30,9 @@ export const fireEntryEvent = action({
     const { data } = await client.post(JOURNEY_EVENTS_PATH, body);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: fireEntryEventExamplePayload.data,
+  }),
 });

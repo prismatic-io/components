@@ -1,17 +1,17 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { PaginatedResponse, PaginationOptions } from "../types";
-export async function paginateResults(
+export async function paginateResults<T = Record<string, unknown>>(
   client: HttpClient,
   endpoint: string,
   fetchAll: boolean,
   params: Record<string, unknown> = {},
   options: PaginationOptions = {},
-) {
+): Promise<PaginatedResponse<T>> {
   const { itemsField = "items", preserveFields = [] } = options;
   const queryParams = fetchAll
     ? { ...params, $page: 1, $pageSize: 500 }
     : params;
-  const { data: firstPage } = await client.get<PaginatedResponse>(endpoint, {
+  const { data: firstPage } = await client.get<PaginatedResponse<T>>(endpoint, {
     params: queryParams,
   });
   if (!fetchAll) {
@@ -21,11 +21,11 @@ export async function paginateResults(
   if (totalPages === 1) {
     return firstPage;
   }
-  const pagePromises: Promise<PaginatedResponse>[] = [];
+  const pagePromises: Promise<PaginatedResponse<T>>[] = [];
   const batchSize = 10;
   for (let page = 2; page <= totalPages; page++) {
     const pagePromise = client
-      .get<PaginatedResponse>(endpoint, {
+      .get<PaginatedResponse<T>>(endpoint, {
         params: {
           ...queryParams,
           $page: page,
@@ -42,7 +42,7 @@ export async function paginateResults(
       allItems.push(...(pageData[itemsField] || []));
     }
   }
-  const response: PaginatedResponse = {
+  const response: PaginatedResponse<T> = {
     count: firstPage.count,
     page: 1,
     pageSize: firstPage.count,

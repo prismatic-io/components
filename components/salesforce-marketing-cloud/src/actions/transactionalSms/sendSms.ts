@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { SMS_MESSAGES_PATH } from "../../constants";
 import { sendSmsExamplePayload } from "../../examplePayloads";
 import { sendSmsInputs } from "../../inputs";
+import { sendSmsOutputSchema } from "../../outputSchemas";
 export const sendSms = action({
   examplePayload: sendSmsExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const sendSms = action({
       "Send a transactional SMS to a single recipient using a send definition.",
   },
   inputs: sendSmsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: sendSmsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -37,4 +43,15 @@ export const sendSms = action({
     );
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { smsMessageKey },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...sendSmsExamplePayload.data,
+      responses: [{ messageKey: smsMessageKey }],
+    },
+  }),
 });

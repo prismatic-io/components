@@ -10,9 +10,15 @@ export const searchContacts = action({
     description: "Search contacts using filter criteria.",
   },
   inputs: searchContactsInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, searchFilter }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.post(CONTACTS_SEARCH_PATH, searchFilter);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: searchContactsExamplePayload.data,
+  }),
 });

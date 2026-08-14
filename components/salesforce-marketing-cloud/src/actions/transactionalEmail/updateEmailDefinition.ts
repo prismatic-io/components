@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { EMAIL_DEFINITIONS_PATH } from "../../constants";
 import { updateEmailDefinitionExamplePayload } from "../../examplePayloads";
 import { updateEmailDefinitionInputs } from "../../inputs";
+import { emailDefinitionOutputSchema } from "../../outputSchemas";
 export const updateEmailDefinition = action({
   examplePayload: updateEmailDefinitionExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const updateEmailDefinition = action({
       "Update a transactional email send definition by key. Changes are applied automatically.",
   },
   inputs: updateEmailDefinitionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: emailDefinitionOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -34,4 +40,20 @@ export const updateEmailDefinition = action({
     );
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { emailDefinitionKey, emailDefinitionName, emailDefinitionDescription },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateEmailDefinitionExamplePayload.data,
+      definitionKey: emailDefinitionKey,
+      name:
+        emailDefinitionName ?? updateEmailDefinitionExamplePayload.data.name,
+      description:
+        emailDefinitionDescription ??
+        updateEmailDefinitionExamplePayload.data.description,
+    },
+  }),
 });

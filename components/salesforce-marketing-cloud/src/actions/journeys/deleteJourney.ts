@@ -11,9 +11,15 @@ export const deleteJourney = action({
       "Delete a journey (interaction) by ID. Deletes all versions of the journey. This action cannot be undone.",
   },
   inputs: deleteJourneyInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, journeyId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.delete(`${JOURNEYS_PATH}/${journeyId}`);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deleteJourneyExamplePayload.data,
+  }),
 });

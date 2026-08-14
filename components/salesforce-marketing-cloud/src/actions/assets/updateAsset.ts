@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ASSETS_PATH } from "../../constants";
 import { updateAssetExamplePayload } from "../../examplePayloads";
 import { updateAssetInputs } from "../../inputs";
+import { assetOutputSchema } from "../../outputSchemas";
 export const updateAsset = action({
   examplePayload: updateAssetExamplePayload,
   display: {
@@ -10,6 +11,11 @@ export const updateAsset = action({
     description: "Update an existing Content Builder asset.",
   },
   inputs: updateAssetInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: assetOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -36,4 +42,20 @@ export const updateAsset = action({
     );
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { assetName, assetDescription, categoryId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateAssetExamplePayload.data,
+      name: assetName ?? updateAssetExamplePayload.data.name,
+      description:
+        assetDescription ?? updateAssetExamplePayload.data.description,
+      category: categoryId
+        ? { ...updateAssetExamplePayload.data.category, id: categoryId }
+        : updateAssetExamplePayload.data.category,
+    },
+  }),
 });

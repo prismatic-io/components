@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { CAMPAIGNS_PATH } from "../../constants";
 import { listCampaignsExamplePayload } from "../../examplePayloads";
 import { listCampaignsInputs } from "../../inputs";
+import { listCampaignsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
 export const listCampaigns = action({
   examplePayload: listCampaignsExamplePayload,
@@ -11,11 +12,16 @@ export const listCampaigns = action({
     description: "List campaigns with optional pagination.",
   },
   inputs: listCampaignsInputs,
-  perform: async (context, { connection, fetchAll, pageSize, page }) => {
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCampaignsOutputSchema,
+  }),
+  performSafety: "notAllowed",
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
-      $pageSize: pageSize,
-      $page: page,
+      $pageSize: pagination.pageSize,
+      $page: pagination.page,
     };
     const data = await paginateResults(
       client,
@@ -25,4 +31,9 @@ export const listCampaigns = action({
     );
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listCampaignsExamplePayload.data,
+  }),
 });

@@ -1,11 +1,11 @@
 export type ItemsField = "items" | "definitions";
 export type PreserveField = "requestId";
-export interface PaginatedResponse {
+export interface PaginatedResponse<T = Record<string, unknown>> {
   count: number;
   page: number;
   pageSize: number;
-  items?: Record<string, unknown>[];
-  definitions?: Record<string, unknown>[];
+  items?: T[];
+  definitions?: T[];
   requestId?: string;
   links?: Record<string, unknown>;
 }

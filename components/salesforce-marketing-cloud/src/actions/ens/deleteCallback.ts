@@ -10,6 +10,7 @@ export const deleteCallback = action({
     description: "Delete an ENS callback endpoint registration.",
   },
   inputs: deleteCallbackInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, callbackId }) => {
     const client = createClient(connection, context.debug.enabled);
     await client.delete(
@@ -23,4 +24,12 @@ export const deleteCallback = action({
       },
     };
   },
+  examplePerform: async (
+    _context,
+    { callbackId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: { ...deleteCallbackExamplePayload.data, callbackId },
+  }),
 });

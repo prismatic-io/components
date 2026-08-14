@@ -11,6 +11,7 @@ export const updateAutomation = action({
       "Update an automation by ID. Use this to modify properties like name, description, or toggle isActive to pause/resume a scheduled automation.",
   },
   inputs: updateAutomationInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, automationId, automationExtraBody },
@@ -22,4 +23,12 @@ export const updateAutomation = action({
     );
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { automationId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: { ...updateAutomationExamplePayload.data, id: automationId },
+  }),
 });

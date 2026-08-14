@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { EMAIL_DEFINITIONS_PATH } from "../../constants";
 import { listEmailDefinitionsExamplePayload } from "../../examplePayloads";
 import { listEmailDefinitionsInputs } from "../../inputs";
+import { listEmailDefinitionsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
 export const listEmailDefinitions = action({
   examplePayload: listEmailDefinitionsExamplePayload,
@@ -12,11 +13,16 @@ export const listEmailDefinitions = action({
       "List transactional email send definitions with optional pagination.",
   },
   inputs: listEmailDefinitionsInputs,
-  perform: async (context, { connection, fetchAll, pageSize, page }) => {
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listEmailDefinitionsOutputSchema,
+  }),
+  performSafety: "notAllowed",
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
-      $pageSize: pageSize,
-      $page: page,
+      $pageSize: pagination.pageSize,
+      $page: pagination.page,
     };
     const data = await paginateResults(
       client,
@@ -30,4 +36,9 @@ export const listEmailDefinitions = action({
     );
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listEmailDefinitionsExamplePayload.data,
+  }),
 });

@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ASSETS_PATH } from "../../constants";
 import { getAssetExamplePayload } from "../../examplePayloads";
 import { getAssetInputs } from "../../inputs";
+import { assetOutputSchema } from "../../outputSchemas";
 export const getAsset = action({
   examplePayload: getAssetExamplePayload,
   display: {
@@ -10,6 +11,11 @@ export const getAsset = action({
     description: "Retrieve a Content Builder asset by ID.",
   },
   inputs: getAssetInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: assetOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection, assetId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(

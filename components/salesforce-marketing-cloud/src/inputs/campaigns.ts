@@ -1,6 +1,6 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
-import { connection, fetchAll, page, pageSize } from "./common";
+import { connection, fetchAll, pagination } from "./common";
 const campaignId = input({
   label: "Campaign ID",
   type: "string",
@@ -58,11 +58,22 @@ const campaignExtraBody = input({
   example: JSON.stringify({ favorite: true }, null, 2),
   clean: util.types.toObject,
 });
+const additionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Campaign Description, Campaign Code, Color, and Extra Body.",
+  inputs: {
+    campaignDescription,
+    campaignCode,
+    campaignColor,
+    campaignExtraBody,
+  },
+});
 export const listCampaignsInputs = {
   connection,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };
 export const getCampaignInputs = {
   connection,
@@ -75,8 +86,5 @@ export const deleteCampaignInputs = {
 export const createCampaignInputs = {
   connection,
   campaignName,
-  campaignDescription,
-  campaignCode,
-  campaignColor,
-  campaignExtraBody,
+  additionalFields,
 };

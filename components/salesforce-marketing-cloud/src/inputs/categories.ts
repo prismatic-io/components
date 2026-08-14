@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
-import { connection, fetchAll, page, pageSize } from "./common";
+import { connection, fetchAll, pagination } from "./common";
 const categoryId = input({
   label: "Category ID",
   type: "string",
@@ -25,7 +25,7 @@ const parentCategoryId = input({
   type: "string",
   required: true,
   comments:
-    "The ID of the parent category. Omit to create a top-level category.",
+    "The ID of the parent Content Builder category the new category is created under.",
   example: "12345",
   placeholder: "Enter parent category ID",
   dataSource: "selectCategory",
@@ -34,8 +34,7 @@ const parentCategoryId = input({
 export const listCategoriesInputs = {
   connection,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };
 export const getCategoryInputs = {
   connection,

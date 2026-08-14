@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
-import { connection, fetchAll, page, pageSize } from "./common";
+import { connection, fetchAll, pagination } from "./common";
 const automationId = input({
   label: "Automation ID",
   type: "string",
@@ -14,8 +14,7 @@ const automationId = input({
 export const listAutomationsInputs = {
   connection,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };
 export const getAutomationInputs = {
   connection,
@@ -36,7 +35,8 @@ export const createAutomationInputs = {
     label: "Automation Description",
     type: "string",
     required: false,
-    comments: "A description of the automation.",
+    comments:
+      "Details about what the automation does, shown in Automation Studio.",
     example: "Syncs data from external source daily",
     placeholder: "Enter automation description",
     clean: toOptionalString,
@@ -63,7 +63,7 @@ export const updateAutomationInputs = {
   connection,
   automationId,
   automationExtraBody: input({
-    label: "Extra Body",
+    label: "Automation Properties",
     type: "code",
     language: "json",
     required: true,

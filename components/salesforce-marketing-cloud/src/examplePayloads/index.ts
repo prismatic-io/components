@@ -83,3 +83,4 @@ export {
   sendSmsExamplePayload,
   updateSmsDefinitionExamplePayload,
 } from "./transactionalSms";
+export { ensWebhookExamplePayload } from "./triggers";

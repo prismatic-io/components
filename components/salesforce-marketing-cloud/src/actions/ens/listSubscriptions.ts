@@ -10,6 +10,7 @@ export const listSubscriptions = action({
     description: "List Event Notification Service (ENS) event subscriptions.",
   },
   inputs: listSubscriptionsInputs,
+  performSafety: "safe",
   perform: async (context, { connection }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(ENS_SUBSCRIPTIONS_PATH);

@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { DATA_EVENTS_PATH } from "../../constants";
 import { upsertRowExamplePayload } from "../../examplePayloads";
 import { upsertRowInputs } from "../../inputs";
+import { upsertRowOutputSchema } from "../../outputSchemas";
 export const upsertRow = action({
   examplePayload: upsertRowExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const upsertRow = action({
       "Insert or update a single row in a data extension by primary key.",
   },
   inputs: upsertRowInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: upsertRowOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, dataExtensionKey, primaryKeys, rowData },
@@ -26,4 +32,12 @@ export const upsertRow = action({
     );
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { primaryKeys, rowData },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: [{ keys: primaryKeys, values: rowData }],
+  }),
 });

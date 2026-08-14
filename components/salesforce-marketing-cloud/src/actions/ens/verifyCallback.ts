@@ -11,6 +11,7 @@ export const verifyCallback = action({
       "Verify ownership of an ENS callback endpoint using the verification key.",
   },
   inputs: verifyCallbackInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, callbackId, verificationKey }) => {
     const client = createClient(connection, context.debug.enabled);
     const body = {
@@ -20,4 +21,9 @@ export const verifyCallback = action({
     const { data } = await client.post(ENS_VERIFY_PATH, body);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: verifyCallbackExamplePayload.data,
+  }),
 });

@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { CATEGORIES_PATH } from "../../constants";
 import { getCategoryExamplePayload } from "../../examplePayloads/categories";
 import { getCategoryInputs } from "../../inputs/categories";
+import { categoryOutputSchema } from "../../outputSchemas";
 export const getCategory = action({
   examplePayload: getCategoryExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const getCategory = action({
       "Retrieve a single Content Builder category (folder) by its ID.",
   },
   inputs: getCategoryInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: categoryOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection, categoryId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`${CATEGORIES_PATH}/${categoryId}`);

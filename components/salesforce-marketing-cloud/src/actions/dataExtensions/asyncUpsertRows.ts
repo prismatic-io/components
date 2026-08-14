@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ASYNC_DATA_EXTENSIONS_PATH } from "../../constants";
 import { asyncUpsertRowsExamplePayload } from "../../examplePayloads";
 import { asyncUpsertRowsInputs } from "../../inputs";
+import { asyncUpsertRowsOutputSchema } from "../../outputSchemas";
 export const asyncUpsertRows = action({
   examplePayload: asyncUpsertRowsExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const asyncUpsertRows = action({
       "Asynchronously insert or update multiple rows in a data extension.",
   },
   inputs: asyncUpsertRowsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: asyncUpsertRowsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, { connection, dataExtensionKey, batchRows }) => {
     const client = createClient(connection, context.debug.enabled);
     const body = {
@@ -22,4 +28,9 @@ export const asyncUpsertRows = action({
     );
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: asyncUpsertRowsExamplePayload.data,
+  }),
 });

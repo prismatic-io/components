@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { trigger, util } from "@prismatic-io/spectral";
+import { ensWebhookExamplePayload } from "../examplePayloads";
 import { ensWebhookInputs } from "../inputs";
 import type { EnsBodyData, EnsVerificationRequest } from "../types";
 export const ensWebhook = trigger({
@@ -12,6 +13,7 @@ export const ensWebhook = trigger({
   inputs: ensWebhookInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
+  examplePayload: ensWebhookExamplePayload,
   perform: async (context, payload, { signatureKey }) => {
     const headers = util.types.lowerCaseHeaders(payload.headers);
     const bodyData = payload.body?.data as EnsBodyData | undefined;

@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { SMS_MESSAGES_PATH } from "../../constants";
 import { sendSmsBatchExamplePayload } from "../../examplePayloads";
 import { sendSmsBatchInputs } from "../../inputs";
+import { sendSmsBatchOutputSchema } from "../../outputSchemas";
 export const sendSmsBatch = action({
   examplePayload: sendSmsBatchExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const sendSmsBatch = action({
       "Send a transactional SMS to multiple recipients in a single batch request.",
   },
   inputs: sendSmsBatchInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: sendSmsBatchOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, smsDefinitionKey, smsBatchRecipients },
@@ -23,4 +29,9 @@ export const sendSmsBatch = action({
     const { data } = await client.post(SMS_MESSAGES_PATH, body);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: sendSmsBatchExamplePayload.data,
+  }),
 });

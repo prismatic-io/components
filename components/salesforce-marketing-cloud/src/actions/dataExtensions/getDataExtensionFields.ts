@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { DATA_EXTENSIONS_PATH } from "../../constants";
 import { getDataExtensionFieldsExamplePayload } from "../../examplePayloads";
 import { getDataExtensionFieldsInputs } from "../../inputs";
+import { getDataExtensionFieldsOutputSchema } from "../../outputSchemas";
 export const getDataExtensionFields = action({
   examplePayload: getDataExtensionFieldsExamplePayload,
   display: {
@@ -10,6 +11,11 @@ export const getDataExtensionFields = action({
     description: "Retrieve a list of fields in a data extension.",
   },
   inputs: getDataExtensionFieldsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getDataExtensionFieldsOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection, dataExtensionId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(

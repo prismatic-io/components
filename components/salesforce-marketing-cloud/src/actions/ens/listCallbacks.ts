@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENS_CALLBACKS_PATH } from "../../constants";
 import { listCallbacksExamplePayload } from "../../examplePayloads";
 import { listCallbacksInputs } from "../../inputs";
+import { listCallbacksOutputSchema } from "../../outputSchemas";
 export const listCallbacks = action({
   examplePayload: listCallbacksExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const listCallbacks = action({
       "List registered Event Notification Service (ENS) callback endpoints.",
   },
   inputs: listCallbacksInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCallbacksOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(ENS_CALLBACKS_PATH);

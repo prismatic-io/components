@@ -10,9 +10,15 @@ export const deleteCategory = action({
     description: "Delete a Content Builder category (folder) by ID.",
   },
   inputs: deleteCategoryInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, categoryId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.delete(`${CATEGORIES_PATH}/${categoryId}`);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deleteCategoryExamplePayload.data,
+  }),
 });

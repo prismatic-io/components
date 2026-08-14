@@ -33,7 +33,7 @@ export const getCategoryExamplePayload = {
 };
 export const updateCategoryExamplePayload = getCategoryExamplePayload;
 export const deleteCategoryExamplePayload = {
-  data: null,
+  data: "OK",
 };
 export const createCategoryExamplePayload = {
   data: {

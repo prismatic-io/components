@@ -2,7 +2,6 @@ import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { SMS_DEFINITIONS_PATH } from "../constants";
 import { connection } from "../inputs/common";
-import type { PaginatedResponse } from "../types";
 import { paginateResults } from "../util/pagination";
 export const selectSmsDefinition = dataSource({
   display: {
@@ -21,7 +20,7 @@ export const selectSmsDefinition = dataSource({
       { $pageSize: 500 },
       { itemsField: "definitions", preserveFields: ["requestId"] },
     );
-    const definitions = (response as PaginatedResponse).definitions ?? [];
+    const definitions = response.definitions ?? [];
     const result = definitions
       .map<Element>((item) => ({
         label: util.types.toString(item.name),

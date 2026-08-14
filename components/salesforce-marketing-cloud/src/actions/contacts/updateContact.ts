@@ -10,6 +10,7 @@ export const updateContact = action({
     description: "Update an existing contact's attributes in Marketing Cloud.",
   },
   inputs: updateContactInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, contactKey, attributeSets }) => {
     const client = createClient(connection, context.debug.enabled);
     const body = {
@@ -22,4 +23,12 @@ export const updateContact = action({
     );
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { contactKey },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: { ...updateContactExamplePayload.data, contactKey },
+  }),
 });

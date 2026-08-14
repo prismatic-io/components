@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { connection, fetchAll, page, pageSize } from "./common";
+import { connection, fetchAll, pagination } from "./common";
 const dataExtensionKey = input({
   label: "Data Extension Key",
   type: "string",
@@ -170,6 +170,5 @@ export const listDataExtensionsInputs = {
   connection,
   searchString,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };

@@ -10,9 +10,15 @@ export const deleteCampaign = action({
     description: "Delete a campaign by ID.",
   },
   inputs: deleteCampaignInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, campaignId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.delete(`${CAMPAIGNS_PATH}/${campaignId}`);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deleteCampaignExamplePayload.data,
+  }),
 });

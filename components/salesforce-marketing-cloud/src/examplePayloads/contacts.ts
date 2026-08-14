@@ -9,11 +9,16 @@ export const getContactExamplePayload = {
 };
 export const createContactExamplePayload = {
   data: {
-    contactID: 123456790,
-    contactKey: "subscriber-002",
-    contactStatus: "active",
-    isNewContactKey: true,
-    modifiedDate: "2024-02-01T10:30:00.000Z",
+    operationStatus: "OK",
+    rowsAffetcted: 1,
+    contactKey: "acruz@example.com",
+    contactId: 12345678,
+    contactTypeID: 0,
+    isNewContactKey: false,
+    requestServiceMessageID: "8b51b524-28c1-46fc-9a44-02fca5b0a08c",
+    hasErrors: false,
+    resultMessages: [],
+    serviceMessageID: "80676c59-ceb9-48aa-ad35-81e150094a17",
   },
 };
 export const updateContactExamplePayload = getContactExamplePayload;
@@ -30,7 +35,25 @@ export const searchContactsExamplePayload = {
     ],
   },
 };
-export const searchContactsByEmailExamplePayload = searchContactsExamplePayload;
+export const searchContactsByEmailExamplePayload = {
+  data: {
+    channelAddressResponseEntities: [
+      {
+        contactKeyDetails: [
+          {
+            contactKey: "5cdc4716-c273-4eec-aacf-8e668a01ecbf",
+            createDate: "2025-11-15T11:51:00",
+          },
+        ],
+        channelAddress: "dangelo.cunningham@example.com",
+      },
+    ],
+    requestServiceMessageID: "35921326-7074-4cf9-8233-f61e76de0054",
+    responseDateTime: "2025-06-13T16:55:21.2506991-06:00",
+    resultMessages: [],
+    serviceMessageID: "cba1b474-6868-4611-99c3-ea0211e7bc36",
+  },
+};
 export const deleteContactExamplePayload = {
   data: {
     operationID: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",

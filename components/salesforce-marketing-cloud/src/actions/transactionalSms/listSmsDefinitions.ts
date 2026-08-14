@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { SMS_DEFINITIONS_PATH } from "../../constants";
 import { listSmsDefinitionsExamplePayload } from "../../examplePayloads";
 import { listSmsDefinitionsInputs } from "../../inputs";
+import { listSmsDefinitionsOutputSchema } from "../../outputSchemas";
 import { paginateResults } from "../../util/pagination";
 export const listSmsDefinitions = action({
   examplePayload: listSmsDefinitionsExamplePayload,
@@ -12,11 +13,16 @@ export const listSmsDefinitions = action({
       "List transactional SMS send definitions with optional pagination.",
   },
   inputs: listSmsDefinitionsInputs,
-  perform: async (context, { connection, fetchAll, pageSize, page }) => {
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSmsDefinitionsOutputSchema,
+  }),
+  performSafety: "notAllowed",
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
-      $pageSize: pageSize,
-      $page: page,
+      $pageSize: pagination.pageSize,
+      $page: pagination.page,
     };
     const data = await paginateResults(
       client,
@@ -30,4 +36,9 @@ export const listSmsDefinitions = action({
     );
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listSmsDefinitionsExamplePayload.data,
+  }),
 });

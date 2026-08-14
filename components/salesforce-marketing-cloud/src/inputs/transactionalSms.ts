@@ -1,12 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
-import { connection, fetchAll, page, pageSize } from "./common";
+import { connection, fetchAll, pagination } from "./common";
 const smsMessageKey = input({
   label: "Message Key",
   type: "string",
   required: true,
   comments:
-    "A unique identifier that you can use to track the status of the message. The key can contain up to 100 characters.",
+    "A unique identifier used to track the status of the message. The key can contain up to 100 characters.",
   example: "msg-abc-123",
   placeholder: "Enter message key",
   clean: util.types.toString,
@@ -123,8 +123,7 @@ const smsBatchRecipients = input({
 export const listSmsDefinitionsInputs = {
   connection,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };
 export const getSmsDefinitionInputs = {
   connection,

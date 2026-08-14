@@ -10,6 +10,7 @@ export const deleteAsset = action({
     description: "Delete a Content Builder asset by ID.",
   },
   inputs: deleteAssetInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, assetId }) => {
     const client = createClient(connection, context.debug.enabled);
     await client.delete(`${ASSETS_PATH}/${encodeURIComponent(assetId)}`);
@@ -21,4 +22,12 @@ export const deleteAsset = action({
       },
     };
   },
+  examplePerform: async (
+    _context,
+    { assetId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: { ...deleteAssetExamplePayload.data, id: assetId },
+  }),
 });

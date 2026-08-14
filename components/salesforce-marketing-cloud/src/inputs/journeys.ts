@@ -1,7 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { JOURNEY_STATUS_OPTIONS } from "../constants";
 import { toNumberArray, toOptionalNumber, toOptionalString } from "../util";
-import { connection, fetchAll, page, pageSize } from "./common";
+import { connection, fetchAll, pagination } from "./common";
 const journeyId = input({
   label: "Journey ID",
   type: "string",
@@ -28,7 +28,7 @@ const journeyKey = input({
   required: true,
   comments:
     "The customer key as a GUID (UUID) to be used while referencing this journey.",
-  example: "journey-welcome-series-2024",
+  example: "281ba2ad-c597-4740-54f6-3cc41f629caa",
   placeholder: "Enter journey key",
   clean: util.types.toString,
 });
@@ -36,7 +36,7 @@ const journeyName = input({
   label: "Journey Name",
   type: "string",
   required: true,
-  comments: "The name of this journey.",
+  comments: "The display name for the journey, shown in Journey Builder.",
   example: "Welcome Series Journey",
   placeholder: "Enter journey name",
   clean: util.types.toString,
@@ -45,7 +45,7 @@ const journeyDescription = input({
   label: "Journey Description",
   type: "string",
   required: false,
-  comments: "A description of this journey.",
+  comments: "Details about the journey's purpose, shown in Journey Builder.",
   example: "Onboarding journey for new customers",
   placeholder: "Enter journey description",
   clean: toOptionalString,
@@ -149,7 +149,7 @@ const exitDefinitionKey = input({
   required: true,
   comments:
     "Customer Key that uniquely identifies the journey. This key is the same for all versions of the journey.",
-  example: "journey-welcome-series-2024",
+  example: "281ba2ad-c597-4740-54f6-3cc41f629caa",
   placeholder: "Enter definition key",
   clean: util.types.toString,
 });
@@ -168,8 +168,7 @@ export const listJourneysInputs = {
   journeyStatus,
   journeyNameFilter,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };
 export const getJourneyInputs = {
   connection,
@@ -196,7 +195,7 @@ export const updateJourneyInputs = {
   journeyVersion: {
     ...journeyVersion,
     required: true,
-    comments: "The version of this journey.",
+    comments: "The version number of the journey to update.",
     clean: util.types.toNumber,
   },
   journeyExtraBody,

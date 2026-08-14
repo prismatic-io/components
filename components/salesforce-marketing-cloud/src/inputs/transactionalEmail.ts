@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
-import { connection, fetchAll, page, pageSize } from "./common";
+import { connection, fetchAll, pagination } from "./common";
 const emailDefinitionKey = input({
   label: "Definition Key",
   type: "string",
@@ -142,8 +142,7 @@ const emailMessageKey = input({
 export const listEmailDefinitionsInputs = {
   connection,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };
 export const getEmailDefinitionInputs = {
   connection,
@@ -162,7 +161,8 @@ export const sendEmailInputs = {
   messageKey: {
     ...messageKey,
     required: true,
-    comments: "The unique identifier of the email definition you want to send.",
+    comments:
+      "A unique identifier for this send request, used to track its delivery status. Must be unique per send.",
     clean: util.types.toString,
   },
   emailDefinitionKey,

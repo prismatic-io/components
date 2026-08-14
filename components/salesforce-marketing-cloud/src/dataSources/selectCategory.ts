@@ -2,7 +2,6 @@ import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { CATEGORIES_PATH } from "../constants";
 import { connection } from "../inputs/common";
-import type { PaginatedResponse } from "../types";
 import { paginateResults } from "../util/pagination";
 export const selectCategory = dataSource({
   display: {
@@ -18,7 +17,7 @@ export const selectCategory = dataSource({
     const response = await paginateResults(client, CATEGORIES_PATH, true, {
       $pageSize: 500,
     });
-    const items = (response as PaginatedResponse).items ?? [];
+    const items = response.items ?? [];
     const result = items
       .map<Element>((item) => ({
         label: util.types.toString(item.name),

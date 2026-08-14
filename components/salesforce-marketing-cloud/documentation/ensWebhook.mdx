@@ -5,7 +5,7 @@ Before events are delivered, a callback endpoint must be registered and verified
 #### How It Works
 
 1. Register a callback endpoint using the **Create ENS Callback** action, providing the flow's webhook URL.
-2. When ENS sends the verification request to your webhook URL, this trigger automatically captures the verification key.
+2. When ENS sends the verification request to the webhook URL, this trigger automatically captures the verification key.
 3. Use the **Verify ENS Callback** action with the verification key returned by this trigger to complete verification.
 4. Create one or more event subscriptions using the **Create ENS Subscription** action, selecting the event categories to monitor.
 5. ENS sends event batches as POST requests to the registered callback URL when matching events occur.
@@ -120,7 +120,7 @@ The trigger extracts the event payload from the incoming request body. ENS deliv
 #### Notes
 
 - **Verification Process**: When a callback is first created, ENS sends a verification request containing a `callbackId` and `verificationKey` in the request body. This trigger automatically captures and returns these values for use with the **Verify ENS Callback** action.
-- **Signature Validation**: ENS event payloads include an HMAC-SHA256 signature in the `X-SFMC-ENS-Signature` or `X-SFMC-HMAC-SHA256` header. When you provide the signature key (returned during callback creation), this trigger automatically validates the signature to ensure events originate from Salesforce Marketing Cloud.
+- **Signature Validation**: ENS event payloads include an HMAC-SHA256 signature in the `X-SFMC-ENS-Signature` or `X-SFMC-HMAC-SHA256` header. When the signature key (returned during callback creation) is provided, this trigger automatically validates the signature to ensure events originate from Salesforce Marketing Cloud.
 - **Batch Delivery**: Events are delivered in batches. The **maxBatchSize** parameter configured during callback registration controls the maximum number of events per delivery.
 - **Retry Policy**: If event delivery fails, ENS retries delivery according to its built-in retry policy. Refer to the [ENS documentation](https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/ens.html) for retry behavior details.
 - **No Lifecycle Support**: This trigger does not support automatic webhook lifecycle management because ENS requires a two-step verification process where the verification key is sent asynchronously to the callback URL. The webhook must be running and accessible to receive and respond to the verification request.

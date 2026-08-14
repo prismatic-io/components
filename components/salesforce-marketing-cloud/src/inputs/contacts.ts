@@ -11,16 +11,6 @@ const contactKey = input({
   placeholder: "Enter contact key",
   clean: util.types.toString,
 });
-const contactId = input({
-  label: "Contact ID",
-  type: "string",
-  required: false,
-  comments:
-    "The numeric identifier assigned to the contact by Marketing Cloud.",
-  example: "12345678",
-  placeholder: "Enter contact ID",
-  clean: toOptionalString,
-});
 const emailAddress = input({
   label: "Email Address",
   type: "string",

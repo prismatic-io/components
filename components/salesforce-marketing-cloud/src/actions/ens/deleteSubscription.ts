@@ -10,6 +10,7 @@ export const deleteSubscription = action({
     description: "Delete an ENS event subscription.",
   },
   inputs: deleteSubscriptionInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, subscriptionId }) => {
     const client = createClient(connection, context.debug.enabled);
     await client.delete(
@@ -23,4 +24,12 @@ export const deleteSubscription = action({
       },
     };
   },
+  examplePerform: async (
+    _context,
+    { subscriptionId },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: { ...deleteSubscriptionExamplePayload.data, subscriptionId },
+  }),
 });

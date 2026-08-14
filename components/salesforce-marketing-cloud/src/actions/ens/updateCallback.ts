@@ -1,8 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { ENS_CALLBACKS_PATH } from "../../constants";
 import { updateCallbackExamplePayload } from "../../examplePayloads";
 import { updateCallbackInputs } from "../../inputs";
+import { updateCallbackOutputSchema } from "../../outputSchemas";
 export const updateCallback = action({
   examplePayload: updateCallbackExamplePayload,
   display: {
@@ -11,6 +12,11 @@ export const updateCallback = action({
       "Update an Event Notification Service (ENS) callback endpoint. Changes may take up to 2 minutes to become active.",
   },
   inputs: updateCallbackInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateCallbackOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, callbackId, callbackName, callbackUrl, maxBatchSize },
@@ -23,4 +29,22 @@ export const updateCallback = action({
     const { data } = await client.put(ENS_CALLBACKS_PATH, [body]);
     return { data };
   },
+  examplePerform: async (
+    _context,
+    { callbackId, callbackName, callbackUrl, maxBatchSize },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: [
+      {
+        ...updateCallbackExamplePayload.data[0],
+        callbackId,
+        callbackName:
+          callbackName ?? updateCallbackExamplePayload.data[0].callbackName,
+        url: callbackUrl ?? updateCallbackExamplePayload.data[0].url,
+        maxBatchSize:
+          maxBatchSize ?? updateCallbackExamplePayload.data[0].maxBatchSize,
+      },
+    ],
+  }),
 });

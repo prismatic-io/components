@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber } from "../util";
 export const connection = input({
   label: "Connection",
@@ -35,9 +35,14 @@ export const pageSize = input({
   placeholder: "Enter page size",
   clean: toOptionalNumber,
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { page, pageSize },
+});
 export const paginatedListInputs = {
   connection,
   fetchAll,
-  pageSize,
-  page,
+  pagination,
 };
