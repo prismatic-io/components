@@ -7,6 +7,7 @@ const rawRequest = action({
     description: "Send raw HTTP request to Google Analytics GA4",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, baseUrl, ...restInputs }) => {
     const { data } = await sendRawRequest(
       baseUrl,

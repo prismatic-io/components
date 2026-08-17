@@ -6,7 +6,7 @@ import { paginateRecords } from "../util";
 const listProperties = dataSource({
   display: {
     label: "List Properties",
-    description: "List Google Analytics GA4 properties for an account",
+    description: "List Google Analytics GA4 properties for an account.",
   },
   inputs: {
     connection: connectionInput,

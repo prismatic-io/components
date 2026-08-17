@@ -1,3 +1,4 @@
+import type { TriggerPayload } from "@prismatic-io/spectral";
 export const listAccountsExamplePayload: {
   data: Record<string, unknown>;
 } = {
@@ -106,4 +107,61 @@ export const listAccountsDataSourceExamplePayload = {
     { key: "accounts/000000000", label: "My Account 1" },
     { key: "accounts/000000001", label: "My Account 2" },
   ],
+};
+export const pollChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    headers: {},
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: {
+        created: [
+          {
+            name: "accounts/000000001",
+            createTime: "2026-08-13T09:15:22.101Z",
+            updateTime: "2026-08-13T09:15:22.101Z",
+            displayName: "Newly Created Account",
+            regionCode: "US",
+          },
+        ],
+        updated: [
+          {
+            name: "accounts/000000000",
+            createTime: "2012-11-20T15:12:07.864Z",
+            updateTime: "2026-08-13T11:42:05.338Z",
+            displayName: "Example Account",
+            regionCode: "US",
+          },
+        ],
+      },
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+    customer: {
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
+    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
+    user: {
+      id: "testUserId",
+      email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
+    },
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2026-08-13T00:00:00.000Z",
+    globalDebug: false,
+  },
 };

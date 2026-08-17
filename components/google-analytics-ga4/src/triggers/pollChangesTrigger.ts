@@ -1,6 +1,7 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createAnalyticsClient } from "../client";
 import { POLL_RESOURCE_KEYS } from "../constants";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
 import type { Account, GA4Record, PollingState, Property } from "../types";
 import { paginateRecords } from "../util";
@@ -79,4 +80,5 @@ export const pollChangesTrigger = pollingTrigger({
       polledNoChanges: totalMatched === 0,
     };
   },
+  examplePayload: pollChangesTriggerExamplePayload,
 });

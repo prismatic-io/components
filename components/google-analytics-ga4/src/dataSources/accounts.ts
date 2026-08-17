@@ -7,7 +7,7 @@ import { paginateRecords } from "../util";
 const listAccounts = dataSource({
   display: {
     label: "List Accounts",
-    description: "Return a list of accounts accessible by the caller",
+    description: "Return a list of accounts accessible by the caller.",
   },
   dataSourceType: "picklist",
   inputs: { connection: connectionInput },

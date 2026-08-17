@@ -28,18 +28,20 @@ export const paginateRecords = async <T, K extends string>(
       pageSize,
     },
   });
+  data[propertyKey] = data[propertyKey] ?? [];
   records[propertyKey] = data[propertyKey];
   let nextPageToken = data.nextPageToken || "";
   if (fetchAll && nextPageToken) {
     while (nextPageToken) {
       const response = await client.get<PaginatedFunction<T, K>>(url, {
         params: {
+          ...params,
           pageSize,
           pageToken: nextPageToken,
         },
       });
       records[propertyKey] = records[propertyKey].concat(
-        response.data[propertyKey],
+        response.data[propertyKey] ?? [],
       );
       nextPageToken = response.data.nextPageToken || "";
     }

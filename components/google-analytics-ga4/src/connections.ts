@@ -5,8 +5,10 @@ export const googleConnection = oauth2Connection({
   display: {
     label: "OAuth 2.0",
     description: "OAuth 2.0 connection for Google Analytics GA4",
+    icons: {
+      oauth2ConnectionIconPath: "oauth-button.png",
+    },
   },
-  iconPath: "oauth-button.png",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

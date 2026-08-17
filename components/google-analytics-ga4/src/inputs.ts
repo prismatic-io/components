@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { ANALYTICS_ENDPOINTS } from "./constants";
 import { pollResourceModel, toOptionalString } from "./util";
@@ -26,7 +26,7 @@ export const pageSize = input({
   required: false,
   example: "100",
   placeholder: "Enter a page size",
-  comments: `The maximum number of resources contained in the underlying API response. The API may return fewer values in a page, even if there are additional values to return. If unspecified, the default is 50; the maximum is 200.`,
+  comments: `The maximum number of resources contained in the underlying API response. The API may return fewer values in a page, even if there are additional values to return. If unspecified, 200 is requested, which is also the maximum.`,
   clean: toOptionalString,
 });
 export const connectionInput = input({
@@ -39,17 +39,20 @@ export const propertyIdInput = input({
   type: "string",
   required: true,
   example: "properties/111111111",
-  comments: "The Google Analytics GA4 Property ID.",
+  placeholder: "Enter a property ID",
+  comments:
+    "The unique identifier for the GA4 property, in properties/NNNNNNNNN form. A bare numeric ID is accepted and normalized.",
   dataSource: "listProperties",
   clean: (value) => cleanId("properties", util.types.toString(value)),
 });
 export const appInstanceId = input({
   label: "App Instance ID",
-  comments: "Your App's instance ID.",
+  comments:
+    "The unique identifier assigned to an app installation on a device. Sent as app_instance_id in the Measurement Protocol payload.",
   type: "string",
   required: true,
   example: "12345678901234567890123456789012",
-  placeholder: "12345678901234567890123456789012",
+  placeholder: "Enter an app instance ID",
   clean: util.types.toString,
 });
 export const events = input({
@@ -79,9 +82,9 @@ export const apiSecret = input({
   type: "password",
   required: true,
   example: "Str5ahciR5SJtWClz1mkRA",
-  placeholder: "Str5ahciR5SJtWClz1mkRA",
+  placeholder: "Enter an API secret",
   comments:
-    "The API secret for your Google Analytics G4. Generated in the Google Analytics UI",
+    "The Measurement Protocol API secret. Generate one in the Google Analytics UI under Admin > Data Streams > Measurement Protocol API secrets.",
   clean: util.types.toString,
 });
 export const firebaseAppId = input({
@@ -100,7 +103,9 @@ export const accountId = input({
   type: "string",
   required: true,
   example: "accounts/000000000",
-  comments: "The Google Analytics Account ID.",
+  placeholder: "Enter an account ID",
+  comments:
+    "The unique identifier for the GA4 account that owns the properties, in accounts/NNNNNNNNN form.",
   dataSource: "listAccounts",
   clean: util.types.toString,
 });
@@ -128,21 +133,25 @@ export const rawRequestInputs = {
   url: {
     ...restInputs.url,
     comments:
-      "Input the path only (/accounts), the base URL comes from the Base URL input. For example, to connect to <INPUT_BASE_URL>/accounts, only /accounts is entered in this field.",
+      "Input the path only (/accounts), the base URL comes from the Base URL input. For example, to connect to the selected base URL followed by /accounts, only /accounts is entered in this field.",
     example: "/accounts",
   },
 };
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { pageSize, pageToken },
+});
 export const listAccountsInputs = {
   fetchAll,
-  pageSize,
-  pageToken,
+  pagination,
   connection: connectionInput,
 };
 export const listPropertiesInputs = {
-  fetchAll,
-  pageSize,
-  pageToken,
   accountId: accountId,
+  fetchAll,
+  pagination,
   connection: connectionInput,
 };
 export const getPropertyInputs = {

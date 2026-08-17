@@ -3,27 +3,17 @@ The **New and Updated Records** trigger checks for new and updated records in Go
 #### How It Works
 
 1. The trigger runs on the configured schedule
-2. It paginates the full set of records from the selected resource type — the GA4 Admin API does not support server-side timestamp filters, so all records are fetched and filtered client-side using each record's `createTime` and `updateTime` fields
-3. Records are categorized as **created** or **updated** based on those timestamps relative to the last poll time — records whose `createTime` exceeds the last poll time are classified as created; records whose `updateTime` exceeds the last poll time (and were not classified as created) are classified as updated
-4. On the first execution, the trigger initializes silently — `lastPolledAt` is set to the current time, so historical records do not flood the workflow on the very first poll
+2. It paginates the full set of records from the selected resource type. The GA4 Admin API does not support server-side timestamp filters, so all records are fetched and filtered client-side using each record's `createTime` and `updateTime` fields
+3. Records are categorized as **created** or **updated** based on those timestamps relative to the last poll time: records whose `createTime` exceeds the last poll time are classified as created; records whose `updateTime` exceeds the last poll time (and were not classified as created) are classified as updated
+4. On the first execution, the trigger initializes silently: `lastPolledAt` is set to the current time, so historical records do not flood the workflow on the very first poll
 5. The trigger updates its internal state after each poll
-
-#### Configuration
-
-Configure the following inputs:
-
-- **Connection**: The Google Analytics GA4 connection used to authenticate API requests
-- **Resource Type**: The type of records to monitor — `Accounts` or `Properties`
-- **Account ID**: The Google Analytics Account ID. Required only when **Resource Type** is set to `Properties` — properties are scoped to a parent account
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+The trigger returns an object with two arrays: `created` for new records and `updated` for modified records.
 
 <details>
-<summary>Example Response — Accounts</summary>
+<summary>Example Response: Accounts</summary>
 
 ```json
 {
@@ -53,7 +43,7 @@ The trigger returns an object with two arrays — `created` for new records and 
 </details>
 
 <details>
-<summary>Example Response — Properties</summary>
+<summary>Example Response: Properties</summary>
 
 ```json
 {
@@ -94,9 +84,11 @@ The trigger returns an object with two arrays — `created` for new records and 
 
 </details>
 
+Fields shown are representative. The full response object includes additional properties.
+
 #### Notes
 
 - The GA4 Admin API does not expose server-side timestamp filters on `accounts.list` or `properties.list`, so each poll fetches the full result set and filters client-side. For tenants with very large numbers of accounts or properties, factor this into the polling frequency
 - Both `Accounts` and `Properties` expose `createTime` and `updateTime` on every record, so both resource types support new and updated record detection
-- When **Resource Type** is `Properties`, the trigger lists properties under the selected **Account ID** using a `parent:accounts/{id}` filter — leaving **Account ID** blank with `Properties` selected results in an error
+- When **Resource Type** is `Properties`, the trigger lists properties under the selected **Account ID** using a `parent:accounts/{id}` filter. Leaving **Account ID** blank with `Properties` selected results in an error
 - Refer to the [Google Analytics Admin API documentation](https://developers.google.com/analytics/devguides/config/admin/v1/rest) for rate limit details and the full schema for each resource type

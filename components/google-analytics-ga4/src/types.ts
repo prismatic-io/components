@@ -1,9 +1,5 @@
 import type { Connection } from "@prismatic-io/spectral";
-import type {
-  ANALYTICS_ENDPOINTS,
-  POLL_RESOURCE_CONFIG,
-  POLL_RESOURCE_KEYS,
-} from "./constants";
+import type { ANALYTICS_ENDPOINTS } from "./constants";
 export type Account = {
   name: string;
   createTime: string;
@@ -38,6 +34,3 @@ export type PollingState = {
   lastPolledAt: string;
 };
 export type GA4Record = Account | Property;
-export type GA4PollableResource =
-  (typeof POLL_RESOURCE_KEYS)[keyof typeof POLL_RESOURCE_KEYS];
-export type PollResourceKey = keyof typeof POLL_RESOURCE_CONFIG;

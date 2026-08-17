@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { GOOGLE_ANALYTICS_COLLECT_EVENTS_URL } from "../consts";
 import { sendMeasurementProtocolEventsExamplePayload } from "../examplePayloads";
 import { apiSecret, appInstanceId, events, firebaseAppId } from "../inputs";
+import { sendMeasurementProtocolEventsOutputSchema } from "../outputSchemas";
 export const sendMeasurementProtocolEvents = action({
   display: {
     label: "Send Measurement Protocol Events",
     description:
-      "Sends Measurement Protocol Events to your Google Analytics G4 Account",
+      "Sends Measurement Protocol Events to the Google Analytics GA4 account.",
   },
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { firebaseAppId, events, appInstanceId, apiSecret },
@@ -29,12 +31,21 @@ export const sendMeasurementProtocolEvents = action({
     );
     return { data: { message: "Event Sent Successfully" } };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    ...sendMeasurementProtocolEventsExamplePayload,
+  }),
   inputs: {
     firebaseAppId,
     appInstanceId,
     apiSecret,
     events,
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: sendMeasurementProtocolEventsOutputSchema,
+  }),
   examplePayload: sendMeasurementProtocolEventsExamplePayload,
 });
 export default { sendMeasurementProtocolEvents };
