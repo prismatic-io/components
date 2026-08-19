@@ -1,48 +1,150 @@
-The **New and Updated Records** trigger checks for new and updated records in Salesforce on a recurring schedule. It uses the configured record type and field values to query for records, then compares timestamps against the last polling time to identify changes.
+The **New and Updated Records** trigger retrieves existing and ongoing records for a specified Salesforce object type. Load history once with a **Look-back Date**, check for changes on a schedule, or both. It queries Salesforce for records of the configured record type and walks them in ascending order of `LastModifiedDate`, so a backlog larger than one page resumes on the next page or recurrence instead of being dropped.
 
 #### How It Works
 
-On each polling interval, the trigger queries Salesforce for records of the specified type. It compares each record's `CreatedDate` and `LastModifiedDate` against the last poll timestamp to determine which records are new or updated. Only changed records are included in the trigger payload.
+On each recurrence the trigger queries records of the selected type whose `LastModifiedDate` falls after its stored position, classifies each as created or updated by comparing `CreatedDate`, and returns them oldest-first. A record created and modified within the same window appears in both lists.
 
-The trigger maintains polling state internally, storing the timestamp of each execution to use as the comparison point for the next poll.
+Each recurrence stores where its last page ended, so the next one continues from there rather than repeating it. A batched drain stores that position on every page it dispatches, and the window's completion mark advances only once the whole window has drained, so an interrupted drain resumes at the page it stopped on and its window stays open until it finishes.
 
-#### Configuration
+If more records changed than **Max Records To Fetch** allows, the trigger continues from where the page ended instead of dropping the rest. With batching enabled it drains the remaining pages inside the same recurrence; without batching it continues on each following scheduled recurrence.
 
-- **Record Type**: The Salesforce object API name to poll for changes (e.g., Account, Contact, Opportunity)
-- **Show New Records**: When enabled, newly created records are included in the results
-- **Show Updated Records**: When enabled, recently modified records are included in the results
-- **Field Values**: Key-value pairs to filter which records are returned
-- **Field Value Types**: The data types for the field values (Boolean, Number, or String)
-- **Dynamic Fields**: Additional fields that can be configured at deploy time
-- **Max Records To Fetch**: The maximum number of records per poll. Defaults to 20,000 records
-- **Version**: The Salesforce API version to use
+**The first recurrence**
+
+- **Look-back Date empty**: the trigger records the current time and reports nothing. Incremental polling begins on the next recurrence.
+- **Look-back Date set**: the trigger begins a one-time initial sync covering every record created on or after that date, seeding each one exactly once. With batching enabled the sync finishes within this recurrence; without batching it continues across following recurrences until its window is exhausted, and those recurrences are still part of the sync.
+
+**During an initial sync**
+
+Some inputs are ignored so that every intended record is retrieved: the sync seeds a complete starting state. However, the inputs that control how records are fetched still apply, and configurations are still used in recurring polling schedules.
+
+| Ignored | Still applied |
+|---|---|
+| Dynamic Fields | Selected Fields |
+| Field Values | Return IDs Only |
+| Field Value Types | Max Records To Fetch |
+| Show New Records | |
+| Show Updated Records | |
+| Show Deleted Records | |
+
+A sync covers records by creation date, so every record it seeds is reported as new; records created before the **Look-back Date** are left out however recently they were edited. **Max Records To Fetch** caps each page of a sync, not the size of the sync.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Salesforce.
+
+To enable, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank to use the limit this trigger ships with, which dispatches one batch at a time.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.createdRecords`, `data.updatedRecords`, and `data.deletedRecords`; with batching on those arrays do not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data**). Any step reading the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+**Handing off to the schedule**
+
+The initial sync's upper bound is fixed when it begins, so records changed while running are not part of it. No field in the payload marks the handoff. Once the window is exhausted the trigger stores that bound as its position, and the next recurrence resumes from exactly there with all filters applied, so the two ranges meet with no gap between them. Deletions are reported from that first regular recurrence onward.
 
 #### Returned Data
 
-The trigger returns an object containing arrays of new and updated records based on the configuration.
+What arrives in `data` depends on whether batching is enabled on the flow.
+
+Each polled record's fields are returned with `Id`, `CreatedDate`, and `LastModifiedDate` first, followed by the rest of the selected fields. Deleted records use a different, smaller shape: `id`, `deletedDate`, and `IsDeleted`. Note the lowercase `id`, where a polled record uses `Id`.
+
+**Without batching**, `data` is a single object containing arrays of new, updated, and (optionally) deleted records, based on the configuration.
 
 <details>
-<summary>Example Payload</summary>
+<summary>Example Payload: batching disabled</summary>
 
 ```json
 {
-  "newRecords": [
-    {
+  "data": {
+    "createdRecords": [
+      {
+        "Id": "0017000000hOMChAAO",
+        "CreatedDate": "2025-01-15T10:30:00.000+0000",
+        "LastModifiedDate": "2025-01-15T10:30:00.000+0000",
+        "Name": "New Account"
+      }
+    ],
+    "updatedRecords": [
+      {
+        "Id": "0017000000hOMCiAAO",
+        "CreatedDate": "2024-06-01T08:00:00.000+0000",
+        "LastModifiedDate": "2025-01-15T10:45:00.000+0000",
+        "Name": "Updated Account"
+      }
+    ],
+    "deletedRecords": [
+      {
+        "id": "0017000000hOMCjAAO",
+        "deletedDate": "2025-01-15T11:00:00.000+0000",
+        "IsDeleted": true
+      }
+    ]
+  }
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+**With batching enabled**, `data` holds one slice of the batch instead of those three arrays. Every record (created, updated, or deleted) becomes its own item, shaped as `changeType` plus `record`. `changeType` is `created`, `updated`, or `deleted`. A created or updated `record` is the polled Salesforce record; a deleted `record` is the smaller deleted-record shape.
+
+With a batch size of 1, `data` is a single item.
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "created",
+    "record": {
       "Id": "0017000000hOMChAAO",
-      "Name": "New Account",
       "CreatedDate": "2025-01-15T10:30:00.000+0000",
-      "LastModifiedDate": "2025-01-15T10:30:00.000+0000"
+      "LastModifiedDate": "2025-01-15T10:30:00.000+0000",
+      "Name": "New Account"
     }
-  ],
-  "updatedRecords": [
+  }
+}
+```
+
+</details>
+
+With a batch size greater than 1, `data` is an array of those items.
+
+<details>
+<summary>Example Payload: batching enabled, batch size greater than 1</summary>
+
+```json
+{
+  "data": [
     {
-      "Id": "0017000000hOMCiAAO",
-      "Name": "Updated Account",
-      "CreatedDate": "2024-06-01T08:00:00.000+0000",
-      "LastModifiedDate": "2025-01-15T10:45:00.000+0000"
+      "changeType": "created",
+      "record": {
+        "Id": "0017000000hOMChAAO",
+        "CreatedDate": "2025-01-15T10:30:00.000+0000",
+        "LastModifiedDate": "2025-01-15T10:30:00.000+0000",
+        "Name": "New Account"
+      }
+    },
+    {
+      "changeType": "updated",
+      "record": {
+        "Id": "0017000000hOMCiAAO",
+        "CreatedDate": "2024-06-01T08:00:00.000+0000",
+        "LastModifiedDate": "2025-01-15T10:45:00.000+0000",
+        "Name": "Updated Account"
+      }
+    },
+    {
+      "changeType": "deleted",
+      "record": {
+        "id": "0017000000hOMCjAAO",
+        "deletedDate": "2025-01-15T11:00:00.000+0000",
+        "IsDeleted": true
+      }
     }
   ]
 }
 ```
 
 </details>
+

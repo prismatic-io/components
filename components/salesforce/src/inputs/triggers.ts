@@ -10,14 +10,13 @@ import {
   version,
 } from "./common";
 import { fieldsInput, nameInput, triggerTypeInput } from "./workflows";
-import { cleanValueList } from "../util";
+import { cleanValueList, lookBackDateClean } from "../util";
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, newly created records are included in the polling results.",
+  comments: "When true, newly created records are included in the results.",
   clean: util.types.toBool,
 });
 const showUpdatedRecords = input({
@@ -25,8 +24,7 @@ const showUpdatedRecords = input({
   type: "boolean",
   required: false,
   default: "true",
-  comments:
-    "When true, recently modified records are included in the polling results.",
+  comments: "When true, recently modified records are included in the results.",
   clean: util.types.toBool,
 });
 const showDeletedRecords = input({
@@ -34,8 +32,7 @@ const showDeletedRecords = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, recently deleted records are included in the polling results.",
+  comments: "When true, recently deleted records are included in the results.",
   clean: util.types.toBool,
 });
 const selectedFields = input({
@@ -58,7 +55,18 @@ const returnIdsOnly = input({
     "When true, only record IDs and date fields are returned (Id, CreatedDate, LastModifiedDate). Overrides Selected Fields. Use this to minimize data returned by the trigger.",
   clean: util.types.toBool,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record created on or after this date once, ignoring the field and visibility filters.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const pollChangesTriggerInputs = {
+  lookBackDate,
   connection: connectionInput,
   version,
   recordType,
@@ -73,7 +81,7 @@ export const pollChangesTriggerInputs = {
   maxRecordsToFetch: {
     ...maxRecordsToFetch,
     comments:
-      "The maximum number of records the trigger will fetch. Defaults to 20,000 records.",
+      "The maximum number of records the trigger will fetch per recurrence. When more records have changed than this, the trigger records its position and continues on the next recurrence. Applies during an initial sync and when batching is enabled: it caps each page rather than the total a recurrence can report. Defaults to 20,000 records.",
   },
 };
 export const workflowTriggerInputs = {

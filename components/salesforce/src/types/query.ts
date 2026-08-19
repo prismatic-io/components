@@ -31,4 +31,5 @@ export interface SOQLQueryParams {
   filters: Record<string, unknown>;
   sortValue: string;
   maxRecords?: number;
+  conditions?: string[];
 }

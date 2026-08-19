@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-08-19
+
+Updated the **New and Updated Records** polling trigger:
+
+- Updated the trigger to carry unreported records forward to the next recurrence, so a backlog larger than **Max Records To Fetch** is no longer dropped and a bulk load stamping many records with one timestamp still drains; **Max Records To Fetch** now caps how many records are retrieved at a time rather than how many the trigger will ever report
+- Added an optional **Look-back Date** input for performing an initial sync of records. The initial sync backfills every record created on or after the specified date, seeding each once and ignoring the field and visibility filters; recurrences after the sync are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Updated deleted-record reporting so a trigger that has not run in more than 15 days continues instead of failing, since Salesforce serves no more than 15 days of deletions, and so deletions at the edge of a window are reported on the next recurrence rather than skipped
+
 ### 2026-07-02
 
 Restructured action inputs into structured objects for an improved user experience

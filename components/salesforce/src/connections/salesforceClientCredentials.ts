@@ -5,7 +5,6 @@ import {
 } from "@prismatic-io/spectral";
 export const salesforceClientCredentials = oauth2Connection({
   key: "salesforceClientCredentials",
-  label: "OAuth 2.0 Client Credentials",
   oauth2Type: OAuth2Type.ClientCredentials,
   display: {
     label: "OAuth 2.0 Client Credentials",

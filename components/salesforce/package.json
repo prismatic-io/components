@@ -11,7 +11,7 @@
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.19.0",
+    "@prismatic-io/spectral": "10.26.1",
     "fast-xml-parser": "3.17.4",
     "jsforce": "^3.10.16",
     "mime-types": "2.1.35",
@@ -26,6 +26,7 @@
     "dotenv": "8.2.0",
     "esbuild": "0.28.1",
     "jest": "30.4.2",
+    "nock": "^14.0.17",
     "ts-jest": "29.4.11",
     "ts-node": "10.9.2",
     "typescript": "5.9.2"

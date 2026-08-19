@@ -4,8 +4,8 @@ import {
   util,
 } from "@prismatic-io/spectral";
 import type { ActionContext } from "@prismatic-io/spectral/dist/serverTypes";
-import type { Connection } from "jsforce";
 import type { FindOptions, Schema, SObjectNames } from "jsforce";
+import { REQUIRED_POLL_FIELDS } from "../constants";
 import type {
   Pagination,
   SFError,
@@ -111,11 +111,33 @@ const escapeSOQLValue = (value: unknown): string => {
   if (typeof value === "number") return util.types.toString(value);
   return `'${util.types.toString(value).replace(/'/g, "\\'")}'`;
 };
-const buildSOQLWhereClause = (filters: Record<string, unknown>): string => {
-  const conditions = Object.entries(filters).map(
-    ([key, value]) => `${key} = ${escapeSOQLValue(value)}`,
-  );
-  return conditions.length > 0 ? ` WHERE ${conditions.join(" AND ")}` : "";
+export const formatSOQLDateTime = (value: Date | string): string => {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    throw new Error(`Invalid date value for SOQL literal: ${String(value)}`);
+  }
+  return `${date.toISOString().slice(0, 19)}Z`;
+};
+const SALESFORCE_ID_PATTERN = /^[a-zA-Z0-9]+$/;
+export const formatSOQLId = (value: string): string => {
+  if (!SALESFORCE_ID_PATTERN.test(value)) {
+    throw new Error(
+      `Invalid Salesforce Id for SOQL literal: ${JSON.stringify(value)}`,
+    );
+  }
+  return `'${value}'`;
+};
+const buildSOQLWhereClause = (
+  filters: Record<string, unknown>,
+  conditions: string[] = [],
+): string => {
+  const clauses = [
+    ...Object.entries(filters).map(
+      ([key, value]) => `${key} = ${escapeSOQLValue(value)}`,
+    ),
+    ...conditions,
+  ];
+  return clauses.length > 0 ? ` WHERE ${clauses.join(" AND ")}` : "";
 };
 const buildSOQLOrderBy = (sortValue: string): string => {
   if (!sortValue?.trim()) return "";
@@ -132,22 +154,12 @@ export const buildSOQLQuery = ({
   filters,
   sortValue,
   maxRecords,
+  conditions,
 }: SOQLQueryParams): string => {
-  const requiredFields = ["Id", "CreatedDate", "LastModifiedDate"];
-  const allFields = [...new Set([...requiredFields, ...fields])];
+  const allFields = [...new Set([...REQUIRED_POLL_FIELDS, ...fields])];
   let soql = `SELECT ${allFields.join(", ")} FROM ${recordType}`;
-  soql += buildSOQLWhereClause(filters);
+  soql += buildSOQLWhereClause(filters, conditions);
   soql += buildSOQLOrderBy(sortValue);
   if (maxRecords) soql += ` LIMIT ${maxRecords}`;
   return soql;
-};
-export const executeSOQLQuery = async (
-  client: Connection,
-  soql: string,
-): Promise<Record<string, unknown>[]> => {
-  const result = await client.query(soql, {
-    autoFetch: true,
-    maxFetch: 100000,
-  });
-  return result.records as Record<string, unknown>[];
 };
