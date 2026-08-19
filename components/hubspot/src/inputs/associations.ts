@@ -4,7 +4,7 @@ export const fromObjectType = input({
   type: "string",
   required: true,
   comments:
-    'The type of the "from" object. Choose from "Contacts", "Companies", "Deals", "Tickets", "Calls", "Quotes", "Line_items", "Meetings", "Products", "Feedback_submissions", or a custom object you have defined.',
+    'The type of the "from" object. Choose from "Contacts", "Companies", "Deals", "Tickets", "Calls", "Quotes", "Line_items", "Meetings", "Products", "Feedback_submissions", or a custom object defined in the account.',
   example: "contact",
 });
 export const toObjectType = input({
@@ -12,7 +12,7 @@ export const toObjectType = input({
   type: "string",
   required: true,
   comments:
-    'The type of the "to" object. Choose from "Contacts", "Companies", "Deals", "Tickets", "Calls", "Quotes", "Line_items", "Meetings", "Products", "Feedback_submissions", or a custom object you have defined.',
+    'The type of the "to" object. Choose from "Contacts", "Companies", "Deals", "Tickets", "Calls", "Quotes", "Line_items", "Meetings", "Products", "Feedback_submissions", or a custom object defined in the account.',
   example: "deal",
 });
 export const fromId = input({

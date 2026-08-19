@@ -1,14 +1,14 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
-import { getAllPaginatedData } from "../util";
 import { selectImportInputs } from "../inputs";
+import { getAllPaginatedData } from "../util";
 export const selectImport = dataSource({
   display: {
     label: "Select Import",
     description: "Select an import from the list of active imports.",
   },
   inputs: selectImportInputs,
-  perform: async (context, { connection }) => {
+  perform: async (_context, { connection }) => {
     const client = getHubspotClient({
       hubspotConnection: connection,
       debugRequest: false,

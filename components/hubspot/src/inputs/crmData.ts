@@ -14,7 +14,7 @@ export const importOperations = input({
   language: "json",
   required: false,
   comments:
-    "Indicates whether the import should create and update, only create, or only update records for a certain object or activity. Include the objectTypeId for the object/activity and whether you want to UPSERT (create and update), CREATE, or UPDATE records. For objectTypeId's, check [HubSpot CRM Object Type IDs](https://developers.hubspot.com/docs/api/crm/understanding-the-crm#object-type-id).",
+    "Indicates whether the import should create and update, only create, or only update records for a certain object or activity. Include the objectTypeId for the object/activity and whether to UPSERT (create and update), CREATE, or UPDATE records. For objectTypeId's, check [HubSpot CRM Object Type IDs](https://developers.hubspot.com/docs/api/crm/understanding-the-crm#object-type-id).",
   clean: util.types.toObject,
   example: JSON.stringify({ "0-1": "CREATE" }),
 });
@@ -29,7 +29,7 @@ export const dateFormat = input({
   required: true,
   default: "MONTH_DAY_YEAR",
   comments:
-    "The format for dates included in the file. By default, this is set to MONTH_DAY_YEAR, but you can also use DAY_MONTH_YEAR or YEAR_MONTH_DAY.",
+    "The format for dates included in the file. Defaults to MONTH_DAY_YEAR; DAY_MONTH_YEAR and YEAR_MONTH_DAY are also accepted.",
   example: "YEAR_MONTH_DAY",
   clean: util.types.toString,
 });
@@ -46,8 +46,7 @@ export const createContactListFromImport = input({
   type: "boolean",
   required: false,
   default: "false",
-  comments:
-    "When true, creates a static list of the contacts from your import.",
+  comments: "When true, creates a static list of the contacts from the import.",
   clean: util.types.toBool,
 });
 export const files = input({
@@ -132,7 +131,7 @@ export const objectProperties = input({
   type: "string",
   collection: "valuelist",
   required: true,
-  comments: "A list of the properties you want included in your export.",
+  comments: "A list of the properties to include in the export.",
   example: "email",
 });
 export const associatedObjectType = input({
@@ -140,7 +139,7 @@ export const associatedObjectType = input({
   type: "string",
   required: false,
   comments:
-    "The name or ID of an associated object to include in the export. If you include an associated object, the export will contain the associated record IDs of that object and the records' primary display property value.",
+    "The name or ID of an associated object to include in the export. When an associated object is included, the export contains the associated record IDs of that object and the records' primary display property value.",
   example: "name",
 });
 export const language = input({

@@ -15,7 +15,7 @@ export const selectCustomObject = dataSource({
     description: "Select a custom object from the list of custom objects.",
   },
   inputs: selectCustomObjectInputs,
-  perform: async (context, { connection }) => {
+  perform: async (_context, { connection }) => {
     const client = getHubspotClient({
       hubspotConnection: connection,
       debugRequest: false,

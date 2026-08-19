@@ -1,4 +1,4 @@
-import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { getDynamicValues, valueListInputClean } from "../util";
 export const connectionInput = input({
   label: "Connection",
@@ -78,8 +78,7 @@ export const additionalProperties = input({
   placeholder: "Select properties",
   example: "phone",
   required: false,
-  comments:
-    "For each item, provide a property you would like to be returned in the response.",
+  comments: "For each item, provide a property to return in the response.",
   dataSource: "selectProperty",
 });
 export const associationsList = input({

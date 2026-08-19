@@ -11,12 +11,15 @@ import type {
   HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { hubspotOAuth, hubspotOAuthTrigger } from "../connections";
-import { HUBSPOT_DATE_PROPERTIES } from "../constant";
 import type { Engagement } from "../types/Engagement";
 import type { GetSubscriptionPayload } from "../types/GetSubscriptionPayload";
 import type { Paging } from "../types/Paging";
-import type { PollingTriggerObject } from "../types/PollingTriggerObject";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+} from "../types/PollingTriggerObject";
 import type { WebhookSettings } from "../types/WebhookSettings";
+export * from "./polling";
 export const toStringList = (array: unknown[]) => {
   return array.map((item) => util.types.toString(item));
 };
@@ -299,48 +302,54 @@ export const triggerWebhookPerformFunction = async (
 };
 export const cleanNumberInput = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
-export const getPollingChanges = (
-  showNewRecords: boolean,
-  showUpdatedRecords: boolean,
-  searchRecords: PollingTriggerObject[],
-  lastPolledAtDate: Date,
-) => {
-  const changesObject: {
-    createdRecords?: PollingTriggerObject[];
-    updatedRecords?: PollingTriggerObject[];
-  } = {};
-  if (showNewRecords) {
-    changesObject.createdRecords = [];
+const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+export const lookBackDateClean = (value: unknown): string => {
+  if (
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim() === "")
+  ) {
+    return "";
   }
-  if (showUpdatedRecords) {
-    changesObject.updatedRecords = [];
+  const raw = typeof value === "string" ? value.trim() : String(value);
+  const match =
+    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  if (!match) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
   }
-  let changes = 0;
-  for (const record of searchRecords) {
-    const recordUpdatedAt = new Date(record.updatedAt);
-    const recordCreatedAt = new Date(record.createdAt);
-    const changeExists = recordUpdatedAt > lastPolledAtDate;
-    if (changeExists) {
-      const isCreated = recordCreatedAt > lastPolledAtDate;
-      if (isCreated) {
-        if (showNewRecords) {
-          changes += 1;
-          changesObject.createdRecords.push(record);
-        }
-      }
-      const isUpdated = recordUpdatedAt > recordCreatedAt;
-      if (isUpdated) {
-        if (showUpdatedRecords) {
-          changes += 1;
-          changesObject.updatedRecords.push(record);
-        }
-      }
-    }
+  const [, yearStr, monthStr, dayStr] = match;
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
   }
-  return {
-    changesObject,
-    changes,
-  };
+  if (parsed.getTime() > Date.now()) {
+    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  }
+  return parsed.toISOString();
+};
+export const resolvePollingRecordChanges = (
+  data: Partial<PollingChangesObject> | undefined,
+): PollingRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.createdRecords ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updatedRecords ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };
 export const getEngagementObjectLabel = (
   properties: Engagement["properties"],
@@ -364,62 +373,4 @@ export const getEngagementObjectLabel = (
 };
 export const getClientSecret = (connection: Connection): string => {
   return util.types.toString(connection.fields.clientSecret);
-};
-const extractExistingFilters = (params) => {
-  const previousFilters = params.searchProperties?.filters;
-  const previousFilterGroups = params.searchProperties?.filterGroups;
-  return {
-    previousFilters: previousFilters || undefined,
-    previousFilterGroups: previousFilterGroups || undefined,
-  };
-};
-const createTimeBasedFilters = (objectType: string, lastPolledAt: string) => {
-  const filtersByRecordType = getFiltersByRecordType(
-    objectType?.toLocaleLowerCase(),
-  );
-  if (!filtersByRecordType) {
-    return [];
-  }
-  return Object.values(filtersByRecordType).map((propertyName) => ({
-    filters: [
-      {
-        propertyName,
-        operator: "GTE",
-        value: lastPolledAt,
-      },
-    ],
-  }));
-};
-const mergeFilterGroups = (
-  previousFilterGroups: unknown[] | undefined,
-  previousFilters: unknown[] | undefined,
-  timeBasedFilters: unknown[],
-) => {
-  return [
-    ...(previousFilterGroups || []),
-    ...(previousFilters ? [{ filters: previousFilters }] : []),
-    ...timeBasedFilters,
-  ];
-};
-export const setSearchFilterGroups = (params, lastPolledAt: string) => {
-  const { previousFilters, previousFilterGroups } =
-    extractExistingFilters(params);
-  const timeBasedFilters = createTimeBasedFilters(
-    params.searchEndpoint,
-    lastPolledAt,
-  );
-  const mergedFilterGroups = mergeFilterGroups(
-    previousFilterGroups,
-    previousFilters,
-    timeBasedFilters,
-  );
-  params.searchProperties = {
-    ...(params.searchProperties || {}),
-    filters: undefined,
-    filterGroups: mergedFilterGroups,
-  };
-  params.lastPolledAt = undefined;
-};
-export const getFiltersByRecordType = (recordType: string) => {
-  return HUBSPOT_DATE_PROPERTIES[recordType];
 };

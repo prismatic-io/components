@@ -54,3 +54,13 @@ export const EVENT_TYPES_PROPERTY_CHANGE = [
 ];
 export const SUCCESS_MESSAGE = "All webhooks deleted successfully";
 export const MAX_SEARCH_LIMIT = 200;
+export const MAX_SEARCH_RESULTS = 10000;
+export const BATCHED_WINDOW_LIMIT = 1000;
+export const POLL_REQUEST_TIMEOUT_MS = 10000;
+export const CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY = "hs_lastmodifieddate";
+export const CUSTOM_OBJECT_CREATED_PROPERTY = "hs_createdate";
+export const CUSTOM_OBJECT_SEARCH_ENDPOINT =
+  "/crm/v3/objects/{objectType}/search";
+export const MAX_FILTER_GROUPS = 5;
+export const MAX_FILTERS_PER_GROUP = 6;
+export const MAX_FILTERS_TOTAL = 18;

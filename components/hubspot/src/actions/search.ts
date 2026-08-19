@@ -1,4 +1,4 @@
-import { type ActionContext, action } from "@prismatic-io/spectral";
+import { action } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
 import { MAX_SEARCH_LIMIT } from "../constants";
 import { searchPayload } from "../examplePayloads";
@@ -13,7 +13,6 @@ import {
 } from "../inputs";
 import type { SearchObjectParams } from "../types/PollingTriggerObject";
 import type { SearchResponse } from "../types/SearchResponse";
-import { setSearchFilterGroups } from "../util";
 const searchPerform = async (
   context,
   {
@@ -114,16 +113,3 @@ export const search = action({
   },
   examplePayload: searchPayload,
 });
-export const searchNoCustomObjects = async (context: ActionContext, params) => {
-  const lastPolledAt = params.lastPolledAt as string | undefined;
-  setSearchFilterGroups(params, lastPolledAt);
-  return searchPerform(context, params);
-};
-export const searchOnlyCustomObjects = async (
-  context: ActionContext,
-  params,
-) => {
-  const lastPolledAt = params.lastPolledAt as string | undefined;
-  setSearchFilterGroups(params, lastPolledAt);
-  return searchPerform(context, params, true);
-};

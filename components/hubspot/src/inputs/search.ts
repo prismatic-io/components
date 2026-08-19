@@ -9,7 +9,7 @@ export const propertyName = input({
   example: "dealname",
   dataSource: "selectProperty",
   comments:
-    "The property to search on. Ensure the spelling and capitalization are correct for the property you want to use.",
+    "The property to search on. Ensure the spelling and capitalization match the property exactly.",
 });
 export const operator = input({
   label: "Operator",
@@ -46,7 +46,7 @@ export const searchProperties = input({
   language: "json",
   required: false,
   comments:
-    "Include properties such as filters and sorts, or specify the properties to be returned. If empty, only the default properties will be returned. For more information, see [HubSpot CRM Search API](https://developers.hubspot.com/docs/api/crm/search).",
+    "Include properties such as filters and sorts, or specify the properties to be returned. If empty, only the default properties will be returned. On the polling triggers, `sorts` is ignored (they sort by the object's last-modified property ascending so polling can resume) and `filters`/`filterGroups` are combined with the recurrence's date window using AND. For more information, see [HubSpot CRM Search API](https://developers.hubspot.com/docs/api/crm/search).",
   example: JSON.stringify(
     {
       sorts: [

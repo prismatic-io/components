@@ -1,4 +1,4 @@
-HubSpot provides two polling triggers to monitor changes to CRM records. Both check for new and updated records on a scheduled basis and work identically. The main difference is which types of objects they monitor.
+This component provides two polling triggers that retrieve existing and ongoing CRM records. Both can load history once, check for changes on a schedule, or both, and they work identically. The main difference is which types of objects they monitor.
 
 **New and Updated Records** - Use for standard HubSpot objects:
 - Companies, Contacts, Deals, Tickets, Products, Line Items, Quotes, Feedback Submissions
@@ -10,27 +10,57 @@ HubSpot provides two polling triggers to monitor changes to CRM records. Both ch
 
 #### How It Works
 
-Both triggers operate the same way:
-1. Run on the configured schedule (e.g., every 5 minutes)
-2. Search HubSpot using the [Search API](https://developers.hubspot.com/docs/api/crm/search) for records modified since the last poll
-3. Categorize records as "new" or "updated" based on created date last modified date timestamps
-4. Maintain state to track the last poll time automatically
+On each recurrence both triggers search HubSpot using the [Search API](https://developers.hubspot.com/docs/api/crm/search) for records whose last-modified property falls after the trigger's stored position, classify each as created or updated by comparing its created and last-modified timestamps against that window, and return them oldest-first. A record created and later modified within the same window appears in both lists.
 
-#### Configuration
+Each recurrence stores where its page ended, so the next one continues from there rather than repeating it. A single HubSpot search returns at most 10,000 results; when a window holds more than that, the trigger drains up to 10,000 per recurrence without batching — or up to 1,000 per round with batching, keeping each delivered payload small — and resumes the same window rather than skipping the remainder. With batching enabled it also resumes immediately inside the same recurrence instead of waiting for the schedule.
 
-**Inputs common to both triggers:**
-- **Show New Records**: Include newly created records
-- **Show Updated Records**: Include modified records
-- **Search Properties**: Optional JSON for additional filters, sorts, or specific properties to return. See [HubSpot Search API docs](https://developers.hubspot.com/docs/api/crm/search).
+**The first recurrence**
+
+- **Look-back Date empty**: the trigger records the current time and reports nothing. Incremental polling begins on the next recurrence.
+- **Look-back Date set**: the trigger begins a one-time initial sync covering everything created on or after that date, seeding each record exactly once. With batching enabled the sync finishes within this recurrence; without batching it continues across following recurrences until its window is exhausted, and those recurrences are still part of the sync.
+
+**During an initial sync**
+
+Some inputs are ignored so that every intended record is retrieved: the sync seeds a complete starting state. The inputs that control which records are searched still apply, and the ignored ones take effect again once regular polling begins.
+
+| Ignored | Still applied |
+|---|---|
+| Show New Records | Search Properties |
+| Show Updated Records | |
+
+Every record the sync returns was created on or after the **Look-back Date**, so all are reported as new and the sync produces no updated records. It matches on the creation date, so retrieving every record means setting **Look-back Date** earlier than the oldest record's creation date.
+
+**Batching**
+
+Batching is enabled per flow on these triggers. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to HubSpot.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.createdRecords` and `data.updatedRecords`; with batching on those arrays do not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data with Batching**). Any step reading the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+**Handing off to the schedule**
+
+The initial sync's upper bound is fixed when it begins, so records changed while running are not part of it. No field in the payload marks the handoff. Once the window is exhausted the trigger stores that bound as its position, and the next recurrence resumes from exactly there with every input applied, so the handoff is seamless: a record at the boundary is delivered exactly once.
+
+#### Filtering with Search Properties
+
+`filters` and `filterGroups` in **Search Properties** are combined with the trigger's own date window using AND, so they narrow the results the trigger would otherwise return. A filter on `dealstage`, for example, only ever returns deals in that stage. They apply to the initial sync exactly as they do to every later recurrence.
+
+`sorts` in **Search Properties** is ignored by these triggers. They always sort by the object's last-modified property in ascending order, which is what lets them resume from their last position on the next recurrence.
 
 #### Returned Data
 
-Both triggers return the same structure with separate arrays for new and updated records:
+Both triggers return the same structure with separate arrays for created and updated records. Both keys are always present, so an array is empty rather than missing when its **Show New Records** / **Show Updated Records** toggle is off.
+
+A record created and later modified within the same window appears in both `createdRecords` and `updatedRecords`, so design downstream steps to be idempotent. The one exception is the initial sync, which reports each record exactly once.
+
+<details>
+<summary>Example Payload: batching disabled</summary>
 
 ```json
 {
   "data": {
-    "newRecords": [
+    "createdRecords": [
       {
         "id": "12345678",
         "properties": {
@@ -54,10 +84,77 @@ Both triggers return the same structure with separate arrays for new and updated
 }
 ```
 
-Properties returned depend on the Search Properties configuration. If not specified, HubSpot returns default properties for the object type.
+</details>
+
+Properties returned depend on the Search Properties configuration. If not specified, HubSpot returns default properties for the object type. Fields shown are representative. The full response object includes additional properties.
+
+#### Returned Data with Batching
+
+Batching replaces the two arrays above with records already tagged by how they changed, so a step never has to work out which array a record came from. `changeType` is either `created` or `updated`.
+
+With **Batch Size** set to 1, each execution receives a single tagged record:
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "created",
+    "record": {
+      "id": "12345678",
+      "properties": {
+        "createdate": "2024-11-10T10:30:00.000Z",
+        "lastmodifieddate": "2024-11-10T10:30:00.000Z"
+        /* additional properties */
+      }
+    }
+  }
+}
+```
+
+</details>
+
+With **Batch Size** greater than 1, each execution receives an array holding up to that many tagged records:
+
+<details>
+<summary>Example Payload: batching enabled, batch size greater than 1</summary>
+
+```json
+{
+  "data": [
+    {
+      "changeType": "created",
+      "record": {
+        "id": "12345678",
+        "properties": {
+          "createdate": "2024-11-10T10:30:00.000Z",
+          "lastmodifieddate": "2024-11-10T10:30:00.000Z"
+          /* additional properties */
+        }
+      }
+    },
+    {
+      "changeType": "updated",
+      "record": {
+        "id": "87654321",
+        "properties": {
+          "createdate": "2024-11-08T09:00:00.000Z",
+          "lastmodifieddate": "2024-11-10T14:22:00.000Z"
+          /* additional properties */
+        }
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+The final batch of a recurrence may hold fewer records than the batch size. Created records are dispatched before updated ones, and a record created and later modified within the same window is dispatched twice, once with each `changeType`. The initial sync dispatches each record once.
 
 #### Best Practices
 
 - **Polling Frequency**: Use 5-15 minute intervals to balance timeliness with API limits
 - **Filter Results**: Use Search Properties to request only needed properties and add filters
-- **Monitor Limits**: Both triggers fetch up to 20,000 records per poll
+- **Large Backlogs**: Enable batching if a recurrence may need to catch up on more than 10,000 changed records, so it drains within one recurrence instead of several

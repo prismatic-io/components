@@ -1,5 +1,17 @@
 ## Changelog
 
+### 2026-08-19
+
+Reworked the **New and Updated Records** and **New and Updated Custom Records** triggers for large data volumes and correct filtering:
+
+- Added an optional **Look-back Date** input across all polling triggers for performing an initial sync of records. The initial sync backfills every record created on or after the specified date, seeding each once and ignoring the field and visibility filters; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Added opt-in batching across all polling triggers, dispatching each changed record individually or in configured batches so a large backlog drains within one recurrence; enabling it changes the shape a downstream step receives
+- Added support for object types holding more than the 10,000 records a single HubSpot search returns, draining the remainder on later recurrences. A larger result set previously failed
+- Updated both triggers to always return both `createdRecords` and `updatedRecords`. A disabled **Show New Records** or **Show Updated Records** now yields an empty array where the key was previously absent
+- Updated **Search Properties** `filters` and `filterGroups` to restrict results instead of widening them. They were previously OR-combined with the trigger's date window, so configured filters returned matching records regardless of date
+- Updated **Search Properties** `sorts` to be ignored by these triggers; they now sort ascending by the object's creation property during the initial sync and its last-modified property on later recurrences, so a recurrence can resume where it left off
+- Fixed the **New and Updated Custom Records** trigger retrieving every record of the custom object type on each recurrence instead of only the changed ones. It now filters and sorts on `hs_lastmodifieddate`, so the custom object type must expose that property
+
 ### 2026-04-30
 
 Updated spectral version

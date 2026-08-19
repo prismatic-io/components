@@ -11,8 +11,6 @@ export const hubspotOAuth = oauth2Connection({
     label: "OAuth 2.0",
     description: "Authenticate requests to Hubspot using OAuth 2.0.",
   },
-  comments:
-    "Authenticate requests to HubSpot using values obtained from the developer console.",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",
@@ -92,8 +90,6 @@ export const privateAppAccessToken = connection({
     description:
       "Authenticate requests to Hubspot using a private app access token.",
   },
-  comments:
-    "An access token generated when you create a private app. For testing purposes only - use OAuth 2.0 for production integrations.",
   inputs: {
     accessToken: {
       label: "Access Token",
@@ -113,7 +109,6 @@ export const hubspotOAuthTrigger = connection({
     description:
       "Authenticate HubSpot webhooks using Client Secret for signature verification only.",
   },
-  comments: "Authenticate hubspot trigger with the client secret.",
   inputs: {
     clientSecret: {
       label: "Client Secret",

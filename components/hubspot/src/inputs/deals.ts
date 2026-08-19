@@ -41,7 +41,7 @@ export const dealStage = input({
   type: "string",
   required: true,
   comments:
-    "The stage of the deal. Deal stages allow you to categorize and track the progress of the deals.",
+    "The stage of the deal. Deal stages categorize deals and track their progress.",
   example: "presentationscheduled",
 });
 export const updateDealStage = input({
@@ -49,7 +49,7 @@ export const updateDealStage = input({
   type: "string",
   required: false,
   comments:
-    "The stage of the deal. Deal stages allow you to categorize and track the progress of the deals.",
+    "The stage of the deal. Deal stages categorize deals and track their progress.",
   example: "presentationscheduled",
 });
 export const pipeline = input({
@@ -72,7 +72,7 @@ export const dealType = input({
   required: false,
   example: "newbusiness",
   comments:
-    "The type of deal. By default, categorize your deal as either New Business or Existing Business. The picklist of values for this property is configurable through HubSpot.",
+    "The type of deal. By default, a deal is categorized as either New Business or Existing Business. The picklist of values for this property is configurable through HubSpot.",
 });
 export const priority = input({
   label: "Priority",

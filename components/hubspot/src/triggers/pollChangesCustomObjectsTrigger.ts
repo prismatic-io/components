@@ -1,23 +1,26 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { searchOnlyCustomObjects } from "../actions/search";
-import { MAX_SEARCH_LIMIT } from "../constants";
 import {
   connectionInput,
+  lookBackDate,
   objectType,
   searchProperties,
   showNewRecords,
   showUpdatedRecords,
 } from "../inputs";
-import type { PollingTriggerObject } from "../types/PollingTriggerObject";
-import type { SearchRecordsPollingState } from "../types/SearchRecordsPollingState";
-import { getPollingChanges } from "../util";
+import type { PollChangesParams } from "../types/polling";
+import {
+  performPollChanges,
+  pollChangesBatchConfig,
+  pollChangesResolver,
+} from "./pollChanges";
 export const pollChangesCustomObjectsTrigger = pollingTrigger({
   display: {
     label: "New and Updated Custom Records",
     description:
-      "Checks for new and updated records in a specified custom object type on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified HubSpot custom object type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
+    lookBackDate,
     showNewRecords,
     showUpdatedRecords,
     hubspotConnection: connectionInput,
@@ -27,34 +30,16 @@ export const pollChangesCustomObjectsTrigger = pollingTrigger({
     },
     searchProperties,
   },
-  perform: async (context, payload, params) => {
-    const now = new Date().toISOString();
-    const pollState: SearchRecordsPollingState =
-      context.polling.getState() as SearchRecordsPollingState;
-    const lastPolledAt: string = pollState.lastPolledAt || now;
-    if (context.debug.enabled) {
-      context.logger.debug(`Polling state: ${JSON.stringify(pollState)}`);
-      context.logger.debug(`Last polled at: ${lastPolledAt}`);
-    }
-    const searchParams = {
-      ...params,
-      fetchAll: true,
-      searchLimit: MAX_SEARCH_LIMIT,
-      timeout: 10000,
-      lastPolledAt,
-    };
-    const { data } = await searchOnlyCustomObjects(context, searchParams);
-    const searchRecords = data.results || [];
-    const { changes, changesObject } = getPollingChanges(
-      params.showNewRecords,
-      params.showUpdatedRecords,
-      searchRecords as PollingTriggerObject[],
-      new Date(lastPolledAt),
-    );
-    context.polling.setState({ lastPolledAt: now });
-    return {
-      payload: { ...payload, body: { data: changesObject } },
-      polledNoChanges: changes === 0,
-    };
-  },
+  triggerResolverSupport: "valid",
+  batchConfig: pollChangesBatchConfig,
+  triggerResolver: pollChangesResolver,
+  perform: async (context, payload, params) =>
+    performPollChanges(
+      context as never,
+      payload as never,
+      params as PollChangesParams,
+      {
+        onlyCustomObjects: true,
+      },
+    ),
 });
