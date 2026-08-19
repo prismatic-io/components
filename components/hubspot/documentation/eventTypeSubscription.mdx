@@ -1,4 +1,4 @@
-The Event Type Subscription trigger can manage [HubSpot webhook subscriptions](https://developers.hubspot.com/docs/api/webhooks) for an instance. Unlike the [Webhook](#webhook) trigger that requires manual configuration in the HubSpot Developer Console, this trigger handles the entire webhook lifecycle automatically.
+The Event Type Subscription trigger can manage [HubSpot webhook subscriptions](https://developers.hubspot.com/docs/api-reference/legacy/webhooks/webhooks-journal) for an instance. Unlike the [Webhook](#webhook) trigger that requires manual configuration in the HubSpot Developer Console, this trigger handles the entire webhook lifecycle automatically.
 
 When the trigger is used in a flow:
 - **On Instance Deploy**: The trigger automatically creates webhook subscription configurations in the HubSpot app for the selected event types (contact creation, deal updates, etc.). The webhook target URL is set to the instance's unique webhook URL. If webhook settings already exist for the app and the overwrite option is disabled, the trigger will throw an error to prevent accidental changes. If overwrite is enabled, existing settings are replaced with the new configuration.
@@ -26,7 +26,7 @@ When configuring the trigger, select which HubSpot events should trigger the flo
 **Property-Specific Events:**
 For `propertyChange` events, you can optionally specify individual property names to monitor (e.g., only trigger when the `email` or `phone` property changes).
 
-A full list of available webhook events and required OAuth scopes is available in the [HubSpot Webhooks API documentation](https://developers.hubspot.com/docs/api/webhooks).
+A full list of available webhook events and required OAuth scopes is available in the [HubSpot Webhooks API documentation](https://developers.hubspot.com/docs/api-reference/legacy/webhooks/webhooks-journal).
 
 #### Overwrite Settings
 
