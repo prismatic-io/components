@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-08-21
+
+Updated the **New and Updated CRM Leads**, **New and Updated CRM Contacts**, and **New and Updated Books Contacts** polling triggers to filter records server-side by their last modified time, so each poll returns only records changed since the previous poll instead of the entire dataset, reducing API-credit consumption
+
 ### 2026-07-14
 
 Added an **Additional Fields** input to the **New and Updated CRM Leads** and **New and Updated CRM Contacts** triggers, letting you include extra CRM fields in the trigger results without making follow-up requests.

@@ -108,3 +108,14 @@ export const getBooksRecordIdField = (
   }
   return idField;
 };
+export const toZohoTimestamp = (iso: string): string => {
+  const date = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const yyyy = date.getUTCFullYear();
+  const mm = pad(date.getUTCMonth() + 1);
+  const dd = pad(date.getUTCDate());
+  const hh = pad(date.getUTCHours());
+  const min = pad(date.getUTCMinutes());
+  const ss = pad(date.getUTCSeconds());
+  return `${yyyy}-${mm}-${dd}T${hh}:${min}:${ss}+00:00`;
+};

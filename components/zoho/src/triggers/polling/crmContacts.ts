@@ -7,6 +7,7 @@ import {
 } from "../../constants";
 import { crmPollingTriggerInputs } from "../../inputs";
 import type { CRMRecords } from "../../types";
+import { toZohoTimestamp } from "../../util/general";
 import {
   getCRMModifiedOrCreatedRecords,
   mergeCRMPollingFields,
@@ -22,11 +23,12 @@ export const contactsPollingTrigger = pollingTrigger({
   perform: async (context, payload, { connection, fields }) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as {
-      lastUpdated: string;
+      lastUpdated?: string;
     };
+    const lastUpdated = lastState?.lastUpdated;
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polling contacts from ${lastState.lastUpdated} to ${now}`,
+        `Polling contacts from ${lastUpdated ?? "(first poll)"} to ${now}`,
       );
       context.logger.debug(`Polling state: ${JSON.stringify(lastState)}`);
     }
@@ -40,10 +42,11 @@ export const contactsPollingTrigger = pollingTrigger({
       fetchAll: true,
       page_token: "",
       page: 1,
+      ...(lastUpdated ? { ifModifiedSince: toZohoTimestamp(lastUpdated) } : {}),
     });
     const filteredRecords = getCRMModifiedOrCreatedRecords(
       (records as unknown as CRMRecords).data,
-      lastState.lastUpdated,
+      lastUpdated ?? now,
     );
     const polledNoChanges = polledChanges(filteredRecords);
     context.polling.setState({ lastUpdated: now });

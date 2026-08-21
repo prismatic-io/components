@@ -3,6 +3,7 @@ import booksGetRecords from "../../actions/booksGetRecords";
 import { DEFAULT_PER_PAGE } from "../../constants";
 import { leadsPollingTriggerInputs } from "../../inputs";
 import type { BookContactsRecords } from "../../types";
+import { toZohoTimestamp } from "../../util/general";
 import {
   getBooksModifiedOrCreatedRecords,
   polledChanges,
@@ -17,12 +18,13 @@ export const bookContactsPollingTrigger = pollingTrigger({
   perform: async (context, payload, { connection }) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as {
-      lastUpdated: string;
+      lastUpdated?: string;
     };
-    context.logger.debug(
-      `Polling contacts from ${lastState.lastUpdated || now} to ${now}`,
-    );
+    const lastUpdated = lastState?.lastUpdated;
     if (context.debug.enabled) {
+      context.logger.debug(
+        `Polling contacts from ${lastUpdated ?? "(first poll)"} to ${now}`,
+      );
       context.logger.debug(`Polling state: ${JSON.stringify(lastState)}`);
     }
     const { data: records } = await booksGetRecords.perform(context, {
@@ -36,10 +38,11 @@ export const bookContactsPollingTrigger = pollingTrigger({
       searchFields: {
         sort_column: "last_modified_time",
       },
+      ...(lastUpdated ? { ifModifiedSince: toZohoTimestamp(lastUpdated) } : {}),
     });
     const filteredRecords = getBooksModifiedOrCreatedRecords(
       (records as unknown as BookContactsRecords).contacts,
-      lastState.lastUpdated,
+      lastUpdated ?? now,
     );
     const polledNoChanges = polledChanges(filteredRecords);
     context.polling.setState({ lastUpdated: now });

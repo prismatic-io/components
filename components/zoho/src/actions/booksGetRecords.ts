@@ -10,6 +10,7 @@ import {
   per_page,
   searchFields,
 } from "../inputs";
+import type { BooksGetRecordsPerformInput } from "../types";
 import { getBooksUrl } from "../util/general";
 import { fetchAllPages } from "../util/pagination";
 const booksGetRecords = action({
@@ -43,7 +44,8 @@ const booksGetRecords = action({
       page,
       per_page,
       fetchAll,
-    },
+      ifModifiedSince,
+    }: BooksGetRecordsPerformInput,
   ) => {
     const booksClient = createClient(
       connection,
@@ -63,7 +65,10 @@ const booksGetRecords = action({
       url,
       params,
       recordType,
-      fetchAll,
+      fetchAll ?? false,
+      ifModifiedSince
+        ? { modifiedSince: ifModifiedSince, clientType: ClientType.BOOKS }
+        : {},
     );
     return { data };
   },

@@ -78,8 +78,32 @@ export interface paginationParams {
   page?: number;
   per_page?: number;
   page_token?: string;
+  last_modified_time?: string;
   sort_order?: string;
   sort_by?: string;
   channelId?: string | number;
   module?: string;
+}
+export interface CrmGetRecordsPerformInput {
+  connection: Connection;
+  recordType: string;
+  fields: string[];
+  page?: number;
+  per_page?: number;
+  page_token?: string;
+  sort_order?: string;
+  sort_by?: string;
+  fetchAll?: boolean;
+  ifModifiedSince?: string;
+}
+export interface BooksGetRecordsPerformInput {
+  connection: Connection;
+  recordType: string;
+  parentRecordType: string;
+  parentRecordId: string;
+  searchFields?: Record<string, unknown>;
+  page?: number;
+  per_page?: number;
+  fetchAll?: boolean;
+  ifModifiedSince?: string;
 }

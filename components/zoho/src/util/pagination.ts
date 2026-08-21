@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { ClientType } from "../client";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PER_PAGE } from "../constants";
 import type { paginationParams } from "../types";
 export const fetchAllPages = async (
@@ -7,9 +8,20 @@ export const fetchAllPages = async (
   params: paginationParams,
   dataKey: string,
   fetchAll: boolean,
+  opts: {
+    modifiedSince?: string;
+    clientType?: ClientType;
+  } = {},
 ) => {
   const results = [];
   let lastResponse: Record<string, unknown> = {};
+  const headers: Record<string, string> = {};
+  const isModifiedSince = Boolean(opts.modifiedSince);
+  if (isModifiedSince && opts.clientType === ClientType.CRM) {
+    headers["If-Modified-Since"] = opts.modifiedSince as string;
+  } else if (isModifiedSince && opts.clientType === ClientType.BOOKS) {
+    params.last_modified_time = opts.modifiedSince;
+  }
   if (fetchAll) {
     params.page_token = undefined;
     params.page = DEFAULT_PAGE_NUMBER;
@@ -23,12 +35,35 @@ export const fetchAllPages = async (
       : params.per_page || DEFAULT_PER_PAGE;
   }
   do {
-    const { data } = await client.get(url, {
-      params,
-    });
+    let data: Record<string, unknown>;
+    try {
+      ({ data } = await client.get(url, { params, headers }));
+    } catch (err) {
+      const status = (
+        err as {
+          response?: {
+            status?: number;
+          };
+        }
+      )?.response?.status;
+      if (isModifiedSince && status === 304) {
+        return { [dataKey]: [] };
+      }
+      throw err;
+    }
     const pageRecords = data[dataKey];
-    const nextPageToken = data?.info?.next_page_token;
-    const hasMorePages = data?.page_context?.has_more_page;
+    const info = data.info as
+      | {
+          next_page_token?: string;
+        }
+      | undefined;
+    const pageContext = data.page_context as
+      | {
+          has_more_page?: boolean;
+        }
+      | undefined;
+    const nextPageToken = info?.next_page_token;
+    const hasMorePages = pageContext?.has_more_page;
     if (Array.isArray(pageRecords)) {
       results.push(...pageRecords);
     }

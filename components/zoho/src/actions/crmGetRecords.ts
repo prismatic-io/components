@@ -12,6 +12,7 @@ import {
   sort_by,
   sort_order,
 } from "../inputs";
+import type { CrmGetRecordsPerformInput } from "../types";
 import { fetchAllPages } from "../util/pagination";
 const crmGetRecords = action({
   display: {
@@ -41,7 +42,8 @@ const crmGetRecords = action({
       sort_order,
       sort_by,
       fetchAll,
-    },
+      ifModifiedSince,
+    }: CrmGetRecordsPerformInput,
   ) => {
     const crmClient = createClient(
       connection,
@@ -59,7 +61,16 @@ const crmGetRecords = action({
         sort_by,
       }).filter(([_key, val]) => Boolean(val)),
     );
-    const data = await fetchAllPages(crmClient, url, params, "data", fetchAll);
+    const data = await fetchAllPages(
+      crmClient,
+      url,
+      params,
+      "data",
+      fetchAll ?? false,
+      ifModifiedSince
+        ? { modifiedSince: ifModifiedSince, clientType: ClientType.CRM }
+        : {},
+    );
     return {
       data,
     };
