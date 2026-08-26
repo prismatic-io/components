@@ -1,0 +1,21 @@
+To authenticate with Qualys, a platform username and password are required along with the API base URLs for the account's assigned pod.
+
+#### Prerequisites
+
+- A Qualys subscription with API access enabled
+- A user account with the appropriate role (e.g., Manager, Unit Manager, or Reader depending on the actions used)
+- The Gateway and Classic API base URLs for the assigned Qualys platform pod
+
+#### Setup Steps
+
+1. Log in to the Qualys platform
+2. Confirm that API access is enabled for the account. API access is controlled by the Qualys subscription administrator
+3. Identify the platform pod by visiting the [Platform Identification](https://www.qualys.com/platform-identification) page. Each pod has distinct Gateway and Classic API base URLs
+4. Note the **Gateway API URL** (e.g., `https://gateway.qg1.apps.qualys.com`) and the **Classic API URL** (e.g., `https://qualysapi.qg1.apps.qualys.com`) for the assigned pod
+
+#### Configure the Connection
+
+- Enter the **Username** for the Qualys platform account
+- Enter the **Password** for that account
+- Enter the **Gateway API URL**, the base URL for the Qualys Gateway (CSAM/GAV) API on the assigned pod
+- Enter the **Classic API URL**, the base URL for the Qualys Classic (VM/PC) API on the assigned pod

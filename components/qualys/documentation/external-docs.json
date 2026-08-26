@@ -1,0 +1,14 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.qualys.com/en/vm/qweb-all-api/"
+  },
+  {
+    "label": "API Docs (CSAM)",
+    "href": "https://docs.qualys.com/en/csam/api/"
+  },
+  {
+    "label": "API Changelog",
+    "href": "https://notifications.qualys.com/api"
+  }
+]
