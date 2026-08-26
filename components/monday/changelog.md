@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-08-26
+
+Grouped the **Page Offset** and **Result Limit** inputs on the **List Boards** action into a **Pagination** structured object; **Fetch All** stays a top-level toggle
+
 ### 2026-07-31
 
 Updated to Monday API version 2026-07

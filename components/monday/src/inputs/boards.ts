@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { toOptionalNumber } from "../util";
-import { boardId, connectionInput, fetchAll, limit, page } from "./common";
+import { boardId, connectionInput, fetchAll, pagination } from "./common";
 const boardName = input({
   label: "Board Name",
   type: "string",
@@ -58,8 +58,7 @@ const workspaceId = input({
 export const listBoardsInputs = {
   connection: connectionInput,
   fetchAll,
-  limit,
-  page,
+  pagination,
 };
 export const getBoardInputs = {
   connection: connectionInput,

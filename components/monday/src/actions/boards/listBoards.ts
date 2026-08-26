@@ -17,7 +17,10 @@ export const listBoards = action({
       const data = await getAllBoards<Board>(client);
       return { data };
     }
-    const variables = { limit: params.limit, page: params.page };
+    const variables = {
+      limit: params.pagination.limit,
+      page: params.pagination.page,
+    };
     const data = await client.request(GetBoardsQuery, variables);
     return { data };
   },

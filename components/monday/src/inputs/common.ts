@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { MAX_LIMIT } from "../constants";
 import { toOptionalNumber } from "../util";
 export const connectionInput = input({
@@ -45,4 +45,13 @@ export const fetchAll = input({
     "When true, automatically fetches all pages of results using pagination. Ignores the Result Limit and Page Offset inputs.",
   default: "false",
   clean: util.types.toBool,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: {
+    page,
+    limit,
+  },
 });
