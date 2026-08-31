@@ -2,9 +2,9 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { changedAssetsExamplePayload } from "../examplePayloads";
 import { changedAssetsInputs } from "../inputs";
 import type {
+  ChangedAssetItem,
   ChangedAssetsChangesObject,
   PollingState,
-  QualysAsset,
 } from "../types";
 import {
   fetchGatewayAssets,
@@ -23,7 +23,7 @@ export const changedAssets = pollingTrigger({
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: 50 },
   triggerResolver: {
-    resolveItems: (_context, { payload }): QualysAsset[] =>
+    resolveItems: (_context, { payload }): ChangedAssetItem[] =>
       resolveChangedAssetItems(
         payload.body.data as ChangedAssetsChangesObject | undefined,
       ),

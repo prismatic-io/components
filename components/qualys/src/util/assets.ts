@@ -6,6 +6,7 @@ import {
   MIN_PAGE_SIZE,
 } from "../constants";
 import type {
+  ChangedAssetItem,
   ChangedAssetsChangesObject,
   ChangedAssetsVisibility,
   FetchGatewayAssetsOptions,
@@ -98,7 +99,13 @@ export const splitAssetsByChangeType = (
 };
 export const resolveChangedAssetItems = (
   data: ChangedAssetsChangesObject | undefined,
-): QualysAsset[] => [
-  ...(data?.createdRecords ?? []),
-  ...(data?.updatedRecords ?? []),
+): ChangedAssetItem[] => [
+  ...(data?.createdRecords ?? []).map((asset) => ({
+    changeType: "created" as const,
+    asset,
+  })),
+  ...(data?.updatedRecords ?? []).map((asset) => ({
+    changeType: "updated" as const,
+    asset,
+  })),
 ];
