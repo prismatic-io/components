@@ -1,5 +1,13 @@
-import { input, util } from "@prismatic-io/spectral";
-import { cleanNumberInput, cleanObjectInput, cleanStringInput } from "../util";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import {
+  cleanAmountInput,
+  cleanIntegerInput,
+  cleanKeyValueListInput,
+  cleanMetadataInput,
+  cleanNumberInput,
+  cleanObjectInput,
+  cleanStringInput,
+} from "../util";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
@@ -14,7 +22,7 @@ export const timeout = input({
   example: "60000",
   placeholder: "Enter timeout in ms",
   required: false,
-  clean: util.types.toNumber,
+  clean: cleanNumberInput,
 });
 export const startingAfter = input({
   label: "Starting After",
@@ -33,7 +41,7 @@ export const limit = input({
   example: "100",
   placeholder: "Enter maximum results",
   required: false,
-  clean: cleanNumberInput,
+  clean: cleanIntegerInput,
 });
 export const endingBefore = input({
   label: "Ending Before",
@@ -63,6 +71,22 @@ export const page = input({
   placeholder: "Enter next_page cursor",
   clean: cleanStringInput,
 });
+const paginationGroupDisplay = {
+  label: "Pagination",
+  comments: "Cursor and page-size controls for paging through results.",
+};
+export const cursorPagination = structuredObjectInput({
+  ...paginationGroupDisplay,
+  inputs: { limit, startingAfter, endingBefore },
+});
+export const forwardCursorPagination = structuredObjectInput({
+  ...paginationGroupDisplay,
+  inputs: { limit, startingAfter },
+});
+export const searchPagination = structuredObjectInput({
+  ...paginationGroupDisplay,
+  inputs: { limit, page },
+});
 export const query = input({
   label: "Query",
   type: "string",
@@ -78,17 +102,10 @@ export const created = input({
   type: "code",
   language: "json",
   comments: "A filter on the list based on the object created field.",
+  placeholder: "Enter created date filter",
   required: false,
   example: JSON.stringify({ gt: 1620000000 }),
-  clean: util.types.toString,
-});
-export const overwriteOnUpdate = input({
-  label: "Protect Blank Values",
-  type: "boolean",
-  comments:
-    "When true, blank values will not overwrite existing values in Stripe.",
-  required: true,
-  clean: util.types.toBool,
+  clean: cleanObjectInput,
 });
 export const metadata = input({
   label: "Metadata",
@@ -96,8 +113,10 @@ export const metadata = input({
   collection: "keyvaluelist",
   comments:
     "Set of key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them.",
+  example: '{"order_id": "6735"}',
   placeholder: "Enter metadata key-value pairs",
   required: false,
+  clean: cleanMetadataInput,
 });
 export const fieldValues = input({
   label: "Values",
@@ -105,8 +124,10 @@ export const fieldValues = input({
   collection: "keyvaluelist",
   comments:
     "The names of optional fields and their values to use when creating/updating a record. For example, if a custom configured field is not represented as an input, here its key can be specified along with an assigned value.",
+  example: '{"footer": "Thank you for your business"}',
   placeholder: "Enter key-value pairs",
   required: false,
+  clean: cleanKeyValueListInput,
 });
 export const description = input({
   label: "Description",
@@ -127,24 +148,6 @@ export const currency = input({
   placeholder: "Enter currency code",
   required: false,
   clean: cleanStringInput,
-});
-export const source = input({
-  label: "Source",
-  type: "string",
-  comments:
-    "Filters results to only include transactions originating from the specified Stripe source ID (e.g., a charge or payout ID).",
-  placeholder: "Enter source ID",
-  required: false,
-  clean: util.types.toString,
-});
-export const bodyParams = input({
-  label: "Body Params",
-  type: "code",
-  language: "json",
-  comments: "More parameters to pass to the request.",
-  required: false,
-  example: JSON.stringify({ customer: "cus_123456" }, null, 2),
-  clean: cleanObjectInput,
 });
 export const customerId = input({
   label: "Customer ID",
@@ -186,68 +189,12 @@ export const productId = input({
   dataSource: "selectProduct",
   clean: util.types.toString,
 });
-export const invoiceId = input({
-  label: "Invoice ID",
-  type: "string",
-  comments: "The unique identifier for the invoice.",
-  example: "in_1JaOXaDtJQgcyrdSRnsI9KW5",
-  placeholder: "Enter Invoice ID",
-  required: true,
-  dataSource: "selectInvoice",
-  clean: util.types.toString,
-});
 export const chargeId = input({
   label: "Charge ID",
   type: "string",
   comments: "The unique identifier for the charge.",
   example: "ch_1JaOXaDtJQgcyrdSRnsI9KW5",
   placeholder: "Enter Charge ID",
-  required: true,
-  clean: util.types.toString,
-});
-export const paymentIntentId = input({
-  label: "Payment Intent ID",
-  type: "string",
-  comments: "The unique identifier for the Payment Intent.",
-  example: "pi_1JaOXaDtJQgcyrdSRnsI9KW5",
-  placeholder: "Enter Payment Intent ID",
-  required: true,
-  clean: util.types.toString,
-  dataSource: "selectPaymentIntent",
-});
-export const disputeId = input({
-  label: "Dispute ID",
-  type: "string",
-  comments: "The unique identifier for the dispute.",
-  example: "dp_1JaOXaDtJQgcyrdSRnsI9KW5",
-  placeholder: "Enter Dispute ID",
-  required: true,
-  clean: util.types.toString,
-});
-export const balanceTransactionId = input({
-  label: "Balance Transaction ID",
-  type: "string",
-  comments: "The unique identifier for the balance transaction.",
-  example: "txn_1Jb9jvDtJQgcyrdS1Z9KW5",
-  placeholder: "Enter Balance Transaction ID",
-  required: true,
-  clean: util.types.toString,
-});
-export const sessionId = input({
-  label: "Session ID",
-  type: "string",
-  comments: "The unique identifier for the Checkout Session.",
-  example: "cs_test_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
-  placeholder: "Enter Session ID",
-  required: true,
-  clean: util.types.toString,
-});
-export const webhookId = input({
-  label: "Webhook ID",
-  type: "string",
-  comments: "The unique identifier for the webhook.",
-  example: "we_1JaOXaDtJQgcyrdSRnsI9KW5",
-  placeholder: "Enter Webhook ID",
   required: true,
   clean: util.types.toString,
 });
@@ -259,7 +206,7 @@ export const paymentIntent = input({
     "Filters results to only charges created by the specified Payment Intent. Provide the Payment Intent ID to scope the query.",
   example: "pi_1JaOXaDtJQgcyrdSRnsI9KW5",
   placeholder: "Enter Payment Intent ID",
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 export const paymentId = input({
   label: "Payment Method ID",
@@ -268,6 +215,7 @@ export const paymentId = input({
   example: "pm_1JaOXaDtJQgcyrdSRnsI9KW5",
   placeholder: "Enter Payment Method ID",
   required: false,
+  dataSource: "selectCard",
   clean: cleanStringInput,
 });
 export const receiptEmail = input({
@@ -278,12 +226,13 @@ export const receiptEmail = input({
   example: "customer@example.com",
   placeholder: "Enter receipt email",
   required: false,
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 export const shipping = input({
   label: "Shipping",
   type: "code",
   language: "json",
+  placeholder: "Enter shipping information",
   required: false,
   comments:
     "Shipping information for the charge. Helps prevent fraud on charges for physical goods.",
@@ -298,7 +247,7 @@ export const shipping = input({
     },
     name: "John Doe",
   }),
-  clean: util.types.toString,
+  clean: cleanObjectInput,
 });
 export const transferGroup = input({
   label: "Transfer Group",
@@ -308,45 +257,15 @@ export const transferGroup = input({
     "A string that identifies this transaction as part of a group. Used with Stripe Connect to associate related charges, transfers, and refunds.",
   example: "ORDER_95",
   placeholder: "Enter transfer group",
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 export const applicationFeeAmount = input({
   label: "Application Fee Amount",
   type: "string",
   comments:
-    "The application fee amount in cents. Only applicable when collection method is 'Charge Automatically'.",
+    "The application fee amount, as a whole number in the currency's smallest unit (500 is $5.00 in USD, ¥500 in JPY). Only applicable when collection method is 'Charge Automatically'.",
   example: "500",
-  placeholder: "Enter fee amount in cents",
+  placeholder: "Enter fee amount in a whole number (exclude decimals)",
   required: false,
-  clean: cleanNumberInput,
-});
-export const statementDescriptor = input({
-  label: "Statement Descriptor",
-  type: "string",
-  comments:
-    "For non-card charges, the complete description that appears on customer statements. Must be 5-22 characters and cannot use special characters `<`, `>`, `\\`, `'`, `\"`.",
-  example: "ACME ORDER 95",
-  placeholder: "Enter statement descriptor",
-  required: false,
-  clean: util.types.toString,
-});
-export const statementDescriptorSuffix = input({
-  label: "Statement Descriptor Suffix",
-  type: "string",
-  comments:
-    "Information about a card payment that customers see on their statements, concatenated with the prefix (the account name) to form the full statement descriptor.",
-  example: "ORDER 95",
-  placeholder: "Enter statement descriptor suffix",
-  required: false,
-  clean: util.types.toString,
-});
-export const transferData = input({
-  label: "Transfer Data",
-  type: "code",
-  language: "json",
-  example: JSON.stringify({ destination: "acct_1F5yQhFjP0puYwXh" }),
-  comments:
-    "The parameters used to automatically create a Transfer when the payment succeeds.",
-  required: false,
-  clean: util.types.toString,
+  clean: cleanAmountInput,
 });

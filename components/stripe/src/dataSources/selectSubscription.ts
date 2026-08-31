@@ -1,11 +1,11 @@
 import { dataSource, util } from "@prismatic-io/spectral";
-import { createStripeClient } from "../auth";
-import { connectionInput } from "../inputs";
+import { createStripeClient } from "../client";
+import { selectSubscriptionInputs } from "../inputs";
 import type { StripeResponse, Subscription } from "../types";
 export const selectSubscription = dataSource({
   display: {
     label: "Select Subscription",
-    description: "A picklist of subscriptions in your Stripe account.",
+    description: "A picklist of subscriptions in the connected Stripe account.",
   },
   dataSourceType: "picklist",
   perform: async (_, { stripeConnection }) => {
@@ -21,7 +21,5 @@ export const selectSubscription = dataSource({
       })),
     };
   },
-  inputs: {
-    stripeConnection: connectionInput,
-  },
+  inputs: selectSubscriptionInputs,
 });

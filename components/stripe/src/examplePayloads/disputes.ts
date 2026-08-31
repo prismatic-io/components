@@ -7,6 +7,7 @@ export const getDisputeExamplePayload = {
     charge: "ch_3MmlLrLkdIwHu7ix0snN0B15",
     created: 1716397800,
     currency: "usd",
+    enhanced_eligibility_types: [],
     evidence: {
       access_activity_log: null,
       billing_address: null,
@@ -21,6 +22,7 @@ export const getDisputeExamplePayload = {
       duplicate_charge_documentation: null,
       duplicate_charge_explanation: null,
       duplicate_charge_id: null,
+      enhanced_evidence: {},
       product_description: null,
       receipt: null,
       refund_policy: null,
@@ -38,6 +40,7 @@ export const getDisputeExamplePayload = {
     },
     evidence_details: {
       due_by: 1718000000,
+      enhanced_eligibility: {},
       has_evidence: false,
       past_due: false,
       submission_count: 0,

@@ -1,11 +1,11 @@
-import { cancelPaymentIntent } from "./cancel";
-import { capturePaymentIntent } from "./capture";
-import { confirmPaymentIntent } from "./confirm";
-import { createPaymentIntent } from "./create";
-import { getPaymentIntent } from "./get";
-import { listPaymentIntents } from "./list";
-import { searchPaymentIntent } from "./search";
-import { updatePaymentIntent } from "./update";
+import { cancelPaymentIntent } from "./cancelPaymentIntent";
+import { capturePaymentIntent } from "./capturePaymentIntent";
+import { confirmPaymentIntent } from "./confirmPaymentIntent";
+import { createPaymentIntent } from "./createPaymentIntent";
+import { getPaymentIntent } from "./getPaymentIntent";
+import { listPaymentIntents } from "./listPaymentIntents";
+import { searchPaymentIntent } from "./searchPaymentIntent";
+import { updatePaymentIntent } from "./updatePaymentIntent";
 export default {
   cancelPaymentIntent,
   capturePaymentIntent,

@@ -1,5 +1,17 @@
 import { input } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import { cleanNumberInput, cleanStringInput } from "../util";
+import {
+  connectionInput,
+  customerId,
+  fieldValues,
+  forwardCursorPagination,
+  metadata,
+  paymentId,
+  priceId,
+  subscriptionId,
+  timeout,
+} from "./common";
+import { collectionMethod } from "./invoices";
 export const cancelAt = input({
   label: "Cancel At",
   type: "string",
@@ -8,7 +20,7 @@ export const cancelAt = input({
   example: "1735689600",
   placeholder: "Enter Unix timestamp",
   required: false,
-  clean: cleanStringInput,
+  clean: cleanNumberInput,
 });
 export const promotionCode = input({
   label: "Promotion Code",
@@ -27,7 +39,7 @@ export const quantity = input({
   example: "1",
   placeholder: "Enter quantity",
   required: false,
-  clean: cleanStringInput,
+  clean: cleanNumberInput,
 });
 export const subscriptionPriceId = input({
   label: "Price ID",
@@ -45,5 +57,48 @@ export const daysUntilDue = input({
   example: "30",
   placeholder: "Enter number of days",
   required: false,
-  clean: cleanStringInput,
+  clean: cleanNumberInput,
 });
+export const createSubscriptionInputs = {
+  customerId,
+  priceId,
+  collectionMethod,
+  quantity,
+  paymentId,
+  cancelAt,
+  daysUntilDue,
+  fieldValues,
+  metadata,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const deleteSubscriptionInputs = {
+  subscriptionId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const getSubscriptionInputs = {
+  subscriptionId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const listSubscriptionsInputs = {
+  timeout,
+  pagination: forwardCursorPagination,
+  stripeConnection: connectionInput,
+};
+export const updateSubscriptionInputs = {
+  subscriptionId,
+  subscriptionPriceId,
+  quantity,
+  collectionMethod,
+  paymentId: {
+    ...paymentId,
+    dataSource: undefined,
+  },
+  cancelAt,
+  fieldValues,
+  metadata,
+  timeout,
+  stripeConnection: connectionInput,
+};

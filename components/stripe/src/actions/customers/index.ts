@@ -1,8 +1,8 @@
-import { createCustomer } from "./create";
-import { deleteCustomer } from "./delete";
-import { getCustomer } from "./get";
-import { listCustomers } from "./list";
-import { updateCustomer } from "./update";
+import { createCustomer } from "./createCustomer";
+import { deleteCustomer } from "./deleteCustomer";
+import { getCustomer } from "./getCustomer";
+import { listCustomers } from "./listCustomers";
+import { updateCustomer } from "./updateCustomer";
 export default {
   createCustomer,
   deleteCustomer,

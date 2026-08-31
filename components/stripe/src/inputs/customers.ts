@@ -1,7 +1,18 @@
-import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
+import {
+  cleanAmountInput,
+  cleanMetadataInput,
+  cleanStringInput,
+} from "../util";
+import {
+  connectionInput,
+  customerId,
+  fieldValues,
+  forwardCursorPagination,
+  timeout,
+} from "./common";
 export const customerName = input({
-  label: "Name",
+  label: "Full Name",
   type: "string",
   comments:
     "The customer's full name, displayed in the Stripe Dashboard and on receipts.",
@@ -21,7 +32,7 @@ export const customerPhone = input({
   clean: cleanStringInput,
 });
 export const customerAddress1 = input({
-  label: "Address Line 1",
+  label: "Street Address",
   type: "string",
   comments:
     "The first line of the customer's billing address, typically the street number and name.",
@@ -31,7 +42,7 @@ export const customerAddress1 = input({
   clean: cleanStringInput,
 });
 export const customerAddress2 = input({
-  label: "Address Line 2",
+  label: "Street Address Line 2",
   type: "string",
   comments:
     "The second line of the customer's billing address, used for apartment, suite, or unit numbers.",
@@ -60,7 +71,7 @@ export const customerCountry = input({
   clean: cleanStringInput,
 });
 export const customerPostal = input({
-  label: "Postal Code",
+  label: "Zip/Postal Code",
   type: "string",
   comments: "The postal or ZIP code portion of the customer's billing address.",
   example: "94105",
@@ -69,7 +80,7 @@ export const customerPostal = input({
   clean: cleanStringInput,
 });
 export const customerState = input({
-  label: "State",
+  label: "State/Province",
   type: "string",
   comments:
     "The state, province, or region code for the customer's billing address (e.g., `CA` for California).",
@@ -82,11 +93,11 @@ export const customerBalance = input({
   label: "Balance",
   type: "string",
   comments:
-    "The starting balance of the customer in cents (e.g., 5000 = $50.00).",
+    "The starting balance of the customer, as a whole number in the currency's smallest unit (5000 is $50.00 in USD, ¥5000 in JPY).",
   example: "5000",
-  placeholder: "Enter balance amount in cents",
+  placeholder: "Enter balance in a whole number (exclude decimals)",
   required: false,
-  clean: cleanStringInput,
+  clean: cleanAmountInput,
 });
 export const customerPaymentId = input({
   label: "Default Payment Method ID",
@@ -122,12 +133,61 @@ export const customerMetadata = input({
   comments:
     "Set of key-value pairs that can be attached to the customer. This can be useful for storing additional information about the object in a structured format.",
   collection: "keyvaluelist",
+  example: '{"order_id": "6735"}',
+  placeholder: "Enter metadata key-value pairs",
   required: false,
+  clean: cleanMetadataInput,
 });
-export const customerTaxExempt = input({
-  label: "Customer Tax Exempt",
-  type: "boolean",
-  comments: "When true, marks the customer as exempt from tax calculations.",
-  required: false,
-  clean: util.types.toBool,
+export const customerAddress = structuredObjectInput({
+  label: "Address",
+  comments: "Street, city, state, postal code, and country.",
+  inputs: {
+    customerAddress1,
+    customerAddress2,
+    customerCity,
+    customerState,
+    customerPostal,
+    customerCountry,
+  },
 });
+export const customerContactInfo = structuredObjectInput({
+  label: "Name & Contact Information",
+  comments: "Full name, email, and phone contact details.",
+  inputs: { customerName, customerEmail, customerPhone },
+});
+export const createCustomerInputs = {
+  contactInfo: customerContactInfo,
+  address: customerAddress,
+  customerBalance,
+  customerPaymentId,
+  customerDescription,
+  customerMetadata,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const deleteCustomerInputs = {
+  customerId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const getCustomerInputs = {
+  customerId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const listCustomersInputs = {
+  timeout,
+  pagination: forwardCursorPagination,
+  stripeConnection: connectionInput,
+};
+export const updateCustomerInputs = {
+  customerId: { ...customerId, required: false },
+  contactInfo: customerContactInfo,
+  address: customerAddress,
+  customerBalance,
+  customerDescription,
+  fieldValues,
+  customerMetadata,
+  timeout,
+  stripeConnection: connectionInput,
+};

@@ -26,7 +26,32 @@ export const getAccountExamplePayload = {
     metadata: {},
     payouts_enabled: true,
     settings: {
+      branding: {
+        icon: null,
+        logo: null,
+        primary_color: null,
+        secondary_color: null,
+      },
+      card_payments: {
+        decline_on: {
+          avs_failure: true,
+          cvc_failure: true,
+        },
+        statement_descriptor_prefix: null,
+        statement_descriptor_prefix_kana: null,
+        statement_descriptor_prefix_kanji: null,
+      },
+      dashboard: {
+        display_name: "Acme Corporation",
+        timezone: "US/Pacific",
+      },
+      payments: {
+        statement_descriptor: "ACME CORP",
+        statement_descriptor_kana: null,
+        statement_descriptor_kanji: null,
+      },
       payouts: {
+        debit_negative_balances: true,
         schedule: {
           delay_days: 2,
           interval: "daily",

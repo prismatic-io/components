@@ -1,16 +1,12 @@
 import { dataSource, util } from "@prismatic-io/spectral";
-import { createStripeClient } from "../auth";
-import {
-  connectionInput,
-  customerId,
-  endingBefore,
-  startingAfter,
-} from "../inputs";
+import { createStripeClient } from "../client";
+import { selectPaymentIntentInputs } from "../inputs";
 import type { PaymentIntent, StripeResponse } from "../types";
 export const selectPaymentIntent = dataSource({
   display: {
     label: "Select Payment Intent",
-    description: "A picklist of payment intents in your Stripe account.",
+    description:
+      "A picklist of payment intents in the connected Stripe account.",
   },
   dataSourceType: "picklist",
   perform: async (
@@ -32,17 +28,5 @@ export const selectPaymentIntent = dataSource({
       })),
     };
   },
-  inputs: {
-    stripeConnection: connectionInput,
-    customerId: {
-      ...customerId,
-      label: "Customer",
-      comments:
-        "Only return PaymentIntents for the customer specified by this customer ID.",
-      clean: util.types.toString,
-      dataSource: undefined,
-    },
-    startingAfter: { ...startingAfter, clean: util.types.toString },
-    endingBefore: { ...endingBefore, clean: util.types.toString },
-  },
+  inputs: selectPaymentIntentInputs,
 });

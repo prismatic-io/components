@@ -1,27 +1,20 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
-import { createStripeClient } from "../auth";
-import { connectionInput, customerId } from "../inputs";
+import { createStripeClient } from "../client";
+import { selectCardInputs } from "../inputs";
 export const selectCard = dataSource({
   display: {
     label: "Select Card",
     description:
-      "Select a card payment method for the selected customer in your Stripe account.",
+      "Select a card payment method for the selected customer in the connected Stripe account.",
   },
   dataSourceType: "picklist",
-  inputs: {
-    stripeConnection: connectionInput,
-    customerId: {
-      ...customerId,
-      dataSource: undefined,
-      required: true,
-    },
-  },
+  inputs: selectCardInputs,
   perform: async (_context, { stripeConnection, customerId }) => {
     const client = createStripeClient({
       stripeConnection,
     });
     const { data } = await client.paymentMethods.list({
-      customer: util.types.toString(customerId),
+      customer: customerId,
       type: "card",
       limit: 100,
     });

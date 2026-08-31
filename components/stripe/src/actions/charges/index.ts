@@ -1,7 +1,7 @@
-import { getCharge } from "./get";
-import { listCharges } from "./list";
-import { searchCharges } from "./search";
-import { updateCharge } from "./update";
+import { getCharge } from "./getCharge";
+import { listCharges } from "./listCharges";
+import { searchCharges } from "./searchCharges";
+import { updateCharge } from "./updateCharge";
 export default {
   getCharge,
   listCharges,

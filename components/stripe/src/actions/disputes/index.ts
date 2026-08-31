@@ -1,7 +1,7 @@
-import { closeDispute } from "./close";
-import { getDispute } from "./get";
-import { listDisputes } from "./list";
-import { updateDispute } from "./update";
+import { closeDispute } from "./closeDispute";
+import { getDispute } from "./getDispute";
+import { listDisputes } from "./listDisputes";
+import { updateDispute } from "./updateDispute";
 export default {
   closeDispute,
   getDispute,

@@ -1,5 +1,13 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
+import {
+  connectionInput,
+  cursorPagination,
+  customerId,
+  metadata,
+  paymentId,
+  timeout,
+} from "./common";
 export const cardNumber = input({
   label: "Card Number",
   type: "string",
@@ -16,7 +24,7 @@ export const expMonth = input({
   example: "12",
   placeholder: "Enter month (MM)",
   required: true,
-  clean: util.types.toString,
+  clean: util.types.toNumber,
 });
 export const expYear = input({
   label: "Expiration Year",
@@ -25,7 +33,7 @@ export const expYear = input({
   example: "2026",
   placeholder: "Enter year (YYYY)",
   required: true,
-  clean: util.types.toString,
+  clean: util.types.toNumber,
 });
 export const cvc = input({
   label: "CVC",
@@ -37,16 +45,17 @@ export const cvc = input({
   clean: util.types.toString,
 });
 export const billingCity = input({
-  label: "Billing City",
+  label: "City",
   type: "string",
-  comments: "The city for the billing address.",
+  comments:
+    "The city portion of the card's billing address, used for address verification.",
   example: "San Francisco",
   placeholder: "Enter city",
   required: false,
   clean: cleanStringInput,
 });
 export const billingCountry = input({
-  label: "Billing Country",
+  label: "Country",
   type: "string",
   comments: "The two-letter ISO country code for the billing address.",
   example: "US",
@@ -55,16 +64,17 @@ export const billingCountry = input({
   clean: cleanStringInput,
 });
 export const billingAddress1 = input({
-  label: "Billing Street Address",
+  label: "Street Address",
   type: "string",
-  comments: "The street address for the billing information.",
+  comments:
+    "The first line of the card's billing address, typically the street number and name.",
   example: "123 Main Street",
   placeholder: "Enter street address",
   required: false,
   clean: cleanStringInput,
 });
 export const billingAddress2 = input({
-  label: "Billing Address 2",
+  label: "Street Address Line 2",
   type: "string",
   comments:
     "Additional address information for the billing address (optional).",
@@ -74,16 +84,17 @@ export const billingAddress2 = input({
   clean: cleanStringInput,
 });
 export const postalCode = input({
-  label: "Billing Postal Code",
+  label: "Zip/Postal Code",
   type: "string",
-  comments: "The postal code for the billing address.",
+  comments:
+    "The postal or ZIP code portion of the card's billing address, used for address verification.",
   example: "94105",
   placeholder: "Enter postal code",
   required: false,
   clean: cleanStringInput,
 });
 export const state = input({
-  label: "Billing State",
+  label: "State/Province",
   type: "string",
   comments: "The state or province code for the billing address.",
   example: "CA",
@@ -92,9 +103,10 @@ export const state = input({
   clean: cleanStringInput,
 });
 export const billingEmail = input({
-  label: "Billing Email",
+  label: "Email",
   type: "string",
-  comments: "The email address for the billing contact.",
+  comments:
+    "The email address Stripe uses for billing receipts and correspondence about this card.",
   example: "billing@example.com",
   placeholder: "Enter email address",
   required: false,
@@ -103,18 +115,88 @@ export const billingEmail = input({
 export const billingName = input({
   label: "Full Name",
   type: "string",
-  comments: "The full name for the billing contact.",
+  comments:
+    "The cardholder name as it appears on the card, used for verification.",
   example: "John Doe",
   placeholder: "Enter full name",
   required: false,
   clean: cleanStringInput,
 });
 export const phone = input({
-  label: "Billing Phone",
+  label: "Phone",
   type: "string",
-  comments: "The phone number for the billing contact.",
+  comments:
+    "The phone number associated with the billing contact, including country code.",
   example: "18005551234",
   placeholder: "Enter phone number",
   required: false,
   clean: cleanStringInput,
 });
+export const cardBillingAddress = structuredObjectInput({
+  label: "Billing Address",
+  comments: "Billing street, city, state, postal code, and country.",
+  inputs: {
+    billingAddress1,
+    billingAddress2,
+    billingCity,
+    state,
+    postalCode,
+    billingCountry,
+  },
+});
+export const cardContactInfo = structuredObjectInput({
+  label: "Name & Contact Information",
+  comments: "Full name, email, and phone contact details.",
+  inputs: { billingName, billingEmail, phone },
+});
+export const attachCardInputs = {
+  customerId,
+  paymentId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const createCardInputs = {
+  customerId,
+  cardNumber,
+  expMonth,
+  expYear,
+  cvc,
+  billingAddress: cardBillingAddress,
+  contactInfo: cardContactInfo,
+  metadata,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const detachCardInputs = {
+  timeout,
+  customerId,
+  paymentId,
+  stripeConnection: connectionInput,
+};
+export const getCardInputs = {
+  timeout,
+  customerId,
+  paymentId,
+  stripeConnection: connectionInput,
+};
+export const listCardsInputs = {
+  timeout,
+  customerId,
+  pagination: cursorPagination,
+  stripeConnection: connectionInput,
+};
+export const updateCardInputs = {
+  customerId,
+  paymentId: {
+    ...paymentId,
+    required: true,
+    clean: util.types.toString,
+  },
+  expMonth,
+  expYear,
+  billingAddress: cardBillingAddress,
+  contactInfo: cardContactInfo,
+  metadata,
+  stripeConnection: connectionInput,
+  timeout,
+};

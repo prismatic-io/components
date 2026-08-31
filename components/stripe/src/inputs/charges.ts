@@ -1,11 +1,27 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
+import { cleanObjectInput, cleanStringInput } from "../util";
+import {
+  chargeId,
+  connectionInput,
+  customerId,
+  description,
+  forwardCursorPagination,
+  limit,
+  metadata,
+  page,
+  query,
+  receiptEmail,
+  shipping,
+  timeout,
+  transferGroup,
+} from "./common";
 export const payout = input({
   label: "Payout",
   type: "string",
   comments:
     "For automatic Stripe payouts only, only returns transactions that were paid out on the specified payout ID.",
   required: false,
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 export const type = input({
   label: "Type",
@@ -56,17 +72,69 @@ export const type = input({
   ],
   comments: "Only returns transactions of the given type.",
   required: false,
-  clean: util.types.toString,
+  clean: cleanStringInput,
 });
 export const fraudDetails = input({
   label: "Fraud Details",
   type: "code",
   language: "json",
+  placeholder: "Enter fraud details",
   required: false,
   comments:
-    "A set of key-value pairs you can attach to a charge giving information about its riskiness.",
+    "A set of key-value pairs that can be attached to a charge giving information about its riskiness.",
   example: JSON.stringify({
     user_report: "safe",
   }),
-  clean: util.types.toString,
+  clean: cleanObjectInput,
 });
+export const getChargeInputs = {
+  timeout,
+  stripeConnection: connectionInput,
+  chargeId,
+};
+export const listChargesInputs = {
+  timeout,
+  pagination: forwardCursorPagination,
+  stripeConnection: connectionInput,
+};
+export const searchChargesPagination = structuredObjectInput({
+  label: "Pagination",
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: {
+    limit: {
+      ...limit,
+      comments:
+        "A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.",
+    },
+    page,
+  },
+});
+export const searchChargesInputs = {
+  timeout,
+  stripeConnection: connectionInput,
+  query,
+  pagination: searchChargesPagination,
+};
+export const updateChargeInputs = {
+  timeout,
+  stripeConnection: connectionInput,
+  chargeId,
+  customerId: {
+    ...customerId,
+    label: "Customer ID",
+    comments:
+      "The ID of an existing customer that will be associated with this request.",
+    clean: cleanStringInput,
+  },
+  description: {
+    ...description,
+    comments:
+      "An arbitrary string that can be attached to a charge object. It is displayed in the web interface alongside the charge.",
+    clean: cleanStringInput,
+  },
+  metadata,
+  receiptEmail,
+  shipping,
+  fraudDetails,
+  transferGroup,
+};

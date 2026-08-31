@@ -1,4 +1,4 @@
-import { listAccounts } from "./list";
+import { listAccounts } from "./listAccounts";
 export default {
   listAccounts,
 };

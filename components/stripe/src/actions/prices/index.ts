@@ -1,7 +1,7 @@
-import { createPrice } from "./create";
-import { getPrice } from "./get";
-import { listPrices } from "./list";
-import { updatePrice } from "./update";
+import { createPrice } from "./createPrice";
+import { getPrice } from "./getPrice";
+import { listPrices } from "./listPrices";
+import { updatePrice } from "./updatePrice";
 export default {
   createPrice,
   getPrice,

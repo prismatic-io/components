@@ -1,5 +1,14 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import { cleanStringInput, cleanStringListInput } from "../util";
+import {
+  connectionInput,
+  description,
+  fieldValues,
+  forwardCursorPagination,
+  metadata,
+  productId,
+  timeout,
+} from "./common";
 export const productName = input({
   label: "Product Name",
   type: "string",
@@ -26,6 +35,7 @@ export const productImages = input({
   example: "https://example.com/images/product.jpg",
   placeholder: "Enter image URL",
   required: false,
+  clean: cleanStringListInput,
 });
 export const productType = input({
   label: "Product Type",
@@ -47,16 +57,6 @@ export const active = input({
   required: true,
   clean: util.types.toBool,
 });
-export const productCaption = input({
-  label: "Product Caption",
-  type: "string",
-  comments:
-    "A short one-line description of the product, meant to be displayable to the customer. May only be set if type=good.",
-  example: "Premium quality product",
-  placeholder: "Enter product caption",
-  required: false,
-  clean: cleanStringInput,
-});
 export const shippable = input({
   label: "Shippable",
   type: "boolean",
@@ -74,3 +74,44 @@ export const productUrl = input({
   required: false,
   clean: cleanStringInput,
 });
+export const createProductInputs = {
+  productName,
+  productType,
+  productUrl,
+  shippable,
+  active,
+  description,
+  productImages,
+  metadata,
+  fieldValues,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const deleteProductInputs = {
+  productId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const getProductInputs = {
+  productId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const listProductsInputs = {
+  timeout,
+  pagination: forwardCursorPagination,
+  stripeConnection: connectionInput,
+};
+export const updateProductInputs = {
+  productId,
+  updateProductName,
+  productUrl,
+  shippable,
+  active,
+  description,
+  productImages,
+  metadata,
+  fieldValues,
+  timeout,
+  stripeConnection: connectionInput,
+};

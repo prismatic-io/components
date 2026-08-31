@@ -1,8 +1,8 @@
-import { createProduct } from "./create";
-import { deleteProduct } from "./delete";
-import { getProduct } from "./get";
-import { listProducts } from "./list";
-import { updateProduct } from "./update";
+import { createProduct } from "./createProduct";
+import { deleteProduct } from "./deleteProduct";
+import { getProduct } from "./getProduct";
+import { listProducts } from "./listProducts";
+import { updateProduct } from "./updateProduct";
 export default {
   createProduct,
   deleteProduct,

@@ -1,9 +1,9 @@
-import { attachCard } from "./attach";
-import { createCard } from "./create";
-import { detachCard } from "./detach";
-import { getCard } from "./get";
-import { listCards } from "./list";
-import { updateCard } from "./update";
+import { attachCard } from "./attachCard";
+import { createCard } from "./createCard";
+import { detachCard } from "./detachCard";
+import { getCard } from "./getCard";
+import { listCards } from "./listCards";
+import { updateCard } from "./updateCard";
 export default {
   attachCard,
   createCard,

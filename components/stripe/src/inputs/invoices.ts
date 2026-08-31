@@ -1,5 +1,17 @@
-import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import { cleanNumberInput, cleanStringInput } from "../util";
+import {
+  applicationFeeAmount,
+  connectionInput,
+  customerId,
+  description,
+  fieldValues,
+  forwardCursorPagination,
+  metadata,
+  paymentId,
+  subscriptionId,
+  timeout,
+} from "./common";
 export const collectionMethod = input({
   label: "Collection Method",
   type: "string",
@@ -27,7 +39,7 @@ export const dueDate = input({
   example: "1735689600",
   placeholder: "Enter Unix timestamp",
   required: false,
-  clean: cleanStringInput,
+  clean: cleanNumberInput,
 });
 export const coupon = input({
   label: "Coupon",
@@ -47,3 +59,60 @@ export const discount = input({
   required: false,
   clean: cleanStringInput,
 });
+export const invoiceId = input({
+  label: "Invoice ID",
+  type: "string",
+  comments: "The unique identifier for the invoice.",
+  example: "in_1JaOXaDtJQgcyrdSRnsI9KW5",
+  placeholder: "Enter Invoice ID",
+  required: true,
+  dataSource: "selectInvoice",
+  clean: util.types.toString,
+});
+export const createInvoiceInputs = {
+  timeout,
+  customerId,
+  collectionMethod,
+  paymentId,
+  autoAdvance,
+  fieldValues,
+  subscriptionId,
+  description,
+  metadata,
+  dueDate,
+  stripeConnection: connectionInput,
+};
+export const deleteInvoiceInputs = {
+  invoiceId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const getInvoiceInputs = {
+  invoiceId,
+  timeout,
+  stripeConnection: connectionInput,
+};
+export const listInvoicesInputs = {
+  timeout,
+  pagination: forwardCursorPagination,
+  stripeConnection: connectionInput,
+};
+export const updateInvoiceAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  comments:
+    "Additional optional fields: includes Auto Advance, Application Fee Amount, Coupon, and Discount.",
+  inputs: { autoAdvance, applicationFeeAmount, coupon, discount },
+});
+export const updateInvoiceInputs = {
+  invoiceId,
+  customerId,
+  paymentId,
+  collectionMethod,
+  description,
+  dueDate,
+  fieldValues,
+  metadata,
+  additionalFields: updateInvoiceAdditionalFields,
+  timeout,
+  stripeConnection: connectionInput,
+};

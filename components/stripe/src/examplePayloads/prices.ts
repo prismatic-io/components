@@ -13,10 +13,8 @@ export const getPriceExamplePayload = {
     nickname: "Standard Monthly",
     product: "prod_NWjs8kKbJWmuuc",
     recurring: {
-      aggregate_usage: null,
       interval: "month",
       interval_count: 1,
-      trial_period_days: null,
       usage_type: "licensed",
     },
     tax_behavior: "unspecified",

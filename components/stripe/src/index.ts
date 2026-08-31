@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "Stripe",
     description:
-      "Manage payments, customers, subscriptions, and other objects in your Stripe account.",
+      "Manage payments, customers, subscriptions, and other objects in the connected Stripe account.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

@@ -75,7 +75,7 @@ export const pollChangesTriggerExamplePayload: {
       versionSequenceId: "1",
       externalVersion: "",
     },
-    flow: { id: "testFlowId", name: "Test Flow" },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
     startedAt: "2024-01-15T00:00:00.000Z",
     globalDebug: false,
   },
