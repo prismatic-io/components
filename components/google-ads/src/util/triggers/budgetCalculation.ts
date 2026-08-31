@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import {
   BUDGET_SEVERITY,
+  CRITICAL_ALERT_THRESHOLD,
   MICROS_TO_DOLLARS_CONVERSION_FACTOR,
 } from "../../constants";
 import type { BudgetStatus, CampaignQueryRow } from "../../types";
@@ -24,7 +25,7 @@ export const calculateBudgetStatus = (
     severity = BUDGET_SEVERITY.CRITICAL;
     shouldAlert = true;
     message = `Campaign has exceeded ${period}`;
-  } else if (percentSpent >= 95) {
+  } else if (percentSpent >= CRITICAL_ALERT_THRESHOLD) {
     severity = BUDGET_SEVERITY.CRITICAL;
     shouldAlert = true;
     message = `Campaign has spent ${percentSpent.toFixed(1)}% of ${period}`;

@@ -1,6 +1,6 @@
 The Campaign Budget Alerts trigger checks for campaigns approaching or exceeding budget thresholds on a configured schedule.
 
-This trigger uses the [Google Ads API Campaign resource](https://developers.google.com/google-ads/api/fields/v23/campaign) to query campaign budget and cost data, calculating budget utilization in real-time.
+This trigger uses the [Google Ads API Campaign resource](https://developers.google.com/google-ads/api/fields/v25/campaign) to query campaign budget and cost data, calculating budget utilization in real-time.
 
 #### How It Works
 
@@ -18,19 +18,35 @@ Budget alerts are classified by severity:
 
 Only campaigns with Warning or Critical severity are included in the results.
 
-#### Configuration
+**Batching**
 
-**Required Inputs:**
-- **Connection** - Google Ads OAuth2 connection
-- **Customer ID** - The Google Ads client account ID (format: `111-222-4444` or `1112224444`)
+This trigger supports opt-in batching. When batching is enabled on the flow, each budget alert (or each group of up to the configured batch size) is dispatched as its own execution rather than delivering all alerts in a single payload. The default batch size is 50.
 
-**Optional Inputs:**
-- **Manager Customer ID** - Manager account ID when accessing sub-accounts
-- **Alert Threshold** - Percentage threshold for triggering alerts (default: 80)
+Batching splits the executions, not the fetch: the trigger still retrieves the full set of budget alerts in a single poll before any dispatching happens. When batching is enabled, each execution receives one item:
+
+```json
+{
+  "changeType": "warning",
+  "record": {
+    "campaignId": "23302011123",
+    "campaignName": "Example-Campaign-1",
+    "budgetAmount": 100,
+    "spent": 95,
+    "percentSpent": 95,
+    "remaining": 5,
+    "period": "DAILY",
+    "shouldAlert": true,
+    "severity": "warning",
+    "message": "Campaign approaching daily budget limit"
+  }
+}
+```
 
 #### Returned Data
 
 The trigger returns an object containing budget alerts and metadata. When no campaigns exceed the threshold, returns `polledNoChanges: true`.
+
+Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>View example response</summary>

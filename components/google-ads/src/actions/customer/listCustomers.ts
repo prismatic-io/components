@@ -1,23 +1,29 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listCustomersExamplePayload } from "../../examplePayloads";
 import { listCustomersInputs } from "../../inputs";
+import { listCustomersOutputSchema } from "../../outputSchemas";
 import { searchGoogleAds } from "../../util";
 export const listCustomers = action({
   display: {
     label: "List Customers by Manager",
-    description: "List all customers under a manager account.",
+    description: "Lists all customers under a manager account.",
   },
   inputs: listCustomersInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCustomersOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, managerCustomerId, pageToken, fetchAll },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      context.logger,
-    );
+    const client = createClient({
+      connection: connection,
+      debugEnabled: context.debug.enabled,
+      logger: context.logger,
+    });
     const data = await searchGoogleAds(client, {
       customerId: managerCustomerId,
       params: {
@@ -36,5 +42,8 @@ export const listCustomers = action({
     });
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listCustomersExamplePayload,
   examplePayload: listCustomersExamplePayload,
 });

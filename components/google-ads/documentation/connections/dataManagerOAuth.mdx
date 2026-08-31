@@ -6,7 +6,7 @@ This connection uses OAuth 2.0 to connect to the Google [Data Manager API](https
 - A Google Ads account that owns the conversion actions to ingest into
 - The numeric **Customer ID** of the Google Ads account that will receive the offline conversions (configured per-action, not on the connection)
 
-#### Configure Google Cloud Project
+#### Setup Steps
 
 1. Sign in to the [Google Cloud Console](https://console.cloud.google.com/) and select or create a project.
 1. Select **APIs & Services** -> **Enabled APIs & services** from the left hand menu.
@@ -28,6 +28,8 @@ This connection uses OAuth 2.0 to connect to the Google [Data Manager API](https
 
 #### Configure the Connection
 
+Create a connection of type **Data Manager OAuth 2.0** and provide the following values:
+
 - **Client ID**: From the Google Cloud Console OAuth client credentials
 - **Client Secret**: From the Google Cloud Console OAuth client credentials
 - **API Version**: The Google Data Manager API version to use. Defaults to `v1`. Refer to the [Data Manager API reference](https://developers.google.com/data-manager/api/reference/rest) for the latest version.
@@ -46,7 +48,7 @@ The component supports the following Google Data Manager API versions through th
 |---------|--------|
 | **v1** | Recommended (default) |
 
-Refer to the official [Data Manager API release notes](https://developers.google.com/data-manager/api/release-notes) for the latest version information.
+Refer to the official [Data Manager API release notes](https://ads-developers.googleblog.com/search/label/data_manager_api) for the latest version information.
 
 #### App Verification
 

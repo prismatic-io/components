@@ -1,27 +1,27 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
 import { BUDGET_SEVERITY } from "./constants";
-export const externalAttributionDataPayload = {
+export const externalAttributionDataExampleInput = {
   externalAttributionCredit: 0.75,
   externalAttributionModel: "LINEAR",
 };
-export const customVariablePayload = {
+export const customVariableExampleInput = {
   conversionCustomVariable:
     "customers/1234567890/conversionCustomVariables/11111",
   value: "premium_tier",
 };
-export const itemPayload = {
+export const cartDataItemExampleInput = {
   productId: "SKU-12345",
   quantity: 2,
   unitPrice: 49.99,
 };
-export const cartDataPayload = {
+export const cartDataExampleInput = {
   merchantId: "1234567",
   feedCountryCode: "US",
   feedLanguageCode: "EN",
   localTransactionCost: 5.99,
-  items: [itemPayload],
+  items: [cartDataItemExampleInput],
 };
-export const offlineUserAddressInfo = {
+export const offlineUserAddressInfoExampleInput = {
   hashedFirstName:
     "a8cfcd74832004951b4408cdb0a5dbcd8c7e52d43f7fe244bf720582e05241da",
   hashedLastName:
@@ -33,7 +33,7 @@ export const offlineUserAddressInfo = {
   hashedStreetAddress:
     "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
 };
-export const userIdentifierPayload = {
+export const userIdentifierExampleInput = {
   userIdentifierSource: "FIRST_PARTY",
   hashedEmail:
     "a1159e9df3670d549d04524532629f5477ceb7deec9b45e47e8c009506ecb2c8",
@@ -41,22 +41,22 @@ export const userIdentifierPayload = {
     "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   mobileId: "cdda802e-fb9c-47ad-0794d394c913",
   thirdPartyUserId: "ext-user-98765",
-  addressInfo: offlineUserAddressInfo,
+  addressInfo: offlineUserAddressInfoExampleInput,
 };
-export const consentPayload = {
+export const consentExampleInput = {
   adUserData: "GRANTED",
   adPersonalization: "GRANTED",
 };
-export const conversionsPayload = [
+export const conversionsExampleInput = [
   {
     gbraid: "gbraid_identifier_string",
     wbraid: "wbraid_identifier_string",
-    externalAttributionData: externalAttributionDataPayload,
-    customVariables: [customVariablePayload],
-    cartData: cartDataPayload,
-    userIdentifiers: [userIdentifierPayload],
+    externalAttributionData: externalAttributionDataExampleInput,
+    customVariables: [customVariableExampleInput],
+    cartData: cartDataExampleInput,
+    userIdentifiers: [userIdentifierExampleInput],
     conversionEnvironment: "WEB",
-    consent: consentPayload,
+    consent: consentExampleInput,
     gclid: "TeSter123.gClIdString_xYz",
     conversionAction: "customers/1234567890/conversionActions/987654321",
     conversionDateTime: "2026-01-15 10:30:00-05:00",
@@ -65,27 +65,20 @@ export const conversionsPayload = [
     orderId: "ORDER-2026-00123",
   },
 ];
-export const dataManagerEventsPayload = [
-  {
-    eventTimestamp: "2026-05-15T12:30:00Z",
-    adIdentifiers: {
-      gclid: "TeSter123.gClIdString_xYz",
-    },
-    conversionValue: 149.99,
-    currency: "USD",
-    transactionId: "ORDER-2026-00123",
-    consent: {
-      adUserData: "GRANTED",
-      adPersonalization: "GRANTED",
-    },
-  },
-];
 export const ingestOfflineConversionsExamplePayload = {
   data: {
     requestId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    fieldWarnings: [
+      {
+        reason: "WARNING_REASON_CUSTOM_VARIABLE_NOT_ENABLED",
+        description:
+          "The custom variable is not enabled in the destination account.",
+        field: "events[0].custom_variables[0]",
+      },
+    ],
   },
 };
-export const operation = {
+export const campaignOperationExampleInput = {
   updateMask: "status,name",
   create: {
     name: "Example Campaign",
@@ -99,8 +92,8 @@ export const operation = {
   },
   remove: "customers/1234567890/campaigns/1122334455",
 };
-export const operationPayload = [operation];
-export const operationCriteriaPayload = [
+export const campaignOperationsExampleInput = [campaignOperationExampleInput];
+export const campaignCriteriaOperationsExampleInput = [
   {
     updateMask: "bidModifier",
     create: {
@@ -117,34 +110,34 @@ export const operationCriteriaPayload = [
     remove: "customers/1234567890/campaignCriteria/1122334455~987654321",
   },
 ];
-export const uploadConversionGenericResponseExamplePayload = {
-  data: {
-    partialFailureError: {
-      code: 3,
-      message:
-        "Multiple errors in 'conversions' field. Details are provided in the 'details' field.",
-      details: [
+const uploadConversionsPartialFailureError = {
+  code: 3,
+  message:
+    "Multiple errors in 'conversions' field. Details are provided in the 'details' field.",
+  details: [
+    {
+      "@type":
+        "type.googleapis.com/google.ads.googleads.v25.errors.GoogleAdsFailure",
+      errors: [
         {
-          "@type":
-            "type.googleapis.com/google.ads.googleads.v23.errors.GoogleAdsFailure",
-          errors: [
-            {
-              errorCode: {
-                conversionUploadError: "INVALID_CONVERSION_ACTION",
-              },
-              message:
-                "The conversion action specified in the request is invalid.",
-              location: {
-                fieldPathElements: [
-                  { fieldName: "conversions", index: 0 },
-                  { fieldName: "conversionAction" },
-                ],
-              },
-            },
-          ],
+          errorCode: {
+            conversionUploadError: "INVALID_CONVERSION_ACTION",
+          },
+          message: "The conversion action specified in the request is invalid.",
+          location: {
+            fieldPathElements: [
+              { fieldName: "conversions", index: 0 },
+              { fieldName: "conversionAction" },
+            ],
+          },
         },
       ],
     },
+  ],
+};
+export const uploadCallConversionsExamplePayload = {
+  data: {
+    partialFailureError: uploadConversionsPartialFailureError,
     results: [
       {
         callerId: "+18005551234",
@@ -153,6 +146,28 @@ export const uploadConversionGenericResponseExamplePayload = {
         conversionDateTime: "2026-01-15 10:30:00-05:00",
       },
     ],
+  },
+};
+export const uploadClickConversionsExamplePayload = {
+  data: {
+    partialFailureError: uploadConversionsPartialFailureError,
+    results: [
+      {
+        gclid: "TeSter123.gClIdString_xYz",
+        gbraid: "gbraid_identifier_string",
+        wbraid: "wbraid_identifier_string",
+        conversionAction: "customers/1234567890/conversionActions/987654321",
+        conversionDateTime: "2026-01-15 10:30:00-05:00",
+        userIdentifiers: [
+          {
+            userIdentifierSource: "FIRST_PARTY",
+            hashedEmail:
+              "a1159e9df3670d549d04524532629f5477ceb7deec9b45e47e8c009506ecb2c8",
+          },
+        ],
+      },
+    ],
+    jobId: "1234567890123456789",
   },
 };
 export const confirmClientLinkExamplePayload = {
@@ -218,7 +233,7 @@ export const mutateCampaignCriteriaExamplePayload = {
     ],
   },
 };
-export const searchAdsExamplePayload: {
+export const searchAdsLocalServicesExamplePayload: {
   data: unknown;
 } = {
   data: {
@@ -249,15 +264,15 @@ export const accountReportsExamplePayload = {
         averageFiveStarRating: 4.8,
         averageWeeklyBudget: 500,
         businessName: "Example Plumbing Services",
-        currentPeriodChargedLeads: 15,
-        currentPeriodConnectedPhoneCalls: 25,
-        currentPeriodPhoneCalls: 30,
+        currentPeriodChargedLeads: "15",
+        currentPeriodConnectedPhoneCalls: "25",
+        currentPeriodPhoneCalls: "30",
         currentPeriodTotalCost: 450.5,
-        impressionsLastTwoDays: 1250,
+        impressionsLastTwoDays: "1250",
         phoneLeadResponsiveness: 0.95,
-        previousPeriodChargedLeads: 12,
-        previousPeriodConnectedPhoneCalls: 20,
-        previousPeriodPhoneCalls: 28,
+        previousPeriodChargedLeads: "12",
+        previousPeriodConnectedPhoneCalls: "20",
+        previousPeriodPhoneCalls: "28",
         previousPeriodTotalCost: 380.25,
         totalReview: 125,
       },
@@ -270,12 +285,16 @@ export const detailedLeadReportsExamplePayload = {
     detailedLeadReports: [
       {
         accountId: "1234567890",
+        aggregatorInfo: {
+          aggregatorProviderId: "1234567890",
+        },
         businessName: "Example Plumbing Services",
         leadType: "MESSAGE",
         chargeStatus: "CHARGED",
         currencyCode: "USD",
         disputeStatus: "DISPUTE_INELIGIBLE",
         geo: "San Francisco, CA",
+        googleAdsLeadId: "1122334455",
         leadCategory: "PLUMBER",
         leadCreationTimestamp: "2026-01-15T10:30:00Z",
         leadId: "987654321",
@@ -284,6 +303,10 @@ export const detailedLeadReportsExamplePayload = {
           customerName: "Jane Smith",
           jobType: "Pipe Repair",
           postalCode: "94105",
+        },
+        timezone: {
+          id: "America/Los_Angeles",
+          version: "",
         },
       },
     ],
@@ -295,6 +318,7 @@ export const inviteUserExamplePayload = {
     result: {
       resourceName:
         "customers/1234567890/customerUserAccessInvitations/9876543210",
+      multiPartyAuthReview: "",
     },
   },
 };
@@ -346,6 +370,12 @@ export const rawRequestExamplePayload = {
     resourceNames: ["customers/1234567890", "customers/5555555555"],
   },
 };
+export const listAccessibleCustomersDataSourceExamplePayload = {
+  result: [{ label: "Example Account - 123-456-7890", key: "1234567890" }],
+};
+export const listAccessibleSubAccountsExamplePayload = {
+  result: [{ label: "Example Account - 123-456-7890", key: "1234567890" }],
+};
 export const campaignChangesTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -363,19 +393,29 @@ export const campaignChangesTriggerExamplePayload: {
             field: "campaign",
             oldValue: null,
             newValue: {
-              campaign: {
-                resourceName: "customers/1234567890/campaigns/12345678901",
-                status: "ENABLED",
-                name: "Example-Campaign-1",
-                id: "12345678901",
-              },
+              resourceName: "customers/1234567890/campaigns/12345678901",
+              status: "ENABLED",
+              name: "Example-Campaign-1",
+              id: "12345678901",
             },
-            changedAt: "2026-01-01T12:00:00.000Z",
+            changedAt: "2026-01-01 12:00:00",
+          },
+          {
+            changeType: "budget",
+            campaignId: "12345678901",
+            campaignName: "Example-Campaign-1",
+            field: "budget_amount_micros",
+            oldValue: "50000000",
+            newValue: "75000000",
+            changedAt: "2026-01-01 12:05:00",
           },
         ],
-        totalCampaigns: 1,
-        changesDetected: 1,
-        syncedAt: "2026-01-01",
+        changesDetected: 2,
+        timeRange: {
+          start: "2026-01-01 11:00:00",
+          end: "2026-01-01 12:10:00",
+        },
+        syncedAt: "2026-01-01 12:10:00",
       },
     },
     pathFragment: "",

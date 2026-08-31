@@ -6,9 +6,10 @@ import { rawRequestInputs } from "../../inputs";
 export const rawRequest = action({
   display: {
     label: "Raw Request",
-    description: "Send raw HTTP request to Google Ads.",
+    description: "Sends a raw HTTP request to the Google Ads API.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...rawRequestInputs }) => {
     const { accessToken, developerToken } = validateConnection(connection);
     const authorizationHeaders: Record<string, string> = {

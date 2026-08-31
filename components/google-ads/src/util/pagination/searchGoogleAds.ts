@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { googleAdsSearchPath } from "../../constants";
 import type {
   GoogleAdsSearchResponse,
   SearchGoogleAdsOptions,
@@ -8,7 +9,7 @@ export async function searchGoogleAds<T>(
   options: SearchGoogleAdsOptions,
 ): Promise<GoogleAdsSearchResponse<T>> {
   const { customerId, params, fetchAll = false } = options;
-  const url = `/customers/${customerId}/googleAds:search`;
+  const url = googleAdsSearchPath(customerId);
   if (fetchAll) {
     options.params.pageToken = undefined;
   }

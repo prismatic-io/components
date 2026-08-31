@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { listAccessibleCustomersDataSourceInputs } from "../inputs";
+import { listAccessibleCustomersDataSourceExamplePayload } from "../examplePayloads";
+import { listAccessibleCustomersInputs } from "../inputs";
 import {
   cleanCustomerId,
   formatAccountNumber,
@@ -11,9 +12,13 @@ export const listAccessibleCustomers = dataSource({
     label: "List Accessible Customers",
     description: "Get a list of accessible customers for the logged in user.",
   },
-  inputs: listAccessibleCustomersDataSourceInputs,
+  inputs: listAccessibleCustomersInputs,
   perform: async (context, { connection }) => {
-    const client = createClient(connection, false, context.logger);
+    const client = createClient({
+      connection: connection,
+      debugEnabled: false,
+      logger: context.logger,
+    });
     const { data } = await client.get("customers:listAccessibleCustomers");
     const clientAccounts = await Promise.all(
       data.resourceNames.map(async (resourceName: string) => {
@@ -32,7 +37,5 @@ export const listAccessibleCustomers = dataSource({
     return { result: clientAccounts };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "Example Account - 123-456-7890", key: "1234567890" }],
-  },
+  examplePayload: listAccessibleCustomersDataSourceExamplePayload,
 });

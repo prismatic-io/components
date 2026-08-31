@@ -1,16 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import type { ActionOutputSchema, PerformSafety } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { camelCase, startCase } from "lodash";
 import { createClient } from "../../client";
+import { googleAdsSearchPath } from "../../constants";
 import {
   getConversionActionExamplePayload,
   getCustomerExamplePayload,
 } from "../../examplePayloads";
+import { customerEntityInputs } from "../../inputs";
 import {
-  connectionInput,
-  customerIdInput,
-  managerCustomerIdInput,
-  pageTokenInput,
-} from "../../inputs";
+  getConversionActionOutputSchema,
+  getCustomerOutputSchema,
+} from "../../outputSchemas";
 import { cleanCustomerId } from "../../util";
 const customerEntities = {
   customer: ["id", "descriptive_name", "status", "test_account", "manager"],
@@ -25,6 +26,25 @@ const entityExamplePayloads: Record<
   customer: getCustomerExamplePayload,
   conversion_action: getConversionActionExamplePayload,
 };
+const entityOutputSchemas: Record<string, ActionOutputSchema["schema"]> = {
+  customer: getCustomerOutputSchema,
+  conversion_action: getConversionActionOutputSchema,
+};
+const entityPerformSafety: Record<string, PerformSafety> = {
+  customer: "safe",
+  conversion_action: "notAllowed",
+};
+const entityExamplePerforms: Record<
+  string,
+  | (() => Promise<{
+      data: unknown;
+    }>)
+  | undefined
+> = {
+  conversion_action: async (): Promise<{
+    data: unknown;
+  }> => getConversionActionExamplePayload,
+};
 export const customerEntityActions = Object.entries(customerEntities).reduce(
   (result, [entityName, fieldsList]) => {
     const key = camelCase(`get ${entityName}`);
@@ -37,29 +57,27 @@ export const customerEntityActions = Object.entries(customerEntities).reduce(
         label: `Get ${name}`,
         description: `Retrieve ${name} data for a customer account.`,
       },
-      inputs: {
-        connection: connectionInput,
-        customerId: customerIdInput,
-        managerCustomerId: { ...managerCustomerIdInput, required: false },
-        pageToken: pageTokenInput,
-      },
+      inputs: customerEntityInputs,
+      outputSchema: outputSchema({
+        type: "actionOutput",
+        schema: entityOutputSchemas[entityName],
+      }),
+      performSafety: entityPerformSafety[entityName],
       perform: async (context, params) => {
-        const client = createClient(
-          params.connection,
-          context.debug.enabled,
-          context.logger,
-          params.managerCustomerId,
-        );
+        const client = createClient({
+          connection: params.connection,
+          debugEnabled: context.debug.enabled,
+          logger: context.logger,
+          loginCustomerId: params.managerCustomerId,
+        });
         const id = cleanCustomerId(params.customerId);
-        const { data } = await client.post(
-          `/customers/${id}/googleAds:search`,
-          {
-            pageToken: params.pageToken || undefined,
-            query: `SELECT ${querySelect} FROM ${entityName}`,
-          },
-        );
+        const { data } = await client.post(googleAdsSearchPath(id), {
+          pageToken: params.pageToken || undefined,
+          query: `SELECT ${querySelect} FROM ${entityName}`,
+        });
         return { data };
       },
+      examplePerform: entityExamplePerforms[entityName],
       examplePayload: entityExamplePayloads[entityName],
     });
     result[key] = entityAction;

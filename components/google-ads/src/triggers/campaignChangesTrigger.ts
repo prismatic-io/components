@@ -1,17 +1,81 @@
+import type {
+  ActionInputParameters,
+  PollingContext,
+  TriggerPayload,
+} from "@prismatic-io/spectral";
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { createClient } from "../client";
 import { campaignChangesTriggerExamplePayload } from "../examplePayloads";
 import { campaignChangesTriggerInputs } from "../inputs";
-import type { CampaignQueryRow, PollingState } from "../types";
+import type {
+  CampaignChangeBatchItem,
+  CampaignChangeEventRow,
+  CampaignChangesObject,
+} from "../types";
 import {
-  buildCampaignQuery,
-  detectCampaignChanges,
-  getCurrentDate,
-  getCustomerTimezone,
-  getPreviousDate,
+  buildCampaignChangeEventQuery,
+  buildTriggerPayload,
+  clampToChangeEventWindow,
+  createTriggerClient,
+  getGAQLDateTime,
+  getPollingState,
   handlePollingError,
+  mapChangeEventsToCampaignChanges,
+  resolveCampaignChanges,
   searchGoogleAds,
 } from "../util";
+const campaignChangesPerform = async (
+  context: PollingContext,
+  payload: TriggerPayload,
+  params: ActionInputParameters<typeof campaignChangesTriggerInputs>,
+) => {
+  const { client, timezone } = await createTriggerClient(context, params);
+  const toTime = getGAQLDateTime(timezone);
+  const pollState = getPollingState(context, {
+    lastChangeTime: getGAQLDateTime(timezone, 1),
+    errorCount: 0,
+    consecutiveErrors: 0,
+  });
+  try {
+    const sinceTime = clampToChangeEventWindow(
+      pollState.lastChangeTime,
+      timezone,
+    );
+    const data = await searchGoogleAds<CampaignChangeEventRow>(client, {
+      customerId: params.customerId,
+      params: {
+        query: buildCampaignChangeEventQuery({
+          sinceTime,
+          toTime,
+          changeTypes: params.changeTypes,
+        }),
+      },
+      fetchAll: true,
+    });
+    const changes = mapChangeEventsToCampaignChanges(
+      data.results ?? [],
+      params.changeTypes,
+    );
+    context.polling.setState({
+      lastChangeTime: toTime,
+      errorCount: pollState.errorCount,
+      consecutiveErrors: 0,
+    });
+    return Promise.resolve({
+      payload: buildTriggerPayload(payload, {
+        changes,
+        changesDetected: changes.length,
+        timeRange: {
+          start: sinceTime,
+          end: toTime,
+        },
+        syncedAt: toTime,
+      }),
+      polledNoChanges: changes.length === 0,
+    });
+  } catch (e) {
+    handlePollingError(e as Error, pollState, context, "Google Ads");
+  }
+};
 export const campaignChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Campaigns",
@@ -19,68 +83,13 @@ export const campaignChangesTrigger = pollingTrigger({
       "Checks for new and updated campaigns in a Google Ads account on a configured schedule.",
   },
   inputs: campaignChangesTriggerInputs,
-  perform: async (context, payload, params) => {
-    const client = createClient(
-      params.connection,
-      context.debug.enabled,
-      context.logger,
-      params.managerCustomerId,
-    );
-    const timezone = await getCustomerTimezone(client, params.customerId);
-    const pollState =
-      Object.keys(context.polling.getState()).length > 0
-        ? (context.polling.getState() as unknown as PollingState)
-        : {
-            lastSyncDate: getPreviousDate(timezone),
-            campaigns: [],
-            errorCount: 0,
-            consecutiveErrors: 0,
-          };
-    const newSyncDate = getCurrentDate(timezone);
-    try {
-      const query = buildCampaignQuery({
-        customerId: params.customerId,
-        changeTypes: params.changeTypes,
-        sinceDate: pollState.lastSyncDate,
-        toDate: newSyncDate,
-      });
-      const data = await searchGoogleAds<CampaignQueryRow>(client, {
-        customerId: params.customerId,
-        params: {
-          query,
-        },
-        fetchAll: true,
-      });
-      const results = data.results ?? [];
-      const changes = detectCampaignChanges(
-        results,
-        pollState.campaigns,
-        params.changeTypes,
-      );
-      context.polling.setState({
-        lastSyncDate: newSyncDate,
-        campaigns: results,
-        errorCount: pollState.errorCount,
-        consecutiveErrors: 0,
-      });
-      return Promise.resolve({
-        payload: {
-          ...payload,
-          body: {
-            data: {
-              changes,
-              totalCampaigns: results.length,
-              changesDetected: changes.length,
-              syncedAt: newSyncDate,
-            },
-          },
-        },
-        polledNoChanges: changes.length === 0,
-      });
-    } catch (e) {
-      handlePollingError(e as Error, pollState, context, "Google Ads");
-    }
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): CampaignChangeBatchItem[] =>
+      resolveCampaignChanges(payload.body.data as CampaignChangesObject),
   },
+  perform: campaignChangesPerform,
   examplePayload: campaignChangesTriggerExamplePayload,
 });
 export default campaignChangesTrigger;

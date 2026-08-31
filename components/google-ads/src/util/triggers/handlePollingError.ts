@@ -1,9 +1,6 @@
 import type { PollingContext } from "@prismatic-io/spectral";
-interface BasePollingState {
-  errorCount?: number;
-  consecutiveErrors?: number;
-  [key: string]: any;
-}
+import { MAX_CONSECUTIVE_POLLING_ERRORS } from "../../constants";
+import type { BasePollingState } from "../../types";
 export const handlePollingError = <T extends BasePollingState>(
   error: Error,
   pollState: T,
@@ -17,7 +14,7 @@ export const handlePollingError = <T extends BasePollingState>(
     errorCount,
     consecutiveErrors,
   });
-  if (consecutiveErrors >= 3) {
+  if (consecutiveErrors >= MAX_CONSECUTIVE_POLLING_ERRORS) {
     context.logger.error(
       `${serviceName} polling failed ${consecutiveErrors} times consecutively. ` +
         `Error: ${error.message}`,

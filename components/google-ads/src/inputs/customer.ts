@@ -27,8 +27,11 @@ export const createClientLinkInputs = {
   managerCustomerId: managerCustomerIdInput,
   customerId: customerIdInput,
 };
-export const listAccessibleCustomersInputs = {
+export const customerEntityInputs = {
   connection: connectionInput,
+  customerId: customerIdInput,
+  managerCustomerId: { ...managerCustomerIdInput, required: false },
+  pageToken: pageTokenInput,
 };
 export const listCustomersInputs = {
   connection: connectionInput,

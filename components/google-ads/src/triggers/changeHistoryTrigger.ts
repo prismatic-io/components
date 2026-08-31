@@ -1,14 +1,79 @@
+import type {
+  ActionInputParameters,
+  PollingContext,
+  TriggerPayload,
+} from "@prismatic-io/spectral";
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { createClient } from "../client";
 import { changeHistoryTriggerExamplePayload } from "../examplePayloads";
 import { changeHistoryTriggerInputs } from "../inputs";
-import type { ChangeEventResponse, PollingState } from "../types";
+import type {
+  ChangeEventResponse,
+  ChangeHistoryBatchItem,
+  ChangeHistoryChangesObject,
+} from "../types";
 import {
-  getCustomerTimezone,
+  buildChangeHistoryQuery,
+  buildTriggerPayload,
+  createTriggerClient,
   getGAQLDateTime,
+  getPollingState,
   handlePollingError,
+  resolveChangeHistoryItems,
   searchGoogleAds,
 } from "../util";
+const changeHistoryPerform = async (
+  context: PollingContext,
+  payload: TriggerPayload,
+  params: ActionInputParameters<typeof changeHistoryTriggerInputs>,
+) => {
+  const { client, timezone } = await createTriggerClient(context, params);
+  const nowTime = getGAQLDateTime(timezone);
+  const pollState = getPollingState(context, {
+    lastChangeTime: getGAQLDateTime(timezone, 1),
+    errorCount: 0,
+    consecutiveErrors: 0,
+  });
+  try {
+    const sinceTime = pollState.lastChangeTime;
+    const data = await searchGoogleAds<ChangeEventResponse>(client, {
+      customerId: params.customerId,
+      params: {
+        query: buildChangeHistoryQuery({
+          sinceTime,
+          toTime: nowTime,
+          resourceTypes: params.resourceTypes,
+          includeUserInfo: params.includeUserInfo,
+        }),
+      },
+      fetchAll: true,
+    });
+    const results = data.results ?? [];
+    context.polling.setState({
+      lastChangeTime: nowTime,
+      changeCount: results.length,
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    return Promise.resolve({
+      payload: buildTriggerPayload(payload, {
+        changes: results,
+        changeCount: results.length,
+        timeRange: {
+          start: sinceTime,
+          end: nowTime,
+        },
+      }),
+      polledNoChanges: results.length === 0,
+    });
+  } catch (e) {
+    handlePollingError(
+      e as Error,
+      pollState,
+      context,
+      "Google Ads change history",
+    );
+  }
+};
 export const changeHistoryTrigger = pollingTrigger({
   display: {
     label: "Account Change History",
@@ -16,85 +81,15 @@ export const changeHistoryTrigger = pollingTrigger({
       "Checks for Google Ads account modifications with user attribution on a configured schedule.",
   },
   inputs: changeHistoryTriggerInputs,
-  perform: async (context, payload, params) => {
-    const client = createClient(
-      params.connection,
-      context.debug.enabled,
-      context.logger,
-      params.managerCustomerId,
-    );
-    const timezone = await getCustomerTimezone(client, params.customerId);
-    const nowTime = getGAQLDateTime(timezone);
-    const pollState =
-      Object.keys(context.polling.getState()).length > 0
-        ? (context.polling.getState() as unknown as PollingState)
-        : {
-            lastChangeTime: getGAQLDateTime(timezone, 1),
-            errorCount: 0,
-            consecutiveErrors: 0,
-          };
-    try {
-      const sinceTime = pollState.lastChangeTime;
-      const resourceFilter =
-        params.resourceTypes.length > 0
-          ? `AND change_event.change_resource_type IN (${params.resourceTypes.map((t: string) => `'${t}'`).join(",")})`
-          : "";
-      const query = `
-        SELECT
-          change_event.change_date_time,
-          change_event.change_resource_type,
-          change_event.change_resource_name,
-          ${params.includeUserInfo ? "change_event.user_email," : ""}
-          ${params.includeUserInfo ? "change_event.client_type," : ""}
-          change_event.resource_change_operation,
-          change_event.old_resource,
-          change_event.new_resource
-        FROM change_event
-        WHERE change_event.change_date_time >= '${sinceTime}'
-          AND change_event.change_date_time < '${nowTime}'
-          ${resourceFilter}
-        ORDER BY change_event.change_date_time DESC
-        LIMIT 1000
-      `;
-      const data = await searchGoogleAds<ChangeEventResponse>(client, {
-        customerId: params.customerId,
-        params: {
-          query,
-        },
-        fetchAll: true,
-      });
-      const results = data.results ?? [];
-      context.polling.setState({
-        lastChangeTime: nowTime,
-        changeCount: results.length,
-        errorCount: 0,
-        consecutiveErrors: 0,
-      });
-      return Promise.resolve({
-        payload: {
-          ...payload,
-          body: {
-            data: {
-              changes: results,
-              changeCount: results.length,
-              timeRange: {
-                start: sinceTime,
-                end: nowTime,
-              },
-            },
-          },
-        },
-        polledNoChanges: results.length === 0,
-      });
-    } catch (e) {
-      handlePollingError(
-        e as Error,
-        pollState,
-        context,
-        "Google Ads change history",
-      );
-    }
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): ChangeHistoryBatchItem[] =>
+      resolveChangeHistoryItems(
+        payload.body.data as ChangeHistoryChangesObject,
+      ),
   },
+  perform: changeHistoryPerform,
   examplePayload: changeHistoryTriggerExamplePayload,
 });
 export default changeHistoryTrigger;

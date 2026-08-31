@@ -1,27 +1,35 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createLocalServicesClient } from "../../client";
 import { detailedLeadReportsExamplePayload } from "../../examplePayloads";
 import { detailedLeadReportsInputs } from "../../inputs";
+import { detailedLeadReportsOutputSchema } from "../../outputSchemas";
 export const detailedLeadReports = action({
   display: {
     label: "Get Detailed Lead Reports",
     description:
-      "Retrieve detailed lead reports providing an in-depth view of leads for Local Services accounts linked to a Manager account.",
+      "Retrieves detailed lead reports providing an in-depth view of leads for Local Services accounts linked to a Manager account.",
   },
   inputs: detailedLeadReportsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: detailedLeadReportsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       customerIds,
       managerCustomerIdInput,
-      pageSizeInput,
-      pageTokenInput,
+      pagination,
       endDateInput,
       startDateInput,
     },
   ) => {
-    const client = createLocalServicesClient(connection, context.debug.enabled);
+    const client = createLocalServicesClient({
+      connection: connection,
+      debugEnabled: context.debug.enabled,
+    });
     const startDate = new Date(startDateInput ?? "");
     const endDate = new Date(endDateInput ?? "");
     const startDateDay = startDate.getDate();
@@ -34,8 +42,8 @@ export const detailedLeadReports = action({
     const { data } = await client.get("/detailedLeadReports:search", {
       params: {
         query,
-        pageSize: pageSizeInput || undefined,
-        pageToken: pageTokenInput || undefined,
+        pageSize: pagination.pageSizeInput || undefined,
+        pageToken: pagination.pageTokenInput || undefined,
         "startDate.day": startDateDay,
         "startDate.month": startDateMonth,
         "startDate.year": startDateYear,
@@ -46,5 +54,8 @@ export const detailedLeadReports = action({
     });
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => detailedLeadReportsExamplePayload,
   examplePayload: detailedLeadReportsExamplePayload,
 });

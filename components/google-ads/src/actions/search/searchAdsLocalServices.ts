@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { searchAdsExamplePayload } from "../../examplePayloads";
+import { searchAdsLocalServicesExamplePayload } from "../../examplePayloads";
 import { searchAdsLocalServicesInputs } from "../../inputs";
+import { searchAdsOutputSchema } from "../../outputSchemas";
 import { searchGoogleAds } from "../../util";
 export const searchAdsLocalServices = action({
   display: {
     label: "Search Ads",
     description:
-      "Returns rows matching a GAQL query against Local Services resources.",
+      "Returns rows matching a GAQL query against Google Ads resources.",
   },
   inputs: searchAdsLocalServicesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: searchAdsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -22,12 +28,12 @@ export const searchAdsLocalServices = action({
       fetchAll,
     },
   ) => {
-    const client = createClient(
-      connection,
-      context.debug.enabled,
-      context.logger,
-      managerCustomerId,
-    );
+    const client = createClient({
+      connection: connection,
+      debugEnabled: context.debug.enabled,
+      logger: context.logger,
+      loginCustomerId: managerCustomerId,
+    });
     const data = await searchGoogleAds(client, {
       customerId,
       fetchAll,
@@ -39,5 +45,8 @@ export const searchAdsLocalServices = action({
     });
     return { data };
   },
-  examplePayload: searchAdsExamplePayload,
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => searchAdsLocalServicesExamplePayload,
+  examplePayload: searchAdsLocalServicesExamplePayload,
 });

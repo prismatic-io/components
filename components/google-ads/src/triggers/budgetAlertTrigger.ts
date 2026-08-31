@@ -1,17 +1,78 @@
+import type {
+  ActionInputParameters,
+  PollingContext,
+  TriggerPayload,
+} from "@prismatic-io/spectral";
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { createClient } from "../client";
 import { DEFAULT_ALERT_THRESHOLD } from "../constants";
 import { budgetAlertTriggerExamplePayload } from "../examplePayloads";
 import { budgetAlertTriggerInputs } from "../inputs";
-import type { CampaignQueryRow, PollingState } from "../types";
+import type {
+  BudgetAlertBatchItem,
+  BudgetAlertChangesObject,
+  CampaignQueryRow,
+} from "../types";
 import {
+  buildBudgetAlertQuery,
+  buildTriggerPayload,
   calculateBudgetStatus,
+  createTriggerClient,
   getCurrentDate,
-  getCustomerTimezone,
+  getPollingState,
   getPreviousDate,
   handlePollingError,
+  resolveBudgetAlerts,
   searchGoogleAds,
 } from "../util";
+const budgetAlertPerform = async (
+  context: PollingContext,
+  payload: TriggerPayload,
+  params: ActionInputParameters<typeof budgetAlertTriggerInputs>,
+) => {
+  const { client, timezone } = await createTriggerClient(context, params);
+  const pollState = getPollingState(context, {
+    lastSyncDate: getPreviousDate(timezone),
+    errorCount: 0,
+    consecutiveErrors: 0,
+  });
+  const newSyncDate = getCurrentDate(timezone);
+  try {
+    const data = await searchGoogleAds<CampaignQueryRow>(client, {
+      customerId: params.customerId,
+      params: {
+        query: buildBudgetAlertQuery({
+          sinceDate: pollState.lastSyncDate,
+          toDate: newSyncDate,
+        }),
+      },
+      fetchAll: true,
+    });
+    const results = data.results ?? [];
+    const budgetAlerts = results
+      .map((campaign) =>
+        calculateBudgetStatus(
+          campaign,
+          params.alertThreshold ?? DEFAULT_ALERT_THRESHOLD,
+        ),
+      )
+      .filter((status) => status.shouldAlert);
+    context.polling.setState({
+      lastSyncDate: newSyncDate,
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    return Promise.resolve({
+      payload: buildTriggerPayload(payload, {
+        alerts: budgetAlerts,
+        totalCampaignsMonitored: results.length,
+        alertThreshold: params.alertThreshold,
+      }),
+      polledNoChanges: budgetAlerts.length === 0,
+    });
+  } catch (e) {
+    handlePollingError(e as Error, pollState, context, "Google Ads budget");
+  }
+};
 export const budgetAlertTrigger = pollingTrigger({
   display: {
     label: "Campaign Budget Alerts",
@@ -19,76 +80,13 @@ export const budgetAlertTrigger = pollingTrigger({
       "Checks for campaigns approaching or exceeding budget thresholds on a configured schedule.",
   },
   inputs: budgetAlertTriggerInputs,
-  perform: async (context, payload, params) => {
-    const client = createClient(
-      params.connection,
-      context.debug.enabled,
-      context.logger,
-      params.managerCustomerId,
-    );
-    const timezone = await getCustomerTimezone(client, params.customerId);
-    const pollState =
-      Object.keys(context.polling.getState()).length > 0
-        ? (context.polling.getState() as unknown as PollingState)
-        : {
-            lastSyncDate: getPreviousDate(timezone),
-            budgetAlerts: [],
-            errorCount: 0,
-            consecutiveErrors: 0,
-          };
-    const newSyncDate = getCurrentDate(timezone);
-    try {
-      const query = `
-        SELECT
-          campaign.id,
-          campaign.name,
-          campaign_budget.amount_micros,
-          campaign_budget.total_amount_micros,
-          campaign_budget.period,
-          metrics.cost_micros
-        FROM campaign
-        WHERE segments.date >= '${pollState.lastSyncDate}' AND segments.date <= '${newSyncDate}'
-          AND campaign.status = 'ENABLED'
-      `;
-      const data = await searchGoogleAds<CampaignQueryRow>(client, {
-        customerId: params.customerId,
-        params: {
-          query,
-        },
-        fetchAll: true,
-      });
-      const results = data.results ?? [];
-      const budgetAlerts = results
-        .map((campaign) =>
-          calculateBudgetStatus(
-            campaign,
-            params.alertThreshold ?? DEFAULT_ALERT_THRESHOLD,
-          ),
-        )
-        .filter((status) => status.shouldAlert);
-      context.polling.setState({
-        lastSyncDate: newSyncDate,
-        budgetAlerts,
-        errorCount: 0,
-        consecutiveErrors: 0,
-      });
-      return Promise.resolve({
-        payload: {
-          ...payload,
-          body: {
-            data: {
-              alerts: budgetAlerts,
-              totalCampaignsMonitored: results.length,
-              alertThreshold: params.alertThreshold,
-            },
-          },
-        },
-        polledNoChanges: budgetAlerts.length === 0,
-      });
-    } catch (e) {
-      handlePollingError(e as Error, pollState, context, "Google Ads budget");
-    }
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): BudgetAlertBatchItem[] =>
+      resolveBudgetAlerts(payload.body.data as BudgetAlertChangesObject),
   },
+  perform: budgetAlertPerform,
   examplePayload: budgetAlertTriggerExamplePayload,
 });
 export default budgetAlertTrigger;

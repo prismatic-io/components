@@ -27,6 +27,9 @@ module.exports = {
     usedExports: true,
   },
   entry: "./src/index.ts",
+  stats: {
+    errorDetails: true,
+  },
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),

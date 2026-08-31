@@ -1,17 +1,39 @@
 Google documents many [common errors](https://developers.google.com/google-ads/api/docs/common-errors) that will aid in troubleshooting.
 
-#### Important Notes for v23
+#### Important Notes for v25
 
-**Breaking changes from v22:**
-- `CallAd` and `CallAdInfo` are removed — call ad creation and management must use alternative ad types
-- `Campaign.start_date` and `Campaign.end_date` are replaced by `Campaign.start_date_time` and `Campaign.end_date_time`
-- `Campaign.url_expansion_opt_out` is removed — URL expansion is now managed through `AssetAutomationType` settings
-- Video metrics are renamed: `video_views` becomes `video_trueview_views`, `average_cpv` becomes `trueview_average_cpv`, `video_view_rate` becomes `video_trueview_view_rate`
+**Breaking changes introduced in v25 (from v24):**
+- The legacy `CustomerLifecycleGoal` and `CampaignLifecycleGoal` resources and their services were removed. New customer acquisition goals are now configured through the `Goal` and `CampaignGoalConfig` resources
+- `CustomerLifecycleOptimizationValueSettings.additional_value` and `additional_high_lifetime_value` became members of a oneof alongside the new `value_multiplier` and `high_lifetime_value_multiplier` fields
+- Incentive services replaced their nested `type` fields with standalone `incentive_type` and `offer_type` enums, and `ApplyIncentiveRequest.selected_incentive_id` and `customer_id` are now required
+- `LocalServicesLead.ContactDetails.email` was removed
+- `AdvertisingPartnerLinkInvitationProperties.allowed_domain` is now required when creating advertising partner product link invitations
+- `GenerateCreatorInsightsRequest.search_brand` was removed. Use `search_topics` instead
+- Reach forecasting replaced `Targeting.plannable_location_id` with `plannable_location_ids`, and `GenerateReachForecastRequest.cookie_frequency_cap` with `cookie_frequency_cap_setting`
+- `GenerateBenchmarksMetricsResponse.customer_metrics` changed type from `Metrics` to `CustomerMetrics`
 
-For full details, see the [v23 release notes](https://developers.google.com/google-ads/api/docs/release-notes#v23_0).
+These v25 changes do **not** affect this component's actions. It does not configure lifecycle or acquisition goals, call the incentive services, request reach forecasts or creator insights, or read benchmark metrics. For full details, see the [v25 release notes](https://developers.google.com/google-ads/api/docs/release-notes).
+
+The `LocalServicesLead.ContactDetails.email` removal is worth noting explicitly because it sounds like it should affect this component's Local Services actions, but it does not. **Search Ads Local Services**, **Account Reports**, and **Detailed Lead Reports** call the separate Local Services API at `localservices.googleapis.com/v1`, which versions independently of the Google Ads API and is unaffected by this change.
+
+If a **Raw Request** action is used to call any of the removed or renamed fields above, those calls must be updated before moving to v25.
+
+Because every version from v22 up is selectable, the earlier upgrade steps below still apply to anyone moving a connection forward from an older pinned version. None of them affect this component's own actions.
+
+**Breaking changes introduced in v24 (from v23):**
+- `videos` and `logo_images` are now required fields on video ad types
+- Campaign-level brand safety settings were removed
+- The loyalty sign-ups user category was deprecated
+- Several keyword planning fields were removed
+
+**Breaking changes introduced in v23 (from v22):**
+- `CallAd` and `CallAdInfo` were removed. Call ad creation and management must use alternative ad types
+- `Campaign.start_date` and `Campaign.end_date` were replaced by `Campaign.start_date_time` and `Campaign.end_date_time`
+- `Campaign.url_expansion_opt_out` was removed. URL expansion is now managed through `AssetAutomationType` settings
+- Video metrics were renamed: `video_views` → `video_trueview_views`, `average_cpv` → `trueview_average_cpv`, `video_view_rate` → `video_trueview_view_rate`
 
 **EU Political Advertising Self-Declaration (v22+):**
-When using API v22 or later, the `containsEuPoliticalAdvertising` field must be set when:
+Because v22 is the minimum supported version, this requirement applies to every version the component can use. The `containsEuPoliticalAdvertising` field must be set when:
 - Creating new campaigns
 - Modifying location or proximity targeting on existing campaigns
 
@@ -24,10 +46,11 @@ Failure to set this field will result in a `FieldError.REQUIRED` error from the 
 
 #### Version Compatibility
 
-The component supports multiple API versions through the `apiVersion` connection field:
-- **v23** (recommended): Latest features and improvements
-- **v22**: Stable, sunset October 2026
-- **v21**: Stable, sunset August 2026
-- **v20**: Minimum supported, sunset June 2026
+The component supports every Google Ads API version that Google has not yet sunset, selectable through the `apiVersion` connection field:
+- **v25** (recommended, default): latest features and improvements
+- **v24**, **v23**: fully supported, set explicitly if an integration depends on their behavior
+- **v22** (minimum supported): connections configured below this are automatically upgraded to v22
 
-To use a specific version, set the `apiVersion` field when configuring the Google Ads connection. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest dates.
+The minimum tracks Google's own sunset schedule rather than the component's default, so the floor only redirects connections that would otherwise call a retired endpoint. Versions v21 and earlier are no longer selectable. v21 sunsets in August 2026 (tentative), and v20 and earlier are already sunset, so connections pinned to them are auto-upgraded to v22. Note that v22 itself sunsets in October 2026. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest dates.
+
+Minor releases such as v25.1 do not need to be configured here. Google automatically updates the major-version endpoint the component calls, so minor-version features become available without a component change.

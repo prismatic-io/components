@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { conversionsPayload } from "../examplePayloads";
+import { conversionsExampleInput } from "../examplePayloads";
 import { cleanString } from "../util";
 import {
   connectionInput,
@@ -9,10 +9,11 @@ import {
 } from "./common";
 const conversions = input({
   label: "Conversions",
+  placeholder: "Enter conversions as a JSON array",
   type: "code",
   language: "json",
   required: true,
-  example: JSON.stringify(conversionsPayload, null, 2),
+  example: JSON.stringify(conversionsExampleInput, null, 2),
   comments:
     "The conversions that are being uploaded. See [Click conversions documentation](https://developers.google.com/google-ads/api/docs/conversions/upload-clicks).",
   clean: util.types.toObject,

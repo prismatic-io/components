@@ -1,46 +1,51 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
-import { GOOGLE_ADS_API_VERSION } from "../constants";
+import {
+  GOOGLE_ADS_API_VERSION,
+  GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION,
+} from "../constants";
 export const oauth = oauth2Connection({
   key: "oauth",
   display: {
     label: "OAuth 2.0",
     description: "Authenticate using OAuth 2.0.",
+    icons: {
+      oauth2ConnectionIconPath: "oauth-button.png",
+    },
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
-  iconPath: "oauth-button.png",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",
-      placeholder: "https://accounts.google.com/o/oauth2/v2/auth",
+      placeholder: "Enter authorize URL",
       type: "string",
       required: true,
       shown: false,
-      default:
-        "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
       comments:
         "The OAuth 2.0 Authorization URL for the Google Ads API. See [OAuth 2.0 documentation](https://developers.google.com/identity/protocols/oauth2).",
+      default:
+        "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent",
     },
     tokenUrl: {
       label: "Token URL",
-      placeholder: "https://oauth2.googleapis.com/token",
+      placeholder: "Enter token URL",
       type: "string",
       required: true,
       shown: false,
-      default: "https://oauth2.googleapis.com/token",
       comments:
         "The OAuth 2.0 Token URL for the Google Ads API. See [OAuth 2.0 documentation](https://developers.google.com/identity/protocols/oauth2).",
+      default: "https://oauth2.googleapis.com/token",
     },
     scopes: {
       label: "Scopes",
-      placeholder: "https://www.googleapis.com/auth/adwords",
+      placeholder: "Enter OAuth scopes",
       type: "string",
       required: true,
       shown: true,
       comments:
         "Space-separated OAuth 2.0 permission scopes for the Google Ads and Data Manager APIs. See [OAuth scopes documentation](https://developers.google.com/identity/protocols/oauth2/scopes).",
-      default: "https://www.googleapis.com/auth/adwords",
       example:
         "https://www.googleapis.com/auth/adwords https://www.googleapis.com/auth/datamanager",
+      default: "https://www.googleapis.com/auth/adwords",
     },
     clientId: {
       label: "Client ID",
@@ -75,13 +80,13 @@ export const oauth = oauth2Connection({
     },
     apiVersion: {
       label: "API Version",
+      placeholder: "Enter API version",
       type: "string",
       required: false,
       shown: true,
-      placeholder: "Enter API version",
+      comments: `The version of the Google Ads API to use. Defaults to ${GOOGLE_ADS_API_VERSION}. Any version from ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION} through ${GOOGLE_ADS_API_VERSION} can be set explicitly; anything below ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION} has already been sunset by Google and is automatically upgraded to ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION}. Note: ${GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION} sunsets in October 2026. See [API versions documentation](https://developers.google.com/google-ads/api/docs/release-notes).`,
       example: GOOGLE_ADS_API_VERSION,
       default: GOOGLE_ADS_API_VERSION,
-      comments: `The version of the Google Ads API to use. Defaults to ${GOOGLE_ADS_API_VERSION}. Older versions (v21, v22) are supported by specifying the version explicitly. Note: v20 sunsets in June 2026. See [API versions documentation](https://developers.google.com/google-ads/api/docs/release-notes).`,
     },
   },
 });

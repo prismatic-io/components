@@ -6,7 +6,7 @@ This component uses OAuth 2.0 to connect to the Google Ads API.
 - The Customer ID of the Ads Manager account (the hyphenated number in the top-left corner of the Ads app) must be noted
 - A [Google Developer account](https://console.cloud.google.com/) is required
 
-#### Developer Token
+#### Setup Steps
 
 The Developer Token is obtained from a Google Ads Manager account:
 
@@ -42,26 +42,45 @@ The Developer Token is obtained from a Google Ads Manager account:
 
 #### Configure the Connection
 
+Create a connection of type **OAuth 2.0** and provide the following values:
+
 - **Client ID**: From the Google Cloud Console OAuth client credentials
 - **Client Secret**: From the Google Cloud Console OAuth client credentials
 - **Developer Token**: From the Google Ads API Center
 - **API Version**: The Google Ads API version to use. Refer to the [Google Ads API release notes](https://developers.google.com/google-ads/api/docs/release-notes) for the latest version.
+- **Scopes**: Defaults to `https://www.googleapis.com/auth/adwords`. Refer to [Google's OAuth 2.0 scopes documentation](https://developers.google.com/identity/protocols/oauth2/scopes) for additional scope information.
 
 #### Supported API Versions
 
-The component supports multiple API versions through the **API Version** connection field:
+The component supports the following Google Ads API versions through the **API Version** connection field. Versions below the minimum are automatically upgraded to the minimum supported version.
 
-| Version | Status | Tentative Sunset |
-|---------|--------|------------------|
-| **v23** | Recommended (default) | January 2027 |
-| **v22** | Stable | October 2026 |
-| **v21** | Stable | August 2026 |
-| **v20** | Stable | June 2026 |
-| ~~v19~~ | Sunset | February 11, 2026 |
+The minimum tracks Google's own sunset schedule, so every version Google still supports can be selected here.
 
-Sunset dates are tentative and subject to change. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest information.
+| Version | Status in this component | Google Sunset |
+|---------|--------------------------|---------------|
+| **v25** | Recommended (default) | August 2027 |
+| **v24** | Supported | May 2027 |
+| **v23** | Supported | February 2027 |
+| **v22** | Supported (minimum) | October 2026 (tentative) |
+| v21 and earlier | Not selectable: auto-upgraded to v22 | v21: August 2026 (tentative) · v20 and earlier: already sunset |
+
+Because v22 is the minimum, the EU Political Advertising self-declaration requirement (v22 and later) applies to every version this component can use.
+
+Google publishes nearer-term sunsets as tentative and firms them up closer to the date, so treat these as subject to change. v22 in particular retires in October 2026. Minor releases (for example v25.1) do not need to be selected here; Google updates the major-version endpoint automatically. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest information.
 
 After entering the credentials, authorize the connection by signing in with the Google account used to create the Developer Token and OAuth credentials.
+
+#### Passkey Requirement
+
+Beginning **August 5, 2026**, Google requires a passkey to authorize new Google Ads API access. Passwords alone and 2-factor methods such as authenticator app codes or SMS codes are no longer accepted for this step.
+
+What this means when setting up a connection:
+
+- **Existing connections keep working.** Refresh tokens issued before this change continue to function, and no reauthorization is prompted.
+- **New authorizations require a passkey.** Anyone authorizing the connection for the first time is prompted to create one if their account does not already have it.
+- **Plan for a delay.** A newly created passkey may take up to **7 days** to become trusted and usable. Create the passkey in advance of configuring the connection to avoid being blocked mid-setup.
+
+To create a passkey, visit [Google's passkeys page](https://www.google.com/account/about/passkeys/), then follow the prompts for the device being used. Full details are in [Google's announcement](https://ads-developers.googleblog.com/2026/07/passkey-authentication-requirement-for.html).
 
 #### App Verification
 

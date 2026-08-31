@@ -1,27 +1,35 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createLocalServicesClient } from "../../client";
 import { accountReportsExamplePayload } from "../../examplePayloads";
 import { accountReportsInputs } from "../../inputs";
+import { accountReportsOutputSchema } from "../../outputSchemas";
 export const accountReports = action({
   display: {
     label: "Get Account Reports",
     description:
-      "Retrieve account reports showing performance and metrics for Local Services accounts linked to a Manager account.",
+      "Retrieves account reports showing performance and metrics for Local Services accounts linked to a Manager account.",
   },
   inputs: accountReportsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: accountReportsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       customerIds,
       managerCustomerIdInput,
-      pageSizeInput,
-      pageTokenInput,
+      pagination,
       endDateInput,
       startDateInput,
     },
   ) => {
-    const client = createLocalServicesClient(connection, context.debug.enabled);
+    const client = createLocalServicesClient({
+      connection: connection,
+      debugEnabled: context.debug.enabled,
+    });
     const startDate = new Date(startDateInput ?? "");
     const endDate = new Date(endDateInput ?? "");
     const startDateDay = startDate.getDate();
@@ -34,8 +42,8 @@ export const accountReports = action({
     const { data } = await client.get("/accountReports:search", {
       params: {
         query,
-        pageSize: pageSizeInput || undefined,
-        pageToken: pageTokenInput || undefined,
+        pageSize: pagination.pageSizeInput || undefined,
+        pageToken: pagination.pageTokenInput || undefined,
         "startDate.day": startDateDay,
         "startDate.month": startDateMonth,
         "startDate.year": startDateYear,
@@ -46,5 +54,8 @@ export const accountReports = action({
     });
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => accountReportsExamplePayload,
   examplePayload: accountReportsExamplePayload,
 });

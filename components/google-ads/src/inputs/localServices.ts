@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { valueListInputClean } from "../util";
 import {
   connectionInput,
@@ -18,29 +18,32 @@ const customerIds = input({
   comments:
     "The Google Ads customer IDs to filter the Local Services report. Leave empty to include all accessible customers.",
 });
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page size and cursor controls for the result set.",
+  inputs: {
+    pageSizeInput: {
+      ...pageSizeInput,
+      required: false,
+      default: "1000",
+    },
+    pageTokenInput,
+  },
+});
 export const accountReportsInputs = {
   connection: connectionInput,
   managerCustomerIdInput,
+  pagination,
   customerIds,
-  pageSizeInput: {
-    ...pageSizeInput,
-    required: false,
-    default: "1000",
-  },
-  pageTokenInput,
   startDateInput,
   endDateInput,
 };
 export const detailedLeadReportsInputs = {
   connection: connectionInput,
   managerCustomerIdInput,
+  pagination,
   customerIds,
-  pageSizeInput: {
-    ...pageSizeInput,
-    required: false,
-    default: "1000",
-  },
-  pageTokenInput,
   startDateInput,
   endDateInput,
 };

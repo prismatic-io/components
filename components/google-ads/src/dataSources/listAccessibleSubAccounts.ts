@@ -1,7 +1,8 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { GET_ACCOUNT_HIERARCHY_QUERY } from "../constants";
-import { listAccessibleSubAccountsDataSourceInputs } from "../inputs";
+import { listAccessibleSubAccountsExamplePayload } from "../examplePayloads";
+import { listAccessibleSubAccountsInputs } from "../inputs";
 import type { CustomerClientResult } from "../types";
 import { formatAccountNumber, searchGoogleAds } from "../util";
 export const listAccessibleSubAccounts = dataSource({
@@ -10,9 +11,13 @@ export const listAccessibleSubAccounts = dataSource({
     description:
       "Get a list of accessible sub accounts for the customer ID provided.",
   },
-  inputs: listAccessibleSubAccountsDataSourceInputs,
+  inputs: listAccessibleSubAccountsInputs,
   perform: async (context, { connection, customerId, customerClientLevel }) => {
-    const client = createClient(connection, false, context.logger);
+    const client = createClient({
+      connection: connection,
+      debugEnabled: false,
+      logger: context.logger,
+    });
     const data = await searchGoogleAds<CustomerClientResult>(client, {
       customerId,
       params: {
@@ -31,7 +36,5 @@ export const listAccessibleSubAccounts = dataSource({
     };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "Example Account - 123-456-7890", key: "1234567890" }],
-  },
+  examplePayload: listAccessibleSubAccountsExamplePayload,
 });

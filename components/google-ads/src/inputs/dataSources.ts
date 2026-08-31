@@ -3,10 +3,10 @@ import {
   customerClientLevel,
   customerIdInput,
 } from "./common";
-export const listAccessibleCustomersDataSourceInputs = {
+export const listAccessibleCustomersInputs = {
   connection: connectionInput,
 };
-export const listAccessibleSubAccountsDataSourceInputs = {
+export const listAccessibleSubAccountsInputs = {
   connection: connectionInput,
   customerId: { ...customerIdInput, dataSource: undefined },
   customerClientLevel,

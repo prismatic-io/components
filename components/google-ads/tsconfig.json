@@ -4,10 +4,15 @@
     "lib": ["esnext"],
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "isolatedModules": true
+    "ignoreDeprecations": "6.0",
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": ["node", "jest"]
   },
   "include": ["src"]
 }

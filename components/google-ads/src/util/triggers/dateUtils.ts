@@ -1,14 +1,15 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import {
+  CHANGE_EVENT_MAX_WINDOW_DAYS,
+  googleAdsSearchPath,
+} from "../../constants";
 export const getCustomerTimezone = async (
   client: HttpClient,
   customerId: string,
 ): Promise<string> => {
-  const response = await client.post(
-    `/customers/${customerId}/googleAds:search`,
-    {
-      query: "SELECT customer.time_zone FROM customer LIMIT 1",
-    },
-  );
+  const response = await client.post(googleAdsSearchPath(customerId), {
+    query: "SELECT customer.time_zone FROM customer LIMIT 1",
+  });
   const timeZone = response.data?.results?.[0]?.customer?.timeZone;
   if (!timeZone) {
     throw new Error(`Unable to retrieve timezone for customer ${customerId}`);
@@ -59,4 +60,14 @@ export const getGAQLDateTime = (
   const datePart = dateFormatter.format(date);
   const timePart = timeFormatter.format(date);
   return `${datePart} ${timePart}`;
+};
+export const clampToChangeEventWindow = (
+  sinceTime: string,
+  timeZone: string,
+): string => {
+  const floor = getGAQLDateTime(
+    timeZone,
+    (CHANGE_EVENT_MAX_WINDOW_DAYS - 1) * 24,
+  );
+  return sinceTime < floor ? floor : sinceTime;
 };

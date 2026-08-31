@@ -1,5 +1,17 @@
 ## Changelog
 
+### 2026-08-31
+
+Updated the component to Google Ads API `v25` with reworked campaign change detection and opt-in batching across all polling triggers:
+
+- Updated the default API version for new connections to `v25`, matching Google's current major release; updated the minimum supported version to `v22`, so `v22` through `v25` are all selectable and connections pinned below `v22` are automatically upgraded
+- Updated the **New and Updated Campaigns** trigger to read the Google Ads change history instead of storing a copy of every campaign between recurrences, a breaking change; `totalCampaigns` is no longer returned, `oldValue` and `newValue` now carry the campaign resource directly rather than wrapped in a query row, a `timeRange` object was added alongside `syncedAt`, and detection is bounded by Google's 30-day change history window
+- Added opt-in batching to the **New and Updated Campaigns**, **Account Change History**, and **Campaign Budget Alerts** triggers, dispatching each record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Updated **Get Account Reports** and **Get Detailed Lead Reports** to group their **Page Size** and **Page Token** inputs into a **Pagination** structured object
+- Added connection setup guidance for Google's passkey requirement; from August 5, 2026 a passkey is required to authorize new Google Ads API access, and a new passkey can take up to 7 days to become usable
+- Added output schemas to 14 actions for improved field mapping during configuration
+- Added inline action calling support across all actions for improved example output during configuration
+
 ### 2026-06-26
 
 Enabled the **OAuth 2.0** connection to drive both the Google Ads and Data Manager APIs from a single connection.

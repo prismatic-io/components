@@ -1,20 +1,26 @@
-import {
-  type ActionLogger,
-  type Connection,
-  ConnectionError,
-  util,
-} from "@prismatic-io/spectral";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import {
   createClient as createHttpClient,
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { oauth as adsConnection, dataManagerOAuth } from "./connections";
-import { GOOGLE_DATA_MANAGER_API_VERSION } from "./constants";
 import {
-  cleanCustomerId,
+  GOOGLE_ADS_BASE_URL,
+  GOOGLE_DATA_MANAGER_API_VERSION,
+  GOOGLE_DATA_MANAGER_BASE_URL,
+  GOOGLE_LOCAL_SERVICES_API_VERSION,
+  GOOGLE_LOCAL_SERVICES_BASE_URL,
+} from "./constants";
+import type {
+  CreateClientProps,
+  CreateDataManagerClientProps,
+  CreateLocalServicesClientProps,
+} from "./types";
+import {
   validateApiVersion,
   validateDataManagerApiVersion,
-} from "./util";
+} from "./util/apiVersion";
+import { cleanCustomerId } from "./util/clean";
 interface Values {
   accessToken: string;
   developerToken: string;
@@ -43,16 +49,17 @@ export const validateConnection = (connection: Connection): Values => {
   const accessToken = extractAccessToken(connection);
   return { accessToken, developerToken };
 };
-export const createClient = (
-  connection: Connection,
-  debugEnabled: boolean,
-  logger: ActionLogger,
-  loginCustomerId?: string | undefined,
-): HttpClient => {
+export const createClient = ({
+  connection,
+  debugEnabled,
+  logger,
+  loginCustomerId,
+}: CreateClientProps): HttpClient => {
   const { accessToken, developerToken } = validateConnection(connection);
   const parsedVersion = util.types.toString(connection.fields?.apiVersion);
   const apiVersion = validateApiVersion(parsedVersion, logger);
   const headers: Record<string, string> = {
+    Accept: "application/json",
     Authorization: `Bearer ${accessToken}`,
     "developer-token": developerToken,
   };
@@ -60,8 +67,9 @@ export const createClient = (
     headers["login-customer-id"] = cleanCustomerId(loginCustomerId);
   }
   return createHttpClient({
-    baseUrl: `https://googleads.googleapis.com/${apiVersion}`,
+    baseUrl: `${GOOGLE_ADS_BASE_URL}/${apiVersion}`,
     headers,
+    responseType: "json",
     debug: debugEnabled,
   });
 };
@@ -81,11 +89,11 @@ export const validateDataManagerConnection = (
   }
   return { accessToken: extractAccessToken(connection) };
 };
-export const createDataManagerClient = (
-  connection: Connection,
-  debugEnabled: boolean,
-  logger: ActionLogger,
-): HttpClient => {
+export const createDataManagerClient = ({
+  connection,
+  debugEnabled,
+  logger,
+}: CreateDataManagerClientProps): HttpClient => {
   const { accessToken } = validateDataManagerConnection(connection);
   const apiVersion =
     connection.key === adsConnection.key
@@ -95,18 +103,23 @@ export const createDataManagerClient = (
           logger,
         );
   return createHttpClient({
-    baseUrl: `https://datamanager.googleapis.com/${apiVersion}`,
-    headers: { Authorization: `Bearer ${accessToken}` },
+    baseUrl: `${GOOGLE_DATA_MANAGER_BASE_URL}/${apiVersion}`,
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    responseType: "json",
     debug: debugEnabled,
   });
 };
-export const createLocalServicesClient = (
-  connection: Connection,
-  debugEnabled: boolean,
-  loginCustomerId?: string | undefined,
-): HttpClient => {
+export const createLocalServicesClient = ({
+  connection,
+  debugEnabled,
+  loginCustomerId,
+}: CreateLocalServicesClientProps): HttpClient => {
   const { accessToken, developerToken } = validateConnection(connection);
   const headers: Record<string, string> = {
+    Accept: "application/json",
     Authorization: `Bearer ${accessToken}`,
     "developer-token": developerToken,
   };
@@ -114,8 +127,9 @@ export const createLocalServicesClient = (
     headers["login-customer-id"] = cleanCustomerId(loginCustomerId);
   }
   return createHttpClient({
-    baseUrl: "https://localservices.googleapis.com/v1",
+    baseUrl: `${GOOGLE_LOCAL_SERVICES_BASE_URL}/${GOOGLE_LOCAL_SERVICES_API_VERSION}`,
     headers,
+    responseType: "json",
     debug: debugEnabled,
   });
 };
