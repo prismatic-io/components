@@ -1,4 +1,4 @@
-The Instance Webhook trigger automatically creates and manages [Box webhook subscriptions](https://developer.box.com/guides/webhooks/) for an instance. Unlike traditional webhook setups that require manual configuration in the Box Developer Console, this trigger handles the entire webhook lifecycle.
+The Instance Webhook trigger automatically creates and manages [Box webhook subscriptions](https://developer.box.com/guides/webhooks) for an instance. Unlike traditional webhook setups that require manual configuration in the Box Developer Console, this trigger handles the entire webhook lifecycle.
 
 When the trigger is used in a flow:
 - **On Instance Deploy**: The trigger automatically creates a V2 webhook subscription in Box pointing to the flow's unique webhook URL. The webhook monitors the specified target (file or folder) for the selected event types. If the webhook configuration changes between deployments, the trigger deletes the old webhook and creates a new one with the updated settings.
@@ -19,9 +19,9 @@ Configure the trigger with the following inputs:
 
 The trigger supports monitoring over 30 different event types on Box files and folders.
 
-A full list of available webhook events is available in the [Box Webhooks documentation](https://developer.box.com/guides/webhooks/v2/create-v2/).
+A full list of available webhook events is available in the [Box Webhooks documentation](https://developer.box.com/guides/webhooks/v2/create-v2).
 <details>
-<summary>View all available webhook events</summary>
+<summary>View all available webhook events (39)</summary>
 
 | Category | Event | Description |
 |----------|-------|-------------|
@@ -105,4 +105,4 @@ The trigger returns the complete webhook payload from Box. The structure varies 
 
 </details>
 
-For complete payload structure details, see the [Box Webhooks V2 documentation](https://developer.box.com/guides/webhooks/v2/).
+For complete payload structure details, see the [Box Webhooks V2 documentation](https://developer.box.com/guides/webhooks/v2).

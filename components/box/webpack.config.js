@@ -27,7 +27,13 @@ const componentConfig = {
   ...baseConfig,
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: "assets", to: path.resolve(__dirname, "dist") }],
+      patterns: [
+        {
+          from: "assets",
+          to: path.resolve(__dirname, "dist"),
+          noErrorOnMissing: true,
+        },
+      ],
     }),
   ],
   ...{

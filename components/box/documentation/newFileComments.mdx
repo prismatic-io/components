@@ -7,7 +7,7 @@ This polling trigger monitors comments on a specific Box file at regular interva
 The trigger operates as follows:
 
 1. Runs on the configured schedule (e.g., every 5 minutes)
-2. Fetches all comments for the specified file using the [Box Comments API](https://developer.box.com/reference/get-files-id-comments/)
+2. Fetches all comments for the specified file using the [Box Comments API](https://developer.box.com/reference/get-files-id-comments)
 3. Normalizes timestamps to UTC for accurate comparison (Box stores dates with timezone offsets)
 4. Compares comment creation timestamps against the last poll time
 5. Returns comments where `created_at` is after the last poll time
@@ -19,18 +19,11 @@ The trigger stores the last poll timestamp in the polling state. On the first ex
 
 Each poll updates the state with the current timestamp, ensuring accurate tracking of when comments were added.
 
-#### Configuration
-
-Configure the trigger with the following inputs:
-
-- **Connection**: Box OAuth 2.0 connection with read permissions for the target file
-- **File ID**: The unique identifier of the file to monitor for comments (use the Box content data source to select a file)
-
 The trigger fetches all comments on the specified file during each poll. Box's API returns all comments without pagination for most files.
 
 #### Returned Data
 
-The trigger returns an array of newly created comments.
+The trigger returns an array of newly created comments. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example returned data structure</summary>

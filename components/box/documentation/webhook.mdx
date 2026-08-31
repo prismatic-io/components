@@ -1,0 +1,61 @@
+Receive and validate webhook requests from Box for manually configured webhook subscriptions.
+
+Unlike the Managed Webhook trigger, this trigger does not create or delete the underlying Box webhook. Use it when the webhook subscription is created separately (either in the Box Developer Console or by running the **Create Webhook** action) and pointed at this trigger's URL.
+
+#### How It Works
+
+If an incoming request carries a `box-signature-primary` or `box-signature-secondary` header, the trigger verifies the payload signature before the flow runs. Requests that fail validation are rejected with an error.
+
+The signature keys used for validation can come from either of two places:
+
+1. The **Primary Signature Key** and **Secondary Signature Key** inputs configured directly on this trigger.
+2. Cross-flow state, where the **Create Webhook** action stores the keys when it is run with its own Primary Signature Key and Secondary Signature Key inputs filled in.
+
+The trigger prefers the values configured on its own inputs and falls back to cross-flow state when an input is left blank. This means a webhook created directly in the Box Developer Console, without ever running the **Create Webhook** action, can now be verified by pasting the signature keys straight into the trigger's inputs.
+
+If neither signature header is present, the payload is passed through without verification.
+
+#### Configuration
+
+- **Primary Signature Key**: Optional. Validates the `box-signature-primary` header. When left blank, the trigger falls back to the value stored in cross-flow state by the **Create Webhook** action.
+- **Secondary Signature Key**: Optional. Validates the `box-signature-secondary` header. When left blank, the trigger falls back to the value stored in cross-flow state by the **Create Webhook** action.
+
+#### Returned Data
+
+The trigger returns the raw webhook payload sent by Box. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example payload for FILE.UPLOADED event</summary>
+
+```json
+{
+  "trigger": "FILE.UPLOADED",
+  "id": "1234567890",
+  "type": "webhook_event",
+  "webhook": {
+    "id": "987654321",
+    "type": "webhook"
+  },
+  "created_by": {
+    "type": "user",
+    "id": "11111",
+    "name": "Example User",
+    "login": "user@example.com"
+  },
+  "created_at": "2024-11-10T10:30:00-08:00",
+  "source": {
+    "id": "555555",
+    "type": "file",
+    "name": "example.pdf",
+    "parent": {
+      "type": "folder",
+      "id": "999999",
+      "name": "Documents"
+    }
+  }
+}
+```
+
+</details>
+
+For complete payload structure details, see the [Box Webhooks V2 documentation](https://developer.box.com/guides/webhooks/v2).

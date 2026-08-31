@@ -1,0 +1,67 @@
+export const getCurrentUserOutputSchema = {
+  type: "object" as const,
+  properties: {
+    id: { type: "string" },
+    type: { type: "string", enum: ["user"] },
+    name: { type: "string" },
+    login: { type: "string", format: "email" },
+    created_at: { type: "string", format: "date-time" },
+    modified_at: { type: "string", format: "date-time" },
+    language: { type: "string" },
+    timezone: { type: "string" },
+    space_amount: { type: "integer" },
+    space_used: { type: "integer" },
+    max_upload_size: { type: "integer" },
+    status: {
+      type: "string",
+      enum: [
+        "active",
+        "inactive",
+        "cannot_delete_edit",
+        "cannot_delete_edit_upload",
+      ],
+    },
+    job_title: { type: "string" },
+    phone: { type: "string" },
+    address: { type: "string" },
+    avatar_url: { type: "string", format: "uri" },
+    notification_email: {
+      type: ["object", "null"],
+      properties: {
+        email: { type: "string", format: "email" },
+        is_confirmed: { type: "boolean" },
+      },
+    },
+    role: { type: "string", enum: ["admin", "coadmin", "user"] },
+    tracking_codes: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          type: { type: "string", enum: ["tracking_code"] },
+          name: { type: "string" },
+          value: { type: "string" },
+        },
+      },
+    },
+    can_see_managed_users: { type: "boolean" },
+    is_sync_enabled: { type: "boolean" },
+    is_external_collab_restricted: { type: "boolean" },
+    is_exempt_from_device_limits: { type: "boolean" },
+    is_exempt_from_login_verification: { type: "boolean" },
+    is_collaborated_content_available_when_owner_inactive: { type: "boolean" },
+    enterprise: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        type: { type: "string", enum: ["enterprise"] },
+        name: { type: "string" },
+      },
+    },
+    my_tags: { type: "array", items: { type: "string" } },
+    hostname: { type: "string" },
+    is_platform_access_only: { type: "boolean" },
+    external_app_user_id: { type: "string" },
+  },
+  required: ["id", "type", "name", "login"],
+};

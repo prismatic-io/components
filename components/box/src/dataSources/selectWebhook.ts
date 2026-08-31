@@ -1,11 +1,12 @@
 import { dataSource, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
-import { connectionInput } from "../inputs";
-import { getAllWebhookEntries } from "../utils";
+import { selectWebhookExamplePayload } from "../examplePayloads";
+import { selectWebhookInputs } from "../inputs";
+import { getAllWebhookEntries } from "../util";
 export const selectWebhook = dataSource({
   display: {
     label: "Select Webhook",
-    description: "Select webhook from Box account",
+    description: "Select webhook from Box account.",
   },
   dataSourceType: "picklist",
   perform: async (context, { boxConnection }) => {
@@ -23,5 +24,6 @@ export const selectWebhook = dataSource({
       })),
     };
   },
-  inputs: { boxConnection: connectionInput },
+  inputs: selectWebhookInputs,
+  examplePayload: selectWebhookExamplePayload,
 });

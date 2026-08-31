@@ -1,5 +1,5 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { connectionInput, folderIdInput } from "../inputs";
+import { newOrUpdatedFileInputs } from "../inputs";
 import { createAuthorizedClient } from "../client";
 import {
   buildPollingResult,
@@ -7,15 +7,15 @@ import {
   getFolderEntries,
   getLastPolledAt,
   normalizeDatesBetweenEntries,
-} from "../utils";
-import { FOLDER_TYPE } from "../constants";
+} from "../util";
+import { FOLDER_TYPE, MAX_PAGE_SIZE } from "../constants";
 export const newOrUpdatedFile = pollingTrigger({
   display: {
     label: "New and Updated Files",
     description:
       "Checks for new and updated files in a specified folder on a configured schedule.",
   },
-  inputs: { connection: connectionInput, folderId: folderIdInput },
+  inputs: newOrUpdatedFileInputs,
   perform: async (context, payload, { connection, folderId }) => {
     const now = new Date().toISOString();
     const client = createAuthorizedClient({ boxConnection: connection });
@@ -26,7 +26,7 @@ export const newOrUpdatedFile = pollingTrigger({
       client,
       id: folderId,
       fields,
-      limit: 1000,
+      limit: MAX_PAGE_SIZE,
     });
     context.logger.info("Polled entries: ", JSON.stringify(entries, null, 2));
     context.logger.info("Normalizing entry dates...");

@@ -1,19 +1,18 @@
-import { type ActionContext, trigger, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  signatureKey,
-  targetId,
-  targetType,
-  triggerTypes,
-} from "../inputs";
+import { trigger, util } from "@prismatic-io/spectral";
+import { managedWebhookInputs } from "../inputs";
 import { createAuthorizedClient } from "../client";
-import { listWebhooks } from "../actions/webhooks";
-import type { StoreState, WebhookTriggerType } from "../interfaces";
+import {
+  BOX_SIGNATURE_PRIMARY_HEADER,
+  BOX_SIGNATURE_SECONDARY_HEADER,
+} from "../constants";
+import type { StoreState, WebhookTriggerType } from "../types";
 import {
   createWebhookFN,
+  getLegacyStoreKey,
   getStoreKey,
+  resolveStoreState,
   validateBoxWebhookSignature,
-} from "../utils";
+} from "../util";
 export const managedWebhook = trigger({
   display: {
     label: "Managed Webhook",
@@ -33,91 +32,81 @@ export const managedWebhook = trigger({
       },
     ) => {
       const client = createAuthorizedClient({ boxConnection: connection });
-      const storeKey = getStoreKey(targetId, targetType, flowProperties.name);
-      const state = crossFlowState[storeKey] as StoreState;
+      const storeKey = getStoreKey(flowProperties.name);
+      const legacyStoreKey = getLegacyStoreKey(
+        targetId,
+        targetType,
+        flowProperties.name,
+      );
+      const { state, adoptedFromLegacyKey } = resolveStoreState(
+        crossFlowState,
+        storeKey,
+        legacyStoreKey,
+      );
+      const persist = (newCrossFlowState: Record<string, StoreState>) => {
+        Object.assign(crossFlowState, newCrossFlowState);
+        if (adoptedFromLegacyKey) {
+          crossFlowState[legacyStoreKey] = undefined;
+        }
+        return { crossFlowState };
+      };
       logger.info("Checking for existing webhook...");
       if (state?.existingWebhookId) {
+        if (adoptedFromLegacyKey) {
+          logger.info(
+            "Adopted webhook state stored under the legacy composite key.",
+          );
+        }
         logger.info("Existing webhook found, checking for changes...");
-        const { data: existingInstanceWebhooks } = await listWebhooks.perform(
-          {
-            webhookUrls: webhookUrls as Record<string, string>,
-          } as ActionContext,
-          {
-            boxConnection: connection,
-            showOnlyInstanceWebhooks: false,
-            fetchAll: true,
-            limit: undefined,
-            marker: undefined,
-          },
-        );
-        const existingInstanceWebhook = existingInstanceWebhooks.entries?.find(
-          (entry) =>
-            util.types.toString(
-              (
-                entry as {
-                  id?: unknown;
-                }
-              ).id,
-            ) === state?.existingWebhookId,
-        );
-        const target = (
-          existingInstanceWebhook as
-            | {
-                target?: {
-                  id?: string;
-                  type?: string;
-                };
-              }
-            | undefined
-        )?.target;
         const hasChanges =
-          target?.id !== targetId || target?.type !== targetType;
+          state.previousTargetId !== targetId ||
+          state.previousTargetType !== targetType ||
+          state.previousTriggerTypes?.join(",") !==
+            (triggerTypes as WebhookTriggerType[]).join(",");
         if (!hasChanges) {
           logger.info("No changes found, skipping...");
-          return;
-        } else {
-          logger.info(
-            "Changes found, deleting previous webhook and creating a new one...",
-          );
-          await client.webhooks.deleteWebhookById(
-            util.types.toString(state.existingWebhookId),
-          );
-          const { crossFlowState: newCrossFlowState } = await createWebhookFN(
-            client,
-            targetId,
-            targetType,
-            util.types.toString(webhookUrls[flowProperties.name]),
-            triggerTypes as WebhookTriggerType[],
-            storeKey,
-            logger,
-            primarySignatureKey,
-            secondarySignatureKey,
-          );
-          return { crossFlowState: newCrossFlowState };
+          return adoptedFromLegacyKey
+            ? persist({ [storeKey]: state })
+            : undefined;
         }
+        logger.info(
+          "Changes found, deleting previous webhook and creating a new one...",
+        );
+        await client.webhooks.deleteWebhookById(
+          util.types.toString(state.existingWebhookId),
+        );
       } else {
         logger.info("No existing webhook found, creating new one...");
-        const { crossFlowState: newCrossFlowState } = await createWebhookFN(
-          client,
-          targetId,
-          targetType,
-          util.types.toString(webhookUrls[flowProperties.name]),
-          triggerTypes as WebhookTriggerType[],
-          storeKey,
-          logger,
-          primarySignatureKey,
-          secondarySignatureKey,
-        );
-        return { crossFlowState: newCrossFlowState };
       }
+      const { crossFlowState: newCrossFlowState } = await createWebhookFN(
+        client,
+        targetId,
+        targetType,
+        util.types.toString(webhookUrls[flowProperties.name]),
+        triggerTypes as WebhookTriggerType[],
+        storeKey,
+        logger,
+        primarySignatureKey,
+        secondarySignatureKey,
+      );
+      return persist(newCrossFlowState);
     },
     delete: async (
       { flow: flowProperties, crossFlowState, logger },
       { connection, targetId, targetType },
     ) => {
-      const storeKey = getStoreKey(targetId, targetType, flowProperties.name);
+      const storeKey = getStoreKey(flowProperties.name);
+      const legacyStoreKey = getLegacyStoreKey(
+        targetId,
+        targetType,
+        flowProperties.name,
+      );
       const client = createAuthorizedClient({ boxConnection: connection });
-      const state = crossFlowState[storeKey] as StoreState;
+      const { state } = resolveStoreState(
+        crossFlowState,
+        storeKey,
+        legacyStoreKey,
+      );
       logger.info("Checking for existing webhook...");
       if (state?.existingWebhookId) {
         logger.info("Existing webhook found, deleting...");
@@ -125,6 +114,7 @@ export const managedWebhook = trigger({
           util.types.toString(state.existingWebhookId),
         );
         crossFlowState[storeKey] = undefined;
+        crossFlowState[legacyStoreKey] = undefined;
         return { crossFlowState };
       } else {
         logger.info("No existing webhook found, skipping...");
@@ -139,18 +129,20 @@ export const managedWebhook = trigger({
     }
     const { rawBody, headers } = payload;
     const lowerHeaders = util.types.lowerCaseHeaders(headers);
-    const primarySignature = lowerHeaders["box-signature-primary"];
-    const secondarySignature = lowerHeaders["box-signature-secondary"];
+    const primarySignature = lowerHeaders[BOX_SIGNATURE_PRIMARY_HEADER];
+    const secondarySignature = lowerHeaders[BOX_SIGNATURE_SECONDARY_HEADER];
     if (primarySignature || secondarySignature) {
-      const primarySignatureKey = context.crossFlowState
-        .primarySignatureKey as string;
-      const secondarySignatureKey = context.crossFlowState
-        .secondarySignatureKey as string;
+      const storeKey = getStoreKey(context.flow.name);
+      const state = context.crossFlowState[storeKey] as StoreState | undefined;
       const isValid = validateBoxWebhookSignature({
         body: util.types.toString(rawBody.data),
         headers: lowerHeaders,
-        primaryKey: primarySignatureKey,
-        secondaryKey: secondarySignatureKey,
+        primaryKey:
+          state?.primarySignatureKey ??
+          (context.crossFlowState.primarySignatureKey as string | undefined),
+        secondaryKey:
+          state?.secondarySignatureKey ??
+          (context.crossFlowState.secondarySignatureKey as string | undefined),
       });
       if (!isValid) {
         throw new Error(
@@ -162,17 +154,7 @@ export const managedWebhook = trigger({
       payload,
     });
   },
-  inputs: {
-    connection: connectionInput,
-    targetId,
-    targetType,
-    triggerTypes,
-    primarySignatureKey: { ...signatureKey, label: "Primary Signature Key" },
-    secondarySignatureKey: {
-      ...signatureKey,
-      label: "Secondary Signature Key",
-    },
-  },
+  inputs: managedWebhookInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });

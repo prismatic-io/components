@@ -1,18 +1,18 @@
 import { pollingTrigger, util } from "@prismatic-io/spectral";
-import { connectionInput, fileIdInput } from "../inputs";
+import { newFileCommentsInputs } from "../inputs";
 import { createAuthorizedClient } from "../client";
 import {
   computeNewEntries,
   getLastPolledAt,
   normalizeDatesBetweenEntries,
-} from "../utils";
+} from "../util";
 export const newFileComments = pollingTrigger({
   display: {
     label: "New File Comments",
     description:
       "Checks for new comments on a specified file on a configured schedule.",
   },
-  inputs: { connection: connectionInput, fileId: fileIdInput },
+  inputs: newFileCommentsInputs,
   allowsBranching: false,
   perform: async (context, payload, { connection, fileId }) => {
     const now = new Date().toISOString();
@@ -42,9 +42,11 @@ export const newFileComments = pollingTrigger({
     return {
       payload: {
         ...payload,
-        data: {
-          newComments: {
-            data: newComments,
+        body: {
+          data: {
+            newComments: {
+              data: newComments,
+            },
           },
         },
       },

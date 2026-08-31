@@ -7,7 +7,7 @@ This polling trigger monitors a Box folder at regular intervals and identifies f
 The trigger operates as follows:
 
 1. Runs on the configured schedule (e.g., every 5 minutes)
-2. Fetches all files from the specified folder using the [Box Folders API](https://developer.box.com/reference/get-folders-id-items/)
+2. Fetches all files from the specified folder using the [Box Folders API](https://developer.box.com/reference/get-folders-id-items)
 3. Normalizes timestamps to UTC for accurate comparison (Box stores dates with timezone offsets)
 4. Compares file creation and modification timestamps against the last poll time
 5. Categorizes files as:
@@ -15,18 +15,11 @@ The trigger operates as follows:
    - **Updated Files**: Files where `modified_at` is after the last poll time but are not classified as new
 6. Maintains polling state automatically to track the last poll time
 
-#### Configuration
-
-Configure the trigger with the following inputs:
-
-- **Connection**: Box OAuth 2.0 connection with read permissions for the target folder
-- **Folder ID**: The unique identifier of the folder to monitor (use the Box folder data source to select a folder)
-
 The trigger fetches up to 1,000 files per poll from the specified folder using Box's pagination mechanism.
 
 #### Returned Data
 
-The trigger returns separate arrays for new and updated files with branch support.
+The trigger returns separate arrays for new and updated files with branch support. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example returned data structure</summary>

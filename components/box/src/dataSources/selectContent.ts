@@ -1,11 +1,13 @@
 import { dataSource, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
-import { connectionInput, contentType, limit, marker, offset } from "../inputs";
-import { getFolderEntries, getPathEntries } from "../utils";
+import { FILE_TYPE, FOLDER_TYPE } from "../constants";
+import { selectContentExamplePayload } from "../examplePayloads";
+import { selectContentInputs } from "../inputs";
+import { getFolderEntries, getPathEntries } from "../util";
 export const selectContent = dataSource({
   display: {
     label: "Select File or Folder",
-    description: "Select file or folder from Box account base path",
+    description: "Select file or folder from Box account base path.",
   },
   dataSourceType: "picklist",
   perform: async (context, params) => {
@@ -14,7 +16,7 @@ export const selectContent = dataSource({
     });
     const pathEntries = await getPathEntries(client, "/");
     const { id, type, name } = pathEntries.slice(-1)[0];
-    if (type !== "folder") {
+    if (type !== FOLDER_TYPE) {
       throw Error(`'${name}' is not a folder`);
     }
     let allEntries = await getFolderEntries({
@@ -25,11 +27,11 @@ export const selectContent = dataSource({
       offset: util.types.toInt(params.offset) || undefined,
     });
     switch (params.contentType) {
-      case "file":
-        allEntries = allEntries.filter((entry) => entry.type === "file");
+      case FILE_TYPE:
+        allEntries = allEntries.filter((entry) => entry.type === FILE_TYPE);
         break;
-      case "folder":
-        allEntries = allEntries.filter((entry) => entry.type === "folder");
+      case FOLDER_TYPE:
+        allEntries = allEntries.filter((entry) => entry.type === FOLDER_TYPE);
         break;
       case "all":
         break;
@@ -45,11 +47,6 @@ export const selectContent = dataSource({
       })),
     };
   },
-  inputs: {
-    boxConnection: connectionInput,
-    contentType,
-    limit,
-    marker,
-    offset,
-  },
+  inputs: selectContentInputs,
+  examplePayload: selectContentExamplePayload,
 });
