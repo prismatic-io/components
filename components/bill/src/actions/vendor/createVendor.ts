@@ -9,6 +9,7 @@ export const createVendor = action({
     label: "Create Vendor",
     description: "Create a vendor object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, name, companyName, email, additionalFields },
@@ -39,6 +40,11 @@ export const createVendor = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createVendorExamplePayload.data,
+  }),
   inputs: createVendorInputs,
   examplePayload: createVendorExamplePayload,
 });

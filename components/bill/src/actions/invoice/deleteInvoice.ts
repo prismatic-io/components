@@ -9,6 +9,7 @@ export const deleteInvoice = action({
     label: "Delete Invoice",
     description: "Delete an invoice object.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, invoiceId }) => {
     const { client, loginData } = await getClient(
       connection,
@@ -28,6 +29,11 @@ export const deleteInvoice = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deleteInvoiceExamplePayload.data,
+  }),
   inputs: deleteInvoiceInputs,
   examplePayload: deleteInvoiceExamplePayload,
 });

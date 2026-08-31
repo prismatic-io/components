@@ -9,6 +9,7 @@ export const createBill = action({
     label: "Create Bill",
     description: "Create a bill object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -51,6 +52,11 @@ export const createBill = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createBillExamplePayload.data,
+  }),
   inputs: createBillInputs,
   examplePayload: createBillExamplePayload,
 });

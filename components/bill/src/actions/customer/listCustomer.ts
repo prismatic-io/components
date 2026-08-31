@@ -4,11 +4,13 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { listCustomerInputs } from "../../inputs/customer";
 import { listCustomerExamplePayload } from "../../examplePayloads";
+import { RESOURCE_CONFIG } from "../../constants";
 export const listCustomer = action({
   display: {
     label: "List Customers",
     description: "List customer objects.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, filters, sort, start, max, nested },
@@ -29,11 +31,19 @@ export const listCustomer = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
-    const { data } = await client.post("/List/Customer.json", stringifiedData);
+    const { data } = await client.post(
+      RESOURCE_CONFIG.customers.endpoint,
+      stringifiedData,
+    );
     return {
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listCustomerExamplePayload.data,
+  }),
   inputs: listCustomerInputs,
   examplePayload: listCustomerExamplePayload,
 });

@@ -9,6 +9,7 @@ export const bulkCreateInvoices = action({
     label: "Bulk Create Invoices",
     description: "Bulk create invoice objects.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, invoiceCreateBulk }) => {
     const { client, loginData } = await getClient(
       connection,
@@ -28,6 +29,11 @@ export const bulkCreateInvoices = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: bulkCreateInvoicesExamplePayload.data,
+  }),
   inputs: bulkCreateInvoicesInputs,
   examplePayload: bulkCreateInvoicesExamplePayload,
 });

@@ -3,12 +3,14 @@ import { cleanReturnData } from "../../util";
 import { stringify } from "qs";
 import { getClient } from "../../client";
 import { listInvoiceInputs } from "../../inputs/invoice";
-import { listInvoicesExamplePayload } from "../../examplePayloads";
+import { listInvoiceExamplePayload } from "../../examplePayloads";
+import { RESOURCE_CONFIG } from "../../constants";
 export const listInvoice = action({
   display: {
     label: "List Invoices",
     description: "List invoice objects.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, filters, sort, start, max, nested },
@@ -29,11 +31,19 @@ export const listInvoice = action({
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
-    const { data } = await client.post("/List/Invoice.json", stringifiedData);
+    const { data } = await client.post(
+      RESOURCE_CONFIG.invoices.endpoint,
+      stringifiedData,
+    );
     return {
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listInvoiceExamplePayload.data,
+  }),
   inputs: listInvoiceInputs,
-  examplePayload: listInvoicesExamplePayload,
+  examplePayload: listInvoiceExamplePayload,
 });

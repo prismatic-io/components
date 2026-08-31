@@ -25,7 +25,7 @@ const invoiceNumber = input({
   placeholder: "Enter invoice number",
   required: true,
   comments:
-    "User-generated invoice number. This value can be your chosen number scheme or invoice due date.",
+    "User-generated invoice number. This value can be a chosen number scheme or the invoice due date.",
   clean: util.types.toString,
 });
 const invoiceDate = input({
@@ -78,7 +78,7 @@ export const createInvoiceInputs = {
   additionalFields: input({
     ...additionalFields,
     example: JSON.stringify(invoiceAdditionalFields, null, 2),
-    comments: `${additionalFields.comments} See https://developer.bill.com/reference/createinvoice for more information.`,
+    comments: `${additionalFields.comments} See the [Bill.com API documentation](https://developer.bill.com/reference/createinvoice) for more information.`,
   }),
 };
 const invoiceCreateBulk = input({

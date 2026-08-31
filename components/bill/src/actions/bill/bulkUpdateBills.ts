@@ -9,6 +9,7 @@ export const bulkUpdateBills = action({
     label: "Bulk Update Bills",
     description: "Bulk update bill objects.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, billsUpdateBulk }) => {
     const { client, loginData } = await getClient(
       connection,
@@ -30,6 +31,11 @@ export const bulkUpdateBills = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: bulkUpdateBillsExamplePayload.data,
+  }),
   inputs: bulkUpdateBillsInputs,
   examplePayload: bulkUpdateBillsExamplePayload,
 });

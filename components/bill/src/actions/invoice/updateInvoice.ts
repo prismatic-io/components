@@ -9,6 +9,7 @@ export const updateInvoice = action({
     label: "Update Invoice",
     description: "Update an invoice object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -51,6 +52,11 @@ export const updateInvoice = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: updateInvoiceExamplePayload.data,
+  }),
   inputs: updateInvoiceInputs,
   examplePayload: updateInvoiceExamplePayload,
 });

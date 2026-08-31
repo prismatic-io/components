@@ -1,3 +1,4 @@
+import type { TriggerPayload } from "@prismatic-io/spectral";
 import type { PayloadData } from "./interfaces/PayloadData";
 export const getCustomerExamplePayload: PayloadData = {
   data: {
@@ -351,7 +352,7 @@ export const getCustomerBankAccountExamplePayload: PayloadData = {
     rndDepExpireDate: "2024-08-13",
   },
 };
-export const listCustomerBankAccountsExamplePayload = {
+export const listCustomerBankAccountExamplePayload = {
   data: [getCustomerBankAccountExamplePayload.data],
 };
 export const listCustomerExamplePayload = {
@@ -442,7 +443,7 @@ export const getInvoiceExamplePayload: PayloadData = {
 export const updateInvoiceExamplePayload = getInvoiceExamplePayload;
 export const createInvoiceExamplePayload = getInvoiceExamplePayload;
 export const deleteInvoiceExamplePayload = getInvoiceExamplePayload;
-export const listInvoicesExamplePayload = {
+export const listInvoiceExamplePayload = {
   data: [getInvoiceExamplePayload.data],
 };
 export const bulkCreateInvoicesExamplePayload: PayloadData = {
@@ -460,8 +461,10 @@ export const bulkUpdateInvoicesExamplePayload =
   bulkCreateInvoicesExamplePayload;
 export const generateMfaChallengeIdExamplePayload: PayloadData = {
   data: {
-    challengeId: "!b-KXe8pBDp1vFgjczl...",
-    sessionId: "!b2XqzA2v6u5T49jY5...",
+    challengeId:
+      "!b-KXe8pBDp1vFgjczlR7mHt2wYqNaLdVe0oUZ4kJ9sCfBvXgQpImD5nWtA3rYhKu",
+    sessionId:
+      "!b2XqzA2v6u5T49jY5eRcVdWfXgHnKpLmQsTuBvNwZ0aDgIjOyClErFtGuHiJkMoPy",
   },
 };
 export const mfaAuthenticateExamplePayload: PayloadData = {
@@ -517,3 +520,14 @@ export const bulkCreateVendorBankAccountsExamplePayload: PayloadData = {
 };
 export const createCustomerBankAccountExamplePayload =
   getCustomerBankAccountExamplePayload;
+export const pollChangesTriggerExamplePayload = {
+  payload: {
+    body: {
+      data: {
+        created: [getBillExamplePayload.data],
+        updated: [getBillExamplePayload.data],
+      },
+    },
+  } as unknown as TriggerPayload,
+  polledNoChanges: false,
+};

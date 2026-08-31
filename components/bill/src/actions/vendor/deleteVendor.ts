@@ -9,6 +9,7 @@ export const deleteVendor = action({
     label: "Delete Vendor",
     description: "Delete a vendor object.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, vendorId }) => {
     const { client, loginData } = await getClient(
       connection,
@@ -30,6 +31,11 @@ export const deleteVendor = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deleteVendorExamplePayload.data,
+  }),
   inputs: deleteVendorInputs,
   examplePayload: deleteVendorExamplePayload,
 });

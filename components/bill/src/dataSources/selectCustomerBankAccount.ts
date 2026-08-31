@@ -1,21 +1,22 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection } from "../inputs/shared";
+import { selectCustomerBankAccountInputs } from "../inputs";
 import { getClient } from "../client";
 import { stringify } from "qs";
 import { cleanReturnData } from "../util";
+import { PAGE_SIZE, BANK_ACCOUNT_LIST_ENDPOINTS } from "../constants";
 export const selectCustomerBankAccount = dataSource({
   display: {
     label: "Select Customer Bank Account",
     description:
       "Select a customer bank account from the list of available customer bank accounts.",
   },
-  inputs: { connection },
+  inputs: selectCustomerBankAccountInputs,
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const { client, loginData } = await getClient(connection, false);
     const sendData = {
       start: 0,
-      max: 999,
+      max: PAGE_SIZE,
     };
     const stringifiedData = stringify({
       data: JSON.stringify(sendData),
@@ -23,7 +24,7 @@ export const selectCustomerBankAccount = dataSource({
       sessionId: loginData.sessionId,
     });
     const { data } = await client.post(
-      "/List/CustomerBankAccount.json",
+      BANK_ACCOUNT_LIST_ENDPOINTS.customerBankAccount,
       stringifiedData,
     );
     const cleanData = cleanReturnData(data);

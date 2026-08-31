@@ -9,6 +9,7 @@ export const createInvoice = action({
     label: "Create Invoice",
     description: "Create an invoice object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -49,6 +50,11 @@ export const createInvoice = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createInvoiceExamplePayload.data,
+  }),
   inputs: createInvoiceInputs,
   examplePayload: createInvoiceExamplePayload,
 });

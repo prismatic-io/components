@@ -9,6 +9,7 @@ export const getBill = action({
     label: "Get Bill",
     description: "Read a bill object.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, billId }) => {
     const { client, loginData } = await getClient(
       connection,

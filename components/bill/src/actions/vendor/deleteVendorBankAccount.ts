@@ -9,6 +9,7 @@ export const deleteVendorBankAccount = action({
     label: "Delete Vendor Bank Account",
     description: "Delete a vendor bank account object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, vendorBankAccountId, mfaId, deviceId },
@@ -37,6 +38,11 @@ export const deleteVendorBankAccount = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deleteVendorBankAccountExamplePayload.data,
+  }),
   inputs: deleteVendorBankAccountInputs,
   examplePayload: deleteVendorBankAccountExamplePayload,
 });

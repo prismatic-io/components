@@ -9,6 +9,7 @@ export const createVendorBankAccount = action({
     label: "Create Vendor Bank Account",
     description: "Create a vendor bank account object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, vendorId, accountNumber, routingNumber, mfaId, deviceId },
@@ -42,6 +43,11 @@ export const createVendorBankAccount = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createVendorBankAccountExamplePayload.data,
+  }),
   inputs: createVendorBankAccountInputs,
   examplePayload: createVendorBankAccountExamplePayload,
 });

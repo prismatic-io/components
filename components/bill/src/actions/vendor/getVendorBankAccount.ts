@@ -9,6 +9,7 @@ export const getVendorBankAccount = action({
     label: "Get Vendor Bank Account",
     description: "Read a vendor bank account object.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, vendorBankAccountId }) => {
     const { client, loginData } = await getClient(
       connection,

@@ -9,6 +9,7 @@ export const bulkCreateBills = action({
     label: "Bulk Create Bills",
     description: "Bulk create bill objects.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, billsCreateBulk }) => {
     const { client, loginData } = await getClient(
       connection,
@@ -30,6 +31,11 @@ export const bulkCreateBills = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: bulkCreateBillsExamplePayload.data,
+  }),
   inputs: bulkCreateBillsInputs,
   examplePayload: bulkCreateBillsExamplePayload,
 });

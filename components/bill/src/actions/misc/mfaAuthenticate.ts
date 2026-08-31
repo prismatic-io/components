@@ -7,9 +7,9 @@ import { mfaAuthenticateExamplePayload } from "../../examplePayloads";
 export const mfaAuthenticate = action({
   display: {
     label: "Authenticate MFA Session",
-    description:
-      "Use this action to authenticate an MFA session. Session only last 30 days.",
+    description: "Authenticate an MFA session. Sessions last only 30 days.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, challengeId, token, sessionId }) => {
     const { client, loginData } = await getClient(
       connection,
@@ -36,6 +36,11 @@ export const mfaAuthenticate = action({
       data: { ...cleanReturnData(data), deviceId },
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: mfaAuthenticateExamplePayload.data,
+  }),
   inputs: mfaAuthenticateInputs,
   examplePayload: mfaAuthenticateExamplePayload,
 });

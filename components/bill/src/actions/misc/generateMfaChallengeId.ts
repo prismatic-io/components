@@ -6,16 +6,18 @@ import { generateMfaChallengeIdInputs } from "../../inputs/misc";
 import { generateMfaChallengeIdExamplePayload } from "../../examplePayloads";
 export const generateMfaChallengeId = action({
   display: {
-    label: "Generate an MFA Challenge ID",
-    description: "Use this action to create a trusted MFA session.",
+    label: "Generate MFA Challenge ID",
+    description:
+      "Create a trusted MFA session. Secondary (backup) phone MFA is no longer supported.",
   },
-  perform: async (context, { connection, useBackup }) => {
+  performSafety: "notAllowed",
+  perform: async (context, { connection }) => {
     const { client, loginData } = await getClient(
       connection,
       context.debug.enabled,
     );
     const sessionId = loginData.sessionId;
-    const sendData = { useBackup };
+    const sendData = {};
     const stringifiedData = stringify({
       data: JSON.stringify(sendData),
       devKey: loginData.devKey,
@@ -26,6 +28,11 @@ export const generateMfaChallengeId = action({
       data: { ...cleanReturnData(data), sessionId },
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: generateMfaChallengeIdExamplePayload.data,
+  }),
   inputs: generateMfaChallengeIdInputs,
   examplePayload: generateMfaChallengeIdExamplePayload,
 });

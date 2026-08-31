@@ -135,7 +135,7 @@ export const createVendorInputs = {
   additionalFields: input({
     ...additionalFields,
     example: JSON.stringify(vendorAdditionalFields, null, 2),
-    comments: `${additionalFields.comments} See https://developer.bill.com/reference/createvendor for more information.`,
+    comments: `${additionalFields.comments} See the [Bill.com API documentation](https://developer.bill.com/reference/createvendor) for more information.`,
   }),
 };
 const vendorCreateBulk = input({
@@ -248,7 +248,7 @@ export const updateVendorInputs = {
   additionalFields: input({
     ...additionalFields,
     example: JSON.stringify(vendorAdditionalFields, null, 2),
-    comments: `${additionalFields.comments} See https://developer.bill.com/reference/updatevendor for more information.`,
+    comments: `${additionalFields.comments} See the [Bill.com API documentation](https://developer.bill.com/reference/updatevendor) for more information.`,
   }),
 };
 const vendorUpdateBulk = input({
@@ -360,7 +360,7 @@ export const createVendorBankAccountInputs = {
   additionalFields: input({
     ...additionalFields,
     example: JSON.stringify(vendorBankAccountAdditionalFields, null, 2),
-    comments: `${additionalFields.comments} See https://developer.bill.com/reference/createvendorbankaccount for more information.`,
+    comments: `${additionalFields.comments} See the [Bill.com API documentation](https://developer.bill.com/reference/createvendorbankaccount) for more information.`,
   }),
 };
 const vendorBankAccountCreateBulk = input({

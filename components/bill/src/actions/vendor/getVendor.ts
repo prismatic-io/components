@@ -9,6 +9,7 @@ export const getVendor = action({
     label: "Get Vendor",
     description: "Read a vendor object.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, vendorId }) => {
     const { client, loginData } = await getClient(
       connection,

@@ -9,6 +9,7 @@ export const updateBill = action({
     label: "Update Bill",
     description: "Update a bill object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -53,6 +54,11 @@ export const updateBill = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: updateBillExamplePayload.data,
+  }),
   inputs: updateBillInputs,
   examplePayload: updateBillExamplePayload,
 });

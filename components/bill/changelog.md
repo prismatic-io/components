@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-08-31
+
+Updated MFA challenge creation and improved configuration-time support:
+
+- Updated the **Generate MFA Challenge ID** action to remove secondary (backup) phone MFA, which BILL no longer supports
+- Added inline action calling support across all actions for improved example output during configuration
+
 ### 2026-05-05
 
 Added **New and Updated Records** polling trigger to detect new and updated records for a selected Bill.com resource type on a configured schedule

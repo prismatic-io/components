@@ -9,6 +9,7 @@ export const bulkCreateVendorBankAccounts = action({
     label: "Bulk Create Vendor Bank Accounts",
     description: "Bulk create vendor bank account objects.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, vendorBankAccountCreateBulk, mfaId, deviceId },
@@ -37,6 +38,11 @@ export const bulkCreateVendorBankAccounts = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: bulkCreateVendorBankAccountsExamplePayload.data,
+  }),
   inputs: bulkCreateVendorBankAccountsInputs,
   examplePayload: bulkCreateVendorBankAccountsExamplePayload,
 });

@@ -9,6 +9,7 @@ export const deleteBill = action({
     label: "Delete Bill",
     description: "Delete a bill object.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, billId }) => {
     const { client, loginData } = await getClient(
       connection,
@@ -30,6 +31,11 @@ export const deleteBill = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deleteBillExamplePayload.data,
+  }),
   inputs: deleteBillInputs,
   examplePayload: deleteBillExamplePayload,
 });

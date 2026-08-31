@@ -9,6 +9,7 @@ export const updateVendor = action({
     label: "Update Vendor",
     description: "Update a vendor object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, vendorId, name, additionalFields },
@@ -38,6 +39,11 @@ export const updateVendor = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: updateVendorExamplePayload.data,
+  }),
   inputs: updateVendorInputs,
   examplePayload: updateVendorExamplePayload,
 });

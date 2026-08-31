@@ -1,7 +1,7 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import connections from "../connections";
 import type { ApiResponse } from "../interfaces/ApiResponse";
-import { ApiUrls } from "../enums/ApiUrls";
+import { ApiUrls } from "../enums/apiUrls";
 import { stringify } from "qs";
 import type { getClient } from "../client";
 import type { BillFilter, BillRecord } from "../types";

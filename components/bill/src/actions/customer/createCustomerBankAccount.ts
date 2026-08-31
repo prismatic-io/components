@@ -9,6 +9,7 @@ export const createCustomerBankAccount = action({
     label: "Create Customer Bank Account",
     description: "Create a customer bank account object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -49,6 +50,11 @@ export const createCustomerBankAccount = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createCustomerBankAccountExamplePayload.data,
+  }),
   inputs: createCustomerBankAccountInputs,
   examplePayload: createCustomerBankAccountExamplePayload,
 });

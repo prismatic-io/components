@@ -9,6 +9,7 @@ export const getCustomer = action({
     label: "Get Customer",
     description: "Read a customer object.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, customerId }) => {
     const { client, loginData } = await getClient(
       connection,

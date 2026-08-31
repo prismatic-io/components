@@ -61,7 +61,7 @@ export const createCustomerInputs = {
   additionalFields: input({
     ...additionalFields,
     example: JSON.stringify(customerAdditionalFields, null, 2),
-    comments: `${additionalFields.comments} See https://developer.bill.com/reference/createcustomer for more information.`,
+    comments: `${additionalFields.comments} See the [Bill.com API documentation](https://developer.bill.com/reference/createcustomer) for more information.`,
   }),
 };
 const customersCreateBulk = input({
@@ -104,7 +104,7 @@ export const updateCustomerInputs = {
   additionalFields: input({
     ...additionalFields,
     example: JSON.stringify(customerAdditionalFields, null, 2),
-    comments: `${additionalFields.comments} See https://developer.bill.com/reference/updatecustomer for more information.`,
+    comments: `${additionalFields.comments} See the [Bill.com API documentation](https://developer.bill.com/reference/updatecustomer) for more information.`,
   }),
 };
 const customersUpdateBulk = input({
@@ -201,6 +201,6 @@ export const createCustomerBankAccountInputs = {
   additionalFields: input({
     ...additionalFields,
     example: JSON.stringify(customerBankAccountAdditionalFields, null, 2),
-    comments: `${additionalFields.comments} See https://developer.bill.com/reference/createcustomerbankaccount for more information.`,
+    comments: `${additionalFields.comments} See the [Bill.com API documentation](https://developer.bill.com/reference/createcustomerbankaccount) for more information.`,
   }),
 };

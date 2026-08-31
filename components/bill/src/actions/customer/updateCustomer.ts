@@ -9,6 +9,7 @@ export const updateCustomer = action({
     label: "Update Customer",
     description: "Update a customer object.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, customerName, customerId, additionalFields },
@@ -38,6 +39,11 @@ export const updateCustomer = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: updateCustomerExamplePayload.data,
+  }),
   inputs: updateCustomerInputs,
   examplePayload: updateCustomerExamplePayload,
 });

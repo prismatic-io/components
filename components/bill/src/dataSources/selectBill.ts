@@ -1,27 +1,31 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection } from "../inputs/shared";
+import { selectBillInputs } from "../inputs";
 import { getClient } from "../client";
 import { stringify } from "qs";
 import { cleanReturnData } from "../util";
+import { PAGE_SIZE, RESOURCE_CONFIG } from "../constants";
 export const selectBill = dataSource({
   display: {
     label: "Select Bill",
     description: "Select a bill from the list of available bills.",
   },
-  inputs: { connection },
+  inputs: selectBillInputs,
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const { client, loginData } = await getClient(connection, false);
     const sendData = {
       start: 0,
-      max: 999,
+      max: PAGE_SIZE,
     };
     const stringifiedData = stringify({
       data: JSON.stringify(sendData),
       devKey: loginData.devKey,
       sessionId: loginData.sessionId,
     });
-    const { data } = await client.post("/List/Bill.json", stringifiedData);
+    const { data } = await client.post(
+      RESOURCE_CONFIG.bills.endpoint,
+      stringifiedData,
+    );
     const cleanData = cleanReturnData(data);
     const objects = (
       cleanData as {

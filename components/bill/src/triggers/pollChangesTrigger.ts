@@ -4,6 +4,7 @@ import { pollChangesInputs } from "../inputs/polling";
 import { RESOURCE_CONFIG } from "../constants";
 import type { PollingState } from "../types";
 import { fetchAllRecords, filterByTimestamp } from "../util";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -11,6 +12,7 @@ export const pollChangesTrigger = pollingTrigger({
       "Checks for new and updated records in a selected Bill.com resource type on a configured schedule.",
   },
   inputs: pollChangesInputs,
+  examplePayload: pollChangesTriggerExamplePayload,
   async perform(context, payload, params) {
     const config = RESOURCE_CONFIG[params.pollResourceType];
     if (!config) {

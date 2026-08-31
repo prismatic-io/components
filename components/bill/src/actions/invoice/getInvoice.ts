@@ -9,6 +9,7 @@ export const getInvoice = action({
     label: "Get Invoice",
     description: "Read an invoice object.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, invoiceId }) => {
     const { client, loginData } = await getClient(
       connection,

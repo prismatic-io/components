@@ -9,6 +9,7 @@ export const createCustomer = action({
     label: "Create Customer",
     description: "Create a customer object.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, customerName, additionalFields }) => {
     const { client, loginData } = await getClient(
       connection,
@@ -34,6 +35,11 @@ export const createCustomer = action({
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createCustomerExamplePayload.data,
+  }),
   inputs: createCustomerInputs,
   examplePayload: createCustomerExamplePayload,
 });

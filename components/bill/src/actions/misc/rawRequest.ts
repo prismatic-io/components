@@ -8,6 +8,7 @@ export const rawRequest = action({
     description: "Send raw HTTP request to Bill.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...httpClientInputs }) => {
     validateConnection(connection);
     const { data } = await sendRawRequest(getBaseUrl(connection), {

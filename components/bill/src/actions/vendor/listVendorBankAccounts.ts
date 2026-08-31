@@ -4,11 +4,13 @@ import { stringify } from "qs";
 import { getClient } from "../../client";
 import { listVendorBankAccountsInputs } from "../../inputs/vendor";
 import { listVendorBankAccountsExamplePayload } from "../../examplePayloads";
+import { BANK_ACCOUNT_LIST_ENDPOINTS } from "../../constants";
 export const listVendorBankAccounts = action({
   display: {
     label: "List Vendor Bank Accounts",
     description: "List vendor bank account objects.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, filters, sort, start, max, nested },
@@ -30,13 +32,18 @@ export const listVendorBankAccounts = action({
       sessionId: loginData.sessionId,
     });
     const { data } = await client.post(
-      "/List/VendorBankAccount.json",
+      BANK_ACCOUNT_LIST_ENDPOINTS.vendorBankAccount,
       stringifiedData,
     );
     return {
       data: cleanReturnData(data),
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listVendorBankAccountsExamplePayload.data,
+  }),
   inputs: listVendorBankAccountsInputs,
   examplePayload: listVendorBankAccountsExamplePayload,
 });
