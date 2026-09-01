@@ -12,26 +12,20 @@ export const listUsers = action({
     context,
     {
       connection,
-      $filter,
-      $select,
-      $expand,
-      $orderby,
-      $top,
+      odataQueryParams,
       getAllPaginatedResults,
-      $count,
-      $search,
       eventualConsistencyLevelHeader,
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
-      $filter,
-      $select,
-      $expand,
-      $orderby,
-      $top,
-      $count,
-      $search,
+      $filter: odataQueryParams.$filter,
+      $select: odataQueryParams.$select,
+      $expand: odataQueryParams.$expand,
+      $orderby: odataQueryParams.$orderby,
+      $top: odataQueryParams.$top,
+      $count: odataQueryParams.$count,
+      $search: odataQueryParams.$search,
     };
     const { data } = await getValues(getAllPaginatedResults, client, `/users`, {
       params,

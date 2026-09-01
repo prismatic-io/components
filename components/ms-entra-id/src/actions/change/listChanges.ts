@@ -11,22 +11,14 @@ export const listChanges = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      deltaURL,
-      $deltatoken,
-      $skiptoken,
-      $select,
-      $filter,
-      returnMinimal,
-    },
+    { connection, deltaURL, odataQueryParams, returnMinimal },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
-      $deltatoken,
-      $skiptoken,
-      $select,
-      $filter,
+      $deltatoken: odataQueryParams.$deltatoken,
+      $skiptoken: odataQueryParams.$skiptoken,
+      $select: odataQueryParams.$select,
+      $filter: odataQueryParams.$filter,
     };
     const { data } = await client.get(deltaURL as string, {
       params,

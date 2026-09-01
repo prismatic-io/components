@@ -10,11 +10,11 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.19.0",
+    "@prismatic-io/spectral": "10.20.0",
     "ms-utils": "file:../../packages/ms-utils"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.13",
+    "@biomejs/biome": "2.5.1",
     "@types/jest": "30.0.0",
     "@types/node": "^22.19.11",
     "copy-webpack-plugin": "13.0.1",

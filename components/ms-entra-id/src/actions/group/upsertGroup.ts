@@ -12,25 +12,15 @@ export const upsertGroup = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      uniqueName,
-      useAsUpsert,
-      displayName,
-      mailEnabled,
-      mailNickname,
-      securityEnabled,
-      groupTypes,
-      additionalProperties,
-    },
+    { connection, uniqueName, useAsUpsert, groupFields, additionalProperties },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const payload = {
-      displayName,
-      mailEnabled,
-      mailNickname,
-      securityEnabled,
-      groupTypes,
+      displayName: groupFields.displayName,
+      mailEnabled: groupFields.mailEnabled,
+      mailNickname: groupFields.mailNickname,
+      securityEnabled: groupFields.securityEnabled,
+      groupTypes: groupFields.groupTypes,
       ...(additionalProperties || {}),
     };
     const { data } = await client.patch(

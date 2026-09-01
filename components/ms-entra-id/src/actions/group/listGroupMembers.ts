@@ -13,24 +13,19 @@ export const listGroupMembers = action({
     {
       connection,
       groupId,
-      $filter,
-      $count,
-      $select,
-      $search,
-      $top,
+      odataQueryParams,
       getAllPaginatedResults,
-      $expand,
       eventualConsistencyLevelHeader,
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const params = {
-      $filter,
-      $count,
-      $select,
-      $search,
-      $top,
-      $expand,
+      $filter: odataQueryParams.$filter,
+      $count: odataQueryParams.$count,
+      $select: odataQueryParams.$select,
+      $search: odataQueryParams.$search,
+      $top: odataQueryParams.$top,
+      $expand: odataQueryParams.$expand,
     };
     const { data } = await getValues(
       getAllPaginatedResults,

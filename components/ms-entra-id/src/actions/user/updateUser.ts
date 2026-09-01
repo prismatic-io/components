@@ -10,9 +10,10 @@ export const updateUser = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      userId,
+    { connection, userId, userFields, additionalProperties },
+  ) => {
+    const client = createClient(connection, context.debug.enabled);
+    const {
       userPrincipalName,
       domain,
       accountEnabled,
@@ -20,10 +21,7 @@ export const updateUser = action({
       givenName,
       surname,
       jobTitle,
-      additionalProperties,
-    },
-  ) => {
-    const client = createClient(connection, context.debug.enabled);
+    } = userFields;
     const lacksDomainWithPrincipalName = userPrincipalName && !domain;
     const lacksPrincipalNameWithDomain = !userPrincipalName && domain;
     const condition =

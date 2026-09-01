@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-09-01
+
+Restructured action inputs into structured objects for an improved user experience.
+
+- Updated **List Users**, **List Groups**, **List Group Members**, and **List Applications** to group their OData system query options into **OData Query Parameters**; **Fetch All** stays a top-level toggle
+- Updated **List Changes** to group its OData system query and change-tracking options into **OData Query Parameters**
+- Updated **Update User** to group its user profile inputs into **User Fields**, and **Upsert Group** to group its group configuration inputs into **Group Fields**
+
 ### 2026-06-02
 
 Added the **OAuth 2.0 Client Credentials** connection for service-to-service authentication

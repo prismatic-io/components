@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanCodeInput, cleanGroupTypes, toOptionalString } from "../util";
 export const connection = input({
   label: "Connection",
@@ -117,6 +117,21 @@ export const odataParams = {
     clean: toOptionalString,
   }),
 };
+export const odataQueryParams = structuredObjectInput({
+  label: "OData Query Parameters",
+  required: false,
+  comments:
+    "OData system query options for filtering, sorting, selecting, and expanding results.",
+  inputs: {
+    $count: odataParams.$count,
+    $expand: odataParams.$expand,
+    $filter: odataParams.$filter,
+    $orderby: odataParams.$orderby,
+    $search: odataParams.$search,
+    $select: odataParams.$select,
+    $top: odataParams.$top,
+  },
+});
 export const additionalProperties = input({
   label: "Additional Properties",
   type: "code",
@@ -221,7 +236,7 @@ export const returnMinimal = input({
   clean: util.types.toBool,
 });
 export const getAllPaginatedResults = input({
-  label: "Get All Paginated Results",
+  label: "Fetch All",
   type: "boolean",
   comments:
     "When true, automatically fetches all pages of results using pagination. Ignores the 'Top' input.",

@@ -4,7 +4,7 @@ import {
   connection,
   eventualConsistencyLevelHeader,
   getAllPaginatedResults,
-  odataParams,
+  odataQueryParams,
   uniqueName,
   useAsUpsert,
 } from "./common";
@@ -48,14 +48,8 @@ export const getApplicationInputs = {
 };
 export const listApplicationsInputs = {
   connection,
-  $count: odataParams.$count,
-  $expand: odataParams.$expand,
-  $filter: odataParams.$filter,
-  $orderby: odataParams.$orderby,
-  $search: odataParams.$search,
-  $select: odataParams.$select,
-  $top: odataParams.$top,
   getAllPaginatedResults,
+  odataQueryParams,
   eventualConsistencyLevelHeader,
 };
 export const upsertApplicationInputs = {

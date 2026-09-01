@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanBooleanInput, getOptionalBooleanModel } from "../util";
 import {
   additionalProperties,
@@ -9,6 +9,7 @@ import {
   groupTypes,
   memberId,
   odataParams,
+  odataQueryParams,
   uniqueName,
   useAsUpsert,
 } from "./common";
@@ -74,26 +75,15 @@ export const getGroupInputs = {
 };
 export const listGroupInputs = {
   connection,
-  $count: odataParams.$count,
-  $expand: odataParams.$expand,
-  $filter: odataParams.$filter,
-  $orderby: odataParams.$orderby,
-  $search: odataParams.$search,
-  $select: odataParams.$select,
-  $top: odataParams.$top,
   getAllPaginatedResults,
+  odataQueryParams,
   eventualConsistencyLevelHeader,
 };
 export const listGroupMembersInputs = {
   connection,
   groupId,
-  $filter: odataParams.$filter,
-  $count: odataParams.$count,
-  $select: odataParams.$select,
-  $search: odataParams.$search,
-  $top: odataParams.$top,
   getAllPaginatedResults,
-  $expand: odataParams.$expand,
+  odataQueryParams,
   eventualConsistencyLevelHeader,
 };
 export const removeMemberOfGroupInputs = {
@@ -123,6 +113,18 @@ const securityEnabledOptional = input({
   model: getOptionalBooleanModel(),
   clean: cleanBooleanInput,
 });
+const groupFields = structuredObjectInput({
+  label: "Group Fields",
+  required: false,
+  comments: "Group configuration fields.",
+  inputs: {
+    displayName: input({ ...displayName, required: false }),
+    mailEnabled: mailEnabledOptional,
+    mailNickname: input({ ...mailNickname, required: false }),
+    securityEnabled: securityEnabledOptional,
+    groupTypes,
+  },
+});
 export const upsertGroupInputs = {
   connection,
   uniqueName: input({
@@ -136,11 +138,7 @@ export const upsertGroupInputs = {
     comments:
       "When true, creates a new group if it does not exist. When false, only updates an existing group.",
   }),
-  displayName: input({ ...displayName, required: false }),
-  mailEnabled: mailEnabledOptional,
-  mailNickname: input({ ...mailNickname, required: false }),
-  securityEnabled: securityEnabledOptional,
-  groupTypes,
+  groupFields,
   additionalProperties: input({
     ...additionalProperties,
     comments: `${additionalProperties.comments} See [Upsert Group API](https://learn.microsoft.com/en-us/graph/api/group-upsert).`,

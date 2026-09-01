@@ -4,21 +4,16 @@ import {
   eventualConsistencyLevelHeader,
   getAllPaginatedResults,
   odataParams,
+  odataQueryParams,
   userId,
 } from "./common";
 export const listUsersInputs = {
   connection,
-  $count: odataParams.$count,
-  $expand: odataParams.$expand,
-  $filter: odataParams.$filter,
-  $orderby: odataParams.$orderby,
-  $search: odataParams.$search,
-  $select: odataParams.$select,
-  $top: odataParams.$top,
   getAllPaginatedResults,
+  odataQueryParams,
   eventualConsistencyLevelHeader,
 };
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanBooleanInput,
   getOptionalBooleanModel,
@@ -145,6 +140,30 @@ const accountEnabledOptional = input({
   model: getOptionalBooleanModel(),
   clean: cleanBooleanInput,
 });
+const userFields = structuredObjectInput({
+  label: "User Fields",
+  required: false,
+  comments: "User profile fields to update.",
+  inputs: {
+    accountEnabled: accountEnabledOptional,
+    displayName: input({ ...displayName, required: false }),
+    userPrincipalName: input({
+      ...userPrincipalName,
+      comments:
+        "The updated user principal name of the user. Required if 'Domain' input is provided.",
+      required: false,
+    }),
+    domain: input({
+      ...domain,
+      comments:
+        "The updated domain for the user, this must be an existing domain in the tenant. Required if 'User Principal Name' input is provided.",
+      required: false,
+    }),
+    givenName,
+    surname,
+    jobTitle,
+  },
+});
 export const updateUserInputs = {
   connection,
   userId: input({
@@ -152,23 +171,7 @@ export const updateUserInputs = {
     comments:
       "Unique Identifier for the user to update. This can be the user's id or userPrincipalName.",
   }),
-  accountEnabled: accountEnabledOptional,
-  displayName: input({ ...displayName, required: false }),
-  userPrincipalName: input({
-    ...userPrincipalName,
-    comments:
-      "The updated user principal name of the user. Required if 'Domain' input is provided.",
-    required: false,
-  }),
-  domain: input({
-    ...domain,
-    comments:
-      "The updated domain for the user, this must be an existing domain in the tenant. Required if 'User Principal Name' input is provided.",
-    required: false,
-  }),
-  givenName,
-  surname,
-  jobTitle,
+  userFields,
   additionalProperties: input({
     ...additionalProperties,
     comments: `${additionalProperties.comments} See [Update User API](https://learn.microsoft.com/en-us/graph/api/user-update).`,
