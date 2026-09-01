@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toObjectOrEmpty, toOptionalNumber } from "../util";
 export const connection = input({
   label: "Connection",
@@ -33,6 +33,12 @@ export const fetchAll = input({
   comments:
     "When true, automatically fetches all pages of results using pagination. Ignores start and limit when true.",
   clean: util.types.toBool,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Start index and page size controls.",
+  inputs: { start, limit },
 });
 export const serviceDeskId = input({
   label: "Service Desk ID",

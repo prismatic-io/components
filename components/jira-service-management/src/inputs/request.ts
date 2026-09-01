@@ -5,10 +5,9 @@ import {
   connection,
   fetchAll,
   issueIdOrKey,
-  limit,
+  pagination,
   requestTypeId,
   serviceDeskId,
-  start,
 } from "./common";
 const requestSummary = input({
   label: "Summary",
@@ -160,15 +159,13 @@ export const listRequestsInputs = {
   connection,
   serviceDeskId,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const listCommentsInputs = {
   connection,
   issueIdOrKey,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const addCommentInputs = {
   connection,
@@ -180,8 +177,7 @@ export const listApprovalsInputs = {
   connection,
   issueIdOrKey,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const approveRequestInputs = {
   connection,
@@ -193,8 +189,7 @@ export const listTransitionsInputs = {
   connection,
   issueIdOrKey,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const transitionRequestInputs = {
   connection,
@@ -206,8 +201,7 @@ export const listSlaInputs = {
   connection,
   issueIdOrKey,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const uploadTemporaryFileInputs = {
   connection,

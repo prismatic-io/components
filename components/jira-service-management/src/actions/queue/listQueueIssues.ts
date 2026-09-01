@@ -12,7 +12,7 @@ export const listQueueIssues = action({
   inputs: listQueueIssuesInputs,
   perform: async (
     context,
-    { connection, serviceDeskId, queueId, start, limit, fetchAll },
+    { connection, serviceDeskId, queueId, pagination, fetchAll },
   ) => {
     const { client } = await createClient(
       connection,
@@ -23,7 +23,7 @@ export const listQueueIssues = action({
       client,
       `/servicedesk/${serviceDeskId}/queue/${queueId}/issue`,
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

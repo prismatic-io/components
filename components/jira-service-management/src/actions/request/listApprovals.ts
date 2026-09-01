@@ -12,14 +12,14 @@ export const listApprovals = action({
   inputs: listApprovalsInputs,
   perform: async (
     context,
-    { connection, issueIdOrKey, start, limit, fetchAll },
+    { connection, issueIdOrKey, pagination, fetchAll },
   ) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<Approval>(
       client,
       `/request/${issueIdOrKey}/approval`,
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

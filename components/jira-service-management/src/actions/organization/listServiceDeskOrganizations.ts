@@ -12,14 +12,14 @@ export const listServiceDeskOrganizations = action({
   inputs: listServiceDeskOrganizationsInputs,
   perform: async (
     context,
-    { connection, serviceDeskId, start, limit, fetchAll },
+    { connection, serviceDeskId, pagination, fetchAll },
   ) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<Organization>(
       client,
       `/servicedesk/${serviceDeskId}/organization`,
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

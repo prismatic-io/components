@@ -11,13 +11,13 @@ export const listOrganizations = action({
       "Returns all organizations in the Jira Service Management instance.",
   },
   inputs: listOrganizationsInputs,
-  perform: async (context, { connection, start, limit, fetchAll }) => {
+  perform: async (context, { connection, pagination, fetchAll }) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<Organization>(
       client,
       "/organization",
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

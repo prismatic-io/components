@@ -12,13 +12,7 @@ export const listAssetSchemas = action({
   inputs: listAssetSchemasInputs,
   perform: async (
     context,
-    {
-      connection,
-      fetchAll,
-      assetStartAt,
-      assetMaxResults,
-      additionalQueryParams,
-    },
+    { connection, fetchAll, assetPagination, additionalQueryParams },
   ) => {
     const { client } = await createAssetsClient(
       connection,
@@ -31,8 +25,8 @@ export const listAssetSchemas = action({
       {
         params: {
           ...additionalQueryParams,
-          startAt: assetStartAt,
-          maxResults: assetMaxResults,
+          startAt: assetPagination.assetStartAt,
+          maxResults: assetPagination.assetMaxResults,
         },
       },
     );

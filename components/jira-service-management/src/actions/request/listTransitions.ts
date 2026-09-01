@@ -12,14 +12,14 @@ export const listTransitions = action({
   inputs: listTransitionsInputs,
   perform: async (
     context,
-    { connection, issueIdOrKey, start, limit, fetchAll },
+    { connection, issueIdOrKey, pagination, fetchAll },
   ) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<Transition>(
       client,
       `/request/${issueIdOrKey}/transition`,
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

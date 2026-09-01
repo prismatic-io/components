@@ -11,13 +11,7 @@ export const searchAssetObjects = action({
   inputs: searchAssetObjectsInputs,
   perform: async (
     context,
-    {
-      connection,
-      assetQL,
-      assetIncludeAttributes,
-      assetStartAt,
-      assetMaxResults,
-    },
+    { connection, assetQL, assetIncludeAttributes, assetPagination },
   ) => {
     const { client } = await createAssetsClient(
       connection,
@@ -29,8 +23,8 @@ export const searchAssetObjects = action({
       {
         params: {
           includeAttributes: assetIncludeAttributes,
-          startAt: assetStartAt,
-          maxResults: assetMaxResults,
+          startAt: assetPagination.assetStartAt,
+          maxResults: assetPagination.assetMaxResults,
         },
       },
     );

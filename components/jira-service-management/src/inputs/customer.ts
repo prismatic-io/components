@@ -3,9 +3,8 @@ import {
   accountIds,
   connection,
   fetchAll,
-  limit,
+  pagination,
   serviceDeskId,
-  start,
 } from "./common";
 const customerEmail = input({
   label: "Email",
@@ -50,8 +49,7 @@ export const listCustomersInputs = {
   connection,
   serviceDeskId,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const addCustomersInputs = {
   connection,

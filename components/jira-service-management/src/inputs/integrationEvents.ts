@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalArray, toOptionalObject, toOptionalString } from "../util";
 import { connection } from "./common";
 const alertMessage = input({
@@ -150,6 +150,24 @@ const alertNote = input({
   example: "Acknowledged from monitoring runbook",
   clean: toOptionalString,
 });
+const additionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Responders, Visible To, Actions, Tags, Details, Entity, Source, Priority, User, and Note.",
+  inputs: {
+    alertResponders,
+    alertVisibleTo,
+    alertActions,
+    alertTags,
+    alertDetails,
+    alertEntity,
+    alertSource,
+    alertPriority,
+    alertUser,
+    alertNote,
+  },
+});
 const alertNoteRequired = input({
   label: "Note",
   type: "string",
@@ -198,16 +216,7 @@ export const createIntegrationAlertInputs = {
   alertMessage,
   alertAlias,
   alertDescription,
-  alertResponders,
-  alertVisibleTo,
-  alertActions,
-  alertTags,
-  alertDetails,
-  alertEntity,
-  alertSource,
-  alertPriority,
-  alertUser,
-  alertNote,
+  additionalFields,
 };
 export const acknowledgeIntegrationAlertInputs = {
   connection,

@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber } from "../util";
 import {
   additionalFields,
@@ -97,6 +97,12 @@ const assetMaxResults = input({
   example: "50",
   clean: toOptionalNumber,
 });
+const assetPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Start index and page size controls.",
+  inputs: { assetStartAt, assetMaxResults },
+});
 export const getAssetObjectInputs = {
   connection,
   assetObjectId,
@@ -123,14 +129,12 @@ export const searchAssetObjectsInputs = {
   connection,
   assetQL,
   assetIncludeAttributes,
-  assetStartAt,
-  assetMaxResults,
+  assetPagination,
 };
 export const listAssetSchemasInputs = {
   connection,
   fetchAll,
-  assetStartAt,
-  assetMaxResults,
+  assetPagination,
   additionalQueryParams,
 };
 export const getAssetSchemaInputs = {

@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
 import { additionalQueryParams, connection, fetchAll } from "./common";
 const scheduleId = input({
@@ -59,12 +59,17 @@ const scheduleSize = input({
   example: "25",
   clean: toOptionalNumber,
 });
+const schedulePagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Offset and page size controls.",
+  inputs: { scheduleOffset, scheduleSize },
+});
 export const listOpsSchedulesInputs = {
   connection,
   fetchAll,
   scheduleQuery,
-  scheduleOffset,
-  scheduleSize,
+  schedulePagination,
   additionalQueryParams,
 };
 export const getOpsScheduleInputs = {

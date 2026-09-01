@@ -4,9 +4,8 @@ import {
   accountIds,
   connection,
   fetchAll,
-  limit,
+  pagination,
   serviceDeskId,
-  start,
 } from "./common";
 const organizationId = input({
   label: "Organization ID",
@@ -65,15 +64,13 @@ export const getOrganizationInputs = {
 export const listOrganizationsInputs = {
   connection,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const listOrganizationUsersInputs = {
   connection,
   organizationId,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const addOrganizationUsersInputs = {
   connection,
@@ -89,8 +86,7 @@ export const listServiceDeskOrganizationsInputs = {
   connection,
   serviceDeskId,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const addServiceDeskOrganizationInputs = {
   connection,

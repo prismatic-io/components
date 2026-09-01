@@ -1,17 +1,15 @@
 import {
   connection,
   fetchAll,
-  limit,
+  pagination,
   requestTypeId,
   serviceDeskId,
-  start,
 } from "./common";
 export const listRequestTypesInputs = {
   connection,
   serviceDeskId,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const getRequestTypeInputs = {
   connection,

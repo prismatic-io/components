@@ -11,13 +11,13 @@ export const listServiceDesks = action({
       "Returns all service desks in the Jira Service Management instance.",
   },
   inputs: listServiceDesksInputs,
-  perform: async (context, { connection, start, limit, fetchAll }) => {
+  perform: async (context, { connection, pagination, fetchAll }) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<ServiceDesk>(
       client,
       "/servicedesk",
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

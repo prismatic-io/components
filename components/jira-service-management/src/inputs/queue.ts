@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { connection, fetchAll, limit, serviceDeskId, start } from "./common";
+import { connection, fetchAll, pagination, serviceDeskId } from "./common";
 const queueId = input({
   label: "Queue ID",
   type: "string",
@@ -15,14 +15,12 @@ export const listQueuesInputs = {
   connection,
   serviceDeskId,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const listQueueIssuesInputs = {
   connection,
   serviceDeskId,
   queueId,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };

@@ -12,14 +12,14 @@ export const listSla = action({
   inputs: listSlaInputs,
   perform: async (
     context,
-    { connection, issueIdOrKey, start, limit, fetchAll },
+    { connection, issueIdOrKey, pagination, fetchAll },
   ) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<SlaInformation>(
       client,
       `/request/${issueIdOrKey}/sla`,
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

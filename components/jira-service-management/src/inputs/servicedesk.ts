@@ -1,9 +1,8 @@
-import { connection, fetchAll, limit, serviceDeskId, start } from "./common";
+import { connection, fetchAll, pagination, serviceDeskId } from "./common";
 export const listServiceDesksInputs = {
   connection,
   fetchAll,
-  start,
-  limit,
+  pagination,
 };
 export const getServiceDeskInputs = {
   connection,

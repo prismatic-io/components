@@ -12,14 +12,14 @@ export const listComments = action({
   inputs: listCommentsInputs,
   perform: async (
     context,
-    { connection, issueIdOrKey, start, limit, fetchAll },
+    { connection, issueIdOrKey, pagination, fetchAll },
   ) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<Comment>(
       client,
       `/request/${issueIdOrKey}/comment`,
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

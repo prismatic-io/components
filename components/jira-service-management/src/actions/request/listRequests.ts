@@ -12,14 +12,20 @@ export const listRequests = action({
   inputs: listRequestsInputs,
   perform: async (
     context,
-    { connection, serviceDeskId, start, limit, fetchAll },
+    { connection, serviceDeskId, pagination, fetchAll },
   ) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<ServiceRequest>(
       client,
       "/request",
       fetchAll,
-      { params: { start, limit, serviceDeskId } },
+      {
+        params: {
+          start: pagination.start,
+          limit: pagination.limit,
+          serviceDeskId,
+        },
+      },
     );
     return { data };
   },

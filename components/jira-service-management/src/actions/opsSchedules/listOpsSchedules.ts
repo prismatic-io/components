@@ -16,8 +16,7 @@ export const listOpsSchedules = action({
       connection,
       fetchAll,
       scheduleQuery,
-      scheduleOffset,
-      scheduleSize,
+      schedulePagination,
       additionalQueryParams,
     },
   ) => {
@@ -33,8 +32,8 @@ export const listOpsSchedules = action({
         params: {
           ...additionalQueryParams,
           query: scheduleQuery,
-          offset: scheduleOffset,
-          size: scheduleSize,
+          offset: schedulePagination.scheduleOffset,
+          size: schedulePagination.scheduleSize,
         },
       },
     );

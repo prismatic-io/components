@@ -12,14 +12,14 @@ export const listOrganizationUsers = action({
   inputs: listOrganizationUsersInputs,
   perform: async (
     context,
-    { connection, organizationId, start, limit, fetchAll },
+    { connection, organizationId, pagination, fetchAll },
   ) => {
     const { client } = await createClient(connection, context.debug.enabled);
     const { data } = await getPaginatedData<User>(
       client,
       `/organization/${organizationId}/user`,
       fetchAll,
-      { params: { start, limit } },
+      { params: { start: pagination.start, limit: pagination.limit } },
     );
     return { data };
   },

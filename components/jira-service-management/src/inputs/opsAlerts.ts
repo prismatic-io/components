@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalArray, toOptionalNumber, toOptionalString } from "../util";
 import {
   additionalFields,
@@ -44,6 +44,12 @@ const opsAlertSize = input({
   placeholder: "Enter size",
   example: "20",
   clean: toOptionalNumber,
+});
+const opsAlertPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Offset and page size controls.",
+  inputs: { opsAlertOffset, opsAlertSize },
 });
 const opsAlertSort = input({
   label: "Sort",
@@ -136,8 +142,7 @@ export const listOpsAlertsInputs = {
   opsAlertSort,
   opsAlertOrder,
   fetchAll,
-  opsAlertOffset,
-  opsAlertSize,
+  opsAlertPagination,
   additionalQueryParams,
 };
 export const getOpsAlertInputs = {

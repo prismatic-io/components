@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-09-01
+
+Restructured action inputs into structured objects for an improved user experience.
+
+- Service desk list actions (**List Requests**, **List Comments**, **List Approvals**, **List Transitions**, **List SLA Information**, **List Customers**, **List Organizations**, **List Organization Users**, **List Service Desk Organizations**, **List Queues**, **List Queue Issues**, **List Request Types**, and **List Service Desks**) group their start-index and page-size inputs into **Pagination**
+- Operations and Assets actions (**List Ops Alerts**, **List Ops Schedules**, **List Asset Schemas**, and **Search Asset Objects**) group their offset and page-size inputs into **Pagination**; across both sets, **Fetch All** stays a top-level toggle
+- **Create Integration Alert** groups its optional responder, visibility, tagging, and alert-metadata inputs into **Additional Fields**, leaving **Message**, **Alias**, and **Description** as top-level inputs
+
 ### 2026-05-13
 
 Added **JSM Operations** and **Assets / CMDB** support:

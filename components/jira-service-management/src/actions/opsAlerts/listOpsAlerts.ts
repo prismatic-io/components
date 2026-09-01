@@ -18,8 +18,7 @@ export const listOpsAlerts = action({
       opsAlertSort,
       opsAlertOrder,
       fetchAll,
-      opsAlertOffset,
-      opsAlertSize,
+      opsAlertPagination,
       additionalQueryParams,
     },
   ) => {
@@ -34,8 +33,8 @@ export const listOpsAlerts = action({
       {
         params: {
           ...additionalQueryParams,
-          offset: opsAlertOffset,
-          size: opsAlertSize,
+          offset: opsAlertPagination.opsAlertOffset,
+          size: opsAlertPagination.opsAlertSize,
           query: opsAlertQuery,
           sort: opsAlertSort,
           order: opsAlertOrder,
