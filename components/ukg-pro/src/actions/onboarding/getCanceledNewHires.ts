@@ -13,14 +13,18 @@ export const getCanceledNewHires = action({
   inputs: getCanceledNewHiresInputs,
   perform: async (
     context,
-    { connection, fetchAll, page, perPage, filterParameters },
+    { connection, fetchAll, pagination, filterParameters },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const tenantIdentifier = getTenantIdentifier(connection);
     const { data } = await fetchWithPagination<CanceledNewHire>(
       client,
       `/talent/onboarding/v2/tenants/${tenantIdentifier}/new-hires/canceled`,
-      { ...filterParameters, page, per_page: perPage },
+      {
+        ...filterParameters,
+        page: pagination.page,
+        per_page: pagination.perPage,
+      },
       fetchAll,
     );
     return { data };

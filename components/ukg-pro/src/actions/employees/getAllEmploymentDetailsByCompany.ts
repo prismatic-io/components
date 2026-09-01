@@ -12,13 +12,17 @@ export const getAllEmploymentDetailsByCompany = action({
   inputs: getAllEmploymentDetailsByCompanyInputs,
   perform: async (
     context,
-    { connection, companyId, filterParameters, fetchAll, page, perPage },
+    { connection, companyId, filterParameters, fetchAll, pagination },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
     const { data } = await fetchWithPagination<EmploymentDetails>(
       client,
       `/personnel/v1/companies/${companyId}/employment-details`,
-      { ...filterParameters, page, per_page: perPage },
+      {
+        ...filterParameters,
+        page: pagination.page,
+        per_page: pagination.perPage,
+      },
       fetchAll,
     );
     return { data };

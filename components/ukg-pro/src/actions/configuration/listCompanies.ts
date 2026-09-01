@@ -19,8 +19,7 @@ export const listCompanies = action({
       fetchAll,
       isMasterCompany,
       masterCompanyId,
-      page,
-      perPage,
+      pagination,
     },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
@@ -32,8 +31,8 @@ export const listCompanies = action({
         companyId,
         isMasterCompany,
         masterCompanyId,
-        page,
-        perPage,
+        page: pagination.page,
+        perPage: pagination.perPage,
       },
       fetchAll,
     );

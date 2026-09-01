@@ -13,13 +13,17 @@ export const getAllPersonDetails = action({
   inputs: getAllPersonDetailsInputs,
   perform: async (
     context,
-    { connection, filterParameters, fetchAll, page, perPage },
+    { connection, filterParameters, fetchAll, pagination },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
     const { data } = await fetchWithPagination<EmployeeDetails>(
       client,
       "/personnel/v1/person-details",
-      { ...filterParameters, page, per_page: perPage },
+      {
+        ...filterParameters,
+        page: pagination.page,
+        per_page: pagination.perPage,
+      },
       fetchAll,
     );
     return { data };

@@ -9,10 +9,14 @@ export const getPendingHires = action({
       "Retrieve a list of pending hire records awaiting conversion to employees.",
   },
   inputs: getPendingHiresInputs,
-  perform: async (context, { connection, companyId, page, perPage }) => {
+  perform: async (context, { connection, companyId, pagination }) => {
     const client = await createClient(connection, context.debug.enabled);
     const { data } = await client.get("/personnel/v1/pending-hires", {
-      params: { company: companyId, page, per_page: perPage },
+      params: {
+        company: companyId,
+        page: pagination.page,
+        per_page: pagination.perPage,
+      },
     });
     return { data };
   },

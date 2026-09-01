@@ -13,13 +13,18 @@ export const getEmployeeChangesByDate = action({
   inputs: getEmployeeChangesByDateInputs,
   perform: async (
     context,
-    { connection, startDate, endDate, fetchAll, page, perPage },
+    { connection, startDate, endDate, fetchAll, pagination },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
     const { data } = await fetchWithPagination<EmployeeChange>(
       client,
       "/personnel/v1/employee-changes",
-      { start_date: startDate, end_date: endDate, page, per_page: perPage },
+      {
+        start_date: startDate,
+        end_date: endDate,
+        page: pagination.page,
+        per_page: pagination.perPage,
+      },
       fetchAll,
     );
     return { data };

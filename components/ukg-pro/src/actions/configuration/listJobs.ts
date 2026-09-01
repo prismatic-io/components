@@ -9,15 +9,16 @@ export const listJobs = action({
     description: "Retrieve a list of job definitions in the organization.",
   },
   inputs: listJobsInputs,
-  perform: async (
-    context,
-    { connection, companyId, page, perPage, fetchAll },
-  ) => {
+  perform: async (context, { connection, companyId, pagination, fetchAll }) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
     const { data } = await fetchWithPagination<Job>(
       client,
       "/configuration/v2/jobs",
-      { company: companyId, page, per_page: perPage },
+      {
+        company: companyId,
+        page: pagination.page,
+        per_page: pagination.perPage,
+      },
       fetchAll,
     );
     return { data };

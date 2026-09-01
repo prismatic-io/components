@@ -12,13 +12,13 @@ export const getEmployeeJobHistory = action({
   inputs: getEmployeeJobHistoryInputs,
   perform: async (
     context,
-    { connection, employeeId, page, perPage, fetchAll },
+    { connection, employeeId, pagination, fetchAll },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
     const { data } = await fetchWithPagination<EmployeeJobHistoryDetails>(
       client,
       "/employee-job-history-details",
-      { employeeId, page, per_page: perPage },
+      { employeeId, page: pagination.page, per_page: pagination.perPage },
       fetchAll,
     );
     return { data };

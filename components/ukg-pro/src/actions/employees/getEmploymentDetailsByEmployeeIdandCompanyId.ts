@@ -19,15 +19,18 @@ export const getEmployeeEmploymentDetailsByEmployeeIdAndCompanyId = action({
       employeeId,
       fetchAll,
       filterParameters,
-      page,
-      perPage,
+      pagination,
     },
   ) => {
     const client = createBasicAuthClient(connection, context.debug.enabled);
     const { data } = await fetchWithPagination<EmployeeEmploymentDetails>(
       client,
       `/personnel/v1/companies/${companyId}/employees/${employeeId}/employment-details`,
-      { ...filterParameters, page, per_page: perPage },
+      {
+        ...filterParameters,
+        page: pagination.page,
+        per_page: pagination.perPage,
+      },
       fetchAll,
     );
     return { data };

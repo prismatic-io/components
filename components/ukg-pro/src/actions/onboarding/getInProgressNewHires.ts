@@ -13,14 +13,18 @@ export const getInProgressNewHires = action({
   inputs: getInProgressNewHiresInputs,
   perform: async (
     context,
-    { connection, page, perPage, fetchAll, filterParameters },
+    { connection, pagination, fetchAll, filterParameters },
   ) => {
     const client = await createClient(connection, context.debug.enabled);
     const tenantIdentifier = getTenantIdentifier(connection);
     const { data } = await fetchWithPagination<InProgressNewHire>(
       client,
       `/talent/onboarding/v2/tenants/${tenantIdentifier}/new-hires/in-progress`,
-      { ...filterParameters, page, per_page: perPage },
+      {
+        ...filterParameters,
+        page: pagination.page,
+        per_page: pagination.perPage,
+      },
       fetchAll,
     );
     return { data };

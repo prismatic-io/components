@@ -1,4 +1,9 @@
-import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import {
+  input,
+  type KeyValuePair,
+  structuredObjectInput,
+  util,
+} from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { cleanNumber, cleanString } from "../util";
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
@@ -76,9 +81,14 @@ export const filterParameters = input({
     return util.types.keyValPairListToObject(value as KeyValuePair[]);
   },
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { page, perPage },
+});
 export const paginationInputs = {
-  page,
-  perPage,
+  pagination,
   fetchAll,
 };
 export const dateRangeInputs = {
