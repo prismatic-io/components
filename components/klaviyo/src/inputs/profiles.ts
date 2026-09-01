@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import {
   ADDITIONAL_FIELDS_PROFILE_MODEL,
   FIELDS_PROFILE_MODEL,
@@ -147,18 +147,22 @@ const properties = input({
   ),
   clean: (value) => cleanCodeInput(value, "Event Properties"),
 });
+const contactInfo = structuredObjectInput({
+  label: "Contact Information",
+  required: false,
+  comments: "Email, phone, and name details.",
+  inputs: { email, phoneNumber, firstName, lastName },
+});
+const profileFields = structuredObjectInput({
+  label: "Profile Details",
+  required: false,
+  comments: "Optional profile details.",
+  inputs: { externalId, organization, title, image, location, properties },
+});
 export const createProfileInputs = {
   connection,
-  email,
-  phoneNumber,
-  externalId,
-  firstName,
-  lastName,
-  organization,
-  title,
-  image,
-  location,
-  properties,
+  contactInfo,
+  profileFields,
 };
 export const getProfileInputs = {
   connection,
@@ -169,16 +173,8 @@ export const getProfileInputs = {
 export const updateProfileInputs = {
   connection,
   profileId,
-  email,
-  phoneNumber,
-  externalId,
-  firstName,
-  lastName,
-  organization,
-  title,
-  image,
-  location,
-  properties,
+  contactInfo,
+  profileFields,
 };
 const subscribeProfiles = input({
   label: "Profiles",

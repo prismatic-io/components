@@ -23,9 +23,7 @@ export const createCampaign = action({
       campaignMessages,
       includedAudiences,
       excludedAudiences,
-      trackingOptions,
-      sendOptions,
-      sendStrategy,
+      campaignConfig,
     },
   ) => {
     const campaignsApi = getApi(connection, KlaviyoApi.Campaigns);
@@ -37,9 +35,7 @@ export const createCampaign = action({
         campaignMessages,
         includedAudiences,
         excludedAudiences,
-        trackingOptions,
-        sendOptions,
-        sendStrategy,
+        campaignConfig,
         debug,
       });
     }
@@ -48,9 +44,9 @@ export const createCampaign = action({
         type: CampaignEnum.Campaign,
         attributes: {
           name: campaignName!,
-          sendStrategy: sendStrategy as SendStrategySubObject,
-          sendOptions,
-          trackingOptions,
+          sendStrategy: campaignConfig.sendStrategy as SendStrategySubObject,
+          sendOptions: campaignConfig.sendOptions,
+          trackingOptions: campaignConfig.trackingOptions,
           campaignMessages: {
             data: campaignMessages as CampaignMessageCreateQueryResourceObject[],
           },

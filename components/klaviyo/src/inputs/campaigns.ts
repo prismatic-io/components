@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import {
   cleanArrayCodeInput,
   cleanCodeInput,
@@ -153,15 +153,19 @@ const sendStrategy = input({
   required: false,
   clean: (value) => cleanCodeInput(value, "Send Strategy"),
 });
+const campaignConfig = structuredObjectInput({
+  label: "Campaign Configuration",
+  required: false,
+  comments: "Tracking, send options, and delivery strategy.",
+  inputs: { trackingOptions, sendOptions, sendStrategy },
+});
 export const createCampaignInputs = {
   connection,
   campaignName,
   campaignMessages,
   includedAudiences,
   excludedAudiences,
-  trackingOptions,
-  sendOptions,
-  sendStrategy,
+  campaignConfig,
 };
 const campaignId = input({
   label: "Campaign ID",
@@ -188,7 +192,5 @@ export const updateCampaignInputs = {
   campaignName: input({ ...campaignName, required: false }),
   includedAudiences: input({ ...includedAudiences, required: false }),
   excludedAudiences: input({ ...excludedAudiences, required: false }),
-  trackingOptions,
-  sendOptions,
-  sendStrategy,
+  campaignConfig,
 };

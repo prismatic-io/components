@@ -21,9 +21,7 @@ export const updateCampaign = action({
       campaignName,
       includedAudiences,
       excludedAudiences,
-      trackingOptions,
-      sendOptions,
-      sendStrategy,
+      campaignConfig,
     },
   ) => {
     const campaignsApi = getApi(connection, KlaviyoApi.Campaigns);
@@ -35,9 +33,7 @@ export const updateCampaign = action({
         campaignName,
         includedAudiences,
         excludedAudiences,
-        trackingOptions,
-        sendOptions,
-        sendStrategy,
+        campaignConfig,
         debug,
       });
     }
@@ -46,9 +42,9 @@ export const updateCampaign = action({
         type: CampaignEnum.Campaign,
         attributes: {
           name: campaignName,
-          sendStrategy: sendStrategy as SendStrategySubObject,
-          sendOptions,
-          trackingOptions,
+          sendStrategy: campaignConfig.sendStrategy as SendStrategySubObject,
+          sendOptions: campaignConfig.sendOptions,
+          trackingOptions: campaignConfig.trackingOptions,
           audiences: {
             included: includedAudiences,
             excluded: excludedAudiences,

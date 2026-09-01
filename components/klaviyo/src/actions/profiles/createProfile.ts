@@ -9,37 +9,14 @@ export const createProfile = action({
     label: "Create Profile",
     description: "Create a new profile.",
   },
-  perform: async (
-    context,
-    {
-      connection,
-      email,
-      phoneNumber,
-      externalId,
-      firstName,
-      lastName,
-      organization,
-      title,
-      image,
-      location,
-      properties,
-    },
-  ) => {
+  perform: async (context, { connection, contactInfo, profileFields }) => {
     const profilesApi = getApi(connection, KlaviyoApi.Profiles);
     const debug = context.debug.enabled;
     if (debug) {
       context.logger.debug({
         connection,
-        email,
-        phoneNumber,
-        externalId,
-        firstName,
-        lastName,
-        organization,
-        title,
-        image,
-        location,
-        properties,
+        contactInfo,
+        profileFields,
         debug,
       });
     }
@@ -47,16 +24,16 @@ export const createProfile = action({
       data: {
         type: ProfileEnum.Profile,
         attributes: {
-          email,
-          phoneNumber,
-          externalId,
-          firstName,
-          lastName,
-          organization,
-          title,
-          image,
-          location,
-          properties,
+          email: contactInfo.email,
+          phoneNumber: contactInfo.phoneNumber,
+          externalId: profileFields.externalId,
+          firstName: contactInfo.firstName,
+          lastName: contactInfo.lastName,
+          organization: profileFields.organization,
+          title: profileFields.title,
+          image: profileFields.image,
+          location: profileFields.location,
+          properties: profileFields.properties,
         },
       },
     };

@@ -15,16 +15,7 @@ export const createEvent = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      eventProperties,
-      eventTime,
-      eventValue,
-      eventValueCurrency,
-      eventUniqueId,
-      eventName,
-      eventProfile,
-    },
+    { connection, eventProperties, eventFields, eventName, eventProfile },
   ) => {
     const eventsApi = getApi(connection, KlaviyoApi.Events);
     const debug = context.debug.enabled;
@@ -32,10 +23,7 @@ export const createEvent = action({
       context.logger.debug({
         connection,
         eventProperties,
-        eventTime,
-        eventValue,
-        eventValueCurrency,
-        eventUniqueId,
+        eventFields,
         eventName,
         eventProfile,
         debug,
@@ -46,10 +34,10 @@ export const createEvent = action({
         type: EventEnum.Event,
         attributes: {
           properties: eventProperties!,
-          time: eventTime,
-          value: eventValue,
-          valueCurrency: eventValueCurrency,
-          uniqueId: eventUniqueId,
+          time: eventFields.eventTime,
+          value: eventFields.eventValue,
+          valueCurrency: eventFields.eventValueCurrency,
+          uniqueId: eventFields.eventUniqueId,
           metric: {
             data: {
               type: "metric",

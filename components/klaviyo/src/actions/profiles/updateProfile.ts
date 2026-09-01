@@ -11,20 +11,7 @@ export const updateProfile = action({
   },
   perform: async (
     context,
-    {
-      connection,
-      profileId,
-      email,
-      phoneNumber,
-      externalId,
-      firstName,
-      lastName,
-      organization,
-      title,
-      image,
-      location,
-      properties,
-    },
+    { connection, profileId, contactInfo, profileFields },
   ) => {
     const profilesApi = getApi(connection, KlaviyoApi.Profiles);
     const debug = context.debug.enabled;
@@ -32,16 +19,8 @@ export const updateProfile = action({
       context.logger.debug({
         connection,
         profileId,
-        email,
-        phoneNumber,
-        externalId,
-        firstName,
-        lastName,
-        organization,
-        title,
-        image,
-        location,
-        properties,
+        contactInfo,
+        profileFields,
         debug,
       });
     }
@@ -49,16 +28,16 @@ export const updateProfile = action({
       data: {
         type: ProfileEnum.Profile,
         attributes: {
-          email,
-          phoneNumber,
-          externalId,
-          firstName,
-          lastName,
-          organization,
-          title,
-          image,
-          location,
-          properties,
+          email: contactInfo.email,
+          phoneNumber: contactInfo.phoneNumber,
+          externalId: profileFields.externalId,
+          firstName: contactInfo.firstName,
+          lastName: contactInfo.lastName,
+          organization: profileFields.organization,
+          title: profileFields.title,
+          image: profileFields.image,
+          location: profileFields.location,
+          properties: profileFields.properties,
         },
         id: profileId!,
       },

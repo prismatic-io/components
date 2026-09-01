@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import { connection, fields } from "./shared";
 import {
   FIELDS_EVENT_MODEL,
@@ -143,15 +143,18 @@ const eventProfile = input({
   ),
   clean: (value) => cleanCodeInput(value, "Event Profile"),
 });
+const eventFields = structuredObjectInput({
+  label: "Event Details",
+  required: false,
+  comments: "Optional event metadata and value details.",
+  inputs: { eventTime, eventValue, eventValueCurrency, eventUniqueId },
+});
 export const createEventInputs = {
   connection,
   eventName,
   eventProfile,
   eventProperties,
-  eventTime,
-  eventValue,
-  eventValueCurrency,
-  eventUniqueId,
+  eventFields,
 };
 const eventId = input({
   label: "Event ID",
