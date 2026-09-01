@@ -14,7 +14,7 @@ export const listWorkers = action({
   examplePayload: listWorkersExamplePayload,
   perform: async (
     context,
-    { connection, fetchAll, filter, expand, orderBy, cursor },
+    { connection, fetchAll, filter, expand, pagination },
   ) => {
     const client = createClient(
       connection,
@@ -24,8 +24,8 @@ export const listWorkers = action({
     return paginateV2Results(client, "/workers", fetchAll, {
       filter,
       expand,
-      order_by: orderBy,
-      cursor,
+      order_by: pagination.orderBy,
+      cursor: pagination.cursor,
     });
   },
 });

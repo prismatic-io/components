@@ -56,20 +56,17 @@ const putGroupsGroupId = action({
   },
   inputs: putGroupsGroupIdInputs,
   examplePayload: putGroupsGroupIdExamplePayload,
-  perform: async (
-    context,
-    { connection, groupId, name, spokeId, users, version },
-  ) => {
+  perform: async (context, { connection, groupId, additionalFields }) => {
     const client = createClient(
       connection,
       API_VERSION.V1,
       context.debug.enabled,
     );
     const { data } = await client.put(`/groups/${groupId}`, {
-      name,
-      spokeId,
-      users,
-      version,
+      name: additionalFields.name,
+      spokeId: additionalFields.spokeId,
+      users: additionalFields.users,
+      version: additionalFields.version,
     });
     return { data };
   },
@@ -81,20 +78,17 @@ const patchGroupsGroupId = action({
   },
   inputs: patchGroupsGroupIdInputs,
   examplePayload: patchGroupsGroupIdExamplePayload,
-  perform: async (
-    context,
-    { connection, groupId, name, spokeId, users, version },
-  ) => {
+  perform: async (context, { connection, groupId, additionalFields }) => {
     const client = createClient(
       connection,
       API_VERSION.V1,
       context.debug.enabled,
     );
     const { data } = await client.patch(`/groups/${groupId}`, {
-      name,
-      spokeId,
-      users,
-      version,
+      name: additionalFields.name,
+      spokeId: additionalFields.spokeId,
+      users: additionalFields.users,
+      version: additionalFields.version,
     });
     return { data };
   },

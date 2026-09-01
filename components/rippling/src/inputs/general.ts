@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../utils";
 export const fetchAll = input({
   label: "Fetch All",
@@ -63,8 +63,13 @@ export const category = input({
   comments: "The category for the resource.",
   clean: toOptionalString,
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Sort order and cursor controls for paging through results.",
+  inputs: { orderBy, cursor },
+});
 export const paginationInputs = {
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };

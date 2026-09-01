@@ -11,10 +11,7 @@ export const listBusinessPartnerGroups = action({
   },
   inputs: listBusinessPartnerGroupsInputs,
   examplePayload: listBusinessPartnerGroupsExamplePayload,
-  perform: async (
-    context,
-    { connection, expand, orderBy, cursor, fetchAll },
-  ) => {
+  perform: async (context, { connection, expand, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V2,
@@ -22,8 +19,8 @@ export const listBusinessPartnerGroups = action({
     );
     return paginateV2Results(client, "/business-partner-groups", fetchAll, {
       expand,
-      order_by: orderBy,
-      cursor,
+      order_by: pagination.orderBy,
+      cursor: pagination.cursor,
     });
   },
 });

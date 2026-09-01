@@ -11,15 +11,15 @@ const getCustomFields = action({
   },
   inputs: getCustomFieldsInputs,
   examplePayload: getCustomFieldsExamplePayload,
-  perform: async (context, { connection, fetchAll, limit, offset }) => {
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V1,
       context.debug.enabled,
     );
     return paginateV1Results(client, "/custom_fields", fetchAll, {
-      limit,
-      offset,
+      limit: pagination.limit,
+      offset: pagination.offset,
     });
   },
 });

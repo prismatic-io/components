@@ -11,15 +11,15 @@ export const listObjectCategories = action({
   },
   inputs: listObjectCategoriesInputs,
   examplePayload: listObjectCategoriesExamplePayload,
-  perform: async (context, { connection, fetchAll, orderBy, cursor }) => {
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V2,
       context.debug.enabled,
     );
     return paginateV2Results(client, "/object-categories/", fetchAll, {
-      order_by: orderBy,
-      cursor,
+      order_by: pagination.orderBy,
+      cursor: pagination.cursor,
     });
   },
 });

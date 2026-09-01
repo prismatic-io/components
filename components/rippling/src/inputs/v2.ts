@@ -1,15 +1,14 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { BASE_URL_V2 } from "../constants";
 import { toOptionalString } from "../utils";
 import {
   category,
   connection,
-  cursor,
   description,
   fetchAll,
   name,
-  orderBy,
+  pagination,
 } from "./general";
 export const filter = input({
   label: "Filter",
@@ -74,8 +73,7 @@ export const listWorkersInputs = {
   filter: workersFilter,
   expand: workersExpand,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getWorkerInputs = {
   connection,
@@ -96,8 +94,7 @@ export const listCompaniesInputs = {
   connection,
   expand: companiesExpand,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const departmentId = input({
   label: "Department ID",
@@ -122,8 +119,7 @@ export const listDepartmentsInputs = {
   connection,
   expand: departmentsExpand,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getDepartmentInputs = {
   connection,
@@ -153,8 +149,7 @@ export const listTeamsInputs = {
   connection,
   expand: teamsExpand,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getTeamInputs = {
   connection,
@@ -174,8 +169,7 @@ export const userId = input({
 export const listUsersInputs = {
   connection,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getUserInputs = {
   connection,
@@ -184,8 +178,7 @@ export const getUserInputs = {
 export const listCustomFieldsInputs = {
   connection,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const workLocationId = input({
   label: "Work Location ID",
@@ -200,8 +193,7 @@ export const workLocationId = input({
 export const listWorkLocationsInputs = {
   connection,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getWorkLocationInputs = {
   connection,
@@ -220,8 +212,7 @@ export const employmentTypeId = input({
 export const listEmploymentTypesInputs = {
   connection,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getEmploymentTypeInputs = {
   connection,
@@ -230,8 +221,7 @@ export const getEmploymentTypeInputs = {
 export const listEntitlementsInputs = {
   connection,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const jobFunctionId = input({
   label: "Job Function ID",
@@ -246,8 +236,7 @@ export const jobFunctionId = input({
 export const listJobFunctionsInputs = {
   connection,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getJobFunctionInputs = {
   connection,
@@ -290,8 +279,7 @@ export const listSupergroupsInputs = {
   connection,
   filter: supergroupsFilter,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getSupergroupInputs = {
   connection,
@@ -341,8 +329,7 @@ export const listBusinessPartnersInputs = {
   filter: businessPartnersFilter,
   expand: businessPartnersExpand,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getBusinessPartnerInputs = {
   connection,
@@ -397,8 +384,7 @@ export const listBusinessPartnerGroupsInputs = {
   connection,
   expand: businessPartnerGroupsExpand,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getBusinessPartnerGroupInputs = {
   connection,
@@ -447,8 +433,7 @@ export const ownerRole = input({
 export const listCustomObjectsInputs = {
   connection,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getCustomObjectInputs = {
   connection,
@@ -463,27 +448,36 @@ export const createCustomObjectInputs = {
   },
   category: { ...category, comments: "The category for the custom object." },
 };
+const updateCustomObjectAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Name, Description, Category, Plural Label, and Owner Role.",
+  inputs: {
+    name: {
+      ...name,
+      required: false,
+      comments: "The new name for the custom object.",
+    },
+    description: {
+      ...description,
+      comments: "The new description for the custom object.",
+    },
+    category: {
+      ...category,
+      comments: "The new category for the custom object.",
+    },
+    pluralLabel,
+    ownerRole,
+  },
+});
 export const updateCustomObjectInputs = {
   connection,
   customObjectApiName: {
     ...customObjectApiName,
     comments: "The API name of the custom object to update.",
   },
-  name: {
-    ...name,
-    required: false,
-    comments: "The new name for the custom object.",
-  },
-  description: {
-    ...description,
-    comments: "The new description for the custom object.",
-  },
-  category: {
-    ...category,
-    comments: "The new category for the custom object.",
-  },
-  pluralLabel,
-  ownerRole,
+  additionalFields: updateCustomObjectAdditionalFields,
 };
 export const deleteCustomObjectInputs = {
   connection,
@@ -505,8 +499,7 @@ export const objectCategoryId = input({
 export const listObjectCategoriesInputs = {
   connection,
   fetchAll,
-  orderBy,
-  cursor,
+  pagination,
 };
 export const getObjectCategoryInputs = {
   connection,

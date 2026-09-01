@@ -12,18 +12,18 @@
     "publish": "npm run build && prism components:publish --no-confirm"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.18.1"
+    "@prismatic-io/spectral": "10.20.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.12",
+    "@biomejs/biome": "2.5.1",
     "@types/jest": "30.0.0",
-    "@types/node": "^25",
+    "@types/node": "^26.0.1",
     "copy-webpack-plugin": "14.0.0",
-    "jest": "30.3.0",
-    "ts-jest": "29.4.9",
-    "ts-loader": "9.5.7",
+    "jest": "30.4.2",
+    "ts-jest": "29.4.11",
+    "ts-loader": "9.6.2",
     "typescript": "6.0.3",
-    "webpack": "5.106.2",
-    "webpack-cli": "7.0.2"
+    "webpack": "5.108.1",
+    "webpack-cli": "7.1.0"
   }
 }

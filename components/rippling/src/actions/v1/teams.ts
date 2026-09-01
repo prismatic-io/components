@@ -11,13 +11,16 @@ const getTeams = action({
   },
   inputs: getTeamsInputs,
   examplePayload: getTeamsExamplePayload,
-  perform: async (context, { connection, fetchAll, limit, offset }) => {
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V1,
       context.debug.enabled,
     );
-    return paginateV1Results(client, "/teams", fetchAll, { limit, offset });
+    return paginateV1Results(client, "/teams", fetchAll, {
+      limit: pagination.limit,
+      offset: pagination.offset,
+    });
   },
 });
 export default {

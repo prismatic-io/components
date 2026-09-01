@@ -11,15 +11,15 @@ export const listWorkLocations = action({
   },
   inputs: listWorkLocationsInputs,
   examplePayload: listWorkLocationsV2ExamplePayload,
-  perform: async (context, { connection, orderBy, cursor, fetchAll }) => {
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V2,
       context.debug.enabled,
     );
     return paginateV2Results(client, "/work-locations", fetchAll, {
-      order_by: orderBy,
-      cursor,
+      order_by: pagination.orderBy,
+      cursor: pagination.cursor,
     });
   },
 });

@@ -24,12 +24,9 @@ const getLeaveRequests = action({
       role,
       requestedBy,
       status,
-      startDate,
-      endDate,
       leavePolicy,
       processedBy,
-      from,
-      to,
+      dateRangeFilters,
     },
   ) => {
     const client = createClient(
@@ -43,12 +40,12 @@ const getLeaveRequests = action({
         role,
         requestedBy,
         status,
-        startDate,
-        endDate,
+        startDate: dateRangeFilters.startDate,
+        endDate: dateRangeFilters.endDate,
         leavePolicy,
         processedBy,
-        from,
-        to,
+        from: dateRangeFilters.from,
+        to: dateRangeFilters.to,
       },
     });
     return { data };

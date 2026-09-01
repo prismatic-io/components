@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { BASE_URL_V1 } from "../constants";
 import { toOptionalNumber, toOptionalString } from "../utils";
@@ -21,14 +21,18 @@ export const offset = input({
   clean: toOptionalNumber,
   comments: "Number of results to skip before returning values.",
 });
+const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { limit, offset },
+});
 export const v1PaginationInputs = {
   fetchAll,
-  limit,
-  offset,
+  pagination,
 };
 export const v1PaginationOnlyInputs = {
-  limit,
-  offset,
+  pagination,
 };
 export const getCompaniesInputs = {
   connection,
@@ -130,13 +134,18 @@ const activityLimit = input({
   clean: toOptionalString,
   comments: "Maximum number of results per page. Maximum: 1000. Default: 1000.",
 });
+const companyActivityPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { next, limit: activityLimit },
+});
 export const getCompanyActivityInputs = {
   connection,
   startDate,
   endDate,
   fetchAll,
-  next,
-  limit: activityLimit,
+  pagination: companyActivityPagination,
 };
 const leaveRequestId = input({
   label: "ID",
@@ -252,18 +261,26 @@ const leaveAction = input({
   clean: util.types.toString,
   comments: "The action to take on the leave request.",
 });
+const dateRangeFilters = structuredObjectInput({
+  label: "Date Range Filters",
+  required: false,
+  comments: "Optional inclusive date-range filters to narrow results by date.",
+  inputs: {
+    startDate: leaveStartDate,
+    endDate: leaveEndDate,
+    from,
+    to,
+  },
+});
 export const getLeaveRequestsInputs = {
   connection,
   id: leaveRequestId,
   role,
   requestedBy,
   status,
-  startDate: leaveStartDate,
-  endDate: leaveEndDate,
   leavePolicy,
   processedBy,
-  from,
-  to,
+  dateRangeFilters,
 };
 export const processLeaveRequestsInputs = {
   connection,
@@ -325,21 +342,39 @@ export const postGroupsInputs = {
   spokeId,
   users,
 };
+const putGroupsAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Name, Spoke ID, Users, and Version.",
+  inputs: {
+    name: { ...groupName, comments: "The name of the Group." },
+    spokeId: { ...spokeId, comments: "The external identifier of the Group." },
+    users: { ...users, comments: "The array of users within the Group." },
+    version,
+  },
+});
+const patchGroupsAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Name, Spoke ID, Users, and Version.",
+  inputs: {
+    name: { ...groupName, comments: "The name of the Group." },
+    spokeId: { ...spokeId, comments: "The external identifier of the Group." },
+    users: { ...users, comments: "The array of users within the Group." },
+    version,
+  },
+});
 export const putGroupsGroupIdInputs = {
   connection,
   groupId,
-  name: { ...groupName, comments: "The name of the Group." },
-  spokeId: { ...spokeId, comments: "The external identifier of the Group." },
-  users: { ...users, comments: "The array of users within the Group." },
-  version,
+  additionalFields: putGroupsAdditionalFields,
 };
 export const patchGroupsGroupIdInputs = {
   connection,
   groupId,
-  name: { ...groupName, comments: "The name of the Group." },
-  spokeId: { ...spokeId, comments: "The external identifier of the Group." },
-  users: { ...users, comments: "The array of users within the Group." },
-  version,
+  additionalFields: patchGroupsAdditionalFields,
 };
 export const deleteGroupsGroupIdInputs = {
   connection,
@@ -486,22 +521,38 @@ const attachments = input({
   clean: toOptionalString,
   comments: "URLs or identifiers for attachments related to the candidate.",
 });
+const contactInfo = structuredObjectInput({
+  label: "Name & Contact Information",
+  required: false,
+  comments: "Name, email, and phone contact details.",
+  inputs: { name: candidateName, email, phoneNumber },
+});
+const compensation = structuredObjectInput({
+  label: "Compensation",
+  required: false,
+  comments:
+    "Optional compensation package details: salary, bonus, equity, and currency.",
+  inputs: { salaryUnit, salaryPerUnit, signingBonus, equityShares, currency },
+});
+const candidateAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Job Title, Start Date, Department, Employment Type, and Attachments.",
+  inputs: {
+    jobTitle,
+    startDate: candidateStartDate,
+    department,
+    employmentType,
+    attachments,
+  },
+});
 export const postAtsCandidatesPushCandidateInputs = {
   connection,
-  name: candidateName,
-  email,
-  phoneNumber,
-  jobTitle,
+  contactInfo,
   candidateId,
-  startDate: candidateStartDate,
-  department,
-  salaryUnit,
-  salaryPerUnit,
-  signingBonus,
-  equityShares,
-  currency,
-  employmentType,
-  attachments,
+  compensation,
+  additionalFields: candidateAdditionalFields,
 };
 const { debugRequest, ...httpInputsWithoutDebug } = httpClientInputs;
 export const rawRequestV1Inputs = {

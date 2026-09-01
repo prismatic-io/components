@@ -1,5 +1,15 @@
 ## Changelog
 
+### 2026-09-01
+
+Grouped related optional inputs into structured objects for clearer configuration:
+
+- **All list actions**: grouped pagination inputs (Limit and Offset on V1 actions; Order By and Cursor on V2 actions; Next and Limit on **Get Company Activity (V1)**) into a **Pagination** object; **Fetch All** remains a top-level toggle
+- **Post Ats Candidates Push Candidate (V1)**: grouped Name, Email, and Phone Number into a **Name & Contact Information** object; Salary Unit, Salary Per Unit, Signing Bonus, Equity Shares, and Currency into a **Compensation** object; and Job Title, Start Date, Department, Employment Type, and Attachments into an **Additional Fields** object
+- **Get Leave Requests (V1)**: grouped Start Date, End Date, From, and To into a **Date Range Filters** object
+- **Put Groups Group Id (V1)** and **Patch Groups Group Id (V1)**: grouped Name, Spoke ID, Users, and Version into an **Additional Fields** object
+- **Update Custom Object (V2)**: grouped Name, Description, Category, Plural Label, and Owner Role into an **Additional Fields** object
+
 ### 2026-05-14
 
 Added bulk pagination support to V1 and V2 list actions, allowing users to fetch all pages of results in a single action invocation

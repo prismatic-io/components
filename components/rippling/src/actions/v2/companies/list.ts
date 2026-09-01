@@ -11,10 +11,7 @@ export const listCompanies = action({
   },
   inputs: listCompaniesInputs,
   examplePayload: listCompaniesV2ExamplePayload,
-  perform: async (
-    context,
-    { connection, expand, orderBy, cursor, fetchAll },
-  ) => {
+  perform: async (context, { connection, expand, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V2,
@@ -22,8 +19,8 @@ export const listCompanies = action({
     );
     return paginateV2Results(client, "/companies", fetchAll, {
       expand,
-      order_by: orderBy,
-      cursor,
+      order_by: pagination.orderBy,
+      cursor: pagination.cursor,
     });
   },
 });

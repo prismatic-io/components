@@ -13,7 +13,7 @@ export const listBusinessPartners = action({
   examplePayload: listBusinessPartnersExamplePayload,
   perform: async (
     context,
-    { connection, filter, expand, orderBy, cursor, fetchAll },
+    { connection, filter, expand, fetchAll, pagination },
   ) => {
     const client = createClient(
       connection,
@@ -23,8 +23,8 @@ export const listBusinessPartners = action({
     return paginateV2Results(client, "/business-partners", fetchAll, {
       filter,
       expand,
-      order_by: orderBy,
-      cursor,
+      order_by: pagination.orderBy,
+      cursor: pagination.cursor,
     });
   },
 });

@@ -19,13 +19,16 @@ const getEmployees = action({
   },
   inputs: getEmployeesInputs,
   examplePayload: getEmployeesExamplePayload,
-  perform: async (context, { connection, fetchAll, limit, offset }) => {
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V1,
       context.debug.enabled,
     );
-    return paginateV1Results(client, "/employees", fetchAll, { limit, offset });
+    return paginateV1Results(client, "/employees", fetchAll, {
+      limit: pagination.limit,
+      offset: pagination.offset,
+    });
   },
 });
 const getEmployeesEmployeeId = action({
@@ -52,7 +55,7 @@ const getEmployeesIncludeTerminated = action({
   },
   inputs: getEmployeesIncludeTerminatedInputs,
   examplePayload: getEmployeesIncludeTerminatedExamplePayload,
-  perform: async (context, { connection, fetchAll, limit, offset, ein }) => {
+  perform: async (context, { connection, fetchAll, pagination, ein }) => {
     const client = createClient(
       connection,
       API_VERSION.V1,
@@ -63,8 +66,8 @@ const getEmployeesIncludeTerminated = action({
       "/employees/include_terminated",
       fetchAll,
       {
-        limit,
-        offset,
+        limit: pagination.limit,
+        offset: pagination.offset,
         EIN: ein,
       },
     );

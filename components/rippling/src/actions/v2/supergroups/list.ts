@@ -11,10 +11,7 @@ export const listSupergroups = action({
   },
   inputs: listSupergroupsInputs,
   examplePayload: listSupergroupsExamplePayload,
-  perform: async (
-    context,
-    { connection, filter, orderBy, cursor, fetchAll },
-  ) => {
+  perform: async (context, { connection, filter, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V2,
@@ -22,8 +19,8 @@ export const listSupergroups = action({
     );
     return paginateV2Results(client, "/supergroups", fetchAll, {
       filter,
-      order_by: orderBy,
-      cursor,
+      order_by: pagination.orderBy,
+      cursor: pagination.cursor,
     });
   },
 });

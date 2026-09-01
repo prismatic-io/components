@@ -13,7 +13,7 @@ const getCompanyActivity = action({
   examplePayload: getCompanyActivityExamplePayload,
   perform: async (
     context,
-    { connection, fetchAll, startDate, endDate, next, limit },
+    { connection, fetchAll, startDate, endDate, pagination },
   ) => {
     const client = createClient(
       connection,
@@ -23,8 +23,8 @@ const getCompanyActivity = action({
     return paginateV1CompanyActivity(client, "/company_activity", fetchAll, {
       startDate,
       endDate,
-      next,
-      limit,
+      next: pagination.next,
+      limit: pagination.limit,
     });
   },
 });

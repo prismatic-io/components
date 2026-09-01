@@ -12,15 +12,7 @@ export const updateCustomObject = action({
   examplePayload: updateCustomObjectExamplePayload,
   perform: async (
     context,
-    {
-      connection,
-      customObjectApiName,
-      name,
-      description,
-      category,
-      pluralLabel,
-      ownerRole,
-    },
+    { connection, customObjectApiName, additionalFields },
   ) => {
     const client = createClient(
       connection,
@@ -30,11 +22,11 @@ export const updateCustomObject = action({
     const { data } = await client.patch(
       `/custom-objects/${customObjectApiName}/`,
       {
-        name,
-        description,
-        category,
-        plural_label: pluralLabel,
-        owner_role: ownerRole,
+        name: additionalFields.name,
+        description: additionalFields.description,
+        category: additionalFields.category,
+        plural_label: additionalFields.pluralLabel,
+        owner_role: additionalFields.ownerRole,
       },
     );
     return { data };

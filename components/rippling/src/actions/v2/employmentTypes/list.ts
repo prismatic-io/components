@@ -11,15 +11,15 @@ export const listEmploymentTypes = action({
   },
   inputs: listEmploymentTypesInputs,
   examplePayload: listEmploymentTypesExamplePayload,
-  perform: async (context, { connection, orderBy, cursor, fetchAll }) => {
+  perform: async (context, { connection, fetchAll, pagination }) => {
     const client = createClient(
       connection,
       API_VERSION.V2,
       context.debug.enabled,
     );
     return paginateV2Results(client, "/employment-types", fetchAll, {
-      order_by: orderBy,
-      cursor,
+      order_by: pagination.orderBy,
+      cursor: pagination.cursor,
     });
   },
 });
