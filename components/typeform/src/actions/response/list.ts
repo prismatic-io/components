@@ -23,16 +23,16 @@ export const listResponses = action({
   },
   perform: async (
     context,
-    { connection, id, customQueryParams, fetchAll, page, pageSize, search },
+    { connection, id, customQueryParams, fetchAll, pagination },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await fetchAllData<Response>(
       client,
       `/forms/${id}/responses`,
       {
-        search,
-        page,
-        page_size: pageSize,
+        search: pagination.search,
+        page: pagination.page,
+        page_size: pagination.pageSize,
         ...customQueryParams,
       },
       fetchAll,

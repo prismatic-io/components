@@ -4,8 +4,7 @@ import {
   commonListInputs,
   connection,
   id,
-  sortBy,
-  orderBy,
+  listFormsPagination,
 } from "../../inputs";
 import { fetchAllData } from "../../util";
 import { listFormsResponse } from "../../examplePayloads/forms";
@@ -19,38 +18,28 @@ export const listForms = action({
   inputs: {
     connection,
     ...commonListInputs,
+    pagination: listFormsPagination,
     workspaceId: {
       ...id,
       label: "Workspace Id",
       comments: "Retrieve typeforms for the specified workspace.",
       required: false,
     },
-    sortBy,
-    orderBy,
   },
   perform: async (
     context,
-    {
-      connection,
-      page,
-      pageSize,
-      search,
-      fetchAll,
-      orderBy,
-      sortBy,
-      workspaceId,
-    },
+    { connection, pagination, fetchAll, workspaceId },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await fetchAllData<Form>(
       client,
       "/forms",
       {
-        search,
-        page,
-        page_size: pageSize,
-        order_by: orderBy,
-        sort_by: sortBy,
+        search: pagination.search,
+        page: pagination.page,
+        page_size: pagination.pageSize,
+        order_by: pagination.orderBy,
+        sort_by: pagination.sortBy,
         workspace_id: workspaceId,
       },
       fetchAll,

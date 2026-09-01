@@ -15,18 +15,15 @@ export const listAccountWorkspaces = action({
     accountId,
     ...commonListInputs,
   },
-  perform: async (
-    context,
-    { connection, page, pageSize, search, fetchAll, accountId },
-  ) => {
+  perform: async (context, { connection, pagination, fetchAll, accountId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await fetchAllData<Workspace>(
       client,
       `/accounts/${accountId}/workspaces`,
       {
-        search,
-        page,
-        page_size: pageSize,
+        search: pagination.search,
+        page: pagination.page,
+        page_size: pagination.pageSize,
       },
       fetchAll,
     );

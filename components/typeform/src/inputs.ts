@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanBoolean,
   cleanCode,
@@ -107,11 +107,15 @@ export const fetchAll = input({
     "If true, it will fetch all the records ignoring the rest of the parameters.",
   clean: cleanBoolean,
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page, page-size, and search controls.",
+  inputs: { page, pageSize, search },
+});
 export const commonListInputs = {
   fetchAll,
-  page,
-  pageSize,
-  search,
+  pagination,
 };
 export const operations = input({
   label: "Operations",
@@ -155,6 +159,12 @@ export const sortBy = input({
   comments: "Field to sort the results by.",
   model: mapModel(["created_at", "last_updated_at"]),
   clean: cleanString,
+});
+export const listFormsPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page, page-size, search, and sorting controls.",
+  inputs: { page, pageSize, search, sortBy, orderBy },
 });
 export const jsonData = input({
   label: "JSON Data",
@@ -253,6 +263,13 @@ export const url = input({
   comments: "Webhook URL.",
   example: "https://test.com",
   clean: cleanString,
+});
+export const deliverySettings = structuredObjectInput({
+  label: "Delivery Settings",
+  required: false,
+  comments:
+    "Optional delivery controls: destination URL, enabled state, and response event toggles.",
+  inputs: { url, enabled, formResponse, formResponsePartial },
 });
 export const verifySsl = input({
   label: "Verify SSL",

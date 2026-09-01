@@ -2,13 +2,10 @@ import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import {
   connection,
-  enabled,
+  deliverySettings,
   formId,
-  formResponse,
-  formResponsePartial,
   secret,
   tag,
-  url,
 } from "../../inputs";
 import { createWebhookResponse } from "../../examplePayloads/webhooks";
 import { createWebhookFunction } from "../../util";
@@ -21,35 +18,23 @@ export const createWebhook = action({
     formId,
     tag,
     secret,
-    url,
-    enabled,
-    formResponse,
-    formResponsePartial,
+    deliverySettings,
     connection,
   },
   perform: async (
     context,
-    {
-      connection,
-      formId,
-      tag,
-      url,
-      enabled,
-      formResponse,
-      formResponsePartial,
-      secret,
-    },
+    { connection, formId, tag, deliverySettings, secret },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await createWebhookFunction({
       client,
       formId,
       tag,
-      enabled,
-      form_response: formResponse,
-      form_response_partial: formResponsePartial,
+      enabled: deliverySettings.enabled,
+      form_response: deliverySettings.formResponse,
+      form_response_partial: deliverySettings.formResponsePartial,
       secret,
-      url,
+      url: deliverySettings.url,
     });
     return {
       data,

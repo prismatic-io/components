@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, structuredObjectInput } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import {
   connection,
@@ -21,14 +21,12 @@ import {
   welcomeScreensInput,
 } from "../../exampleInputs/forms";
 import { formatCode, setHrefObject } from "../../util";
-export const createForm = action({
-  display: {
-    label: "Create Form",
-    description: "Create a form",
-  },
+const additionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Theme, Workspace URL, CUI Settings, Fields, Hidden, Logic, Settings, Thank You Screens, Variables, and Welcome Screens.",
   inputs: {
-    title,
-    type,
     theme: themeUrl,
     workspaceUrl,
     cuiSettings: {
@@ -79,40 +77,34 @@ export const createForm = action({
       example: formatCode(welcomeScreensInput),
       comments: "The welcome screens for the form.",
     },
+  },
+});
+export const createForm = action({
+  display: {
+    label: "Create Form",
+    description: "Create a form",
+  },
+  inputs: {
+    title,
+    type,
+    additionalFields,
     connection,
   },
-  perform: async (
-    context,
-    {
-      connection,
-      cuiSettings,
-      fields,
-      hidden,
-      setting,
-      thankyouScreen,
-      theme,
-      title,
-      type,
-      variables,
-      welcomeScreens,
-      workspaceUrl,
-      logic,
-    },
-  ) => {
+  perform: async (context, { connection, additionalFields, title, type }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.post<Form>(`/forms`, {
-      cui_settings: cuiSettings,
-      fields,
-      hidden,
-      logic,
-      setting,
-      thankyou_screens: thankyouScreen,
-      theme: setHrefObject(theme),
+      cui_settings: additionalFields.cuiSettings,
+      fields: additionalFields.fields,
+      hidden: additionalFields.hidden,
+      logic: additionalFields.logic,
+      setting: additionalFields.setting,
+      thankyou_screens: additionalFields.thankyouScreen,
+      theme: setHrefObject(additionalFields.theme),
       title,
       type,
-      variables,
-      welcome_screens: welcomeScreens,
-      workspace: setHrefObject(workspaceUrl),
+      variables: additionalFields.variables,
+      welcome_screens: additionalFields.welcomeScreens,
+      workspace: setHrefObject(additionalFields.workspaceUrl),
     });
     return {
       data,

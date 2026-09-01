@@ -13,18 +13,15 @@ export const listWorkspaces = action({
     connection,
     ...commonListInputs,
   },
-  perform: async (
-    context,
-    { connection, page, pageSize, search, fetchAll },
-  ) => {
+  perform: async (context, { connection, pagination, fetchAll }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await fetchAllData<Workspace>(
       client,
       "/workspaces",
       {
-        search,
-        page,
-        page_size: pageSize,
+        search: pagination.search,
+        page: pagination.page,
+        page_size: pagination.pageSize,
       },
       fetchAll,
     );
