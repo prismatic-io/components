@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-09-01
+
+Restructured action inputs into structured objects for an improved configuration experience.
+
+- **Create Vendor** and **Update Vendor** group their inputs into **Name**, **Contact Details**, **Tax Information**, **ACH Banking**, **Payment Settings**, **Form 1099**, **Contact Roles**, and **GL Accounts**
+- **Create Customer** and **Update Customer** group their inputs into **Name**, **Contact Details**, **Tax Information**, **Contact Roles**, **Print Options**, **GL Accounts**, and **Billing and Delivery Preferences**
+- **Create Contact** and **Update Contact** group their inputs into **Name**, **Contact Details**, and **Tax Information**
+- **Create Invoice** and **Update Invoice** group their currency inputs into **Currency and Exchange Rate**
+
 ### 2026-05-05
 
 Added **New and Updated Records** polling trigger to detect newly created or modified records across Vendor, Customer, AP Bill, AR Invoice, Contact, Employee, Project, and AR Payment, with server-side filtering so only changed records are returned each poll

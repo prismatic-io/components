@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanBooleanInput,
   cleanCodeInput,
@@ -581,6 +581,62 @@ export const isoCountryCodeInput = input({
   placeholder: "Enter ISO country code",
   clean: util.types.toString,
 });
+export const contactDetails = structuredObjectInput({
+  label: "Contact Details",
+  required: false,
+  comments: "Address, phone, email, and other contact channel details.",
+  inputs: {
+    addressLine1Input,
+    addressLine2Input,
+    cityInput,
+    stateProvinceInput,
+    zipPostalCodeInput,
+    countryInput,
+    primaryPhoneNoInput,
+    secondaryPhoneNoInput,
+    cellularPhoneNoInput,
+    pagerNoInput,
+    faxNoInput,
+    primaryEmailAddressInput,
+    secondaryEmailAddressInput,
+    primaryUrlInput,
+    secondaryUrlInput,
+  },
+});
+export const contactDetailsWithCountryCode = structuredObjectInput({
+  label: "Contact Details",
+  required: false,
+  comments: "Address, phone, email, and other contact channel details.",
+  inputs: {
+    addressLine1Input,
+    addressLine2Input,
+    cityInput,
+    stateProvinceInput,
+    zipPostalCodeInput,
+    countryInput,
+    isoCountryCodeInput,
+    primaryPhoneNoInput,
+    secondaryPhoneNoInput,
+    cellularPhoneNoInput,
+    pagerNoInput,
+    faxNoInput,
+    primaryEmailAddressInput,
+    secondaryEmailAddressInput,
+    primaryUrlInput,
+    secondaryUrlInput,
+  },
+});
+export const name = structuredObjectInput({
+  label: "Name",
+  required: false,
+  comments: "First, middle, and last name with prefix.",
+  inputs: {
+    prefixInput,
+    firstNameInput,
+    middleNameInput,
+    lastNameInput,
+  },
+});
 export const excludedFromContactListInput = input({
   label: "Excluded From Contact List",
   comments:
@@ -951,6 +1007,122 @@ export const shipToContactNameInput = input({
   placeholder: "Enter contact name",
   clean: util.types.toString,
 });
+export const taxInfo = structuredObjectInput({
+  label: "Tax Information",
+  required: false,
+  comments: "Tax ID, taxable status, and tax group.",
+  inputs: {
+    taxIdInput,
+    taxableInput,
+    contactTaxGroupNameInput,
+  },
+});
+export const achDetails = structuredObjectInput({
+  label: "ACH Banking",
+  required: false,
+  comments: "ACH bank account and routing details.",
+  inputs: {
+    achEnabledInput,
+    achBankRoutingNoInput,
+    achBankAccountNoInput,
+    achBankAccountTypeInput,
+    achBankAccountClassInput,
+  },
+});
+export const paymentSettings = structuredObjectInput({
+  label: "Payment Settings",
+  required: false,
+  comments: "Payment method, terms, and notification preferences.",
+  inputs: {
+    doNotPayInput,
+    preferredPaymentMethodInput,
+    paymentTermInput,
+    sendAutomaticPaymentNotificationInput,
+    mergePaymentRequestsInput,
+    vendorBillingTypeInput,
+    paymentPriorityInput,
+    termDiscountDisplayedOnCheckStubInput,
+  },
+});
+export const form1099 = structuredObjectInput({
+  label: "Form 1099",
+  required: false,
+  comments: "Form 1099 tax reporting details.",
+  inputs: {
+    form1099NameInput,
+    form1099TypeInput,
+    form1099BoxInput,
+  },
+});
+export const vendorContactRoles = structuredObjectInput({
+  label: "Contact Roles",
+  required: false,
+  comments: "Primary, pay-to, and return-to contact assignments.",
+  inputs: {
+    primaryContactNameInput,
+    payToContactNameInput,
+    returnToContactNameInput,
+  },
+});
+export const printOptions = structuredObjectInput({
+  label: "Print Options",
+  required: false,
+  comments:
+    "Document template assignments for invoices, quotes, orders, and adjustments.",
+  inputs: {
+    printOptionArInvoiceTemplateNameInput,
+    printOptionOeQuoteTemplateNameInput,
+    printOptionOeOrderTemplateNameInput,
+    printOptionOeListTemplateNameInput,
+    printOptionOeInvoiceTemplateNameInput,
+    printOptionOeAdjustmentTemplateNameInput,
+    printOptionOeOtherTemplateNameInput,
+  },
+});
+export const customerContactRoles = structuredObjectInput({
+  label: "Contact Roles",
+  required: false,
+  comments: "Primary, bill-to, and ship-to contact assignments.",
+  inputs: {
+    primaryContactNameInput,
+    billToContactNameInput,
+    shipToContactNameInput,
+  },
+});
+export const glAccounts = structuredObjectInput({
+  label: "GL Accounts",
+  required: false,
+  comments:
+    "GL group, default expense GL account, and offset GL account numbers.",
+  inputs: {
+    glGroupNameInput,
+    defaultExpenseGlAccountNoInput,
+    offsetGlAccountNoInput,
+  },
+});
+export const customerGlAccounts = structuredObjectInput({
+  label: "GL Accounts",
+  required: false,
+  comments:
+    "GL group, offset AR GL account, and default revenue GL account numbers.",
+  inputs: {
+    glGroupNameInput,
+    offsetArGlAccountNoInput,
+    defaultRevenueGlAccountNoInput,
+  },
+});
+export const billingPreferences = structuredObjectInput({
+  label: "Billing and Delivery Preferences",
+  required: false,
+  comments:
+    "Payment term, delivery method, default invoice message, and shipping method.",
+  inputs: {
+    paymentTermInput,
+    deliveryMethodInput,
+    defaultInvoiceMessageInput,
+    shippingMethodInput,
+  },
+});
 export const restrictionTypeInput = input({
   label: "Restriction Type",
   type: "string",
@@ -1264,6 +1436,35 @@ export const exchRateInput = input({
     "Exchange rate for the invoice. Do not use if Exchange Rate Type is used.",
   required: false,
   clean: util.types.toString,
+});
+export const invoiceCurrencyAndExchangeRate = structuredObjectInput({
+  label: "Currency and Exchange Rate",
+  required: false,
+  comments: "Base currency, transaction currency, and exchange rate details.",
+  inputs: {
+    baseCurrencyInput,
+    currencyInput: {
+      ...currencyInput,
+      comments: "The currency of the invoice.",
+    },
+    exchRateDateInput,
+    exchRateTypeInput,
+  },
+});
+export const updateInvoiceCurrencyAndExchangeRate = structuredObjectInput({
+  label: "Currency and Exchange Rate",
+  required: false,
+  comments: "Base currency, transaction currency, and exchange rate details.",
+  inputs: {
+    baseCurrencyInput,
+    currencyInput,
+    exchRateDateInput,
+    exchRateTypeInput: {
+      ...exchRateTypeInput,
+      comments: "The exchange rate type. Do not use if exchrate is set.",
+    },
+    exchRateInput,
+  },
 });
 export const explicitArray = input({
   label: "Array JSON Nodes",

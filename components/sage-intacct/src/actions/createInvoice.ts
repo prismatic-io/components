@@ -14,10 +14,7 @@ import {
   externalIdInput,
   billToContactNameInput,
   shipToContactNameInput,
-  baseCurrencyInput,
-  currencyInput,
-  exchRateDateInput,
-  exchRateTypeInput,
+  invoiceCurrencyAndExchangeRate,
   noglInput,
   attachmentsIdInput,
   customFieldsXmlInput,
@@ -46,10 +43,7 @@ export const createInvoice = action({
       externalIdInput,
       billToContactNameInput,
       shipToContactNameInput,
-      baseCurrencyInput,
-      currencyInput,
-      exchRateDateInput,
-      exchRateTypeInput,
+      currencyAndExchangeRate,
       noglInput,
       attachmentsIdInput,
       customFieldsXmlInput,
@@ -77,14 +71,17 @@ export const createInvoice = action({
     <shipto>
         <contactname>${shipToContactNameInput}</contactname>
     </shipto>
-    <basecurr>${baseCurrencyInput}</basecurr>
-    <currency>${currencyInput}</currency>
+    <basecurr>${currencyAndExchangeRate.baseCurrencyInput}</basecurr>
+    <currency>${currencyAndExchangeRate.currencyInput}</currency>
     ${
-      exchRateDateInput.length > 0
-        ? getDateXmlTags(exchRateDateInput, "exchratedate")
+      currencyAndExchangeRate.exchRateDateInput.length > 0
+        ? getDateXmlTags(
+            currencyAndExchangeRate.exchRateDateInput,
+            "exchratedate",
+          )
         : ""
     }
-    <exchratetype>${exchRateTypeInput}</exchratetype>
+    <exchratetype>${currencyAndExchangeRate.exchRateTypeInput}</exchratetype>
     ${noglInput === "" ? "" : `<nogl>${noglInput}</nogl>`}
     <supdocid>${attachmentsIdInput}</supdocid>
     <customfields>
@@ -143,13 +140,7 @@ export const createInvoice = action({
       comments:
         "The name of the contact to ship to. This should be an existing contact in Intacct.",
     },
-    baseCurrencyInput,
-    currencyInput: {
-      ...currencyInput,
-      comments: "The currency of the invoice.",
-    },
-    exchRateDateInput,
-    exchRateTypeInput,
+    currencyAndExchangeRate: invoiceCurrencyAndExchangeRate,
     noglInput,
     attachmentsIdInput,
     customFieldsXmlInput,

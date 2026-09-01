@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "@intacct/intacct-sdk": "^2.2.1",
-    "@prismatic-io/spectral": "10.17.1",
+    "@prismatic-io/spectral": "10.20.0",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.5",
+    "@biomejs/biome": "2.5.1",
     "@types/jest": "30.0.0",
     "@types/xml2js": "^0.4.14",
     "copy-webpack-plugin": "13.0.0",

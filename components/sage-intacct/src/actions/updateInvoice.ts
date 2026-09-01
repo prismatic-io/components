@@ -7,24 +7,20 @@ import {
 } from "../utils";
 import {
   attachmentsIdInput,
-  baseCurrencyInput,
   connection,
   contactNameInput,
-  currencyInput,
   customerIdInput,
   customFieldsXmlInput,
   dateCreatedInput,
   dateDueInput,
   datePostedInput,
   descriptionInput,
-  exchRateDateInput,
-  exchRateInput,
-  exchRateTypeInput,
   invoiceLineItemsInput,
   invoiceNumberInput,
   keyId,
   ponumberInput,
   termNameInput,
+  updateInvoiceCurrencyAndExchangeRate,
 } from "../inputs";
 import { updateInvoicePayload } from "../examplePayloads/updateInvoicePayload";
 export const updateInvoice = action({
@@ -46,11 +42,7 @@ export const updateInvoice = action({
       ponumberInput,
       descriptionInput,
       contactNameInput,
-      baseCurrencyInput,
-      currencyInput,
-      exchRateDateInput,
-      exchRateTypeInput,
-      exchRateInput,
+      currencyAndExchangeRate,
       attachmentsIdInput,
       customFieldsXmlInput,
       invoiceLineItemsInput,
@@ -90,15 +82,18 @@ export const updateInvoice = action({
         ? `<returnto><contactname>${contactNameInput}</contactname></returnto>`
         : ""
     }
-    ${getXmlTagOrEmptyString("basecurr", baseCurrencyInput)}
-    ${getXmlTagOrEmptyString("currency", currencyInput)}
+    ${getXmlTagOrEmptyString("basecurr", currencyAndExchangeRate.baseCurrencyInput)}
+    ${getXmlTagOrEmptyString("currency", currencyAndExchangeRate.currencyInput)}
     ${
-      exchRateDateInput.length > 0
-        ? getDateXmlTags(exchRateDateInput, "exchratedate")
+      currencyAndExchangeRate.exchRateDateInput.length > 0
+        ? getDateXmlTags(
+            currencyAndExchangeRate.exchRateDateInput,
+            "exchratedate",
+          )
         : ""
     }
-    ${getXmlTagOrEmptyString("exchratetype", exchRateTypeInput)}
-    ${getXmlTagOrEmptyString("exchrate", exchRateInput)}
+    ${getXmlTagOrEmptyString("exchratetype", currencyAndExchangeRate.exchRateTypeInput)}
+    ${getXmlTagOrEmptyString("exchrate", currencyAndExchangeRate.exchRateInput)}
     ${getXmlTagOrEmptyString("supdocid", attachmentsIdInput)}
     ${
       customFieldsXmlInput.length > NO_CHARACTERS
@@ -147,14 +142,7 @@ export const updateInvoice = action({
       ...contactNameInput,
       required: false,
     },
-    baseCurrencyInput,
-    currencyInput,
-    exchRateDateInput,
-    exchRateTypeInput: {
-      ...exchRateTypeInput,
-      comments: "The exchange rate type. Do not use if exchrate is set.",
-    },
-    exchRateInput,
+    currencyAndExchangeRate: updateInvoiceCurrencyAndExchangeRate,
     attachmentsIdInput,
     customFieldsXmlInput,
     invoiceLineItemsInput: {
