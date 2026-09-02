@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../utils";
 export const fetchAll = input({
   label: "Fetch All",
@@ -109,6 +109,24 @@ export const odataParams = {
     clean: cleanStringInput,
   }),
 };
+export const odataQueryParams = structuredObjectInput({
+  label: "OData Query Parameters",
+  required: false,
+  comments:
+    "OData system query options for filtering, sorting, selecting, and expanding results.",
+  inputs: {
+    $filter: odataParams.$filter,
+    $select: odataParams.$select,
+    $expand: odataParams.$expand,
+    $orderBy: odataParams.$orderBy,
+    $top: odataParams.$top,
+    $skip: odataParams.$skip,
+    $count: odataParams.$count,
+    $search: odataParams.$search,
+    $format: odataParams.$format,
+    $skipToken: odataParams.$skipToken,
+  },
+});
 export const additionalProperties = input({
   label: "Additional Properties",
   type: "code",

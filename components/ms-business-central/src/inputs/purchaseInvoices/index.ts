@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { BOOLEAN_INPUT_MODEL } from "../../constants";
 import {
   cleanBooleanInput,
@@ -6,7 +6,7 @@ import {
   cleanStringInput,
 } from "../../utils";
 import { companyId } from "../accounts/getAccountsInputs";
-import { connectionInput, fetchAll, odataParams } from "../general";
+import { connectionInput, fetchAll, odataQueryParams } from "../general";
 export const purchaseInvoiceId = input({
   label: "Purchase Invoice ID",
   type: "string",
@@ -163,6 +163,19 @@ export const buyFromPostCode = input({
   required: false,
   clean: cleanStringInput,
 });
+export const buyFromAddress = structuredObjectInput({
+  label: "Buy From Address",
+  required: false,
+  comments: "Buy-from street, city, state, postal code, and country.",
+  inputs: {
+    buyFromAddressLine1,
+    buyFromAddressLine2,
+    buyFromCity,
+    buyFromState,
+    buyFromPostCode,
+    buyFromCountry,
+  },
+});
 export const currencyId = input({
   label: "Currency ID",
   type: "string",
@@ -201,7 +214,7 @@ export const listPurchaseInvoicesInputs = {
   connection: connectionInput,
   companyId,
   fetchAll,
-  ...odataParams,
+  odataQueryParams,
 };
 export const getPurchaseInvoiceInputs = {
   connection: connectionInput,
@@ -225,12 +238,7 @@ export const createPurchaseInvoiceInputs = {
   payToVendorNumber,
   shipToName,
   shipToContact,
-  buyFromAddressLine1,
-  buyFromAddressLine2,
-  buyFromCity,
-  buyFromState,
-  buyFromCountry,
-  buyFromPostCode,
+  buyFromAddress,
   currencyId,
   currencyCode,
   pricesIncludeTax,
@@ -253,12 +261,7 @@ export const updatePurchaseInvoiceInputs = {
   payToVendorNumber,
   shipToName,
   shipToContact,
-  buyFromAddressLine1,
-  buyFromAddressLine2,
-  buyFromCity,
-  buyFromState,
-  buyFromCountry,
-  buyFromPostCode,
+  buyFromAddress,
   currencyId,
   currencyCode,
   pricesIncludeTax: {

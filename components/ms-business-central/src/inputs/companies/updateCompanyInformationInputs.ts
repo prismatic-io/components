@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../../utils";
 export const companyDisplayName = input({
   label: "Display Name",
@@ -134,6 +134,30 @@ export const companyIndustry = input({
   required: false,
   type: "string",
   clean: cleanStringInput,
+});
+export const address = structuredObjectInput({
+  label: "Address",
+  required: false,
+  comments: "Street, city, state, postal code, and country.",
+  inputs: {
+    companyAddressLine1,
+    companyAddressLine2,
+    companyCity,
+    companyState,
+    companyCountry,
+    companyPostalCode,
+  },
+});
+export const contactInfo = structuredObjectInput({
+  label: "Contact Information",
+  required: false,
+  comments: "Email, phone, and other contact channel details.",
+  inputs: {
+    companyEmail,
+    companyPhoneNumber,
+    companyFaxNumber,
+    companyWebsite,
+  },
 });
 export const companyInformationId = input({
   label: "Company Information ID",

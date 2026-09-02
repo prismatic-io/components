@@ -11,22 +11,7 @@ export const listPurchaseOrderLines = action({
   },
   perform: async (
     context,
-    {
-      companyId,
-      purchaseOrderId,
-      connection,
-      fetchAll,
-      $orderBy,
-      $format,
-      $expand,
-      $count,
-      $filter,
-      $top,
-      $skipToken,
-      $skip,
-      $search,
-      $select,
-    },
+    { companyId, purchaseOrderId, connection, fetchAll, odataQueryParams },
   ) => {
     const client = getMsBusinessCentralClient(
       connection,
@@ -34,15 +19,15 @@ export const listPurchaseOrderLines = action({
       context.debug.enabled,
     );
     const params = {
-      $orderBy,
-      $format,
-      $expand,
-      $count,
-      $filter,
-      $skipToken,
-      $skip,
-      $search,
-      $select,
+      $orderBy: odataQueryParams.$orderBy,
+      $format: odataQueryParams.$format,
+      $expand: odataQueryParams.$expand,
+      $count: odataQueryParams.$count,
+      $filter: odataQueryParams.$filter,
+      $skipToken: odataQueryParams.$skipToken,
+      $skip: odataQueryParams.$skip,
+      $search: odataQueryParams.$search,
+      $select: odataQueryParams.$select,
     };
     return await paginateResults<
       (typeof examplePayload)["data"]["value"][number]
@@ -51,7 +36,7 @@ export const listPurchaseOrderLines = action({
       endpoint: `/companies(${companyId})/purchaseOrders(${purchaseOrderId})/purchaseOrderLines`,
       params,
       fetchAll,
-      pageSize: $top,
+      pageSize: odataQueryParams.$top,
     });
   },
   inputs,

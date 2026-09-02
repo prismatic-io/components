@@ -1,8 +1,8 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { BOOLEAN_INPUT_MODEL } from "../../constants";
 import { cleanBooleanInput, cleanStringInput } from "../../utils";
 import { companyId } from "../accounts/getAccountsInputs";
-import { connectionInput, fetchAll, odataParams } from "../general";
+import { connectionInput, fetchAll, odataQueryParams } from "../general";
 export const vendorId = input({
   label: "Vendor ID",
   type: "string",
@@ -174,11 +174,23 @@ export const blocked = input({
   required: false,
   clean: cleanStringInput,
 });
+export const address = structuredObjectInput({
+  label: "Address",
+  required: false,
+  comments: "Street, city, state, postal code, and country.",
+  inputs: { addressLine1, addressLine2, city, state, country, postalCode },
+});
+export const contactInfo = structuredObjectInput({
+  label: "Contact Information",
+  required: false,
+  comments: "Email, phone, and other contact channel details.",
+  inputs: { email, phoneNumber, website },
+});
 export const listVendorsInputs = {
   connection: connectionInput,
   companyId,
   fetchAll,
-  ...odataParams,
+  odataQueryParams,
 };
 export const getVendorInputs = {
   connection: connectionInput,
@@ -192,15 +204,8 @@ export const createVendorInputs = {
     comments: "The ID of the company you want to create the vendor in.",
   },
   displayName,
-  addressLine1,
-  addressLine2,
-  city,
-  state,
-  country,
-  postalCode,
-  phoneNumber,
-  email,
-  website,
+  address,
+  contactInfo,
   taxLiable,
   taxRegistrationNumber,
   currencyId,
@@ -218,15 +223,8 @@ export const updateVendorInputs = {
   },
   vendorId,
   displayName: { ...displayName, required: false, clean: cleanStringInput },
-  addressLine1,
-  addressLine2,
-  city,
-  state,
-  country,
-  postalCode,
-  phoneNumber,
-  email,
-  website,
+  address,
+  contactInfo,
   taxLiable: {
     ...taxLiable,
     required: false,

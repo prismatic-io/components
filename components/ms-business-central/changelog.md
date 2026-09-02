@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-09-02
+
+Updated action inputs to group related fields into structured objects:
+- Updated the list actions (**List Items**, **List Vendors**, **List Purchase Orders**, **List Purchase Order Lines**, **List Purchase Invoices**, **List Purchase Receipts**, **List Purchase Receipt Lines**, **List General Ledger Entries**, and **List Item Ledger Entries**) to group their OData query options into an **OData Query Parameters** object; **Fetch All** remains a top-level toggle
+- Updated **Create Purchase Invoice** and **Update Purchase Invoice** to group their buy-from address fields into a **Buy From Address** object
+- Updated **Create Vendor**, **Update Vendor**, and **Update Company Information** to group their address and contact fields into **Address** and **Contact Information** objects
+
 ### 2026-07-27
 
 Updated the **Fetch All** option on list actions so results are returned in the same `{ value: [ ... ] }` shape as a single-page call; previously enabling Fetch All returned a bare array, so integrations that read the `value` property received no items

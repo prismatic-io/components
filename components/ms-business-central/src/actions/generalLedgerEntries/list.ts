@@ -12,21 +12,7 @@ export const listGeneralLedgerEntries = action({
   inputs: listGeneralLedgerEntriesInputs,
   perform: async (
     context,
-    {
-      $search,
-      companyId,
-      connection,
-      fetchAll,
-      $skip,
-      $skipToken,
-      $top,
-      $filter,
-      $count,
-      $expand,
-      $format,
-      $orderBy,
-      $select,
-    },
+    { companyId, connection, fetchAll, odataQueryParams },
   ) => {
     const client = getMsBusinessCentralClient(
       connection,
@@ -34,15 +20,15 @@ export const listGeneralLedgerEntries = action({
       context.debug.enabled,
     );
     const params = {
-      $search,
-      $skip,
-      $skipToken,
-      $filter,
-      $count,
-      $expand,
-      $format,
-      $orderBy,
-      $select,
+      $search: odataQueryParams.$search,
+      $skip: odataQueryParams.$skip,
+      $skipToken: odataQueryParams.$skipToken,
+      $filter: odataQueryParams.$filter,
+      $count: odataQueryParams.$count,
+      $expand: odataQueryParams.$expand,
+      $format: odataQueryParams.$format,
+      $orderBy: odataQueryParams.$orderBy,
+      $select: odataQueryParams.$select,
     };
     return await paginateResults<
       (typeof listGeneralLedgerEntriesExamplePayload)["data"]["value"][number]
@@ -51,7 +37,7 @@ export const listGeneralLedgerEntries = action({
       endpoint: `/companies(${companyId})/generalLedgerEntries`,
       params,
       fetchAll,
-      pageSize: $top,
+      pageSize: odataQueryParams.$top,
     });
   },
   examplePayload: listGeneralLedgerEntriesExamplePayload,
