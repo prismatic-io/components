@@ -1,12 +1,11 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalObject, toOptionalString } from "../util";
 import {
   additionalFields,
   connection,
-  cursor,
+  cursorPagination,
   customFields,
   fetchAll,
-  limit,
 } from "./common";
 const userId = input({
   label: "User ID",
@@ -36,7 +35,11 @@ const userName = input({
   placeholder: "Enter name",
   example: "Jane Smith",
 });
-export const listUsersInputs = { connection, fetchAll, cursor, limit };
+export const listUsersInputs = {
+  connection,
+  fetchAll,
+  pagination: cursorPagination,
+};
 export const retrieveUserInputs = { connection, userId };
 const companies = input({
   label: "Companies",
@@ -60,14 +63,19 @@ const companies = input({
     2,
   ),
 });
+const createOrUpdateUserAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Companies, Custom Fields, and Additional Fields.",
+  inputs: { companies, customFields, additionalFields },
+});
 export const createOrUpdateUserInputs = {
   connection,
   userEmail,
   userName,
   userId: { ...userId, required: false, clean: toOptionalString },
-  companies,
-  customFields,
-  additionalFields,
+  additionalFields: createOrUpdateUserAdditionalFields,
 };
 export const deleteUserInputs = { connection, userId };
 export const selectUserInputs = { connection };

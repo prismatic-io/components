@@ -4,8 +4,7 @@ import {
   boardIdRequired,
   connection,
   fetchAll,
-  limit,
-  skip,
+  offsetPagination,
 } from "./common";
 const tagId = input({
   label: "Tag ID",
@@ -21,12 +20,18 @@ const tagName = input({
   label: "Name",
   type: "string",
   required: true,
-  comments: "The name of the tag.",
+  comments:
+    "The label applied to posts for filtering, such as bug or feature-request.",
   clean: util.types.toString,
   placeholder: "Enter tag name",
   example: "bug",
 });
-export const listTagsInputs = { connection, boardId, fetchAll, limit, skip };
+export const listTagsInputs = {
+  connection,
+  boardId,
+  fetchAll,
+  pagination: offsetPagination,
+};
 export const retrieveTagInputs = { connection, tagId };
 export const createTagInputs = { connection, boardIdRequired, tagName };
 export const selectTagInputs = {

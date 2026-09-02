@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalObject, toOptionalString } from "../util";
 import {
   additionalFields,
@@ -10,9 +10,8 @@ import {
   customFields,
   fetchAll,
   imageURLs,
-  limit,
+  offsetPagination,
   postId,
-  skip,
 } from "./common";
 const authorIdRequired = input({
   label: "Author ID",
@@ -28,7 +27,8 @@ const title = input({
   label: "Title",
   type: "string",
   required: true,
-  comments: "The title of the post.",
+  comments:
+    "The headline shown in the board list and used for search matching.",
   clean: util.types.toString,
   placeholder: "Enter post title",
   example: "Add dark mode support",
@@ -37,7 +37,8 @@ const titleOptional = input({
   label: "Title",
   type: "string",
   required: false,
-  comments: "Updated post title.",
+  comments:
+    "Replaces the post headline. Leave blank to keep the current title.",
   clean: toOptionalString,
   placeholder: "Enter post title",
   example: "Add dark mode support",
@@ -55,7 +56,7 @@ const detailsOptional = input({
   label: "Details",
   type: "text",
   required: false,
-  comments: "Updated post content.",
+  comments: "Replaces the post body. Leave blank to keep the current details.",
   clean: toOptionalString,
   placeholder: "Enter post details",
   example: "Updated description for the feature request.",
@@ -164,7 +165,28 @@ const tagIDs = input({
   required: false,
   comments: "JSON array of tag IDs to filter by.",
   clean: toOptionalObject,
+  placeholder: "Enter tag IDs",
   example: JSON.stringify(["553c3ef8b8cdcd1501ba4444"], null, 2),
+});
+const listControls = structuredObjectInput({
+  label: "List Controls",
+  required: false,
+  comments: "Search, sort, and status filter controls.",
+  inputs: { search, sort, status },
+});
+const createPostAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Custom Fields, ETA, ETA Public, Image URLs, and Additional Fields.",
+  inputs: { customFields, eta, etaPublic, imageURLs, additionalFields },
+});
+const updatePostAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Custom Fields, ETA, Image URLs, and Additional Fields.",
+  inputs: { customFields, eta, imageURLs, additionalFields },
 });
 export const listPostsInputs = {
   connection,
@@ -173,11 +195,8 @@ export const listPostsInputs = {
   companyId,
   tagIDs,
   fetchAll,
-  limit,
-  skip,
-  search,
-  sort,
-  status,
+  pagination: offsetPagination,
+  listControls,
 };
 export const retrievePostInputs = { connection, postId };
 export const createPostInputs = {
@@ -187,21 +206,14 @@ export const createPostInputs = {
   title,
   details,
   categoryId,
-  customFields,
-  eta,
-  etaPublic,
-  imageURLs,
-  additionalFields,
+  additionalFields: createPostAdditionalFields,
 };
 export const updatePostInputs = {
   connection,
   postId,
   titleOptional,
   detailsOptional,
-  customFields,
-  eta,
-  imageURLs,
-  additionalFields,
+  additionalFields: updatePostAdditionalFields,
 };
 export const deletePostInputs = { connection, postId };
 export const changePostStatusInputs = {

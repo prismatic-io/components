@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   toObjectOrEmpty,
   toOptionalNumber,
@@ -46,6 +46,18 @@ export const cursor = input({
   clean: toOptionalString,
   placeholder: "Enter cursor token",
   example: "next_abc123def456",
+});
+export const offsetPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page and page-size controls.",
+  inputs: { limit, skip },
+});
+export const cursorPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { cursor, limit },
 });
 export const boardId = input({
   label: "Board ID",

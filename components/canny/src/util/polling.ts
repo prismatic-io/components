@@ -1,12 +1,45 @@
-import type { Post } from "../types";
+import type { CannyPostChange, CannyPostChangesObject, Post } from "../types";
+export const collectPostChanges = (
+  posts: Post[],
+  since: string,
+  options: {
+    isInitialSync: boolean;
+    showNewRecords: boolean;
+    showUpdatedRecords: boolean;
+  },
+): CannyPostChangesObject => {
+  const { isInitialSync, showNewRecords, showUpdatedRecords } = options;
+  const { created, updated } = classifyPostsByPollDate(
+    posts,
+    since,
+    isInitialSync,
+  );
+  return {
+    created: isInitialSync || showNewRecords ? created : [],
+    updated: isInitialSync || showUpdatedRecords ? updated : [],
+  };
+};
+export const resolvePostChanges = (
+  data: CannyPostChangesObject | undefined,
+): CannyPostChange[] => {
+  const changesObject = data ?? { created: [], updated: [] };
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): CannyPostChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): CannyPostChange => ({ changeType: "updated", record }),
+    ),
+  ];
+};
 export const classifyPostsByPollDate = (
   posts: Post[],
-  lastPolledAt: string,
-): {
-  created: Post[];
-  updated: Post[];
-} => {
-  const lastPolledAtMs = new Date(lastPolledAt).getTime();
+  since: string,
+  inclusive = false,
+): CannyPostChangesObject => {
+  const sinceMs = new Date(since).getTime();
+  const isAfter = (ms: number) =>
+    !Number.isNaN(ms) && (inclusive ? ms >= sinceMs : ms > sinceMs);
   const created: Post[] = [];
   const updated: Post[] = [];
   for (const post of posts) {
@@ -16,11 +49,8 @@ export const classifyPostsByPollDate = (
     const statusChangedMs = post.statusChangedAt
       ? new Date(post.statusChangedAt).getTime()
       : Number.NaN;
-    const isNew = !Number.isNaN(createdMs) && createdMs > lastPolledAtMs;
-    const isUpdated =
-      !isNew &&
-      !Number.isNaN(statusChangedMs) &&
-      statusChangedMs > lastPolledAtMs;
+    const isNew = isAfter(createdMs);
+    const isUpdated = !isNew && isAfter(statusChangedMs);
     if (isNew) {
       created.push(post);
     } else if (isUpdated) {

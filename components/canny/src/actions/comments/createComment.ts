@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createCommentExamplePayload } from "../../examplePayloads";
 import { createCommentInputs } from "../../inputs";
+import { createCommentOutputSchema } from "../../outputSchemas";
 export const createComment = action({
   display: {
     label: "Create Comment",
     description: "Creates a new comment on a post.",
   },
   inputs: createCommentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createCommentOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -15,9 +21,7 @@ export const createComment = action({
       postId,
       commentAuthorId,
       commentValue,
-      internal,
       parentId,
-      imageURLs,
       additionalFields,
     },
   ) => {
@@ -26,12 +30,15 @@ export const createComment = action({
       postID: postId,
       authorID: commentAuthorId,
       value: commentValue,
-      internal,
+      internal: additionalFields.internal,
       parentID: parentId,
-      imageURLs,
-      ...additionalFields,
+      imageURLs: additionalFields.imageURLs,
+      ...additionalFields.additionalFields,
     });
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createCommentExamplePayload,
   examplePayload: createCommentExamplePayload,
 });

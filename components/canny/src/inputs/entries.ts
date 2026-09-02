@@ -1,11 +1,16 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
-import { additionalFields, connection, fetchAll, limit, skip } from "./common";
+import {
+  additionalFields,
+  connection,
+  fetchAll,
+  offsetPagination,
+} from "./common";
 const entryTitle = input({
   label: "Title",
   type: "string",
   required: true,
-  comments: "The changelog entry title.",
+  comments: "The headline shown at the top of the changelog entry.",
   clean: util.types.toString,
   placeholder: "Enter entry title",
   example: "New Dashboard Features",
@@ -67,15 +72,19 @@ export const listEntriesInputs = {
   entryType,
   entrySort,
   fetchAll,
-  limit,
-  skip,
+  pagination: offsetPagination,
 };
+const createEntryAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Notify, Published, and Additional Fields.",
+  inputs: { notify, published, additionalFields },
+});
 export const createEntryInputs = {
   connection,
   entryTitle,
   entryDetails,
   entryType,
-  notify,
-  published,
-  additionalFields,
+  additionalFields: createEntryAdditionalFields,
 };

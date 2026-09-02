@@ -1,12 +1,11 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalNumber, toOptionalString } from "../util";
 import {
   additionalFields,
   connection,
-  cursor,
+  cursorPagination,
   customFields,
   fetchAll,
-  limit,
 } from "./common";
 const companyIdRequired = input({
   label: "Company ID",
@@ -49,7 +48,8 @@ const segment = input({
   label: "Segment",
   type: "string",
   required: false,
-  comments: "Filter by segment.",
+  comments:
+    "Restricts results to companies in a single segment, matched exactly against the segment name.",
   clean: toOptionalString,
   placeholder: "Enter segment",
   example: "enterprise",
@@ -59,16 +59,20 @@ export const listCompaniesInputs = {
   companySearch,
   segment,
   fetchAll,
-  cursor,
-  limit,
+  pagination: cursorPagination,
 };
+const updateCompanyAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Monthly Spend, Custom Fields, and Additional Fields.",
+  inputs: { monthlySpend, customFields, additionalFields },
+});
 export const updateCompanyInputs = {
   connection,
   companyIdRequired,
   companyName,
-  monthlySpend,
-  customFields,
-  additionalFields,
+  additionalFields: updateCompanyAdditionalFields,
 };
 export const deleteCompanyInputs = { connection, companyIdRequired };
 export const selectCompanyInputs = { connection };

@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { trigger, util } from "@prismatic-io/spectral";
+import { webhookExamplePayload } from "../examplePayloads";
 import { webhookInputs } from "../inputs";
 import { validateConnection } from "../util";
 export const webhook = trigger({
@@ -9,7 +10,10 @@ export const webhook = trigger({
       "Receives webhook events from Canny when configured events occur.",
   },
   inputs: webhookInputs,
-  perform: async (_context, payload, { connection }) => {
+  perform: async (context, payload, { connection }) => {
+    if (context.isSimulatedTestExecution) {
+      return { payload };
+    }
     const apiKey = validateConnection(connection);
     const headers = util.types.lowerCaseHeaders(
       payload.headers as Record<string, string>,
@@ -27,4 +31,5 @@ export const webhook = trigger({
   },
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
+  examplePayload: webhookExamplePayload,
 });

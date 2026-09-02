@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listVotesExamplePayload } from "../../examplePayloads";
 import { listVotesInputs } from "../../inputs";
+import { listVotesOutputSchema } from "../../outputSchemas";
 import { paginateCursor } from "../../util";
 export const listVotes = action({
   display: {
@@ -10,6 +11,11 @@ export const listVotes = action({
       "Lists votes with optional filtering and cursor-based pagination (v2).",
   },
   inputs: listVotesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listVotesOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -19,8 +25,7 @@ export const listVotes = action({
       companyId,
       userIdOptional,
       fetchAll,
-      cursor,
-      limit,
+      pagination,
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
@@ -33,12 +38,15 @@ export const listVotes = action({
         postID: postIdOptional,
         companyID: companyId,
         userID: userIdOptional,
-        cursor,
-        limit,
+        cursor: pagination.cursor,
+        limit: pagination.limit,
       },
       fetchAll,
     );
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listVotesExamplePayload,
   examplePayload: listVotesExamplePayload,
 });

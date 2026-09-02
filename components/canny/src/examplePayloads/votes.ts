@@ -49,13 +49,14 @@ export const retrieveVoteExamplePayload = {
     voter: {
       id: "553c3ef8b8cdcd1501ba123a",
       created: "2017-08-30T13:32:00.000Z",
-      email: "test@test.test",
+      email: "sally.doe@example.com",
       isAdmin: false,
       name: "Sally Doe",
       url: "https://your-company.canny.io/admin/users/sally-doe",
       userID: "1234",
     },
     votePriority: "Important",
+    zendeskTicket: null,
   },
 };
 export const listVotesExamplePayload = {
@@ -112,7 +113,7 @@ export const listVotesExamplePayload = {
         voter: {
           id: "553c3ef8b8cdcd1501ba123a",
           created: "2026-04-16T01:07:22.193Z",
-          email: "test@test.test",
+          email: "sally.doe@example.com",
           isAdmin: false,
           name: "Sally Doe",
           url: "https://your-company.canny.io/admin/users/sally-doe",

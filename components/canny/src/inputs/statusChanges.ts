@@ -1,8 +1,7 @@
-import { boardId, connection, cursor, fetchAll, limit } from "./common";
+import { boardId, connection, cursorPagination, fetchAll } from "./common";
 export const listStatusChangesInputs = {
   connection,
   boardId,
   fetchAll,
-  cursor,
-  limit,
+  pagination: cursorPagination,
 };

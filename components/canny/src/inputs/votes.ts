@@ -4,9 +4,8 @@ import {
   boardId,
   companyId,
   connection,
-  cursor,
+  cursorPagination,
   fetchAll,
-  limit,
   postId,
   postIdOptional,
   userIdOptional,
@@ -37,8 +36,7 @@ export const listVotesInputs = {
   companyId,
   userIdOptional,
   fetchAll,
-  cursor,
-  limit,
+  pagination: cursorPagination,
 };
 export const retrieveVoteInputs = { connection, voteId };
 export const createVoteInputs = {

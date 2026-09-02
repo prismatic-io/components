@@ -7,5 +7,6 @@ export * from "./entries";
 export * from "./posts";
 export * from "./statusChanges";
 export * from "./tags";
+export * from "./triggers";
 export * from "./users";
 export * from "./votes";

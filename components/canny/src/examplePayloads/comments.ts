@@ -4,7 +4,7 @@ export const retrieveCommentExamplePayload = {
     author: {
       id: "553c3ef8b8cdcd1501ba123a",
       created: "2026-04-15T22:51:00.519Z",
-      email: "test@test.test",
+      email: "sally.doe@example.com",
       isAdmin: false,
       name: "Sally Doe",
       url: "https://your-company.canny.io/admin/users/sally-doe",
@@ -66,6 +66,7 @@ export const retrieveCommentExamplePayload = {
     reactions: {
       like: 2,
     },
+    status: null,
     value: "Some cool comment",
   },
 };
@@ -79,7 +80,7 @@ export const listCommentsExamplePayload = {
         author: {
           id: "553c3ef8b8cdcd1501ba123a",
           created: "2026-04-15T22:51:00.520Z",
-          email: "test@test.test",
+          email: "sally.doe@example.com",
           isAdmin: false,
           name: "Sally Doe",
           url: "https://your-company.canny.io/admin/users/sally-doe",

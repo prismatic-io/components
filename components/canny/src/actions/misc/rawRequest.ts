@@ -9,6 +9,7 @@ export const rawRequest = action({
       "Sends a raw HTTP request to the Canny API. The API key is injected automatically into the request body.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...httpInputs }) => {
     const apiKey = validateConnection(connection);
     const existingBody = httpInputs.data

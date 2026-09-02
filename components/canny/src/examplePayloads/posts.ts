@@ -4,7 +4,7 @@ export const retrievePostExamplePayload = {
     author: {
       id: "553c3ef8b8cdcd1501ba123a",
       created: "2026-04-16T01:07:22.189Z",
-      email: "test@test.test",
+      email: "sally.doe@example.com",
       isAdmin: true,
       name: "Sally Doe",
       url: "https://your-company.canny.io/admin/users/sally-doe",
@@ -20,7 +20,7 @@ export const retrievePostExamplePayload = {
     by: {
       id: "524c3ef8b8cdcd1501ba246b",
       created: "2026-04-16T01:07:22.189Z",
-      email: "test@john.test",
+      email: "john.doe@example.com",
       isAdmin: true,
       name: "John Doe",
       url: "https://your-company.canny.io/admin/users/john-doe",
@@ -60,7 +60,8 @@ export const retrievePostExamplePayload = {
         value: "high",
       },
     ],
-    details: "Test post details",
+    details:
+      "We'd love the ability to customize the color scheme to match our brand.",
     eta: "February 2020",
     imageURLs: [
       "https://canny.io/images/93fc5808937760b82c3dc00aa5cd86b8.png",
@@ -93,12 +94,13 @@ export const retrievePostExamplePayload = {
     owner: {
       id: "553c3ef8b8cdcd1501ba123a",
       created: "2026-04-16T01:07:22.189Z",
-      email: "test@test.test",
+      email: "sally.doe@example.com",
       isAdmin: true,
       name: "Sally Doe",
       url: "https://your-company.canny.io/admin/users/sally-doe",
       userID: "1234",
     },
+    roadmaps: [],
     score: 72,
     status: "in progress",
     statusChangedAt: "2026-04-16T01:07:22.189Z",
@@ -123,7 +125,7 @@ export const listPostsExamplePayload = {
         author: {
           id: "553c3ef8b8cdcd1501ba123a",
           created: "2026-04-16T01:07:22.189Z",
-          email: "test@test.test",
+          email: "sally.doe@example.com",
           isAdmin: false,
           name: "Sally Doe",
           url: "https://your-company.canny.io/admin/users/sally-doe",
@@ -139,7 +141,7 @@ export const listPostsExamplePayload = {
         by: {
           id: "524c3ef8b8cdcd1501ba246b",
           created: "2026-04-16T01:07:22.189Z",
-          email: "test@john.test",
+          email: "john.doe@example.com",
           isAdmin: true,
           name: "John Doe",
           url: "https://your-company.canny.io/admin/users/john-doe",
@@ -173,7 +175,8 @@ export const listPostsExamplePayload = {
             value: "high",
           },
         ],
-        details: "Test post details",
+        details:
+          "We'd love the ability to customize the color scheme to match our brand.",
         eta: "February 2020",
         imageURLs: [
           "https://canny.io/images/93fc5808937760b82c3dc00aa5cd86b8.png",
@@ -206,12 +209,13 @@ export const listPostsExamplePayload = {
         owner: {
           id: "553c3ef8b8cdcd1501ba123a",
           created: "2026-04-16T01:07:22.189Z",
-          email: "test@test.test",
+          email: "sally.doe@example.com",
           isAdmin: true,
           name: "Sally Doe",
           url: "https://your-company.canny.io/admin/users/sally-doe",
           userID: "1234",
         },
+        roadmaps: [],
         score: 72,
         status: "in progress",
         statusChangedAt: "2026-04-16T01:07:22.189Z",
@@ -229,16 +233,9 @@ export const listPostsExamplePayload = {
     ],
   },
 };
-export const pollPostsExamplePayload = {
-  data: {
-    created: listPostsExamplePayload.data.posts,
-    updated: [],
-  },
-};
 export const createPostExamplePayload = {
   data: {
     id: "553c3ef8b8cdcd1501ba5678",
-    url: "https://example.canny.io/admin/board/features/p/add-dark-mode-support",
   },
 };
 export const updatePostExamplePayload = { data: "success" };
@@ -249,7 +246,7 @@ export const changePostStatusExamplePayload = {
     author: {
       id: "553c3ef8b8cdcd1501ba123a",
       created: "2017-07-15T22:11:00.000Z",
-      email: "test@test.test",
+      email: "sally.doe@example.com",
       isAdmin: false,
       name: "Sally Doe",
       url: "https://your-company.canny.io/admin/users/sally-doe",
@@ -265,7 +262,7 @@ export const changePostStatusExamplePayload = {
     by: {
       id: "524c3ef8b8cdcd1501ba246b",
       created: "2017-07-15T22:11:00.000Z",
-      email: "test@john.test",
+      email: "john.doe@example.com",
       isAdmin: true,
       name: "John Doe",
       url: "https://your-company.canny.io/admin/users/john-doe",
@@ -286,7 +283,15 @@ export const changePostStatusExamplePayload = {
     },
     commentCount: 10,
     created: "2017-08-22T13:32:00.000Z",
-    details: "Test post details",
+    customFields: [
+      {
+        id: "553c3ef8b8cdcd1501ba2238",
+        name: "priority",
+        value: "high",
+      },
+    ],
+    details:
+      "We'd love the ability to customize the color scheme to match our brand.",
     eta: "February 2020",
     imageURLs: [
       "https://canny.io/images/93fc5808937760b82c3dc00aa5cd86b8.png",
@@ -316,6 +321,16 @@ export const changePostStatusExamplePayload = {
         },
       },
     ],
+    owner: {
+      id: "553c3ef8b8cdcd1501ba123a",
+      created: "2017-07-15T22:11:00.000Z",
+      email: "sally.doe@example.com",
+      isAdmin: true,
+      name: "Sally Doe",
+      url: "https://your-company.canny.io/admin/users/sally-doe",
+      userID: "1234",
+    },
+    roadmaps: [],
     score: 72,
     status: "in progress",
     statusChangedAt: "2017-08-24T23:22:00.000Z",

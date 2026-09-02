@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listCommentsExamplePayload } from "../../examplePayloads";
 import { listCommentsInputs } from "../../inputs";
+import { listCommentsOutputSchema } from "../../outputSchemas";
 import { paginateCursor } from "../../util";
 export const listComments = action({
   display: {
@@ -10,6 +11,11 @@ export const listComments = action({
       "Lists comments with optional filtering and cursor-based pagination.",
   },
   inputs: listCommentsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCommentsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -19,8 +25,7 @@ export const listComments = action({
       authorId,
       companyId,
       fetchAll,
-      cursor,
-      limit,
+      pagination,
     },
   ) => {
     const client = createClient(connection, context.debug.enabled);
@@ -33,12 +38,15 @@ export const listComments = action({
         postID: postIdOptional,
         authorID: authorId,
         companyID: companyId,
-        cursor,
-        limit,
+        cursor: pagination.cursor,
+        limit: pagination.limit,
       },
       fetchAll,
     );
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listCommentsExamplePayload,
   examplePayload: listCommentsExamplePayload,
 });

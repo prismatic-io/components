@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createCategoryExamplePayload } from "../../examplePayloads";
 import { createCategoryInputs } from "../../inputs";
+import { createCategoryOutputSchema } from "../../outputSchemas";
 export const createCategory = action({
   display: {
     label: "Create Category",
     description: "Creates a new category in a board.",
   },
   inputs: createCategoryInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createCategoryOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -27,5 +33,8 @@ export const createCategory = action({
     });
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createCategoryExamplePayload,
   examplePayload: createCategoryExamplePayload,
 });

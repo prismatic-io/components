@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { toOptionalString } from "../util";
 import {
   additionalFields,
@@ -6,10 +6,9 @@ import {
   boardId,
   companyId,
   connection,
-  cursor,
+  cursorPagination,
   fetchAll,
   imageURLs,
-  limit,
   postId,
   postIdOptional,
 } from "./common";
@@ -36,7 +35,7 @@ const commentValue = input({
   label: "Comment Text",
   type: "text",
   required: true,
-  comments: "The text content of the comment.",
+  comments: "The body of the comment as it appears on the post. Plain text.",
   clean: util.types.toString,
   placeholder: "Enter comment text",
   example: "Great idea! We should prioritize this.",
@@ -65,18 +64,22 @@ export const listCommentsInputs = {
   authorId,
   companyId,
   fetchAll,
-  cursor,
-  limit,
+  pagination: cursorPagination,
 };
 export const retrieveCommentInputs = { connection, commentId };
+const createCommentAdditionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Internal, Image URLs, and Additional Fields.",
+  inputs: { internal, imageURLs, additionalFields },
+});
 export const createCommentInputs = {
   connection,
   postId,
   commentAuthorId,
   commentValue,
-  internal,
   parentId,
-  imageURLs,
-  additionalFields,
+  additionalFields: createCommentAdditionalFields,
 };
 export const deleteCommentInputs = { connection, commentId };

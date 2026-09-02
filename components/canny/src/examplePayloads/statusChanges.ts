@@ -14,7 +14,7 @@ export const listStatusChangesExamplePayload = {
         changer: {
           id: "553c3ef8b8cdcd1501ba123a",
           created: "2026-04-16T01:07:22.191Z",
-          email: "test@test.test",
+          email: "sally.doe@example.com",
           isAdmin: false,
           name: "Sally Doe",
           url: "https://your-company.canny.io/admin/users/sally-doe",
@@ -32,7 +32,8 @@ export const listStatusChangesExamplePayload = {
             url: "https://your-company.canny.io/admin/board/feature-requests?category=dashboard",
           },
           commentCount: 10,
-          details: "Test post details",
+          details:
+            "We'd love the ability to customize the color scheme to match our brand.",
           id: "553c3ef8b8cdcd1501ba1238",
           imageURLs: [
             "https://canny.io/images/93fc5808937760b82c3dc00aa5cd86b8.png",
@@ -46,7 +47,6 @@ export const listStatusChangesExamplePayload = {
                 url: "https://your-company.atlassian.net/browse/ID-123",
               },
             ],
-            linkedIssueIDs: ["123"],
           },
           linear: {
             linkedIssueIDs: ["ID-123", "ID-345"],

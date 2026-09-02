@@ -5,8 +5,7 @@ import {
   boardIdRequired,
   connection,
   fetchAll,
-  limit,
-  skip,
+  offsetPagination,
 } from "./common";
 const categoryIdRequired = input({
   label: "Category ID",
@@ -22,7 +21,7 @@ const categoryName = input({
   label: "Name",
   type: "string",
   required: true,
-  comments: "The name of the category.",
+  comments: "The display name shown when grouping posts on the board.",
   clean: util.types.toString,
   placeholder: "Enter category name",
   example: "UI Improvements",
@@ -48,8 +47,7 @@ export const listCategoriesInputs = {
   connection,
   boardId,
   fetchAll,
-  limit,
-  skip,
+  pagination: offsetPagination,
 };
 export const retrieveCategoryInputs = { connection, categoryIdRequired };
 export const createCategoryInputs = {

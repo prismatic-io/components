@@ -1,20 +1,33 @@
-This trigger polls [Canny](https://canny.io/) on a configured schedule and emits posts that were created, or had a status change, since the previous run. It is a convenient alternative to webhooks when a scheduled pull is preferred over an event push.
+This trigger polls [Canny](https://canny.io/) on a configured schedule and emits posts that were created, or had a status change, since the previous recurrence. It can also load a history of existing posts once, so an instance can start from a known state instead of only seeing changes from deployment onward. It is a convenient alternative to webhooks when a scheduled pull is preferred over an event push.
 
 #### How It Works
 
-Canny's posts endpoint does not support filtering by date, so on each scheduled run the trigger fetches posts and classifies them against the previous poll time:
+Canny's posts endpoint does not support filtering by date, so on each recurrence the trigger fetches posts and classifies them against the stored cursor:
 
-- **Created**: posts whose `created` timestamp is after the previous poll.
-- **Updated**: posts whose `statusChangedAt` is after the previous poll (and that are not newly created).
+- **Created**: posts whose `created` timestamp is after the cursor.
+- **Updated**: posts whose `statusChangedAt` is after the cursor (and that are not newly created).
 
-The current run time is stored as the cursor for the next run.
+The time each recurrence started is stored as the cursor for the next one, so only posts created or status-changed since then are returned.
 
-- **First run**: the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical posts on deploy.
-- **Subsequent runs**: only posts created or status-changed since the last run are returned.
+**Initial sync**
+
+An initial sync seeds a complete starting state rather than a feed of changes. Inputs that narrow which changes are reported would leave permanent gaps in that starting state, so they are not applied to it, while inputs that shape how records are fetched still are. Setting **Look-back Date** starts the sync from that date on the first recurrence and seeds each post created or status-changed since it exactly once. The sync ignores **Show New Records** and **Show Updated Records**, the trigger's two visibility filters, which resume on every later recurrence. Leaving **Look-back Date** empty means no sync runs at all: the first recurrence records the cursor, emits nothing, and the trigger reports only changes from that point forward.
+
+The upper bound of the sync window is fixed at the moment the sync begins, so a post changed while the sync is in progress is not picked up by the sync itself. Once the window is exhausted the trigger stores that bound as its position, and the first incremental recurrence resumes from exactly there, so nothing is lost between the two. No field in the payload marks the handoff. The sync drains within a single recurrence whether or not batching is enabled, because the trigger reads the full post list and classifies it in memory.
+
+The sync boundary is inclusive: a post dated exactly on the look-back date is seeded. Every later recurrence is exclusive of the previous cursor, so a post sitting exactly on it is not emitted a second time. This trigger has no page-size or field-selection inputs, so no fetch-shaping input is suppressed; the sync reads the same full post list that a normal recurrence does.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Canny.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the shape a downstream step receives. With batching off, a step reads the full polling payload and finds the posts under `data.created` and `data.updated`. With batching on, those two arrays do not exist: each record is dispatched on its own, tagged as `changeType` (either `created` or `updated`) with the post itself under `record`. Any step that reads `data.created` or `data.updated` must be updated before batching is turned on. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns the matching posts grouped under `created` and `updated`. Fields shown are representative. The full response object includes additional properties.
+With batching off, the trigger returns the matching posts grouped under `created` and `updated`. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -38,7 +51,27 @@ The trigger returns the matching posts grouped under `created` and `updated`. Fi
 
 </details>
 
+With batching on, each dispatched record takes the tagged shape below instead.
+
+<details>
+<summary>Per-Record Shape (batching enabled)</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "553c3ef8b8cdcd1501ba1238",
+    "title": "An awesome feature request",
+    "status": "in progress",
+    "created": "2026-04-16T01:07:22.189Z",
+    "statusChangedAt": "2026-04-16T01:07:22.189Z"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
 - "Updated" detection is based on each post's `statusChangedAt`, which reflects status transitions. Other edits that do not change status are not detected.
-- Because Canny has no server-side date filter, each run lists posts and filters them in memory; for very large boards consider scoping with the underlying list filters.
+- Because Canny has no server-side date filter, each recurrence lists every post and filters them in memory, so a very large board makes each recurrence proportionally more expensive.

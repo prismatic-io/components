@@ -10,7 +10,7 @@ export const listCompaniesExamplePayload = {
         customFields: {
           number: 1,
           bool: true,
-          string: "test",
+          string: "Enterprise",
         },
         domain: "example.com",
         memberCount: 5,

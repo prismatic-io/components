@@ -145,3 +145,11 @@ export type CursorResult<K extends string, T> = {
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
+export interface CannyPostChangesObject {
+  created: Post[];
+  updated: Post[];
+}
+export interface CannyPostChange {
+  changeType: "created" | "updated";
+  record: Post;
+}
