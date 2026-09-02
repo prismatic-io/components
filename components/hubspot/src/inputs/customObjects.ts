@@ -1,32 +1,36 @@
 import { input, util } from "@prismatic-io/spectral";
-import { valueListInputClean } from "../util";
-export const singularLabel = input({
+import { toOptionalString, valueListInputClean } from "../util";
+import {
+  additionalProperties,
+  archived,
+  connectionInput,
+  dynamicValues,
+  fieldValues,
+  name,
+  objectType,
+  properties,
+  timeout,
+} from "./common";
+const singularLabel = input({
   label: "Singular Label",
   type: "string",
+  placeholder: "Enter singular label",
   example: "My object",
   comments: "The word for one object. (There's no way to change this later.)",
   required: true,
   clean: util.types.toString,
 });
-export const pluralLabel = input({
+const pluralLabel = input({
   label: "Plural Label",
   type: "string",
+  placeholder: "Enter plural label",
   example: "My object",
   comments:
     "The word for multiple objects. (There's no way to change this later.)",
   required: true,
   clean: util.types.toString,
 });
-export const primaryDisplayProperty = input({
-  label: "Primary Display Property",
-  type: "string",
-  example: "my_object_property",
-  comments:
-    "The name of the primary property for this object. This will be displayed as primary on the HubSpot record page for this object type.",
-  required: false,
-  clean: util.types.toString,
-});
-export const requiredProperties = input({
+const requiredProperties = input({
   label: "Required Properties",
   type: "string",
   collection: "valuelist",
@@ -37,7 +41,7 @@ export const requiredProperties = input({
   clean: valueListInputClean,
   example: "my_object_property",
 });
-export const searchableProperties = input({
+const searchableProperties = input({
   label: "Searchable Properties",
   type: "string",
   collection: "valuelist",
@@ -48,7 +52,7 @@ export const searchableProperties = input({
   clean: valueListInputClean,
   example: "my_object_property",
 });
-export const secondaryDisplayProperties = input({
+const secondaryDisplayProperties = input({
   label: "Secondary Display Properties",
   type: "string",
   collection: "valuelist",
@@ -59,7 +63,7 @@ export const secondaryDisplayProperties = input({
   clean: valueListInputClean,
   example: "my_object_property",
 });
-export const associatedObjects = input({
+const associatedObjects = input({
   label: "Associated Objects",
   type: "string",
   collection: "valuelist",
@@ -69,3 +73,48 @@ export const associatedObjects = input({
   clean: valueListInputClean,
   example: "my_object_property",
 });
+export const listCustomObjectsInputs = {
+  hubspotConnection: connectionInput,
+  timeout,
+  archived: { ...archived, required: false },
+  additionalProperties,
+};
+export const createCustomObjectInputs = {
+  hubspotConnection: connectionInput,
+  name,
+  singularLabel,
+  properties,
+  pluralLabel,
+  requiredProperties,
+  searchableProperties,
+  secondaryDisplayProperties,
+  associatedObjects,
+  timeout,
+  fieldValues,
+  dynamicValues,
+};
+export const updateCustomObjectInputs = {
+  hubspotConnection: connectionInput,
+  objectType: {
+    ...objectType,
+    label: "Fully qualified name or object type ID of your schema.",
+  },
+  singularLabel: { ...singularLabel, required: false, clean: toOptionalString },
+  pluralLabel: { ...pluralLabel, required: false, clean: toOptionalString },
+  requiredProperties: { ...requiredProperties, required: false },
+  searchableProperties: { ...searchableProperties, required: false },
+  timeout,
+  fieldValues,
+  dynamicValues,
+};
+export const deleteCustomObjectInputs = {
+  hubspotConnection: connectionInput,
+  objectType,
+  timeout,
+  archived: { ...archived, default: "false" },
+};
+export const getCustomObjectInputs = {
+  hubspotConnection: connectionInput,
+  timeout,
+  objectType,
+};

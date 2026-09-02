@@ -1,13 +1,7 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  lookBackDate,
-  objectType,
-  searchProperties,
-  showNewRecords,
-  showUpdatedRecords,
-} from "../inputs";
-import type { PollChangesParams } from "../types/polling";
+import { pollChangesCustomObjectsTriggerExamplePayload } from "../examplePayloads";
+import { pollChangesCustomObjectsTriggerInputs } from "../inputs";
+import type { PollChangesParams } from "../types";
 import {
   performPollChanges,
   pollChangesBatchConfig,
@@ -19,17 +13,8 @@ export const pollChangesCustomObjectsTrigger = pollingTrigger({
     description:
       "Retrieves existing and ongoing records for a specified HubSpot custom object type. Load history once, check for changes on a schedule, or both.",
   },
-  inputs: {
-    lookBackDate,
-    showNewRecords,
-    showUpdatedRecords,
-    hubspotConnection: connectionInput,
-    objectType: {
-      ...objectType,
-      comments: "The type of custom object to search for.",
-    },
-    searchProperties,
-  },
+  inputs: pollChangesCustomObjectsTriggerInputs,
+  examplePayload: pollChangesCustomObjectsTriggerExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: pollChangesBatchConfig,
   triggerResolver: pollChangesResolver,

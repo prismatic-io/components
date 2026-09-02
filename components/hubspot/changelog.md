@@ -1,5 +1,21 @@
 ## Changelog
 
+### 2026-09-02
+
+Improved trigger inputs, connection options, action correctness, and developer experience:
+
+- Added **Property Change Properties** input to the **Event Type Subscription** trigger, enabling property change event types to include the required property names in each webhook subscription
+
+  Reconfiguration notice: The **Event Type Subscription** trigger now requires an entry in **Property Change Properties** for every property change event type selected. An existing configuration that selects one will fail the next time its webhook configuration is created, on a first deploy or a redeploy with **Overwrite Webhook Settings** enabled, until the property names are entered.
+
+- Fixed the **Delete Line Item** action sending a GET request instead of DELETE, so the line item was never deleted
+- Updated the **Private App Access Token** connection, now labeled **Private App Access Token or Service Key**, to accept a HubSpot account service key in the same field as a private app access token; service keys are HubSpot's recommended credential for new system-to-system integrations, and either credential works for every action
+- Updated the connection documentation to note that the webhook actions and the **Event Type Subscription** trigger require an **OAuth 2.0** connection backed by a legacy public app, which HubSpot stopped allowing accounts to create on June 23, 2026; the **Webhook** trigger and both polling triggers are unaffected
+- Updated **List Companies**, **List Contacts**, **List Deals**, **List Line Items**, **List Products**, and **Search Deals** to group their cursor and page-size inputs into **Pagination** for an improved user experience, where **Fetch All** stays a top-level toggle
+- Updated **Create Contact** and **Update Contact** to group their email, phone, and website inputs into **Contact Information**
+- Added inline action calling support to 58 actions for improved example output during configuration
+- Added output schemas to 40 actions for improved field mapping during configuration
+
 ### 2026-08-19
 
 Reworked the **New and Updated Records** and **New and Updated Custom Records** triggers for large data volumes and correct filtering:

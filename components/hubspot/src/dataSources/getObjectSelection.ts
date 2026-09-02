@@ -1,25 +1,13 @@
-import { dataSource, input, util } from "@prismatic-io/spectral";
+import { dataSource } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
-import { objectsToSelect } from "../inputs";
+import { getObjectSelectionInputs } from "../inputs";
 export const getObjectSelection = dataSource({
   display: {
-    label: "Object Selection",
-    description: "A list of HubSpot objects.",
+    label: "Select Object",
+    description:
+      "Select a HubSpot object type from the list of available objects.",
   },
-  inputs: {
-    connection: input({
-      label: "HubSpot Connection",
-      required: true,
-      type: "connection",
-    }),
-    objectsToSelect,
-    includeCustomObjects: input({
-      label: "Include Custom Objects",
-      type: "boolean",
-      default: "false",
-      clean: util.types.toBool,
-    }),
-  },
+  inputs: getObjectSelectionInputs,
   perform: async (
     _context,
     { connection, objectsToSelect, includeCustomObjects },

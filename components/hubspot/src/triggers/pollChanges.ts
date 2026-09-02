@@ -10,12 +10,10 @@ import type {
   PollingChangesObject,
   PollingRecordChange,
   PollingTriggerObject,
-} from "../types/PollingTriggerObject";
-import type {
   PollChangesParams,
   PollingCursor,
   SearchRecordsPollingState,
-} from "../types/polling";
+} from "../types";
 import { resolvePollingRecordChanges } from "../util";
 import {
   advanceCursor,

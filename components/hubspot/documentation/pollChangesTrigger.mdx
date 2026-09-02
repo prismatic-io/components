@@ -12,7 +12,7 @@ This component provides two polling triggers that retrieve existing and ongoing 
 
 On each recurrence both triggers search HubSpot using the [Search API](https://developers.hubspot.com/docs/api-reference/latest/crm/search-the-crm) for records whose last-modified property falls after the trigger's stored position, classify each as created or updated by comparing its created and last-modified timestamps against that window, and return them oldest-first. A record created and later modified within the same window appears in both lists.
 
-Each recurrence stores where its page ended, so the next one continues from there rather than repeating it. A single HubSpot search returns at most 10,000 results; when a window holds more than that, the trigger drains up to 10,000 per recurrence without batching — or up to 1,000 per round with batching, keeping each delivered payload small — and resumes the same window rather than skipping the remainder. With batching enabled it also resumes immediately inside the same recurrence instead of waiting for the schedule.
+Each recurrence stores where its page ended, so the next one continues from there rather than repeating it. A single HubSpot search returns at most 10,000 results; when a window holds more than that, the trigger drains up to 10,000 per recurrence without batching (or up to 1,000 per round with batching, keeping each delivered payload small) and resumes the same window rather than skipping the remainder. With batching enabled it also resumes immediately inside the same recurrence instead of waiting for the schedule.
 
 **The first recurrence**
 

@@ -1,5 +1,13 @@
-import { input, util } from "@prismatic-io/spectral";
-import { getDynamicValues, valueListInputClean } from "../util";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import {
+  getDynamicValues,
+  toCommaSeparatedList,
+  toKeyValueObject,
+  toOptionalInt,
+  toOptionalString,
+  toTrimmedStringList,
+  valueListInputClean,
+} from "../util";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
@@ -21,7 +29,7 @@ export const limit = input({
   required: false,
   example: "100",
   comments: "The maximum number of items that will be returned by the search.",
-  clean: util.types.toNumber,
+  clean: toOptionalInt,
 });
 export const after = input({
   label: "Start After",
@@ -30,19 +38,28 @@ export const after = input({
   comments:
     "Specify the pagination token that's returned by a previous request to retrieve the next page of results",
   example: "lslTXFcbLQKkb0vP9Kgh5hy0Y0OnC7Z9ZPHPwPmMnxSk3eiDRMkct7D8E",
+  clean: toOptionalString,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor-based pagination: page size and cursor token.",
+  inputs: { limit, after },
 });
 export const timeout = input({
   label: "Timeout",
   type: "string",
   required: false,
+  placeholder: "Enter timeout",
   example: "20000",
   comments: "The maximum time a client will await a request",
-  clean: util.types.toInt,
+  clean: toOptionalInt,
 });
 export const objectType = input({
   label: "Object Type",
   type: "string",
   required: true,
+  placeholder: "Enter object type",
   example: "deal",
   comments: "The type of object.",
   clean: util.types.toString,
@@ -52,15 +69,21 @@ export const description = input({
   label: "Description",
   type: "string",
   required: false,
-  comments: "The description of the object.",
+  placeholder: "Enter description",
+  comments:
+    "An optional text description providing additional detail about the record.",
   example: "This is an example description.",
+  clean: toOptionalString,
 });
 export const hubspotOwnerId = input({
   label: "Owner ID",
   type: "string",
   required: false,
-  comments: "The owner ID of the resource.",
+  placeholder: "Enter owner ID",
+  comments:
+    "The HubSpot user ID of the record owner, used to assign responsibility.",
   example: "910901",
+  clean: toOptionalString,
 });
 export const idProperty = input({
   label: "ID Property",
@@ -69,7 +92,7 @@ export const idProperty = input({
   comments:
     "The name of a property whose values are unique for this object type.",
   dataSource: "selectProperty",
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 export const additionalProperties = input({
   label: "Additional Properties To Return",
@@ -89,6 +112,7 @@ export const associationsList = input({
   required: false,
   comments:
     "For each item, provide an object type to retrieve the associated Ids for.",
+  clean: toCommaSeparatedList,
 });
 export const archived = input({
   label: "Return Archived Results",
@@ -115,10 +139,7 @@ export const fieldValues = input({
   comments:
     "The names of the fields and their values to use when creating/updating a record.",
   example: "name:My Example Account,phone:5551234567",
-  clean: (dynamicFields: unknown) =>
-    Array.isArray(dynamicFields)
-      ? util.types.keyValPairListToObject(dynamicFields)
-      : {},
+  clean: toKeyValueObject,
 });
 export const dynamicValues = input({
   label: "Dynamic Fields",
@@ -142,12 +163,15 @@ export const value = input({
   label: "Value",
   type: "string",
   required: true,
+  placeholder: "Enter value",
   example: "myDeal",
   comments: "The value corresponding to the given property name.",
+  clean: util.types.toString,
 });
 export const name = input({
   label: "Name",
   type: "string",
+  placeholder: "Enter name",
   example: "my_object",
   comments: "A unique name for this object. For internal use only.",
   required: true,
@@ -158,22 +182,36 @@ export const properties = input({
   type: "code",
   language: "json",
   comments: "Properties defined for this object type.",
-  example: JSON.stringify([
-    {
-      name: "my_object_property",
-      label: "My object property",
-      type: "string",
-      fieldType: "text",
-      groupName: "my_object_information",
-      displayOrder: -1,
-      calculated: false,
-      externalOptions: false,
-      archived: false,
-      hasUniqueValue: false,
-    },
-  ]),
+  example: JSON.stringify(
+    [
+      {
+        name: "my_object_property",
+        label: "My object property",
+        type: "string",
+        fieldType: "text",
+        groupName: "my_object_information",
+        displayOrder: -1,
+        calculated: false,
+        externalOptions: false,
+        archived: false,
+        hasUniqueValue: false,
+      },
+    ],
+    null,
+    2,
+  ),
   clean: util.types.toObject,
   required: true,
+});
+export const propertyChangeProperties = input({
+  label: "Property Change Properties",
+  type: "string",
+  collection: "keyvaluelist",
+  required: false,
+  comments:
+    "Add one key-value pair per property change event type. The key is the event type (e.g. contact.propertyChange) and the value is a comma-separated list of the property names to monitor (e.g. email,firstname).",
+  example: '{"contact.propertyChange": "email,firstname"}',
+  clean: toKeyValueObject,
 });
 export const objectsToSelect = input({
   label: "Objects to Select",
@@ -189,9 +227,5 @@ export const objectsToSelect = input({
   ],
   required: false,
   comments: "The objects to include in the selection list.",
-  clean: (value: unknown): string[] => {
-    return util.types.isPicklist(value)
-      ? (value as string[]).map((name) => name.trim())
-      : [];
-  },
+  clean: toTrimmedStringList,
 });

@@ -5,18 +5,22 @@ This connection is only used for webhook triggers and does not grant API access.
 #### Prerequisites
 
 - Access to a [HubSpot account](https://app.hubspot.com)
-- Appropriate permissions to create private apps or manage existing apps
-- A configured HubSpot app with webhook capabilities
+- A [super admin](https://knowledge.hubspot.com/user-management/hubspot-user-permissions-guide) user, which HubSpot requires for access to private apps
+- A HubSpot app configured to deliver webhooks
+
+Both private apps and public apps have a client secret, and HubSpot signs each app's webhook requests with that app's own secret. Use the secret belonging to whichever app delivers the webhooks.
 
 #### Setup Steps
 
+To copy the client secret from a legacy private app:
+
 1. Navigate to [HubSpot](https://app.hubspot.com) and log in
-2. Navigate to **Settings > Integrations > Private Apps**
-3. To create a new app:
-   - Click **Create a private app** or **Create an app**
-   - Configure the required webhook subscriptions
-4. Navigate to the **Auth** or **App Credentials** section
-5. Copy the **Client Secret** value
+2. Navigate to **Development**, then click **Legacy apps** in the left sidebar menu
+3. Click the name of the app, or click **Create legacy app** in the top right and select **Private** to create one
+4. Click the **Auth** tab
+5. Next to *Client secret*, click **Show secret**, then copy the value
+
+For a legacy public app, open the app from the **Apps** dashboard in the HubSpot developer account and copy the **Client Secret** from its **Auth** tab.
 
 #### Configure the Connection
 
@@ -26,10 +30,13 @@ This connection is only used for webhook triggers and does not grant API access.
 
 #### Webhook Subscriptions
 
-After configuring the connection, webhook subscriptions must be set up:
+After configuring the connection, webhook subscriptions must be set up. In a legacy private app, subscriptions are managed in the app settings and [cannot be edited through an API](https://developers.hubspot.com/docs/apps/legacy-apps/private-apps/create-and-edit-webhook-subscriptions-in-private-apps):
 
-1. In the app settings, navigate to the **Webhooks** section
-2. Click **Configure** or **Set up webhooks**
-3. Provide the following:
-   - **Target URL**: The webhook endpoint URL where HubSpot will send webhook events (found in **Test Configuration > Trigger Payload** section of the integration)
-   - **Events to subscribe to**: Select the specific events to monitor (e.g., contact created, deal updated, company deleted)
+1. On the app details page, click the **Webhooks** tab
+2. Under *Target URL*, enter the URL that HubSpot will send webhook events to (found in the **Test Configuration > Trigger Payload** section of the integration)
+3. Click **Create subscription**
+4. In the right panel, select the **object types** to subscribe to, then select the **events** for those objects (for example created, merged, or deleted)
+5. If **Property changed** is selected, also select the properties to watch for changes
+6. Click **Subscribe**
+
+Selecting an object type that needs a scope the app has not authorized prompts for that scope to be added.

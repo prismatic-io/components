@@ -1,10 +1,9 @@
 import { URLSearchParams } from "node:url";
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
-import { ENGAGEMENT_OBJECTS } from "../constants/engagementObjects";
-import { ENGAGEMENT_PROPERTIES } from "../constants/engagementProperties";
+import { ENGAGEMENT_OBJECTS, ENGAGEMENT_PROPERTIES } from "../constants";
 import { selectEngagementInputs } from "../inputs";
-import type { Engagement } from "../types/Engagement";
+import type { Engagement } from "../types";
 import {
   addUrlSearchParamsFromStringArray,
   getAllPaginatedData,

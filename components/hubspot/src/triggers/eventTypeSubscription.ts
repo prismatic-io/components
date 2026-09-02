@@ -1,11 +1,8 @@
 import { trigger } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
-import {
-  connectionInput,
-  eventTypes,
-  overwriteWebhookSettings,
-} from "../inputs";
-import type { WebhookSettings } from "../types/WebhookSettings";
+import { eventTypeSubscriptionExamplePayload } from "../examplePayloads";
+import { eventTypeSubscriptionInputs } from "../inputs";
+import type { WebhookSettings } from "../types";
 import {
   appWebhookSettingsExists,
   appWebhookSubscriptionsExists,
@@ -22,18 +19,20 @@ export const eventTypeSubscription = trigger({
       "Receive CRM event notifications from HubSpot. Automatically creates and manages a webhook subscription for selected event types when the instance is deployed, and removes the subscription when the instance is deleted.",
   },
   allowsBranching: false,
-  inputs: {
-    hubspotConnection: connectionInput,
-    eventTypes,
-    overwriteWebhookSettings,
-  },
+  inputs: eventTypeSubscriptionInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
   perform: webhookPerformFunction,
+  examplePayload: eventTypeSubscriptionExamplePayload,
   webhookLifecycleHandlers: {
     create: async (
       context,
-      { hubspotConnection, eventTypes, overwriteWebhookSettings },
+      {
+        hubspotConnection,
+        eventTypes,
+        propertyChangeProperties,
+        overwriteWebhookSettings,
+      },
     ) => {
       const webhookUrl = context.webhookUrls[context.flow.name];
       const client = getHubspotClient(
@@ -73,6 +72,7 @@ export const eventTypeSubscription = trigger({
           appId,
           developerApiKey,
           webhookUrl,
+          propertyChangeProperties,
         );
       }
     },

@@ -1,7 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
 import { selectLineItemInputs } from "../inputs";
-import type { LineItem } from "../types/LineItem";
+import type { LineItem } from "../types";
 import { getAllPaginatedData } from "../util";
 export const selectLineItem = dataSource({
   display: {

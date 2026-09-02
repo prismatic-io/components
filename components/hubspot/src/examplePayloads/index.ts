@@ -1,6 +1,6 @@
-import { baseUrl } from "../connections";
-import { SUCCESS_MESSAGE } from "../constants";
-export const createCustomObjectPayload = {
+import type { TriggerPayload } from "@prismatic-io/spectral";
+import { BASE_URL, SUCCESS_MESSAGE } from "../constants";
+export const createCustomObjectExamplePayload = {
   data: {
     id: "2116144016",
     createdAt: "2024-01-15T18:07:11.390Z",
@@ -55,12 +55,12 @@ export const createCustomObjectPayload = {
     name: "equipment",
   },
 };
-export const deleteCustomObjectPayload = { data: {} };
-export const getCustomObjectPayload = createCustomObjectPayload;
-export const listCustomObjectsPayload = {
+export const deleteCustomObjectExamplePayload = { data: {} };
+export const getCustomObjectExamplePayload = createCustomObjectExamplePayload;
+export const listCustomObjectsExamplePayload = {
   data: {
     results: [
-      createCustomObjectPayload.data,
+      createCustomObjectExamplePayload.data,
       {
         id: "2117255127",
         createdAt: "2024-01-16T09:12:33.120Z",
@@ -103,11 +103,12 @@ export const listCustomObjectsPayload = {
     ],
   },
 };
-export const updateCustomObjectPayload = createCustomObjectPayload;
-export const archiveBatchEngagementPayload = {
+export const updateCustomObjectExamplePayload =
+  createCustomObjectExamplePayload;
+export const archiveBatchEngagementExamplePayload = {
   data: {},
 };
-export const createBatchEngagementPayload = {
+export const createBatchEngagementExamplePayload = {
   data: {
     status: "COMPLETE",
     results: [
@@ -154,7 +155,7 @@ export const createBatchEngagementPayload = {
     completedAt: "2024-01-15T14:09:49.903Z",
   },
 };
-export const createEngagementPayload = {
+export const createEngagementExamplePayload = {
   data: {
     id: "47231018317",
     properties: {
@@ -193,8 +194,8 @@ export const createEngagementPayload = {
     archived: false,
   },
 };
-export const deleteEngagementPayload = { data: {} };
-export const getEngagementPayload = {
+export const deleteEngagementExamplePayload = { data: {} };
+export const getEngagementExamplePayload = {
   data: {
     id: "47231018154",
     properties: {
@@ -226,7 +227,7 @@ export const getEngagementPayload = {
     archived: false,
   },
 };
-export const listEngagementsPayload = {
+export const listEngagementsExamplePayload = {
   data: [
     {
       id: "47231018154",
@@ -258,7 +259,7 @@ export const listEngagementsPayload = {
     },
   ],
 };
-export const updateBatchEngagementPayload = {
+export const updateBatchEngagementExamplePayload = {
   data: {
     status: "COMPLETE",
     results: [
@@ -285,7 +286,7 @@ export const updateBatchEngagementPayload = {
     completedAt: "2024-01-15T02:31:49.703Z",
   },
 };
-export const updateEngagementPayload = {
+export const updateEngagementExamplePayload = {
   data: {
     id: "47231018317",
     properties: {
@@ -304,7 +305,7 @@ export const updateEngagementPayload = {
     archived: false,
   },
 };
-export const listAssociationTypesPayload = {
+export const listAssociationTypesExamplePayload = {
   data: {
     results: [
       {
@@ -322,7 +323,7 @@ export const listAssociationTypesPayload = {
     ],
   },
 };
-export const createAssociationsPayload = {
+export const createAssociationsExamplePayload = {
   data: {
     completedAt: "2024-01-15T23:59:28.273Z",
     requestedAt: "2024-01-15T23:59:28.120Z",
@@ -342,7 +343,7 @@ export const createAssociationsPayload = {
     status: "COMPLETE",
   },
 };
-export const readAssociationsPayload = {
+export const readAssociationsExamplePayload = {
   data: {
     completedAt: "2024-01-15T23:59:28.283Z",
     requestedAt: "2024-01-15T23:59:28.120Z",
@@ -355,7 +356,7 @@ export const readAssociationsPayload = {
         },
         paging: {
           next: {
-            link: `${baseUrl}/crm/v3/associations/contact/company/batch/read?after=98765432102`,
+            link: `${BASE_URL}/crm/v3/associations/contact/company/batch/read?after=98765432102`,
             after: "98765432102",
           },
         },
@@ -374,10 +375,10 @@ export const readAssociationsPayload = {
     status: "COMPLETE",
   },
 };
-export const archiveAssociationsPayload = {
+export const archiveAssociationsExamplePayload = {
   data: {},
 };
-export const listCompaniesPayload = {
+export const listCompaniesExamplePayload = {
   data: {
     results: [
       {
@@ -401,13 +402,13 @@ export const listCompaniesPayload = {
     paging: {
       next: {
         after: "98765432102",
-        link: `${baseUrl}/crm/v3/objects/companies?limit=10&after=98765432102`,
+        link: `${BASE_URL}/crm/v3/objects/companies?limit=10&after=98765432102`,
       },
     },
   },
 };
-export const deleteCompanyPayload = { data: {} };
-export const createCompanyPayload = {
+export const deleteCompanyExamplePayload = { data: {} };
+export const createCompanyExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:06:42.321Z",
     archived: false,
@@ -449,7 +450,7 @@ export const createCompanyPayload = {
     updatedAt: "2024-01-15T00:06:42.321Z",
   },
 };
-export const updateCompanyPayload = {
+export const updateCompanyExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:06:42.336Z",
     archived: false,
@@ -491,7 +492,7 @@ export const updateCompanyPayload = {
     updatedAt: "2024-01-16T10:15:30.120Z",
   },
 };
-export const listContactsPayload = {
+export const listContactsExamplePayload = {
   data: {
     results: [
       {
@@ -515,13 +516,13 @@ export const listContactsPayload = {
     paging: {
       next: {
         after: "65059681028",
-        link: `${baseUrl}/crm/v3/objects/contacts?limit=10&after=65059681028`,
+        link: `${BASE_URL}/crm/v3/objects/contacts?limit=10&after=65059681028`,
       },
     },
   },
 };
-export const deleteContactPayload = { data: {} };
-export const createContactPayload = {
+export const deleteContactExamplePayload = { data: {} };
+export const createContactExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:20:24.825Z",
     archived: false,
@@ -571,7 +572,7 @@ export const createContactPayload = {
     updatedAt: "2024-01-15T00:20:24.825Z",
   },
 };
-export const updateContactPayload = {
+export const updateContactExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:20:24.840Z",
     archived: false,
@@ -611,8 +612,8 @@ export const updateContactPayload = {
     updatedAt: "2024-01-16T09:30:15.234Z",
   },
 };
-export const archiveBatchContactsPayload = { data: {} };
-export const createBatchContactsPayload = {
+export const archiveBatchContactsExamplePayload = { data: {} };
+export const createBatchContactsExamplePayload = {
   data: {
     completedAt: "2024-01-15T08:27:09.446Z",
     requestedAt: "2024-01-15T08:27:09.120Z",
@@ -649,7 +650,7 @@ export const createBatchContactsPayload = {
     status: "COMPLETE",
   },
 };
-export const getBatchContactsPayload = {
+export const getBatchContactsExamplePayload = {
   data: {
     completedAt: "2024-01-15T08:27:09.454Z",
     requestedAt: "2024-01-15T08:27:09.120Z",
@@ -686,7 +687,7 @@ export const getBatchContactsPayload = {
     status: "COMPLETE",
   },
 };
-export const updateBatchContactsPayload = {
+export const updateBatchContactsExamplePayload = {
   data: {
     completedAt: "2024-01-15T08:27:09.462Z",
     requestedAt: "2024-01-15T08:27:09.120Z",
@@ -724,7 +725,7 @@ export const updateBatchContactsPayload = {
     status: "COMPLETE",
   },
 };
-export const listDealsPayload = {
+export const listDealsExamplePayload = {
   data: {
     results: [
       {
@@ -747,13 +748,13 @@ export const listDealsPayload = {
     paging: {
       next: {
         after: "87654321099",
-        link: `${baseUrl}/crm/v3/objects/deals?limit=10&after=87654321099`,
+        link: `${BASE_URL}/crm/v3/objects/deals?limit=10&after=87654321099`,
       },
     },
   },
 };
-export const deleteDealPayload = { data: {} };
-export const searchDealsPayload = {
+export const deleteDealExamplePayload = { data: {} };
+export const searchDealsExamplePayload = {
   data: {
     total: 2,
     paging: {
@@ -792,7 +793,7 @@ export const searchDealsPayload = {
     ],
   },
 };
-export const createDealPayload = {
+export const createDealExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:24:54.526Z",
     archived: false,
@@ -830,7 +831,7 @@ export const createDealPayload = {
     updatedAt: "2024-01-15T00:24:54.526Z",
   },
 };
-export const updateDealPayload = {
+export const updateDealExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:24:54.543Z",
     archived: false,
@@ -868,7 +869,7 @@ export const updateDealPayload = {
     updatedAt: "2024-01-16T11:20:15.340Z",
   },
 };
-export const listLineItemsPayload = {
+export const listLineItemsExamplePayload = {
   data: {
     results: [
       {
@@ -891,13 +892,13 @@ export const listLineItemsPayload = {
     paging: {
       next: {
         after: "54321098766",
-        link: `${baseUrl}/crm/v3/objects/line_items?limit=10&after=54321098766`,
+        link: `${BASE_URL}/crm/v3/objects/line_items?limit=10&after=54321098766`,
       },
     },
   },
 };
-export const deleteLineItemPayload = { data: {} };
-export const createLineItemPayload = {
+export const deleteLineItemExamplePayload = { data: {} };
+export const createLineItemExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:31:42.469Z",
     archived: false,
@@ -927,7 +928,7 @@ export const createLineItemPayload = {
     updatedAt: "2024-01-15T00:31:42.469Z",
   },
 };
-export const updateLineItemPayload = {
+export const updateLineItemExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:31:42.485Z",
     archived: false,
@@ -967,7 +968,7 @@ export const updateLineItemPayload = {
     updatedAt: "2024-01-16T11:45:30.250Z",
   },
 };
-export const listProductsPayload = {
+export const listProductsExamplePayload = {
   data: {
     results: [
       {
@@ -990,13 +991,13 @@ export const listProductsPayload = {
     paging: {
       next: {
         after: "76543210988",
-        link: `${baseUrl}/crm/v3/objects/products?limit=10&after=76543210988`,
+        link: `${BASE_URL}/crm/v3/objects/products?limit=10&after=76543210988`,
       },
     },
   },
 };
-export const deleteProductPayload = { data: {} };
-export const createProductPayload = {
+export const deleteProductExamplePayload = { data: {} };
+export const createProductExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:35:05.442Z",
     archived: false,
@@ -1026,7 +1027,7 @@ export const createProductPayload = {
     updatedAt: "2024-01-15T00:35:05.442Z",
   },
 };
-export const updateProductPayload = {
+export const updateProductExamplePayload = {
   data: {
     createdAt: "2024-01-15T00:35:05.457Z",
     archived: false,
@@ -1067,7 +1068,7 @@ export const updateProductPayload = {
     updatedAt: "2024-01-16T12:10:45.680Z",
   },
 };
-export const listPropertiesPayload = {
+export const listPropertiesExamplePayload = {
   data: {
     results: [
       {
@@ -1164,7 +1165,7 @@ export const listPropertiesPayload = {
     ],
   },
 };
-export const cancelImportPayload = {
+export const cancelImportExamplePayload = {
   data: {
     completedAt: "2024-01-15T05:02:32.700Z",
     requestedAt: "2024-01-15T05:02:30.120Z",
@@ -1173,7 +1174,7 @@ export const cancelImportPayload = {
     status: "CANCELED",
   },
 };
-export const listActiveImportsPayload = {
+export const listActiveImportsExamplePayload = {
   data: [
     {
       importTemplate: {
@@ -1207,7 +1208,7 @@ export const listActiveImportsPayload = {
     },
   ],
 };
-export const importCRMDataPayload = {
+export const importCRMDataExamplePayload = {
   data: {
     importTemplate: {
       templateType: "admin_defined",
@@ -1239,7 +1240,7 @@ export const importCRMDataPayload = {
     updatedAt: "2024-01-15T05:02:32.679Z",
   },
 };
-export const getAnImportPayload = {
+export const getAnImportExamplePayload = {
   data: {
     importTemplate: {
       templateType: "admin_defined",
@@ -1271,7 +1272,7 @@ export const getAnImportPayload = {
     updatedAt: "2024-01-15T05:15:45.890Z",
   },
 };
-export const exportCRMDataPayload = {
+export const exportCRMDataExamplePayload = {
   data: {
     id: "12345678",
     exportName: "Q1 2024 Contact Export",
@@ -1284,7 +1285,7 @@ export const exportCRMDataPayload = {
     recordCount: 0,
   },
 };
-export const searchPayload = {
+export const searchExamplePayload = {
   data: {
     total: 2,
     results: [
@@ -1326,7 +1327,7 @@ export const searchPayload = {
     },
   },
 };
-export const getCurrentUserPayload = {
+export const getCurrentUserExamplePayload = {
   data: {
     portalId: 12345678,
     timeZone: "US/Eastern",
@@ -1338,8 +1339,8 @@ export const getCurrentUserPayload = {
     user: "admin@example.com",
   },
 };
-export const validateConnectionPayload = { data: true };
-export const listWebhooksPayload = {
+export const validateConnectionExamplePayload = { data: true };
+export const listWebhooksExamplePayload = {
   data: {
     results: [
       {
@@ -1361,7 +1362,7 @@ export const listWebhooksPayload = {
     ],
   },
 };
-export const createWebhookPayload = {
+export const createWebhookExamplePayload = {
   data: {
     createdAt: "2024-01-15T20:53:52.517Z",
     propertyName: "email",
@@ -1371,13 +1372,97 @@ export const createWebhookPayload = {
     updatedAt: "2024-01-15T20:53:52.517Z",
   },
 };
-export const deleteWebhookPayload = { data: {} };
-export const deleteAllWebhooksPayload = {
+export const deleteWebhookExamplePayload = { data: {} };
+export const deleteAllWebhooksExamplePayload = {
   data: {
     message: SUCCESS_MESSAGE,
   },
 };
-export const webhookPayload = {
+export const eventTypeSubscriptionExamplePayload = {
+  payload: {
+    headers: {
+      "Content-Type": "application/json",
+      "X-HubSpot-Signature-v3": "sha256=abc123",
+      "X-HubSpot-Request-Timestamp": "1708986599647",
+      "X-HubSpot-Signature-Version": "v3",
+    },
+    queryParameters: null,
+    rawBody: { data: "" },
+    body: {
+      data: [
+        {
+          eventId: 567890123,
+          subscriptionId: 234567,
+          portalId: 12345678,
+          appId: 987654,
+          occurredAt: 1708986598741,
+          subscriptionType: "contact.creation",
+          attemptNumber: 0,
+          objectId: 65059681032,
+          changeFlag: "CREATED",
+          changeSource: "CRM_UI",
+          sourceId: "userId:45678",
+        },
+      ],
+      contentType: "application/json",
+    },
+  },
+};
+export const pollChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    headers: {},
+    queryParameters: null,
+    rawBody: { data: "" },
+    body: {
+      data: {
+        createdRecords: [
+          {
+            id: "65059681027",
+            properties: {
+              createdate: "2024-01-10T08:30:15.234Z",
+              hs_lastmodifieddate: "2024-01-10T08:30:15.234Z",
+              hs_object_id: "65059681027",
+            },
+            createdAt: "2024-01-10T08:30:15.234Z",
+            updatedAt: "2024-01-10T08:30:15.234Z",
+            archived: false,
+          },
+        ],
+        updatedRecords: [
+          {
+            id: "65059681028",
+            properties: {
+              createdate: "2024-01-05T10:20:30.456Z",
+              hs_lastmodifieddate: "2024-01-15T14:22:10.789Z",
+              hs_object_id: "65059681028",
+            },
+            createdAt: "2024-01-05T10:20:30.456Z",
+            updatedAt: "2024-01-15T14:22:10.789Z",
+            archived: false,
+          },
+        ],
+      },
+      contentType: "application/json",
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "",
+    customer: undefined,
+    instance: undefined,
+    user: undefined,
+    integration: undefined,
+    flow: undefined,
+    startedAt: "",
+    globalDebug: false,
+  },
+};
+export const pollChangesCustomObjectsTriggerExamplePayload =
+  pollChangesTriggerExamplePayload;
+export const webhookExamplePayload = {
   payload: {
     headers: {
       Accept: "*/*",

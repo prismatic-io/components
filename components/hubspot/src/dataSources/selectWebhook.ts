@@ -1,7 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
 import { selectWebhookInputs } from "../inputs";
-import type { Webhook } from "../types/Webhook";
+import type { Webhook } from "../types";
 import { checkDeveloperApiKeyAndAppId } from "../util";
 export const selectWebhook = dataSource({
   display: {

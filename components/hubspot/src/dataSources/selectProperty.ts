@@ -1,7 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
 import { selectPropertyInputs } from "../inputs";
-import type { Property } from "../types/Property";
+import type { Property } from "../types";
 export const selectProperty = dataSource({
   display: {
     label: "Select Property",

@@ -1,7 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
 import { selectDealInputs } from "../inputs";
-import type { Deal } from "../types/Deal";
+import type { Deal } from "../types";
 import { getAllPaginatedData } from "../util";
 export const selectDeal = dataSource({
   display: {

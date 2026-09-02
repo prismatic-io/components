@@ -2,12 +2,13 @@ import {
   BATCHED_WINDOW_LIMIT,
   MAX_SEARCH_LIMIT,
   MAX_SEARCH_RESULTS,
+  RATE_LIMIT_MAX_ATTEMPTS,
 } from "../constants";
-import type { PollingTriggerObject } from "../types/PollingTriggerObject";
 import type {
+  PollingTriggerObject,
   PollingCursor,
   SearchRecordsPollingState,
-} from "../types/polling";
+} from "../types";
 import {
   advanceCursor,
   buildPollingFilterGroups,
@@ -15,7 +16,6 @@ import {
   cycleFloor,
   fetchPollingWindow,
   getPollingChanges,
-  RATE_LIMIT_MAX_ATTEMPTS,
   resolveCursor,
   resolveCursorSafely,
   resolveLastModifiedProperty,

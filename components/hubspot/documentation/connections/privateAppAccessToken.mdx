@@ -1,24 +1,55 @@
-Private app access tokens are recommended for testing purposes only. For production integrations, OAuth 2.0 should be used to allow users to authenticate with their own credentials.
+This connection authenticates with either a **private app access token** or an **account service key**. Both are entered in the same field and are sent as bearer tokens, so either credential works for every action in this component.
 
-Private app access tokens do not expire but can be revoked at any time from the HubSpot account settings.
+[Service keys](https://developers.hubspot.com/docs/apps/developer-platform/build-apps/authentication/account-service-keys) are HubSpot's recommended credential for new system-to-system integrations. Private app access tokens remain supported for integrations already built against them.
+
+:::note[Webhook Triggers Require OAuth 2.0]
+Neither credential can configure webhook subscriptions over the API. The **Event Type Subscription** trigger needs the App ID and Developer API Key carried by the OAuth 2.0 connection, and will fail at runtime if given this connection instead.
+:::
+
+Neither credential expires. A private app access token can be revoked at any time from the HubSpot account settings, and a service key can be rotated or deleted from its details page.
+
+:::warning[Legacy Private App Creation Is Ending]
+HubSpot is retiring the ability to create new legacy private apps. Which deadline applies depends on when the HubSpot account was created:
+
+- **Accounts created before September 28, 2026** can still create a legacy private app, but only until **October 26, 2026**.
+- **Accounts created on or after September 28, 2026** cannot create one at all.
+
+Existing legacy private apps and their access tokens keep working. See the [legacy private app creation sunset](https://developers.hubspot.com/changelog/legacy-private-app-creation-sunset) announcement.
+
+Use a service key for new integrations, following the steps below.
+:::
 
 #### Prerequisites
 
 - Access to a [HubSpot account](https://app.hubspot.com)
-- Appropriate permissions to create private apps
+- A [super admin](https://knowledge.hubspot.com/user-management/hubspot-user-permissions-guide) user, which HubSpot requires for access to private apps. A service key can also be created by a user with the **Developer tools access** permission.
 
 #### Setup Steps
+
+Follow whichever set of steps matches the credential being used.
+
+##### Create a Service Key
+
+1. Navigate to [HubSpot](https://app.hubspot.com) and log in
+2. Navigate to **Development**, then click **Keys**, then **Service keys** in the left sidebar menu
+3. In the top right, click **Create service key**
+4. Enter a **name** for the key
+5. Click **Add new scope**, select each scope the integration requires, then click **Update**
+6. Click **Create** in the top right, then confirm
+7. Click the **name** of the new service key, click **Show**, then click **Copy**
+
+##### Create a Legacy Private App Access Token
 
 To generate a private app access token:
 
 1. Navigate to [HubSpot](https://app.hubspot.com) and log in
-2. Navigate to **Settings > Integrations > Private Apps**
-3. Click **Create a private app**
-4. Enter a name for the app
-5. Configure the required scopes for the integration
-6. After creating the app, navigate to the **Auth** tab
-7. Copy the **Access Token** displayed
+2. Navigate to **Development**, then click **Legacy apps** in the left sidebar menu
+3. In the top right, click **Create legacy app**, then select **Private** in the dialog box
+4. On the *Basic Info* tab, enter a **name** for the app
+5. Click the **Scopes** tab, click **Add new scope**, then select each scope the integration requires
+6. Click **Create app** in the top right, then click **Continue creating**
+7. On the app details page, click the **Auth** tab, click **Show token**, then click **Copy**
 
 #### Configure the Connection
 
-- Enter the **Access Token** from the HubSpot private app settings into the connection configuration
+Enter the copied service key or private app access token into **Access Token or Service Key**.

@@ -4,11 +4,12 @@ import {
   MAX_SEARCH_LIMIT,
   MAX_SEARCH_RESULTS,
 } from "../constants";
-import type { PollingChangesObject } from "../types/PollingTriggerObject";
 import type {
+  PollingChangesObject,
+  PollResult,
   PollingCursor,
   SearchRecordsPollingState,
-} from "../types/polling";
+} from "../types";
 import { pollChangesCustomObjectsTrigger } from "./pollChangesCustomObjectsTrigger";
 import { pollChangesTrigger } from "./pollChangesTrigger";
 jest.mock("../client");
@@ -153,7 +154,7 @@ describe("pollChangesTrigger perform", () => {
     expect(getState().lastPolledAt >= before).toBe(true);
     expect(getState().lastPolledAt <= after).toBe(true);
     expect(result.payload.paginationState).toBeUndefined();
-    expect(result.polledNoChanges).toBe(false);
+    expect((result as unknown as PollResult).polledNoChanges).toBe(false);
   });
   test("holds lastPolledAt at the committed mark and returns a cursor mid-drain", async () => {
     const results = Array.from({ length: MAX_SEARCH_LIMIT }, (_, i) =>
@@ -202,7 +203,7 @@ describe("pollChangesTrigger perform", () => {
     expect(getState().cursor?.idWalk?.denseTimestamp).toBe(
       "2026-08-05T00:00:00.000Z",
     );
-    expect(result.polledNoChanges).toBe(false);
+    expect((result as unknown as PollResult).polledNoChanges).toBe(false);
   });
   test("caps the window at the batched limit when the flow is batching", async () => {
     const results = Array.from({ length: MAX_SEARCH_LIMIT }, (_, i) =>
@@ -245,7 +246,7 @@ describe("pollChangesTrigger perform", () => {
       baseParams({ showNewRecords: false, showUpdatedRecords: false }) as never,
     );
     expect(result.payload.paginationState).toBeDefined();
-    expect(result.polledNoChanges).toBe(false);
+    expect((result as unknown as PollResult).polledNoChanges).toBe(false);
   });
   test("reports polledNoChanges only when the drain is done and nothing changed", async () => {
     const post = jest.fn().mockResolvedValue(searchPage([]));
@@ -258,7 +259,7 @@ describe("pollChangesTrigger perform", () => {
       {} as never,
       baseParams() as never,
     );
-    expect(result.polledNoChanges).toBe(true);
+    expect((result as unknown as PollResult).polledNoChanges).toBe(true);
   });
   test.each([
     ["state.cursor", "state"],
@@ -285,7 +286,7 @@ describe("pollChangesTrigger perform", () => {
       baseParams({ showNewRecords: false, showUpdatedRecords: false }) as never,
     );
     expect(result.payload.paginationState).toBeUndefined();
-    expect(result.polledNoChanges).toBe(false);
+    expect((result as unknown as PollResult).polledNoChanges).toBe(false);
   });
   test("resumes identically from paginationState and from state.cursor", async () => {
     const cursor: PollingCursor = {

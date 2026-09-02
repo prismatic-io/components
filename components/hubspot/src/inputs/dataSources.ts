@@ -1,4 +1,5 @@
-import { connectionInput, objectType } from "./common";
+import { input, util } from "@prismatic-io/spectral";
+import { connectionInput, objectType, objectsToSelect } from "./common";
 export const selectCompanyInputs = {
   connection: connectionInput,
 };
@@ -16,4 +17,15 @@ export const selectPropertyInputs = {
     ...objectType,
     dataSource: undefined,
   },
+};
+const includeCustomObjects = input({
+  label: "Include Custom Objects",
+  type: "boolean",
+  default: "false",
+  clean: util.types.toBool,
+});
+export const getObjectSelectionInputs = {
+  connection: connectionInput,
+  objectsToSelect,
+  includeCustomObjects,
 };

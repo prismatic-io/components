@@ -1,5 +1,14 @@
 import type { Connection } from "@prismatic-io/spectral";
-import type { PollingTriggerObject } from "./PollingTriggerObject";
+import type { PollingTriggerObject } from "./pollingTriggerObject";
+export interface PollResult {
+  payload: {
+    body: {
+      data: unknown;
+    };
+    paginationState?: unknown;
+  };
+  polledNoChanges: boolean;
+}
 export interface PollingCursor extends Record<string, unknown> {
   watermark: string;
   windowStart: string;

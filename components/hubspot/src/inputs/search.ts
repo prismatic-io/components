@@ -1,7 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
-import { SEARCH_ENDPOINTS } from "../constant";
-import { MAX_SEARCH_LIMIT } from "../constants";
-import { cleanNumberInput } from "../util";
+import { MAX_SEARCH_LIMIT, SEARCH_ENDPOINTS } from "../constants";
+import { toOptionalInt } from "../util";
+import { connectionInput, fetchAll, objectType, timeout } from "./common";
 export const propertyName = input({
   label: "Property Name",
   type: "string",
@@ -10,12 +10,14 @@ export const propertyName = input({
   dataSource: "selectProperty",
   comments:
     "The property to search on. Ensure the spelling and capitalization match the property exactly.",
+  clean: util.types.toString,
 });
 export const operator = input({
   label: "Operator",
   type: "string",
   required: true,
-  comments: "The operator used to search on.",
+  comments:
+    "The comparison operator applied to the property value in the search filter.",
   model: [
     { label: "Equal To", value: "EQ" },
     { label: "Less Than", value: "LT" },
@@ -30,6 +32,7 @@ export const operator = input({
     { label: "Contains Token", value: "CONTAINS_TOKEN" },
     { label: "Not Contains Token", value: "NOT_CONTAINS_TOKEN" },
   ],
+  clean: util.types.toString,
 });
 export const searchEndpoint = input({
   label: "Search Endpoint",
@@ -61,7 +64,7 @@ export const searchProperties = input({
   ),
   clean: util.types.toObject,
 });
-export const searchLimit = input({
+const searchLimit = input({
   label: "Search Limit",
   type: "string",
   required: true,
@@ -69,5 +72,22 @@ export const searchLimit = input({
   example: "10",
   placeholder: "10",
   comments: `The number of records to return. The maximum value is ${MAX_SEARCH_LIMIT}.`,
-  clean: cleanNumberInput,
+  clean: toOptionalInt,
 });
+export const searchInputs = {
+  hubspotConnection: connectionInput,
+  searchEndpoint,
+  searchProperties,
+  objectType: {
+    ...objectType,
+    required: false,
+    comments:
+      "The type of custom object to search for. Required for the Custom objects search endpoint.",
+  },
+  searchLimit,
+  fetchAll: {
+    ...fetchAll,
+    comments: `Turn this ON to get more than ${MAX_SEARCH_LIMIT} results. Note that this can be a large amount of data.`,
+  },
+  timeout,
+};

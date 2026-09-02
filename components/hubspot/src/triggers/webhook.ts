@@ -1,6 +1,6 @@
 import { trigger } from "@prismatic-io/spectral";
-import { webhookPayload } from "../examplePayloads";
-import { connectionInput } from "../inputs";
+import { webhookExamplePayload } from "../examplePayloads";
+import { webhookTriggerInputs } from "../inputs";
 import { triggerWebhookPerformFunction } from "../util";
 export const webhook = trigger({
   display: {
@@ -9,10 +9,8 @@ export const webhook = trigger({
       "Receive and validate webhook requests from HubSpot for manually configured webhook subscriptions.",
   },
   perform: triggerWebhookPerformFunction,
-  inputs: {
-    hubspotConnection: connectionInput,
-  },
+  inputs: webhookTriggerInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
-  examplePayload: webhookPayload,
+  examplePayload: webhookExamplePayload,
 });

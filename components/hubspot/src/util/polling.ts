@@ -1,19 +1,20 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import { HUBSPOT_DATE_PROPERTIES } from "../constant";
 import {
   CUSTOM_OBJECT_CREATED_PROPERTY,
   CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY,
+  HUBSPOT_DATE_PROPERTIES,
   CUSTOM_OBJECT_SEARCH_ENDPOINT,
   MAX_FILTER_GROUPS,
   MAX_FILTERS_PER_GROUP,
   MAX_FILTERS_TOTAL,
   MAX_SEARCH_LIMIT,
+  OBJECT_ID_PROPERTY,
+  RATE_LIMIT_FALLBACK_DELAY_MS,
+  RATE_LIMIT_MAX_ATTEMPTS,
 } from "../constants";
 import type {
   PollingChangesObject,
   PollingTriggerObject,
-} from "../types/PollingTriggerObject";
-import type {
   CursorLogger,
   FetchPollingWindowParams,
   HttpErrorish,
@@ -22,8 +23,8 @@ import type {
   ResolveCursorParams,
   SearchFilter,
   SearchFilterGroup,
-} from "../types/polling";
-import type { SearchResponse } from "../types/SearchResponse";
+  SearchResponse,
+} from "../types";
 const assertValidDateString = (value: unknown, field: string): string => {
   if (typeof value !== "string" || Number.isNaN(new Date(value).getTime())) {
     throw new Error(
@@ -147,7 +148,6 @@ export const resolveCursorSafely = (
     }
   }
 };
-export const OBJECT_ID_PROPERTY = "hs_object_id";
 const nextMillisecond = (iso: string): string =>
   new Date(new Date(iso).getTime() + 1).toISOString();
 const resumeAfterDenseMs = (cursor: PollingCursor): PollingCursor => ({
@@ -422,8 +422,6 @@ export const getPollingChanges = (
   }
   return { changes, changesObject };
 };
-export const RATE_LIMIT_MAX_ATTEMPTS = 5;
-const RATE_LIMIT_FALLBACK_DELAY_MS = 1000;
 const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 const statusOf = (error: unknown): number | undefined =>

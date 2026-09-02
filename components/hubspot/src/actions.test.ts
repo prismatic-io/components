@@ -1,8 +1,8 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import * as dotenv from "dotenv";
-import { getCurrentUser } from "./actions/getCurrentUser";
+import { getCurrentUser } from "./actions/misc/getCurrentUser";
 import { rawRequest } from "./actions/misc/rawRequest";
-import { validateConnection } from "./actions/validateConnection";
+import { validateConnection } from "./actions/misc/validateConnection";
 import { privateAppAccessToken } from "./connections";
 dotenv.config();
 const connection = createConnection(privateAppAccessToken, {

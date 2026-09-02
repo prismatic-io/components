@@ -3,12 +3,8 @@ import {
   type ClientProps,
   createClient,
 } from "@prismatic-io/spectral/dist/clients/http";
-import {
-  hubspotOAuth,
-  baseUrl as importedBaseUrl,
-  privateAppAccessToken,
-} from "./connections";
-export const baseUrl = importedBaseUrl;
+import { hubspotOAuth, privateAppAccessToken } from "./connections";
+import { BASE_URL } from "./constants";
 interface GetHubspotClientProps {
   hubspotConnection: Connection;
   timeout?: unknown;
@@ -36,7 +32,7 @@ const getClientConfiguration = (
   addBearerToken: boolean,
 ): ClientProps => {
   const toReturn: ClientProps = {
-    baseUrl,
+    baseUrl: BASE_URL,
     headers: {
       Accept: "application/json",
       timeout: util.types.toNumber(timeout),
