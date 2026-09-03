@@ -1,7 +1,8 @@
 import merge from "lodash.merge";
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createDB } from "../../client";
 import { queryInputs } from "../../inputs";
+import { queryOutputSchema } from "../../outputSchemas";
 import { queryExamplePayload } from "../../examplePayloads";
 export const query = action({
   display: {
@@ -9,6 +10,11 @@ export const query = action({
     description: "Performs a query on a PostgreSQL database.",
   },
   examplePayload: queryExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: queryOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { queryField, postgresConnection, params, paramsObject },

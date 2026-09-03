@@ -25,9 +25,10 @@ export const params = input({
 export const paramsObject = input({
   label: "Parameters Object or Array",
   comments:
-    "Optional parameters to insert into a query. This should be a key-value object if you are using named inputs (i.e. ${name}), or an array if using index variables (i.e. $2) in your query. Values from this object will be merged with Named Parameters inputs if you are using named variables.",
+    "Optional parameters to insert into a query. Use a key-value object for named inputs (i.e. ${name}), or an array for index variables (i.e. $2). Values from this object are merged with the Named Parameters input when named variables are used.",
   type: "code",
   language: "json",
+  placeholder: "Enter a JSON object or array",
   required: false,
   example: JSON.stringify({ productId: 123, customerName: "Acme Corp" }),
   clean: (value) => (value ? util.types.toObject(value) : {}),

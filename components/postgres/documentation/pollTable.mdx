@@ -1,0 +1,92 @@
+The **New and Updated Records** trigger retrieves existing and ongoing records from a table: load history once, check for changes on a schedule, or both. It tracks a nominated cursor column and, on each recurrence, returns every record whose cursor value is greater than the highest value it has already emitted.
+
+#### How It Works
+
+Each recurrence queries the configured table for records whose **Cursor Field** value is greater than the trigger's stored position, ordered by that field ascending, and returns them. The **Cursor Field** can be any column whose values only increase: an auto-incrementing integer ID, or a `created_at` or `updated_at` timestamp.
+
+The trigger stores its position as the cursor value of the last record it actually emitted, rather than the table's maximum value. Advancing only as far as what was emitted means a record committed while the trigger was still reading the table is picked up on the following recurrence instead of being stepped over. The position advances when a recurrence fetches its page, which is before the flow's steps have run on it, so a page whose execution is interrupted between those two points is not re-sent. Paging bounds what one interruption can cost to a single page.
+
+On the first recurrence, with no **Default Cursor Value** set, the trigger records the table's current maximum cursor value, emits no records, and reports no changes. Records are emitted from the next recurrence onward. Changing **Table Name** or **Cursor Field** later re-establishes the position the same way.
+
+**Initial sync**
+
+Setting **Default Cursor Value** seeds the starting position instead of taking the table's current maximum, so the first recurrence returns history rather than nothing. The initial sync begins on that first recurrence and emits every record whose cursor value is greater than the value provided, seeding each record exactly once.
+
+The sync has no fixed upper bound. Each recurrence emits at most one page of records, sized by **Max Records Per Recurrence**, and advances its position to the last record on that page, so a backlog drains across as many scheduled recurrences as it takes. A record modified while the backlog is still draining is emitted by the sync itself whenever its cursor value places it ahead of the current position. There is no separate sync mode, and no field in the payload marks the handoff: once the backlog is exhausted, ordinary incremental behavior continues from the same stored position.
+
+No inputs are suppressed during an initial sync. This trigger has no field or visibility filters to set aside: **Table Name** and **Cursor Field** select and order the records, **Cast Timestamps to Strings** shapes how their values are returned, and **Max Records Per Recurrence** caps how many rows one recurrence may take. All of them apply during a sync exactly as they apply on any later recurrence.
+
+Records sharing one **Cursor Field** value are always emitted together, on the same recurrence, because the position resumes strictly after the last value emitted. A column with few distinct values therefore pages poorly: when a single value covers more rows than one page holds, the trigger emits every remaining record from its current position in that one recurrence and the page limit does not apply to it. Prefer a column whose values are close to unique per row, such as a microsecond timestamp or an auto-incrementing id.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as
+its own execution, or grouped by the configured batch size. Batch size and
+the number of batches dispatched concurrently can both be overridden per instance. Raising
+concurrency increases the request volume sent to PostgreSQL.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with,
+or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank
+to use the limit this trigger ships with.
+
+Once a drain is in progress, the platform re-invokes the trigger until a round returns no further pages, so a single recurrence can produce several rounds of executions before the backlog is exhausted. A recurrence that finds no new records reports no changes and the flow does not execute, while a round the platform drove as part of a drain always reports changes, even when it returns nothing, so that the dispatch which completes the drain is not skipped. Each round records its resume position when it fetches its page, the same way an unbatched recurrence does, and the committed position advances only on the final page of a drain, so a drain whose stored position is lost re-delivers its window from the last committed mark rather than stepping over it.
+
+With batching off, a downstream step reads the array of records at `payload.body.data`. With batching on, that array is not present: each execution receives a single record, or a batch of records, as its payload instead. Any step that reads `payload.body.data`, or indexes into it, must be updated to read the record directly before batching is enabled. Because batching is enabled per flow, this change is scoped to the flow it is enabled on and does not affect other flows using the same trigger.
+
+#### Returned Data
+
+With batching off, the matching records are returned as an array at `payload.body.data`. Row shape is dynamic and depends on the polled table's schema.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "body": {
+    "data": [
+      {
+        "id": 1,
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "jane.doe@example.com",
+        "created_at": "2025-08-15T14:32:00.000Z",
+        "updated_at": "2025-08-15T14:32:00.000Z",
+        "is_active": true
+      },
+      {
+        "id": 2,
+        "first_name": "John",
+        "last_name": "Smith",
+        "email": "john.smith@example.com",
+        "created_at": "2025-09-01T09:15:00.000Z",
+        "updated_at": "2025-09-02T11:48:00.000Z",
+        "is_active": false
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution instead receives one record, or a batch of records, taken from that same array.
+
+<details>
+<summary>Example Batched Item</summary>
+
+```json
+{
+  "id": 2,
+  "first_name": "John",
+  "last_name": "Smith",
+  "email": "john.smith@example.com",
+  "created_at": "2025-09-01T09:15:00.000Z",
+  "updated_at": "2025-09-02T11:48:00.000Z",
+  "is_active": false
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

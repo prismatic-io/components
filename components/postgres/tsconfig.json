@@ -9,7 +9,8 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": false
+    "isolatedModules": false,
+    "skipLibCheck": true
   },
   "include": ["src"]
 }
