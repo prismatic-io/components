@@ -26,6 +26,7 @@ import {
   cleanStringInput,
   cleanValueListInput,
   generateModelFromSnakeCaseArray,
+  lookBackDateClean,
 } from "./util";
 const shopifyConnection = input({
   label: "Connection",
@@ -200,8 +201,7 @@ const tags = input({
   collection: "valuelist",
   example: "Style",
   placeholder: "Enter tag",
-  comments:
-    "For each list item, provide a string you would like to tag the product with.",
+  comments: "For each list item, provide a string to tag the product with.",
   clean: cleanValueListInput,
 });
 const additionalFields = input({
@@ -657,8 +657,6 @@ export const deleteInventoryLevelsInputs = {
     ...levelId,
     example:
       "gid://shopify/InventoryLevel/820859520?inventory_item_id=826867926",
-    placeholder:
-      "gid://shopify/InventoryLevel/820859520?inventory_item_id=826867926",
   }),
 };
 export const connectInventoryLevelInputs = {
@@ -886,7 +884,6 @@ export const listVariantsInputs = {
   productId: input({
     ...productId,
     example: "108828309",
-    placeholder: "108828309",
     clean: cleanProductIdForVariant,
   }),
   getAlldata,
@@ -992,8 +989,7 @@ const webhookFormat = input({
     { label: "XML", value: "XML" },
   ],
   default: "JSON",
-  comments:
-    "Provide a string value for the format you would like your webhook to return.",
+  comments: "Provide a string value for the format the webhook returns.",
 });
 export const createWebhookInputs = {
   shopifyConnection,
@@ -1041,10 +1037,11 @@ const webhookTopics = input({
 });
 const secretKey = input({
   label: "Secret Key",
-  type: "string",
+  type: "password",
   required: true,
   comments:
     "The Shopify app's client secret, viewable from the Partner Dashboard.",
+  placeholder: "Enter secret key",
   clean: util.types.toString,
 });
 export const eventTopicWebhookInputs = {
@@ -1161,7 +1158,6 @@ export const createProductInputs = {
     ...tags,
     comments: "Provide a list of tags for the product.",
     example: "Style",
-    placeholder: "Style",
     clean: cleanValueListInput,
   }),
   additionalFields,
@@ -1224,7 +1220,6 @@ export const getProductImageInputs = {
   imageId: input({
     ...imageId,
     example: "916933471",
-    placeholder: "916933471",
     comments: "Provide a unique ID of a product image. Use only the ID number.",
   }),
 };
@@ -1358,6 +1353,17 @@ export const deleteMetafieldInputs = {
 export const countDraftOrdersInputs = {
   shopifyConnection,
 };
+export const lookBackDate = input({
+  label: "Look-back Date",
+  type: "string",
+  required: false,
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  example: "2026-01-01",
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync reports every record updated on or after this date.",
+  clean: lookBackDateClean,
+});
 export const pollingTriggerInputs = {
   shopifyConnection,
+  lookBackDate,
 };

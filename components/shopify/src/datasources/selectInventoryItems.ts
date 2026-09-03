@@ -11,7 +11,7 @@ interface InventoryItemNode {
 export const selectInventoryItems = dataSource({
   display: {
     label: "Select Inventory Item",
-    description: "A picklist of inventory items in your Shopify store.",
+    description: "A picklist of all inventory items.",
   },
   inputs: selectInventoryItemsInputs,
   perform: async (_context, { shopifyConnection }) => {

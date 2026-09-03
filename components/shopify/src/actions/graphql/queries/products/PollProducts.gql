@@ -1,0 +1,15 @@
+#import "../../fragments/ProductDetails.gql"
+# sortKey matches the field the query filters on. Shopify documents a range query as
+# slow or timing out on a large collection when the two differ.
+# https://shopify.dev/docs/api/usage/search-syntax
+query PollProducts($first: Int!, $query: String, $cursor: String) {
+  products(first: $first, query: $query, after: $cursor, sortKey: UPDATED_AT) {
+    nodes {
+      ...ProductDetails
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

@@ -1,52 +1,35 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import listOrdersQuery from "../actions/graphql/queries/orders/ListOrders.gql";
+import pollOrdersQuery from "../actions/graphql/queries/orders/PollOrders.gql";
 import type { Order } from "../actions/interfaces/Order";
-import type { PageInfo } from "../actions/interfaces/PageInfo";
-import type { PollingState } from "../actions/interfaces/PollingState";
-import { getShopifyGraphQlClient } from "../client";
-import { POLLING_LIMIT } from "../constants";
+import type { PollingCursor } from "../actions/interfaces/PollingState";
 import { pollingTriggerInputs } from "../inputsGql";
-import { categorizeByChangeType, fetchData } from "../util";
+import { resolvePollingRecordChanges, runPollingCycle } from "../util";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingResource,
+} from "./pollingTypes";
+const ordersResource: PollingResource = {
+  listKey: "orders",
+  query: pollOrdersQuery,
+};
 export const ordersPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Orders",
     description:
-      "Checks for new and updated orders in Shopify on a configured schedule.",
+      "Retrieves existing and ongoing order changes from Shopify. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollingTriggerInputs,
-  perform: async (context, payload, { shopifyConnection }) => {
-    const now = new Date().toISOString();
-    const client = getShopifyGraphQlClient(
-      shopifyConnection,
-      undefined,
-      context.debug.enabled,
-    );
-    const lastState = context.polling.getState() as PollingState;
-    const lastPolledAt = lastState?.lastPolledAt ?? now;
-    context.logger.debug(`Last polled at: ${lastPolledAt}`);
-    const query = `updated_at:>=${lastPolledAt}`;
-    const data = (await fetchData<Order>(
-      client,
-      ["orders"],
-      "orders",
-      true,
-      listOrdersQuery,
-      {
-        first: POLLING_LIMIT,
-        query,
-      },
-    )) as Record<"orders", Order[]> & {
-      pageInfo: PageInfo;
-    };
-    const orders = data?.orders ?? [];
-    const polledNoChanges = orders.length === 0;
-    context.polling.setState({ lastPolledAt: now });
-    return Promise.resolve({
-      payload: {
-        ...payload,
-        body: { data: categorizeByChangeType(orders, lastPolledAt) },
-      },
-      polledNoChanges,
-    });
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50, concurrentBatchLimit: 1 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange<Order>[] =>
+      resolvePollingRecordChanges(
+        payload.body.data as PollingChangesObject<Order>,
+      ),
+    getNextPaginationState: (_context, { payload }): PollingCursor | null =>
+      (payload.paginationState as PollingCursor | undefined) ?? null,
   },
+  perform: async (context, payload, params) =>
+    runPollingCycle<Order>(context, payload, params, ordersResource),
 });

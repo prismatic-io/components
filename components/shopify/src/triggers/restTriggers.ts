@@ -6,6 +6,7 @@ import {
   createWebhooks,
   deleteWebhooksInstance,
   performFunction,
+  signaturesMatch,
 } from "../util";
 export const eventTopicWebhook = trigger({
   display: {
@@ -45,8 +46,7 @@ export const webhook = trigger({
             .createHmac("sha256", secret_key)
             .update(requestBody, "utf8")
             .digest("base64");
-          const match = signature === SHOPIFY_HMAC;
-          if (!match) {
+          if (!signaturesMatch(signature, SHOPIFY_HMAC)) {
             throw new Error("Signature verification failed");
           }
         }

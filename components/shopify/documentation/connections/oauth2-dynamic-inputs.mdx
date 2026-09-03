@@ -4,7 +4,7 @@ Shopify uses OAuth 2.0 for app authentication. This connection type simplifies c
 
 - A [Shopify Partners account](https://www.shopify.com/partners)
 - Access to the [Dev Dashboard](https://dev.shopify.com/dashboard) or [Shopify CLI](https://shopify.dev/docs/apps/build/scaffold-app) for app creation
-- A [development store](https://shopify.dev/docs/apps/tools/development-stores) for testing
+- A [development store](https://shopify.dev/docs/apps/build/stores/development-stores) for testing
 
 :::caution[Legacy Custom App Deprecation]
 As of January 1, 2026, merchants can no longer create new legacy custom apps. Existing apps are not affected. Partners can still create new custom apps and transfer stores to merchants, but once transferred, new custom app creation is disabled on the store. Use the Partner Dashboard or Shopify CLI to create apps going forward.
@@ -35,7 +35,7 @@ Refer to the [Dev Dashboard documentation](https://shopify.dev/docs/apps/build/d
 
 The Shopify CLI scaffolds a complete app project with best practices built in. This method is suitable for apps that need embedded UI, checkout extensions, or full-stack capabilities.
 
-1. Install the [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) if not already installed.
+1. Install the [Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps) if not already installed.
 2. Navigate to the desired project directory and run:
    ```bash
    shopify app init
@@ -65,8 +65,8 @@ Regardless of the creation method, retrieve the OAuth credentials:
 
 Create a connection of type **OAuth 2.0** and configure the following fields:
 
-- **API Key**: Enter the **Client ID** copied from the Shopify app credentials (Shopify labels this as "API key").
-- **API Secret**: Enter the **Client secret** copied from the Shopify app credentials (Shopify labels this as "API secret key").
+- **Client ID (API Key)**: Enter the **Client ID** copied from the Shopify app credentials (Shopify labels this as "API key").
+- **Client Secret (API Secret)**: Enter the **Client secret** copied from the Shopify app credentials (Shopify labels this as "API secret key").
 - **Shop Name**: Enter the Shopify domain without `.myshopify.com` (e.g., `example-store`).
 - **Scopes**: Configure based on the required permissions. Default scopes include:
   ```
@@ -75,8 +75,8 @@ Create a connection of type **OAuth 2.0** and configure the following fields:
   write_draft_orders write_fulfillments write_inventory
   write_orders write_products write_locations
   ```
-  Refer to [Shopify's access scopes documentation](https://shopify.dev/api/usage/access-scopes#authenticated-access-scopes) for a complete list of available scopes.
-- **API Version** (optional): Specify the Shopify API version to use. Defaults to `2026-01`. Refer to [Shopify API versioning](https://shopify.dev/docs/api/usage/versioning) for available versions.
+  Refer to [Shopify's access scopes documentation](https://shopify.dev/docs/api/usage/access-scopes) for a complete list of available scopes.
+- **API Version** (optional): Specify the Shopify API version to use. Defaults to the version this component ships with, currently `2026-07`. Shopify keeps each version available for at least 12 months, so refer to [Shopify API versioning](https://shopify.dev/docs/api/usage/versioning) for the versions it currently accepts and how long each remains available.
 
 Save the integration to connect and authenticate to Shopify.
 
@@ -90,12 +90,12 @@ Shopify vets all apps intended for distribution to multiple merchants through a 
 
 Shopify app distribution determines which merchants can install the app and is a permanent, non-reversible choice.
 
-**Custom apps** are created directly within a merchant's Shopify admin and are restricted to that single store. Custom apps do not appear in the Shopify App Store and cannot be installed by other merchants. This is the appropriate choice for single-merchant integrations.
+**Custom apps** are installed on a single Shopify store, on multiple stores belonging to the same Plus organization, or on transfer-disabled development stores. They do not appear in the Shopify App Store and cannot be installed by other merchants, which makes them the appropriate choice for single-merchant integrations. New custom apps are created through the Dev Dashboard or the Shopify CLI; the older path of creating one directly in a merchant's Shopify admin was closed on January 1, 2026.
 
 **Public apps** are created through the Shopify Partners program and can be distributed to multiple merchants. Public apps must be submitted for review and listed in the [Shopify App Store](https://apps.shopify.com/) before other merchants can install them.
 
-:::note[Unlisted Apps Deprecated]
-Shopify deprecated unlisted public apps on December 9, 2019. There is no longer an option to distribute to multiple merchants without an App Store listing. For multi-merchant distribution, create a public app and submit it for App Store review.
+:::note[No Unlisted Distribution]
+Shopify offers no option to distribute an app to many merchants without an App Store listing. For multi-merchant distribution, create a public app and submit it for App Store review.
 :::
 
-For information on the App Store review process, refer to [Shopify's app distribution documentation](https://shopify.dev/docs/apps/distribution).
+For information on the App Store review process, refer to [Shopify's app distribution documentation](https://shopify.dev/docs/apps/launch/distribution).

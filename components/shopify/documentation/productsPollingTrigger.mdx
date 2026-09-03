@@ -1,24 +1,43 @@
-Checks for new and updated products in a Shopify store on a configured schedule.
+Retrieves existing and ongoing product changes from a Shopify store. Load history once, check for changes on a schedule, or both.
 
 #### How It Works
 
 The trigger operates by:
 1. Running on the configured schedule (e.g., every 5 minutes)
-2. Querying the [Shopify GraphQL API](https://shopify.dev/docs/api/admin-graphql) for products modified since the last poll using the `updated_at` filter
-3. Categorizing products as "created" or "updated" based on their `createdAt` timestamp compared to the last poll time
-4. Maintaining state automatically to track the last poll time
-5. Returning all products on the first run (when no previous poll state exists)
+2. Querying the [Shopify GraphQL API](https://shopify.dev/docs/api/admin-graphql/latest) for products whose `updated_at` falls inside the window this round covers, sorted by `updated_at` so the filter and the sort key match
+3. Categorizing products as "created" or "updated" by comparing their `createdAt` timestamp against the start of that window, which stays frozen for the whole window so one product is classified the same way on every page
+4. Reading a single page per round and remembering where that page ended, rather than holding an entire window in memory at once
+5. Advancing its committed position only once a window is fully drained, so an interrupted drain resumes instead of skipping what it had not reported yet
 
-#### Configuration
+If more products changed than one page holds, the trigger continues from where the page ended instead of dropping the rest. With batching enabled it drains the remaining pages inside the same recurrence; without batching it continues on each following scheduled recurrence.
 
-The trigger requires only a Shopify connection. Schedule configuration is handled by the platform.
+**The first recurrence**
+
+- **Look-back Date empty**: the trigger records the current time and reports nothing. Incremental polling begins on the next recurrence.
+- **Look-back Date set**: the trigger begins a one-time initial sync covering every product updated on or after that date, then hands off to incremental polling. An instance that already carries a committed position is never sent back through an initial sync, so setting the date on a running instance does not replay its history.
+
+The initial sync seeds each product exactly once. The window it covers is half-open, so a product whose `updated_at` falls on the window's upper bound belongs to the next window rather than this one, and no product is reported twice across the handoff. That upper bound is fixed at the moment the sync begins and does not move as the sync progresses, so a sync spanning several recurrences covers the range it started with rather than growing to follow the clock.
+
+No field in the payload marks the handoff from the initial sync to incremental polling. A downstream step cannot distinguish a backfilled product from one picked up by ordinary polling, and does not need to: the shape is identical in both phases.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Shopify.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank to use the limit this trigger ships with, which dispatches one batch at a time.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.created` and `data.updated`; with batching on those arrays do not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data**). Any step reading the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns data with products categorized by change type:
+Fields shown are representative. The full response object includes additional properties.
+
+What arrives in `data` depends on whether batching is enabled on the flow.
+
+**Without batching**, `data` is a single object holding the products categorized by change type.
 
 <details>
-<summary>Example Response</summary>
+<summary>Example Payload: batching disabled</summary>
 
 ```json
 {
@@ -68,6 +87,67 @@ The trigger returns data with products categorized by change type:
       }
     ]
   }
+}
+```
+
+</details>
+
+**With batching enabled**, `data` holds one slice of the batch instead of those two arrays. Every product becomes its own item, shaped as `changeType` plus `record`. `changeType` is `created` or `updated`, and `record` is the polled product.
+
+With a batch size of 1, `data` is a single item.
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "created",
+    "record": {
+      "id": "gid://shopify/Product/108828309",
+      "title": "Example Product",
+      "handle": "example-product",
+      "status": "ACTIVE",
+      "createdAt": "2024-11-10T10:30:00Z",
+      "updatedAt": "2024-11-10T10:30:00Z"
+    }
+  }
+}
+```
+
+</details>
+
+With a batch size greater than 1, `data` is an array of those items.
+
+<details>
+<summary>Example Payload: batching enabled, batch size greater than 1</summary>
+
+```json
+{
+  "data": [
+    {
+      "changeType": "created",
+      "record": {
+        "id": "gid://shopify/Product/108828309",
+        "title": "Example Product",
+        "handle": "example-product",
+        "status": "ACTIVE",
+        "createdAt": "2024-11-10T10:30:00Z",
+        "updatedAt": "2024-11-10T10:30:00Z"
+      }
+    },
+    {
+      "changeType": "updated",
+      "record": {
+        "id": "gid://shopify/Product/108828310",
+        "title": "Another Product",
+        "handle": "another-product",
+        "status": "ACTIVE",
+        "createdAt": "2024-11-08T09:00:00Z",
+        "updatedAt": "2024-11-10T14:22:00Z"
+      }
+    }
+  ]
 }
 ```
 

@@ -8,7 +8,7 @@ When the trigger is used in a flow:
 
 This trigger requires:
 - **Connection**: A Shopify connection with appropriate API access permissions
-- **Secret Key**: The Shopify app's client secret for HMAC signature verification, viewable from the app's Configuration section in the [Shopify Partner Dashboard](https://partners.shopify.com/)
+- **Secret Key**: The Shopify app's client secret for HMAC signature verification, viewable from the app's Configuration section in the [Shopify Partner Dashboard](https://www.shopify.com/partners)
 - **Webhook Topics**: One or more event types to subscribe to (see Event Topics below)
 
 #### Signature Verification
@@ -18,6 +18,19 @@ The trigger includes built-in HMAC-SHA256 signature verification to ensure webho
 2. Computes the expected signature using the configured Secret Key
 3. Compares the computed signature with the received signature
 4. Rejects requests with mismatched signatures
+
+The signature is computed over the raw request body, base64-encoded:
+
+```javascript
+const crypto = require("node:crypto");
+
+const signature = crypto
+  .createHmac("sha256", secretKey)   // the app's client secret
+  .update(rawRequestBody, "utf8")    // the raw body, before JSON parsing
+  .digest("base64");                 // Shopify sends base64, not hex
+```
+
+The computed value is compared against the header using a constant-time comparison, so a mismatch takes the same time to detect regardless of where the two values first differ.
 
 The trigger automatically returns a 200 OK response with the parsed JSON body for verified webhooks.
 
@@ -76,7 +89,7 @@ Select which Shopify events should trigger the flow.
 
 </details>
 
-A complete list of webhook topics and their payloads is available in the [Shopify Webhook Topics documentation](https://shopify.dev/docs/api/webhooks).
+A complete list of webhook topics and their payloads is available in the [Shopify Webhook Topics documentation](https://shopify.dev/docs/api/webhooks/latest).
 
 #### Webhook Payload Example
 

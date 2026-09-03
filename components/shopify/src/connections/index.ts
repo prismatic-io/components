@@ -52,7 +52,7 @@ const scopeInput = input({
     "write_locations",
   ].join(" "),
   comments:
-    "Space-separated list of OAuth permission scopes. See [Shopify access scopes](https://shopify.dev/api/usage/access-scopes#authenticated-access-scopes) for all available scopes.",
+    "Space-separated list of OAuth permission scopes. See [Shopify access scopes](https://shopify.dev/docs/api/usage/access-scopes) for all available scopes.",
 });
 const clientIdInput = input({
   label: "Client ID (API Key)",
@@ -178,7 +178,7 @@ const adminApiAccessToken = connection({
       required: true,
       placeholder: "Enter Admin API Access Token",
       comments:
-        "Generate from the 'API credentials' tab of a private Shopify app. Learn more at [Shopify Admin API](https://shopify.dev/docs/api/admin-rest#authentication).",
+        "Generate from the 'API credentials' tab of an admin-created custom app. Learn more at [Shopify admin-created custom apps](https://shopify.dev/docs/apps/build/authentication-authorization/legacy/admin-custom-apps).",
       example: "shpat_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
     }),
     host: hostInput,

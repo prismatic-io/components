@@ -1,5 +1,5 @@
-export const DEFAULT_SHOPIFY_VERSION = "2026-01";
-export const DEFAULT_SHOPIFY_GRAPHQL_API_VERSION = "2026-01";
+export const DEFAULT_SHOPIFY_VERSION = "2026-07";
+export const DEFAULT_SHOPIFY_GRAPHQL_API_VERSION = "2026-07";
 export const GRAPHQL_EXAMPLE = `{
     products(first: 3) {
       edges {
@@ -12,6 +12,7 @@ export const GRAPHQL_EXAMPLE = `{
   }`;
 export const MAX_LIMIT = 250;
 export const POLLING_LIMIT = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const WEBHOOK_TOPICS = [
   "APP_PURCHASES_ONE_TIME_UPDATE",
   "APP_SCOPES_UPDATE",

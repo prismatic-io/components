@@ -56,7 +56,7 @@ export const type = input({
   type: "string",
   required: true,
   comments:
-    "The metafield type definition. See [supported metafield types](https://shopify.dev/apps/metafields/types) for all available options.",
+    "The metafield type definition. See [supported metafield types](https://shopify.dev/docs/apps/build/metafields/list-of-data-types) for all available options.",
   example: "single_line_text_field",
   placeholder: "Enter metafield type",
   clean: util.types.toString,

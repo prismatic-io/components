@@ -2274,16 +2274,16 @@ export const listMetafieldsExamplePayload = {
   data: {
     metafields: [
       {
-        id: "example",
-        namespace: "example",
-        key: "example",
-        value: "example",
+        id: 721389483,
+        namespace: "affiliates",
+        key: "app_key",
+        value: "app_key",
         description: "This is an example description.",
-        owner_id: "example",
+        owner_id: 548380009,
         created_at: "2022-03-31T21:33:14-07:00",
         updated_at: "2022-03-31T21:33:14-07:00",
         owner_resource: "shop",
-        type: "ingle_line_text_field",
+        type: "single_line_text_field",
       },
     ],
   },

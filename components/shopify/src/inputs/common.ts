@@ -188,7 +188,7 @@ export const webhookTopic = input({
     value: topic.event_name,
   })),
   comments:
-    "The event topic for the webhook. See [Shopify webhook topics](https://shopify.dev/docs/api/admin-rest/2023-04/resources/webhook#event-topics) for all available topics.",
+    "The event topic for the webhook. See [Shopify webhook topics](https://shopify.dev/docs/api/webhooks/latest) for all available topics.",
   clean: (value: unknown) => {
     if (Array.isArray(value)) {
       return value;

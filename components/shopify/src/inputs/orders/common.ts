@@ -113,7 +113,7 @@ export const fulfillmentStatus = input({
   clean: cleanStringInput,
 });
 export const commaSeparatedIds = input({
-  label: "IDs",
+  label: "Order IDs",
   type: "string",
   required: false,
   comments:

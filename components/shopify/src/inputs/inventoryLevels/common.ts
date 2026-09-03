@@ -14,7 +14,7 @@ export const inventoryItemIds = input({
   type: "string",
   required: false,
   comments:
-    "Comma-separated list of inventory item IDs. You must include this input, 'Location IDs', or both.",
+    "Comma-separated list of inventory item IDs. Either this input, Location IDs, or both must be provided.",
   example: "49148385,49148386",
   placeholder: "Enter inventory item IDs",
   clean: cleanStringInput,

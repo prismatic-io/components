@@ -1,7 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { LIST_INVENTORY_ITEMS_DATASOURCE_REFERENCE } from "../../constants";
 export const ids = input({
-  label: "IDs",
+  label: "Inventory Item IDs",
   type: "string",
   required: true,
   collection: "valuelist",

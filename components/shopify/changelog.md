@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-09-03
+
+- Added opt-in batching across all polling triggers, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of records across all polling triggers. The initial sync backfills every record modified on or after the specified date, seeding each once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Updated all polling triggers to deliver a large backlog across recurrences, continuing from where the previous recurrence left off rather than holding every changed record before any of it reaches a flow
+- Updated the default Shopify API version to 2026-07
+- Fixed the **Secret Key** input on the **Event Topic Subscription** trigger displaying the app's client secret in plain text; it is now masked, matching the other webhook triggers
+
 ### 2026-07-15
 
 Updated the OAuth 2.0 connections to request expiring access tokens so authentication continues to work with newer Shopify apps

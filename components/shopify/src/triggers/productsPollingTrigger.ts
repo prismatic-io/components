@@ -1,52 +1,35 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import listProductsQuery from "../actions/graphql/queries/products/ListProducts.gql";
-import type { PageInfo } from "../actions/interfaces/PageInfo";
-import type { PollingState } from "../actions/interfaces/PollingState";
+import pollProductsQuery from "../actions/graphql/queries/products/PollProducts.gql";
+import type { PollingCursor } from "../actions/interfaces/PollingState";
 import type { Product } from "../actions/interfaces/Product";
-import { getShopifyGraphQlClient } from "../client";
-import { POLLING_LIMIT } from "../constants";
 import { pollingTriggerInputs } from "../inputsGql";
-import { categorizeByChangeType, fetchData } from "../util";
+import { resolvePollingRecordChanges, runPollingCycle } from "../util";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingResource,
+} from "./pollingTypes";
+const productsResource: PollingResource = {
+  listKey: "products",
+  query: pollProductsQuery,
+};
 export const productsPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Products",
     description:
-      "Checks for new and updated products in Shopify on a configured schedule.",
+      "Retrieves existing and ongoing product changes from Shopify. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollingTriggerInputs,
-  perform: async (context, payload, { shopifyConnection }) => {
-    const now = new Date().toISOString();
-    const client = getShopifyGraphQlClient(
-      shopifyConnection,
-      undefined,
-      context.debug.enabled,
-    );
-    const lastState = context.polling.getState() as PollingState;
-    const lastPolledAt = lastState?.lastPolledAt ?? now;
-    context.logger.debug(`Last polled at: ${lastPolledAt}`);
-    const query = `updated_at:>='${lastPolledAt}'`;
-    const data = (await fetchData<Product>(
-      client,
-      ["products"],
-      "products",
-      true,
-      listProductsQuery,
-      {
-        first: POLLING_LIMIT,
-        query,
-      },
-    )) as Record<"products", Product[]> & {
-      pageInfo: PageInfo;
-    };
-    const products = data?.products ?? [];
-    const polledNoChanges = products.length === 0;
-    context.polling.setState({ lastPolledAt: now });
-    return Promise.resolve({
-      payload: {
-        ...payload,
-        body: { data: categorizeByChangeType(products, lastPolledAt) },
-      },
-      polledNoChanges,
-    });
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50, concurrentBatchLimit: 1 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange<Product>[] =>
+      resolvePollingRecordChanges(
+        payload.body.data as PollingChangesObject<Product>,
+      ),
+    getNextPaginationState: (_context, { payload }): PollingCursor | null =>
+      (payload.paginationState as PollingCursor | undefined) ?? null,
   },
+  perform: async (context, payload, params) =>
+    runPollingCycle<Product>(context, payload, params, productsResource),
 });

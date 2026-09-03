@@ -1,29 +1,33 @@
-An **admin API access token** can be used for testing purposes during integration development.
+An **admin API access token** from an admin-created custom app can be used for testing purposes during integration development.
 
-Personal access tokens are recommended for testing only. For production integrations, use OAuth 2.0 to allow users to authenticate with their own credentials.
+Admin API access tokens are recommended for testing only. For production integrations, use OAuth 2.0 to allow users to authenticate with their own credentials.
+
+:::warning[New Admin-Created Custom Apps Can No Longer Be Created]
+Shopify stopped allowing new admin-created custom apps on **January 1, 2026**. The **Develop apps** flow in a store's settings can no longer create one. Existing admin-created custom apps are unaffected and their tokens continue to work.
+
+To create a new app, use the [Dev Dashboard](https://shopify.dev/docs/apps/build/dev-dashboard/create-apps-using-dev-dashboard) or the [Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps) and authenticate with the **OAuth 2.0** connection instead.
+:::
 
 #### Prerequisites
 
-- A Shopify store (for testing purposes)
+- A Shopify store with an existing admin-created custom app (for testing purposes)
+- A staff or collaborator account with the **Develop apps** permission
 
 #### Setup Steps
 
-To generate an admin API access token:
+To copy the admin API access token from an existing custom app:
 
 1. Log in to the Shopify admin dashboard.
-2. Navigate to **Settings** > **Apps and sales channels**.
-3. Click **Develop apps**.
-4. If prompted, click **Allow custom app development**.
-5. Click **Create an app** and provide a name for the app.
-6. Click **Configure Admin API scopes** and select the required scopes for the integration.
-7. Click **Save**.
-8. Navigate to the **API credentials** tab.
-9. Under **Admin API access token**, click **Install app** to generate the token.
-10. Copy the **Admin API access token** value.
+2. Navigate to **Apps** > **Develop apps**.
+3. Click the name of the app.
+4. Navigate to the **API credentials** tab.
+5. Copy the **Admin API access token**.
+
+The token is shown only once, when it is generated, so it may no longer be retrievable. Shopify does not support rotating the token in place: generating a new one means uninstalling and reinstalling the app from the Shopify admin, which keeps the app itself intact but disrupts its requests and webhooks until the new token is entered here.
 
 The token will have a format similar to `shpat_00000000000000000000000000000000`.
 
-Refer to [Shopify's Admin API access token documentation](https://shopify.dev/docs/apps/auth/admin-app-access-tokens) for more information.
+Refer to [Shopify's admin-created custom apps documentation](https://shopify.dev/docs/apps/build/authentication-authorization/legacy/admin-custom-apps) for more information.
 
 #### Configure the Connection
 
@@ -31,8 +35,8 @@ Create a connection of type **Access Token** and configure the following fields:
 
 - Enter the **Admin API Access Token** into the connection configuration.
 - Enter the **Host** (the Shopify domain without `https://`, e.g., `example-store.myshopify.com`).
-- Optionally configure the **API Version** (defaults to latest version).
+- Optionally set the **API Version**. It defaults to the version this component ships with, currently `2026-07`. Refer to [Shopify API versioning](https://shopify.dev/docs/api/usage/versioning) for the versions Shopify currently accepts and how long each remains available.
 
 :::warning[Production Use]
-Admin API access tokens are tied to custom apps and recommended for testing only. For production integrations, OAuth 2.0 authentication provides a better user experience and allows users to authenticate with their own credentials.
+Admin API access tokens are tied to admin-created custom apps and recommended for testing only. For production integrations, OAuth 2.0 authentication provides a better user experience and allows users to authenticate with their own credentials.
 :::

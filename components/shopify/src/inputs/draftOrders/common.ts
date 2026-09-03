@@ -8,7 +8,7 @@ export const lineItems = input({
   example: `[{ title: "Custom Tee", price: "20.00", quantity: 2 }]`,
   placeholder: "Enter line items array",
   comments:
-    "A JSON array of line item objects for the draft order. See [Draft Order line items](https://shopify.dev/api/admin-rest/2021-10/resources/draftorder#post-draft-orders) for available fields.",
+    "A JSON array of line item objects for the draft order. See [DraftOrderLineItemInput](https://shopify.dev/docs/api/admin-graphql/latest/input-objects/DraftOrderLineItemInput) for available fields.",
   clean: cleanCodeInput,
 });
 export const useCustomerAddress = input({
