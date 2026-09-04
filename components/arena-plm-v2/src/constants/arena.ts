@@ -1,0 +1,10 @@
+export const ARENA_API_VERSION_PATH = "/v1";
+export const ARENA_LOGIN_PATH = "/login";
+export const ARENA_OUTBOUND_INTEGRATIONS_PATH = "/outboundintegrations";
+export const ARENA_SESSION_HEADER = "arena_session_id";
+export const ARENA_REQUESTS_REMAINING_HEADER = "x-arena-requests-remaining";
+export const ARENA_LIMIT_RESET_HEADER = "x-arena-next-request-limit-reset";
+export const ARENA_LOW_QUOTA_THRESHOLD = 100;
+export const ARENA_CREDENTIAL_REJECTION_STATUSES = [400, 401, 417];
+export const ARENA_DEFAULT_TIMEOUT_MS = 30000;
+export const ARENA_MAX_PAGE_SIZE = 400;

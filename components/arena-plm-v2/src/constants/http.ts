@@ -1,0 +1,9 @@
+export const CONTENT_TYPE_HEADER = "Content-Type";
+export const AUTHORIZATION_HEADER = "Authorization";
+export const JSON_CONTENT_TYPE = "application/json";
+export const BINARY_CONTENT_TYPE = "application/octet-stream";
+export const FORM_URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
+export const BEARER_PREFIX = "Bearer";
+export const CONNECTION_RESET_CODE = "ECONNRESET";
+export const SOCKET_HANG_UP_MESSAGE = "socket hang up";
+export const UNKNOWN_ERROR_MESSAGE = "Unknown error";

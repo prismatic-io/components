@@ -1,0 +1,85 @@
+This trigger polls an Arena outbound integration for events created since the last recurrence.
+
+Arena publishes events per integration: each configured outbound integration keeps its own feed, recording changes such as an effective change order or a revised item. The trigger reports only newly created events, because an Arena event is immutable. It is written once and never modified, so there is no updated-event category to report. Refer to the [Arena Developer & API Help Center](https://ptc-arena.github.io/arena-dev-help/) for the outbound integration event API reference.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule.
+2. It asks Arena for one page of the events the selected integration created inside the window it is currently covering.
+3. If that page came back full, more events remain and the trigger records where the next page starts. If it came back short, the window is exhausted and the trigger commits its position.
+4. It returns the page's events. A recurrence that matches nothing and has nothing left to cover reports no changes rather than an empty result.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state rather than reporting a change, and this trigger performs one whenever **Look-back Date** is set. It begins on the first recurrence, covers everything created between that date and the moment it starts, and seeds each event exactly once. **No input is ignored while it runs**: **Reconciliation Status** filters the sync exactly as it filters every later recurrence, because an Arena event feed is already the record of what changed and narrowing it leaves no gap to fill.
+
+The window's upper bound is fixed when the sync begins, so events created while it is still being covered are not picked up by the sync itself. Once the window is exhausted the trigger stores that bound as its position, and the first incremental recurrence resumes from exactly there, so nothing between the two is lost. No field in the payload marks the handoff. With batching enabled the whole window is covered inside one poll cycle; with batching off it is covered one page per scheduled recurrence, and the position is not committed until the last page arrives. An interrupted sync repeats its window rather than skipping past it.
+
+Leave **Look-back Date** unset and there is no sync: the first recurrence records its position without asking Arena anything, and only events created after that point are delivered. The value is consulted once, on the first recurrence only.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Arena.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads the events from `trigger.results.body.data.createdRecords`. With batching on that path does not exist: each execution receives a single tagged item instead, whose event is at `record` and whose category is at `changeType`. Any step that reads the older path must be updated before batching is enabled, or it will find nothing. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using this trigger.
+
+#### Returned Data
+
+With batching off, the trigger returns an object with:
+
+<details>
+<summary>Example Response (Non-Batched)</summary>
+
+```json
+{
+  "data": {
+    "createdRecords": [
+      {
+        "guid": "9OE00VN11OE22VN33OE44VN5",
+        "eventType": "CHANGE_EFFECTIVE",
+        "status": "COMPLETED",
+        "creationDateTime": "2026-03-21T08:40:00Z",
+        "reconciled": false,
+        "change": {
+          "guid": "CH1AB2CD3EF4GH5IJ6KL7MN8",
+          "number": "ECO-000512",
+          "title": "Update resistor tolerance on control board"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one item, or a group of them at a batch size above one:
+
+<details>
+<summary>Example Response (Batched)</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "guid": "9OE00VN11OE22VN33OE44VN5",
+    "eventType": "CHANGE_EFFECTIVE",
+    "status": "COMPLETED",
+    "creationDateTime": "2026-03-21T08:40:00Z",
+    "reconciled": false,
+    "change": {
+      "guid": "CH1AB2CD3EF4GH5IJ6KL7MN8",
+      "number": "ECO-000512",
+      "title": "Update resistor tolerance on control board"
+    }
+  }
+}
+```
+
+</details>
+
+Arena answers with one of two event shapes depending on how the selected integration is configured: a change-based feed carries `reconciled` and `reconciledDateTime`, while an item-based feed carries `itemsReconciled` instead. Both carry `guid`, `eventType`, `status` and `creationDateTime`, and whichever shape Arena sends is passed through in full.
+
+Fields shown are representative. The full response object includes additional properties.

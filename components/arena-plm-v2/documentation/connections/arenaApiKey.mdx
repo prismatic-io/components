@@ -1,0 +1,22 @@
+Authenticate requests to Arena using an API session key.
+
+#### Prerequisites
+
+- An Arena account with API access enabled.
+- An API session ID generated from the Arena instance.
+
+#### Setup Steps
+
+1. Contact `arena-sales@ptc.com` to activate REST API access for the account. Access is not enabled by default, and each account carries a request limit per 24-hour period.
+2. Confirm the account used for the integration is an Employee or Partner user. Supplier users cannot access the Arena REST API.
+3. Obtain an API session ID by sending the account's username and password to Arena's [Log In request](https://ptc-arena.github.io/arena-dev-help/get-started/connecting/). The response returns the session ID as `arena_session_id`.
+4. Copy the `arena_session_id` value into the connection.
+
+A session expires 90 minutes after its last action. This connection re-authenticates automatically when Arena rejects a request, so a long-running integration does not need the session refreshed by hand.
+
+#### Configure the Connection
+
+- **Arena Environment**: Select the regional Arena endpoint (North America, GovCloud, Europe, United Kingdom, or China), or choose Custom URL to supply a specific base URL.
+- **Custom Arena URL**: The API base URL, used only when Arena Environment is set to Custom URL. Must use `https`.
+- **API Key (arena_session_id)**: The Arena API session ID used to authenticate requests.
+- **Request Timeout**: Optional request timeout in milliseconds.

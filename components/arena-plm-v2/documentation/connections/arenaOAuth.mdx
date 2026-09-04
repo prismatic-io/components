@@ -1,0 +1,29 @@
+Authenticate to Arena using the OAuth 2.0 Client Credentials grant. The token exchange is handled automatically: supply the token endpoint and credentials, and the access token is requested and refreshed without further configuration.
+
+#### Prerequisites
+
+- An Arena machine user with API access enabled.
+- OAuth 2.0 client credentials (Client ID and Client Secret) issued by Arena for that machine user.
+- The token endpoint URL supplied by Arena for the target environment.
+
+#### Setup Steps
+
+1. Contact `arena-sales@ptc.com` to activate REST API access for the account. Access is not enabled by default, and each account carries a request limit per 24-hour period.
+2. Ask an Arena coach or Arena customer support to add a Machine User to the account. OAuth credentials are issued to that user, and the workspace it is granted when created is the workspace every request targets.
+3. In Arena, go to **Workspace Settings > OAuth Applications** and click **New OAuth Application**. Refer to Arena's [OAuth2 guide](https://ptc-arena.github.io/arena-dev-help/oauth/oauth_guide/) for details.
+4. Give the application a name and a description, then click **Create**.
+5. Copy the generated **Client ID** and **Client Secret** into the connection, and store them in a secure vault.
+6. Enter the token endpoint URL Arena supplies alongside those credentials as the **Token URL**.
+
+Requests target the workspace the machine user was granted when it was created, so no workspace needs to be configured here. Arena recommends giving a machine user access to a single workspace.
+
+No scopes are requested for this flow, so the Scopes field stays empty.
+
+#### Configure the Connection
+
+- **Arena Environment**: Select the regional Arena endpoint (North America, GovCloud, Europe, United Kingdom, or China), or choose Custom URL to supply a specific base URL.
+- **Custom Arena URL**: The API base URL, used only when Arena Environment is set to Custom URL. Must use `https`.
+- **Token URL**: The OAuth 2.0 token endpoint that issues the access token, supplied by Arena along with the client credentials.
+- **Client ID**: The OAuth client identifier issued by Arena.
+- **Client Secret**: The OAuth client secret issued by Arena.
+- **Request Timeout**: The request timeout in milliseconds. Defaults to 30 seconds.
