@@ -1,10 +1,16 @@
 import { input, util } from "@prismatic-io/spectral";
-import type { Expand } from "dynamics-web-api";
-import { toOptionalString } from "../util/cleanInput";
+import {
+  toExpandList,
+  toOptionalString,
+  toPicklistLowerCase,
+  toPicklistStrings,
+  toStringList,
+} from "../util";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
   required: true,
+  comments: "The Microsoft Dynamics 365 connection to use.",
 });
 export const entityType = input({
   label: "Entity Type",
@@ -24,12 +30,7 @@ export const fieldNames = input({
   required: true,
   comments:
     "The OData $select fields to include in the result. Leave empty to return all fields.",
-  clean: (rawValue: unknown): string[] | undefined => {
-    if (!Array.isArray(rawValue) || rawValue.length === 0) {
-      return undefined;
-    }
-    return rawValue.map((item) => util.types.toString(item));
-  },
+  clean: toStringList,
 });
 export const entityId = input({
   label: "Entity ID",
@@ -46,7 +47,7 @@ export const filterExpression = input({
   placeholder: "Enter OData filter expression",
   type: "string",
   required: false,
-  comments: "The filter expression that used for querying entity collections.",
+  comments: "The filter expression used for querying entity collections.",
   example: "Country_Region_Code eq 'ES' and Payment_Terms_Code eq '14 DAYS'",
   clean: util.types.toString,
 });
@@ -66,14 +67,7 @@ export const expandPropertyNames = input({
   collection: "valuelist",
   required: false,
   comments: "The OData $expand properties to include linked records inline.",
-  clean: (rawValue: unknown): Expand[] => {
-    if (!Array.isArray(rawValue) || rawValue.length === 0) {
-      return undefined;
-    }
-    return rawValue.map((item) => ({
-      property: util.types.toString(item),
-    }));
-  },
+  clean: toExpandList,
 });
 export const defaultSelectedRecordTypes = input({
   label: "Default Selected Entity Types",
@@ -83,9 +77,7 @@ export const defaultSelectedRecordTypes = input({
   required: false,
   comments: "The names of the Entity Types to default in a selected state.",
   example: "Account",
-  clean: (value: unknown): string[] => {
-    return util.types.isPicklist(value) ? (value as string[]) : [];
-  },
+  clean: toPicklistStrings,
 });
 export const recordTypeFilter = input({
   label: "Entity Type Filter",
@@ -96,11 +88,7 @@ export const recordTypeFilter = input({
   comments:
     "The names or labels of the Entity Types to include; if blank then all types are included. Uses case-insensitive matching.",
   example: "Account",
-  clean: (value: unknown): string[] => {
-    return util.types.isPicklist(value)
-      ? (value as string[]).map((name) => name.trim().toLowerCase())
-      : [];
-  },
+  clean: toPicklistLowerCase,
 });
 export const includeAllCustomRecordTypes = input({
   label: "Include All Custom Entity Types",

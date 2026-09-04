@@ -1,9 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import type { RetrieveMultipleRequest } from "dynamics-web-api";
 import { createCrmClient } from "../../client";
 import { queryEntitiesExamplePayload } from "../../examplePayloads";
 import { queryEntitiesInputs } from "../../inputs";
-import { paginateQueryEntities } from "../../utils/pagination";
+import { paginateQueryEntities } from "../../util";
 export const queryEntities = action({
   display: {
     label: "Query Entities",
@@ -55,4 +55,5 @@ export const queryEntities = action({
     };
   },
   inputs: queryEntitiesInputs,
+  performSafety: PerformSafety.NOT_ALLOWED,
 });

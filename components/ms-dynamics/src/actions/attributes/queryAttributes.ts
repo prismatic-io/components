@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { queryAttributesExamplePayload } from "../../examplePayloads";
 import { queryAttributesInputs } from "../../inputs";
@@ -23,4 +23,5 @@ export const queryAttributes = action({
     });
     return { data: result };
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
 });

@@ -1,8 +1,10 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { getWebApiUrl } from "../../client";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
+import { getCurrentUserOutputSchema } from "../../outputSchemas";
+import { getAuthorizationHeader } from "../../util";
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -10,22 +12,24 @@ export const getCurrentUser = action({
       "Retrieves information about the currently logged-in CRM user.",
   },
   inputs: getCurrentUserInputs,
+  outputSchema: getCurrentUserOutputSchema,
   perform: async (context, params) => {
     const webApiUrl = await getWebApiUrl(
       params.connection,
       context.debug.enabled,
     );
-    const token = util.types.toString(params.connection.token.access_token);
     const webClient = createClient({
       baseUrl: webApiUrl,
       debug: context.debug.enabled,
     });
     const { data } = await webClient.get(`/WhoAmI()`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: getAuthorizationHeader(params.connection),
       },
     });
     return { data };
   },
   examplePayload: getCurrentUserExamplePayload,
+  performSafety: PerformSafety.SAFE,
+  examplePerform: async () => getCurrentUserExamplePayload,
 });

@@ -10,9 +10,9 @@ export const dynamicsWebhookTrigger = trigger({
   allowsBranching: true,
   staticBranchNames: ["URL Validation / Heartbeat", "Event"],
   examplePayload: dynamicsWebhookTriggerExamplePayload,
-  perform: async (_context, payload, params) => {
+  perform: async (context, payload, params) => {
     const headers = util.types.lowerCaseHeaders(payload.headers);
-    if (params.webhookKey) {
+    if (params.webhookKey && !context.isSimulatedTestExecution) {
       const queryParameters = (payload.queryParameters ?? {}) as Record<
         string,
         unknown

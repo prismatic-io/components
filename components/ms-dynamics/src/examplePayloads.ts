@@ -371,6 +371,37 @@ export const rawRequestV2ExamplePayload = {
     name: exampleAccount.name,
   },
 };
+export const selectEntityExamplePayload = {
+  result: [
+    { label: "Account", key: "70816501-edb9-4740-a16c-6a5efbc05d84" },
+    { label: "Contact", key: "c4e9a276-67a4-4c2a-9f4e-3e4f6b8d1c2a" },
+  ],
+};
+export const selectAttributeExamplePayload = {
+  result: [
+    { label: "Account Name", key: "a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+    { label: "Email Address 1", key: "b2c3d4e5-f6a7-8901-bcde-f12345678901" },
+  ],
+};
+export const selectEntityTypeExamplePayload = {
+  result: [
+    { label: "Account (Account)", key: "account" },
+    { label: "Contact (Contact)", key: "contact" },
+  ],
+};
+export const getEntitiesMetaDataDataSourceExamplePayload = {
+  result: [
+    {
+      object: { key: "70816501-edb9-4740-a16c-6a5efbc05d84", label: "Account" },
+      defaultSelected: true,
+      fields: [
+        { key: "accountid", label: "Account" },
+        { key: "name", label: "Account Name" },
+        { key: "emailaddress1", label: "Email" },
+      ],
+    },
+  ],
+};
 const dynamicsBodyData = {
   SchemaName: "AccountCreate",
   OperationType: 0,
@@ -399,7 +430,7 @@ const dynamicsBodyData = {
   OutputParameters: [],
 };
 const dynamicsInputParameters = dynamicsBodyData.InputParameters;
-export const pollChangesExamplePayload = {
+export const pollChangesTriggerExamplePayload = {
   payload: {
     body: {
       data: {

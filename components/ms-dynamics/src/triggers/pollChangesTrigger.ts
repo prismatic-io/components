@@ -1,22 +1,29 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import type { RetrieveMultipleRequest } from "dynamics-web-api";
 import { createCrmClient } from "../client";
-import { pollChangesExamplePayload } from "../examplePayloads";
+import { BATCH_SIZE } from "../constants";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { DynamicsRecord, PollingState } from "../types";
-import { paginateQueryEntities } from "../utils/pagination";
+import type {
+  DynamicsChangesObject,
+  DynamicsRecord,
+  PollingState,
+} from "../types";
+import { paginateQueryEntities, resolvePollingRecordChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
       "Checks for new and updated records of a Microsoft Dynamics 365 entity type on a configured schedule.",
   },
-  examplePayload: pollChangesExamplePayload,
+  examplePayload: pollChangesTriggerExamplePayload,
   inputs: pollChangesInputs,
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const lastPolledAt =
+      pollState?.lastPolledAt ??
+      (params.lookBackDate ? `${params.lookBackDate}T00:00:00Z` : now);
     const modifiedFilter = `modifiedon gt ${lastPolledAt}`;
     const filter = params.filterExpression
       ? `(${params.filterExpression}) and (${modifiedFilter})`
@@ -24,6 +31,7 @@ export const pollChangesTrigger = pollingTrigger({
     const request: RetrieveMultipleRequest = {
       collection: params.entityType,
       filter,
+      orderBy: ["modifiedon asc"],
     };
     const client = await createCrmClient(
       params.connection,
@@ -56,7 +64,13 @@ export const pollChangesTrigger = pollingTrigger({
       else if (isUpdated && params.showUpdatedRecords) updated.push(record);
     }
     const totalMatched = created.length + updated.length;
-    context.polling.setState({ lastPolledAt: now });
+    const maxModifiedOn = records.length
+      ? records.reduce((max, r) => {
+          const mod = typeof r.modifiedon === "string" ? r.modifiedon : "";
+          return mod > max ? mod : max;
+        }, "")
+      : null;
+    context.polling.setState({ lastPolledAt: maxModifiedOn ?? now });
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${params.entityType}: ${records.length} fetched, ${created.length} created, ${updated.length} updated`,
@@ -66,5 +80,15 @@ export const pollChangesTrigger = pollingTrigger({
       payload: { ...payload, body: { data: { created, updated } } },
       polledNoChanges: totalMatched === 0,
     };
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, result) => {
+      const data = result.payload.body.data as
+        | DynamicsChangesObject
+        | undefined;
+      return resolvePollingRecordChanges(data);
+    },
   },
 });

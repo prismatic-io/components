@@ -1,5 +1,6 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createCrmClient } from "../client";
+import { getEntitiesMetaDataDataSourceExamplePayload } from "../examplePayloads";
 import { getEntitiesMetaDataDataSourceInputs } from "../inputs";
 export const getEntitiesMetaData = dataSource({
   display: {
@@ -7,6 +8,7 @@ export const getEntitiesMetaData = dataSource({
     description:
       "Returns a configurable subset of Dynamics 365 CRM entity types and their attributes for object selection.",
   },
+  examplePayload: getEntitiesMetaDataDataSourceExamplePayload,
   inputs: getEntitiesMetaDataDataSourceInputs,
   perform: async (
     _context,

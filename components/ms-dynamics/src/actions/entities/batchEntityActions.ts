@@ -1,4 +1,4 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, PerformSafety, util } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { batchEntityActionsExamplePayload } from "../../examplePayloads";
 import { batchEntityActionsInputs } from "../../inputs";
@@ -39,4 +39,5 @@ export const batchEntityActions = action({
     const result = await client.executeBatch();
     return { data: result };
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
 });

@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { getEntitiesMetaDataExamplePayload } from "../../examplePayloads";
 import { getEntitiesMetaDataInputs } from "../../inputs";
+import { getEntitiesMetaDataOutputSchema } from "../../outputSchemas";
 export const getEntitiesMetaData = action({
   display: {
     label: "Get Entities Metadata",
@@ -10,6 +11,7 @@ export const getEntitiesMetaData = action({
   },
   inputs: getEntitiesMetaDataInputs,
   examplePayload: getEntitiesMetaDataExamplePayload,
+  outputSchema: getEntitiesMetaDataOutputSchema,
   perform: async (
     context,
     {
@@ -62,4 +64,5 @@ export const getEntitiesMetaData = action({
       data: await Promise.all(mappedObjects),
     };
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
 });

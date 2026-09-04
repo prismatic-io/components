@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { toOptionalString } from "../util/cleanInput";
+import { lookBackDateClean, toOptionalString } from "../util";
 import { connectionInput, entityType, filterExpression } from "./common";
 const webhookKey = input({
   label: "Webhook Authentication Key",
@@ -29,9 +29,20 @@ const showUpdatedRecords = input({
     "When enabled, records updated after the last poll will be included in the trigger output.",
   clean: util.types.toBool,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the first poll returns all records created or modified on or after this date.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const pollChangesInputs = {
   connection: connectionInput,
   entityType,
+  lookBackDate,
   filterExpression,
   showNewRecords,
   showUpdatedRecords,

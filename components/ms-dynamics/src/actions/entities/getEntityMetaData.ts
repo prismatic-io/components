@@ -1,7 +1,8 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, PerformSafety, util } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { getEntityMetaDataExamplePayload } from "../../examplePayloads";
 import { getEntityMetaDataInputs } from "../../inputs";
+import { getEntityMetaDataOutputSchema } from "../../outputSchemas";
 export const getEntityMetaData = action({
   display: {
     label: "Get Entity Metadata",
@@ -9,6 +10,7 @@ export const getEntityMetaData = action({
       "Retrieves the definition of a Microsoft Dynamics 365 CRM entity.",
   },
   examplePayload: getEntityMetaDataExamplePayload,
+  outputSchema: getEntityMetaDataOutputSchema,
   perform: async (context, { entityType, connection, lookupField }) => {
     const client = await createCrmClient(connection, context.debug.enabled);
     const result = await client.retrieveEntity({
@@ -23,4 +25,6 @@ export const getEntityMetaData = action({
     };
   },
   inputs: getEntityMetaDataInputs,
+  performSafety: PerformSafety.SAFE,
+  examplePerform: async () => getEntityMetaDataExamplePayload,
 });

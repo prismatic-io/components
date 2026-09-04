@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import type { RetrieveRequest } from "dynamics-web-api";
 import { createCrmClient } from "../../client";
 import { getEntityExamplePayload } from "../../examplePayloads";
@@ -26,4 +26,6 @@ export const getEntity = action({
     return { data: result };
   },
   inputs: getEntityInputs,
+  performSafety: PerformSafety.SAFE,
+  examplePerform: async () => getEntityExamplePayload,
 });

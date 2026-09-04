@@ -19,7 +19,7 @@ const contact4 = {
 describe("paginateQueryEntities", () => {
   it("returns initial result as-is when fetchAll is false", async () => {
     const response = { value: [contact1, contact2] };
-    const retrieveFn = jest.fn().mockResolvedValue(response);
+    const retrieveFn = vi.fn().mockResolvedValue(response);
     const result = await paginateQueryEntities(retrieveFn, false);
     expect(result).toEqual({ data: response });
     expect(retrieveFn).toHaveBeenCalledTimes(1);
@@ -31,7 +31,7 @@ describe("paginateQueryEntities", () => {
         "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2",
     };
     const page2 = { value: [contact3, contact4] };
-    const retrieveFn = jest
+    const retrieveFn = vi
       .fn()
       .mockResolvedValueOnce(page1)
       .mockResolvedValueOnce(page2);
@@ -48,7 +48,7 @@ describe("paginateQueryEntities", () => {
         "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=1",
     };
     const page2 = { value: [contact2] };
-    const retrieveFn = jest
+    const retrieveFn = vi
       .fn()
       .mockResolvedValueOnce(page1)
       .mockResolvedValueOnce(page2);
@@ -58,7 +58,7 @@ describe("paginateQueryEntities", () => {
   });
   it("stops when no nextLink is present", async () => {
     const page1 = { value: [contact1] };
-    const retrieveFn = jest.fn().mockResolvedValue(page1);
+    const retrieveFn = vi.fn().mockResolvedValue(page1);
     const result = await paginateQueryEntities(retrieveFn, true);
     expect(result).toEqual({ data: { value: [contact1] } });
     expect(retrieveFn).toHaveBeenCalledTimes(1);
@@ -68,7 +68,7 @@ describe("paginateQueryEntities", () => {
       "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2";
     const page1 = { value: [contact1], oDataNextLink: nextUrl };
     const page2 = { value: [contact2] };
-    const retrieveFn = jest
+    const retrieveFn = vi
       .fn()
       .mockResolvedValueOnce(page1)
       .mockResolvedValueOnce(page2);
@@ -82,7 +82,7 @@ describe("paginateQueryEntities", () => {
       oDataNextLink:
         "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=next",
     });
-    const retrieveFn = jest
+    const retrieveFn = vi
       .fn()
       .mockImplementation(() => Promise.resolve(makePage()));
     const result = await paginateQueryEntities(retrieveFn, true);
@@ -99,7 +99,7 @@ describe("paginateQueryEntities", () => {
 describe("paginateFetchXml", () => {
   it("returns initial result as-is when fetchAll is false", async () => {
     const response = { value: [contact1] };
-    const executeFn = jest.fn().mockResolvedValue(response);
+    const executeFn = vi.fn().mockResolvedValue(response);
     const result = await paginateFetchXml(executeFn, false);
     expect(result).toEqual({ data: response });
     expect(executeFn).toHaveBeenCalledTimes(1);
@@ -116,7 +116,7 @@ describe("paginateFetchXml", () => {
       value: [contact3, contact4],
       PagingInfo: { cookie: undefined, nextPage: false },
     };
-    const executeFn = jest
+    const executeFn = vi
       .fn()
       .mockResolvedValueOnce(page1)
       .mockResolvedValueOnce(page2);
@@ -131,7 +131,7 @@ describe("paginateFetchXml", () => {
       value: [contact1],
       PagingInfo: { cookie: "somecookie", nextPage: false },
     };
-    const executeFn = jest.fn().mockResolvedValue(page1);
+    const executeFn = vi.fn().mockResolvedValue(page1);
     const result = await paginateFetchXml(executeFn, true);
     expect(result).toEqual({ data: { value: [contact1] } });
     expect(executeFn).toHaveBeenCalledTimes(1);
@@ -141,7 +141,7 @@ describe("paginateFetchXml", () => {
       value: [contact1],
       PagingInfo: { cookie: undefined, nextPage: true },
     };
-    const executeFn = jest.fn().mockResolvedValue(page1);
+    const executeFn = vi.fn().mockResolvedValue(page1);
     const result = await paginateFetchXml(executeFn, true);
     expect(result).toEqual({ data: { value: [contact1] } });
     expect(executeFn).toHaveBeenCalledTimes(1);
@@ -158,7 +158,7 @@ describe("paginateFetchXml", () => {
       PagingInfo: { cookie: cookie2, nextPage: true },
     };
     const page3 = { value: [contact3], PagingInfo: { nextPage: false } };
-    const executeFn = jest
+    const executeFn = vi
       .fn()
       .mockResolvedValueOnce(page1)
       .mockResolvedValueOnce(page2)
@@ -173,7 +173,7 @@ describe("paginateFetchXml", () => {
       value: [contact1],
       PagingInfo: { cookie: "somecookie", nextPage: true },
     });
-    const executeFn = jest
+    const executeFn = vi
       .fn()
       .mockImplementation(() => Promise.resolve(makePage()));
     const result = await paginateFetchXml(executeFn, true);
@@ -190,7 +190,7 @@ describe("paginateFetchXml", () => {
 describe("paginateListEntities", () => {
   it("returns first page as-is when fetchAll is false", async () => {
     const pageData = { value: [contact1, contact2] };
-    const fetchPage = jest.fn().mockResolvedValue({ data: pageData });
+    const fetchPage = vi.fn().mockResolvedValue({ data: pageData });
     const result = await paginateListEntities(fetchPage, false);
     expect(result).toEqual({ data: pageData });
     expect(fetchPage).toHaveBeenCalledTimes(1);
@@ -203,7 +203,7 @@ describe("paginateListEntities", () => {
       "@odata.nextLink": nextUrl,
     };
     const page2Data = { value: [contact3, contact4] };
-    const fetchPage = jest
+    const fetchPage = vi
       .fn()
       .mockResolvedValueOnce({ data: page1Data })
       .mockResolvedValueOnce({ data: page2Data });
@@ -215,7 +215,7 @@ describe("paginateListEntities", () => {
   });
   it("stops when @odata.nextLink is absent", async () => {
     const pageData = { value: [contact1] };
-    const fetchPage = jest.fn().mockResolvedValue({ data: pageData });
+    const fetchPage = vi.fn().mockResolvedValue({ data: pageData });
     const result = await paginateListEntities(fetchPage, true);
     expect(result).toEqual({ data: { value: [contact1] } });
     expect(fetchPage).toHaveBeenCalledTimes(1);
@@ -225,7 +225,7 @@ describe("paginateListEntities", () => {
       "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=2";
     const page1Data = { value: [contact1], "@odata.nextLink": nextUrl };
     const page2Data = { value: [contact2] };
-    const fetchPage = jest
+    const fetchPage = vi
       .fn()
       .mockResolvedValueOnce({ data: page1Data })
       .mockResolvedValueOnce({ data: page2Data });
@@ -241,7 +241,7 @@ describe("paginateListEntities", () => {
           "https://org.crm.dynamics.com/api/data/v9.2/contacts?$skiptoken=next",
       },
     });
-    const fetchPage = jest
+    const fetchPage = vi
       .fn()
       .mockImplementation(() => Promise.resolve(makePage()));
     const result = await paginateListEntities(fetchPage, true);

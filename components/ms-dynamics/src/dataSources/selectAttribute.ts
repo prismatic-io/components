@@ -1,5 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createCrmClient } from "../client";
+import { selectAttributeExamplePayload } from "../examplePayloads";
 import { selectAttributeInputs } from "../inputs";
 export const selectAttribute = dataSource({
   display: {
@@ -8,6 +9,7 @@ export const selectAttribute = dataSource({
       "Selects from all attributes for a specific entity in the Dynamics 365 CRM instance.",
   },
   dataSourceType: "picklist",
+  examplePayload: selectAttributeExamplePayload,
   inputs: selectAttributeInputs,
   perform: async (_context, { connection, entityId }) => {
     const client = await createCrmClient(connection, false);

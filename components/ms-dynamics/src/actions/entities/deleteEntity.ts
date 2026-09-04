@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { deleteEntityExamplePayload } from "../../examplePayloads";
 import { deleteEntityInputs } from "../../inputs";
@@ -18,4 +18,5 @@ export const deleteEntity = action({
     return { data: result };
   },
   inputs: deleteEntityInputs,
+  performSafety: PerformSafety.NOT_ALLOWED,
 });

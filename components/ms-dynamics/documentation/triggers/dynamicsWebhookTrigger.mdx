@@ -9,26 +9,26 @@ All subsequent event notifications are routed to the **Event** branch. The trigg
 <details>
 <summary>Extracted Fields (5)</summary>
 
-- **Organization** — the Dynamics 365 tenant name (from the `x-ms-dynamics-organization` header)
-- **Entity Name** — the logical name of the entity that triggered the event (from the `x-ms-dynamics-entity-name` header)
-- **Message Name** — the name of the event (e.g., `Create`, `Update`, `Delete`)
-- **Input Parameters** — the entity data included in the event
-- **Initiating User ID** — the ID of the user whose action triggered the event
+- **Organization**: the Dynamics 365 tenant name (from the `x-ms-dynamics-organization` header)
+- **Entity Name**: the logical name of the entity that triggered the event (from the `x-ms-dynamics-entity-name` header)
+- **Message Name**: the name of the event (e.g., `Create`, `Update`, `Delete`)
+- **Input Parameters**: the entity data included in the event
+- **Initiating User ID**: the ID of the user whose action triggered the event
 
 </details>
 
 #### Branches
 
-- **URL Validation / Heartbeat** — the validation handshake. Microsoft Dynamics 365 sends a `URL_VALIDATION` request when a webhook is first registered (and periodically thereafter). The trigger auto-responds with a `200 OK`; no business logic should be added on this branch.
-- **Event** — real notifications. All `Create`, `Update`, `Delete`, and other event messages flow through this branch. Business logic, downstream steps, and routing should be implemented here.
+- **URL Validation / Heartbeat**: the validation handshake. Microsoft Dynamics 365 sends a `URL_VALIDATION` request when a webhook is first registered (and periodically thereafter). The trigger auto-responds with a `200 OK`; no business logic should be added on this branch.
+- **Event**: real notifications. All `Create`, `Update`, `Delete`, and other event messages flow through this branch. Business logic, downstream steps, and routing should be implemented here.
 
 #### Event Types
 
 Events are configured when registering the webhook step in the Dynamics 365 Plugin Registration Tool. Common events include:
 
-- `Create` — a record is created
-- `Update` — a record is modified
-- `Delete` — a record is removed
+- `Create`: a record is created
+- `Update`: a record is modified
+- `Delete`: a record is removed
 
 Refer to the [Microsoft Dataverse webhook documentation](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-webhooks?tabs=cs) for the complete list of supported messages and filtering options.
 

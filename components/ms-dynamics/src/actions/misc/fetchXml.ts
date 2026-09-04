@@ -1,8 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { fetchXmlExamplePayload } from "../../examplePayloads";
 import { fetchXmlInputs } from "../../inputs";
-import { paginateFetchXml } from "../../utils/pagination";
+import { paginateFetchXml } from "../../util";
 export const fetchXml = action({
   display: {
     label: "Run Fetch XML Query",
@@ -16,13 +16,13 @@ export const fetchXml = action({
       entityType,
       xmlQuery,
       includeAnnotations,
-      pageNumber,
-      nextPageId,
+      pagination,
       impersonateUserId,
       fetchAll: shouldFetchAll,
       connection,
     },
   ) => {
+    const { pageNumber, nextPageId } = pagination;
     const client = await createCrmClient(connection, context.debug.enabled);
     const executeFn = async (page?: number, cookie?: string) => {
       const result = await client.fetch({
@@ -49,4 +49,5 @@ export const fetchXml = action({
     return { data: result };
   },
   inputs: fetchXmlInputs,
+  performSafety: PerformSafety.NOT_ALLOWED,
 });

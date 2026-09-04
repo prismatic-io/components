@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { getAttributeExamplePayload } from "../../examplePayloads";
 import { getAttributeInputs } from "../../inputs";
@@ -22,4 +22,6 @@ export const getAttribute = action({
     });
     return { data: result };
   },
+  performSafety: PerformSafety.SAFE,
+  examplePerform: async () => getAttributeExamplePayload,
 });

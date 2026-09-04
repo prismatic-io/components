@@ -1,8 +1,9 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { getWebApiUrl } from "../../client";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequestInputs } from "../../inputs";
+import { getAuthorizationHeader } from "../../util";
 export const rawRequest = action({
   display: {
     label: "Raw Request (Deprecated)",
@@ -12,14 +13,14 @@ export const rawRequest = action({
   examplePayload: rawRequestExamplePayload,
   perform: async (context, { connection, ...httpInputParams }) => {
     const webApiUrl = await getWebApiUrl(connection, context.debug.enabled);
-    const token = util.types.toString(connection.token.access_token);
     const { data } = await sendRawRequest(
       webApiUrl,
       { ...httpInputParams, debugRequest: context.debug.enabled },
       {
-        Authorization: `Bearer ${token}`,
+        Authorization: getAuthorizationHeader(connection),
       },
     );
     return { data };
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
 });

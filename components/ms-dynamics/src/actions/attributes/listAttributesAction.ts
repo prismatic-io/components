@@ -1,7 +1,8 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, PerformSafety, util } from "@prismatic-io/spectral";
 import { createCrmClient } from "../../client";
 import { listAttributesActionExamplePayload } from "../../examplePayloads";
 import { listAttributesActionInputs } from "../../inputs";
+import { listAttributesActionOutputSchema } from "../../outputSchemas";
 export const listAttributesAction = action({
   display: {
     label: "List Attributes",
@@ -10,6 +11,7 @@ export const listAttributesAction = action({
   },
   inputs: listAttributesActionInputs,
   examplePayload: listAttributesActionExamplePayload,
+  outputSchema: listAttributesActionOutputSchema,
   perform: async (
     context,
     { connection, entityId, attributeType, includeDetails },
@@ -93,4 +95,5 @@ export const listAttributesAction = action({
       },
     };
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
 });

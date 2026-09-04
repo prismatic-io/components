@@ -1,5 +1,5 @@
-import { input, util } from "@prismatic-io/spectral";
-import { toOptionalNumber, toOptionalString } from "../util/cleanInput";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import { toOptionalNumber, toOptionalString } from "../util";
 import { connectionInput, entityType, fetchAll, nextPageId } from "./common";
 const xmlQuery = input({
   label: "XML Query",
@@ -47,6 +47,14 @@ const impersonateUserId = input({
   example: "7d577253-3ef0-4a0a-bb7f-8335c2596e70",
   clean: toOptionalString,
 });
+const fetchXmlPagination = structuredObjectInput({
+  label: "Pagination",
+  comments: "Page number and next-page cookie for paging through results.",
+  inputs: {
+    pageNumber,
+    nextPageId,
+  },
+});
 export const fetchXmlInputs = {
   connection: connectionInput,
   entityType,
@@ -54,6 +62,5 @@ export const fetchXmlInputs = {
   includeAnnotations,
   impersonateUserId,
   fetchAll,
-  pageNumber,
-  nextPageId,
+  pagination: fetchXmlPagination,
 };

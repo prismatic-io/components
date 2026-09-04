@@ -1,5 +1,6 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
 import { batchActionsDefault, batchActionsExample } from "../examplePayloads";
+import { toDynamicValues, toFilteredStringList } from "../util";
 import {
   connectionInput,
   defaultSelectedRecordTypes,
@@ -18,13 +19,7 @@ const dynamicValuesInput = input({
   label: "Dynamic Values",
   type: "data",
   required: false,
-  clean: (value) =>
-    value
-      ? Object.entries(value).reduce((prev, [k, v]) => {
-          prev[k] = v;
-          return prev;
-        }, {})
-      : {},
+  clean: toDynamicValues,
 });
 const fieldValues = input({
   label: "Field Value",
@@ -55,12 +50,7 @@ const orderByFieldNames = input({
   required: false,
   comments:
     "The OData $orderby fields. Suffix with 'desc' for descending order, e.g., 'createdon desc'.",
-  clean: (rawValue) => {
-    if (!Array.isArray(rawValue) || rawValue.filter(Boolean).length === 0) {
-      return undefined;
-    }
-    return rawValue.map((item) => util.types.toString(item)).filter(Boolean);
-  },
+  clean: toFilteredStringList,
 });
 const lookupField = input({
   label: "Use Logical Name for Lookup",

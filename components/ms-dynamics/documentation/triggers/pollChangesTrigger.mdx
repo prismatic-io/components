@@ -1,0 +1,136 @@
+Retrieves existing and ongoing record changes for a specified Microsoft Dynamics 365 entity type. Load history once, check for changes on a schedule, or both.
+
+#### How It Works
+
+The trigger operates by:
+
+1. Running on the configured schedule (e.g., every 5 minutes)
+2. Querying the [Dataverse Web API](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/query/overview) for records whose `modifiedon` timestamp is later than its stored position, sorted by `modifiedon` ascending so the filter and the sort key match
+3. Categorizing each record as **created** or **updated** by comparing its `createdon` timestamp against that same position
+4. Storing the newest `modifiedon` it read as its new position, so the next recurrence resumes from the last record it actually saw rather than from the clock
+
+Records are retrieved a page at a time and accumulated until the API reports no further pages, up to 100 pages per recurrence. Everything gathered that way is classified and reported together in that one recurrence.
+
+The `modifiedon` comparison is strict, so a record already reported is not reported again on a later recurrence.
+
+**Show New Records** and **Show Updated Records** filter what is reported, not what is queried. A record the query matched but neither switch admits still moves the position past itself, so it is not revisited.
+
+**The first recurrence**
+
+- **Look-back Date empty**: the trigger stores the current time as its position and reports nothing. Incremental polling begins on the next recurrence.
+- **Look-back Date set**: the trigger starts from midnight UTC on that date and returns every record created or modified since, seeding each one exactly once.
+
+The look-back date is consulted only while no position is stored, so setting it on an instance that has already run does not replay that instance's history. **Entity Type**, **Filter Expression**, **Show New Records**, and **Show Updated Records** all apply on that first recurrence exactly as they do on later ones; the historical load suppresses no input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Microsoft Dynamics 365.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.created` and `data.updated`; with batching on those arrays do not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data**). Any step reading the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+Batching splits the executions, not the fetch. The trigger still retrieves the full result set before dispatching batches.
+
+**Handing off to the schedule**
+
+The historical load has no upper bound of its own: it runs as an ordinary recurrence, so a record changed while it is running is picked up either by that recurrence or by the one after it. Once the load finishes, the trigger stores the newest `modifiedon` it read as its position, and the next recurrence resumes strictly after that value with every input applied, so the two ranges meet with no gap between them. No field in the payload marks the handoff.
+
+The load finishes in a single recurrence whether or not batching is enabled, unless it reaches the 100-page ceiling, in which case it continues from its stored position on the following recurrence.
+
+#### Returned Data
+
+Fields shown are representative. The full response object includes additional properties.
+
+What arrives in `data` depends on whether batching is enabled on the flow.
+
+**Without batching**, `data` is a single object containing two arrays: `created` and `updated`.
+
+<details>
+<summary>Example Payload: batching disabled</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "accountid": "b3c4d5e6-f7a8-4901-c234-5678901cdef0",
+        "name": "Adventure Works Cycles",
+        "accountnumber": "ACC-0003",
+        "createdon": "2026-05-22T14:30:00Z",
+        "modifiedon": "2026-05-22T14:30:00Z"
+      }
+    ],
+    "updated": [
+      {
+        "accountid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "Contoso Ltd. (Updated)",
+        "modifiedon": "2026-05-22T14:35:00Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+**With batching enabled**, `data` holds one slice of the batch instead of those two arrays. Every record becomes its own item, shaped as `changeType` plus `record`. `changeType` is `created` or `updated`, and `record` is the Dataverse record.
+
+With a batch size of 1, `data` is a single item.
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "created",
+    "record": {
+      "accountid": "b3c4d5e6-f7a8-4901-c234-5678901cdef0",
+      "name": "Adventure Works Cycles",
+      "accountnumber": "ACC-0003",
+      "createdon": "2026-05-22T14:30:00Z",
+      "modifiedon": "2026-05-22T14:30:00Z"
+    }
+  }
+}
+```
+
+</details>
+
+With a batch size greater than 1, `data` is an array of those items.
+
+<details>
+<summary>Example Payload: batching enabled, batch size greater than 1</summary>
+
+```json
+{
+  "data": [
+    {
+      "changeType": "created",
+      "record": {
+        "accountid": "b3c4d5e6-f7a8-4901-c234-5678901cdef0",
+        "name": "Adventure Works Cycles",
+        "accountnumber": "ACC-0003",
+        "createdon": "2026-05-22T14:30:00Z",
+        "modifiedon": "2026-05-22T14:30:00Z"
+      }
+    },
+    {
+      "changeType": "updated",
+      "record": {
+        "accountid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "Contoso Ltd. (Updated)",
+        "modifiedon": "2026-05-22T14:35:00Z"
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+#### Notes
+
+- Both the `modifiedon` comparison and any **Filter Expression** are applied server-side through OData, so records that do not match are never transferred.
+- Dataverse returns up to 5,000 rows per page for standard tables, and the trigger reads at most 100 pages in one recurrence.

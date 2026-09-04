@@ -25,7 +25,7 @@ The OAuth 2.0 authorization code flow allows an end user to grant the integratio
    - Take note of the **Value** (not the Secret ID) of the client secret.
 1. Returning to the **Overview** page, take note of **Application (Client) ID**.
 
-#### Configure The Connection
+#### Configure the Connection
 
 Create a connection of type **OAuth 2.0 Authorization Code**.
 
@@ -59,13 +59,13 @@ Apps requesting **application permissions** (permissions that act without a sign
 
 A tenant administrator can grant consent using either method:
 
-**Method 1 — Admin Consent URL:**
+**Method 1: Admin Consent URL:**
 
 Navigate to the following URL, replacing `{tenant}` with the Directory tenant ID and `{client_id}` with the Application client ID:
 
-    https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}
+`https://login.microsoftonline.com/{tenant}/adminconsent?client_id={client_id}`
 
-**Method 2 — Microsoft Entra Admin Center:**
+**Method 2: Microsoft Entra Admin Center:**
 
 1. Navigate to [Microsoft Entra Admin Center](https://entra.microsoft.com/) → **Enterprise applications**
 2. Select the app registration

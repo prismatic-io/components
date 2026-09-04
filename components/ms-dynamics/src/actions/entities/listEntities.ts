@@ -1,9 +1,10 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, PerformSafety } from "@prismatic-io/spectral";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { getWebApiUrl } from "../../client";
 import { listEntitiesExamplePayload } from "../../examplePayloads";
 import { listEntitiesInputs } from "../../inputs";
-import { paginateListEntities } from "../../utils/pagination";
+import { listEntitiesOutputSchema } from "../../outputSchemas";
+import { getAuthorizationHeader, paginateListEntities } from "../../util";
 export const listEntities = action({
   display: {
     label: "List Entity Types",
@@ -12,15 +13,16 @@ export const listEntities = action({
   },
   inputs: listEntitiesInputs,
   examplePayload: listEntitiesExamplePayload,
-  perform: async (context, { connection, maxPageSize, nextLink, fetchAll }) => {
+  outputSchema: listEntitiesOutputSchema,
+  perform: async (context, { connection, fetchAll, pagination }) => {
+    const { maxPageSize, nextLink } = pagination;
     const webApiUrl = await getWebApiUrl(connection, context.debug.enabled);
-    const token = util.types.toString(connection.token?.access_token);
     const createPageClient = (url?: string) =>
       createHttpClient({
         baseUrl: url ? "" : webApiUrl,
         debug: context.debug.enabled,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: getAuthorizationHeader(connection),
           Accept: "application/json",
           "OData-MaxVersion": "4.0",
           "OData-Version": "4.0",
@@ -93,4 +95,5 @@ export const listEntities = action({
       throw new Error(`Failed to list entities: ${error.message || error}`);
     }
   },
+  performSafety: PerformSafety.NOT_ALLOWED,
 });
