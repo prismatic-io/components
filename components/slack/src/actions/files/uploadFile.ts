@@ -27,7 +27,6 @@ export const uploadFile = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { fileName, title, channels },

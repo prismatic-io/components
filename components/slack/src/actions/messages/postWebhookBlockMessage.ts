@@ -24,7 +24,6 @@ export const postWebhookBlockMessage = action({
       }),
     };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({

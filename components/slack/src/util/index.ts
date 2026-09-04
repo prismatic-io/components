@@ -7,7 +7,10 @@ export {
   listChannels,
 } from "./getChannels";
 export { getErrorDescription } from "./getErrorDescription";
+export { lookBackDateClean } from "./lookBackDateClean";
 export { paginateResults } from "./paginateResults";
+export { resolvePollingRecordChanges } from "./resolvePollingRecordChanges";
+export { sortByAttribute } from "./sortByAttribute";
 export {
   isValidArrayNotEmpty,
   valueListInputClean,

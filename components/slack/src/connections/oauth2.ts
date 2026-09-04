@@ -14,7 +14,7 @@ export const slackOAuth = oauth2Connection({
       required: true,
       shown: true,
       comments:
-        "The OAuth 2.0 Authorization URL for Slack. To request access to the API on behalf of a User, append a `user_scope` query parameter to the end of the Authorize URL (e.g., `https://slack.com/oauth/v2/authorize?user_scope=chat:write,channels:read,groups:read,im:read,mpim:read`).",
+        "The OAuth 2.0 Authorization URL for Slack. To request access to the API on behalf of a User, append a `user_scope` query parameter to the end of the Authorize URL (e.g., `https://slack.com/oauth/v2/authorize?user_scope=chat:write,channels:read,groups:read,im:read,mpim:read`). For GovSlack, change the domain from slack.com to slack-gov.com.",
       default: "https://slack.com/oauth/v2/authorize",
     },
     tokenUrl: {
@@ -23,7 +23,8 @@ export const slackOAuth = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments: "The OAuth 2.0 Token URL for Slack.",
+      comments:
+        "The OAuth 2.0 Token URL for Slack. For GovSlack, change the domain from slack.com to slack-gov.com.",
       default: "https://slack.com/api/oauth.v2.access",
     },
     revokeUrl: {
@@ -32,7 +33,8 @@ export const slackOAuth = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
-      comments: "The OAuth 2.0 Revocation URL for Slack.",
+      comments:
+        "The OAuth 2.0 Revocation URL for Slack. For GovSlack, change the domain from slack.com to slack-gov.com.",
       default: "https://slack.com/api/auth.revoke",
     },
     scopes: {

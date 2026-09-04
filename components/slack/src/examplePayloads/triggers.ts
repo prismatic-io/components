@@ -1,7 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
-export const pollChangesTriggerExamplePayload: {
-  payload: TriggerPayload;
-} = {
+export const pollChangesTriggerExamplePayload = {
   payload: {
     headers: {},
     queryParameters: {},
@@ -53,5 +51,6 @@ export const pollChangesTriggerExamplePayload: {
     flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
     startedAt: "2024-01-15T00:00:00.000Z",
     globalDebug: false,
-  },
+  } as TriggerPayload,
+  polledNoChanges: false,
 };

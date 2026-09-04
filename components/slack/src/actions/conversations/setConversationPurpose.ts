@@ -24,7 +24,6 @@ export const setConversationPurpose = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { purpose },

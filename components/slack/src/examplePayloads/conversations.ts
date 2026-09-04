@@ -172,3 +172,28 @@ export const listUserConversationsExamplePayload = {
     },
   ],
 };
+export const searchConversationExamplePayload = {
+  ok: true,
+  conversations: [
+    {
+      id: "C1234567890",
+      name: "example-channel",
+      purpose: "This channel was created for an example response.",
+      member_count: 42,
+      created: 6426934241,
+      creator_id: "W1234567890",
+      is_private: false,
+      is_archived: false,
+      is_general: false,
+      is_org_shared: true,
+      is_ext_shared: false,
+      internal_team_ids: ["T1234567890", "T0987654321"],
+      internal_team_ids_count: 2,
+      connected_team_ids: [],
+      last_activity_ts: 1712345678,
+      channel_manager_count: 1,
+    },
+  ],
+  next_cursor: "Y29udmVyc2F0aW9uOkMxMjM0NTY3ODkw",
+  total_count: 1,
+};

@@ -24,7 +24,6 @@ export const deleteMessage = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { messageId, channelId },

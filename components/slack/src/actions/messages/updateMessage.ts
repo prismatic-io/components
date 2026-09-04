@@ -25,7 +25,6 @@ export const updateMessage = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { channelId, messageId, message },

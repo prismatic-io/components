@@ -9,7 +9,7 @@ export const listFiles = action({
     description: "List all available files.",
   },
   inputs: listFilesInputs,
-  performSafety: "safe",
+  performSafety: "notAllowed",
   perform: async ({ debug: { enabled: debug } }, params) => {
     debugLogger({ ...params, debug });
     const client = await createOauthClient({
@@ -23,6 +23,11 @@ export const listFiles = action({
     });
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listFilesExamplePayload,
+  }),
   examplePayload: {
     data: listFilesExamplePayload as unknown,
   },

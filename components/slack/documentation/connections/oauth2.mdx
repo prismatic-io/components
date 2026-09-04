@@ -61,6 +61,21 @@ The `Auth URL`, then, will look something like this: `https://slack.com/oauth/v2
 The bot's username and icon are set when creating the Slack app.
 To override the bot's username within the integration, request the `chat:write.customize` scope in addition to `chat:write`.
 
+#### Enterprise Grid
+
+A Slack app can be installed into a single workspace, which is the default described above, or across an entire [Enterprise Grid organization](https://docs.slack.dev/enterprise/developing-for-enterprise-orgs/). Installing per workspace on a Grid workspace needs no extra configuration.
+
+To install org-wide instead:
+
+1. In the Slack app, select **OAuth & Permissions** and confirm at least one **Bot Token Scope** is set
+1. Select **Org Level Apps** from the sidebar, choose **Opt-In**, then confirm **Yes, Opt-in**
+1. Have an Org Admin install the app to the organization rather than to a single workspace
+
+Two things change once the token is org-level:
+
+- **Team ID becomes required.** Slack can no longer infer which workspace to act on, so actions that expose a **Team ID** input need a value. The **List Teams** action returns the available IDs, and the **Team ID** input offers them in a dropdown. A workspace-level token accepts and ignores **Team ID**, so it is safe to always set it.
+- **Admin scopes become available.** Admin actions only work on an org-level install. **List Teams** requires `admin.teams:read` and **Search Conversation** requires `admin.conversations:read`. Other `admin.*` methods can be reached through the **Raw Request** action once the matching scope is added.
+
 #### GovSlack
 
 Slack offers [GovSlack](https://slack.com/solutions/govslack) for government organizations that require compliance with FIPS 140-2, FedRAMP, ITAR, etc.

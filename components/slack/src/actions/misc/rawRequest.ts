@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
-import { createOauthClient } from "../../client";
+import { createOauthClient, getApiBaseUrl } from "../../client";
 import { rawRequestInputs } from "../../inputs";
 export const rawRequest = action({
   display: {
@@ -16,7 +16,7 @@ export const rawRequest = action({
     const client = await createOauthClient({ slackConnection: connection });
     const token = client.token;
     const { data } = await sendRawRequest(
-      "https://slack.com/api",
+      getApiBaseUrl({ slackConnection: connection }),
       { ...rawRequestParams, debugRequest: debug },
       { Authorization: `Bearer ${token}` },
     );

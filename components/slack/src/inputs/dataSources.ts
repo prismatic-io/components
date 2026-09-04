@@ -17,7 +17,15 @@ export const showChannelIdInDropdown = input({
 export const showUserIdInDropdown = input({
   label: "Show User ID in Dropdown",
   comments:
-    "When true, displays the user ID alongside the username (e.g., '#user-id (ID: C123456)').",
+    "When true, displays the user ID alongside the username (e.g., 'jane.doe (ID: U1234567890)').",
+  type: "boolean",
+  default: "false",
+  clean: util.types.toBool,
+});
+export const showTeamIdInDropdown = input({
+  label: "Show Team ID in Dropdown",
+  comments:
+    "When true, displays the team ID alongside the workspace name (e.g., 'Example Workspace (ID: T1234567890)').",
   type: "boolean",
   default: "false",
   clean: util.types.toBool,
@@ -33,4 +41,8 @@ export const selectChannelsInputs = {
 export const selectUsersInputs = {
   connection: connectionInput,
   showIdInDropdown: showUserIdInDropdown,
+};
+export const selectTeamsInputs = {
+  connection: connectionInput,
+  showIdInDropdown: showTeamIdInDropdown,
 };

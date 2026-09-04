@@ -23,7 +23,6 @@ export const closeConversation = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({

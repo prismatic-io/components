@@ -1,4 +1,4 @@
-This trigger polls Slack's [`conversations.history`](https://docs.slack.dev/reference/methods/conversations.history) endpoint on a configured schedule and emits new messages posted in a selected Slack channel.
+This trigger polls Slack's [`conversations.history`](https://docs.slack.dev/reference/methods/conversations.history/) endpoint on a configured schedule and emits new messages posted in a selected Slack channel. Load history once with a **Look-back Date**, check for new messages on a schedule, or both.
 
 The trigger checks for:
 
@@ -8,24 +8,44 @@ The trigger checks for:
 #### How It Works
 
 1. The trigger runs on the configured schedule (for example, every five minutes).
-2. It calls `conversations.history` with `oldest` set to the timestamp of the previous successful poll (formatted as UNIX seconds with subsecond precision, for example `1716397800.000200`).
+2. It calls `conversations.history` with `oldest` set to its stored position, formatted as UNIX seconds with subsecond precision (for example, `1716397800.000200`). On the first recurrence there is no stored position yet, so **Look-back Date** decides where it starts.
 3. Slack returns matching messages newest-first. If the page is **truncated** because more messages exist than fit in a single page, the trigger advances its cursor to the `ts` of the oldest fetched message so the next poll resumes from that point. Otherwise, the cursor advances to the current time.
 4. The cursor is persisted via `context.polling.setState({ lastPolledAt })`, so subsequent invocations only return messages newer than the previous run.
 5. When no new messages are returned, the trigger reports `polledNoChanges: true` and the flow is not invoked.
 
-#### Configuration
+**The first recurrence**
 
-Configure the following inputs:
+- **Look-back Date empty**: the trigger records the current time and reports nothing. Incremental polling begins on the next recurrence.
+- **Look-back Date set**: the trigger begins a one-time initial sync covering every message posted on or after that date, seeding each one exactly once. The date is read in `YYYY-MM-DD` form and normalized to UTC midnight, and a future date is rejected rather than silently ignored.
 
-- **Connection**: The Slack OAuth connection used to call `conversations.history`. The connection must include the appropriate `*:history` scope for the channel type (for example, `channels:history`, `groups:history`, `im:history`, `mpim:history`).
-- **Channel ID**: The static Slack channel ID to poll (for example, `C02MS7HV6KB`). The dropdown is populated by the `selectChannels` data source.
-- **Show New Records**: When true, newly posted messages are included in the `created` bucket. Defaults to `true`.
-- **Show Updated Records**: Reserved for shape consistency with other polling triggers. The `updated` bucket is always empty because `conversations.history` does not surface message edits. Defaults to `true` but has no effect.
+**During an initial sync**
+
+No inputs are suppressed. A sync seeds a complete starting state, and none of this trigger's inputs narrow the change feed in a way that would leave gaps in it, so every input keeps the effect it has during incremental polling. **Show New Records** still gates whether messages reach the `created` bucket, and **Channel ID** still selects the single channel the sync covers. **Show Updated Records** has no effect during a sync for the same reason it has none afterward: `conversations.history` never returns an edit as its own record.
+
+There is no page-size input to cap a page of the sync. Each recurrence fetches the whole window it can reach, following Slack's cursor pagination until the endpoint reports no more pages or the trigger's internal page cap stops it.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Slack.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.created` and `data.updated`; with batching on those arrays do not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data**). Any step reading the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+Batching changes how fetched messages are dispatched, not how they are fetched. This trigger retrieves its window within a single recurrence either way, so turning batching on does not shorten or lengthen the drain.
+
+**Handing off to the schedule**
+
+An initial sync has no separate upper bound: the trigger advances its stored position to the current time once the window is exhausted, exactly as an incremental recurrence does, and the next recurrence resumes from there. No field in the payload marks the handoff, and there is no phase in which a different set of filters applies.
 
 #### Returned Data
 
+What arrives in `data` depends on whether batching is enabled on the flow.
+
+**Without batching**, `data` is a single object holding the `created` and `updated` arrays. `updated` is always empty.
+
 <details>
-<summary>Example Polling Payload</summary>
+<summary>Example Payload: batching disabled</summary>
 
 ```json
 {
@@ -36,7 +56,7 @@ Configure the following inputs:
           {
             "type": "message",
             "user": "U012AB3CDE",
-            "text": "Heads up — deploy at 3pm.",
+            "text": "Heads up, deploy at 3pm.",
             "ts": "1716397800.000200",
             "team": "T012AB3C4"
           },
@@ -56,10 +76,75 @@ Configure the following inputs:
 }
 ```
 
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+**With batching enabled**, `data` holds one slice of the batch instead of those two arrays. Every message becomes its own item, shaped as `changeType` plus `record`. `changeType` is `created` or `updated`, and `record` is the polled Slack message. Because `updated` is always empty, every item this trigger dispatches carries `changeType: "created"`.
+
+With a batch size of 1, `data` is a single item.
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "created",
+    "record": {
+      "type": "message",
+      "user": "U012AB3CDE",
+      "text": "Heads up, deploy at 3pm.",
+      "ts": "1716397800.000200",
+      "team": "T012AB3C4"
+    }
+  }
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+With a batch size greater than 1, `data` is an array of those items.
+
+<details>
+<summary>Example Payload: batching enabled, batch size greater than 1</summary>
+
+```json
+{
+  "data": [
+    {
+      "changeType": "created",
+      "record": {
+        "type": "message",
+        "user": "U012AB3CDE",
+        "text": "Heads up, deploy at 3pm.",
+        "ts": "1716397800.000200",
+        "team": "T012AB3C4"
+      }
+    },
+    {
+      "changeType": "created",
+      "record": {
+        "type": "message",
+        "user": "U987XY6Z5",
+        "text": "Got it, thanks.",
+        "ts": "1716397950.000100",
+        "team": "T012AB3C4"
+      }
+    }
+  ]
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
 </details>
 
 #### Notes
 
+- **Connection scopes.** The Slack OAuth connection must include the appropriate `*:history` scope for the channel type being polled (for example, `channels:history`, `groups:history`, `im:history`, `mpim:history`). A connection missing the scope for the selected channel fails at the first request rather than returning an empty page.
 - **`updated` is always empty.** Slack's `conversations.history` endpoint does not return edited or deleted messages as separate records. To react to `message_changed` or `message_deleted` events, configure the **Events API Webhook** trigger and subscribe to the corresponding Slack event types.
 - **Truncation behavior.** When Slack reports `has_more: true`, the cursor advances only to the oldest message in the returned page so the next poll resumes from there. This guarantees no messages are skipped under sustained traffic, though high-volume channels may take several polls to catch up.
 - **Rate limits.** `conversations.history` is rate limited at Tier 3 (50+ requests per minute for Marketplace apps). Avoid polling intervals shorter than one minute when monitoring many channels.

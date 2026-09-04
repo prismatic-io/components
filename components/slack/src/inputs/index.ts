@@ -5,6 +5,7 @@ export * from "./files";
 export * from "./messages";
 export * from "./misc";
 export * from "./search";
+export * from "./teams";
 export * from "./triggers";
 export * from "./users";
 export * from "./views";

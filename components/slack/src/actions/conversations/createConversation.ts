@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { createOauthClient } from "../../client";
+import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { createConversationExamplePayload } from "../../examplePayloads";
 import { createConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
@@ -15,6 +15,7 @@ export const createConversation = action({
     { connection, isPrivate, conversationName, teamId },
   ) => {
     debugLogger({ debug, isPrivate, conversationName, teamId });
+    assertTeamIdForOrgToken(connection, teamId, "conversations.create");
     const client = await createOauthClient({ slackConnection: connection });
     const data = await client.conversations.create({
       name: conversationName,
@@ -23,7 +24,6 @@ export const createConversation = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { conversationName, isPrivate },

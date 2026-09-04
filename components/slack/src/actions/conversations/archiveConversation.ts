@@ -23,7 +23,6 @@ export const archiveConversation = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({

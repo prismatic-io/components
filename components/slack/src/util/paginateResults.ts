@@ -8,14 +8,17 @@ export const paginateResults = async (
 ) => {
   let cursor: string | undefined;
   const toReturn = [];
+  const target = object
+    .split(".")
+    .reduce((accumulator, key) => accumulator[key], client);
   do {
-    const data = await client[object][method]({
+    const data = await target[method]({
       ...params,
       cursor: cursor,
       limit: 50,
     });
-    cursor = data.response_metadata.next_cursor;
-    toReturn.push(...data[returnObject]);
+    cursor = data.response_metadata?.next_cursor;
+    toReturn.push(...(data[returnObject] ?? []));
   } while (cursor);
   return {
     data: {

@@ -33,7 +33,6 @@ export const postMessage = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { channelName, message, username, messageId },

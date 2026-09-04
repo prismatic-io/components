@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { createOauthClient } from "../../client";
+import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { searchAllExamplePayload } from "../../examplePayloads";
 import { searchAllInputs } from "../../inputs";
 import { debugLogger } from "../../util";
@@ -25,6 +25,7 @@ export const searchAll = action({
       highlight,
       page,
     });
+    assertTeamIdForOrgToken(connection, team_id, "search.all");
     const client = await createOauthClient({
       slackConnection: connection,
     });
@@ -39,7 +40,6 @@ export const searchAll = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { query },

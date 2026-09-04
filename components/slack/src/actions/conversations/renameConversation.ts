@@ -24,7 +24,6 @@ export const renameConversation = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { newConversationName },

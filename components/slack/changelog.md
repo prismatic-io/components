@@ -1,5 +1,19 @@
 ## Changelog
 
+### 2026-09-04
+
+Added Enterprise Grid support and enhanced component capabilities:
+
+- Added the **List Teams** action for listing the workspaces in an Enterprise Grid organization
+- Added the **Select Team** inline data source, providing a dropdown for the **Team ID** input on the **Create Conversation**, **List Conversations**, **List User Conversations**, **List Users**, **Search All**, **Search Files**, and **Search Messages** actions
+- Added the **Search Conversation** action for searching channels across an Enterprise Grid organization
+- Added org-level install detection; actions that accept a **Team ID** now report a clear error when an org-level token is used without one
+- Updated the Slack API host to be read from the connection rather than a fixed address, so a Slack Gov connection reaches the Slack Gov API for token verification and for the **Raw Request** action
+- Updated inline action calling support on the **Conversation Exists**, **Get Conversation History**, **List Conversation Members**, **List Conversations**, **List Files**, **List Users**, and **List User Conversations** actions for improved example output during configuration
+- Added opt-in batching to the **New and Updated Messages** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input on the **New and Updated Messages** trigger for performing an initial sync of records; the backfill begins on the first recurrence and seeds each record once; later recurrences are unaffected
+- Fixed **List Files** raising a TypeError when **Fetch All** is enabled; enumeration currently stops at the first page
+
 ### 2026-07-31
 
 Added inline action calling support across all actions so the app builder can show example output during configuration

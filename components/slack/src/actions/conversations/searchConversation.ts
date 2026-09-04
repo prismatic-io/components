@@ -1,6 +1,6 @@
 import { action } from "@prismatic-io/spectral";
 import { createOauthClient } from "../../client";
-import { closeConversationExamplePayload } from "../../examplePayloads";
+import { searchConversationExamplePayload } from "../../examplePayloads";
 import { searchConversationInputs } from "../../inputs";
 import { debugLogger } from "../../util";
 export const searchConversation = action({
@@ -54,13 +54,12 @@ export const searchConversation = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({
-    data: closeConversationExamplePayload,
+    data: searchConversationExamplePayload,
   }),
   examplePayload: {
-    data: closeConversationExamplePayload,
+    data: searchConversationExamplePayload,
   },
 });

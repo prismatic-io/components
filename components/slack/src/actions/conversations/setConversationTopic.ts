@@ -24,7 +24,6 @@ export const setConversationTopic = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { topic },

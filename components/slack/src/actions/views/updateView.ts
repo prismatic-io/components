@@ -25,7 +25,6 @@ export const updateView = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { view_id, external_id, view },

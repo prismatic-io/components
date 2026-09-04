@@ -1,47 +1,47 @@
 import { action } from "@prismatic-io/spectral";
 import { createOauthClient } from "../../client";
-import { listConversationMembersExamplePayload } from "../../examplePayloads";
-import { listConversationMembersInputs } from "../../inputs";
+import { listTeamsExamplePayload } from "../../examplePayloads";
+import { listTeamsInputs } from "../../inputs";
 import { debugLogger, paginateResults } from "../../util";
-export const listConversationMembers = action({
+export const listTeams = action({
   display: {
-    label: "List Conversation Members",
-    description: "List all members of a conversation.",
+    label: "List Teams",
+    description:
+      "List the workspaces in an Enterprise Grid organization along with their team IDs.",
   },
-  inputs: listConversationMembersInputs,
+  inputs: listTeamsInputs,
   performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
-    { fetchAll, connection, channelName, pagination },
+    { connection, fetchAll, pagination },
   ) => {
     const { cursor, limit } = pagination;
-    debugLogger({ debug, channelName, cursor, limit });
+    debugLogger({ cursor, limit, debug });
     const client = await createOauthClient({
       slackConnection: connection,
     });
     const params = {
       cursor: cursor || undefined,
       limit,
-      channel: channelName,
     };
     if (fetchAll) {
       return await paginateResults(
         client,
-        "conversations",
-        "members",
-        "members",
+        "admin.teams",
+        "teams",
+        "list",
         params,
       );
     }
-    const data = await client.conversations.members(params);
+    const data = await client.admin.teams.list(params);
     return { data };
   },
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({
-    data: listConversationMembersExamplePayload,
+    data: listTeamsExamplePayload,
   }),
   examplePayload: {
-    data: listConversationMembersExamplePayload,
+    data: listTeamsExamplePayload,
   },
 });

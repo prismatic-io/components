@@ -8,7 +8,7 @@ export const rawRequestInputs = {
   url: {
     ...rawRequestSharedInputs.url,
     comments:
-      "The path portion of the Slack API URL only (e.g., `/team.info`). The base URL `https://slack.com/api` is already included. For example, to call `https://slack.com/api/team.info`, enter only `/team.info` here.",
+      "The path portion of the Slack API URL only (e.g., `/team.info`). The base URL is taken from the connection (`https://slack.com/api`, or the Slack Gov equivalent) and is already included. For example, to call `https://slack.com/api/team.info`, enter only `/team.info` here.",
     example: "/team.info",
   },
 };

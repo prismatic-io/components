@@ -79,8 +79,10 @@ export const teamId = input({
   placeholder: "Enter team ID",
   type: "string",
   required: false,
-  comments: "The unique identifier for the Slack team.",
+  comments:
+    "The unique identifier for the Slack team. Required when an org-level token is used; ignored on a workspace-level token.",
   example: "T1234567890",
+  dataSource: "selectTeams",
   clean: cleanString,
 });
 export const team_id = input({
@@ -91,6 +93,7 @@ export const team_id = input({
   comments:
     "The encoded team ID to search in. Required when an org-level token is used.",
   example: "T1234567890",
+  dataSource: "selectTeams",
   clean: cleanString,
 });
 export const includePublicChannels = input({

@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { createOauthClient } from "../../client";
+import { assertTeamIdForOrgToken, createOauthClient } from "../../client";
 import { listUserConversationsExamplePayload } from "../../examplePayloads";
 import { listUsersConversationsInputs } from "../../inputs";
 import { debugLogger, paginateResults } from "../../util";
@@ -9,20 +9,21 @@ export const listUsersConversations = action({
     description: "List all conversations for a user.",
   },
   inputs: listUsersConversationsInputs,
-  performSafety: "safe",
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     { connection, pagination, teamId, userId, fetchAll },
   ) => {
     const { cursor, limit } = pagination;
     debugLogger({ cursor, limit, teamId, userId, debug });
+    assertTeamIdForOrgToken(connection, teamId, "users.conversations");
     const client = await createOauthClient({
       slackConnection: connection,
     });
     const params = {
       user: userId || undefined,
       cursor: cursor || undefined,
-      limit: limit || undefined,
+      limit,
       team_id: teamId || undefined,
     };
     if (fetchAll) {
@@ -37,6 +38,11 @@ export const listUsersConversations = action({
     const data = await client.users.conversations(params);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listUserConversationsExamplePayload,
+  }),
   examplePayload: {
     data: listUserConversationsExamplePayload,
   },

@@ -1,12 +1,12 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createOauthClient } from "../client";
 import { selectChannelsInputs } from "../inputs";
-import { getChannelDisplayName, getChannels } from "../util";
+import { getChannelDisplayName, getChannels, sortByAttribute } from "../util";
 export const selectChannels = dataSource({
   display: {
     label: "Select Channel",
     description:
-      "Select a Slack channel from a dropdown menu (up to 10,000 channels). To select Private Channels, you must access the API as a User and use the 'user_scope' configuration.",
+      "Select a Slack channel from a dropdown menu (up to 10,000 channels). Selecting Private Channels requires accessing the API as a User with the 'user_scope' configuration.",
   },
   inputs: selectChannelsInputs,
   perform: async (context, params) => {
@@ -17,12 +17,12 @@ export const selectChannels = dataSource({
     if (!channels) {
       return { result: [] };
     }
-    const objects = channels
-      .sort((a, b) => (a.name < b.name ? -1 : 1))
-      .map<Element>((channel) => ({
+    const objects = sortByAttribute(channels, "name").map<Element>(
+      (channel) => ({
         key: channel.id,
         label: getChannelDisplayName(params.showIdInDropdown, channel),
-      }));
+      }),
+    );
     return { result: objects };
   },
   dataSourceType: "picklist",

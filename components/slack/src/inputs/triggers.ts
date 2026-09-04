@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { lookBackDateClean } from "../util/lookBackDateClean";
 import { channelId, connectionInput } from "./common";
 export const responseBody = input({
   label: "Response Body",
@@ -47,9 +48,20 @@ export const slashCommandWebhookInputs = {
   responseBody,
   contentType,
 };
+export const lookBackDate = input({
+  label: "Look-back Date",
+  type: "string",
+  required: false,
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  example: "2026-01-01",
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record created on or after this date once.",
+  clean: lookBackDateClean,
+});
 export const pollChangesInputs = {
   connection: connectionInput,
   channelId,
   showNewRecords,
   showUpdatedRecords,
+  lookBackDate,
 };

@@ -18,7 +18,34 @@ export type SearchChannelType = search_channel_types[];
 export type SearchAllSort = "timestamp" | "score";
 export interface AuthTestResponse {
   ok: boolean;
-  error: string;
+  error?: string;
+  url?: string;
+  team?: string;
+  user?: string;
+  team_id?: string;
+  user_id?: string;
+  bot_id?: string;
+  enterprise_id?: string;
+}
+export interface SlackOAuthToken {
+  access_token?: string;
+  authed_user?: {
+    access_token?: string;
+  };
+  team?: {
+    id?: string;
+    name?: string;
+  };
+  enterprise?: {
+    id?: string;
+    name?: string;
+  } | null;
+  is_enterprise_install?: boolean;
+}
+export interface EnterpriseContext {
+  isEnterpriseInstall: boolean;
+  enterpriseId?: string;
+  teamId?: string;
 }
 export interface CreateClientProps {
   slackConnection?: Connection;
@@ -32,4 +59,12 @@ export interface SlackMessage extends Record<string, unknown> {
   user?: string;
   text?: string;
   thread_ts?: string;
+}
+export interface SlackChangesObject {
+  created: SlackMessage[];
+  updated: SlackMessage[];
+}
+export interface SlackRecordChange {
+  changeType: "created" | "updated";
+  record: SlackMessage;
 }

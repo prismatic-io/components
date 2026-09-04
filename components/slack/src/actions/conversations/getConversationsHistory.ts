@@ -9,7 +9,7 @@ export const getConversationsHistory = action({
     description: "Get the history of a conversation.",
   },
   inputs: getConversationsHistoryInputs,
-  performSafety: "safe",
+  performSafety: "notAllowed",
   perform: async (
     { debug: { enabled: debug } },
     {
@@ -40,7 +40,7 @@ export const getConversationsHistory = action({
       channel: channelName,
       cursor: cursor || undefined,
       include_all_metadata: includeAllMetadata || undefined,
-      limit: limit || undefined,
+      limit,
       inclusive,
       ...(oldest ? { oldest } : {}),
       ...(latest ? { latest } : {}),
@@ -57,6 +57,11 @@ export const getConversationsHistory = action({
     const data = await client.conversations.history(params);
     return { data };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: getConversationHistoryExamplePayload,
+  }),
   examplePayload: {
     data: getConversationHistoryExamplePayload,
   },

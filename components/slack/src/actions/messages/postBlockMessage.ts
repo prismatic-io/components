@@ -27,7 +27,6 @@ export const postBlockMessage = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { channelName, message, username, messageId },

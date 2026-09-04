@@ -1,8 +1,15 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
+import { POLLING_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { PollingState, SlackMessage } from "../types";
-import { fetchSlackMessagesSince } from "../util";
+import type {
+  PollingState,
+  SlackChangesObject,
+  SlackMessage,
+  SlackRecordChange,
+} from "../types";
+import { fetchSlackMessagesSince } from "../util/fetchSlackMessagesSince";
+import { resolvePollingRecordChanges } from "../util/resolvePollingRecordChanges";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Messages",
@@ -11,10 +18,25 @@ export const pollChangesTrigger = pollingTrigger({
   },
   examplePayload: pollChangesTriggerExamplePayload,
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: POLLING_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): SlackRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as SlackChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const hasExistingState = !!pollState?.lastPolledAt;
+    const hasLookBackDate = !!params.lookBackDate;
+    let lastPolledAt: string;
+    if (hasExistingState) {
+      lastPolledAt = pollState.lastPolledAt;
+    } else if (hasLookBackDate) {
+      lastPolledAt = params.lookBackDate;
+    } else {
+      lastPolledAt = now;
+    }
     const oldest = (new Date(lastPolledAt).getTime() / 1000).toFixed(6);
     const { messages, truncated } = await fetchSlackMessagesSince(
       params.connection,

@@ -11,6 +11,7 @@ import {
   listConversationMembers,
   listConversations,
   renameConversation,
+  searchConversation,
   setConversationPurpose,
   setConversationTopic,
 } from "./actions/conversations";
@@ -29,6 +30,7 @@ import {
 } from "./actions/messages";
 import { rawRequest } from "./actions/misc";
 import { searchAll } from "./actions/search";
+import { listTeams } from "./actions/teams";
 import {
   getUser,
   getUserById,
@@ -87,6 +89,8 @@ export default component({
     searchAll,
     searchFiles,
     searchMessages,
+    searchConversation,
+    listTeams,
   },
   triggers,
   dataSources,

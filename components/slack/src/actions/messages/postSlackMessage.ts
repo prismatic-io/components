@@ -19,7 +19,6 @@ export const postSlackMessage = action({
       }),
     };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({

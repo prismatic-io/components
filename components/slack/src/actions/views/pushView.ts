@@ -24,7 +24,6 @@ export const pushView = action({
     });
     return { data };
   },
-  examplePerformSafety: "safe",
   examplePerform: async (
     _context,
     { view },

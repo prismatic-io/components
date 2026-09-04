@@ -49,6 +49,8 @@ export const ERROR_DESCRIPTIONS = {
   team_added_to_org:
     "The workspace associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.",
 };
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+export const POLLING_BATCH_SIZE = 50;
 export enum ChannelType {
   PUBLIC_CHANNEL = "public_channel",
   PRIVATE_CHANNEL = "private_channel",
