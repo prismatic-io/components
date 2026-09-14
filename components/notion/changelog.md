@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-09-14
+
+Removed the **Create Database (Deprecated)**, **Get Database (Deprecated)**, **List Databases (Deprecated)**, and **Query Database (Deprecated)** actions that are no longer in use; use **Create Database**, **Retrieve Database**, **List Data Sources**, and **Query Data Source** instead
+
 ### 2026-04-30
 
 Updated spectral version

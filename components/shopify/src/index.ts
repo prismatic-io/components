@@ -13,7 +13,7 @@ import {
 } from "./actions/fulfillments";
 import graphqlActions from "./actions/graphql";
 import { getShopConfig, graphQlRawRequest, rawRequest } from "./actions/misc";
-import { getOrder, listOrders } from "./actions/orders";
+import { getOrder } from "./actions/orders";
 import { listProductImages } from "./actions/productImages";
 import { countProducts, getProduct, listProducts } from "./actions/products";
 import {
@@ -46,7 +46,6 @@ export default component({
     listProducts,
     getProduct,
     getOrder,
-    listOrders,
     rawRequest,
     listFulfillments,
     getFulfillmentOrder,

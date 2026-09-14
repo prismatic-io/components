@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-09-14
+
+Removed the **List Files in Drive (Deprecated)** and **List Folder Files in Drive (Deprecated)** actions that are no longer in use; use **List Files in Drive** and **List Folder Files in Drive** instead
+
 ### 2026-08-05
 
 Improved datasource filtering, drive scoping, and pagination consistency across drive actions and triggers:

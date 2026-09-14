@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-09-14
+
+Removed the **Get Items By Column Value (Deprecated)** action that is no longer in use; use **Get Items By Column Value** instead
+
 ### 2026-08-26
 
 Grouped the **Page Offset** and **Result Limit** inputs on the **List Boards** action into a **Pagination** structured object; **Fetch All** stays a top-level toggle

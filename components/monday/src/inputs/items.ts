@@ -29,12 +29,6 @@ const columnValue = input({
   example: "Done",
   clean: util.types.toString,
 });
-export const getItemsByColumnValueInputs = {
-  connection: connectionInput,
-  boardId,
-  columnId,
-  columnValue,
-};
 export const getItemsByColumnValueNewInputs = {
   connection: connectionInput,
   boardId,

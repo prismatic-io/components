@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-09-14
+
+Removed the **List Orders (Deprecated)** action and the **Event Topic Webhook (Deprecated)** trigger that are no longer in use; use **List Orders** and **Event Topic Subscription** instead
+
 ### 2026-09-03
 
 - Added opt-in batching across all polling triggers, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
@@ -17,8 +21,6 @@ Updated the OAuth 2.0 connections to request expiring access tokens so authentic
 Restructured action inputs into structured objects for an improved user experience.
 - The GraphQL list actions (**List Currencies**, **List Collections**, **List Customers**, **List Draft Orders**, **List Fulfillment Orders**, **List Inventory Items**, **List Inventory Levels At Location**, **List Locations**, **List Orders**, **List Product Images**, **List Products**, **List Variants**, **List Webhooks**, and **List Metafields**) group their **Limit** and **Page Offset Cursor** inputs into a **Pagination** structured object
 - **Create Customer** groups its **Phone**, **Notes**, **Currency Format**, **Tax Exempt**, and **Metafields** inputs into an **Additional Fields** structured object; the required **Address List** input moves up beside the other required inputs
-
-
 
 ### 2026-04-30
 

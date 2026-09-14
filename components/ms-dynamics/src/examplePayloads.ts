@@ -357,13 +357,6 @@ export const fetchXmlExamplePayload = {
     ],
   },
 };
-export const rawRequestExamplePayload = {
-  data: {
-    "@odata.context": `${API_BASE}/$metadata#accounts/$entity`,
-    accountid: exampleAccount.accountid,
-    name: exampleAccount.name,
-  },
-};
 export const rawRequestV2ExamplePayload = {
   data: {
     "@odata.context": `${API_BASE}/$metadata#accounts/$entity`,

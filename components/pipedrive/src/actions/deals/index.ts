@@ -12,7 +12,6 @@ import { getDealFiles } from "./getDealFiles";
 import { getDealFollowers } from "./getDealFollowers";
 import { getDealMailMessages } from "./getDealMailMessages";
 import { getDealParticipants } from "./getDealParticipants";
-import { getDealPersons } from "./getDealPersons";
 import { getDealProducts } from "./getDealProducts";
 import { getDealUsers } from "./getDealUsers";
 import { getDeals } from "./getDeals";
@@ -42,7 +41,6 @@ export default {
   addDealParticipant,
   deleteDealParticipant,
   getDealUsers,
-  getDealPersons,
   getDealProducts,
   addDealProduct,
   updateDealProduct,

@@ -22,7 +22,6 @@ import type {
 import type { UserError } from "../actions/interfaces/UserError";
 import type { WebhookSubscription } from "../actions/interfaces/Webhook";
 import type { Webhookinput } from "../actions/interfaces/Webhookinput";
-import type { ShopifyWebhook } from "../actions/webhooks";
 import { getShopifyGraphQlClient } from "../client";
 import { LOOK_BACK_DATE_PATTERN, MAX_LIMIT, POLLING_LIMIT } from "../constants";
 import type { pollingTriggerInputs } from "../inputsGql";
@@ -86,64 +85,6 @@ export const performFunction = async (
       body: "{}",
     },
   });
-};
-export const createWebhooks = async (
-  client: HttpClient,
-  events: string[],
-  address: string,
-) => {
-  const eventsPromises = [];
-  for (const event of events) {
-    eventsPromises.push(createWebhookAction(client, event, address));
-  }
-  const data = await Promise.all(eventsPromises);
-  return data;
-};
-export const createWebhookAction = async (
-  client: HttpClient,
-  topic: string,
-  address: string,
-  format = "json",
-) => {
-  const { data } = await client.post<{
-    webhook: ShopifyWebhook;
-  }>("/webhooks.json", {
-    webhook: {
-      topic,
-      address,
-      format,
-    },
-  });
-  return data;
-};
-export const fetchWebhooks = async (client: HttpClient, address: string) => {
-  let webhooks: ShopifyWebhook[] = [];
-  let page_info: string | null = null;
-  do {
-    const { data, headers } = await client.get("/webhooks.json", {
-      params: { limit: 250, address },
-    });
-    const locationData = parseLinkHeader(headers.link);
-    page_info = locationData?.next?.page_info;
-    webhooks = [...webhooks, ...data.webhooks];
-  } while (page_info);
-  return webhooks;
-};
-export const deleteWebhooksInstance = async (
-  client: HttpClient,
-  address: string,
-) => {
-  const webhooks = await fetchWebhooks(client, address);
-  const webhooksPromises = [];
-  for (const webhook of webhooks) {
-    webhooksPromises.push(deleteWebhook(client, webhook.id));
-  }
-  const data = await Promise.all(webhooksPromises);
-  return data;
-};
-export const deleteWebhook = async (client: HttpClient, id: number) => {
-  const { data } = await client.delete(`/webhooks/${id}.json`);
-  return data;
 };
 export const computePageInformation = async (
   client: HttpClient,

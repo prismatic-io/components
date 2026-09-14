@@ -28,11 +28,6 @@ export const createFolderInputs = {
   path,
   boxConnection: connectionInput,
 };
-export const listFolderInputs = {
-  path,
-  pagination: folderPagination,
-  boxConnection: connectionInput,
-};
 export const listFolderWithPaginationInputs = {
   path,
   fetchAll,

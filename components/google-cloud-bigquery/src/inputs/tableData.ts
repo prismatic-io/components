@@ -1,14 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanString, jsonInputClean } from "../util";
-import {
-  connectionInput,
-  datasetId,
-  kind,
-  projectId,
-  selectedFields,
-  tableId,
-} from "./common";
-import { paginationFieldsWithStartIndex } from "./pagination";
+import { connectionInput, datasetId, kind, projectId, tableId } from "./common";
 export const skipInvalidRows = input({
   label: "Skip Invalid Rows",
   type: "boolean",
@@ -71,18 +63,6 @@ export const tableDataInsertAllAdditionalFields = structuredObjectInput({
     templateSuffix,
   },
 });
-export const listTableDataInputs = {
-  connectionInput,
-  datasetId,
-  projectId,
-  tableId,
-  selectedFields: {
-    ...selectedFields,
-    comments:
-      "Subset of fields to return, supports select into sub fields. Example: selectedFields = 'a,e.d.f';",
-  },
-  pagination: paginationFieldsWithStartIndex,
-};
 export const tableDataInsertAllInputs = {
   connectionInput,
   datasetId,

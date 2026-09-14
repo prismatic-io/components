@@ -46,47 +46,6 @@ export const getBoardExamplePayload = {
     ],
   },
 };
-export const getItemsByColumnValueExamplePayload = {
-  data: {
-    items_by_column_values: [
-      {
-        id: "4277581981",
-        name: "Task 1",
-        creator: {
-          email: "example@email.com",
-        },
-        updated_at: "2023-04-10T16:23:17Z",
-        state: "active",
-        column_values: [
-          {
-            id: "numbers",
-            text: "1234",
-            title: "Some Numbers",
-            value: '"1234"',
-            description: null,
-            type: "numeric",
-          },
-          {
-            id: "item_id",
-            text: "4277581981",
-            title: "Item ID",
-            value: null,
-            description: null,
-            type: "pulse-id",
-          },
-          {
-            id: "text",
-            text: "Hi There",
-            title: "Text",
-            value: '"Hi There"',
-            description: null,
-            type: "text",
-          },
-        ],
-      },
-    ],
-  },
-};
 export const getItemsByColumnValueNewExamplePayload = {
   data: {
     items_by_column_values: [

@@ -1,34 +1,7 @@
 import * as crypto from "node:crypto";
 import { type TriggerPayload, trigger, util } from "@prismatic-io/spectral";
-import { getShopifyClient } from "../client";
-import { eventTopicWebhookInputs, webhookInputs } from "../inputs";
-import {
-  createWebhooks,
-  deleteWebhooksInstance,
-  performFunction,
-  signaturesMatch,
-} from "../util";
-export const eventTopicWebhook = trigger({
-  display: {
-    label: "Event Topic Webhook (Deprecated)",
-    description:
-      "Set event based webhooks and get notified when these event types are created, updated, or deleted. This version of the trigger is being deprecated. Please replace trigger with Event Topic Webhook.",
-  },
-  inputs: eventTopicWebhookInputs,
-  synchronousResponseSupport: "invalid",
-  scheduleSupport: "invalid",
-  perform: performFunction,
-  onInstanceDeploy: async (context, { connectionInput, webhookTopic }) => {
-    const endpoint = context.webhookUrls[context.flow.name];
-    const client = getShopifyClient(connectionInput);
-    await createWebhooks(client, webhookTopic, endpoint);
-  },
-  onInstanceDelete: async (context, { connectionInput }) => {
-    const endpoint = context.webhookUrls[context.flow.name];
-    const client = getShopifyClient(connectionInput);
-    await deleteWebhooksInstance(client, endpoint);
-  },
-});
+import { webhookInputs } from "../inputs";
+import { signaturesMatch } from "../util";
 export const webhook = trigger({
   display: {
     label: "Webhook",
@@ -80,4 +53,4 @@ export const webhook = trigger({
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
 });
-export default { webhook, eventTopicWebhook };
+export default { webhook };

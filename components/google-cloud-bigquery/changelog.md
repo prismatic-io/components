@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-09-14
+
+Removed the **List Table Data (Deprecated)** action that is no longer in use
+
 ### 2026-07-15
 
 Grouped related optional inputs into structured objects across BigQuery actions to reduce clutter in the configuration UI

@@ -224,15 +224,6 @@ export const stageIdInput = input({
   example: "123",
   placeholder: "Enter Stage ID",
 });
-export const subscriptionIdInput = input({
-  label: "Subscription ID",
-  type: "string",
-  required: true,
-  clean: util.types.toNumber,
-  comments: "The unique identifier for the subscription.",
-  example: "123",
-  placeholder: "Enter Subscription ID",
-});
 export const userIdInput = input({
   label: "User ID",
   type: "string",

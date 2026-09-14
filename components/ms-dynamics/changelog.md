@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-09-14
+
+Removed the **Raw Request (Deprecated)** action that is no longer in use; use **Raw Request** instead
+
 ### 2026-09-04
 
 - Added opt-in batching to the **New and Updated Records** polling trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives

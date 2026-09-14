@@ -25,7 +25,6 @@ export * from "./pipelines";
 export * from "./productFields";
 export * from "./products";
 export * from "./stages";
-export * from "./subscriptions";
 export * from "./triggers";
 export * from "./userConnections";
 export * from "./userSettings";

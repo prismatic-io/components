@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-09-14
+
+Removed the **Cancel Recurring Subscription (Deprecated)**, **Delete Subscription (Deprecated)**, **Find Subscription By Deal (Deprecated)**, **Get Subscription (Deprecated)**, **Get Subscription Payments (Deprecated)**, and **Get Deal Persons (Deprecated)** actions that are no longer in use. No subscription actions remain on the component
+
 ### 2026-07-29
 
 Added 10 new V2 actions for the Pipedrive Fields API v2 endpoints. V2 actions use cursor-based pagination with **Fetch All** support and identify fields by **Field Code** (string key) instead of numeric ID. Existing v1 actions are preserved for backwards compatibility.

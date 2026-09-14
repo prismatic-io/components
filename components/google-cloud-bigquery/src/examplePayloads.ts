@@ -380,30 +380,6 @@ export const cancelJobExamplePayload = {
 export const deleteJobExamplePayload = {
   data: {},
 };
-export const listTableDataExamplePayload = {
-  data: {
-    kind: "bigquery#tableDataList",
-    etag: "abc123def456",
-    totalRows: "1000",
-    rows: [
-      {
-        f: [
-          { v: "user_001" },
-          { v: "user001@example.com" },
-          { v: "1609459200.0" },
-        ],
-      },
-      {
-        f: [
-          { v: "user_002" },
-          { v: "user002@example.com" },
-          { v: "1609545600.0" },
-        ],
-      },
-    ],
-    pageToken: "eyJwYWdlIjogMn0=",
-  },
-};
 export const tableDataInsertAllExamplePayload = {
   data: {
     kind: "bigquery#tableDataInsertAllResponse",

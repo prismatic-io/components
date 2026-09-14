@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-09-14
+
+Removed the **List Folder (Deprecated)** action that is no longer in use; use **List Folder** instead
+
 ### 2026-08-31
 
 Improved Box trigger and webhook reliability and restructured action inputs:

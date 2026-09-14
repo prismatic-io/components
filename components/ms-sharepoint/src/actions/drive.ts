@@ -104,53 +104,6 @@ const getDrive = action({
     return { data };
   },
 });
-const getFilesFromDrive = action({
-  display: {
-    label: "List Files in Drive (Deprecated)",
-    description:
-      "List all the files from a Drive. This version of the action" +
-      " is being deprecated. Please replace action with List Files In Drive.",
-  },
-  inputs: {
-    connection,
-    siteId: { ...siteId, required: false },
-    driveId,
-  },
-  perform: async ({ debug: { enabled: debug } }, { connection, driveId }) => {
-    const client = await createClient(connection, debug);
-    const { data } = await client.get(`/drives/${driveId}/root/children`);
-    return {
-      data: data.value,
-    };
-  },
-});
-const getFilesFromDriveFolder = action({
-  display: {
-    label: "List Folder Files in Drive (Deprecated)",
-    description:
-      "List all the files inside of a folder from a Drive. This " +
-      "version of the action is being deprecated. Please replace action with " +
-      "List Folder Files In Drive.",
-  },
-  inputs: {
-    connection,
-    siteId: { ...siteId, required: false },
-    driveId,
-    folderId,
-  },
-  perform: async (
-    { debug: { enabled: debug } },
-    { connection, folderId, driveId },
-  ) => {
-    const client = await createClient(connection, debug);
-    const { data } = await client.get(
-      `/drives/${driveId}/items/${folderId}/children`,
-    );
-    return {
-      data: data.value,
-    };
-  },
-});
 const getFilesFromDriveWithPagination = action({
   display: {
     label: "List Files in Drive",
@@ -398,12 +351,10 @@ const getFilesFromDriveRecursive = action({
 export default {
   listDrives,
   getDrive,
-  getFilesFromDrive,
   getFile,
   uploadFile,
   updateFile,
   downloadFile,
-  getFilesFromDriveFolder,
   getFilesFromDriveFolderWithPagination,
   getFilesFromDriveWithPagination,
 };

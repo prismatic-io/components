@@ -23,7 +23,6 @@ import pipelines from "./pipelines";
 import productFields from "./productFields";
 import products from "./products";
 import stages from "./stages";
-import subscriptions from "./subscriptions";
 import userConnections from "./userConnections";
 import userSettings from "./userSettings";
 import users from "./users";
@@ -54,7 +53,6 @@ export default {
   ...productFields,
   ...products,
   ...stages,
-  ...subscriptions,
   ...userConnections,
   ...userSettings,
   ...users,

@@ -360,11 +360,6 @@ export const initialDataSourcePropertiesInput = input({
   comments:
     "Property schema for the initial data source. The keys are the names of properties as they appear in Notion.",
 });
-export const listOldDatabasesInputs = {
-  connection: connectionInput,
-  startCursor: startCursorInput,
-  fetchAll: fetchAllInput,
-};
 export const selectDatabaseInputs = {
   connection: connectionInput,
 };
