@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { createPaymentExamplePayload as updatePaymentExamplePayload } from "../../examplePayloads";
+import { updatePaymentExamplePayload } from "../../examplePayloads";
 import { updatePaymentInputs } from "../../inputs";
+import { updatePaymentOutputSchema } from "../../outputSchemas";
 export const updatePayment = action({
   display: {
     label: "Update Payment",
-    description: "Update a specified payment",
+    description: "Update a specified payment.",
   },
   inputs: updatePaymentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updatePaymentOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -42,5 +48,6 @@ export const updatePayment = action({
       data,
     };
   },
+  examplePerform: async () => updatePaymentExamplePayload,
   examplePayload: updatePaymentExamplePayload,
 });

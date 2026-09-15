@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listPaymentsExamplePayload } from "../../examplePayloads";
 import { listPaymentsInputs } from "../../inputs";
+import { listPaymentsOutputSchema } from "../../outputSchemas";
 import type { Payment } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listPayments = action({
   display: {
     label: "List Payments",
-    description: "Retrieve a list of payments",
+    description: "Retrieve a list of payments.",
   },
   inputs: listPaymentsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listPaymentsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
@@ -42,5 +48,6 @@ export const listPayments = action({
       data,
     };
   },
+  examplePerform: async () => listPaymentsExamplePayload,
   examplePayload: listPaymentsExamplePayload,
 });

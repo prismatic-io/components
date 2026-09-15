@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getLocationExamplePayload as updateLocationExamplePayload } from "../../examplePayloads";
+import { updateLocationExamplePayload } from "../../examplePayloads";
 import { updateLocationInputs } from "../../inputs";
+import { updateLocationOutputSchema } from "../../outputSchemas";
 export const updateLocation = action({
   display: {
     label: "Update Location",
-    description: "Update a location",
+    description: "Update a location.",
   },
   inputs: updateLocationInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateLocationOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -38,5 +44,6 @@ export const updateLocation = action({
       data,
     };
   },
+  examplePerform: async () => updateLocationExamplePayload,
   examplePayload: updateLocationExamplePayload,
 });

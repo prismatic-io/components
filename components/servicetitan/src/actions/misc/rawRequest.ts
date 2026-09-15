@@ -10,9 +10,10 @@ import {
 export const rawRequest = action({
   display: {
     label: "Raw Request",
-    description: "Send raw HTTP request to ServiceDesk Plus",
+    description: "Send raw HTTP request to ServiceTitan.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, urlType, ...httpClientInputs }) => {
     validateConnection(connection);
     const applicationKey = getApplicationKeyFromConnection(connection);
@@ -23,7 +24,7 @@ export const rawRequest = action({
       { ...httpClientInputs, debugRequest: context.debug.enabled },
       {
         Authorization: `Bearer ${token}`,
-        Accepts: "application/json",
+        Accept: "application/json",
         "Content-type": "application/json",
         "ST-App-Key": applicationKey,
       },

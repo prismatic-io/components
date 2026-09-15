@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import {
   cleanBooleanInput,
   cleanCodeInput,
@@ -44,14 +44,14 @@ const appointments = input({
     2,
   ),
   comments: "List of appointment information",
-  clean: cleanCodeInput,
+  clean: util.types.toObject,
 });
 const jobGeneratedLeadSource = input({
   label: "Job Generated Lead Source",
   type: "code",
   language: "json",
   required: false,
-  default: JSON.stringify(
+  example: JSON.stringify(
     {
       jobId: 0,
       employeeId: 0,
@@ -60,7 +60,7 @@ const jobGeneratedLeadSource = input({
     2,
   ),
   comments:
-    "Object that contains: JobId: ID of the job from which this job was generated EmployeeId: ID of the office user or technician",
+    "The lead source that generated this job. Provide jobId (the job this one was generated from) and employeeId (the office user or technician credited).",
   clean: cleanCodeInput,
 });
 const invoiceSignatureIsRequired = input({
@@ -68,7 +68,7 @@ const invoiceSignatureIsRequired = input({
   type: "string",
   required: false,
   comments:
-    "Optional model that informs if invoice should requires a signature or not if not informed will follow the rules for location and job type",
+    "When true, the invoice for this job requires a signature. When left empty, the location and job type rules apply.",
   model: mapBooleanModelInput,
   clean: cleanBooleanInput,
   default: "",
@@ -76,20 +76,22 @@ const invoiceSignatureIsRequired = input({
 const customerPo = input({
   label: "Customer PO",
   type: "string",
+  example: "PO-10025",
   required: false,
-  comments: "Customer PO",
+  comments: "The customer's purchase order number to record on the job.",
+  placeholder: "Enter a purchase order number",
   clean: cleanStringInput,
   default: "",
 });
 const externalDataApplicationGuid = input({
-  label: "External Data Application Guid",
+  label: "External Data Application GUID",
   type: "string",
   example: "6B29FC40-CA47-1067-B31D-00DD010662DA",
   required: true,
   comments:
     "Format - guid. If this guid is provided, external data corresponding to this application guid will be returned.",
-  placeholder: "6B29FC40-CA47-1067-B31D-00DD010662DA",
-  clean: cleanStringInput,
+  placeholder: "Enter an application GUID",
+  clean: util.types.toString,
 });
 const shouldUpdateInvoiceItems = input({
   label: "Should Update Invoice Items",
@@ -107,8 +109,8 @@ const reasonId = input({
   required: true,
   comments: "ID of job cancel reason",
   example: "1088",
-  placeholder: "1088",
-  clean: cleanStringInput,
+  placeholder: "Enter a job cancel reason ID",
+  clean: util.types.toNumber,
   dataSource: "selectJobCancelReason",
 });
 const jobMemo = input({
@@ -116,9 +118,9 @@ const jobMemo = input({
   type: "text",
   required: true,
   comments: "Memo of job cancel reason",
-  example: "string",
-  placeholder: "string",
-  clean: cleanStringInput,
+  example: "Customer rescheduled to a later date",
+  placeholder: "Enter a memo",
+  clean: util.types.toString,
 });
 export const createJobInputs = {
   connection,

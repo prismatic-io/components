@@ -14,14 +14,14 @@ import {
   sort,
   tagTypeIds,
 } from "./common";
-export const installedEquipmentId = input({
+const installedEquipmentId = input({
   label: "Installed Equipment ID",
   type: "string",
   example: "1234567890",
   required: true,
   comments: "ID of the installed equipment",
-  placeholder: "1234567890",
-  clean: cleanStringInput,
+  placeholder: "Enter an installed equipment ID",
+  clean: util.types.toString,
   dataSource: "selectInstalledEquipment",
 });
 const serialNumber = input({
@@ -30,7 +30,7 @@ const serialNumber = input({
   example: "1234567890",
   required: false,
   comments: "Serial number of the installed equipment",
-  placeholder: "1234567890",
+  placeholder: "Enter a serial number",
   clean: cleanStringInput,
 });
 const manufacturer = input({
@@ -39,7 +39,7 @@ const manufacturer = input({
   example: "Test Manufacturer",
   required: false,
   comments: "Manufacturer of the installed equipment",
-  placeholder: "Test Manufacturer",
+  placeholder: "Enter a manufacturer name",
   clean: cleanStringInput,
 });
 const model = input({
@@ -48,7 +48,7 @@ const model = input({
   example: "Test Model",
   required: false,
   comments: "Model of the installed equipment",
-  placeholder: "Test Model",
+  placeholder: "Enter a model name",
   clean: cleanStringInput,
 });
 const installedEquipmentCost = input({
@@ -57,7 +57,7 @@ const installedEquipmentCost = input({
   example: "100.00",
   required: false,
   comments: "Cost of the installed equipment",
-  placeholder: "100.00",
+  placeholder: "Enter a cost amount",
   clean: cleanNumberInput,
 });
 const manufacturerWarrantyStart = input({
@@ -66,7 +66,7 @@ const manufacturerWarrantyStart = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Manufacturer warranty start date",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the manufacturer warranty start date",
   clean: cleanStringInput,
 });
 const manufacturerWarrantyEnd = input({
@@ -75,7 +75,7 @@ const manufacturerWarrantyEnd = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Manufacturer warranty end date",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the manufacturer warranty end date",
   clean: cleanStringInput,
 });
 const serviceProviderWarrantyStart = input({
@@ -84,7 +84,7 @@ const serviceProviderWarrantyStart = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Service Provider Warranty Start date",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the service provider warranty start date",
   clean: cleanStringInput,
 });
 const serviceProviderWarrantyEnd = input({
@@ -93,7 +93,7 @@ const serviceProviderWarrantyEnd = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Service Provider Warranty End date",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the service provider warranty end date",
   clean: cleanStringInput,
 });
 const attachments = input({
@@ -101,7 +101,7 @@ const attachments = input({
   type: "code",
   language: "json",
   required: false,
-  default: JSON.stringify(
+  example: JSON.stringify(
     [
       {
         alias: "string",
@@ -129,8 +129,8 @@ const fileName = input({
   example: "Test File",
   required: true,
   comments: "Name of the file",
-  placeholder: "Test File",
-  clean: cleanStringInput,
+  placeholder: "Enter a file name",
+  clean: util.types.toString,
 });
 const path = input({
   label: "Path",
@@ -138,7 +138,7 @@ const path = input({
   example: "department",
   required: false,
   comments: "Installed equipment attachment path",
-  placeholder: "department",
+  placeholder: "Enter an attachment path",
   clean: cleanStringInput,
 });
 const warrantyDates = structuredObjectInput({
@@ -156,7 +156,7 @@ export const createInstalledEquipmentInputs = {
   connection,
   locationId: {
     ...locationId,
-    comments: "The location id of the installed equipment",
+    comments: "The ID of the location of the installed equipment",
   },
   name: {
     ...name,
@@ -208,6 +208,7 @@ export const listInstalledEquipmentAttachmentsInputs = {
   path: {
     ...path,
     required: true,
+    clean: util.types.toString,
   },
 };
 export const updateInstalledEquipmentInputs = {

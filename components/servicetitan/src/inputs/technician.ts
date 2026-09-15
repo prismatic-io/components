@@ -1,4 +1,4 @@
-import { input, structuredObjectInput } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanNumberInput,
   cleanStringInput,
@@ -26,7 +26,7 @@ const phoneNumber = input({
   example: "1234567890",
   required: false,
   comments: "Technician's phone number",
-  placeholder: "1234567890",
+  placeholder: "Enter a phone number",
   clean: cleanStringInput,
 });
 const email = input({
@@ -35,7 +35,7 @@ const email = input({
   example: "test@technician.us",
   required: false,
   comments: "Technician's email address",
-  placeholder: "test@technician.us",
+  placeholder: "Enter an email address",
   clean: cleanStringInput,
 });
 const login = input({
@@ -44,23 +44,25 @@ const login = input({
   example: "technician_us",
   required: false,
   comments: "Technician's username",
-  placeholder: "technician_us",
+  placeholder: "Enter a username",
   clean: cleanStringInput,
 });
 const password = input({
   label: "Password",
-  type: "string",
-  example: "@an1pwd123",
+  type: "password",
+  example: "XXXXXXXXXXXX",
   required: false,
-  comments: "Technician's password",
-  placeholder: "@an1pwd123",
+  comments:
+    "The password to assign when the technician's login is created now rather than deferred or invited.",
+  placeholder: "Enter a password",
   clean: cleanStringInput,
 });
 const accountCreationMethod = input({
   label: "Account Creation Method",
   type: "string",
   required: true,
-  comments: "Account creation method",
+  comments:
+    "Determines how the technician's login is created: defer it, send an invite, or assign a username and password now.",
   model: mapModelValues(
     ["CreateLater", "SendInvite", "AssignLoginAndPassword"],
     true,
@@ -73,8 +75,8 @@ const roleId = input({
   type: "string",
   example: "7",
   required: true,
-  comments: "User role Id",
-  placeholder: "7",
+  comments: "The ID of the user role to assign to the technician.",
+  placeholder: "Enter a user role ID",
   clean: cleanNumberInput,
   dataSource: "selectUserRole",
 });
@@ -102,19 +104,20 @@ const positions = input({
   clean: cleanStringValueListInput,
 });
 const aadUserId = input({
-  label: "Azure Active Directory User Id",
+  label: "Azure Active Directory User ID",
   type: "string",
   example: "6B29FC40-CA47-1067-B31D-00DD010662DA",
   required: false,
-  comments: "Azure Active Directory User Id",
-  placeholder: "6B29FC40-CA47-1067-B31D-00DD010662DA",
+  comments:
+    "The GUID of the technician's user account in Azure Active Directory.",
+  placeholder: "Enter an Azure Active Directory user ID",
   clean: cleanStringInput,
 });
 const licenseType = input({
   label: "License Type",
   type: "string",
   required: true,
-  comments: "License type",
+  comments: "The type of ServiceTitan license to assign to the technician.",
   model: mapModelValues(
     ["NonManagedTech", "ManagedTech", "ManagedInstaller"],
     true,
@@ -128,7 +131,7 @@ const team = input({
   example: "Test Team",
   required: false,
   comments: "Team name",
-  placeholder: "Test Team",
+  placeholder: "Enter a team name",
   clean: cleanStringInput,
 });
 const dailyGoal = input({
@@ -137,7 +140,7 @@ const dailyGoal = input({
   example: "5.6",
   required: false,
   comments: "Daily revenue goal",
-  placeholder: "5.6",
+  placeholder: "Enter a daily revenue goal",
   clean: cleanNumberInput,
 });
 const burdenRate = input({
@@ -146,16 +149,16 @@ const burdenRate = input({
   example: "5.6",
   required: false,
   comments: "Burden rate (hourly)",
-  placeholder: "5.6",
+  placeholder: "Enter an hourly burden rate",
   clean: cleanNumberInput,
 });
 const bio = input({
   label: "Biography",
   type: "string",
-  example: "Biography",
+  example: "20 years of residential HVAC experience",
   required: false,
   comments: "Biography of the technician",
-  placeholder: "Biography",
+  placeholder: "Enter a biography",
   clean: cleanStringInput,
 });
 const jobFilter = input({
@@ -195,7 +198,8 @@ const jobHistoryDateFilter = input({
 const technicianAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
-  comments: "Additional optional fields.",
+  comments:
+    "Additional optional fields: includes Team, Daily Goal, Burden Rate, Biography, Job Filter, and Job History Date Filter.",
   inputs: {
     team,
     dailyGoal,

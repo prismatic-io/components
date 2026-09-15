@@ -1,5 +1,5 @@
-import { input } from "@prismatic-io/spectral";
-import { cleanCodeInput, cleanStringInput, mapStatusModelInput } from "../util";
+import { input, util } from "@prismatic-io/spectral";
+import { cleanStringInput, mapStatusModelInput } from "../util";
 import {
   connection,
   customQueryParams,
@@ -12,14 +12,14 @@ import {
   sort,
   typeId,
 } from "./common";
-export const paymentId = input({
+const paymentId = input({
   label: "Payment ID",
   type: "string",
   example: "10978752986",
   required: true,
   comments: "The ID of the payment.",
-  placeholder: "10978752986",
-  clean: cleanStringInput,
+  placeholder: "Enter a payment ID",
+  clean: util.types.toString,
   dataSource: "selectPayment",
 });
 const paidOn = input({
@@ -28,25 +28,25 @@ const paidOn = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "The date the payment was paid on.",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the payment date and time in UTC",
   clean: cleanStringInput,
 });
 const authCode = input({
   label: "Auth Code",
   type: "string",
-  example: "6B29FC40-CA47-1067-B31D-00DD010662DA21323",
+  example: "A1B2C3",
   required: false,
   comments: "The authorization code for the payment.",
-  placeholder: "6B29FC40-CA47-1067-B31D-00DD010662DA21323",
+  placeholder: "Enter an authorization code",
   clean: cleanStringInput,
 });
 const checkNumber = input({
   label: "Check Number",
   type: "string",
-  example: "6B29FC40-CA47-1067-B31D-00DD010662DA21323",
+  example: "1042",
   required: false,
   comments: "The check number for the payment.",
-  placeholder: "6B29FC40-CA47-1067-B31D-00DD010662DA21323",
+  placeholder: "Enter a check number",
   clean: cleanStringInput,
 });
 const status = input({
@@ -74,7 +74,7 @@ const splits = input({
     2,
   ),
   comments: "The splits of the payment.",
-  clean: cleanCodeInput,
+  clean: util.types.toObject,
 });
 export const createPaymentInputs = {
   connection,

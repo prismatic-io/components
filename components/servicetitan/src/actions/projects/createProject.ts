@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getProjectExamplePayload as createProjectExamplePayload } from "../../examplePayloads";
+import { createProjectExamplePayload } from "../../examplePayloads";
 import { createProjectInputs } from "../../inputs";
+import { createProjectOutputSchema } from "../../outputSchemas";
 export const createProject = action({
   display: {
     label: "Create Project",
-    description: "Create a new project",
+    description: "Create a new project.",
   },
   inputs: createProjectInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createProjectOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -45,5 +51,6 @@ export const createProject = action({
       data,
     };
   },
+  examplePerform: async () => createProjectExamplePayload,
   examplePayload: createProjectExamplePayload,
 });

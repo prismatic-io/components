@@ -5,9 +5,10 @@ import { updatePaymentCustomFieldsInputs } from "../../inputs";
 export const updatePaymentCustomFields = action({
   display: {
     label: "Update Payment Custom Fields",
-    description: "Update custom fields for specified payments",
+    description: "Update custom fields for specified payments.",
   },
   inputs: updatePaymentCustomFieldsInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, operations }) => {
     const client = createClient(
       connection,
@@ -21,5 +22,6 @@ export const updatePaymentCustomFields = action({
       data,
     };
   },
+  examplePerform: async () => updatePaymentCustomFieldsExamplePayload,
   examplePayload: updatePaymentCustomFieldsExamplePayload,
 });

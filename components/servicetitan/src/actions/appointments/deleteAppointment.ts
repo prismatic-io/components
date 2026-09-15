@@ -5,9 +5,10 @@ import { deleteAppointmentInputs } from "../../inputs";
 export const deleteAppointment = action({
   display: {
     label: "Delete Appointment",
-    description: "Delete appointment by ID",
+    description: "Delete an appointment by ID.",
   },
   inputs: deleteAppointmentInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, appointmentId }) => {
     const client = createClient(connection, "jpm", context.debug.enabled);
     const { data } = await client.delete(`/appointments/${appointmentId}`);
@@ -15,5 +16,6 @@ export const deleteAppointment = action({
       data,
     };
   },
+  examplePerform: async () => deleteAppointmentExamplePayload,
   examplePayload: deleteAppointmentExamplePayload,
 });

@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listJobCancelReasonsExamplePayload } from "../../examplePayloads";
 import { listJobCancelReasonsInputs } from "../../inputs";
+import { listJobCancelReasonsOutputSchema } from "../../outputSchemas";
 import type { JobCancel } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listJobCancelReasons = action({
   display: {
     label: "List Job Cancel Reasons",
-    description: "Retrieve a list of job cancel reasons",
+    description: "Retrieve a list of job cancel reasons.",
   },
   inputs: listJobCancelReasonsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listJobCancelReasonsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
@@ -42,5 +48,6 @@ export const listJobCancelReasons = action({
       data,
     };
   },
+  examplePerform: async () => listJobCancelReasonsExamplePayload,
   examplePayload: listJobCancelReasonsExamplePayload,
 });

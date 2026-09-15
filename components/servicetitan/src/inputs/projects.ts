@@ -1,5 +1,9 @@
-import { input } from "@prismatic-io/spectral";
-import { cleanNumberValueListInput, cleanStringInput } from "../util";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
+import {
+  cleanNumberInput,
+  cleanNumberValueListInput,
+  cleanStringInput,
+} from "../util";
 import {
   connection,
   customerId,
@@ -23,25 +27,25 @@ const projectManagerIds = input({
   example: "1088",
   required: false,
   comments: "IDs of the project's managers",
-  placeholder: "1088",
+  placeholder: "Enter a project manager ID",
   clean: cleanNumberValueListInput,
 });
 const statusId = input({
   label: "Status ID",
   type: "string",
   required: false,
-  comments: "Project status id",
+  comments: "The ID of the project status to set.",
   example: "1088",
-  placeholder: "1088",
+  placeholder: "Enter a project status ID",
   clean: cleanStringInput,
 });
 const subStatusId = input({
   label: "Sub Status ID",
   type: "string",
   required: false,
-  comments: "Project sub status id",
+  comments: "The ID of the project sub-status to set.",
   example: "1088",
-  placeholder: "1088",
+  placeholder: "Enter a project sub-status ID",
   clean: cleanStringInput,
 });
 const targetCompletionDate = input({
@@ -50,7 +54,7 @@ const targetCompletionDate = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Target completion date of the project",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the target completion date and time in UTC",
   clean: cleanStringInput,
 });
 const actualCompletionDate = input({
@@ -59,17 +63,17 @@ const actualCompletionDate = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Actual completion date of the project",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the actual completion date and time in UTC",
   clean: cleanStringInput,
 });
 const jobsIds = input({
-  label: "Jobs IDs",
+  label: "Job IDs",
   type: "string",
   collection: "valuelist",
   example: "1088",
   required: false,
   comments: "IDs of the project's jobs",
-  placeholder: "1088",
+  placeholder: "Enter a job ID",
   clean: cleanNumberValueListInput,
   dataSource: "selectJob",
 });
@@ -104,7 +108,7 @@ export const createProjectInputs = {
   externalData: {
     ...externalData,
     comments:
-      "Optional model that contains a list of external data items that should be attached to this project.",
+      "External data items to attach to the project, grouped under an application GUID.",
   },
 };
 export const getProjectInputs = {
@@ -154,6 +158,6 @@ export const updateProjectInputs = {
   externalData: {
     ...externalData,
     comments:
-      "Optional model that contains a list of external data items that should be attached to this project.",
+      "External data items to attach to the project, grouped under an application GUID.",
   },
 };

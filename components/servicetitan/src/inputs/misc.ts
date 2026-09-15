@@ -1,6 +1,5 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
-import { cleanStringInput } from "../util";
 import {
   connection,
   customQueryParams,
@@ -16,8 +15,8 @@ const urlType = input({
   required: true,
   comments:
     "The URL type to connect to. For example, jpm, crm, accounting, etc.",
-  placeholder: "jpm",
-  clean: cleanStringInput,
+  placeholder: "Enter a URL type",
+  clean: util.types.toString,
 });
 const { debugRequest: _, ...rawRequestHttpInputs } = httpClientInputs;
 export const rawRequestInputs = {
@@ -27,8 +26,8 @@ export const rawRequestInputs = {
   url: {
     ...httpClientInputs.url,
     comments:
-      "Input the path only (/jobs), The base URL is already included (https://api.servicetitan.io/jpm/v2/{YOUR-TENANT}/). For example, to connect to https://api.servicetitan.io/jpm/v2/{YOUR-TENANT}/jobs, only /jobs is entered in this field. e.g. /jobs",
-    placeholder: "/jobs",
+      "Input the path only. The base URL is built from the connection environment and the URL Type above, in the form https://api.servicetitan.io/{URL Type}/v2/tenant/{tenant}. For example, with a URL Type of jpm, entering /jobs reaches https://api.servicetitan.io/jpm/v2/tenant/{tenant}/jobs.",
+    placeholder: "Enter a path such as /jobs",
     example: "/jobs",
   },
 };

@@ -1,18 +1,3 @@
-export interface Appointment {
-  id: number;
-  jobId: number;
-  appointmentNumber: string;
-  start: string;
-  end: string;
-  arrivalWindowStart: string;
-  arrivalWindowEnd: string;
-  status: Status;
-  specialInstructions: string;
-  createdOn: string;
-  modifiedOn: string;
-  customerId: number;
-  unused: boolean;
-}
 type Status =
   | "Scheduled"
   | "Dispatched"
@@ -20,6 +5,21 @@ type Status =
   | "Hold"
   | "Done"
   | "Canceled";
+export interface Appointment {
+  id: number;
+  jobId: number;
+  appointmentNumber: string | null;
+  start: string;
+  end: string;
+  arrivalWindowStart: string | null;
+  arrivalWindowEnd: string | null;
+  status: Status;
+  specialInstructions: string | null;
+  createdOn: string;
+  modifiedOn: string;
+  customerId: number;
+  unused: boolean;
+}
 export interface AppointmentAssignment {
   id: number;
   technicianId: number;

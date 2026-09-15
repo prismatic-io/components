@@ -1,9 +1,5 @@
-import { input } from "@prismatic-io/spectral";
-import {
-  cleanNumberInput,
-  cleanNumberValueListInput,
-  cleanStringInput,
-} from "../util";
+import { input, util } from "@prismatic-io/spectral";
+import { cleanStringInput } from "../util";
 import {
   connection,
   customQueryParams,
@@ -16,24 +12,14 @@ import {
   start,
   technicianId,
 } from "./common";
-export const appointmentId = input({
+const appointmentId = input({
   label: "Appointment ID",
   type: "string",
   example: "10978752986",
   required: true,
   comments: "The ID of the appointment.",
-  placeholder: "10978752986",
-  clean: cleanStringInput,
-  dataSource: "selectAppointment",
-});
-export const jobAppointmentId = input({
-  label: "Job Appointment ID",
-  type: "string",
-  example: "1234567890",
-  required: true,
-  comments: "ID of the job appointment",
-  placeholder: "1234567890",
-  clean: cleanNumberInput,
+  placeholder: "Enter an appointment ID",
+  clean: util.types.toString,
   dataSource: "selectAppointment",
 });
 const arrivalWindowStart = input({
@@ -41,8 +27,8 @@ const arrivalWindowStart = input({
   type: "string",
   example: "2021-01-01T00:00:00Z",
   required: false,
-  comments: "Arrival window start date/time (in UTC) ",
-  placeholder: "2021-01-01T00:00:00Z",
+  comments: "Arrival window start date/time (in UTC)",
+  placeholder: "Enter the arrival window start date and time in UTC",
   clean: cleanStringInput,
 });
 const arrivalWindowEnd = input({
@@ -50,8 +36,8 @@ const arrivalWindowEnd = input({
   type: "string",
   example: "2021-01-01T00:00:00Z",
   required: false,
-  comments: "Arrival window end date/time (in UTC) ",
-  placeholder: "2021-01-01T00:00:00Z",
+  comments: "Arrival window end date/time (in UTC)",
+  placeholder: "Enter the arrival window end date and time in UTC",
   clean: cleanStringInput,
 });
 const specialInstructions = input({
@@ -60,19 +46,8 @@ const specialInstructions = input({
   required: false,
   comments: "Special instructions associated to the appointment",
   example: "Any special instructions",
-  placeholder: "Any special instructions",
+  placeholder: "Enter special instructions",
   clean: cleanStringInput,
-});
-const technicianIds = input({
-  label: "Technician IDs",
-  type: "string",
-  collection: "valuelist",
-  example: "1088",
-  required: false,
-  comments: "List of IDs of technicians to assign to new appointment",
-  placeholder: "1088",
-  clean: cleanNumberValueListInput,
-  dataSource: "selectTechnician",
 });
 export const createAppointmentInputs = {
   connection,
@@ -80,10 +55,12 @@ export const createAppointmentInputs = {
   start: {
     ...start,
     required: true,
+    clean: util.types.toString,
   },
   end: {
     ...end,
     required: true,
+    clean: util.types.toString,
   },
   arrivalWindowStart,
   arrivalWindowEnd,
@@ -99,32 +76,6 @@ export const getAppointmentInputs = {
   appointmentId,
 };
 export const listAppointmentsInputs = {
-  connection,
-  fetchAll,
-  pagination,
-  includeTotal,
-  sort,
-  customQueryParams,
-};
-export const assignTechniciansInputs = {
-  connection,
-  jobAppointmentId,
-  technicianIds: {
-    ...technicianIds,
-    required: true,
-    comments: "Assign these technicians to the appointment.",
-  },
-};
-export const unassignTechniciansInputs = {
-  connection,
-  jobAppointmentId,
-  technicianIds: {
-    ...technicianIds,
-    required: true,
-    comments: "Unassign these technicians to the appointment.",
-  },
-};
-export const listAppointmentsAssignmentInputs = {
   connection,
   fetchAll,
   pagination,

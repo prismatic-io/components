@@ -23,7 +23,7 @@ const taxZoneId = input({
   example: "1088",
   required: false,
   comments: "ID of the location tax zone",
-  placeholder: "1088",
+  placeholder: "Enter a tax zone ID",
   clean: cleanNumberInput,
 });
 export const createLocationInputs = {

@@ -13,22 +13,25 @@ export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
+  comments: "The ServiceTitan connection to use.",
 });
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
   required: false,
   comments:
-    "If true, fetch all records, if false, will use the pageSize and page parameters",
-  clean: cleanBooleanInput,
+    "When true, automatically fetches all pages of results and ignores the page and page size values.",
+  clean: util.types.toBool,
+  default: "false",
 });
 export const page = input({
   label: "Page",
   type: "string",
   example: "1",
   required: false,
-  comments: "The page number to filter by",
-  placeholder: "1",
+  comments:
+    "The page of results to return. Paging is 1-based, so the first page is 1.",
+  placeholder: "Enter a page number",
   clean: cleanNumberInput,
 });
 export const pageSize = input({
@@ -36,8 +39,9 @@ export const pageSize = input({
   type: "string",
   example: "50",
   required: false,
-  comments: "How many records to return (50 by default)",
-  placeholder: "50",
+  comments:
+    "The maximum number of records to return per page. A page never contains more than this many records. Defaults to 50 when omitted.",
+  placeholder: "Enter the number of records per page",
   clean: cleanNumberInput,
 });
 export const pagination = structuredObjectInput({
@@ -51,7 +55,7 @@ export const includeTotal = input({
   type: "boolean",
   required: false,
   comments:
-    "Include total count of records. If fetchAll is true, this will be ignored.",
+    "When true, includes the total count of matching records in the response. Ignored when Fetch All is true.",
   clean: util.types.toBool,
 });
 export const sort = input({
@@ -61,7 +65,7 @@ export const sort = input({
   required: false,
   comments:
     "Applies sorting by the specified field:'?sort=+FieldName' for ascending order,'?sort=-FieldName' for descending order.",
-  placeholder: "+FieldName",
+  placeholder: "Enter a field name prefixed with + or -",
   clean: cleanStringInput,
 });
 export const customQueryParams = input({
@@ -70,17 +74,18 @@ export const customQueryParams = input({
   collection: "keyvaluelist",
   example: "key1=value1",
   required: false,
-  comments: "Custom fields filter",
-  placeholder: "key1=value1",
+  comments:
+    "Additional query-string parameters to append to the request, supplied as name and value pairs.",
+  placeholder: "Enter a query parameter name and value",
   clean: cleanKeyValueListInput,
 });
 export const name = input({
   label: "Name",
   type: "string",
-  example: "Test Source",
+  example: "Acme Plumbing",
   required: true,
-  comments: "Name of the customer",
-  placeholder: "Test Source",
+  comments: "The full name of the customer or business.",
+  placeholder: "Enter a name",
   clean: cleanStringInput,
 });
 export const memo = input({
@@ -88,15 +93,15 @@ export const memo = input({
   type: "string",
   example: "Payment for services rendered.",
   required: false,
-  comments: "The memo of the payment.",
-  placeholder: "Payment for services rendered.",
+  comments: "A free-text note recorded against the payment.",
+  placeholder: "Enter a memo",
   clean: cleanStringInput,
 });
 export const active = input({
   label: "Active",
   type: "string",
   required: false,
-  comments: "The active status of the payment.",
+  comments: "The active status of the record.",
   model: mapBooleanModelInput,
   clean: cleanBooleanInput,
   default: "",
@@ -106,7 +111,7 @@ export const address = input({
   type: "code",
   language: "json",
   required: false,
-  default: JSON.stringify(
+  example: JSON.stringify(
     {
       street: "string",
       unit: "string",
@@ -118,7 +123,8 @@ export const address = input({
     null,
     2,
   ),
-  comments: "Address of the booking",
+  comments:
+    "The street address, including unit, city, state, ZIP code, and country.",
   clean: cleanCodeInput,
 });
 export const contacts = input({
@@ -126,7 +132,7 @@ export const contacts = input({
   type: "code",
   language: "json",
   required: false,
-  default: JSON.stringify(
+  example: JSON.stringify(
     [
       {
         type: "Phone",
@@ -137,7 +143,8 @@ export const contacts = input({
     null,
     2,
   ),
-  comments: "Contacts for the booking",
+  comments:
+    "The contact methods to attach, each with a type such as Phone or Email, a value, and an optional memo.",
   clean: cleanCodeInput,
 });
 export const customFields = input({
@@ -145,7 +152,7 @@ export const customFields = input({
   type: "code",
   language: "json",
   required: false,
-  default: JSON.stringify(
+  example: JSON.stringify(
     [
       {
         typeId: 0,
@@ -155,7 +162,8 @@ export const customFields = input({
     null,
     2,
   ),
-  comments: "Custom fields for the request",
+  comments:
+    "Custom field values to set, as an array of type ID and value pairs.",
   clean: cleanCodeInput,
 });
 export const tagTypeIds = input({
@@ -164,8 +172,8 @@ export const tagTypeIds = input({
   collection: "valuelist",
   example: "123",
   required: false,
-  comments: "A list of tags ID's",
-  placeholder: "123",
+  comments: "The IDs of the tag types to apply.",
+  placeholder: "Enter a tag type ID",
   clean: cleanNumberValueListInput,
 });
 export const externalData = input({
@@ -173,7 +181,7 @@ export const externalData = input({
   type: "code",
   language: "json",
   required: false,
-  default: JSON.stringify(
+  example: JSON.stringify(
     {
       applicationGuid: "string",
       externalData: [
@@ -195,7 +203,7 @@ export const summary = input({
   example: "A summary related to the invoice.",
   required: false,
   comments: "The summary of the invoice.",
-  placeholder: "A summary related to the invoice.",
+  placeholder: "Enter a summary",
   clean: cleanStringInput,
 });
 export const start = input({
@@ -204,7 +212,7 @@ export const start = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Start date/time (in UTC)",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter a start date and time in UTC",
   clean: cleanStringInput,
 });
 export const end = input({
@@ -213,7 +221,7 @@ export const end = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "End date/time (in UTC)",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter an end date and time in UTC",
   clean: cleanStringInput,
 });
 export const customerId = input({
@@ -222,7 +230,7 @@ export const customerId = input({
   example: "10978752986",
   required: true,
   comments: "The customer ID.",
-  placeholder: "10978752986",
+  placeholder: "Enter a customer ID",
   clean: cleanNumberInput,
   dataSource: "selectCustomers",
 });
@@ -232,7 +240,7 @@ export const locationId = input({
   example: "10978752986",
   required: true,
   comments: "The ID of the location.",
-  placeholder: "10978752986",
+  placeholder: "Enter a location ID",
   clean: cleanNumberInput,
   dataSource: "selectLocation",
 });
@@ -241,8 +249,8 @@ export const businessUnitId = input({
   type: "string",
   example: "10978752986",
   required: false,
-  comments: "ID of the booking's business unit",
-  placeholder: "10978752986",
+  comments: "The ID of the business unit.",
+  placeholder: "Enter a business unit ID",
   clean: cleanStringInput,
   dataSource: "selectBusinessUnit",
 });
@@ -251,8 +259,8 @@ export const campaignId = input({
   type: "string",
   example: "10978752986",
   required: false,
-  comments: "ID of the booking's campaign",
-  placeholder: "10978752986",
+  comments: "The ID of the marketing campaign that generated the record.",
+  placeholder: "Enter a campaign ID",
   clean: cleanStringInput,
 });
 export const jobTypeId = input({
@@ -260,8 +268,8 @@ export const jobTypeId = input({
   type: "string",
   example: "10978752986",
   required: false,
-  comments: "ID of the booking's job type",
-  placeholder: "10978752986",
+  comments: "The ID of the job type to assign.",
+  placeholder: "Enter a job type ID",
   clean: cleanStringInput,
 });
 export const priority = input({
@@ -276,17 +284,18 @@ export const customerType = input({
   label: "Customer Type",
   type: "string",
   required: false,
-  comments: "Type of the customer",
+  comments: "Whether the customer is Residential or Commercial.",
   model: mapModelValues(["Residential", "Commercial"], true),
   clean: cleanStringInput,
 });
 export const exportId = input({
   label: "Export ID",
   type: "string",
-  example: "6B29FC40-CA47-1067-B31D-00DD010662DA21323",
+  example: "6B29FC40-CA47-1067-B31D-00DD010662DA",
   required: false,
-  comments: "Gets or sets the identifier when exported.",
-  placeholder: "6B29FC40-CA47-1067-B31D-00DD010662DA21323",
+  comments:
+    "The identifier assigned to the record when it is exported to an external system.",
+  placeholder: "Enter an export identifier",
   clean: cleanStringInput,
 });
 export const typeId = input({
@@ -294,8 +303,9 @@ export const typeId = input({
   type: "string",
   example: "0",
   required: true,
-  comments: "The ID of the type of the payment.",
-  placeholder: "0",
+  comments:
+    "The ID of the invoice or payment type to assign, as configured in the ServiceTitan tenant.",
+  placeholder: "Enter a type ID",
   clean: cleanNumberInput,
 });
 export const operations = input({
@@ -319,7 +329,7 @@ export const operations = input({
     2,
   ),
   comments: "The operations to perform on the payment.",
-  clean: cleanCodeInput,
+  clean: util.types.toObject,
 });
 export const installedOn = input({
   label: "Installed On",
@@ -327,7 +337,7 @@ export const installedOn = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "The date the SKU was installed on.",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the installation date and time in UTC",
   clean: cleanStringInput,
 });
 export const modifiedBefore = input({
@@ -336,7 +346,7 @@ export const modifiedBefore = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Return items modified before certain date/time (in UTC)",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter a date and time in UTC",
   clean: cleanStringInput,
 });
 export const modifiedOnOrAfter = input({
@@ -345,7 +355,7 @@ export const modifiedOnOrAfter = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "Return items modified on or after certain date/time (in UTC)",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter a date and time in UTC",
   clean: cleanStringInput,
 });
 export const technicianId = input({
@@ -354,7 +364,7 @@ export const technicianId = input({
   example: "10978752986",
   required: false,
   comments: "The ID of the technician.",
-  placeholder: "10978752986",
+  placeholder: "Enter a technician ID",
   clean: cleanNumberInput,
   dataSource: "selectTechnician",
 });
@@ -364,7 +374,7 @@ export const jobId = input({
   example: "10978752986",
   required: true,
   comments: "The job ID.",
-  placeholder: "10978752986",
+  placeholder: "Enter a job ID",
   clean: cleanNumberInput,
   dataSource: "selectJob",
 });
@@ -374,43 +384,7 @@ export const projectId = input({
   example: "10978752986",
   required: false,
   comments: "ID of the job's project",
-  placeholder: "10978752986",
+  placeholder: "Enter a project ID",
   clean: cleanNumberInput,
   dataSource: "selectProject",
-});
-export const tenant = input({
-  label: "Tenant",
-  type: "string",
-  example: "10978752986",
-  required: true,
-  comments: "The client tenant.",
-  placeholder: "10978752986",
-  clean: cleanStringInput,
-});
-export const applicationKey = input({
-  label: "Application Key",
-  type: "string",
-  example: "ak1.4adsy4lzgsd0b3cqh48zl5z3d7",
-  required: true,
-  comments: "The ID of the payment.",
-  placeholder: "ak1.4adsy4lzgsd0b3cqh48zl5z3d7",
-  clean: cleanStringInput,
-});
-export const environment = input({
-  key: "environment",
-  label: "Environment",
-  type: "string",
-  required: true,
-  comments: "The environment to connect to",
-  model: [
-    {
-      value: "production",
-      label: "Production environment",
-    },
-    {
-      value: "integration",
-      label: "Integration environment",
-    },
-  ],
-  clean: cleanStringInput,
 });

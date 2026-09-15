@@ -1,4 +1,4 @@
-import { input, structuredObjectInput } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanBooleanInput,
   cleanCodeInput,
@@ -21,14 +21,14 @@ import {
   technicianId,
   typeId,
 } from "./common";
-export const invoiceId = input({
+const invoiceId = input({
   label: "Invoice ID",
   type: "string",
   example: "10978752986",
   required: true,
   comments: "The ID of the invoice.",
-  placeholder: "10978752986",
-  clean: cleanStringInput,
+  placeholder: "Enter an invoice ID",
+  clean: util.types.toNumber,
   dataSource: "selectInvoice",
 });
 const itemId = input({
@@ -37,8 +37,8 @@ const itemId = input({
   example: "10978752986",
   required: true,
   comments: "The ID of the item.",
-  placeholder: "10978752986",
-  clean: cleanStringInput,
+  placeholder: "Enter an item ID",
+  clean: util.types.toString,
 });
 const adjustmentToId = input({
   label: "Adjustment To ID",
@@ -46,8 +46,8 @@ const adjustmentToId = input({
   example: "10978752986",
   required: true,
   comments: "The ID of the invoice the adjustment is for.",
-  placeholder: "10978752986",
-  clean: cleanNumberInput,
+  placeholder: "Enter the ID of the invoice being adjusted",
+  clean: util.types.toNumber,
   dataSource: "selectInvoice",
 });
 const number = input({
@@ -56,7 +56,7 @@ const number = input({
   example: "10978752986",
   required: false,
   comments: "The invoice number.",
-  placeholder: "10978752986",
+  placeholder: "Enter an invoice number",
   clean: cleanStringInput,
 });
 const invoicedOn = input({
@@ -65,7 +65,7 @@ const invoicedOn = input({
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "The date the invoice was invoiced on.",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the invoice date and time in UTC",
   clean: cleanStringInput,
 });
 const subtotal = input({
@@ -74,7 +74,7 @@ const subtotal = input({
   example: "100.00",
   required: false,
   comments: "The subtotal of the invoice.",
-  placeholder: "100.00",
+  placeholder: "Enter a subtotal amount",
   clean: cleanNumberInput,
 });
 const tax = input({
@@ -83,11 +83,11 @@ const tax = input({
   example: "100.00",
   required: false,
   comments: "The tax of the invoice.",
-  placeholder: "100.00",
+  placeholder: "Enter a tax amount",
   clean: cleanNumberInput,
 });
 const royaltyStatus = input({
-  label: "Royalty Status",
+  label: "Status",
   type: "string",
   required: false,
   comments: "The royalty status of the invoice.",
@@ -107,7 +107,7 @@ const items = input({
   type: "code",
   language: "json",
   required: false,
-  default: JSON.stringify(
+  example: JSON.stringify(
     [
       {
         skuId: 0,
@@ -137,30 +137,30 @@ const items = input({
   clean: cleanCodeInput,
 });
 const royaltyDate = input({
-  label: "Royalty Date",
+  label: "Date",
   type: "string",
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "The royalty date of the invoice.",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the royalty date and time in UTC",
   clean: cleanStringInput,
 });
 const royaltySentOn = input({
-  label: "Royalty Sent On",
+  label: "Sent On",
   type: "string",
   example: "2021-01-01T00:00:00Z",
   required: false,
   comments: "The royalty sent date of the invoice.",
-  placeholder: "2021-01-01T00:00:00Z",
+  placeholder: "Enter the royalty sent date and time in UTC",
   clean: cleanStringInput,
 });
 const royaltyMemo = input({
-  label: "Royalty Memo",
+  label: "Memo",
   type: "string",
   example: "Payment for services rendered.",
   required: false,
-  comments: "The royalty sent date of the invoice.",
-  placeholder: "Payment for services rendered.",
+  comments: "A free-form note stored with the invoice's royalty record.",
+  placeholder: "Enter a royalty memo",
   clean: cleanStringInput,
 });
 const assignedToId = input({
@@ -169,7 +169,7 @@ const assignedToId = input({
   example: "10978752986",
   required: false,
   comments: "The ID of the user the invoice is assigned to.",
-  placeholder: "10978752986",
+  placeholder: "Enter a user ID",
   clean: cleanNumberInput,
 });
 const payments = input({
@@ -177,7 +177,7 @@ const payments = input({
   type: "code",
   language: "json",
   required: false,
-  default: JSON.stringify(
+  example: JSON.stringify(
     [
       {
         id: 0,
@@ -197,7 +197,7 @@ const skuId = input({
   example: "10978752986",
   required: false,
   comments: "The ID of the SKU.",
-  placeholder: "10978752986",
+  placeholder: "Enter a SKU ID",
   clean: cleanNumberInput,
 });
 const skuName = input({
@@ -206,7 +206,7 @@ const skuName = input({
   example: "Test SKU",
   required: false,
   comments: "The name of the SKU.",
-  placeholder: "Test SKU",
+  placeholder: "Enter a SKU name",
   clean: cleanStringInput,
 });
 const description = input({
@@ -215,8 +215,8 @@ const description = input({
   example: "A test SKU",
   required: true,
   comments: "The description of the SKU.",
-  placeholder: "A test SKU",
-  clean: cleanStringInput,
+  placeholder: "Enter a description",
+  clean: util.types.toString,
 });
 const quantity = input({
   label: "Quantity",
@@ -224,8 +224,8 @@ const quantity = input({
   example: "2",
   required: true,
   comments: "The quantity of the SKU.",
-  placeholder: "2",
-  clean: cleanNumberInput,
+  placeholder: "Enter a quantity",
+  clean: util.types.toNumber,
 });
 const unitPrice = input({
   label: "Unit Price",
@@ -233,7 +233,7 @@ const unitPrice = input({
   example: "2.0",
   required: false,
   comments: "The unit price of the SKU.",
-  placeholder: "2.0",
+  placeholder: "Enter a unit price",
   clean: cleanNumberInput,
 });
 const cost = input({
@@ -242,7 +242,7 @@ const cost = input({
   example: "2.0",
   required: false,
   comments: "The cost of the SKU.",
-  placeholder: "2.0",
+  placeholder: "Enter a cost amount",
   clean: cleanNumberInput,
 });
 const isAddOn = input({
@@ -260,7 +260,7 @@ const signature = input({
   example: "An example signature.",
   required: false,
   comments: "The signature of the SKU.",
-  placeholder: "An example signature.",
+  placeholder: "Enter a signature",
   clean: cleanStringInput,
 });
 const technicianAcknowledgementSignature = input({
@@ -269,7 +269,7 @@ const technicianAcknowledgementSignature = input({
   example: "Test Signature",
   required: false,
   comments: "The technician acknowledgement signature of the SKU.",
-  placeholder: "Test Signature",
+  placeholder: "Enter a technician acknowledgement signature",
   clean: cleanStringInput,
 });
 const inventoryWarehouseName = input({
@@ -278,7 +278,7 @@ const inventoryWarehouseName = input({
   example: "Warehouse",
   required: false,
   comments: "The inventory warehouse name of the SKU.",
-  placeholder: "Warehouse",
+  placeholder: "Enter an inventory warehouse name",
   clean: cleanStringInput,
 });
 const skipUpdatingMembershipPrices = input({
@@ -296,7 +296,7 @@ const itemGroupName = input({
   example: "Test Group",
   required: false,
   comments: "The item group name of the SKU.",
-  placeholder: "Test Group",
+  placeholder: "Enter an item group name",
   clean: cleanStringInput,
 });
 const itemGroupRootId = input({
@@ -305,7 +305,7 @@ const itemGroupRootId = input({
   example: "10978752986",
   required: false,
   comments: "The item group root ID of the SKU.",
-  placeholder: "10978752986",
+  placeholder: "Enter an item group root ID",
   clean: cleanNumberInput,
 });
 const inventoryLocationId = input({
@@ -314,7 +314,7 @@ const inventoryLocationId = input({
   example: "10978752986",
   required: false,
   comments: "The inventory location ID of the SKU.",
-  placeholder: "10978752986",
+  placeholder: "Enter an inventory location ID",
   clean: cleanNumberInput,
 });
 const durationBillingId = input({
@@ -323,16 +323,16 @@ const durationBillingId = input({
   example: "10978752986",
   required: false,
   comments: "The duration billing ID of the SKU.",
-  placeholder: "10978752986",
+  placeholder: "Enter a duration billing ID",
   clean: cleanNumberInput,
 });
 const id = input({
-  label: "ID",
+  label: "Invoice Item ID",
   type: "string",
   example: "10978752986",
   required: false,
-  comments: "The ID.",
-  placeholder: "10978752986",
+  comments: "The unique identifier of the invoice item.",
+  placeholder: "Enter an invoice item ID",
   clean: cleanNumberInput,
 });
 const royaltyDetails = structuredObjectInput({
@@ -349,7 +349,8 @@ const royaltyDetails = structuredObjectInput({
 const updateInvoiceItemsAdditionalFields = structuredObjectInput({
   label: "Additional Fields",
   required: false,
-  comments: "Additional optional fields.",
+  comments:
+    "Additional optional fields: includes Unit Price, Cost, Is Add On, Signature, Technician Acknowledgement Signature, Installed On, Inventory Warehouse Name, Skip Updating Membership Prices, and Item Group Name.",
   inputs: {
     unitPrice,
     cost,

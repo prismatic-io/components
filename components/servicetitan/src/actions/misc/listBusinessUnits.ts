@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listBusinessUnitsExamplePayload } from "../../examplePayloads";
 import { listBusinessUnitsInputs } from "../../inputs";
+import { listBusinessUnitsOutputSchema } from "../../outputSchemas";
 import type { BusinessUnits } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listBusinessUnits = action({
   display: {
     label: "List Business Units",
-    description: "Gets a list of business units",
+    description: "Gets a list of business units.",
   },
   inputs: listBusinessUnitsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listBusinessUnitsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
@@ -42,5 +48,6 @@ export const listBusinessUnits = action({
       data,
     };
   },
+  examplePerform: async () => listBusinessUnitsExamplePayload,
   examplePayload: listBusinessUnitsExamplePayload,
 });

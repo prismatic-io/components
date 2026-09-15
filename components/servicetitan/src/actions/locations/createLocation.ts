@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createLocationExamplePayload } from "../../examplePayloads";
 import { createLocationInputs } from "../../inputs";
+import { createLocationOutputSchema } from "../../outputSchemas";
 export const createLocation = action({
   display: {
     label: "Create Location",
-    description: "Creates a new location",
+    description: "Creates a new location.",
   },
   inputs: createLocationInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createLocationOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -35,5 +41,6 @@ export const createLocation = action({
       data,
     };
   },
+  examplePerform: async () => createLocationExamplePayload,
   examplePayload: createLocationExamplePayload,
 });

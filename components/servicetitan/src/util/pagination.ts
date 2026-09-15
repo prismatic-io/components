@@ -4,6 +4,7 @@ export async function fetchAllRecords<T>(
   client: HttpClient,
   url: string,
   queryParams: Record<string, unknown>,
+  maxRecords?: number,
 ): Promise<ListGeneric<T>> {
   let records: T[] = [];
   let hasMore = false;
@@ -27,12 +28,17 @@ export async function fetchAllRecords<T>(
     });
     records = [...records, ...data.data];
     hasMore = data.hasMore;
-  } while (hasMore);
+  } while (
+    hasMore &&
+    (maxRecords === undefined || records.length < maxRecords)
+  );
+  const truncated = maxRecords !== undefined && records.length > maxRecords;
+  const data = truncated ? records.slice(0, maxRecords) : records;
   return {
     page,
     pageSize: 500,
-    hasMore,
-    totalCount: records.length,
-    data: records,
+    hasMore: hasMore || truncated,
+    totalCount: data.length,
+    data,
   };
 }

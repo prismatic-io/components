@@ -4,12 +4,56 @@ This trigger polls the [ServiceTitan API](https://developer.servicetitan.io/) fo
 
 1. The trigger runs on the configured schedule
 2. It fetches records from ServiceTitan using the `modifiedOnOrAfter` API parameter to retrieve only records modified since the last poll
-3. Records are classified as **created** if `createdOn` exceeds the last poll time; all other returned records are classified as **updated**
-4. The trigger updates its internal state after each poll
+3. Each returned record is classified as **created** when its `createdOn` is at or later than the last poll time, and otherwise as **updated** when its `modifiedOn` is at or later than the last poll time. A record landing exactly on the last poll time is included only if it was not already delivered on an earlier recurrence. A record that satisfies neither test is classified as neither and is dropped from the results
+4. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. Turning either off empties that array, and both keys remain present in the payload
+5. The trigger updates its internal state after each poll
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow
+which changes are reported would leave gaps in it: **Show New Records** and **Show Updated
+Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first
+recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set,
+and seeds every record created or modified on or after that date exactly once. Left empty, there is
+no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync rather
+than deferred to the schedule. Each recurrence advances the position to the newest record it
+actually received, never to the wall clock, and the first incremental recurrence resumes from
+exactly there; nothing in the payload marks the handoff. With batching off the drain is uncapped
+and finishes in one recurrence; with batching on it is capped, so a larger window spans several
+recurrences before the toggles apply again. **Technicians** has no sortable field, so it is never
+capped.
+
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input,
+so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as
+its own execution, or grouped by the configured batch size. Batch size and the number of batches
+dispatched concurrently can both be overridden per instance. Raising concurrency increases the
+request volume sent to ServiceTitan.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with,
+or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it
+blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks
+the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to
+the flow rather than to the component or to other flows using the same trigger.
+
+The trigger advances its polling position before dispatching, so a failed execution loses its
+records either way: with batching off the whole recurrence's payload, with batching on only that
+batch. Records lost this way are not re-polled.
 
 #### Returned Data
 
-Returns an object with two arrays: `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
+With batching off, the trigger returns an object with two arrays: `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -43,7 +87,29 @@ Returns an object with two arrays: `created` for new records and `updated` for m
 
 </details>
 
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": 98765432,
+    "number": "JOB-0001234",
+    "status": "Scheduled",
+    "createdOn": "2024-01-16T10:30:00Z",
+    "modifiedOn": "2024-01-16T10:30:00Z",
+    "customerId": 11223344
+  }
+}
+```
+
+</details>
+
 #### Notes
 
-- ServiceTitan uses different API URL namespaces per resource type (jobs, appointments, and projects use the dispatch namespace; invoices and payments use accounting; customers and locations use CRM; installed equipment uses equipment systems; technicians use settings). The trigger selects the correct endpoint automatically based on the chosen resource type
+- ServiceTitan uses different API URL namespaces per resource type. Jobs, appointments, and projects use the job project management namespace (`jpm`); invoices and payments use accounting; customers and locations use CRM; installed equipment uses equipment systems; technicians use settings. The trigger selects the correct endpoint automatically based on the chosen resource type
+- The per-recurrence cap that batching applies relies on sorting by modified date, and ServiceTitan documents no secondary sort or continuation token for these endpoints. If a single `modifiedOn` instant holds more records than that cap, the trigger delivers the first cap-full and its polling position cannot advance past that instant, so the remaining records at that instant are not delivered. With batching off the drain is uncapped and unaffected
 - Refer to the [ServiceTitan developer documentation](https://developer.servicetitan.io/) for rate limit details and available fields per resource type

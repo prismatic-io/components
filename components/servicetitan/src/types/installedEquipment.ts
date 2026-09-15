@@ -1,11 +1,21 @@
+interface Tag {
+  id: number;
+  ownerId: number;
+  typeId: number;
+  typeName: string | null;
+  memo: string | null;
+  color: string | null;
+  textColor: string | null;
+  code: string | null;
+}
 export interface InstalledEquipment {
   id: number;
-  equipmentId: number;
+  equipmentId: number | null;
   locationId: number;
   customerId: number;
-  invoiceItemId: number;
+  invoiceItemId: number | null;
   name: string;
-  installedOn: string;
+  installedOn: string | null;
   createdOn: string;
   modifiedOn: string;
   serialNumber: string;
@@ -13,19 +23,9 @@ export interface InstalledEquipment {
   manufacturer: string;
   model: string;
   cost: number;
-  manufacturerWarrantyStart: string;
-  manufacturerWarrantyEnd: string;
-  serviceProviderWarrantyStart: string;
-  serviceProviderWarrantyEnd: string;
-  tags: Tag[];
-}
-interface Tag {
-  id: number;
-  ownerId: number;
-  typeId: number;
-  typeName: string;
-  memo: string;
-  color: string;
-  textColor: string;
-  code: string;
+  manufacturerWarrantyStart: string | null;
+  manufacturerWarrantyEnd: string | null;
+  serviceProviderWarrantyStart: string | null;
+  serviceProviderWarrantyEnd: string | null;
+  tags: Tag[] | null;
 }

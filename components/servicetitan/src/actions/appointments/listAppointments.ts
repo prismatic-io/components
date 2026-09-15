@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listAppointmentsExamplePayload } from "../../examplePayloads";
 import { listAppointmentsInputs } from "../../inputs";
+import { listAppointmentsOutputSchema } from "../../outputSchemas";
 import type { Appointment } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listAppointments = action({
   display: {
     label: "List Appointments",
-    description: "Retrieve a list of appointments",
+    description: "Retrieve a list of appointments.",
   },
   inputs: listAppointmentsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listAppointmentsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
@@ -38,5 +44,6 @@ export const listAppointments = action({
       data,
     };
   },
+  examplePerform: async () => listAppointmentsExamplePayload,
   examplePayload: listAppointmentsExamplePayload,
 });

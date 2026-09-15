@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import {
   cleanBooleanInput,
   cleanStringInput,
@@ -23,23 +23,23 @@ import {
   start,
   summary,
 } from "./common";
-export const bookingProvider = input({
-  label: "Booking Provider",
+const bookingProvider = input({
+  label: "Booking Provider ID",
   type: "string",
   example: "10978752986",
   required: true,
-  comments: "The ID of the booking provider.",
-  placeholder: "10978752986",
-  clean: cleanStringInput,
+  comments: "The ID of the booking provider that submitted the booking.",
+  placeholder: "Enter a booking provider ID",
+  clean: util.types.toString,
 });
-export const bookingId = input({
+const bookingId = input({
   label: "Booking ID",
   type: "string",
   example: "10978752986",
   required: true,
-  comments: "The ID of the booking.",
-  placeholder: "10978752986",
-  clean: cleanStringInput,
+  comments: "The ID of the booking to act on.",
+  placeholder: "Enter a booking ID",
+  clean: util.types.toString,
   dataSource: "selectBooking",
 });
 const externalId = input({
@@ -47,15 +47,15 @@ const externalId = input({
   type: "string",
   example: "10978752986",
   required: true,
-  comments: "External ID of booking",
-  placeholder: "10978752986",
+  comments: "The booking's identifier in the originating external system.",
+  placeholder: "Enter an external ID",
   clean: cleanStringInput,
 });
 const isFirstTimeClient = input({
   label: "Is First Time Client",
   type: "string",
   required: true,
-  comments: "True if first time client",
+  comments: "When true, marks the booking's customer as a first-time client.",
   model: mapBooleanModelInput,
   clean: cleanBooleanInput,
   default: "",
@@ -65,23 +65,25 @@ const source = input({
   type: "string",
   example: "Test Source",
   required: true,
-  comments: "The source of the booking provider",
-  placeholder: "Test Source",
+  comments: "The lead source that generated this booking.",
+  placeholder: "Enter a booking source",
   clean: cleanStringInput,
 });
 const uploadedImages = input({
   label: "Uploaded Images",
   type: "string",
   collection: "valuelist",
+  example: "booking-photo.jpg",
   required: false,
-  comments: "Uploaded images",
+  comments: "The images to attach to the booking, one entry per image.",
+  placeholder: "Enter an image to attach",
   clean: cleanStringValueListInput,
 });
 const isSendConfirmationEmail = input({
   label: "Send Confirmation Email",
   type: "string",
   required: false,
-  comments: "True if first time client",
+  comments: "When true, sends a booking confirmation email to the customer.",
   model: mapBooleanModelInput,
   clean: cleanBooleanInput,
   default: "",
@@ -91,8 +93,9 @@ export const createBookingByProviderInputs = {
   bookingProvider,
   summary: {
     ...summary,
-    comments: "Summary of the booking",
+    comments: "A short summary describing the booking.",
     required: true,
+    clean: util.types.toString,
   },
   isFirstTimeClient,
   externalId,
@@ -112,16 +115,16 @@ export const createBookingByProviderInputs = {
   uploadedImages,
   isSendConfirmationEmail,
 };
-export const getByProviderInputs = {
+export const getBookingByProviderInputs = {
   connection,
   bookingProvider,
   bookingId,
 };
-export const getByTenantInputs = {
+export const getBookingByTenantInputs = {
   connection,
   bookingId,
 };
-export const listByProviderInputs = {
+export const listBookingByProviderInputs = {
   connection,
   bookingProvider: bookingProvider,
   fetchAll,
@@ -130,7 +133,7 @@ export const listByProviderInputs = {
   sort,
   customQueryParams,
 };
-export const listByTenantInputs = {
+export const listBookingByTenantInputs = {
   connection,
   fetchAll,
   pagination,

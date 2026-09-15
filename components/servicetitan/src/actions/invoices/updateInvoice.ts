@@ -5,9 +5,10 @@ import { updateInvoiceInputs } from "../../inputs";
 export const updateInvoice = action({
   display: {
     label: "Update Invoice",
-    description: "Update Invoice",
+    description: "Update an invoice.",
   },
   inputs: updateInvoiceInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -53,5 +54,6 @@ export const updateInvoice = action({
       data,
     };
   },
+  examplePerform: async () => updateInvoiceExamplePayload,
   examplePayload: updateInvoiceExamplePayload,
 });

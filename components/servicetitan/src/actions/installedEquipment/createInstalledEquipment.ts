@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { createEquipmentExamplePayload } from "../../examplePayloads";
+import { createInstalledEquipmentExamplePayload } from "../../examplePayloads";
 import { createInstalledEquipmentInputs } from "../../inputs";
+import { createInstalledEquipmentOutputSchema } from "../../outputSchemas";
 export const createInstalledEquipment = action({
   display: {
     label: "Create Installed Equipment",
-    description: "Create a new Installed equipment",
+    description: "Create a new installed equipment record.",
   },
   inputs: createInstalledEquipmentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createInstalledEquipmentOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -52,5 +58,6 @@ export const createInstalledEquipment = action({
       data,
     };
   },
-  examplePayload: createEquipmentExamplePayload,
+  examplePerform: async () => createInstalledEquipmentExamplePayload,
+  examplePayload: createInstalledEquipmentExamplePayload,
 });

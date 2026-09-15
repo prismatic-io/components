@@ -1,39 +1,39 @@
 import type { CustomField, ExternalData } from "./common";
+interface JobGeneratedLeadSource {
+  jobId: number | null;
+  employeeId: number | null;
+}
 export interface Job {
   id: number;
   jobNumber: string;
-  projectId: number;
+  projectId: number | null;
   customerId: number;
   locationId: number;
   jobStatus: string;
-  completedOn: string;
+  completedOn: string | null;
   businessUnitId: number;
   jobTypeId: number;
   priority: string;
   campaignId: number;
-  summary: string;
+  summary: string | null;
   customFields: CustomField[];
   appointmentCount: number;
   firstAppointmentId: number;
   lastAppointmentId: number;
-  recallForId: number;
-  warrantyId: number;
-  jobGeneratedLeadSource: JobGeneratedLeadSource;
+  recallForId: number | null;
+  warrantyId: number | null;
+  jobGeneratedLeadSource: JobGeneratedLeadSource | null;
   noCharge: boolean;
   notificationsEnabled: boolean;
   createdOn: string;
   createdById: number;
   modifiedOn: string;
   tagTypeIds: number[];
-  leadCallId: number;
-  bookingId: number;
-  soldById: number;
+  leadCallId: number | null;
+  bookingId: number | null;
+  soldById: number | null;
   externalData: ExternalData[];
   customerPo: string;
-}
-interface JobGeneratedLeadSource {
-  jobId: number;
-  employeeId: number;
 }
 export interface JobCancel {
   id: number;

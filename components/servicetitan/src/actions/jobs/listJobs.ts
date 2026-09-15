@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listJobsExamplePayload } from "../../examplePayloads";
 import { listJobsInputs } from "../../inputs";
+import { listJobsOutputSchema } from "../../outputSchemas";
 import type { Job } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listJobs = action({
   display: {
     label: "List Jobs",
-    description: "Retrieve a list of jobs",
+    description: "Retrieve a list of jobs.",
   },
   inputs: listJobsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listJobsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
@@ -38,5 +44,6 @@ export const listJobs = action({
       data,
     };
   },
+  examplePerform: async () => listJobsExamplePayload,
   examplePayload: listJobsExamplePayload,
 });

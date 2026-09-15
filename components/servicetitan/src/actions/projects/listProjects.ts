@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listProjectsExamplePayload } from "../../examplePayloads";
 import { listProjectsInputs } from "../../inputs";
+import { listProjectsOutputSchema } from "../../outputSchemas";
 import type { Project } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listProjects = action({
   display: {
     label: "List Projects",
-    description: "Retrieve a list of Projects",
+    description: "Retrieve a list of projects.",
   },
   inputs: listProjectsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listProjectsOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
@@ -38,5 +44,6 @@ export const listProjects = action({
       data,
     };
   },
+  examplePerform: async () => listProjectsExamplePayload,
   examplePayload: listProjectsExamplePayload,
 });

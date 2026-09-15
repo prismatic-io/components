@@ -1,95 +1,95 @@
 import type { Address, AssignedTo, Batch, CustomField } from "./common";
-export interface Invoice {
-  id: number;
-  syncStatus: string;
-  summary: string;
-  referenceNumber: string;
-  invoiceDate: string;
-  dueDate: string;
-  subTotal: string;
-  salesTax: string;
-  salesTaxCode: SalesTaxCode;
-  total: string;
-  balance: string;
-  invoiceType: AssignedTo;
-  customer: AssignedTo;
-  customerAddress: Address;
-  location: AssignedTo;
-  locationAddress: Address;
-  businessUnit: AssignedTo;
-  termName: string;
-  createdBy: string;
-  batch: Batch;
-  depositedOn: string;
-  createdOn: string;
-  modifiedOn: string;
-  adjustmentToId: number;
-  job: InvoiceJob;
-  projectId: number;
-  royalty: Royalty;
-  employeeInfo: EmployeeInfo;
-  commissionEligibilityDate: string;
-  sentStatus: string;
-  reviewStatus: string;
-  assignedTo: AssignedTo;
-  items: Item[];
-  customFields: CustomField[];
-}
-interface SalesTaxCode {
-  id: number;
-  name: string;
-  taxRate: number;
-}
-interface EmployeeInfo {
-  id: number;
-  name: string;
-  modifiedOn: string;
-}
-interface Item {
-  id: number;
-  description: string;
-  quantity: string;
-  cost: string;
-  totalCost: string;
-  inventoryLocation: string;
-  price: string;
-  type: string;
-  skuName: string;
-  skuId: number;
-  total: string;
-  inventory: boolean;
-  taxable: boolean;
-  generalLedgerAccount: Account;
-  costOfSaleAccount: Account;
-  assetAccount: Account;
-  membershipTypeId: number;
-  itemGroup: ItemGroup;
-  displayName: string;
-  soldHours: number;
-  modifiedOn: string;
-  serviceDate: string;
-  order: number;
-  businessUnit: AssignedTo;
-}
 interface Account {
   id: number;
-  name: string;
-  number: string;
-  type: string;
-  detailType: string;
+  name: string | null;
+  number: string | null;
+  type: string | null;
+  detailType: string | null;
 }
 interface ItemGroup {
   rootId: number;
-  name: string;
+  name: string | null;
+}
+interface Item {
+  id: number;
+  description: string | null;
+  quantity: string | null;
+  cost: string | null;
+  totalCost: string | null;
+  inventoryLocation: string | null;
+  price: string | null;
+  type: string;
+  skuName: string | null;
+  skuId: number;
+  total: string | null;
+  inventory: boolean;
+  taxable: boolean;
+  generalLedgerAccount: Account | null;
+  costOfSaleAccount: Account | null;
+  assetAccount: Account | null;
+  membershipTypeId: number;
+  itemGroup: ItemGroup | null;
+  displayName: string | null;
+  soldHours: number | null;
+  modifiedOn: string;
+  serviceDate: string | null;
+  order: number;
+  businessUnit: AssignedTo | null;
+}
+interface EmployeeInfo {
+  id: number;
+  name: string | null;
+  modifiedOn: string;
 }
 interface InvoiceJob {
   id: number;
-  number: string;
-  type: string;
+  number: string | null;
+  type: string | null;
 }
 interface Royalty {
-  status: string;
-  date: string;
-  sentOn: string;
-  memo: string;
+  status: string | null;
+  date: string | null;
+  sentOn: string | null;
+  memo: string | null;
+}
+interface SalesTaxCode {
+  id: number;
+  name: string | null;
+  taxRate: number;
+}
+export interface Invoice {
+  id: number;
+  syncStatus: string | null;
+  summary: string | null;
+  referenceNumber: string | null;
+  invoiceDate: string | null;
+  dueDate: string | null;
+  subTotal: string | null;
+  salesTax: string | null;
+  salesTaxCode: SalesTaxCode | null;
+  total: string | null;
+  balance: string | null;
+  invoiceType: AssignedTo | null;
+  customer: AssignedTo | null;
+  customerAddress: Address | null;
+  location: AssignedTo | null;
+  locationAddress: Address | null;
+  businessUnit: AssignedTo | null;
+  termName: string | null;
+  createdBy: string | null;
+  batch: Batch | null;
+  depositedOn: string | null;
+  createdOn: string;
+  modifiedOn: string | null;
+  adjustmentToId: number | null;
+  job: InvoiceJob | null;
+  projectId: number | null;
+  royalty: Royalty | null;
+  employeeInfo: EmployeeInfo | null;
+  commissionEligibilityDate: string | null;
+  sentStatus: string;
+  reviewStatus: string;
+  assignedTo: AssignedTo | null;
+  items: Item[] | null;
+  customFields: CustomField[] | null;
 }

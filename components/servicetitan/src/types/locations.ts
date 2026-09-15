@@ -9,9 +9,9 @@ export interface Location {
   createdOn: string;
   createdById: number;
   modifiedOn: string;
-  mergedToId: number;
-  zoneId: number;
+  mergedToId: number | null;
+  zoneId: number | null;
   tagTypeIds: number[];
   externalData: ExternalData[];
-  taxZoneId: number;
+  taxZoneId: number | null;
 }

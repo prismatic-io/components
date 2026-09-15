@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { createTechnicianExamplePayload as updateTechnicianExamplePayload } from "../../examplePayloads";
+import { updateTechnicianExamplePayload } from "../../examplePayloads";
 import { updateTechnicianInputs } from "../../inputs";
+import { updateTechnicianOutputSchema } from "../../outputSchemas";
 export const updateTechnician = action({
   display: {
     label: "Update Technician",
-    description: "Update a technician",
+    description: "Update a technician.",
   },
   inputs: updateTechnicianInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateTechnicianOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -53,5 +59,6 @@ export const updateTechnician = action({
       data,
     };
   },
+  examplePerform: async () => updateTechnicianExamplePayload,
   examplePayload: updateTechnicianExamplePayload,
 });

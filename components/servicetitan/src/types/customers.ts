@@ -13,18 +13,18 @@ export interface Customer {
   createdOn: string;
   createdById: number;
   modifiedOn: string;
-  mergedToId: number;
+  mergedToId: number | null;
   externalData: ExternalData[];
+}
+interface PhoneSettings {
+  phoneNumber: string;
+  doNotText: boolean;
 }
 export interface ContactCustomer {
   id: number;
   type: string;
   value: string;
-  memo: string;
+  memo: string | null;
   modifiedOn: string;
   phoneSettings: PhoneSettings;
-}
-interface PhoneSettings {
-  phoneNumber: string;
-  doNotText: boolean;
 }

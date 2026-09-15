@@ -5,9 +5,10 @@ import { cancelJobInputs } from "../../inputs";
 export const cancelJob = action({
   display: {
     label: "Cancel Job",
-    description: "Cancels a Job",
+    description: "Cancels a job.",
   },
   inputs: cancelJobInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, jobId, memo, reasonId }) => {
     const client = createClient(connection, "jpm", context.debug.enabled);
     const { data } = await client.put(`/jobs/${jobId}/cancel`, {
@@ -18,5 +19,6 @@ export const cancelJob = action({
       data,
     };
   },
+  examplePerform: async () => cancelJobExamplePayload,
   examplePayload: cancelJobExamplePayload,
 });

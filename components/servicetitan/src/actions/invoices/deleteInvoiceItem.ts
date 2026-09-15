@@ -5,9 +5,10 @@ import { deleteInvoiceItemInputs } from "../../inputs";
 export const deleteInvoiceItem = action({
   display: {
     label: "Delete Invoice Item",
-    description: "Delete an invoice item",
+    description: "Delete an invoice item.",
   },
   inputs: deleteInvoiceItemInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, invoiceId, itemId }) => {
     const client = createClient(
       connection,
@@ -21,5 +22,6 @@ export const deleteInvoiceItem = action({
       data,
     };
   },
+  examplePerform: async () => deleteInvoiceItemExamplePayload,
   examplePayload: deleteInvoiceItemExamplePayload,
 });

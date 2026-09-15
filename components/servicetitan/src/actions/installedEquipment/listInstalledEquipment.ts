@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listInstalledEquipmentExamplePayload } from "../../examplePayloads";
 import { listInstalledEquipmentInputs } from "../../inputs";
+import { listInstalledEquipmentOutputSchema } from "../../outputSchemas";
 import type { InstalledEquipment } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listInstalledEquipment = action({
   display: {
     label: "List Installed Equipment",
-    description: "Retrieve a list of installed equipment",
+    description: "Retrieve a list of installed equipment.",
   },
   inputs: listInstalledEquipmentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listInstalledEquipmentOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
@@ -46,5 +52,6 @@ export const listInstalledEquipment = action({
       data,
     };
   },
+  examplePerform: async () => listInstalledEquipmentExamplePayload,
   examplePayload: listInstalledEquipmentExamplePayload,
 });

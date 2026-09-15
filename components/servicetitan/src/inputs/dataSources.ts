@@ -1,3 +1,4 @@
+import { cleanStringInput } from "../util";
 import { connection, customerId } from "./common";
 export const selectLocationInputs = {
   connection,
@@ -28,7 +29,7 @@ export const selectCustomerContactInputs = {
   customerId: {
     ...customerId,
     comments: "The customer ID to fetch contacts for.",
-    clean: (value: unknown) => value as string,
+    clean: cleanStringInput,
     dataSource: undefined,
   },
 };

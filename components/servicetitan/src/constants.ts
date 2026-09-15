@@ -1,10 +1,12 @@
-const productionUrl = "https://api.servicetitan.io";
-const integrationUrl = "https://api-integration.servicetitan.io";
-export const URLS: Record<string, string> = {
-  production: productionUrl,
-  integration: integrationUrl,
-};
 import type { PollResourceConfig } from "./types";
+export const PRODUCTION_URL = "https://api.servicetitan.io";
+export const INTEGRATION_URL = "https://api-integration.servicetitan.io";
+export const URLS: Record<string, string> = {
+  production: PRODUCTION_URL,
+  integration: INTEGRATION_URL,
+};
+export const MAX_BATCHED_RECORDS = 1000;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
   jobs: {
     label: "Jobs",
@@ -12,6 +14,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     urlType: "jpm",
     createdAtField: "createdOn",
     updatedAtField: "modifiedOn",
+    sortField: "ModifiedOn",
   },
   appointments: {
     label: "Appointments",
@@ -19,6 +22,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     urlType: "jpm",
     createdAtField: "createdOn",
     updatedAtField: "modifiedOn",
+    sortField: "ModifiedOn",
   },
   projects: {
     label: "Projects",
@@ -26,6 +30,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     urlType: "jpm",
     createdAtField: "createdOn",
     updatedAtField: "modifiedOn",
+    sortField: "ModifiedOn",
   },
   invoices: {
     label: "Invoices",
@@ -33,6 +38,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     urlType: "accounting",
     createdAtField: "createdOn",
     updatedAtField: "modifiedOn",
+    sortField: "ModifiedOn",
   },
   payments: {
     label: "Payments",
@@ -40,6 +46,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     urlType: "accounting",
     createdAtField: "createdOn",
     updatedAtField: "modifiedOn",
+    sortField: "ModifiedOn",
   },
   customers: {
     label: "Customers",
@@ -47,6 +54,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     urlType: "crm",
     createdAtField: "createdOn",
     updatedAtField: "modifiedOn",
+    sortField: "ModifiedOn",
   },
   locations: {
     label: "Locations",
@@ -54,6 +62,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     urlType: "crm",
     createdAtField: "createdOn",
     updatedAtField: "modifiedOn",
+    sortField: "ModifiedOn",
   },
   installedEquipment: {
     label: "Installed Equipment",
@@ -61,6 +70,7 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     urlType: "equipmentsystems",
     createdAtField: "createdOn",
     updatedAtField: "modifiedOn",
+    sortField: "ModifiedOn",
   },
   technicians: {
     label: "Technicians",
@@ -70,6 +80,3 @@ export const POLL_RESOURCE_CONFIG: Record<string, PollResourceConfig> = {
     updatedAtField: "modifiedOn",
   },
 };
-export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
-  ([value, { label }]) => ({ label, value }),
-);

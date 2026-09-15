@@ -1,15 +1,18 @@
-import { type Connection, util } from "@prismatic-io/spectral";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { serviceTitanConnection } from "../connections";
 import { URLS } from "../constants";
-export const validateConnection = (connection: Connection) => {
+export const validateConnection = (connection: Connection): void => {
   if (connection.key !== serviceTitanConnection.key) {
-    throw new Error("Connection is not authorized");
+    throw new ConnectionError(
+      connection,
+      `Expected the ${serviceTitanConnection.key} connection but received "${connection.key}".`,
+    );
   }
 };
 export const getURLFromConnection = (
   connection: Connection,
   urlType: string | undefined,
-) => {
+): string => {
   if (!urlType) {
     throw new Error("URL type is required");
   }
@@ -19,9 +22,11 @@ export const getURLFromConnection = (
   const completeServiceTitanURL = `${URLS[environment]}/${urlType}/v2/tenant/${tenant}`;
   return completeServiceTitanURL;
 };
-export const getTokenFromConnection = (connection: Connection) => {
+export const getTokenFromConnection = (connection: Connection): string => {
   return util.types.toString(connection.token?.access_token);
 };
-export const getApplicationKeyFromConnection = (connection: Connection) => {
+export const getApplicationKeyFromConnection = (
+  connection: Connection,
+): string => {
   return util.types.toString(connection.fields.applicationKey);
 };

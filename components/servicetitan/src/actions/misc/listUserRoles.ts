@@ -1,15 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { listUserRolesExamplePayload } from "../../examplePayloads";
 import { listUserRolesInputs } from "../../inputs";
+import { listUserRolesOutputSchema } from "../../outputSchemas";
 import type { UserRoles } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listUserRoles = action({
   display: {
     label: "List User Roles",
-    description: "Gets a list of user roles",
+    description: "Gets a list of user roles.",
   },
   inputs: listUserRolesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listUserRolesOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, pagination, includeTotal, sort, customQueryParams, fetchAll },
@@ -38,5 +44,6 @@ export const listUserRoles = action({
       data,
     };
   },
+  examplePerform: async () => listUserRolesExamplePayload,
   examplePayload: listUserRolesExamplePayload,
 });
