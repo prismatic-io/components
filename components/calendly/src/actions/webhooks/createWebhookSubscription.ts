@@ -1,14 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createWebhookSubscriptionOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import {
-  connection,
-  url,
-  event,
-  organization,
-  user,
-  scope,
-  signingKey,
-} from "../../inputs";
+import { createWebhookSubscriptionInputs } from "../../inputs";
 import { createWebhookSubscriptionExamplePayload } from "../../examplePayloads";
 import { postWebhookSubscription } from "../../util";
 export const createWebhookSubscription = action({
@@ -16,6 +9,7 @@ export const createWebhookSubscription = action({
     label: "Create Webhook Subscription",
     description: "Create a Webhook Subscription for an Organization or User.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, url, event, organization, user, scope, signingKey },
@@ -32,25 +26,15 @@ export const createWebhookSubscription = action({
     );
     return { data };
   },
-  inputs: {
-    connection,
-    organization: {
-      ...organization,
-      required: true,
-      dataSource: "organizations",
-      comments:
-        "The unique reference to the organization that the webhook will be tied to.",
-    },
-    user: {
-      ...user,
-      required: false,
-      comments:
-        "The unique reference to the user that the webhook will be tied to.",
-    },
-    url,
-    event,
-    scope,
-    signingKey,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createWebhookSubscriptionExamplePayload.data,
+  }),
+  inputs: createWebhookSubscriptionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createWebhookSubscriptionOutputSchema,
+  }),
   examplePayload: createWebhookSubscriptionExamplePayload,
 });

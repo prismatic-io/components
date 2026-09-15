@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-09-15
+
+Updated the component with expanded connection defaults and improved configuration and polling capabilities:
+- Updated the **OAuth 2.0** connection to default to the full set of permission scopes required by this component's actions, triggers, and datasources
+- Added inline action calling support across all actions for improved example output during configuration
+- Added output schemas across all actions for improved field mapping during configuration
+- Added opt-in batching to the **New and Updated Events** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-Back Date** input to the **New and Updated Events** trigger for performing an initial sync of records. The initial sync backfills every record modified on or after the specified date, beginning on the first recurrence and seeding each record once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-06-08
 
 Added the **New and Updated Events** polling trigger that checks for scheduled events created or updated since the last run

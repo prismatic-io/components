@@ -1,4 +1,8 @@
-export type { Pagination } from "./Pagination";
-export type { Webhook } from "./Webhook";
-export type { WebhookSubscriptionPayload } from "./WebhookSubscriptionPayload";
-export type { CalendlyEvent, PollingState } from "./Polling";
+export type { Pagination } from "./common";
+export type {
+  CalendlyEvent,
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "./polling";
+export type { Webhook, WebhookSubscriptionPayload } from "./webhooks";

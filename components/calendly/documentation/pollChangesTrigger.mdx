@@ -1,23 +1,54 @@
-This trigger polls [Calendly](https://calendly.com/) on a configured schedule and emits scheduled events that were created or updated since the previous run. It is a convenient alternative to webhooks when a scheduled pull is preferred over an event push.
+This trigger polls [Calendly](https://calendly.com/) on a configured schedule and emits scheduled events that were created or updated since the previous recurrence. Load history once with a **Look-Back Date**, check for changes on a schedule, or both.
+
+The trigger checks for:
+
+- **New records**: Events whose `created_at` is after the trigger's stored position, when **Show New Records** is enabled.
+- **Updated records**: Events whose `updated_at` is after the stored position and that are not newly created, when **Show Updated Records** is enabled.
 
 #### How It Works
 
-Calendly's list endpoint does not support filtering by creation or modification date (`min_start_time` filters by the event's start time, not when the record changed), so on each scheduled run the trigger fetches the organization's scheduled events and classifies them against the previous poll time:
+Calendly's List Events endpoint does not support filtering by creation or modification date (`min_start_time` filters by the event's start time, not by when the record changed), so the trigger classifies events client-side.
 
-- **Created**: events whose `created_at` is after the previous poll.
-- **Updated**: events whose `updated_at` is after the previous poll (and that are not newly created).
+1. The trigger runs on the configured schedule (for example, every five minutes).
+2. It fetches the organization's scheduled events, following Calendly's pagination until every page is retrieved. No sort is requested: the endpoint accepts only `start_time` as a sort field, and ordering is irrelevant because every page is fetched and classification happens in memory.
+3. Each event is classified against the stored position — **created** when `created_at` is after it, **updated** when `updated_at` is after it and the event is not newly created.
+4. **Show New Records** and **Show Updated Records** gate which buckets are emitted.
+5. The trigger stores the current time as its position via `context.polling.setState({ lastPolledAt })`, so the next recurrence returns only events changed since this one.
+6. When neither bucket contains an event, the trigger reports `polledNoChanges: true` and the flow is not invoked.
 
-The current run time is stored as the cursor for the next run.
+**The first recurrence**
 
-- **First run**: the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical events on deploy.
-- **Subsequent runs**: only events created or updated since the last run are returned.
+- **Look-Back Date empty**: the trigger records the current time as its position and reports nothing, so an instance does not receive a backlog of historical events on deploy. Incremental polling begins on the next recurrence.
+- **Look-Back Date set**: the trigger begins a one-time initial sync covering every event created or updated on or after that date, seeding each one exactly once.
+
+**During an initial sync**
+
+No inputs are suppressed. A sync seeds a complete starting state, and none of this trigger's inputs narrow the change feed in a way that would leave gaps in it, so every input keeps the effect it has during incremental polling. **Show New Records** and **Show Updated Records** still gate which buckets are emitted, and **Organization** and **User** still scope which events the sync covers.
+
+There is no page-size input to cap a page of the sync. Each recurrence follows Calendly's pagination until every page of the window has been retrieved.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Calendly.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.created` and `data.updated`; with batching on those arrays do not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data**). Any step reading the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+Batching changes how fetched events are dispatched, not how they are fetched. This trigger retrieves its window within a single recurrence either way, so turning batching on does not shorten or lengthen the drain.
+
+**Handing off to the schedule**
+
+An initial sync has no separate upper bound: the trigger advances its stored position to the current time once the window is exhausted, exactly as an incremental recurrence does, and the next recurrence resumes from there. No field in the payload marks the handoff, and there is no phase in which a different set of filters applies.
 
 #### Returned Data
 
-The trigger returns the matching events grouped under `created` and `updated`. Fields shown are representative. The full response object includes additional properties.
+What arrives in `data` depends on whether batching is enabled on the flow.
+
+**Without batching**, `data` is a single object holding the `created` and `updated` arrays.
 
 <details>
-<summary>Example Payload</summary>
+<summary>Example Payload: batching disabled</summary>
 
 ```json
 {
@@ -27,6 +58,9 @@ The trigger returns the matching events grouped under `created` and `updated`. F
         "uri": "https://api.calendly.com/scheduled_events/GBGBDCAADAEDCRZ2",
         "name": "15 Minute Meeting",
         "status": "active",
+        "start_time": "2019-08-24T14:15:22.123456Z",
+        "end_time": "2019-08-24T14:15:22.123456Z",
+        "event_type": "https://api.calendly.com/event_types/GBGBDCAADAEDCRZ2",
         "created_at": "2019-01-02T03:04:05.092125Z",
         "updated_at": "2019-01-02T03:04:05.092125Z"
       }
@@ -36,9 +70,76 @@ The trigger returns the matching events grouped under `created` and `updated`. F
 }
 ```
 
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+**With batching enabled**, `data` holds one slice of the batch instead of those two arrays. Every event becomes its own item, shaped as `changeType` plus `record`. `changeType` is `created` or `updated`, and `record` is the polled Calendly scheduled event.
+
+With a batch size of 1, `data` is a single item.
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "created",
+    "record": {
+      "uri": "https://api.calendly.com/scheduled_events/GBGBDCAADAEDCRZ2",
+      "name": "15 Minute Meeting",
+      "status": "active",
+      "start_time": "2019-08-24T14:15:22.123456Z",
+      "end_time": "2019-08-24T14:15:22.123456Z",
+      "event_type": "https://api.calendly.com/event_types/GBGBDCAADAEDCRZ2",
+      "created_at": "2019-01-02T03:04:05.092125Z",
+      "updated_at": "2019-01-02T03:04:05.092125Z"
+    }
+  }
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+With a batch size greater than 1, `data` is an array of those items.
+
+<details>
+<summary>Example Payload: batching enabled, batch size greater than 1</summary>
+
+```json
+{
+  "data": [
+    {
+      "changeType": "created",
+      "record": {
+        "uri": "https://api.calendly.com/scheduled_events/GBGBDCAADAEDCRZ2",
+        "name": "15 Minute Meeting",
+        "status": "active",
+        "created_at": "2019-01-02T03:04:05.092125Z",
+        "updated_at": "2019-01-02T03:04:05.092125Z"
+      }
+    },
+    {
+      "changeType": "updated",
+      "record": {
+        "uri": "https://api.calendly.com/scheduled_events/HJHJEDBBEBFEDSA3",
+        "name": "30 Minute Meeting",
+        "status": "canceled",
+        "created_at": "2019-01-02T03:04:05.092125Z",
+        "updated_at": "2019-03-14T09:21:17.445301Z"
+      }
+    }
+  ]
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
 </details>
 
 #### Notes
 
-- Because Calendly has no server-side created/updated filter, each run lists the organization's events and filters them in memory; for organizations with very many events this can be heavy.
-- Cancellations and other status changes are detected via `updated_at`; the existing webhook trigger remains the lowest-latency option for real-time invitee events.
+- **Client-side filtering.** Because Calendly has no server-side created or updated filter, each recurrence lists the organization's events and classifies them in memory. For organizations with very many events this can be heavy.
+- **Status changes.** Cancellations and other status changes are detected via `updated_at`. The **Scheduled Event** webhook trigger remains the lowest-latency option for real-time invitee events.

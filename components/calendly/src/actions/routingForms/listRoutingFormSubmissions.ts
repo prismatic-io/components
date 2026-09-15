@@ -1,6 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listRoutingFormSubmissionsOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, form, organization, sort } from "../../inputs";
+import { listRoutingFormSubmissionsInputs } from "../../inputs";
 import { listRoutingFormSubmissionsExamplePayload } from "../../examplePayloads";
 import { paginator } from "../../util";
 export const listRoutingFormSubmissions = action({
@@ -9,37 +10,24 @@ export const listRoutingFormSubmissions = action({
     description:
       "Get a list of Routing Form Submissions for a specified Routing Form.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, form, sort }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const data = await paginator(client, "/routing_form_submissions", {
       form,
-      sort: sort || undefined,
+      sort: sort,
     });
     return { data };
   },
-  inputs: {
-    connection,
-    organization: { ...organization, dataSource: "organizations" },
-    form,
-    sort: {
-      ...sort,
-      model: [
-        {
-          label: "",
-          value: "",
-        },
-        {
-          label: "Created At (Ascending)",
-          value: "created_at:asc",
-        },
-        {
-          label: "Created At (Descending)",
-          value: "created_at:desc",
-        },
-      ],
-      comments:
-        "Order results by the specified field and direction. Supported fields are: created_at. Sort direction is specified as: asc, desc.",
-    },
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listRoutingFormSubmissionsExamplePayload.data,
+  }),
+  inputs: listRoutingFormSubmissionsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listRoutingFormSubmissionsOutputSchema,
+  }),
   examplePayload: listRoutingFormSubmissionsExamplePayload,
 });

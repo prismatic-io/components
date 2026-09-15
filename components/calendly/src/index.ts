@@ -12,7 +12,7 @@ export default component({
     category: "Application Connectors",
     label: "Calendly",
     description:
-      "Calendly is an industry leading scheduling solution for businesses. Use the Calendly component to manage the scheduling of events; attendee availability; and retrieve pertinent data on users and attendees.",
+      "Manage the scheduling of events, attendee availability, and retrieve data on users and attendees.",
     iconPath: "icon.png",
   },
   actions,

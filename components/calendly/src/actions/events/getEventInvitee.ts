@@ -1,6 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getEventInviteeOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, eventUuid, inviteeUuid, organization } from "../../inputs";
+import { getEventInviteeInputs } from "../../inputs";
 import { getEventInviteeExamplePayload } from "../../examplePayloads";
 export const getEventInvitee = action({
   display: {
@@ -8,6 +9,7 @@ export const getEventInvitee = action({
     description:
       "Returns information about a specified Invitee (person invited to an event).",
   },
+  performSafety: "safe",
   perform: async (context, { connection, eventUuid, inviteeUuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const { data } = await client.get(
@@ -15,11 +17,10 @@ export const getEventInvitee = action({
     );
     return { data };
   },
-  inputs: {
-    connection,
-    organization: { ...organization, dataSource: "organizations" },
-    eventUuid,
-    inviteeUuid,
-  },
+  inputs: getEventInviteeInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getEventInviteeOutputSchema,
+  }),
   examplePayload: getEventInviteeExamplePayload,
 });

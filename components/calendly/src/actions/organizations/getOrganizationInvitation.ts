@@ -1,6 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getOrganizationInvitationOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, uuid, orgUuid } from "../../inputs";
+import { getOrganizationInvitationInputs } from "../../inputs";
 import { getOrganizationInvitationExamplePayload } from "../../examplePayloads";
 export const getOrganizationInvitation = action({
   display: {
@@ -8,6 +9,7 @@ export const getOrganizationInvitation = action({
     description:
       "Returns an Organization Invitation that was sent to the organization's members.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, uuid, orgUuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const { data } = await client.get(
@@ -15,13 +17,10 @@ export const getOrganizationInvitation = action({
     );
     return { data };
   },
-  inputs: {
-    connection,
-    uuid: {
-      ...uuid,
-      comments: "The organization invitation's unique identifier.",
-    },
-    orgUuid,
-  },
+  inputs: getOrganizationInvitationInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getOrganizationInvitationOutputSchema,
+  }),
   examplePayload: getOrganizationInvitationExamplePayload,
 });

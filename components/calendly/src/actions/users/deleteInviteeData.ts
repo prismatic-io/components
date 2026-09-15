@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteInviteeDataOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, emails } from "../../inputs";
+import { deleteInviteeDataInputs } from "../../inputs";
 import { deleteInviteeDataExamplePayload } from "../../examplePayloads";
 export const deleteInviteeData = action({
   display: {
     label: "Delete Invitee Data",
     description:
-      "To submit a request to remove invitee data from all previously booked events in your organization, use this endpoint.",
+      "Submits a request to remove invitee data from all previously booked events in the organization.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, emails }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const { data } = await client.post("/data_compliance/deletion/invitees", {
@@ -15,9 +17,15 @@ export const deleteInviteeData = action({
     });
     return { data };
   },
-  inputs: {
-    connection,
-    emails,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: deleteInviteeDataExamplePayload.data,
+  }),
+  inputs: deleteInviteeDataInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteInviteeDataOutputSchema,
+  }),
   examplePayload: deleteInviteeDataExamplePayload,
 });

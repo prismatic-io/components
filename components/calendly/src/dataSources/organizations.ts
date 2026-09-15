@@ -1,5 +1,5 @@
 import { dataSource } from "@prismatic-io/spectral";
-import { connection } from "../inputs";
+import { organizationsInputs } from "../inputs";
 import { getCalendlyClient } from "../client";
 import { extractUuidFromUri } from "../util";
 export const organizations = dataSource({
@@ -8,9 +8,7 @@ export const organizations = dataSource({
     description:
       "Returns the current user's organization for use in other inputs.",
   },
-  inputs: {
-    connection,
-  },
+  inputs: organizationsInputs,
   perform: async (context, { connection }) => {
     const client = getCalendlyClient(connection, false);
     const { data } = await client.get("/users/me");

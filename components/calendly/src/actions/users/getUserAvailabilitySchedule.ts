@@ -1,21 +1,23 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getUserAvailabilityScheduleOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, uuid } from "../../inputs";
+import { getUserAvailabilityScheduleInputs } from "../../inputs";
 import { getUserAvailabilityScheduleExamplePayload } from "../../examplePayloads";
 export const getUserAvailabilitySchedule = action({
   display: {
     label: "Get User Availability Schedule",
-    description:
-      "This will return the availability schedule of the given UUID.",
+    description: "Returns the availability schedule of the given UUID.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, uuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const { data } = await client.get(`/user_availability_schedules/${uuid}`);
     return { data };
   },
-  inputs: {
-    connection,
-    uuid: { ...uuid, comments: "The UUID of the availability schedule." },
-  },
+  inputs: getUserAvailabilityScheduleInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getUserAvailabilityScheduleOutputSchema,
+  }),
   examplePayload: getUserAvailabilityScheduleExamplePayload,
 });

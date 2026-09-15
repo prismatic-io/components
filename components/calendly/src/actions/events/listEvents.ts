@@ -1,15 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listEventsOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import {
-  connection,
-  inviteeEmail,
-  maxStartTime,
-  minStartTime,
-  organization,
-  sort,
-  status,
-  user,
-} from "../../inputs";
+import { listEventsInputs } from "../../inputs";
 import { listEventsExamplePayload } from "../../examplePayloads";
 import { getEvents } from "../../util";
 export const listEvents = action({
@@ -17,6 +9,7 @@ export const listEvents = action({
     label: "List Events",
     description: "Returns a list of Events.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -43,15 +36,15 @@ export const listEvents = action({
     );
     return { data };
   },
-  inputs: {
-    connection,
-    inviteeEmail,
-    maxStartTime,
-    minStartTime,
-    organization: { ...organization, dataSource: "organizations" },
-    sort,
-    status,
-    user,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listEventsExamplePayload.data,
+  }),
+  inputs: listEventsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listEventsOutputSchema,
+  }),
   examplePayload: listEventsExamplePayload,
 });

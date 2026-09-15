@@ -1,15 +1,5 @@
 import { dataSource } from "@prismatic-io/spectral";
-import {
-  connection,
-  inviteeEmail,
-  maxStartTime,
-  minStartTime,
-  organization,
-  returnUuidOnly,
-  sort,
-  status,
-  user,
-} from "../inputs";
+import { eventsInputs } from "../inputs";
 import { getCalendlyClient } from "../client";
 import { getEvents, extractUuidFromUri } from "../util";
 export const events = dataSource({
@@ -17,17 +7,7 @@ export const events = dataSource({
     label: "Select Event",
     description: "Select an Event.",
   },
-  inputs: {
-    connection,
-    inviteeEmail,
-    maxStartTime,
-    minStartTime,
-    organization,
-    returnUuidOnly,
-    sort,
-    status,
-    user,
-  },
+  inputs: eventsInputs,
   perform: async (
     context,
     {

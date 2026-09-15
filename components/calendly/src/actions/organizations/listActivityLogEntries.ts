@@ -1,16 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listActivityLogEntriesOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import {
-  connection,
-  organization,
-  action as actionInput,
-  actor,
-  maxOccurredAt,
-  minOccurredAt,
-  namespace,
-  searchTerm,
-  sortList,
-} from "../../inputs";
+import { listActivityLogEntriesInputs } from "../../inputs";
 import { listActivityLogEntriesExamplePayload } from "../../examplePayloads";
 import { paginator } from "../../util";
 export const listActivityLogEntries = action({
@@ -18,6 +9,7 @@ export const listActivityLogEntries = action({
     label: "List Activity Log Entries",
     description: "Returns a list of activity log entries.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -37,30 +29,23 @@ export const listActivityLogEntries = action({
       organization,
       action: actionInput.length ? actionInput : undefined,
       actor: actor.length ? actor : undefined,
-      max_occurred_at: maxOccurredAt || undefined,
-      min_occurred_at: minOccurredAt || undefined,
+      max_occurred_at: maxOccurredAt,
+      min_occurred_at: minOccurredAt,
       namespace: namespace.length ? namespace : undefined,
-      search_term: searchTerm || undefined,
+      search_term: searchTerm,
       sort: sortList.length ? sortList : undefined,
     });
     return { data };
   },
-  inputs: {
-    connection,
-    organization: {
-      ...organization,
-      required: true,
-      dataSource: "organizations",
-      comments:
-        "Return activity log entries from the organization associated with this URI",
-    },
-    actionInput,
-    actor,
-    maxOccurredAt,
-    minOccurredAt,
-    namespace,
-    searchTerm,
-    sortList,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listActivityLogEntriesExamplePayload.data,
+  }),
+  inputs: listActivityLogEntriesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listActivityLogEntriesOutputSchema,
+  }),
   examplePayload: listActivityLogEntriesExamplePayload,
 });

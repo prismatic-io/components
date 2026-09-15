@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { revokeUserOrganizationInvitationOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, uuid, orgUuid } from "../../inputs";
+import { revokeUserOrganizationInvitationInputs } from "../../inputs";
+import { revokeUserOrganizationInvitationExamplePayload } from "../../examplePayloads";
 export const revokeUserOrganizationInvitation = action({
   display: {
     label: "Revoke User's Organization Invitation",
-    description:
-      "Use this to revoke an Organization Invitation to an organization.",
+    description: "Revokes an Organization Invitation to an organization.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, uuid, orgUuid }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const { data } = await client.delete(
@@ -14,12 +16,15 @@ export const revokeUserOrganizationInvitation = action({
     );
     return { data };
   },
-  inputs: {
-    connection,
-    uuid: {
-      ...uuid,
-      comments: "The organization invitation's unique identifier.",
-    },
-    orgUuid,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: revokeUserOrganizationInvitationExamplePayload.data,
+  }),
+  inputs: revokeUserOrganizationInvitationInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: revokeUserOrganizationInvitationOutputSchema,
+  }),
+  examplePayload: revokeUserOrganizationInvitationExamplePayload,
 });

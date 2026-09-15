@@ -15,7 +15,7 @@ export const getCalendlyClient = (connection: Connection, debug: boolean) => {
   return createClient({
     baseUrl,
     headers: {
-      authorization: `Bearer ${connection.token?.access_token}`,
+      authorization: `Bearer ${util.types.toString(connection.token?.access_token)}`,
       "Content-Type": "application/json",
     },
     debug,

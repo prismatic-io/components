@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listOrganizationMembershipsOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, email, organization, user } from "../../inputs";
+import { listOrganizationMembershipsInputs } from "../../inputs";
 import { listOrganizationMembershipsExamplePayload } from "../../examplePayloads";
 import { getOrganizationMemberships } from "../../util";
 export const listOrganizationMemberships = action({
   display: {
     label: "List Organization Memberships",
     description:
-      "Use this to list the Organization Memberships for all users belonging to an organization.",
+      "Lists the Organization Memberships for all users belonging to an organization.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, email, organization, user }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const data = await getOrganizationMemberships(
@@ -19,23 +21,15 @@ export const listOrganizationMemberships = action({
     );
     return { data };
   },
-  inputs: {
-    connection,
-    email: {
-      ...email,
-      comments: "Indicates if the results should be filtered by email address",
-      example: "user@example.com",
-    },
-    organization: {
-      ...organization,
-      dataSource: "organizations",
-      comments: "Indicates if the results should be filtered by organization",
-    },
-    user: {
-      ...user,
-      comments: "Indicates if the results should be filtered by user",
-      example: "https://api.calendly.com/users/UR1234567890",
-    },
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listOrganizationMembershipsExamplePayload.data,
+  }),
+  inputs: listOrganizationMembershipsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listOrganizationMembershipsOutputSchema,
+  }),
   examplePayload: listOrganizationMembershipsExamplePayload,
 });

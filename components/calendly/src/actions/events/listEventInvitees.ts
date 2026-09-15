@@ -1,13 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listEventInviteesOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import {
-  connection,
-  email,
-  organization,
-  sort,
-  status,
-  uuid,
-} from "../../inputs";
+import { listEventInviteesInputs } from "../../inputs";
 import { listEventInviteesExamplePayload } from "../../examplePayloads";
 import { paginator } from "../../util";
 export const listEventInvitees = action({
@@ -15,22 +9,25 @@ export const listEventInvitees = action({
     label: "List Event Invitees",
     description: "Returns a list of Invitees for an event.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, uuid, email, sort, status }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const data = await paginator(client, `/scheduled_events/${uuid}/invitees`, {
-      email: email || undefined,
-      sort: sort || undefined,
-      status: status || undefined,
+      email,
+      sort,
+      status,
     });
     return { data };
   },
-  inputs: {
-    connection,
-    organization: { ...organization, dataSource: "organizations" },
-    uuid: { ...uuid, dataSource: "events" },
-    email,
-    sort,
-    status,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: listEventInviteesExamplePayload.data,
+  }),
+  inputs: listEventInviteesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listEventInviteesOutputSchema,
+  }),
   examplePayload: listEventInviteesExamplePayload,
 });

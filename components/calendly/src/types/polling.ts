@@ -6,3 +6,11 @@ export interface CalendlyEvent extends Record<string, unknown> {
   created_at?: string;
   updated_at?: string;
 }
+export interface PollingChangesObject {
+  created?: CalendlyEvent[];
+  updated?: CalendlyEvent[];
+}
+export interface PollingRecordChange {
+  changeType: "created" | "updated";
+  record: CalendlyEvent;
+}

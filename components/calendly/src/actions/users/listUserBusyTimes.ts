@@ -1,6 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listUserBusyTimesOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, endTime, startTime, user } from "../../inputs";
+import { listUserBusyTimesInputs } from "../../inputs";
 import { listUserBusyTimesExamplePayload } from "../../examplePayloads";
 export const listUserBusyTimes = action({
   display: {
@@ -8,6 +9,7 @@ export const listUserBusyTimes = action({
     description:
       "Returns an ascending list of user internal and external scheduled events within a specified date range.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, endTime, startTime, user }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const { data } = await client.get("/user_busy_times", {
@@ -19,21 +21,10 @@ export const listUserBusyTimes = action({
     });
     return { data };
   },
-  inputs: {
-    connection,
-    user: {
-      ...user,
-      required: true,
-      comments: "The uri associated with the user",
-    },
-    endTime: {
-      ...endTime,
-      comments: "End time of the requested availability range",
-    },
-    startTime: {
-      ...startTime,
-      comments: "Start time of the requested availability range",
-    },
-  },
+  inputs: listUserBusyTimesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listUserBusyTimesOutputSchema,
+  }),
   examplePayload: listUserBusyTimesExamplePayload,
 });

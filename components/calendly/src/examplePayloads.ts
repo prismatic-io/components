@@ -1,3 +1,4 @@
+import type { TriggerPayload } from "@prismatic-io/spectral";
 export const listEventInviteesExamplePayload = {
   data: [
     {
@@ -102,10 +103,120 @@ export const listEventsExamplePayload = {
     },
   ],
 };
-export const pollEventsExamplePayload = {
-  data: {
-    created: listEventsExamplePayload.data,
-    updated: [],
+export const calendlyTriggerExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    body: {
+      data: {
+        event: "invitee.created",
+        created_at: "2024-03-15T14:30:00.000000Z",
+        created_by: "https://api.calendly.com/users/AAAAAAAAAAAAAAAA",
+        payload: {
+          cancel_url: "https://calendly.com/cancellations/AAAAAAAAAAAAAAAA",
+          created_at: "2024-03-15T14:30:00.000000Z",
+          email: "invitee@example.com",
+          event: "https://api.calendly.com/scheduled_events/AAAAAAAAAAAAAAAA",
+          name: "Jane Doe",
+          new_invitee: null,
+          old_invitee: null,
+          reschedule_url: "https://calendly.com/reschedulings/AAAAAAAAAAAAAAAA",
+          status: "active",
+          uri: "https://api.calendly.com/scheduled_events/AAAAAAAAAAAAAAAA/invitees/AAAAAAAAAAAAAAAA",
+          updated_at: "2024-03-15T14:30:00.000000Z",
+        },
+      },
+    },
+    headers: {},
+    queryParameters: {},
+    rawBody: {
+      data: undefined,
+      contentType: undefined,
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "",
+    customer: {
+      id: "Q3VzdG9tZXI6MTIzNDU2NzgtMTIzNC00NTY3LTg5YWItY2RlZjAxMjM0NTY3",
+      name: "Example Customer",
+      externalId: "ext-cust-001",
+    },
+    instance: {
+      id: "SW5zdGFuY2U6MTIzNDU2NzgtMTIzNC00NTY3LTg5YWItY2RlZjAxMjM0NTY3",
+      name: "Calendly - Production",
+    },
+    user: {
+      id: "VXNlcjoxMjM0NTY3OC0xMjM0LTQ1NjctODlhYi1jZGVmMDEyMzQ1Njc=",
+      email: "user@example.com",
+      name: "Example User",
+      externalId: "ext-user-001",
+    },
+    integration: {
+      id: "SW50ZWdyYXRpb246MTIzNDU2NzgtMTIzNC00NTY3LTg5YWItY2RlZjAxMjM0NTY3",
+      name: "Calendly - Webhook Integration",
+      versionSequenceId: "VmVyc2lvbjoxMjM0NTY3OC0xMjM0LTQ1Njc=",
+      externalVersion: "1.0.0",
+    },
+    flow: {
+      id: "Rmxvdzo4NzY1NDMyMS0xMjM0LTQ1NjctODlhYi1jZGVmMDEyMzQ1Njc=",
+      name: "New and Updated Events",
+      stableId: "",
+    },
+    startedAt: "",
+    globalDebug: false,
+  },
+};
+export const pollChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    body: {
+      data: {
+        created: listEventsExamplePayload.data,
+        updated: [],
+      },
+    },
+    headers: {},
+    queryParameters: {},
+    rawBody: {
+      data: undefined,
+      contentType: undefined,
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "",
+    customer: {
+      id: "Q3VzdG9tZXI6MTIzNDU2NzgtMTIzNC00NTY3LTg5YWItY2RlZjAxMjM0NTY3",
+      name: "Example Customer",
+      externalId: "ext-cust-001",
+    },
+    instance: {
+      id: "SW5zdGFuY2U6MTIzNDU2NzgtMTIzNC00NTY3LTg5YWItY2RlZjAxMjM0NTY3",
+      name: "Calendly - Production",
+    },
+    user: {
+      id: "VXNlcjoxMjM0NTY3OC0xMjM0LTQ1NjctODlhYi1jZGVmMDEyMzQ1Njc=",
+      email: "user@example.com",
+      name: "Example User",
+      externalId: "ext-user-001",
+    },
+    integration: {
+      id: "SW50ZWdyYXRpb246MTIzNDU2NzgtMTIzNC00NTY3LTg5YWItY2RlZjAxMjM0NTY3",
+      name: "Calendly - Webhook Integration",
+      versionSequenceId: "VmVyc2lvbjoxMjM0NTY3OC0xMjM0LTQ1Njc=",
+      externalVersion: "1.0.0",
+    },
+    flow: {
+      id: "Rmxvdzo4NzY1NDMyMS0xMjM0LTQ1NjctODlhYi1jZGVmMDEyMzQ1Njc=",
+      name: "New and Updated Events",
+      stableId: "",
+    },
+    startedAt: "",
+    globalDebug: false,
   },
 };
 export const getEventInviteeExamplePayload = {
@@ -216,8 +327,8 @@ export const getEventExamplePayload = {
 export const cancelEventExamplePayload = {
   data: {
     resource: {
-      canceled_by: "string",
-      reason: "string",
+      canceled_by: "John Doe",
+      reason: "Scheduling conflict",
       canceler_type: "host",
       created_at: "2019-01-02T03:04:05.678123Z",
     },
@@ -233,6 +344,21 @@ export const createSingleUseSchedulingLinkExamplePayload = {
   },
 };
 export const deleteInviteeDataExamplePayload = {
+  data: {},
+};
+export const deleteScheduledEventDataExamplePayload = {
+  data: {},
+};
+export const deleteWebhookSubscriptionExamplePayload = {
+  data: {},
+};
+export const deleteInstancedWebhooksExamplePayload = {
+  data: {},
+};
+export const removeUserFromOrganizationExamplePayload = {
+  data: {},
+};
+export const revokeUserOrganizationInvitationExamplePayload = {
   data: {},
 };
 export const listUserEventTypesExamplePayload = {

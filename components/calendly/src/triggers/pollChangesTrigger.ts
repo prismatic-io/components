@@ -1,43 +1,50 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { getCalendlyClient } from "../client";
+import { DEFAULT_BATCH_SIZE } from "../constants";
+import { pollChangesTriggerInputs } from "../inputs";
+import type {
+  CalendlyEvent,
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
 import {
-  connection,
-  organization,
-  showNewRecords,
-  showUpdatedRecords,
-  user,
-} from "../inputs";
-import type { CalendlyEvent, PollingState } from "../types";
-import { classifyEventsByPollDate, getEvents } from "../util";
+  classifyEventsByPollDate,
+  getEvents,
+  resolvePollingRecordChanges,
+} from "../util";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Events",
     description:
       "Checks for new and updated Events in Calendly on a configured schedule.",
   },
-  inputs: {
-    connection,
-    organization: {
-      ...organization,
-      required: true,
-      dataSource: "organizations",
-      comments: "Poll events scheduled with the organization at this URI.",
-    },
-    user,
-    showNewRecords,
-    showUpdatedRecords,
+  examplePayload: pollChangesTriggerExamplePayload,
+  inputs: pollChangesTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
   },
   perform: async (context, payload, params) => {
     const pollState = context.polling.getState() as PollingState;
     const now = new Date().toISOString();
     if (!pollState?.lastPolledAt) {
-      context.polling.setState({ lastPolledAt: now });
-      return {
-        payload: { ...payload, body: { data: { created: [], updated: [] } } },
-        polledNoChanges: true,
-      };
+      const seedDate = params.lookBackDate || now;
+      context.polling.setState({ lastPolledAt: seedDate });
+      if (!params.lookBackDate) {
+        return {
+          payload: {
+            ...payload,
+            body: { data: { created: [], updated: [] } },
+          },
+          polledNoChanges: true,
+        };
+      }
     }
-    const { lastPolledAt } = pollState;
+    const lastPolledAt = pollState?.lastPolledAt ?? params.lookBackDate ?? now;
     const client = getCalendlyClient(params.connection, context.debug.enabled);
     const events = (await getEvents(
       client,

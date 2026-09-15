@@ -1,12 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listEventTypeAvailableTimesOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import {
-  connection,
-  endTime,
-  eventType,
-  organization,
-  startTime,
-} from "../../inputs";
+import { listEventTypeAvailableTimesInputs } from "../../inputs";
 import { listEventTypeAvailableTimesExamplePayload } from "../../examplePayloads";
 export const listEventTypeAvailableTimes = action({
   display: {
@@ -14,6 +9,7 @@ export const listEventTypeAvailableTimes = action({
     description:
       "Returns a list of available times for an event type within a specified date range.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, endTime, eventType, startTime }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const { data } = await client.get("/event_type_available_times", {
@@ -25,20 +21,10 @@ export const listEventTypeAvailableTimes = action({
     });
     return { data };
   },
-  inputs: {
-    connection,
-    organization: { ...organization, dataSource: "organizations" },
-    endTime: {
-      ...endTime,
-      required: true,
-      comments: "End time of the requested availability range.",
-    },
-    eventType,
-    startTime: {
-      ...startTime,
-      required: true,
-      comments: "Start time of the requested availability range.",
-    },
-  },
+  inputs: listEventTypeAvailableTimesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listEventTypeAvailableTimesOutputSchema,
+  }),
   examplePayload: listEventTypeAvailableTimesExamplePayload,
 });

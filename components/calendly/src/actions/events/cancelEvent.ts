@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { cancelEventOutputSchema } from "../../outputSchemas";
 import { getCalendlyClient } from "../../client";
-import { connection, organization, uuid, reason } from "../../inputs";
+import { cancelEventInputs } from "../../inputs";
 import { cancelEventExamplePayload } from "../../examplePayloads";
 export const cancelEvent = action({
   display: {
     label: "Cancel Event",
     description: "Cancels specified event.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, uuid, reason }) => {
     const client = getCalendlyClient(connection, context.debug.enabled);
     const body: {
@@ -21,11 +23,15 @@ export const cancelEvent = action({
     );
     return { data };
   },
-  inputs: {
-    connection,
-    organization: { ...organization, dataSource: "organizations" },
-    uuid: { ...uuid, dataSource: "events" },
-    reason,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: cancelEventExamplePayload.data,
+  }),
+  inputs: cancelEventInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: cancelEventOutputSchema,
+  }),
   examplePayload: cancelEventExamplePayload,
 });

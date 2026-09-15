@@ -1,11 +1,5 @@
 import { dataSource } from "@prismatic-io/spectral";
-import {
-  connection,
-  email,
-  organization,
-  user,
-  returnUuidOnly,
-} from "../inputs";
+import { organizationMembershipsInputs } from "../inputs";
 import { getCalendlyClient } from "../client";
 import { getOrganizationMemberships, extractUuidFromUri } from "../util";
 export const organizationMemberships = dataSource({
@@ -13,24 +7,7 @@ export const organizationMemberships = dataSource({
     label: "Select Organization Membership",
     description: "Select an Organization Membership.",
   },
-  inputs: {
-    connection,
-    email: {
-      ...email,
-      comments: "Indicates if the results should be filtered by email address",
-      example: "user@example.com",
-    },
-    organization: {
-      ...organization,
-      comments: "Indicates if the results should be filtered by organization",
-    },
-    user: {
-      ...user,
-      comments: "Indicates if the results should be filtered by user",
-      example: "https://api.calendly.com/users/UR1234567890",
-    },
-    returnUuidOnly,
-  },
+  inputs: organizationMembershipsInputs,
   perform: async (
     context,
     { connection, email, organization, user, returnUuidOnly },
