@@ -1,0 +1,10 @@
+import { emptyResponseSchema, fileListSchema, fileSchema } from "./common";
+export const getFileMetadataOutputSchema = fileSchema;
+export const createFileOutputSchema = fileSchema;
+export const updateFileOutputSchema = fileSchema;
+export const listFilesOutputSchema = fileListSchema;
+export const listFoldersOutputSchema = fileListSchema;
+export const searchFilesOutputSchema = fileListSchema;
+export const searchFoldersOutputSchema = fileListSchema;
+export const deleteFileOutputSchema = emptyResponseSchema;
+export const emptyTrashOutputSchema = emptyResponseSchema;

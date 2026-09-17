@@ -7,28 +7,29 @@
     "format": "biome format --write .",
     "build": "npm run format && npm run lint && webpack",
     "publish": "npm run build && prism components:publish",
-    "test": "echo 'no tests'",
+    "test": "jest",
     "jest": "jest",
     "build:testapp": "npm run build"
   },
   "dependencies": {
     "@googleapis/drive": "12.0.0",
-    "@prismatic-io/spectral": "10.17.1",
+    "@prismatic-io/spectral": "10.28.0",
     "googleapis": "^148.0.0",
     "mime-types": "2.1.35",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.3",
+    "@biomejs/biome": "2.5.11",
     "@types/gapi": "0.0.47",
     "@types/jest": "30.0.0",
-    "@types/node": "18.19.130",
-    "copy-webpack-plugin": "13.0.1",
-    "jest": "30.2.0",
-    "ts-jest": "29.4.5",
-    "ts-loader": "9.5.4",
+    "@types/node": "^26.4.0",
+    "copy-webpack-plugin": "14.0.0",
+    "jest": "30.5.1",
+    "nock": "13.5.6",
+    "ts-jest": "29.4.12",
+    "ts-loader": "9.6.2",
     "typescript": "5.9.3",
-    "webpack": "5.102.1",
-    "webpack-cli": "6.0.1"
+    "webpack": "5.110.2",
+    "webpack-cli": "7.2.3"
   }
 }

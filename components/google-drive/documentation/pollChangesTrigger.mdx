@@ -1,0 +1,94 @@
+The **New and Updated Files** trigger reports files that were created or changed in a drive on a scheduled basis. Load history once with a **Look-back Date**, check for changes on a schedule, or both. It tracks its position with a Google-issued change token rather than a timestamp, so it reports exactly what Google recorded as changed since it last ran.
+
+#### How It Works
+
+On each recurrence the trigger asks Google for the changes recorded since its stored position, and stores the position Google returns for next time. Each change identifies one file and whether it was removed.
+
+A backlog larger than one page is not dropped. When Google reports that more pages remain, the trigger keeps its position on the page it just read rather than jumping to the end, so nothing between the pages is skipped. With batching enabled it drains the remaining pages inside the same recurrence; without batching it continues on the next scheduled recurrence.
+
+**The first recurrence**
+
+- **Look-back Date empty**: the trigger records its starting position and reports nothing. Incremental polling begins on the next recurrence.
+- **Look-back Date set**: the trigger begins a one-time initial sync covering every file modified on or after that date, seeding each one exactly once. With batching enabled the sync finishes within this recurrence; without batching it continues across following recurrences until its window is exhausted, and those recurrences are still part of the sync.
+
+**During an initial sync**
+
+No input is ignored. Google's change feed cannot be asked for history, so a sync reads the files themselves instead, over the same drive the trigger is scoped to and with the same access. There is no change feed to narrow, so there is nothing to suppress: **Drive ID** still scopes the sync exactly as it scopes ordinary recurrences.
+
+A sync covers files by their modified time, so a file last modified before the **Look-back Date** is left out however recently it was created. Files in the trash are not seeded, and deletions are not part of a sync at all. They are reported from the first regular recurrence onward. Every file a sync seeds is reported with `removed` set to `false`.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Google Drive.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank to keep the limit this trigger ships with.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.changes`; with batching on that array does not exist and `data` is a single change item, or an array of them (see **Returned Data**). Any step reading the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+**Handing off to the schedule**
+
+The starting position for incremental polling is taken before the initial sync reads its first file, not after it finishes. No field in the payload marks the handoff. Once the sync's window is exhausted the trigger stores that position, and the next recurrence resumes from exactly there. Because the position was taken first, a file changed while the sync was still draining is reported again by that first incremental recurrence rather than falling between the two.
+
+#### Returned Data
+
+What arrives in `data` depends on whether batching is enabled on the flow. Fields shown are representative. The full response object includes additional properties.
+
+Each change identifies one file by `fileId`, carries the file's current metadata under `file`, and reports `removed` as `true` when the file was deleted or access to it was lost. A change produced by an initial sync always reports `removed` as `false`.
+
+**Without batching**, `data` is the change list object Google returned, with every change for this recurrence under `changes`.
+
+<details>
+<summary>Example Payload: batching disabled</summary>
+
+```json
+{
+  "data": {
+    "kind": "drive#changeList",
+    "newStartPageToken": "247040",
+    "changes": [
+      {
+        "kind": "drive#change",
+        "removed": false,
+        "file": {
+          "kind": "drive#file",
+          "mimeType": "image/png",
+          "id": "14FSE_ESVGWta4XlzWGHVm0VultNS-1uO",
+          "name": "example.png"
+        },
+        "fileId": "14FSE_ESVGWta4XlzWGHVm0VultNS-1uO",
+        "time": "2022-09-20T21:36:23.687Z",
+        "changeType": "file"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+`newStartPageToken` is present only on the last page of a recurrence; while more pages remain, Google returns `nextPageToken` in its place.
+
+**With batching**, the `changes` array is unwrapped. `data` is one change when the batch size is 1, or an array of changes when it is larger.
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "kind": "drive#change",
+    "removed": false,
+    "file": {
+      "kind": "drive#file",
+      "mimeType": "image/png",
+      "id": "14FSE_ESVGWta4XlzWGHVm0VultNS-1uO",
+      "name": "example.png"
+    },
+    "fileId": "14FSE_ESVGWta4XlzWGHVm0VultNS-1uO",
+    "time": "2022-09-20T21:36:23.687Z",
+    "changeType": "file"
+  }
+}
+```
+
+</details>

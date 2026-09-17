@@ -1,0 +1,112 @@
+The **Drive Activity** trigger reports activity recorded in Google Drive on a scheduled basis: uploads, edits, comments, renames, moves, permission changes and more. Load history once with a **Look-back Date**, check for activity on a schedule, or both. By default it yields activity on the personal "My Drive"; to follow a shared drive, supply that drive's folder under **Folder or Drive ID**.
+
+#### How It Works
+
+On each recurrence the trigger queries the Drive Activity API for activity recorded after its stored position, once per entry in **Folder or Drive ID**, and stores the time the recurrence began as its new position. Selecting **Trigger Events** narrows the query to those action types; leaving it empty returns every type.
+
+Because the position stored is the time the recurrence began rather than the time it finished, activity recorded while a recurrence was running is reported again by the next one instead of being skipped.
+
+**The first recurrence**
+
+- **Look-back Date empty**: the window opens at the current instant, so the first recurrence reports nothing. Incremental polling begins on the next recurrence.
+- **Look-back Date set**: the trigger begins a one-time initial sync covering every activity recorded on or after that date, seeding each one exactly once. With batching enabled the sync finishes within this recurrence; without batching it is a single wider query on this recurrence.
+
+**During an initial sync**
+
+No input is ignored. A sync is the same query the trigger always runs, with its window opened wider, so every input that shapes that query still applies: **Folder or Drive ID**, **File ID**, **Trigger Events** and **Consolidation Strategy** all scope and filter a sync exactly as they scope an ordinary recurrence.
+
+The consequence is worth stating plainly: a sync narrowed by **Trigger Events** seeds only those action types. Widen the selection before the first recurrence if the starting state should cover everything.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Google Drive.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank to keep the limit this trigger ships with.
+
+Enabling batching also changes how the trigger reads. With batching off it reads every page of every entry in **Folder or Drive ID** within one recurrence; with batching on it reads one page of one entry per round and drains the rest inside the same recurrence, advancing through the list in order.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data` as an array of activities; with batching on `data` is a single activity, or an array of them when the batch size is larger than 1 (see **Returned Data**). Any step iterating the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+**Handing off to the schedule**
+
+On deploy, the trigger performs a one-time initial sync starting from the **Look-back Date**. Once that sync finishes, it records the position it reached, and the first scheduled poll resumes from there instead of covering the same history again. If the sync does not finish, nothing is recorded, and the first scheduled poll covers the window again from the **Look-back Date**; that yields duplicates rather than a gap, which is deliberate: re-delivering an activity is recoverable, missing one is not. The sync runs once per instance rather than once per deploy, so redeploying an instance that already completed it does not repeat it. With the **Look-back Date** left empty there is no initial sync at all, which is the documented no-backfill behavior.
+
+The window's upper bound is fixed when the recurrence begins and every round of a drain asks about that same window, so a drain spanning several minutes does not shift underneath itself. The trigger stores that bound as its position only once every entry in **Folder or Drive ID** has been exhausted, so an interrupted drain resumes its whole window rather than skipping the part it had not dispatched. No field in the payload marks the handoff.
+
+#### Returned Data
+
+What arrives in `data` depends on whether batching is enabled on the flow. Fields shown are representative. The full response object includes additional properties.
+
+Each activity carries `primaryActionDetail` describing what happened, `actors` identifying who did it, `actions` listing the individual actions consolidated into it, `targets` naming the affected Drive items, and `timestamp`.
+
+**Without batching**, `data` is an array of every activity found across all entries in **Folder or Drive ID** for this recurrence.
+
+<details>
+<summary>Example Payload: batching disabled</summary>
+
+```json
+{
+  "data": [
+    {
+      "primaryActionDetail": { "create": { "upload": {} } },
+      "actors": [
+        {
+          "user": {
+            "knownUser": {
+              "personName": "people/114118080512406438242",
+              "isCurrentUser": true
+            }
+          }
+        }
+      ],
+      "actions": [{ "detail": { "create": { "upload": {} } } }],
+      "targets": [
+        {
+          "driveItem": {
+            "name": "items/14FSE_ESVGWta4XlzWGHVm0VultNS-1uO",
+            "title": "example.png"
+          }
+        }
+      ],
+      "timestamp": "2025-03-11T15:58:37.276Z"
+    }
+  ]
+}
+```
+
+</details>
+
+**With batching**, the array is unwrapped. `data` is one activity when the batch size is 1, or an array of activities when it is larger.
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "primaryActionDetail": { "create": { "upload": {} } },
+    "actors": [
+      {
+        "user": {
+          "knownUser": {
+            "personName": "people/114118080512406438242",
+            "isCurrentUser": true
+          }
+        }
+      }
+    ],
+    "actions": [{ "detail": { "create": { "upload": {} } } }],
+    "targets": [
+      {
+        "driveItem": {
+          "name": "items/14FSE_ESVGWta4XlzWGHVm0VultNS-1uO",
+          "title": "example.png"
+        }
+      }
+    ],
+    "timestamp": "2025-03-11T15:58:37.276Z"
+  }
+}
+```
+
+</details>
