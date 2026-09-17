@@ -1,26 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createMixpanelClient } from "../../client";
-import {
-  connectionInput,
-  project_id,
-  regionAndDomain,
-  useProjectToken,
-  workspace_id,
-} from "../../inputs";
-import { Authorization } from "../../enums/Authorization";
+import { listSavedFunnelsInputs } from "../../inputs";
+import { Authorization } from "../../enums/authorization";
 import { listSavedFunnelsExamplePayload } from "../../examplePayloads";
+import { listSavedFunnelsOutputSchema } from "../../outputSchemas";
 export const listSavedFunnels = action({
   display: {
     label: "List Saved Funnels",
-    description: "Get the names and funnel_ids of your funnels.",
+    description: "Get the names and funnel_ids of the funnels.",
   },
-  inputs: {
-    connection: connectionInput,
-    useProjectToken,
-    regionAndDomain,
-    project_id: { ...project_id, required: true },
-    workspace_id,
-  },
+  inputs: listSavedFunnelsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSavedFunnelsOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (
     context,
     { connection, project_id, regionAndDomain, workspace_id, useProjectToken },
@@ -33,8 +27,8 @@ export const listSavedFunnels = action({
     );
     const { data } = await client.get("/funnels/list", {
       params: {
-        project_id: project_id || undefined,
-        workspace_id: workspace_id || undefined,
+        project_id,
+        workspace_id,
       },
     });
     return {

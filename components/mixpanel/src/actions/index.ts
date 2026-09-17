@@ -1,21 +1,18 @@
-import { customJQLQuery } from "./customJQLQuery";
-import { downloadData } from "./downloadData";
-import { queryInsightsSavedReports } from "./queryInsightSavedReports";
+import dataExport from "./dataExport";
 import events from "./events";
 import funnels from "./funnels";
 import identities from "./identities";
+import insights from "./insights";
+import misc from "./misc";
 import pipelines from "./pipelines";
 import profiles from "./profiles";
-import rawRequest from "./rawRequest";
 export default {
+  ...dataExport,
   ...events,
   ...funnels,
   ...identities,
-  ...identities,
+  ...insights,
+  ...misc,
   ...pipelines,
   ...profiles,
-  customJQLQuery,
-  downloadData,
-  queryInsightsSavedReports,
-  rawRequest,
 };

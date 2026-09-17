@@ -1,15 +1,14 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
-import { createClient } from "../../client";
-import { createAliasInputs } from "../../inputs";
-import { Authorization } from "../../enums/authorization";
-import { createAliasExamplePayload } from "../../examplePayloads";
+import { createNoAuthClient } from "../../client";
+import { createIdentityInputs } from "../../inputs";
+import { createIdentityExamplePayload } from "../../examplePayloads";
 import { ingestionAckOutputSchema } from "../../outputSchemas";
-export const createAlias = action({
+export const createIdentity = action({
   display: {
-    label: "Create Alias",
-    description: "Mixpanel supports adding an alias to a distinct id.",
+    label: "Create Identity",
+    description: "Creates a new Identity",
   },
-  inputs: createAliasInputs,
+  inputs: createIdentityInputs,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: ingestionAckOutputSchema,
@@ -17,19 +16,25 @@ export const createAlias = action({
   performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, region, deliveryOptions, distinct_id, project_token, alias },
+    {
+      connection,
+      deliveryOptions,
+      region,
+      identified_id,
+      anon_id,
+      project_token,
+    },
   ) => {
-    const client = createClient(
+    const client = createNoAuthClient(
       region,
       connection,
-      Authorization.Fallback,
       context.debug.enabled,
     );
     const identityData = JSON.stringify({
-      event: "$create_alias",
+      event: "$identify",
       properties: {
-        distinct_id,
-        alias,
+        $identified_id: identified_id,
+        $anon_id: anon_id,
         token: project_token,
       },
     });
@@ -39,7 +44,7 @@ export const createAlias = action({
     if (deliveryOptions.strict) {
       body.append("strict", deliveryOptions.strict);
     }
-    const { data } = await client.post("/track#identity-create-alias", body, {
+    const { data } = await client.post("/track#create-identity", body, {
       params: {
         verbose: deliveryOptions.verbose,
         redirect: deliveryOptions.redirect,
@@ -51,6 +56,6 @@ export const createAlias = action({
   },
   examplePerform: async (): Promise<{
     data: unknown;
-  }> => createAliasExamplePayload,
-  examplePayload: createAliasExamplePayload,
+  }> => createIdentityExamplePayload,
+  examplePayload: createIdentityExamplePayload,
 });

@@ -1,10 +1,10 @@
-import { createGCSPipeline } from "./create";
-import { createGenericPipeline } from "./createGeneric";
-import { deletePipeline } from "./delete";
-import { editGCSPipeline } from "./edit";
-import { editGenericPipeline } from "./editGeneric";
-import { getPipeline } from "./get";
-import { listPipelines } from "./list";
+import { createGCSPipeline } from "./createGCSPipeline";
+import { createGenericPipeline } from "./createGenericPipeline";
+import { deletePipeline } from "./deletePipeline";
+import { editGCSPipeline } from "./editGCSPipeline";
+import { editGenericPipeline } from "./editGenericPipeline";
+import { getPipeline } from "./getPipeline";
+import { listPipelines } from "./listPipelines";
 export default {
   createGCSPipeline,
   createGenericPipeline,

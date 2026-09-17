@@ -73,77 +73,63 @@ export const getPipelineExamplePayload = {
   data: {
     canceled: [
       {
-        project_id: 0,
-        name: "string",
-        state: "string",
-        last_finish: "string",
-        run_at: "string",
-        from_date: "string",
-        to_date: "string",
+        project_id: 2195193,
+        name: "events-daily-bigquery-monoschema",
+        state: "canceled",
+        last_finish: "2024-01-15 12:00:00 US/Pacific",
+        run_at: "2024-01-15 11:00:00 US/Pacific",
+        from_date: "2024-01-01",
+        to_date: "2024-01-02",
       },
     ],
     retried: [
       {
-        project_id: 0,
-        name: "string",
-        state: "string",
-        last_finish: "string",
-        run_at: "string",
-        from_date: "string",
-        to_date: "string",
+        project_id: 2195193,
+        name: "events-daily-bigquery-monoschema",
+        state: "retried",
+        last_finish: "2024-01-15 13:00:00 US/Pacific",
+        run_at: "2024-01-15 12:30:00 US/Pacific",
+        from_date: "2024-01-02",
+        to_date: "2024-01-03",
       },
     ],
     succeeded: [
       {
-        project_id: 0,
-        name: "string",
-        state: "string",
-        last_finish: "string",
-        run_at: "string",
-        from_date: "string",
-        to_date: "string",
+        project_id: 2195193,
+        name: "events-daily-bigquery-monoschema",
+        state: "succeeded",
+        last_finish: "2024-01-15 14:00:00 US/Pacific",
+        run_at: "2024-01-15 13:30:00 US/Pacific",
+        from_date: "2024-01-03",
+        to_date: "2024-01-04",
       },
     ],
   },
 };
 export const createGCSPipelineExamplePayload = {
   data: {
-    canceled: [
-      {
-        project_id: 0,
-        name: "string",
-        state: "string",
-        last_finish: "string",
-        run_at: "string",
-        from_date: "string",
-        to_date: "string",
-      },
+    pipeline_names: [
+      "trial-events-daily-bigquery-monoschema",
+      "trial-people-daily-bigquery-monoschema",
     ],
-    retried: [
-      {
-        project_id: 0,
-        name: "string",
-        state: "string",
-        last_finish: "string",
-        run_at: "string",
-        from_date: "string",
-        to_date: "string",
-      },
-    ],
-    succeeded: [
-      {
-        project_id: 0,
-        name: "string",
-        state: "string",
-        last_finish: "string",
-        run_at: "string",
-        from_date: "string",
-        to_date: "string",
-      },
-    ],
+    bigquery_dataset_name:
+      "https://bigquery.cloud.google.com/dataset/mixpanel-prod-1:sample_dataset_name",
   },
 };
 export const editGCSPipelineExamplePayload = {
+  data: null,
+};
+export const createGenericPipelineExamplePayload = {
+  data: {
+    pipeline_names: [
+      "trial-events-daily-generic-monoschema",
+      "trial-people-daily-generic-monoschema",
+    ],
+    bigquery_dataset_name:
+      "https://bigquery.cloud.google.com/dataset/mixpanel-prod-1:generic_dataset_name",
+  },
+};
+export const editGenericPipelineExamplePayload = {
   data: null,
 };
 export const deletePipelineExamplePayload = {

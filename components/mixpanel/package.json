@@ -1,29 +1,25 @@
 {
   "name": "mixpanel",
   "private": true,
-  "license": "Apache-2.0",
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "build": "webpack",
-    "test": "echo 'no tests'",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "publish": "npm run build && prism components:publish",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1"
+    "@prismatic-io/spectral": "10.30.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.8",
-    "@types/jest": "30.0.0",
-    "@types/node": "18.19.130",
-    "copy-webpack-plugin": "13.0.1",
-    "jest": "30.2.0",
-    "ts-jest": "29.4.6",
-    "ts-loader": "9.5.4",
-    "typescript": "5.9.3",
-    "webpack": "5.103.0",
-    "webpack-cli": "6.0.1"
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26.5.0",
+    "nock": "^14.0.0",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

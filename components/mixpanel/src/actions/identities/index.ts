@@ -1,4 +1,4 @@
-import { createIdentity } from "./create";
+import { createIdentity } from "./createIdentity";
 import { createAlias } from "./createAlias";
 export default {
   createIdentity,

@@ -1,5 +1,16 @@
 ## Changelog
 
+### 2026-09-17
+
+Restructured action inputs into structured objects for an improved user experience.
+
+- **Track Events**, **Create Identity**, and **Create Alias** group their request delivery controls into **Delivery Options**
+- **Download Data** groups its query controls into **Filters**
+- **Query Funnel Saved Reports** groups its breakdown controls into **Segmentation**
+- **Query Profile** groups its paging inputs into **Pagination** and its cohort and behavior inputs into **Cohort & Behavior Filters**
+- Added inline action calling support to 20 actions for improved example output during configuration
+- Added output schemas to 15 actions for improved field mapping during configuration
+
 ### 2026-04-30
 
 Updated spectral version
