@@ -3,7 +3,9 @@ import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/cl
 import { getClientConfig } from "./util";
 export const createFreshserviceClient = (
   connection: Connection,
-  debug: boolean,
+  options: {
+    debug: boolean;
+  },
 ) => {
   const { baseUrl, authorization } = getClientConfig(connection);
   return createHttpClient({
@@ -11,6 +13,6 @@ export const createFreshserviceClient = (
     headers: {
       Authorization: authorization,
     },
-    debug,
+    debug: options.debug,
   });
 };

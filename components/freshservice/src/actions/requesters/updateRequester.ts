@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../../client";
 import { updateRequesterExamplePayload as examplePayload } from "../../examplePayloads";
-import { updateRequesterInputs as inputs } from "../../inputs/requesters";
+import { updateRequesterInputs as inputs } from "../../inputs";
+import { requesterOutputSchema } from "../../outputSchemas";
 export const updateRequester = action({
   display: {
     label: "Update Requester",
     description: "Updates an existing requester.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -21,7 +23,9 @@ export const updateRequester = action({
       requestersAdditionalFields,
     },
   ) => {
-    const client = createFreshserviceClient(connection, context.debug.enabled);
+    const client = createFreshserviceClient(connection, {
+      debug: context.debug.enabled,
+    });
     const payload = {
       first_name: firstName,
       primary_email: contactInfo.primaryEmail,
@@ -40,6 +44,10 @@ export const updateRequester = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: requesterOutputSchema,
+  }),
   inputs,
   examplePayload,
 });

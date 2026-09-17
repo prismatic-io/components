@@ -1,6 +1,6 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../client";
-import { selectProblemInputs as inputs } from "../inputs/dataSources";
+import { selectProblemInputs as inputs } from "../inputs";
 import type { Problem } from "../types/dataSourceTypes";
 import { getListData } from "../util";
 export const selectProblem = dataSource({
@@ -11,13 +11,12 @@ export const selectProblem = dataSource({
   inputs,
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
-    const client = createFreshserviceClient(connection, false);
+    const client = createFreshserviceClient(connection, { debug: false });
     const { data } = await getListData<Problem, "problems">(
       client,
       `/problems`,
       "problems",
-      true,
-      {},
+      { fetchAll: true, params: {} },
     );
     const objects = (data.problems || []).map<Element>(({ id, subject }) => ({
       key: util.types.toString(id),

@@ -3,24 +3,49 @@ This trigger polls the [Freshservice API](https://api.freshservice.com/) for new
 #### How It Works
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes)
-2. It fetches tickets from Freshservice using the `GET /tickets` endpoint with an `updated_since` parameter set to the last poll time, paginating through results via Link headers
-3. Records are categorized as **created** or **updated** based on their timestamps — tickets whose `created_at` exceeds the last poll time are classified as created; all other tickets returned by the query are classified as updated
-4. The trigger updates its internal state after each poll
+2. It fetches one page of tickets from Freshservice using the `GET /tickets` endpoint with an `updated_since` parameter set to the last poll time
+3. If Freshservice reports more pages, the trigger reads the next page on its next recurrence, reusing the same `updated_since` value, until the last page is reached. With batching enabled the remaining pages are read within the recurrence that started them
+4. Records are categorized as **created** or **updated** based on their timestamps. Tickets whose `created_at` exceeds the last poll time are classified as created; all other tickets returned by the query are classified as updated
+5. The trigger advances its saved poll time only after the last page. A recurrence that fails part-way through leaves the saved poll time untouched, so the next recurrence re-covers the whole window instead of skipping the pages it never reached
 
-#### Configuration
+**Paging through a large backlog**
 
-Configure the following inputs:
+The trigger reads one page of up to 100 tickets per recurrence, so a window covering thousands of tickets is spread across many small executions rather than loading everything at once.
 
-- **Connection**: The Freshservice connection used to authenticate API requests
-- **Show New Records**: When enabled, includes newly created tickets in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified tickets in the results. Defaults to `true`
+The saved poll time moves forward only when the last page of a window has been read. That is what keeps a failure part-way through a large backlog from losing tickets: nothing is marked as seen until the whole window has been read, so the next recurrence starts again from the same point. The trade-off is that tickets already delivered before the failure are delivered a second time, so downstream steps should tolerate seeing the same ticket twice.
+
+A single window stops after 200 pages (20,000 tickets) as a safety limit. If that limit is reached, the trigger logs an error and leaves the saved poll time alone, so the tickets it did not reach are picked up on a later recurrence rather than skipped. A trigger that keeps hitting this limit is falling behind and needs a shorter polling interval.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Freshservice.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.created` and `data.updated`; with batching on those arrays do not exist and `data` is a single `changeType`/`record` item, or an array of them. Any step reading the older shape must be updated before batching is turned on. Because batching is enabled per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+Batching changes how the tickets in a window are dispatched downstream. It does not make the trigger reach further back in time, and it does not change which tickets a window contains.
+
+**Initial sync**
+
+The first time the trigger runs on an instance it has no saved poll time, so it opens a window reaching back into the past. That first window is the initial sync: it is how tickets that already existed in Freshservice reach the flow, rather than only tickets changed from that moment onward. No input is suppressed while it runs, because the sync is an ordinary window rather than a separate mode. It covers the **last 7 days** by default; set **Look-back Date** to reach further back. Choose that date deliberately: every matching ticket updated since it is sent through the flow, so a wide date on a busy Freshservice account produces a very large sync. Once the saved poll time is set, **Look-back Date** is no longer consulted, so changing it later does not re-run the sync.
+
+The window has no fixed upper bound, so a ticket modified while the sync drains is swept into it. Once the window is exhausted the trigger saves the time the window opened as its poll time, and the first incremental recurrence resumes from exactly there, so nothing falls between the two. No field in the payload marks the handoff. With batching off the sync reads one page per scheduled recurrence, so a wide window takes many to finish; batching collapses the drain into the recurrence that started it.
+
+**Show New Records** and **Show Updated Records** filter the sync exactly as they filter every later recurrence, so turning one off keeps that category out of the sync as well. The 100-ticket page size applies to it unchanged, and the 200-page safety limit caps the sync window as a whole rather than each recurrence of it.
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new tickets and `updated` for modified tickets.
+What arrives in `data` depends on whether batching is enabled on the flow.
+
+**Without batching**, `data` is a single object holding the `created` and `updated` arrays.
 
 <details>
-<summary>Example Response</summary>
+<summary>Example Payload: batching disabled</summary>
 
 ```json
 {
@@ -49,11 +74,78 @@ The trigger returns an object with two arrays — `created` for new tickets and 
 }
 ```
 
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+**With batching enabled**, `data` holds one slice of the batch instead of those two arrays. Every ticket becomes its own item, shaped as `changeType` plus `record`. `changeType` is `created` or `updated`, and `record` is the polled Freshservice ticket.
+
+With a batch size of 1, `data` is a single item.
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "created",
+    "record": {
+      "id": 1234,
+      "subject": "Cannot access VPN",
+      "status": 2,
+      "priority": 2,
+      "created_at": "2024-01-16T10:30:00Z",
+      "updated_at": "2024-01-16T10:30:00Z"
+    }
+  }
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+With a batch size greater than 1, `data` is an array of those items.
+
+<details>
+<summary>Example Payload: batching enabled, batch size greater than 1</summary>
+
+```json
+{
+  "data": [
+    {
+      "changeType": "created",
+      "record": {
+        "id": 1234,
+        "subject": "Cannot access VPN",
+        "status": 2,
+        "priority": 2,
+        "created_at": "2024-01-16T10:30:00Z",
+        "updated_at": "2024-01-16T10:30:00Z"
+      }
+    },
+    {
+      "changeType": "updated",
+      "record": {
+        "id": 1189,
+        "subject": "Printer not responding",
+        "status": 4,
+        "priority": 1,
+        "created_at": "2024-01-10T09:00:00Z",
+        "updated_at": "2024-01-16T14:22:00Z"
+      }
+    }
+  ]
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
 </details>
 
 #### Notes
 
-- The `updated_since` parameter is set to the start time of the previous poll to ensure no tickets are missed between executions
-- Pagination is handled automatically using Link headers returned by the Freshservice API
+- The `updated_since` parameter is set to the start time of the previous window to ensure no tickets are missed between executions
+- Pagination is handled automatically using Link headers returned by the Freshservice API, one page per recurrence
 - A ticket is classified as **created** if its `created_at` timestamp exceeds the last poll time. If `created_at` does not exceed the cutoff but `updated_at` does, the ticket is classified as **updated**
 - Refer to the [Freshservice API documentation](https://api.freshservice.com/) for rate limit details and available ticket fields

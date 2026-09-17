@@ -1,22 +1,22 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../../client";
 import { createAssetExamplePayload as examplePayload } from "../../examplePayloads";
-import { createAssetInputs as inputs } from "../../inputs/assets";
+import { createAssetInputs as inputs } from "../../inputs";
+import { assetOutputSchema } from "../../outputSchemas";
 export const createAsset = action({
   display: {
-    label: "Create Asset",
-    description: "Creates a new asset in Freshservice.",
+    label: "Create Asset (Deprecated)",
+    description:
+      "Creates a new asset in Freshservice. Applies to Freshservice accounts created before the March 31, 2026 IT Asset Management release.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       name,
       assetTypeId,
-      assetTag,
-      impact,
-      usageType,
-      description,
+      additionalFields,
       locationId,
       agentId,
       departmentId,
@@ -25,14 +25,16 @@ export const createAsset = action({
       assetsAdditionalFields,
     },
   ) => {
-    const client = createFreshserviceClient(connection, context.debug.enabled);
+    const client = createFreshserviceClient(connection, {
+      debug: context.debug.enabled,
+    });
     const payload = {
       name,
       asset_type_id: assetTypeId,
-      asset_tag: assetTag,
-      impact,
-      usage_type: usageType,
-      description,
+      asset_tag: additionalFields.assetTag,
+      impact: additionalFields.impact,
+      usage_type: additionalFields.usageType,
+      description: additionalFields.description,
       location_id: locationId,
       agent_id: agentId,
       department_id: departmentId,
@@ -45,6 +47,10 @@ export const createAsset = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: assetOutputSchema,
+  }),
   inputs,
   examplePayload,
 });

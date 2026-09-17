@@ -1,17 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../../client";
 import { moveTicketExamplePayload as examplePayload } from "../../examplePayloads";
-import { moveTicketInputs as inputs } from "../../inputs/tickets";
+import { moveTicketInputs as inputs } from "../../inputs";
+import { ticketOutputSchema } from "../../outputSchemas";
 export const moveTicket = action({
   display: {
     label: "Move Ticket",
     description: "Moves a ticket to a different workspace.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, ticketId, workspaceId, groupId, responderId },
   ) => {
-    const client = createFreshserviceClient(connection, context.debug.enabled);
+    const client = createFreshserviceClient(connection, {
+      debug: context.debug.enabled,
+    });
     const payload = {
       workspace_id: workspaceId,
       group_id: groupId,
@@ -25,6 +29,10 @@ export const moveTicket = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: ticketOutputSchema,
+  }),
   inputs,
   examplePayload,
 });

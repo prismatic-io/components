@@ -1,17 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../../client";
 import { updateTicketExamplePayload as examplePayload } from "../../examplePayloads";
-import { updateTicketInputs as inputs } from "../../inputs/tickets";
+import { updateTicketInputs as inputs } from "../../inputs";
+import { ticketOutputSchema } from "../../outputSchemas";
 export const updateTicket = action({
   display: {
     label: "Update Ticket",
     description: "Updates an existing ticket.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, ticketId, additionalFields, ticketsAdditionalFields },
   ) => {
-    const client = createFreshserviceClient(connection, context.debug.enabled);
+    const client = createFreshserviceClient(connection, {
+      debug: context.debug.enabled,
+    });
     const payload = {
       priority: additionalFields.priority,
       status: additionalFields.status,
@@ -27,6 +31,10 @@ export const updateTicket = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: ticketOutputSchema,
+  }),
   inputs,
   examplePayload,
 });

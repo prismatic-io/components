@@ -12,15 +12,15 @@ export const connection = input({
   comments: "The Freshservice connection to use.",
 });
 export const additionalFields = input({
-  label: "Additional Fields",
+  label: "Extra Body",
   type: "code",
   language: "json",
   required: false,
   comments:
     "A JSON object of additional fields not covered by the standard inputs.",
-  clean: (value) => cleanCodeInput(value, "Additional Fields", true),
+  clean: (value) => cleanCodeInput(value, "Extra Body", true),
 });
-export const perPage = input({
+const perPage = input({
   label: "Items Per Page",
   type: "string",
   required: false,
@@ -29,7 +29,7 @@ export const perPage = input({
   placeholder: "Enter page size",
   clean: cleanNumberInput,
 });
-export const page = input({
+const page = input({
   label: "Page Number",
   type: "string",
   required: false,

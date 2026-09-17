@@ -1,5 +1,7 @@
 import agents from "./agents";
 import assets from "./assets";
+import itamAssets from "./itamAssets";
+import itamDevices from "./itamDevices";
 import misc from "./misc";
 import problems from "./problems";
 import requesters from "./requesters";
@@ -13,6 +15,8 @@ export default {
   ...requesters,
   ...agents,
   ...assets,
+  ...itamAssets,
+  ...itamDevices,
   ...software,
   ...serviceRequest,
   ...misc,

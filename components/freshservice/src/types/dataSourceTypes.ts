@@ -44,7 +44,8 @@ export type RequestersResponse = {
   requesters: Requester[];
 };
 export type SoftwareResponse = {
-  applications: Software[];
+  application?: Software[];
+  applications?: Software[];
 };
 export type TicketsResponse = {
   tickets: Ticket[];

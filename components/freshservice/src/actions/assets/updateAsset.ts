@@ -1,12 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../../client";
 import { updateAssetExamplePayload as examplePayload } from "../../examplePayloads";
-import { updateAssetInputs as inputs } from "../../inputs/assets";
+import { updateAssetInputs as inputs } from "../../inputs";
+import { assetOutputSchema } from "../../outputSchemas";
 export const updateAsset = action({
   display: {
-    label: "Update Asset",
-    description: "Updates an existing asset.",
+    label: "Update Asset (Deprecated)",
+    description:
+      "Updates an existing asset. Applies to Freshservice accounts created before the March 31, 2026 IT Asset Management release.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -21,7 +24,9 @@ export const updateAsset = action({
       assetsAdditionalFields,
     },
   ) => {
-    const client = createFreshserviceClient(connection, context.debug.enabled);
+    const client = createFreshserviceClient(connection, {
+      debug: context.debug.enabled,
+    });
     const payload = {
       name: additionalFields.name,
       asset_type_id: assetTypeId,
@@ -40,6 +45,10 @@ export const updateAsset = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: assetOutputSchema,
+  }),
   inputs,
   examplePayload,
 });

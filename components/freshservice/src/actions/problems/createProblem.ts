@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../../client";
 import { createProblemExamplePayload as examplePayload } from "../../examplePayloads";
-import { createProblemInputs as inputs } from "../../inputs/problems";
+import { createProblemInputs as inputs } from "../../inputs";
+import { problemOutputSchema } from "../../outputSchemas";
 export const createProblem = action({
   display: {
     label: "Create Problem",
     description: "Creates a new problem in Freshservice.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -22,7 +24,9 @@ export const createProblem = action({
       problemsAdditionalFields,
     },
   ) => {
-    const client = createFreshserviceClient(connection, context.debug.enabled);
+    const client = createFreshserviceClient(connection, {
+      debug: context.debug.enabled,
+    });
     const payload = {
       subject,
       email,
@@ -41,6 +45,10 @@ export const createProblem = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: problemOutputSchema,
+  }),
   inputs,
   examplePayload,
 });

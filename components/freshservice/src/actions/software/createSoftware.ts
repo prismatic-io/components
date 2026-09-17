@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../../client";
 import { createSoftwareExamplePayload as examplePayload } from "../../examplePayloads";
-import { createSoftwareInputs as inputs } from "../../inputs/software";
+import { createSoftwareInputs as inputs } from "../../inputs";
+import { softwareOutputSchema } from "../../outputSchemas";
 export const createSoftware = action({
   display: {
     label: "Create Software",
     description: "Creates a new software application in Freshservice.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -14,26 +16,25 @@ export const createSoftware = action({
       name,
       description,
       applicationType,
-      status,
       managedById,
-      notes,
-      category,
-      source,
+      additionalFields,
       workspaceId,
       softwareAdditionalFields,
     },
   ) => {
-    const client = createFreshserviceClient(connection, context.debug.enabled);
+    const client = createFreshserviceClient(connection, {
+      debug: context.debug.enabled,
+    });
     const payload = {
       application: {
         name,
         description,
         application_type: applicationType,
-        category,
-        status,
-        source,
+        category: additionalFields.category,
+        status: additionalFields.status,
+        source: additionalFields.source,
         managed_by_id: managedById,
-        notes,
+        notes: additionalFields.notes,
         workspace_id: workspaceId,
         ...softwareAdditionalFields,
       },
@@ -43,6 +44,10 @@ export const createSoftware = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: softwareOutputSchema,
+  }),
   inputs,
   examplePayload,
 });

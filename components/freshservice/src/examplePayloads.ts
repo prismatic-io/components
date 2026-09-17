@@ -1,3 +1,4 @@
+import type { TriggerPayload } from "@prismatic-io/spectral";
 import { SUCCESS_RESPONSE } from "./constants";
 export const createTicketExamplePayload = {
   data: {
@@ -187,7 +188,11 @@ export const listAgentsExamplePayload = {
   data: { agents: [createAgentExamplePayload.data.agent] },
 };
 export const updateAgentExamplePayload = createAgentExamplePayload;
-export const deactivateAgentExamplePayload = createAgentExamplePayload;
+export const deactivateAgentExamplePayload = {
+  data: {
+    agent: { ...createAgentExamplePayload.data.agent, active: false },
+  },
+};
 export const forgetAgentExamplePayload = SUCCESS_RESPONSE;
 export const createAssetExamplePayload = {
   data: {
@@ -312,19 +317,33 @@ export const createServiceRequestExamplePayload = {
 };
 export const createOnboardingRequestExamplePayload = {
   data: {
-    initiator_id: 1,
-    fields: {
-      cf_employee_name: "Andrea",
-      cf_job_title: "HR",
-      cf_date_of_joining: "2020-08-20",
-      cf_all_users: "andrea@freshservice.com",
-      cf_department: "HR",
-      cf_assets: 1,
-      cf_location: 5,
-      cf_hierarchy: "L3",
-      cf_verified: true,
-      msf_area_of_expertise: ["Ruby", "Java"],
-      msf_preferred_locations: [53, 57],
+    onboarding_request: {
+      id: 4,
+      created_at: "2026-09-09T14:21:08Z",
+      updated_at: "2026-09-09T14:21:08Z",
+      status: 1,
+      subject: "Onboarding request for Andrea",
+      ticket_id: null,
+      actors: {
+        reporting_manager: {
+          email: "sam.reyes@freshservice.com",
+          name: "Sam Reyes",
+        },
+      },
+      fields: {
+        cf_employee_name: "Andrea",
+        cf_job_title: "HR",
+        cf_date_of_joining: "2020-08-20",
+        cf_all_users: "andrea@freshservice.com",
+        cf_department: "HR",
+        cf_assets: 1,
+        cf_location: 5,
+        cf_hierarchy: "L3",
+        cf_verified: true,
+        msf_area_of_expertise: ["Ruby", "Java"],
+        msf_preferred_locations: [53, 57],
+      },
+      lookup_values: {},
     },
   },
 };
@@ -365,3 +384,226 @@ export const getWorkspaceExamplePayload = {
     workspace: listWorkspacesExamplePayload.data.workspaces[0],
   },
 };
+export const pollNewAndUpdatedTicketsTriggerExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    headers: {},
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: {
+        created: [createTicketExamplePayload.data.ticket],
+        updated: [
+          {
+            ...createTicketExamplePayload.data.ticket,
+            id: 265,
+            status: 3,
+            updated_at: "2017-09-09T14:12:43Z",
+          },
+        ],
+      },
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+    customer: {
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
+    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
+    user: {
+      id: "testUserId",
+      email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
+    },
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: {
+      id: "testFlowId",
+      name: "Test Flow",
+      stableId: "testFlowStableId",
+    },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
+};
+const itamDevice = {
+  device_id: 46,
+  name: "db-080-westport",
+  type_id: 2,
+  type: "physical",
+  serial_no: "SN-4451-XR",
+  asset_no: "ASSET-9",
+  uuid: "4c4c4544-0051-3010-8043-b6c04f325632",
+  notes: "Primary database node.",
+  device_url: "https://example.freshservice.com/itam/devices/46",
+  tags: ["production", "database"],
+  aliases: [],
+  custom_fields: {},
+  first_added: "2026-04-02T10:26:17Z",
+  last_updated: "2026-09-01T08:14:03Z",
+  physicalsubtype_id: 2,
+  physicalsubtype: "Rackable",
+  total_cpus: 2,
+  core_per_cpu: 8,
+  ram: 64,
+  hard_disk_count: 4,
+  hard_disk_size: 960,
+  os_name: "Ubuntu",
+  os_version: "24.04",
+  data_center: "Westport DC1",
+  building_id: 3,
+  rack_id: 17,
+  objectcategory: "Servers",
+  service_level: "Gold",
+  customer: "Finance",
+  customers: ["Finance", "Operations"],
+  in_service: "yes",
+};
+export const createOrUpdateItamDeviceExamplePayload = {
+  data: {
+    action: "device added or updated",
+    id: 46,
+    name: "db-080-westport",
+    didSomethingChange: true,
+    isNew: true,
+    code: 0,
+    raw: ["device added or updated", 46, "db-080-westport", true, true],
+  },
+};
+export const updateItamDeviceExamplePayload = {
+  data: {
+    action: "device added or updated",
+    id: 46,
+    name: "db-080-westport",
+    didSomethingChange: true,
+    isNew: false,
+    code: 0,
+    raw: ["device added or updated", 46, "db-080-westport", true, false],
+  },
+};
+export const getItamDeviceExamplePayload = {
+  data: itamDevice,
+};
+export const listItamDevicesExamplePayload = {
+  data: {
+    meta: { page: 1, per_page: 100, total_count: 2 },
+    devices: [
+      itamDevice,
+      {
+        device_id: 47,
+        name: "s3-bucket-archive",
+        type_id: 3,
+        type: "virtual",
+        serial_no: null,
+        asset_no: null,
+        uuid: null,
+        virtualsubtype_id: 2,
+        virtualsubtype: "Amazon EC2 Instance",
+        in_service: "yes",
+        custom_fields: {},
+        tags: [],
+        aliases: [],
+      },
+    ],
+  },
+};
+export const deleteItamDeviceExamplePayload = SUCCESS_RESPONSE;
+const itamAsset = {
+  id: 54,
+  device_id: 46,
+  name: "main modem",
+  serial_no: "SN-2281-KD",
+  asset_no: "ASSET-54",
+  uuid: null,
+  notes: "Spare unit held in the Westport store room.",
+  tags: ["spare", "networking"],
+  aliases: [],
+  preferred_alias: null,
+  custom_fields: {},
+  device_external_links: [],
+  in_service: "yes",
+  service_level: "In Service",
+  type: "Cable Modem",
+  device_sub_type: null,
+  last_updated: "2026-09-01T08:14:03Z",
+  hw_model: "DPC3941T",
+  hw_size: 1,
+  hw_depth: "half",
+  manufacturer: "Cisco",
+  building: "Westport",
+  room: "Server Room A",
+  row: "3",
+  location: "Westport / Server Room A",
+  rack: "Rack 12",
+  rack_id: 17,
+  start_at: 12,
+  orientation: null,
+  reversed: "no",
+  slot_number: null,
+  xpos: 1260,
+  ip_addresses: [],
+  mac_addresses: [],
+  modules: [],
+  vms: [],
+  devices: [],
+  device_purchase_line_items: [],
+  customer_id: 4,
+  customer: "Finance",
+};
+export const createOrUpdateItamAssetExamplePayload = {
+  data: {
+    action: "asset added/edited.",
+    id: 54,
+    name: "main modem",
+    didSomethingChange: true,
+    isNew: true,
+    code: 0,
+    raw: ["asset added/edited.", 54, "main modem", true, true],
+  },
+};
+export const updateItamAssetExamplePayload = {
+  data: {
+    action: "asset added/edited.",
+    id: 54,
+    name: "main modem",
+    didSomethingChange: true,
+    isNew: false,
+    code: 0,
+    raw: ["asset added/edited.", 54, "main modem", true, false],
+  },
+};
+export const getItamAssetExamplePayload = {
+  data: itamAsset,
+};
+export const listItamAssetsExamplePayload = {
+  data: {
+    meta: { page: 1, per_page: 100, total_count: 2 },
+    assets: [
+      itamAsset,
+      {
+        id: 55,
+        device_id: null,
+        name: "front-door-sensor",
+        serial_no: null,
+        asset_no: null,
+        type: "Sensor",
+        in_service: "yes",
+        service_level: "Spare",
+        tags: [],
+        aliases: [],
+        custom_fields: {},
+      },
+    ],
+  },
+};
+export const deleteItamAssetExamplePayload = SUCCESS_RESPONSE;

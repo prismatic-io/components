@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createFreshserviceClient } from "../../client";
 import { createAgentExamplePayload as examplePayload } from "../../examplePayloads";
-import { createAgentInputs as inputs } from "../../inputs/agents";
+import { createAgentInputs as inputs } from "../../inputs";
+import { agentOutputSchema } from "../../outputSchemas";
 export const createAgent = action({
   display: {
     label: "Create Agent",
     description: "Creates a new agent in Freshservice.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -23,7 +25,9 @@ export const createAgent = action({
       agentsAdditionalFields,
     },
   ) => {
-    const client = createFreshserviceClient(connection, context.debug.enabled);
+    const client = createFreshserviceClient(connection, {
+      debug: context.debug.enabled,
+    });
     const payload = {
       first_name: firstName,
       email,
@@ -44,6 +48,10 @@ export const createAgent = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: agentOutputSchema,
+  }),
   inputs,
   examplePayload,
 });
