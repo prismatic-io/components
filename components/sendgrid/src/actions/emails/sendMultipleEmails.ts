@@ -9,6 +9,7 @@ export const sendMultipleEmails = action({
     label: "Send Multiple Emails",
     description: "Sends a separate email to each recipient.",
   },
+  performSafety: "notAllowed",
   perform: async (
     _context,
     {
@@ -25,10 +26,8 @@ export const sendMultipleEmails = action({
       replyToEmail,
       replyToName,
       content,
-      disposition,
       fileName,
-      fileType,
-      contentId,
+      attachmentDetails,
       multipleAttachments,
     },
   ) => {
@@ -37,6 +36,7 @@ export const sendMultipleEmails = action({
         "If you want to include the 'Reply To' property, you must supply a 'Reply To' email.",
       );
     }
+    const { disposition, fileType, contentId } = attachmentDetails;
     const fileData = content?.data
       ? content.data.toString("base64")
       : undefined;
@@ -87,5 +87,10 @@ export const sendMultipleEmails = action({
     }
   },
   inputs: sendMultipleEmailsInputs,
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: sendMultipleEmailsExamplePayload.data,
+  }),
   examplePayload: sendMultipleEmailsExamplePayload,
 });

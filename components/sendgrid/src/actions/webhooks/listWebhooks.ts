@@ -9,6 +9,7 @@ export const listWebhooks = action({
     description: "Lists all Event Webhook configurations.",
   },
   inputs: listWebhooksInputs,
+  performSafety: "safe",
   perform: async (_context, { sendGridConnection }) => {
     const client = createAuthorizedClient(sendGridConnection);
     const [_response, body] = await client.request({

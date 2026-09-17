@@ -9,6 +9,7 @@ export const getWebhook = action({
     description: "Retrieves an Event Webhook configuration by ID.",
   },
   inputs: getWebhookInputs,
+  performSafety: "safe",
   perform: async (_context, { sendGridConnection, webhookId }) => {
     const client = createAuthorizedClient(sendGridConnection);
     const url = `/v3/user/webhooks/event/settings/${webhookId}`;

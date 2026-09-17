@@ -10,6 +10,7 @@ export const getImportStatus = action({
     description: "Checks the status of a contact import job.",
   },
   inputs: getImportStatusInputs,
+  performSafety: "safe",
   perform: async (_context, { sendGridConnection, job_id }) => {
     const client = createAuthorizedClient(sendGridConnection);
     const [_response, body] = await client.request({

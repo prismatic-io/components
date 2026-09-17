@@ -32,6 +32,8 @@ export const getWebhookOutputSchema = {
   properties: {
     ...eventWebhookBaseProperties,
     public_key: { type: "string" },
+    created_at: { type: ["string", "null"], format: "date-time" },
+    updated_at: { type: ["string", "null"], format: "date-time" },
   },
 };
 export const listWebhooksOutputSchema = {

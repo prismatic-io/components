@@ -4,7 +4,7 @@ import {
   cleanFieldMappingsInput,
   cleanStringInput,
 } from "../util";
-import { connectionInput } from "./shared";
+import { connectionInput } from "./common";
 const contactListIds = input({
   label: "List IDs",
   type: "string",
@@ -71,6 +71,7 @@ const jobId = input({
   example: "f8a7b6c5-d4e3-f2a1-b0c9-d8e7f6a5b4c3",
   comments:
     "The job ID returned from Import Contacts, Add/Update Contact, or Delete Contacts operations.",
+  clean: util.types.toString,
 });
 const isCompressedInput = input({
   label: "Is Compressed",

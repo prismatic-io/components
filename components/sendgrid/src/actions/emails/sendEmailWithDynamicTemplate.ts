@@ -12,6 +12,7 @@ export const sendEmailWithDynamicTemplate = action({
       "Sends an email using a SendGrid dynamic template with complex nested JSON data.",
   },
   inputs: sendEmailWithDynamicTemplateInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -94,5 +95,10 @@ export const sendEmailWithDynamicTemplate = action({
       throw new Error(util.types.toString(error));
     }
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: sendEmailWithDynamicTemplateExamplePayload.data,
+  }),
   examplePayload: sendEmailWithDynamicTemplateExamplePayload,
 });

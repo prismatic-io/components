@@ -1,15 +1,16 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { updateWebhookExamplePayload } from "../../examplePayloads";
-import { eventsBuilder, updateWebhookHelper } from "../../helpers";
 import { updateWebhookInputs } from "../../inputs";
 import { updateWebhookOutputSchema } from "../../outputSchemas";
+import { eventsBuilder, updateWebhookHelper } from "../../util";
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
     description: "Updates an existing Event Webhook configuration.",
   },
   inputs: updateWebhookInputs,
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { sendGridConnection, webhookId, url, friendlyName, enabled, events },
@@ -30,6 +31,11 @@ export const updateWebhook = action({
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: updateWebhookOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: updateWebhookExamplePayload.data,
   }),
   examplePayload: updateWebhookExamplePayload,
 });

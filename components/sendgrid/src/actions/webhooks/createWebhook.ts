@@ -1,9 +1,9 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { createWebhookExamplePayload } from "../../examplePayloads";
-import { createWebhookHelper, eventsBuilder } from "../../helpers";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
+import { createWebhookHelper, eventsBuilder } from "../../util";
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -11,6 +11,7 @@ export const createWebhook = action({
       "Creates a new Event Webhook configuration to receive email event data.",
   },
   inputs: createWebhookInputs,
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { sendGridConnection, url, friendlyName, enabled, events },
@@ -30,6 +31,11 @@ export const createWebhook = action({
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createWebhookOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createWebhookExamplePayload.data,
   }),
   examplePayload: createWebhookExamplePayload,
 });

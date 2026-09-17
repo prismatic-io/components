@@ -11,6 +11,7 @@ export const addOrUpdateContact = action({
       "Adds or updates a contact. Can also be used to add contacts to a list.",
   },
   inputs: addOrUpdateContactInputs,
+  performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, list_ids, contacts }) => {
     const client = createAuthorizedClient(sendGridConnection);
     const payload: {
@@ -35,6 +36,11 @@ export const addOrUpdateContact = action({
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: addOrUpdateContactOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: addOrUpdateContactExamplePayload.data,
   }),
   examplePayload: addOrUpdateContactExamplePayload,
 });

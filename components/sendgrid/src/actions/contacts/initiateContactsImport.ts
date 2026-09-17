@@ -11,6 +11,7 @@ export const initiateContactsImport = action({
       "Initiates a CSV contact import. Returns a URL and headers for uploading the CSV file.",
   },
   inputs: initiateContactsImportInputs,
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { sendGridConnection, list_ids, field_mappings, is_compressed },
@@ -42,6 +43,11 @@ export const initiateContactsImport = action({
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: initiateContactsImportOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: initiateContactsImportExamplePayload.data,
   }),
   examplePayload: initiateContactsImportExamplePayload,
 });

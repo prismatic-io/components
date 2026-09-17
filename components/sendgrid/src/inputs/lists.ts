@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { connectionInput, fetchAll, pageSize, pageToken } from "./shared";
+import { connectionInput, fetchAll, pagination } from "./common";
 const listName = input({
   label: "List Name",
   type: "string",
@@ -34,17 +34,10 @@ export const createListInputs = {
 export const getAllListsInputs = {
   sendGridConnection: connectionInput,
   fetchAll,
-  page_size: pageSize,
-  page_token: pageToken,
+  pagination,
 };
 export const getListByIdInputs = {
   sendGridConnection: connectionInput,
   list_id: listId,
   contact_sample: includeSampleContacts,
-};
-export const getAllFieldDefinitionsInputs = {
-  sendGridConnection: connectionInput,
-  fetchAll,
-  page_size: pageSize,
-  page_token: pageToken,
 };

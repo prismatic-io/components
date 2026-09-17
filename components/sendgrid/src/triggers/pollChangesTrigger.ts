@@ -1,36 +1,43 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
-import {
-  OVERLAP_MS,
-  POLL_WINDOW_STEP_MS,
-  RETENTION_WINDOW_MS,
-} from "../constants";
+import { POLL_WINDOW_STEP_MS, POLLING_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { PollingState, SendgridMessageRecord } from "../types";
-import { fetchMessagesInWindow } from "../util";
+import type {
+  PollingChangesObject,
+  PollingState,
+  SendgridMessageRecord,
+  SendgridRecordChange,
+} from "../types";
+import {
+  computePollWindow,
+  fetchMessagesInWindow,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Messages",
     description:
-      "Checks for new and updated messages in SendGrid on a configured schedule.",
+      "Retrieves existing and ongoing messages from the SendGrid Email Activity Feed. Load history once, check for changes on a schedule, or both.",
   },
   examplePayload: pollChangesTriggerExamplePayload,
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: POLLING_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): SendgridRecordChange[] =>
+      resolvePollingRecordChanges(
+        payload.body.data as PollingChangesObject | undefined,
+      ),
+  },
   perform: async (context, payload, params) => {
     const nowMs = Date.now();
     const pollState = context.polling.getState() as PollingState;
-    const retentionFloorMs = nowMs - RETENTION_WINDOW_MS;
-    const persistedMs = pollState?.lastPolledAt
-      ? Date.parse(pollState.lastPolledAt)
-      : Number.NaN;
-    const fromMs = Number.isFinite(persistedMs)
-      ? Math.max(persistedMs, retentionFloorMs)
-      : retentionFloorMs;
-    const overlapMs = nowMs - OVERLAP_MS;
-    const toMs = Math.min(fromMs + POLL_WINDOW_STEP_MS, overlapMs);
-    const fromIso = new Date(fromMs).toISOString();
-    const toIso = new Date(toMs).toISOString();
+    const { fromIso, toIso } = computePollWindow(
+      pollState,
+      nowMs,
+      params.lookBackDate,
+    );
     const client = createAuthorizedClient(params.sendGridConnection);
     const { records, truncated } = await fetchMessagesInWindow(
       client,
@@ -40,6 +47,8 @@ export const pollChangesTrigger = pollingTrigger({
     const updated: SendgridMessageRecord[] =
       params.showUpdatedRecords !== false ? records : [];
     const created: SendgridMessageRecord[] = [];
+    const fromMs = Date.parse(fromIso);
+    const toMs = Date.parse(toIso);
     const nextCursorMs = truncated ? fromMs + POLL_WINDOW_STEP_MS : toMs;
     context.polling.setState({
       lastPolledAt: new Date(nextCursorMs).toISOString(),

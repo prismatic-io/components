@@ -1,5 +1,6 @@
 import { URL, URLSearchParams } from "node:url";
-export function extractPaginationTokens(url?: string): {
+import type { PaginationMetadata } from "../types/pagination";
+function extractPaginationTokens(url?: string): {
   nextPageToken?: string;
   previousPageToken?: string;
 } {
@@ -15,12 +16,11 @@ export function extractPaginationTokens(url?: string): {
     return {};
   }
 }
-export function extractMetadata(metadata?: {
-  self?: string;
-  next?: string;
-  prev?: string;
-  count?: number;
-}) {
+export function extractMetadata(metadata?: PaginationMetadata): {
+  nextPageToken?: string;
+  previousPageToken?: string;
+  totalCount?: number;
+} {
   if (!metadata) return {};
   const nextTokens = extractPaginationTokens(metadata.next);
   const prevTokens = extractPaginationTokens(metadata.prev);

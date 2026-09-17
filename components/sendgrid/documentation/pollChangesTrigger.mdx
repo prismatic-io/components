@@ -21,13 +21,29 @@ For new event-driven flows, prefer the Event Webhook trigger.
 
 The trigger maintains a single ISO 8601 cursor (`lastPolledAt`) in polling state. Each run sends a SQL-like query:
 
-`last_event_time BETWEEN "<fromIso>" AND "<toIso>"`
+`last_event_time BETWEEN TIMESTAMP "<fromIso>" AND TIMESTAMP "<toIso>"`
 
 The window is constructed using three safeguards:
 
-- **30-day retention clamp**: SendGrid retains Email Activity for 30 days. On bootstrap (no prior cursor), or when the persisted cursor is older than 30 days, the lower bound is clamped to `now - 30d`. Older events are not available from the feed.
-- **60-second eventual-consistency overlap**: events surface in the feed a few minutes after the underlying send. The upper bound is set to `now - 60s` to avoid tail-cutting events that are still propagating. The next poll re-scans the overlap, providing at-least-once delivery.
+- **30-day retention clamp**: SendGrid retains Email Activity for 30 days. On bootstrap (no prior cursor) the lower bound is **Look-back Date** if one is set and `now - 30d` otherwise; a persisted cursor or a look-back date older than 30 days is clamped forward to `now - 30d`. Older events are not available from the feed.
+- **60-second eventual-consistency overlap**: events surface in the feed a few minutes after the underlying send. The upper bound is set to `now - 60s` to avoid tail-cutting events that are still propagating. The next recurrence resumes from that bound, and because `BETWEEN` is inclusive at both ends, a message landing exactly on it is delivered twice.
 - **6-hour window-walking step on truncation**: the feed caps responses at 1000 records per request and the SendGrid query DSL does not expose `ORDER BY`. When a response is truncated (1000 records returned), the cursor advances by a fixed 6-hour step instead of jumping to `now`. This deterministically drains a backlog without dropping records in the un-fetched tail of the window.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it. This trigger suppresses none of them during the sync. The sync begins on the first recurrence, when the trigger has no stored position, and seeds each record once as its window walks forward. It covers the full 30-day Email Activity retention window unless **Look-back Date** (`YYYY-MM-DD`) starts it later. Leaving that input empty does not skip the sync; the window still starts at the retention floor, and a date older than 30 days is clamped forward to it.
+
+The sync's end is not fixed when it starts. Each recurrence recomputes its ceiling from the current time, so a message whose activity lands mid-drain is swept into the sync rather than held for the schedule. The trigger stores the upper bound it queried as its position, or advances a fixed six hours when the response was truncated, never a timestamp taken from the records received, and the first scheduled recurrence resumes from exactly there so nothing is lost. No field in the payload marks that handoff. Batching does not change the drain: the six-hour step is unconditional, so a full 30-day window takes roughly 120 recurrences either way.
+
+**Show Updated Records** applies during the sync exactly as it does afterward. The trigger has no page-size or field-selection input, so nothing else behaves differently between the sync and the schedule.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to SendGrid.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `changeType`/`record` item, or an array of them when the batch size is greater than 1, always tagged `"changeType": "updated"` because `created` is empty. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to that flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
@@ -58,6 +74,27 @@ The trigger returns separate arrays for created and updated records. Because of 
         ]
       }
     }
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Example Response (Batched Item)</summary>
+
+```json
+{
+  "changeType": "updated",
+  "record": {
+    "msg_id": "abc12345.recvd-67890-XYZ-1-1234567-1.0",
+    "from_email": "sender@example.com",
+    "to_email": "user@example.com",
+    "subject": "Hello from Acme!",
+    "status": "delivered",
+    "last_event_time": "2026-05-27T14:30:00Z"
   }
 }
 ```

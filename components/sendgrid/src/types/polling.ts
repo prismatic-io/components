@@ -21,3 +21,11 @@ export interface FetchMessagesInWindowResult {
   records: SendgridMessageRecord[];
   truncated: boolean;
 }
+export interface PollingChangesObject {
+  created?: SendgridMessageRecord[];
+  updated?: SendgridMessageRecord[];
+}
+export interface SendgridRecordChange {
+  changeType: "created" | "updated";
+  record: SendgridMessageRecord;
+}

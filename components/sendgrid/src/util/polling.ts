@@ -1,9 +1,44 @@
 import type { Client } from "@sendgrid/client";
-import { MESSAGES_ENDPOINT, MESSAGES_MAX_LIMIT } from "../constants";
+import {
+  MESSAGES_ENDPOINT,
+  MESSAGES_MAX_LIMIT,
+  OVERLAP_MS,
+  POLL_WINDOW_STEP_MS,
+  RETENTION_WINDOW_MS,
+} from "../constants";
 import type {
   FetchMessagesInWindowResult,
   MessagesResponse,
+  PollingChangesObject,
+  PollingState,
+  SendgridRecordChange,
 } from "../types/polling";
+export function computePollWindow(
+  pollState: PollingState | undefined,
+  nowMs: number = Date.now(),
+  lookBackDate?: string,
+): {
+  fromIso: string;
+  toIso: string;
+} {
+  const retentionFloorMs = nowMs - RETENTION_WINDOW_MS;
+  const persistedMs = pollState?.lastPolledAt
+    ? Date.parse(pollState.lastPolledAt)
+    : Number.NaN;
+  let fromMs: number;
+  if (Number.isFinite(persistedMs)) {
+    fromMs = Math.max(persistedMs, retentionFloorMs);
+  } else if (lookBackDate) {
+    fromMs = Math.max(Date.parse(lookBackDate), retentionFloorMs);
+  } else {
+    fromMs = retentionFloorMs;
+  }
+  const toMs = Math.min(fromMs + POLL_WINDOW_STEP_MS, nowMs - OVERLAP_MS);
+  return {
+    fromIso: new Date(fromMs).toISOString(),
+    toIso: new Date(toMs).toISOString(),
+  };
+}
 export async function fetchMessagesInWindow(
   client: Client,
   fromIso: string,
@@ -40,4 +75,17 @@ export async function fetchMessagesInWindow(
     }
     throw error;
   }
+}
+export function resolvePollingRecordChanges(
+  data: PollingChangesObject | undefined,
+): SendgridRecordChange[] {
+  const { created, updated } = data ?? {};
+  const changes: SendgridRecordChange[] = [];
+  for (const record of created ?? []) {
+    changes.push({ changeType: "created", record });
+  }
+  for (const record of updated ?? []) {
+    changes.push({ changeType: "updated", record });
+  }
+  return changes;
 }

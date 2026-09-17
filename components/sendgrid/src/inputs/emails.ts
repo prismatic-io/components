@@ -1,6 +1,6 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanArrayCodeInput, cleanDataInput, cleanStringInput } from "../util";
-import { connectionInput } from "./shared";
+import { connectionInput } from "./common";
 const dynamicTemplateData = input({
   label: "Dynamic Template Data",
   type: "code",
@@ -96,7 +96,7 @@ const replyToName = input({
   type: "string",
   required: false,
   comments:
-    "Name to reply to. This field is only required when you provide a value for Reply To Email.",
+    "The display name used for replies. Required when Reply To Email is provided.",
   example: "John Doe",
   clean: cleanStringInput,
 });
@@ -207,7 +207,8 @@ const fileType = input({
   placeholder: "Enter MIME type",
   type: "string",
   required: false,
-  comments: "The MIME type of the content you are attaching.",
+  comments:
+    "The MIME type of the attached content (e.g., text/plain, application/pdf).",
   example: "text/plain",
   clean: cleanStringInput,
 });
@@ -217,9 +218,16 @@ const contentId = input({
   type: "string",
   required: false,
   comments:
-    "Provide the content Id of the attachment. This value is only required when you select 'inline'.",
+    "The content ID of the attachment, used to reference inline attachments in HTML via a cid: URL. Required when Disposition is set to 'inline'.",
   example: "12345",
   clean: cleanStringInput,
+});
+const attachmentDetails = structuredObjectInput({
+  label: "Attachment Details",
+  required: false,
+  comments:
+    "Configure a single file attachment including its display mode, MIME type, and content ID.",
+  inputs: { disposition, fileType, contentId },
 });
 const multipleAttachments = input({
   label: "Multiple Attachments",
@@ -241,7 +249,7 @@ const multipleAttachments = input({
 const subscriptionTracking = input({
   label: "Subscription Tracking",
   comments:
-    "When true, inserts a subscription management link at the bottom of the text and HTML bodies of your email.",
+    "When true, inserts a subscription management link at the bottom of the text and HTML bodies of the email.",
   type: "boolean",
   required: false,
   default: "false",
@@ -261,10 +269,8 @@ export const sendEmailInputs = {
   html,
   personalizations,
   content,
-  disposition,
   fileName,
-  fileType,
-  contentId,
+  attachmentDetails,
   multipleAttachments,
   subscriptionTracking,
 };
@@ -282,10 +288,8 @@ export const sendMultipleEmailsInputs = {
   html,
   personalizations,
   content,
-  disposition,
   fileName,
-  fileType,
-  contentId,
+  attachmentDetails,
   multipleAttachments,
 };
 export const sendEmailWithDynamicTemplateInputs = {

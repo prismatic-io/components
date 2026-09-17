@@ -1,6 +1,7 @@
 The Event Webhook trigger can manage [SendGrid event webhook subscriptions](https://www.twilio.com/docs/sendgrid/for-developers/tracking-events/getting-started-event-webhook) for an instance. Unlike traditional webhook setups that require manual configuration in the SendGrid dashboard, this trigger handles the entire webhook lifecycle.
 
-When the trigger is used in a flow:
+#### How It Works
+
 - **On Instance Deploy**: The trigger automatically creates a webhook endpoint in the SendGrid account pointing to the instance's unique webhook URL. If a webhook with the same ID already exists in the stored state, it updates the existing webhook instead of creating a duplicate. The trigger also automatically enables signature verification and stores the public key for validating incoming requests.
 - **On Instance Deletion**: The trigger automatically removes the webhook endpoint from the SendGrid account.
 
@@ -9,7 +10,7 @@ When the trigger is used in a flow:
 Configure the trigger to receive notifications for the following email events:
 
 <details>
-<summary>Event Types</summary>
+<summary>Event Types (11)</summary>
 
 | Event | Description |
 | ----- | ----------- |

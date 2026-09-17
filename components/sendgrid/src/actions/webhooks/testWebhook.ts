@@ -9,6 +9,7 @@ export const testWebhook = action({
     description: "Tests an Event Webhook by sending a fake event notification.",
   },
   inputs: testWebhookInputs,
+  performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, url }) => {
     const client = createAuthorizedClient(sendGridConnection);
     await client.request({
@@ -28,6 +29,11 @@ export const testWebhook = action({
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: testWebhookOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: testWebhookExamplePayload.data,
   }),
   examplePayload: testWebhookExamplePayload,
 });

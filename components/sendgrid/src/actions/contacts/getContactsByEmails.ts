@@ -10,6 +10,7 @@ export const getContactsByEmails = action({
     description: "Retrieves contacts by their email addresses.",
   },
   inputs: getContactsByEmailsInputs,
+  performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, emails }) => {
     const client = createAuthorizedClient(sendGridConnection);
     let emailArray: string[];
@@ -63,6 +64,11 @@ export const getContactsByEmails = action({
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getContactsByEmailsOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: getContactsByEmailsExamplePayload.data,
   }),
   examplePayload: getContactsByEmailsExamplePayload,
 });

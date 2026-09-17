@@ -18,11 +18,12 @@ export const getAllFieldDefinitionsOutputSchema = {
       items: {
         type: "object" as const,
         properties: {
+          id: { type: "string" },
           name: { type: "string" },
           field_type: { type: "string", enum: ["Text", "Number", "Date"] },
           read_only: { type: "boolean" },
         },
-        required: ["name", "field_type"],
+        required: ["id", "name", "field_type"],
       },
     },
     _metadata: {

@@ -1,6 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput, cleanValueListInput } from "../util";
-import { connectionInput } from "./shared";
+import { connectionInput, events, webhookFriendlyName } from "./common";
 const webhookUrl = input({
   label: "Webhook URL",
   placeholder: "Enter a webhook URL",
@@ -9,15 +8,6 @@ const webhookUrl = input({
   required: true,
   clean: util.types.toString,
   comments: "The URL where SendGrid will send event data.",
-});
-const webhookFriendlyName = input({
-  label: "Friendly Name",
-  placeholder: "Enter a friendly name",
-  example: "My Event Webhook",
-  type: "string",
-  required: false,
-  clean: cleanStringInput,
-  comments: "A friendly name to help differentiate between multiple webhooks.",
 });
 const webhookEnabled = input({
   label: "Enabled",
@@ -54,44 +44,20 @@ const testWebhookUrl = input({
   clean: util.types.toString,
   comments: "The URL where the test event will be sent.",
 });
-const events = input({
-  label: "Events",
-  collection: "valuelist",
-  type: "string",
-  required: true,
-  model: [
-    { label: "Delivered", value: "delivered" },
-    { label: "Bounce", value: "bounce" },
-    { label: "Deferred", value: "deferred" },
-    { label: "Processed", value: "processed" },
-    { label: "Dropped", value: "dropped" },
-    { label: "Open", value: "open" },
-    { label: "Click", value: "click" },
-    { label: "Spam Report", value: "spamReport" },
-    { label: "Unsubscribe", value: "unsubscribe" },
-    { label: "Group Unsubscribe", value: "groupUnsubscribe" },
-    { label: "Group Resubscribe", value: "groupResubscribe" },
-  ],
-  comments:
-    "The email event types to subscribe to. Selected events trigger webhook notifications when they occur.",
-  example: "delivered",
-  default: ["delivered"],
-  clean: cleanValueListInput,
-});
 export const createWebhookInputs = {
   sendGridConnection: connectionInput,
   url: webhookUrl,
+  events,
   friendlyName: webhookFriendlyName,
   enabled: webhookEnabled,
-  events,
 };
 export const updateWebhookInputs = {
   sendGridConnection: connectionInput,
   webhookId,
   url: webhookUrl,
+  events,
   friendlyName: webhookFriendlyName,
   enabled: webhookEnabled,
-  events,
 };
 export const getWebhookInputs = {
   sendGridConnection: connectionInput,
@@ -112,9 +78,4 @@ export const toggleSignatureVerificationInputs = {
   sendGridConnection: connectionInput,
   webhookId,
   enabled: signatureVerificationEnabled,
-};
-export const eventWebhookInputs = {
-  sendGridConnection: connectionInput,
-  friendlyName: webhookFriendlyName,
-  events,
 };

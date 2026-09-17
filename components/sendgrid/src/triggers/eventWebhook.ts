@@ -1,18 +1,18 @@
 import { trigger, util } from "@prismatic-io/spectral";
 import { EventWebhook } from "@sendgrid/eventwebhook";
 import { createAuthorizedClient } from "../client";
-import { eventWebhookTriggerExamplePayload } from "../examplePayloads";
+import { eventWebhookExamplePayload } from "../examplePayloads";
+import { eventWebhookInputs } from "../inputs";
+import type { WebhookState } from "../types";
 import {
   createWebhookHelper,
   deleteWebhookHelper,
   eventsBuilder,
+  getBase64FromUrl,
   handleWebhookError,
   toggleSignatureVerificationHelper,
   updateWebhookHelper,
-} from "../helpers";
-import { eventWebhookInputs } from "../inputs";
-import type { WebhookState } from "../types";
-import { getBase64FromUrl } from "../util";
+} from "../util";
 export const eventWebhook = trigger({
   display: {
     label: "Managed Webhook Events",
@@ -48,6 +48,7 @@ export const eventWebhook = trigger({
           logger.info("Webhook updated successfully");
           if (debug.enabled) logger.info(JSON.stringify(data));
           crossFlowState[encodedId] = {
+            ...state,
             webhookId: data.id,
           };
           return;
@@ -124,9 +125,19 @@ export const eventWebhook = trigger({
     },
   },
   perform: async (
-    { webhookUrls, flow, crossFlowState, logger, debug },
+    {
+      webhookUrls,
+      flow,
+      crossFlowState,
+      logger,
+      debug,
+      isSimulatedTestExecution,
+    },
     payload,
   ) => {
+    if (isSimulatedTestExecution) {
+      return { payload };
+    }
     const encodedId = getBase64FromUrl(webhookUrls[flow.name]);
     const state = crossFlowState?.[encodedId] as unknown as {
       webhookId: string;
@@ -173,5 +184,5 @@ export const eventWebhook = trigger({
   inputs: eventWebhookInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
-  examplePayload: eventWebhookTriggerExamplePayload,
+  examplePayload: eventWebhookExamplePayload,
 });

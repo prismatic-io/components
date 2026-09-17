@@ -10,6 +10,7 @@ export const createList = action({
     description: "Creates a new contact list.",
   },
   inputs: createListInputs,
+  performSafety: "notAllowed",
   perform: async (_context, { sendGridConnection, name }) => {
     const client = createAuthorizedClient(sendGridConnection);
     const [_response, body] = await client.request({
@@ -22,6 +23,11 @@ export const createList = action({
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: createListOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: createListExamplePayload.data,
   }),
   examplePayload: createListExamplePayload,
 });

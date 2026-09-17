@@ -17,6 +17,7 @@ export const listWebhooksExamplePayload = {
         open: true,
         click: true,
         dropped: true,
+        account_status_change: true,
         friendly_name: "Engagement Webhook",
         id: "b4c46f7a-9012-4e8d-bc5f-7d3a1e8b9c0d",
         oauth_client_id: "a835e7210bbb47edbfa71bdfc909b2d7",
@@ -43,6 +44,7 @@ export const createWebhookExamplePayload = {
     open: true,
     click: true,
     dropped: true,
+    account_status_change: true,
     friendly_name: "Order Notifications Webhook",
     oauth_client_id: "a835e7210bbb47edbfa71bdfc909b2d7",
     oauth_token_url: "https://oauthservice.example.com",
@@ -72,6 +74,7 @@ export const getWebhookExamplePayload = {
     open: true,
     click: true,
     dropped: true,
+    account_status_change: true,
     friendly_name: "Delivery Status Webhook",
     id: "b4c46f7a-9012-4e8d-bc5f-7d3a1e8b9c0d",
     oauth_client_id: "a835e7210bbb47edbfa71bdfc909b2d7",
@@ -108,6 +111,7 @@ export const updateWebhookExamplePayload = {
     open: true,
     click: true,
     dropped: true,
+    account_status_change: true,
     friendly_name: "Delivery Status Webhook",
     id: "b4c46f7a-9012-4e8d-bc5f-7d3a1e8b9c0d",
     oauth_client_id: "a835e7210bbb47edbfa71bdfc909b2d7",
@@ -375,7 +379,7 @@ export const pollChangesTriggerExamplePayload: {
     globalDebug: false,
   },
 };
-export const eventWebhookTriggerExamplePayload: {
+export const eventWebhookExamplePayload: {
   payload: TriggerPayload;
 } = {
   payload: {
@@ -479,7 +483,7 @@ export const eventWebhookTriggerExamplePayload: {
     globalDebug: true,
   },
 };
-export const webhookTriggerExamplePayload: {
+export const webhookExamplePayload: {
   payload: TriggerPayload;
 } = {
   payload: {

@@ -1,4 +1,4 @@
-import { connectionInput } from "./shared";
+import { connectionInput } from "./common";
 export const sendGridListsDataSourceInputs = {
   connection: connectionInput,
 };

@@ -1,6 +1,5 @@
 export interface CreateWebhookParams {
   url: string;
-  friendlyName?: string;
   enabled: boolean;
   delivered: boolean;
   bounce: boolean;
@@ -13,10 +12,11 @@ export interface CreateWebhookParams {
   unsubscribe: boolean;
   groupUnsubscribe: boolean;
   groupResubscribe: boolean;
+  accountStatusChange: boolean;
+  friendlyName?: string;
 }
 export interface WebhookRequestBody {
   url: string;
-  friendly_name?: string;
   enabled: boolean;
   delivered: boolean;
   bounce: boolean;
@@ -29,6 +29,8 @@ export interface WebhookRequestBody {
   unsubscribe: boolean;
   group_unsubscribe: boolean;
   group_resubscribe: boolean;
+  account_status_change: boolean;
+  friendly_name?: string;
 }
 export interface UpdateWebhookParams extends CreateWebhookParams {
   webhookId: string;
@@ -54,6 +56,7 @@ export interface WebhookResponse {
   open: boolean;
   click: boolean;
   dropped: boolean;
+  account_status_change: boolean;
   friendly_name: string;
   id: string;
   oauth_client_id: string;
@@ -61,10 +64,6 @@ export interface WebhookResponse {
   public_key: string;
   created_date: string;
   updated_date: string;
-}
-export interface ToggleSignatureVerificationResponse {
-  id: string;
-  public_key: string;
 }
 export interface WebhookState {
   webhookId: string;
@@ -82,4 +81,5 @@ export interface TrackEvents {
   unsubscribe: boolean;
   groupUnsubscribe: boolean;
   groupResubscribe: boolean;
+  accountStatusChange: boolean;
 }

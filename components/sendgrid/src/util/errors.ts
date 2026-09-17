@@ -1,5 +1,5 @@
 import type { ActionLogger } from "@prismatic-io/spectral";
-import type { SendGridError } from "../../types";
+import type { SendGridError } from "../types";
 export const handleWebhookError = (
   e: unknown,
   operation: string,

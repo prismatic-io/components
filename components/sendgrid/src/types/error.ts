@@ -1,4 +1,4 @@
-export type SendGridError = {
+export interface SendGridError {
   message: string;
   response?: {
     body?: {
@@ -7,4 +7,4 @@ export type SendGridError = {
       }[];
     };
   };
-};
+}

@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../../client";
 import { API_VERSION } from "../../constants";
 import { getListByIdExamplePayload } from "../../examplePayloads";
 import { getListByIdInputs } from "../../inputs";
+import { getListByIdOutputSchema } from "../../outputSchemas";
 export const getListById = action({
   display: {
     label: "Get List by ID",
     description: "Retrieves a specific contact list by its ID.",
   },
   inputs: getListByIdInputs,
+  performSafety: "safe",
   perform: async (
     _context,
     { sendGridConnection, list_id, contact_sample },
@@ -21,5 +23,9 @@ export const getListById = action({
     });
     return { data: body };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getListByIdOutputSchema,
+  }),
   examplePayload: getListByIdExamplePayload,
 });

@@ -7,6 +7,15 @@ export const createListOutputSchema = {
     _metadata: { type: "object", properties: { self: { type: "string" } } },
   },
 };
+export const getListByIdOutputSchema = {
+  type: "object" as const,
+  properties: {
+    id: { type: "string" },
+    name: { type: "string" },
+    contact_count: { type: "integer" },
+    _metadata: { type: "object", properties: { self: { type: "string" } } },
+  },
+};
 export const getAllListsOutputSchema = {
   type: "object" as const,
   properties: {

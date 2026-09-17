@@ -12,6 +12,7 @@ export const rawRequest = action({
     description: "Sends a raw HTTP request to SendGrid.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...httpInputs }) => {
     validateConnection(connection);
     const apiKey = util.types.toString(connection.fields.apiKey);
