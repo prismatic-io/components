@@ -1,16 +1,18 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-jest.mock("./client", () => ({
-  createClient: jest.fn(),
+import { vi } from "vitest";
+import { fetchAllKnowledgeRecords, fetchAllTableRecords } from "./util";
+vi.mock("./client", () => ({
+  createClient: vi.fn(),
 }));
-const { fetchAllTableRecords, fetchAllKnowledgeRecords } =
-  require("./util") as typeof import("./util");
-const createMockClient = (getMock: jest.Mock): Pick<HttpClient, "get"> => ({
-  get: getMock,
+const createMockClient = (
+  getMock: ReturnType<typeof vi.fn>,
+): Pick<HttpClient, "get"> => ({
+  get: getMock as unknown as HttpClient["get"],
 });
 describe("fetchAllTableRecords", () => {
-  let getMock: jest.Mock;
+  let getMock: ReturnType<typeof vi.fn>;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   it("single page: returns records when count < pageSize", async () => {
     const records = [{ sys_id: "1" }, { sys_id: "2" }];
@@ -42,9 +44,9 @@ describe("fetchAllTableRecords", () => {
   });
 });
 describe("fetchAllKnowledgeRecords", () => {
-  let getMock: jest.Mock;
+  let getMock: ReturnType<typeof vi.fn>;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   it("single page: returns articles when count < pageSize", async () => {
     const articles = [{ sys_id: "a1", title: "Article 1" }];

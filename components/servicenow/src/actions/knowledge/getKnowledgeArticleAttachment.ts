@@ -1,17 +1,12 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  articleSysId,
-  attachmentSysId,
-  connection,
-  instanceUrlInput,
-} from "../../inputs";
+import { getKnowledgeArticleAttachmentInputs } from "../../inputs";
 import { getKnowledgeManagementApiClient } from "../../util";
 export const getKnowledgeArticleAttachment = action({
   display: {
     label: "Get Knowledge Article Attachment",
     description: "Returns a knowledge article attachment as a file.",
   },
+  performSafety: "safe",
   perform: async (
     context,
     {
@@ -35,11 +30,5 @@ export const getKnowledgeArticleAttachment = action({
       data,
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    articleSysId,
-    attachmentSysId,
-  },
+  inputs: getKnowledgeArticleAttachmentInputs,
 });

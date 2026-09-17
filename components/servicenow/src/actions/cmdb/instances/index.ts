@@ -1,8 +1,8 @@
-import { createConfigurationItem } from "./create";
-import { deleteConfigurationItem } from "./delete";
-import { getConfigurationItemAttributes } from "./get";
-import { listConfigurationItems } from "./list";
-import { updateConfigurationItem } from "./put";
+import { createConfigurationItem } from "./createConfigurationItem";
+import { deleteConfigurationItem } from "./deleteConfigurationItem";
+import { getConfigurationItemAttributes } from "./getConfigurationItemAttributes";
+import { listConfigurationItems } from "./listConfigurationItems";
+import { updateConfigurationItem } from "./updateConfigurationItem";
 export default {
   getConfigurationItemAttributes,
   listConfigurationItems,

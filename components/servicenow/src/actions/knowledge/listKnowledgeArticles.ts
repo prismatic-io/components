@@ -1,17 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  fetchAll,
-  fields,
-  filter,
-  instanceUrlInput,
-  kb,
-  language,
-  limit,
-  offset,
-  query,
-} from "../../inputs";
+import { listKnowledgeArticlesInputs } from "../../inputs";
 import {
   fetchAllKnowledgeRecords,
   getKnowledgeManagementApiClient,
@@ -22,6 +10,7 @@ export const listKnowledgeArticles = action({
     description:
       "Returns a list of knowledge base (KB) articles which can be searched and filtered using various parameters.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -29,13 +18,8 @@ export const listKnowledgeArticles = action({
       fetchAll,
       instanceUrlInput,
       apiVersionInput,
-      filter,
-      fields,
-      kb,
-      language,
-      limit,
-      offset,
-      query,
+      filters,
+      pagination,
     },
   ) => {
     const client = getKnowledgeManagementApiClient(
@@ -48,26 +32,33 @@ export const listKnowledgeArticles = action({
       const data = await fetchAllKnowledgeRecords(
         client,
         "/knowledge/articles",
-        { filter, fields, kb, language, query },
+        {
+          filter: filters.filter,
+          fields: filters.fields,
+          kb: filters.kb,
+          language: filters.language,
+          query: filters.query,
+        },
       );
       return { data };
     }
     const { data } = await client.get("/knowledge/articles", {
-      params: { filter, fields, kb, language, limit, offset, query },
+      params: {
+        filter: filters.filter,
+        fields: filters.fields,
+        kb: filters.kb,
+        language: filters.language,
+        limit: pagination.limit,
+        offset: pagination.offset,
+        query: filters.query,
+      },
     });
     return { data: data.result };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    filter,
-    fields,
-    kb,
-    language,
-    query,
-    fetchAll,
-    limit,
-    offset,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: [] },
+  }),
+  inputs: listKnowledgeArticlesInputs,
 });

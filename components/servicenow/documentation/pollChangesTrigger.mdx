@@ -1,29 +1,34 @@
-This trigger polls the [ServiceNow Table API](https://developer.servicenow.com/dev.do) for new and updated records in a selected ServiceNow table on a configured schedule.
+This trigger polls a selected ServiceNow table for records created or updated since its last recurrence, and can optionally load history once before it starts. See the [ServiceNow developer documentation](https://developer.servicenow.com/dev.do) for the available tables and API versions.
 
 #### How It Works
 
 1. The trigger runs on the configured schedule
-2. It queries the ServiceNow Table API using `sysparm_query=sys_updated_on>{lastPolledAt}` to fetch only records modified since the last poll
-3. Records are classified as **created** if `sys_created_on` exceeds the last poll time; all other returned records are classified as **updated**
-4. The trigger updates its internal state after each poll
+2. It queries the ServiceNow Table API using `sysparm_query=sys_updated_on>{cursor}` to fetch only records modified since the previous recurrence
+3. Records are classified as **created** if `sys_created_on` is past the cursor; all other returned records are classified as **updated**
+4. The trigger stores the timestamp it captured at the start of the recurrence as its new cursor
 
-#### Configuration
+**Initial sync**
 
-Configure the following inputs:
+An initial sync seeds a complete starting state rather than a feed of changes. Inputs that narrow which changes are reported would leave permanent gaps in that starting state, so they are not applied to it, while inputs that shape how records are fetched still are. Setting **Look-back Date** starts the sync from that date on the first recurrence and seeds each record modified since it exactly once. The sync ignores **Show New Records** and **Show Updated Records**, the trigger's two visibility filters, which resume on every later recurrence. Leaving **Look-back Date** empty means no sync runs at all: the first recurrence records the cursor, emits nothing, and the trigger reports only changes from that point forward.
 
-- **Connection**: The ServiceNow connection used to authenticate API requests
-- **Instance URL**: The full base URL of the ServiceNow instance (e.g., `https://dev12345.service-now.com`)
-- **API Version**: The ServiceNow REST API version to use (e.g., `v2`)
-- **Table Name**: The name of the ServiceNow table to monitor. Enter any valid table name (e.g., `incident`, `problem`, `change_request`, `sc_task`)
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+The sync window has no fixed upper bound: the query sends only a lower bound, so a record modified while the sync is running is swept into the sync itself. When the recurrence ends the trigger stores the timestamp it captured when that recurrence began, and the next recurrence resumes from exactly there, so nothing is lost between the two. Because that timestamp predates the fetch, a record modified in the interval between the two can be emitted once by the sync and again by the next recurrence. No field in the payload marks the handoff. The sync drains within a single recurrence whether or not batching is enabled, because the trigger reads the full matching record set and classifies it in memory.
+
+The sync boundary is inclusive: a record modified exactly on the look-back date is seeded. Every later recurrence is exclusive of the previous cursor, so a record sitting exactly on it is not emitted a second time. This trigger has no page-size or field-selection inputs, so no fetch-shaping input is suppressed; the sync reads the same record set that a normal recurrence does.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to ServiceNow.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the shape a downstream step receives. With batching off, a step reads the full polling payload and finds the records under `data.created` and `data.updated`. With batching on, those two arrays do not exist: each record is dispatched on its own, tagged as `changeType` (either `created` or `updated`) with the record itself under `record`. Any step that reads `data.created` or `data.updated` must be updated before batching is turned on. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-Returns an object with two arrays — `created` for new records and `updated` for modified records.
+With batching off, the trigger returns the matching records grouped under `created` and `updated`. Fields shown are representative. The full response object includes additional properties.
 
 <details>
-<summary>Example Response</summary>
+<summary>Example Payload</summary>
 
 ```json
 {
@@ -54,8 +59,30 @@ Returns an object with two arrays — `created` for new records and `updated` fo
 
 </details>
 
+With batching on, each record is dispatched on its own instead.
+
+<details>
+<summary>Example Payload (batching enabled)</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "sys_id": "abc123def456",
+    "number": "INC0010001",
+    "short_description": "Cannot connect to VPN",
+    "sys_created_on": "2024-01-16 10:30:00",
+    "sys_updated_on": "2024-01-16 10:30:00",
+    "state": "1"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
-- **Table Name** is a free-form input — any valid ServiceNow table name is accepted. Common examples include `incident`, `problem`, `change_request`, and `sc_task`
+- **Table Name** is a free-form input: any valid ServiceNow table name is accepted. Common examples include `incident`, `problem`, `change_request`, and `sc_task`
 - **Instance URL** must be the full base URL including the protocol (e.g., `https://dev12345.service-now.com`)
-- Refer to the [ServiceNow developer documentation](https://developer.servicenow.com/dev.do) for the full list of available tables and API version details
+- A record is counted as **created** only when it was created after the cursor. A record created earlier and edited since is reported as **updated**, so the two arrays never contain the same record
+- The trigger does not page its query, so a recurrence covering a very large window is bounded by the instance's own row limit rather than by an input

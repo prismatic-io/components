@@ -19,7 +19,7 @@ export const getAuthHeaders = (
     connection.key === authorizationCode.key ||
     connection.key === clientCredentials.key
   ) {
-    const token = util.types.toString(connection.token.access_token);
+    const token = util.types.toString(connection.token?.access_token);
     return { Authorization: `Bearer ${token}` };
   }
   throw new ConnectionError(connection, "Unknown Connection type provided.");

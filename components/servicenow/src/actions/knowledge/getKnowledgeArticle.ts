@@ -1,15 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  articleId,
-  connection,
-  fields,
-  instanceUrlInput,
-  language,
-  searchId,
-  searchRank,
-  updateView,
-} from "../../inputs";
+import { getKnowledgeArticleInputs } from "../../inputs";
 import { getKnowledgeManagementApiClient } from "../../util";
 export const getKnowledgeArticle = action({
   display: {
@@ -17,6 +7,7 @@ export const getKnowledgeArticle = action({
     description:
       "Returns specific knowledge article content and its field values.",
   },
+  performSafety: "safe",
   perform: async (
     context,
     {
@@ -50,15 +41,5 @@ export const getKnowledgeArticle = action({
       data: data.result,
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    articleId,
-    fields,
-    language,
-    searchId,
-    searchRank,
-    updateView,
-  },
+  inputs: getKnowledgeArticleInputs,
 });

@@ -1,25 +1,15 @@
 import { dataSource } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  instanceUrlInput,
-  sysparmQuery,
-} from "../inputs";
+import { selectAttachmentInputs } from "../inputs";
 import { createNowApiClient } from "../util";
 export const selectAttachment = dataSource({
   display: {
     label: "Select Attachment",
     description: "Select an attachment from a list of attachments.",
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    sysparmQuery,
-  },
+  inputs: selectAttachmentInputs,
   dataSourceType: "picklist",
   perform: async (
-    context,
+    _context,
     { connection, instanceUrlInput, apiVersionInput, sysparmQuery },
   ) => {
     const client = createNowApiClient(

@@ -1,10 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  fieldValuesInput,
-  instanceUrlInput,
-} from "../../inputs";
+import { createIncidentInputs } from "../../inputs";
 import { createTableRecord } from "../tables/records/createTableRecord";
 export const createIncident = action({
   display: {
@@ -12,6 +7,7 @@ export const createIncident = action({
     description:
       "Creates an Incident with the specified field names and values",
   },
+  performSafety: "notAllowed",
   perform: async (context, parameters) => {
     return {
       data: await createTableRecord.perform(context, {
@@ -20,10 +16,10 @@ export const createIncident = action({
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    fieldValuesInput,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: {} },
+  }),
+  inputs: createIncidentInputs,
 });

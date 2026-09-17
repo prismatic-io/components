@@ -1,18 +1,13 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  fieldValuesInput,
-  instanceUrlInput,
-  tableNameInput,
-} from "../../../inputs";
+import { createTableRecordInputs } from "../../../inputs";
 import { buildPayload, postTable } from "../../../util";
 export const createTableRecord = action({
   display: {
     label: "Create Table Record",
     description:
-      "Creates a record in the specified table with the specified field names and values",
+      "Creates a record in the specified table with the specified field names and values.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -35,11 +30,10 @@ export const createTableRecord = action({
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    tableNameInput,
-    fieldValuesInput,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: {} },
+  }),
+  inputs: createTableRecordInputs,
 });

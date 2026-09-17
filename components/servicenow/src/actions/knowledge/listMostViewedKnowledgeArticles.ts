@@ -1,15 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  fetchAll,
-  fields,
-  instanceUrlInput,
-  kb,
-  language,
-  limit,
-  offset,
-} from "../../inputs";
+import { listMostViewedKnowledgeArticlesInputs } from "../../inputs";
 import {
   fetchAllKnowledgeRecords,
   getKnowledgeManagementApiClient,
@@ -20,6 +10,7 @@ export const listMostViewedKnowledgeArticles = action({
     description:
       "Returns a list of knowledge articles prioritized by most-viewed.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -27,11 +18,8 @@ export const listMostViewedKnowledgeArticles = action({
       fetchAll,
       instanceUrlInput,
       apiVersionInput,
-      fields,
-      kb,
-      language,
-      limit,
-      offset,
+      filters,
+      pagination,
     },
   ) => {
     const client = getKnowledgeManagementApiClient(
@@ -44,24 +32,29 @@ export const listMostViewedKnowledgeArticles = action({
       const data = await fetchAllKnowledgeRecords(
         client,
         "/knowledge/articles/most_viewed",
-        { fields, kb, language },
+        {
+          fields: filters.fields,
+          kb: filters.kb,
+          language: filters.language,
+        },
       );
       return { data };
     }
     const { data } = await client.get("/knowledge/articles/most_viewed", {
-      params: { fields, kb, language, limit, offset },
+      params: {
+        fields: filters.fields,
+        kb: filters.kb,
+        language: filters.language,
+        limit: pagination.limit,
+        offset: pagination.offset,
+      },
     });
     return { data: data.result };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    fields,
-    kb,
-    language,
-    fetchAll,
-    limit,
-    offset,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: [] },
+  }),
+  inputs: listMostViewedKnowledgeArticlesInputs,
 });

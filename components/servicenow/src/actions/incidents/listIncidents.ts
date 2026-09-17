@@ -1,19 +1,12 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  fetchAll,
-  instanceUrlInput,
-  sysparmLimit,
-  sysparmOffset,
-  sysparmQuery,
-} from "../../inputs";
+import { listIncidentsInputs } from "../../inputs";
 import { listTableRecords } from "../tables/records/listTableRecords";
 export const listIncidents = action({
   display: {
     label: "List Incidents",
-    description: "Gets a list of all Incidents",
+    description: "Gets a list of all incidents.",
   },
+  performSafety: "notAllowed",
   perform: async (context, parameters) => {
     return {
       data: await listTableRecords.perform(context, {
@@ -22,13 +15,10 @@ export const listIncidents = action({
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    sysparmQuery,
-    fetchAll,
-    sysparmLimit,
-    sysparmOffset,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: [] },
+  }),
+  inputs: listIncidentsInputs,
 });

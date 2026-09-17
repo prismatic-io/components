@@ -1,17 +1,12 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  instanceUrlInput,
-  sysId,
-  tableNameInput,
-} from "../../../inputs";
+import { deleteTableRecordInputs } from "../../../inputs";
 import { deleteTable } from "../../../util";
 export const deleteTableRecord = action({
   display: {
     label: "Delete Table Record",
-    description: "Delete a record for a given ID in the specified Table",
+    description: "Delete a record for a given ID in the specified table.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, instanceUrlInput, apiVersionInput, tableNameInput, sysId },
@@ -29,11 +24,10 @@ export const deleteTableRecord = action({
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    tableNameInput,
-    sysId,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: null },
+  }),
+  inputs: deleteTableRecordInputs,
 });

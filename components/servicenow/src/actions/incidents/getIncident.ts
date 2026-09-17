@@ -1,16 +1,12 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  instanceUrlInput,
-  sysId,
-} from "../../inputs";
+import { getIncidentInputs } from "../../inputs";
 import { getTableRecord } from "../tables/records/getTableRecord";
 export const getIncident = action({
   display: {
     label: "Get Incident",
-    description: "Gets an Incident by ID",
+    description: "Gets an incident by ID.",
   },
+  performSafety: "safe",
   perform: async (context, parameters) => {
     return {
       data: await getTableRecord.perform(context, {
@@ -19,10 +15,5 @@ export const getIncident = action({
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    sysId,
-  },
+  inputs: getIncidentInputs,
 });

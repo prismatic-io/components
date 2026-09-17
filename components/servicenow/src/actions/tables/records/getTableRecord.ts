@@ -1,17 +1,12 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  instanceUrlInput,
-  sysId,
-  tableNameInput,
-} from "../../../inputs";
+import { getTableRecordInputs } from "../../../inputs";
 import { getTable } from "../../../util";
 export const getTableRecord = action({
   display: {
     label: "Get Table Record",
-    description: "Get a record for a given ID in the specified Table",
+    description: "Get a record for a given ID in the specified table.",
   },
+  performSafety: "safe",
   perform: async (
     context,
     { connection, instanceUrlInput, apiVersionInput, tableNameInput, sysId },
@@ -29,11 +24,5 @@ export const getTableRecord = action({
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    tableNameInput,
-    sysId,
-  },
+  inputs: getTableRecordInputs,
 });

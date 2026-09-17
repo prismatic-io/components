@@ -1,29 +1,19 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  email,
-  fieldValuesInputNonRequired,
-  firstName,
-  instanceUrlInput,
-  lastName,
-  userName,
-} from "../../inputs";
+import { createUserInputs } from "../../inputs";
 import { createTableRecord } from "../tables/records/createTableRecord";
 export const createUser = action({
   display: {
     label: "Create User",
-    description: "Creates a User with the specified field names and values",
+    description: "Creates a user with the specified field names and values.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       fieldValuesInputNonRequired,
       userName,
-      email,
-      firstName,
-      lastName,
+      contactInfo,
       instanceUrlInput,
       apiVersionInput,
     },
@@ -31,9 +21,9 @@ export const createUser = action({
     const fieldValuesInput = [
       ...(fieldValuesInputNonRequired ? fieldValuesInputNonRequired : []),
       { key: "user_name", value: userName },
-      { key: "first_name", value: firstName },
-      { key: "last_name", value: lastName },
-      { key: "email", value: email },
+      { key: "first_name", value: contactInfo.firstName },
+      { key: "last_name", value: contactInfo.lastName },
+      { key: "email", value: contactInfo.email },
     ];
     return {
       data: await createTableRecord.perform(context, {
@@ -45,14 +35,10 @@ export const createUser = action({
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    fieldValuesInputNonRequired,
-    firstName,
-    lastName,
-    email,
-    userName,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: {} },
+  }),
+  inputs: createUserInputs,
 });

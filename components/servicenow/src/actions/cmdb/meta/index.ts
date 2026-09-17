@@ -1,4 +1,4 @@
-import { getCMDBClassMetaData } from "./get";
+import { getCMDBClassMetaData } from "./getCMDBClassMetaData";
 export default {
   getCMDBClassMetaData,
 };

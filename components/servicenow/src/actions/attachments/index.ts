@@ -1,9 +1,9 @@
-import { deleteAttachment } from "./delete";
-import { getAttachment } from "./get";
-import { getAttachmentFile } from "./getFile";
-import { listAttachments } from "./list";
-import { multipartUploadAttachment } from "./multipartUpload";
-import { uploadAttachment } from "./upload";
+import { deleteAttachment } from "./deleteAttachment";
+import { getAttachment } from "./getAttachment";
+import { getAttachmentFile } from "./getAttachmentFile";
+import { listAttachments } from "./listAttachments";
+import { multipartUploadAttachment } from "./multipartUploadAttachment";
+import { uploadAttachment } from "./uploadAttachment";
 export default {
   getAttachment,
   getAttachmentFile,

@@ -1,9 +1,9 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.1/schema.json",
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "preset": "recommended"
     }
   },
   "formatter": {
@@ -17,7 +17,7 @@
     }
   },
   "files": {
-    "includes": ["**/*.{js,jsx,ts,tsx,json,jsonc}"],
+    "includes": ["src/**/*.{js,jsx,ts,tsx,json,jsonc}", "*.{json,jsonc}"],
     "ignoreUnknown": true
   }
 }

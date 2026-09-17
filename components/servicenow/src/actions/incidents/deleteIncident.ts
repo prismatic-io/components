@@ -1,16 +1,12 @@
 import { action } from "@prismatic-io/spectral";
-import {
-  apiVersionInput,
-  connection,
-  instanceUrlInput,
-  sysId,
-} from "../../inputs";
+import { deleteIncidentInputs } from "../../inputs";
 import { deleteTableRecord } from "../tables/records/deleteTableRecord";
 export const deleteIncident = action({
   display: {
     label: "Delete Incident",
-    description: "Delete an Incident",
+    description: "Delete an incident.",
   },
+  performSafety: "notAllowed",
   perform: async (context, parameters) => {
     return {
       data: await deleteTableRecord.perform(context, {
@@ -19,10 +15,10 @@ export const deleteIncident = action({
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    sysId,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: null },
+  }),
+  inputs: deleteIncidentInputs,
 });

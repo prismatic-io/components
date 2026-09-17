@@ -1,21 +1,13 @@
 import { action, util } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
-import {
-  apiVersionInput,
-  connection,
-  fetchAll,
-  instanceUrlInput,
-  sysparmLimit,
-  sysparmOffset,
-  sysparmQuery,
-  tableNameInput,
-} from "../../../inputs";
+import { listTableRecordsInputs } from "../../../inputs";
 import { fetchAllTableRecords, getTable } from "../../../util";
 export const listTableRecords = action({
   display: {
     label: "List Table Records",
-    description: "Lists records in the specified table",
+    description: "Lists records in the specified table.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -24,8 +16,7 @@ export const listTableRecords = action({
       instanceUrlInput,
       apiVersionInput,
       tableNameInput,
-      sysparmLimit,
-      sysparmOffset,
+      pagination,
       sysparmQuery,
     },
   ) => {
@@ -53,22 +44,18 @@ export const listTableRecords = action({
         apiVersion: apiVersionInput,
         instanceUrl: instanceUrlInput,
         queryParameters: {
-          sysparm_limit: sysparmLimit,
-          sysparm_offset: sysparmOffset,
+          sysparm_limit: pagination.sysparmLimit,
+          sysparm_offset: pagination.sysparmOffset,
           sysparm_query: sysparmQuery,
         },
         debug: context.debug.enabled,
       }),
     };
   },
-  inputs: {
-    connection,
-    instanceUrlInput,
-    apiVersionInput,
-    tableNameInput,
-    sysparmQuery,
-    fetchAll,
-    sysparmLimit,
-    sysparmOffset,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: { result: [] },
+  }),
+  inputs: listTableRecordsInputs,
 });

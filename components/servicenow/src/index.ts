@@ -10,7 +10,7 @@ export default component({
   public: true,
   display: {
     label: "ServiceNow",
-    description: "Create records and incidents within ServiceNow",
+    description: "Create records and incidents within ServiceNow.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },
