@@ -1,2 +1,4 @@
 The first time this action runs, it takes note of the current `cursor` returned by Dropbox, and returns no changes.
 Subsequent runs of this step use that `cursor` to determine what has changed since the last time this step ran.
+
+To watch a folder on a schedule rather than run this action as a step, use the **New and Updated Files** trigger. It reports the same changes in the same shape, and adds an optional one-time sync of the files already in the folder plus optional batching. Each step keeps its own stored position, so a trigger and this action running in the same flow advance independently and each reports the full set of changes it sees. See the trigger's documentation for the payload it returns and for how batching changes that payload.

@@ -1,18 +1,31 @@
 This component uses OAuth 2.0 to connect to Dropbox's API.
+
+#### Prerequisites
+
+- A Dropbox account
+- Access to the Dropbox App Console at [https://www.dropbox.com/developers/apps](https://www.dropbox.com/developers/apps)
+
+#### Setup Steps
+
 To create a Dropbox OAuth 2.0 app, log in to Dropbox and open [https://www.dropbox.com/developers/apps](https://www.dropbox.com/developers/apps):
 
 1. Select **Create app**.
-1. Select that you want **Scoped access**.
-1. Choose the type of access you want:
-   1. **App folder** access gives you access to a single folder in the user's `Apps/` directory. A folder will be created with the same name as your OAuth app.
-   1. **Full Dropbox** access gives you access to all files and folders in a user's Dropbox account.
-1. Give your app a name and click **Create app**.
-   1. Take note of the **App key** and **App secret** - you'll enter these in a Dropbox connection config variable.
+1. Select **Scoped access**.
+1. Choose the type of access required:
+   1. **App folder** access grants access to a single folder in the user's `Apps/` directory. A folder will be created with the same name as the OAuth app.
+   1. **Full Dropbox** access grants access to all files and folders in a user's Dropbox account.
+1. Give the app a name and click **Create app**.
+   1. Take note of the **App key** and **App secret**. These are entered in a Dropbox connection config variable.
 1. Under the **OAuth2** section add the **Redirect URI** as <OauthCallbackUrl />.
 
-Under the **Permissions** tab, choose the permissions your app will need.
-The actions supported in this component relate to files, so you should grant the `files.metadata.read` and `files.content.read` permissions if you need read-only access, and also include the `files.metadata.write` and `files.content.write` permissions if you need to write files to a user's Dropbox account.
-You can safely ignore permissions listed under **Collaboration** and **Account Info**.
+Under the **Permissions** tab, choose the permissions the app will need.
+The actions supported in this component relate to files, so grant the `files.metadata.read` and `files.content.read` permissions for read-only access, and also include the `files.metadata.write` and `files.content.write` permissions to write files to a user's Dropbox account.
+Permissions listed under **Collaboration** and **Account Info** can be safely ignored.
+
+#### Configure the Connection
+
+- Enter the **App key** from the Dropbox app's settings page as the **App Key**.
+- Enter the **App secret** from the Dropbox app's settings page as the **App Secret**.
 
 #### Production Approval
 

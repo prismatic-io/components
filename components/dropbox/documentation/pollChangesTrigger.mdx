@@ -1,0 +1,119 @@
+The **New and Updated Files** trigger checks a Dropbox folder for new and updated files on a configured schedule, and can optionally sync the files already in that folder once, when the instance is deployed.
+It returns the entries Dropbox reports as changed since the previous recurrence, including deleted entries when **Include Deleted** is enabled.
+
+#### How It Works
+
+Dropbox reports changes against a cursor rather than a timestamp. On each recurrence the trigger sends the cursor it stored previously, Dropbox returns every entry that changed since that cursor was issued, and the trigger stores the new cursor carried in the response. The next recurrence resumes from exactly there, so no change is reported twice and none is missed between recurrences.
+
+The stored cursor is scoped to the flow and step that produced it, and is kept alongside the **Directory Path**, **Recursive**, and **Include Deleted** values it was issued for.
+
+**The first recurrence**
+
+With no **Look-back Date** set, the first recurrence returns no entries. Dropbox issues a cursor describing the folder's current state, and the trigger stores it without reporting anything, so change reporting begins on the recurrence after that. The same happens after **Directory Path**, **Recursive**, or **Include Deleted** is changed: the stored cursor belongs to the previous settings, so the trigger discards it, takes a fresh cursor for the new settings, and again returns no entries for that recurrence. An empty first recurrence is expected behavior, not a misconfigured trigger.
+
+**Syncing the files that are already there**
+
+Set **Look-back Date** to have the trigger read the folder's existing files once, when the instance is deployed, before any scheduled recurrence runs. Each existing file modified on or after that date is reported the same way later changes are reported — as a `file` entry, with no separate "pre-existing" marker.
+
+Leave **Look-back Date** empty and no historical sync happens at all: the trigger records the folder's current position and reports only what changes after deployment. An instance that has been running without this input therefore keeps behaving exactly as it did, and redeploying it does not produce a backlog.
+
+Two limits are worth knowing before setting a date:
+
+- **Dropbox has no date filter on folder listing.** The folder is read in full either way, and the date decides only which entries are reported. Setting an older date does not cost more requests, and setting a recent one does not save any — it saves the downstream executions.
+- **Entries Dropbox does not timestamp are always reported.** Folders and deleted paths carry no modification time, so the date cannot exclude them. Reporting them is deliberate: leaving them out would drop entries silently, which is worse than reporting one more than asked for.
+
+Dropbox also rejects a date in the future, and a date that is not a real calendar date such as `2026-02-31`.
+
+**Initial Sync Page Size** controls how many entries are read per request during this one-time pass. It appears in the flow's on-deploy configuration and does not affect scheduled recurrences. It defaults to 2000, the largest value Dropbox accepts; lower it when a downstream step is slow enough that a full page of work at once is too much to hand over. A value of zero, a negative number, or a non-numeric value falls back to the default rather than failing the deploy.
+
+Changing **Directory Path**, **Recursive**, **Include Deleted**, or **Look-back Date** requires redeploying the instance, and that redeploy runs the initial sync again under the new settings.
+
+**Draining a backlog**
+
+A single Dropbox response carries at most one page of entries. When more pages remain and batching is enabled on the flow, the trigger keeps going within the same recurrence until the folder is caught up, rather than reporting one page and waiting for the next scheduled run. A folder with a hundred pages of pending changes therefore clears in one recurrence instead of a hundred.
+
+With batching off, the trigger reports one page per recurrence.
+
+**Recovering From An Interrupted Pass**
+
+The stored position advances only when a pass reaches the folder's last page. If a pass is interrupted part way through — a failure, a timeout, a redeploy — the stored position is still where that pass began, and the next recurrence reads the pass again from its start. Entries that were already reported are reported a second time.
+
+That is the intended behavior, and the alternative is worse: advancing the position page by page would put every page not yet reported permanently behind the stored cursor the moment a later page failed, and those entries would never be reported at all, with no error raised. Duplicate delivery is visible and recoverable; a silent gap is neither.
+
+Flows using this trigger should therefore treat each entry as being delivered at least once, and act on entries in a way that is safe to repeat — keying downstream writes on the entry's `path_display` or `id` rather than appending unconditionally.
+
+**Batching**
+
+Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Dropbox. The same batch settings apply to the deploy-time sync and to scheduled recurrences.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank to use the limit this trigger ships with, which dispatches one batch at a time.
+
+Batch concurrency ships at 1 and should be left there unless the downstream flow is order-independent. Entries are delivered in Dropbox's own order, and that order carries meaning: a `deleted` entry followed by a `file` entry at the same path is a delete-then-recreate or a rename. Processing those in parallel can apply the deletion after the recreation and remove a file that still exists.
+
+Enabling batching changes the payload a downstream step receives, and it is also what allows a backlog to drain within one recurrence. With batching off a step reads `data.entries`, `data.cursor`, and `data.has_more`; with batching on those fields do not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data**). Any step reading the older shape must be updated before batching is turned on. Because batching is enabled per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+#### Returned Data
+
+What arrives in `data` depends on whether batching is enabled on the flow. The deploy-time sync and scheduled recurrences return the same shapes.
+
+**Without batching**, `data` is the full folder-changes result: an `entries` array of changed files, folders, and deleted paths, the `cursor` the next recurrence resumes from, and a `has_more` flag.
+
+<details>
+<summary>Unbatched payload</summary>
+
+```json
+{
+  "data": {
+    "entries": [
+      {
+        ".tag": "deleted",
+        "name": "example_deleted_file.png",
+        "path_display": "/TestSubfolder/example_deleted_file.png"
+      },
+      {
+        ".tag": "file",
+        "name": "example_added_file.png",
+        "path_display": "/TestSubfolder/example_added_file.png",
+        "id": "id:someExampleId",
+        "server_modified": "2024-11-21T18:07:17Z",
+        "rev": "01627702307738900000002a67d8f21",
+        "size": 331590
+      }
+    ],
+    "cursor": "examplePaginationCursorValue",
+    "has_more": false
+  }
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+**With batching enabled**, each execution receives one entry (or a group of entries, up to the configured batch size), tagged with the kind of change it represents. With a batch size of 1, `data` is a single item; with a larger batch size, `data` is an array of them.
+
+<details>
+<summary>Batched item</summary>
+
+```json
+{
+  "changeType": "file",
+  "record": {
+    ".tag": "file",
+    "name": "example_added_file.png",
+    "path_display": "/TestSubfolder/example_added_file.png",
+    "id": "id:someExampleId",
+    "server_modified": "2024-11-21T18:07:17Z",
+    "rev": "01627702307738900000002a67d8f21",
+    "size": 331590
+  }
+}
+```
+
+Fields shown are representative. The full response object includes additional properties.
+
+</details>
+
+`changeType` is the entry's own `.tag` (`file`, `folder`, or `deleted`), not a created-versus-updated distinction: `files/list_folder/continue` returns current metadata with no create-versus-update marker, so a modified file simply reappears with a fresh `server_modified`.
+
+`cursor` and `has_more` are **not** present on a batched item. A flow that reads either of them from the trigger payload breaks the moment batching is enabled, so downstream steps must be updated before turning it on.

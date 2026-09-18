@@ -1,0 +1,62 @@
+import {
+  enumTagSchema,
+  nameSchema,
+  openStructSchema,
+  openTaggedUnionSchema,
+} from "./shared";
+export const getCurrentAccountOutputSchema = {
+  type: "object" as const,
+  properties: {
+    account_id: { type: "string" },
+    name: nameSchema,
+    email: { type: "string" },
+    email_verified: { type: "boolean" },
+    profile_photo_url: { type: "string" },
+    disabled: { type: "boolean" },
+    country: { type: "string" },
+    locale: { type: "string" },
+    referral_link: { type: "string" },
+    team: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        name: { type: "string" },
+        sharing_policies: openStructSchema,
+        office_addin_policy: openTaggedUnionSchema,
+        top_level_content_policy: openStructSchema,
+      },
+      required: [
+        "id",
+        "name",
+        "sharing_policies",
+        "office_addin_policy",
+        "top_level_content_policy",
+      ],
+    },
+    team_member_id: { type: "string" },
+    is_paired: { type: "boolean" },
+    account_type: enumTagSchema(["basic", "pro", "business"]),
+    root_info: {
+      type: "object",
+      properties: {
+        ".tag": { type: "string", enum: ["team", "user"] },
+        root_namespace_id: { type: "string" },
+        home_namespace_id: { type: "string" },
+        home_path: { type: "string" },
+      },
+      required: [".tag", "root_namespace_id", "home_namespace_id"],
+    },
+  },
+  required: [
+    "account_id",
+    "name",
+    "email",
+    "email_verified",
+    "disabled",
+    "locale",
+    "referral_link",
+    "is_paired",
+    "account_type",
+    "root_info",
+  ],
+};
