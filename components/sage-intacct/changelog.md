@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-09-18
+
+- Added output schemas to 27 actions for improved field mapping during configuration
+- Added inline action calling support across all actions for improved example output during configuration
+- Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of records. The initial sync backfills every record modified on or after the specified date, beginning on the first recurrence and seeding each record once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-09-01
 
 Restructured action inputs into structured objects for an improved configuration experience.

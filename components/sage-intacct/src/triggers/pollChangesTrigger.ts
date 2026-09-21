@@ -1,15 +1,32 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { POLL_RESOURCE_CONFIG } from "../constants";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { PollingState, SageIntacctRecord } from "../types";
-import { filterByTimestamp, queryRecordsPaginated } from "../utils";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+  SageIntacctRecord,
+} from "../types";
+import {
+  filterByTimestamp,
+  queryRecordsPaginated,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in Sage Intacct on a configured schedule.",
+      "Retrieves existing and ongoing records for a selected Sage Intacct object type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
+  examplePayload: pollChangesTriggerExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
+  },
   async perform(context, payload, params) {
     const config = POLL_RESOURCE_CONFIG[params.pollResourceType];
     if (!config) {
@@ -17,7 +34,7 @@ export const pollChangesTrigger = pollingTrigger({
     }
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
-    const lastPolledAt = state?.lastPolledAt ?? now;
+    const lastPolledAt = state?.lastPolledAt ?? (params.lookBackDate || now);
     if (!params.showNewRecords && !params.showUpdatedRecords) {
       context.polling.setState({ lastPolledAt: now });
       return {

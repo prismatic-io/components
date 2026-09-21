@@ -1,11 +1,12 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection, returnIdInput } from "../inputs";
-import { queryRecordsPaginated } from "../utils";
+import { selectCustomerExamplePayload } from "../examplePayloads";
+import { selectCustomerInputs } from "../inputs";
+import { queryRecordsPaginated } from "../util";
 export const selectCustomer = dataSource({
   dataSourceType: "picklist",
   display: {
     label: "Select Customer",
-    description: "A picklist of customers in Sage Intacct.",
+    description: "Lists customers in Sage Intacct.",
   },
   perform: async (_context, { connection, returnIdInput }) => {
     const customers = await queryRecordsPaginated(
@@ -33,5 +34,6 @@ export const selectCustomer = dataSource({
       ),
     };
   },
-  inputs: { connection, returnIdInput },
+  inputs: selectCustomerInputs,
+  examplePayload: selectCustomerExamplePayload,
 });

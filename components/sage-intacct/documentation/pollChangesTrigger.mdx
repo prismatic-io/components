@@ -8,18 +8,41 @@ It uses each object's `WHENMODIFIED` timestamp to detect changes since the last 
 2. It queries Sage Intacct's `Functions.Common.ReadByQuery` endpoint with a server-side filter of the form `OBJECT.WHENMODIFIED > '{lastPolledAt}'`. A newly created record has `WHENMODIFIED == WHENCREATED`, so this single query captures both new and updated records.
 3. Returned records are split client-side into `created` and `updated` arrays based on whether `WHENCREATED` is greater than the last poll timestamp.
 4. The trigger persists the current poll timestamp via `context.polling.setState()` so the next execution resumes from where this one left off.
-5. On the very first poll, `lastPolledAt` is initialized to the current time so historical records do not flood the workflow.
+5. On the first recurrence there is no stored position, so the trigger starts from the **Look-back Date** when one is set, and otherwise from the time that recurrence runs.
 
-#### Configuration
+**Initial Sync**
 
-Configure the following inputs:
+An initial sync seeds a complete starting state rather than a change feed. It begins on the first
+recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set,
+and seeds every record modified on or after that date exactly once. Left empty, there is no sync
+and the trigger starts from its first recurrence. No input is suppressed while a sync runs: **Show
+New Records** and **Show Updated Records** each still gate one of the two result arrays, so a sync
+started with either turned off seeds only the other category.
 
-- **Connection**: The Sage Intacct connection to use.
-- **Resource Type**: The Sage Intacct object to poll for new or updated records. Supported types are listed below.
-- **Show New Records**: When enabled, newly created records are included in the trigger output. Defaults to `true`.
-- **Show Updated Records**: When enabled, records updated after the last poll are included in the trigger output. Defaults to `true`.
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync rather
+than deferred to the schedule. The whole window drains in a single recurrence whether or not
+batching is on. The position then advances to the wall-clock time that recurrence started, never to
+a watermark taken from the records received, and the first incremental recurrence resumes from
+exactly there; nothing in the payload marks the handoff.
 
-If both **Show New Records** and **Show Updated Records** are disabled, the trigger short-circuits and returns empty arrays without making an API call.
+**Resource Type** applies throughout, and the trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Sage Intacct.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch
+Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks
+the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to
+the flow rather than to the component or to other flows using the same trigger.
 
 #### Supported Resource Types
 
@@ -41,7 +64,7 @@ If both **Show New Records** and **Show Updated Records** are disabled, the trig
 
 #### Returned Data
 
-The trigger returns separate arrays for newly created and updated records:
+With batching off, the trigger returns separate arrays for newly created and updated records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example response payload</summary>
@@ -75,8 +98,28 @@ The trigger returns separate arrays for newly created and updated records:
 
 The exact fields returned depend on the selected resource type. Each record reflects the full object as returned by the Sage Intacct XML API.
 
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "RECORDNO": "12345",
+    "VENDORID": "V-001",
+    "NAME": "Acme Supplies",
+    "WHENCREATED": "2026-05-04T10:30:00Z",
+    "WHENMODIFIED": "2026-05-04T10:30:00Z"
+  }
+}
+```
+
+</details>
+
 #### Best Practices
 
 - **Polling Frequency**: Use 5-15 minute intervals to balance timeliness with API rate limits.
-- **First Poll**: The first execution after deployment establishes the baseline timestamp and returns no records. Subsequent polls return changes made after that baseline.
+- **First Poll**: With no **Look-back Date** set, the first recurrence establishes the baseline timestamp and returns no records, and later recurrences return changes made after that baseline. With a **Look-back Date** set, the first recurrence returns every record modified on or after that date.
 - **Toggles**: Disable **Show New Records** or **Show Updated Records** to filter the output to only one category of change.
