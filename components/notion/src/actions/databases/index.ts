@@ -1,6 +1,6 @@
-import { updatedCreateDatabase } from "./create";
-import { retrieveDatabase } from "./retrieve";
-import { updatedUpdateDatabase } from "./update";
+import { retrieveDatabase } from "./retrieveDatabase";
+import { updatedCreateDatabase } from "./updatedCreateDatabase";
+import { updatedUpdateDatabase } from "./updatedUpdateDatabase";
 export default {
   updatedCreateDatabase,
   retrieveDatabase,

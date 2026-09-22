@@ -1,4 +1,4 @@
-export const retrieveDatabaseResponse = {
+export const retrieveDatabaseExamplePayload = {
   data: {
     object: "database",
     id: "bc1211ca-e3f1-4939-ae34-5260b16f627c",
@@ -58,7 +58,7 @@ export const retrieveDatabaseResponse = {
     ],
   },
 };
-export const createDatabaseExampleResponse = {
+export const updatedCreateDatabaseExamplePayload = {
   data: {
     object: "database",
     id: "bc1211ca-e3f1-4939-ae34-5260b16f627c",
@@ -132,7 +132,7 @@ export const createDatabaseExampleResponse = {
     ],
   },
 };
-export const updateDatabaseResponse = {
+export const updatedUpdateDatabaseExamplePayload = {
   data: {
     object: "database",
     id: "bc1211ca-e3f1-4939-ae34-5260b16f627c",

@@ -5,18 +5,60 @@ Unlike the Pages and Data Sources triggers that search the entire workspace, thi
 #### How It Works
 
 1. Runs on the configured schedule (e.g., every 5 minutes)
-2. Makes two parallel requests to the [Query Data Source API](https://developers.notion.com/reference/query-a-data-source):
-   - One filtered by `created_time >= lastPolledAt` for new items
-   - One filtered by `last_edited_time >= lastPolledAt` for updated items
-3. Returns separate arrays for new and updated items
-4. Maintains state to track the last poll time automatically
+2. Queries the [Query Data Source API](https://developers.notion.com/reference/query-a-data-source) with a server-side filter of `last_edited_time` on or after the window start, walking up to its page budget
+3. Splits that one result set into the two arrays: every record returned is an updated item, and the records created since `lastPolledAt` are also new items
+4. Returns separate arrays for new and updated items
+5. Advances its cursor to the newest `last_edited_time` it saw, and carries the ids sitting exactly on that instant into the next recurrence so they are not sent twice
 
-Note: Newly created items appear in **both** `newItems` and `updatedItems` arrays since creation time equals last edited time for new records.
+Note: Newly created items appear in **both** `newItems` and `updatedItems` arrays since creation time equals last edited time for new records. With batching enabled the item is handed downstream once, not twice.
 
-#### Configuration
+**Initial Sync**
 
-- **Connection**: A Notion OAuth or Internal Integration connection with read access to the data source
-- **Data Source ID**: The unique identifier of the data source to monitor
+An initial sync seeds a complete starting state rather than a change feed. It runs once when the
+instance is deployed, before any scheduled recurrence, and seeds every item edited on or after the
+**Look-back Date** (`YYYY-MM-DD`) exactly once. Left empty, the sync opens at the deploy itself, so
+nothing historical is seeded.
+
+The sync runs on deploy whether or not a Look-back Date is set, because it is declared on the trigger
+rather than switched on per flow. Redeploying an instance that has already synced does not replay it.
+
+The window has no fixed upper bound, so an item edited mid-drain is swept into the sync rather
+than deferred to the schedule. The position advances to the newest `last_edited_time` actually
+received, never to the wall clock, and the first scheduled recurrence resumes from exactly there;
+nothing in the payload marks the handoff.
+
+The sync walks up to 20 pages per round, and a scheduled recurrence up to 50. With batching on, a
+round that reaches its budget continues immediately within the same recurrence until the backlog is
+drained. With batching off it resumes on the next recurrence instead, so a large backlog spans
+several. Either way the position is committed only once the walk finishes, so an interrupted drain is
+re-read from where that window opened rather than leaving records behind a cursor that already passed
+them; entries can therefore arrive more than once, and a flow should treat each as delivered at least
+once.
+
+If the deploy-time sync exhausts its page budget, it hands the first scheduled recurrence the start of
+its window rather than the point it reached. Nothing is skipped, and what the sync already sent is
+sent again. Narrow the Look-back Date to avoid it.
+
+No input is suppressed while the sync runs: the trigger has no toggles that narrow which changes are
+reported, **Data Source ID** applies throughout, and there is no page-size or field-selection
+input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Notion.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.newItems` and `body.data.updatedItems`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": "new" | "updated", "record": ... }` item, or an array of them when the batch size is
+greater than 1. Any step reading the older shape must be updated before batching is enabled, or it
+breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped
+to the flow rather than to the component or to other flows using the same trigger.
 
 #### Finding Data Source IDs
 
@@ -27,6 +69,8 @@ Note: Newly created items appear in **both** `newItems` and `updatedItems` array
 Alternatively, use the **List Data Sources** action to retrieve IDs programmatically.
 
 #### Returned Data
+
+Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -80,6 +124,42 @@ Alternatively, use the **List Data Sources** action to retrieve IDs programmatic
         "url": "https://www.notion.so/Updated-Record-11111111111111111111111111111111"
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `newItems` and `updatedItems` arrays are not part of this shape, and a newly created item is handed downstream once rather than twice.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "new",
+  "record": {
+    "object": "page",
+    "id": "12345678-1234-1234-1234-123456789012",
+    "created_time": "2026-01-23T10:00:00.000Z",
+    "last_edited_time": "2026-01-23T10:00:00.000Z",
+    "parent": {
+      "type": "data_source_id",
+      "data_source_id": "87654321-4321-4321-4321-210987654321"
+    },
+    "properties": {
+      "Name": {
+        "id": "title",
+        "type": "title",
+        "title": [{ "plain_text": "New Record" }]
+      },
+      "Status": {
+        "id": "status",
+        "type": "select",
+        "select": { "name": "Active", "color": "green" }
+      }
+    },
+    "url": "https://www.notion.so/New-Record-12345678123412341234123456789012"
   }
 }
 ```

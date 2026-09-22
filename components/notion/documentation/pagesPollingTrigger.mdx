@@ -1,20 +1,65 @@
-The **Pages** trigger monitors all pages shared with your Notion integration for new and updated content on a configured schedule.
+The **Pages** trigger monitors all pages shared with the Notion integration for new and updated content on a configured schedule.
 
 This trigger is best for workspace-wide page monitoring. For monitoring records within a specific database, use the [Data Source Items](#datasourceitemspollingtrigger) trigger instead, which is more efficient.
 
 #### How It Works
 
 1. Runs on the configured schedule (e.g., every 5 minutes)
-2. Calls the [Notion Search API](https://developers.notion.com/reference/post-search) to retrieve all pages shared with the integration
-3. Compares page timestamps against the last poll time
-4. Categorizes pages as "new" (created since last poll) or "updated" (modified but not created since last poll)
-5. Maintains state to track the last poll time automatically
+2. Calls the [Notion Search API](https://developers.notion.com/reference/post-search) for pages, sorted by last edited time, newest first
+3. Stops paginating at the first page older than the window, or at its page budget, so a quiet workspace costs one request rather than a full walk
+4. Categorizes pages as "new" (created within the window) or "updated" (edited but not created within it)
+5. Advances its cursor to the newest `last_edited_time` it saw, and carries the ids sitting exactly on that instant into the next recurrence so they are not sent twice
 
-#### Configuration
+**Initial Sync**
 
-- **Connection**: A Notion OAuth or Internal Integration connection with read access to the pages being monitored
+An initial sync seeds a complete starting state rather than a change feed. It runs once when the
+instance is deployed, before any scheduled recurrence, and seeds every page edited on or after the
+**Look-back Date** (`YYYY-MM-DD`) exactly once. Left empty, the sync opens at the deploy itself, so
+nothing historical is seeded.
+
+The sync runs on deploy whether or not a Look-back Date is set, because it is declared on the trigger
+rather than switched on per flow. Redeploying an instance that has already synced does not replay it.
+
+The window has no fixed upper bound, so a page edited mid-drain is swept into the sync rather
+than deferred to the schedule. The position advances to the newest `last_edited_time` actually
+received, never to the wall clock, and the first scheduled recurrence resumes from exactly there;
+nothing in the payload marks the handoff.
+
+The sync walks up to 20 pages per round, and a scheduled recurrence up to 50. With batching on, a
+round that reaches its budget continues immediately within the same recurrence until the backlog is
+drained. With batching off it resumes on the next recurrence instead, so a large backlog spans
+several. Either way the position is committed only once the walk finishes, so an interrupted drain is
+re-read from where that window opened rather than leaving records behind a cursor that already passed
+them; entries can therefore arrive more than once, and a flow should treat each as delivered at least
+once.
+
+If the deploy-time sync exhausts its page budget, it hands the first scheduled recurrence the start of
+its window rather than the point it reached. Nothing is skipped, and what the sync already sent is
+sent again. Narrow the Look-back Date to avoid it.
+
+No input is suppressed while the sync runs: the trigger has no toggles that narrow which changes are
+reported, and it has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Notion.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.newPages` and `body.data.updatedPages`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": "new" | "updated", "record": ... }` item, or an array of them when the batch size is
+greater than 1. Any step reading the older shape must be updated before batching is enabled, or it
+breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped
+to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
+
+Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -54,6 +99,33 @@ This trigger is best for workspace-wide page monitoring. For monitoring records 
         "url": "https://www.notion.so/Updated-Page-87654321432143214321210987654321"
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `newPages` and `updatedPages` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "new",
+  "record": {
+    "object": "page",
+    "id": "12345678-1234-1234-1234-123456789012",
+    "created_time": "2026-01-23T10:00:00.000Z",
+    "last_edited_time": "2026-01-23T10:00:00.000Z",
+    "properties": {
+      "title": {
+        "id": "title",
+        "type": "title",
+        "title": [{ "plain_text": "New Page Title" }]
+      }
+    },
+    "url": "https://www.notion.so/New-Page-12345678123412341234123456789012"
   }
 }
 ```

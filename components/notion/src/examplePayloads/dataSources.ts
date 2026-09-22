@@ -1,4 +1,4 @@
-export const retrieveDataSourceResponse = {
+export const retrieveDataSourceExamplePayload = {
   data: {
     object: "data_source",
     id: "2f26ee68-df30-4251-aad4-8ddc420cba3d",
@@ -82,7 +82,7 @@ export const retrieveDataSourceResponse = {
     in_trash: false,
   },
 };
-export const queryDataSourceResponse = {
+export const queryDataSourceExamplePayload = {
   data: {
     object: "list",
     results: [
@@ -128,7 +128,7 @@ export const queryDataSourceResponse = {
     type: "page_or_database",
   },
 };
-export const listDataSourcesResponse = {
+export const listDataSourcesExamplePayload = {
   data: {
     object: "list",
     results: [
@@ -177,7 +177,7 @@ export const listDataSourcesResponse = {
     type: "data_source",
   },
 };
-export const createDataSourceResponse = {
+export const createDataSourceExamplePayload = {
   data: {
     object: "data_source",
     id: "3c26ee68-df30-4251-aad4-8ddc420cba3e",
@@ -228,7 +228,7 @@ export const createDataSourceResponse = {
     in_trash: false,
   },
 };
-export const updateDataSourceResponse = {
+export const updateDataSourceExamplePayload = {
   data: {
     object: "data_source",
     id: "2f26ee68-df30-4251-aad4-8ddc420cba3d",
@@ -312,7 +312,7 @@ export const updateDataSourceResponse = {
     in_trash: false,
   },
 };
-export const selectDataSourceResponse = {
+export const selectDataSourceExamplePayload = {
   result: [
     {
       label: "Tasks",
@@ -324,7 +324,7 @@ export const selectDataSourceResponse = {
     },
   ],
 };
-export const selectPageResponse = {
+export const selectPageExamplePayload = {
   result: [
     {
       label: "Welcome Page",
@@ -333,6 +333,30 @@ export const selectPageResponse = {
     {
       label: "Getting Started",
       key: "69833787-2cf9-4fdf-8782-e53db20768a6",
+    },
+  ],
+};
+export const selectDatabaseExamplePayload = {
+  result: [
+    {
+      label: "Tasks",
+      key: "668d797c-76fa-4934-9b05-ad288df2d136",
+    },
+    {
+      label: "Projects",
+      key: "778d797c-76fa-4934-9b05-ad288df2d137",
+    },
+  ],
+};
+export const selectUserExamplePayload = {
+  result: [
+    {
+      label: "John Doe",
+      key: "45ee8d13-687b-47ce-a5ca-6e2e45548c4b",
+    },
+    {
+      label: "Integration Bot",
+      key: "ee5f0f84-409a-440f-983a-a5315961c6e4",
     },
   ],
 };

@@ -1,8 +1,8 @@
-import { createDataSource } from "./create";
-import { listDataSources } from "./list";
-import { queryDataSource } from "./query";
-import { retrieveDataSource } from "./retrieve";
-import { updateDataSource } from "./update";
+import { createDataSource } from "./createDataSource";
+import { listDataSources } from "./listDataSources";
+import { queryDataSource } from "./queryDataSource";
+import { retrieveDataSource } from "./retrieveDataSource";
+import { updateDataSource } from "./updateDataSource";
 export default {
   createDataSource,
   listDataSources,

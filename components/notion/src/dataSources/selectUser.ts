@@ -1,13 +1,10 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { selectUserExamplePayload } from "../examplePayloads";
 import { selectUserInputs } from "../inputs";
-import { getPaginatedData, sortArray } from "../util";
+import { getPaginatedData, sortArray } from "../utils";
 import { HttpMethod, MAX_PAGE_SIZE } from "../constants";
-interface NotionUser {
-  id: string;
-  name?: string;
-  type?: string;
-}
+import type { NotionUser } from "../types";
 export const selectUser = dataSource({
   display: {
     label: "Select User",
@@ -35,10 +32,5 @@ export const selectUser = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      { label: "John Doe", key: "45ee8d13-687b-47ce-a5ca-6e2e45548c4b" },
-      { label: "Integration Bot", key: "ee5f0f84-409a-440f-983a-a5315961c6e4" },
-    ],
-  },
+  examplePayload: selectUserExamplePayload,
 });

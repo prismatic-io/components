@@ -81,7 +81,7 @@ export const createDatabasePayload = {
     files: {},
   },
 };
-export const listPagesResponse = {
+export const listPagesExamplePayload = {
   data: {
     object: "list",
     results: [
@@ -127,7 +127,7 @@ export const listPagesResponse = {
     type: "page",
   },
 };
-export const createPageResponse = {
+export const createPageExamplePayload = {
   data: {
     object: "page",
     id: "59833787-2cf9-4fdf-8782-e53db20768a5",
@@ -223,7 +223,7 @@ export const descriptionInputExample = [
     },
   },
 ];
-export const getUserResponse = {
+export const getUserExamplePayload = {
   data: {
     object: "user",
     id: "45ee8d13-687b-47ce-a5ca-6e2e45548c4b",
@@ -235,8 +235,31 @@ export const getUserResponse = {
     avatar_url: "https://secure.notion-static.com/avatar.jpg",
   },
 };
-export const getCurrentUserResponse = getUserResponse;
-export const listUsersResponse = {
+export const getCurrentUserExamplePayload = {
+  data: {
+    object: "user",
+    id: "16d84278-ab0e-484c-9bdd-b35da3bd8905",
+    type: "bot",
+    name: "Example Integration",
+    avatar_url: null,
+    bot: {
+      owner: {
+        type: "user",
+        user: {
+          object: "user",
+          id: "45ee8d13-687b-47ce-a5ca-6e2e45548c4b",
+          type: "person",
+          name: "John Doe",
+          avatar_url: "https://secure.notion-static.com/avatar.jpg",
+          person: {
+            email: "john.doe@example.com",
+          },
+        },
+      },
+    },
+  },
+};
+export const listUsersExamplePayload = {
   data: {
     object: "list",
     results: [
@@ -270,7 +293,7 @@ export const listUsersResponse = {
     type: "user",
   },
 };
-export const rawRequestResponse = {
+export const rawRequestExamplePayload = {
   data: {
     object: "user",
     id: "45ee8d13-687b-47ce-a5ca-6e2e45548c4b",
@@ -282,4 +305,5 @@ export const rawRequestResponse = {
     avatar_url: "https://secure.notion-static.com/avatar.jpg",
   },
 };
-export const createDatabaseItemResponse = createPageResponse;
+export const createDatabaseItemExamplePayload = createPageExamplePayload;
+export const getPageExamplePayload = createPageExamplePayload;

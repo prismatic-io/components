@@ -1,13 +1,14 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createOldClient } from "../client";
+import { selectDatabaseExamplePayload } from "../examplePayloads";
 import { selectDatabaseInputs } from "../inputs";
-import { getPaginatedData, sortArray } from "../util";
+import { getPaginatedData, sortArray } from "../utils";
 import { HttpMethod } from "../constants";
 import type { InlineDSDatabase } from "../types";
 export const selectDatabase = dataSource({
   display: {
     label: "Select Database (Deprecated)",
-    description: "Select a Notion database from a picklist",
+    description: "Select a Notion database from a picklist.",
   },
   inputs: selectDatabaseInputs,
   perform: async (_context, { connection }) => {
@@ -35,4 +36,5 @@ export const selectDatabase = dataSource({
     };
   },
   dataSourceType: "picklist",
+  examplePayload: selectDatabaseExamplePayload,
 });

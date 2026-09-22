@@ -1,37 +1,47 @@
-import type { Connection } from "@prismatic-io/spectral";
-import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import { notionInternalIntegration, notionOauth } from "./connections";
-export const baseUrl = "https://api.notion.com/v1";
-export const notionVersion = "2025-09-03";
-export const oldNotionVersion = "2022-06-28";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
+import {
+  type HttpClient,
+  createClient as createHttpClient,
+} from "@prismatic-io/spectral/dist/clients/http";
+import { notionInternalIntegration } from "./connections/notionInternalIntegration";
+import { notionOauth } from "./connections/notionOauth";
+import { BASE_URL, NOTION_VERSION, OLD_NOTION_VERSION } from "./constants";
 export const getAuthorizationHeader = (connection: Connection): string => {
   if (connection.key === notionOauth.key) {
-    return `Bearer ${connection.token?.access_token}`;
+    return `Bearer ${util.types.toString(connection.token?.access_token)}`;
   }
   if (connection.key === notionInternalIntegration.key) {
-    return `Bearer ${connection.fields?.apiKey}`;
+    return `Bearer ${util.types.toString(connection.fields?.apiKey)}`;
   }
-  throw new Error("Unsupported Notion connection type");
+  throw new ConnectionError(connection, "Unsupported Notion connection type");
 };
-export const createClient = (connection: Connection, debug: boolean) => {
+export const createClient = (
+  connection: Connection,
+  debug = false,
+): HttpClient => {
   const headers: Record<string, string> = {
-    "Notion-Version": notionVersion,
+    "Notion-Version": NOTION_VERSION,
     Authorization: getAuthorizationHeader(connection),
   };
   return createHttpClient({
-    baseUrl,
+    baseUrl: BASE_URL,
     headers,
+    responseType: "json",
     debug,
   });
 };
-export const createOldClient = (connection: Connection, debug: boolean) => {
+export const createOldClient = (
+  connection: Connection,
+  debug = false,
+): HttpClient => {
   const headers: Record<string, string> = {
-    "Notion-Version": oldNotionVersion,
+    "Notion-Version": OLD_NOTION_VERSION,
     Authorization: getAuthorizationHeader(connection),
   };
   return createHttpClient({
-    baseUrl,
+    baseUrl: BASE_URL,
     headers,
+    responseType: "json",
     debug,
   });
 };

@@ -1,14 +1,14 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { selectPageInputs } from "../inputs";
-import { getPageTitle, getPaginatedData, sortArray } from "../util";
+import { getPageTitle, getPaginatedData, sortArray } from "../utils";
 import { HttpMethod } from "../constants";
 import type { InlineDSPage } from "../types";
-import { selectPageResponse } from "../examplePayloads";
+import { selectPageExamplePayload } from "../examplePayloads";
 export const selectPage = dataSource({
   display: {
     label: "Select Page",
-    description: "Select a Notion page from a picklist",
+    description: "Select a Notion page from a picklist.",
   },
   inputs: selectPageInputs,
   perform: async (_context, { connection }) => {
@@ -36,5 +36,5 @@ export const selectPage = dataSource({
     };
   },
   dataSourceType: "picklist",
-  examplePayload: selectPageResponse,
+  examplePayload: selectPageExamplePayload,
 });
