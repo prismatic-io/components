@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { suiteQLQueryCustomersExamplePayload } from "../../examplePayloads";
 import { suiteQLQueryInputs } from "../../inputs";
+import { suiteQlQueryOutputSchema } from "../../outputSchemas";
 export const suiteQLQuery = action({
   display: {
     label: "SuiteQL Query",
@@ -10,6 +11,11 @@ export const suiteQLQuery = action({
   },
   inputs: suiteQLQueryInputs,
   examplePayload: suiteQLQueryCustomersExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: suiteQlQueryOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createClient(
       params.connection,
@@ -24,4 +30,7 @@ export const suiteQLQuery = action({
     );
     return { data: { data, headers: headers as Record<string, string> } };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => suiteQLQueryCustomersExamplePayload,
 });

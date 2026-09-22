@@ -9,3 +9,12 @@ export interface PollingChangesResult {
   };
   changes: number;
 }
+export interface PollingQueryParams {
+  lookBackDate?: string;
+  additionalFilter?: string;
+}
+export interface BuiltPollingQuery {
+  query: string;
+  lastPolledAt: string;
+  isInitialSync: boolean;
+}

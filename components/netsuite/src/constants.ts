@@ -1,4 +1,6 @@
 export const RECORDS_PAGE_SIZE = 1000;
+export const DEFAULT_BATCH_SIZE = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const ACCOUNT_REGEX = /https:\/\/(.*)\.suitetalk\.api\.netsuite\.com\//;
 export const recordTypes = [
   "account",

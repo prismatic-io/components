@@ -10,11 +10,29 @@ For more information on NetSuite REST API filtering, see [Record Collection Filt
 4. Return both new and updated records that have been modified since the last poll
 5. Maintain state to track the last poll time automatically
 
-On the first run, the trigger sets the poll timestamp to the current time and returns all matching records. Subsequent runs detect records created or modified after that timestamp.
+Records are classified against the stored cursor: a record whose `datecreated` is later than the cursor is reported as created; a record created on or before the cursor whose `lastmodifieddate` is later than its `datecreated` is reported as updated. A record matching neither test is dropped. `createdRecords` is present only when **Show New Records** is enabled, and `updatedRecords` only when **Show Updated Records** is enabled.
+
+On the first recurrence with no stored cursor and no **Look-back Date**, the trigger sets the cursor to the current time and reports nothing. Later recurrences report records modified after the stored cursor.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Additional Filter**, **Show New Records**, and **Show Updated Records** are ignored while it runs. All three inputs take effect again from the next recurrence onward. Setting **Look-back Date** (in `YYYY-MM-DD` format) seeds the cursor from that date on the first recurrence instead of from the current time, and each record modified on or after it is seeded exactly once. A future date is rejected by validation. Leaving it empty starts from the first recurrence with no backfill.
+
+The backfill window has no fixed upper bound: its query asks NetSuite for every record modified on or after the look-back date, and the trigger fetches all of them in that first recurrence. Once the cursor advances to the recurrence's own timestamp, later recurrences resume from that stored cursor. Because the cursor is the recurrence's own start time, a record modified while the sync is still draining can be reported again on the next recurrence. No field in the payload marks the handoff from backfill to incremental polling.
+
+**Record Type** still applies throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to NetSuite.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Until batching is enabled the payload shape is unchanged: a downstream step reads `payload.body.data.createdRecords` and `payload.body.data.updatedRecords`. With batching on, those two arrays do not exist; each execution receives a flattened item of shape `{ changeType, record }`, or an array of them when the batch size is greater than 1. Any step reading `createdRecords` or `updatedRecords` must be updated to read the flattened item before batching is enabled. Because batching is enabled per flow, this change is scoped to that flow and does not affect the component or other flows using the same trigger.
 
 #### Notes
 
-The query is built in the format `lastmodifieddate AFTER {lastPolledAt}`, and any additional filter conditions are appended to it.
+The query is built in the format `lastmodifieddate AFTER {lastPolledAt}`, and any additional filter conditions are appended to it. During an initial sync the query uses `ON_OR_AFTER` with the look-back date and no additional filter.
 
 Example additional filters:
 
@@ -26,12 +44,12 @@ See [Record Collection Filtering documentation](https://docs.oracle.com/en/cloud
 
 #### Returned Data
 
-The trigger returns all records that have been created or modified since the last poll, split into `createdRecords` and `updatedRecords`. Each array is present only when the corresponding option is enabled. When no changes are detected, the arrays are empty and `polledNoChanges` is set to `true`.
+With batching off, the trigger returns all records created or modified since the last poll, split into `createdRecords` and `updatedRecords`. Each array is present only when the corresponding option is enabled. When no changes are detected, the arrays are empty and `polledNoChanges` is set to `true`.
 
 Fields shown are representative. The full response object includes additional properties.
 
 <details>
-<summary>View example response</summary>
+<summary>View example response (batching off)</summary>
 
 ```json
 {
@@ -66,6 +84,32 @@ Fields shown are representative. The full response object includes additional pr
         }
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, the `createdRecords` and `updatedRecords` arrays are flattened into individual items. Each execution receives one such item, or an array of them when the batch size is greater than 1. The `record` is the NetSuite record object, carrying `id`, `datecreated`, `lastmodifieddate`, and its type-specific fields.
+
+<details>
+<summary>View example item (batching on)</summary>
+
+```json
+{
+  "changeType": "updated",
+  "record": {
+    "id": "457",
+    "entityid": "CUST-002",
+    "companyname": "Global Tech Inc",
+    "email": "info@globaltech.example.com",
+    "phone": "555-0456",
+    "lastmodifieddate": "2026-01-23T10:35:00.000Z",
+    "datecreated": "2026-01-22T14:20:00.000Z",
+    "subsidiary": {
+      "id": "1",
+      "refName": "Parent Company"
+    }
   }
 }
 ```

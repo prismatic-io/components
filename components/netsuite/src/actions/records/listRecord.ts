@@ -14,6 +14,7 @@ export const listRecord = action({
     schema: listRecordOutputSchema,
   }),
   examplePayload: listCustomersExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createClient(
       params.connection,
@@ -29,4 +30,7 @@ export const listRecord = action({
     });
     return { data: { data, headers: headers as Record<string, string> } };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listCustomersExamplePayload,
 });

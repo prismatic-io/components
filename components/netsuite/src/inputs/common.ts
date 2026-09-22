@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { toNumberWithDefault1000 } from "../utils/cleanFunctions";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
@@ -14,7 +15,7 @@ export const limitInput = input({
   example: "1000",
   placeholder: "Enter pagination limit",
   required: false,
-  clean: (value) => util.types.toNumber(value, 1000),
+  clean: toNumberWithDefault1000,
 });
 export const offsetInput = input({
   label: "Offset",

@@ -68,3 +68,46 @@ export const updateRecordOutputSchema = {
   },
   required: ["data", "headers"],
 };
+export const getRecordOutputSchema = {
+  type: "object" as const,
+  properties: {
+    data: {
+      type: "object" as const,
+      properties: {
+        links: { type: "array", items: linkSchema },
+      },
+      required: [],
+      additionalProperties: true,
+    },
+    headers: responseHeadersSchema,
+  },
+  required: ["data", "headers"],
+};
+export const suiteQlQueryOutputSchema = {
+  type: "object" as const,
+  properties: {
+    data: {
+      type: "object" as const,
+      properties: {
+        links: { type: "array", items: linkSchema },
+        count: { type: "number" },
+        offset: { type: "number" },
+        totalResults: { type: "number" },
+        items: {
+          type: "array",
+          items: {
+            type: "object" as const,
+            properties: {
+              links: { type: "array", items: linkSchema },
+            },
+            required: [],
+            additionalProperties: true,
+          },
+        },
+      },
+      required: ["links", "count", "offset", "totalResults", "items"],
+    },
+    headers: responseHeadersSchema,
+  },
+  required: ["data", "headers"],
+};

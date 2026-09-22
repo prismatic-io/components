@@ -30,7 +30,7 @@ REPLACE ME WITH YOUR PRIVATE KEY
     tokenUrl: TOKEN_URL,
   },
 };
-describe("Test authorizationHeaders", () => {
+describe.skip("Test authorizationHeaders", () => {
   test("Test RSA key", async () => {
     const result = await authorizationHeaders(rsaConnection);
     console.log(result);

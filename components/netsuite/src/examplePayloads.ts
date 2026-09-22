@@ -1,3 +1,4 @@
+import type { TriggerBaseResult, TriggerPayload } from "@prismatic-io/spectral";
 export const baseCustomerPayload = {
   entityid: "CUST-001",
   companyname: "Acme Corporation",
@@ -223,7 +224,9 @@ export const listCustomersExamplePayload = {
   data: {
     data: {
       count: 2,
+      offset: 0,
       hasMore: true,
+      totalResults: 2,
       items: [
         {
           id: "12345",
@@ -545,6 +548,8 @@ export const suiteQLQueryCustomersExamplePayload = {
   data: {
     data: {
       count: 2,
+      offset: 0,
+      totalResults: 2,
       hasMore: false,
       items: [
         {
@@ -578,6 +583,8 @@ export const suiteQLQueryInvoicesExamplePayload = {
   data: {
     data: {
       count: 3,
+      offset: 0,
+      totalResults: 3,
       hasMore: false,
       items: [
         {
@@ -621,6 +628,8 @@ export const suiteQLQueryInventoryExamplePayload = {
   data: {
     data: {
       count: 2,
+      offset: 0,
+      totalResults: 2,
       hasMore: false,
       items: [
         {
@@ -744,4 +753,55 @@ export const exampleSuiteQLQueries = {
     "SELECT c.id, c.entityid, c.companyname, c.balance FROM customer c WHERE c.balance > 0 ORDER BY c.balance DESC LIMIT 50",
   recentTransactions:
     "SELECT t.id, t.tranid, t.trandate, t.recordtype, t.entity, t.total FROM transaction t WHERE t.trandate >= CURRENT_DATE - 30 ORDER BY t.trandate DESC LIMIT 100",
+};
+export const pollRecordsExamplePayload: TriggerBaseResult<TriggerPayload> = {
+  payload: {
+    headers: {},
+    queryParameters: {},
+    rawBody: { data: "" },
+    body: {
+      data: {
+        createdRecords: [
+          {
+            id: "12345",
+            entityid: "CUST-001",
+            companyname: "Acme Corporation",
+            email: "contact@acmecorp.example.com",
+            subsidiary: { id: "1", refName: "Parent Company" },
+            datecreated: "2024-10-20T15:30:00Z",
+            lastmodifieddate: "2024-10-20T15:30:00Z",
+          },
+        ],
+        updatedRecords: [
+          {
+            id: "12346",
+            entityid: "CUST-002",
+            companyname: "Global Industries Ltd",
+            email: "contact@globalindustries.example.com",
+            subsidiary: { id: "1", refName: "Parent Company" },
+            datecreated: "2024-10-15T09:00:00Z",
+            lastmodifieddate: "2024-10-20T16:45:00Z",
+          },
+        ],
+      },
+      contentType: "application/json",
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "",
+    customer: { id: "", externalId: "", name: "" },
+    instance: { id: "", name: "" },
+    user: { id: "", email: "", name: "", externalId: "" },
+    integration: {
+      id: "",
+      name: "",
+      versionSequenceId: "",
+      externalVersion: "",
+    },
+    flow: { id: "", name: "", stableId: "" },
+    startedAt: "",
+    globalDebug: false,
+  },
 };

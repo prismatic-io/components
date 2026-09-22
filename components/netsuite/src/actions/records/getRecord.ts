@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { getCustomerExamplePayload } from "../../examplePayloads";
 import { getRecordInputs } from "../../inputs";
+import { getRecordOutputSchema } from "../../outputSchemas";
 export const getRecord = action({
   display: {
     label: "Get Record",
@@ -9,6 +10,11 @@ export const getRecord = action({
   },
   inputs: getRecordInputs,
   examplePayload: getCustomerExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getRecordOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createClient(
       params.connection,

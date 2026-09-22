@@ -1,5 +1,45 @@
-import type { PollingChangesResult } from "../types/PollingState";
-import type { PollingTriggerObject } from "../types/PollingTriggerObject";
+import type {
+  BuiltPollingQuery,
+  NetSuitePollingState,
+  PollingChangesResult,
+  PollingQueryParams,
+} from "../types/PollingState";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingTriggerObject,
+} from "../types/PollingTriggerObject";
+export const buildPollingQuery = (
+  pollState: NetSuitePollingState | undefined,
+  params: PollingQueryParams,
+  now: string,
+): BuiltPollingQuery => {
+  const cursor = pollState?.lastPolledAt ?? "";
+  const lookBackDate = params.lookBackDate ?? "";
+  const filter =
+    (params.additionalFilter ?? "") === ""
+      ? ""
+      : ` AND ${params.additionalFilter}`;
+  if (cursor !== "") {
+    return {
+      query: `lastmodifieddate AFTER ${cursor}${filter}`,
+      lastPolledAt: cursor,
+      isInitialSync: false,
+    };
+  }
+  if (lookBackDate !== "") {
+    return {
+      query: `lastmodifieddate ON_OR_AFTER ${lookBackDate}`,
+      lastPolledAt: lookBackDate,
+      isInitialSync: true,
+    };
+  }
+  return {
+    query: `lastmodifieddate AFTER ${now}${filter}`,
+    lastPolledAt: now,
+    isInitialSync: false,
+  };
+};
 export const getPollingChanges = (
   showNewRecords: boolean,
   showUpdatedRecords: boolean,
@@ -32,4 +72,17 @@ export const getPollingChanges = (
     }
   }
   return { changesObject, changes };
+};
+export const resolvePollingRecordChanges = (
+  data: PollingChangesObject | undefined,
+): PollingRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.createdRecords ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updatedRecords ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

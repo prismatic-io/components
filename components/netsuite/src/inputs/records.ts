@@ -2,6 +2,7 @@ import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { startCase } from "lodash";
 import { recordTypes } from "../constants";
 import type { RecordType } from "../types/RecordType";
+import { lookBackDateClean } from "../utils";
 import { connectionInput, limitInput, offsetInput } from "./common";
 const pagination = structuredObjectInput({
   label: "Pagination",
@@ -156,6 +157,16 @@ const showUpdatedRecordsInput = input({
   comments: "When true, includes updated records in the results.",
   clean: util.types.toBool,
 });
+const lookBackDateInput = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once, ignoring the additional filter.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 const additionalFilterInput = input({
   label: "Additional Filter",
   type: "string",
@@ -210,5 +221,6 @@ export const pollRecordsInputs = {
   showUpdatedRecords: showUpdatedRecordsInput,
   connection: connectionInput,
   recordType: recordTypeInput,
+  lookBackDate: lookBackDateInput,
   additionalFilter: additionalFilterInput,
 };

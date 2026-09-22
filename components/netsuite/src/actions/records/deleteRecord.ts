@@ -9,6 +9,7 @@ export const deleteRecord = action({
   },
   inputs: deleteRecordInputs,
   examplePayload: deleteCustomerExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createClient(
       params.connection,
@@ -20,4 +21,7 @@ export const deleteRecord = action({
     );
     return { data: { data, headers: headers as Record<string, string> } };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => deleteCustomerExamplePayload,
 });

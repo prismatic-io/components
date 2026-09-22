@@ -15,6 +15,7 @@ export const updateRecord = action({
     schema: updateRecordOutputSchema,
   }),
   examplePayload: updateCustomerExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createClient(
       params.connection,
@@ -39,4 +40,19 @@ export const updateRecord = action({
       },
     };
   },
+  examplePerform: async (
+    _context,
+    { recordType, id },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...updateCustomerExamplePayload.data,
+      data: {
+        ...updateCustomerExamplePayload.data.data,
+        recordType,
+        id,
+      },
+    },
+  }),
 });

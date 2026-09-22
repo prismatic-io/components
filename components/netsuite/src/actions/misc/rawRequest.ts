@@ -10,6 +10,7 @@ export const rawRequest = action({
   },
   inputs: rawRequestInputs,
   examplePayload: rawRequestGETExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, serviceType, ...httpClientInputs },
