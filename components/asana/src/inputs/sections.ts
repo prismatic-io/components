@@ -66,7 +66,3 @@ export const addTaskToSectionInputs = {
   sectionId,
   taskId,
 };
-export const selectSectionInputs = {
-  connection: connectionInput,
-  projectId: { ...projectId, dataSource: undefined },
-};

@@ -1,5 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { Task } from "../types/Task";
+import type { Task } from "../types/resources";
 export async function getSubtasks(
   client: HttpClient,
   taskId: string,

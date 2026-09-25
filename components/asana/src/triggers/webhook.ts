@@ -40,7 +40,9 @@ export const webhook = trigger({
       });
     } else {
       const stateSecrets = secrets || [];
-      validateHmac(payload, headers["x-hook-signature"], stateSecrets);
+      if (!context.isSimulatedTestExecution) {
+        validateHmac(payload, headers["x-hook-signature"], stateSecrets);
+      }
       if (isLegacy) {
         context.crossFlowState[webhookSecretsStateKey(context)] = secrets;
         context.instanceState[WEBHOOK_SECRETS_LEGACY_KEY] = null;

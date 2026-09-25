@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema, PerformSafety } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { listUsersInTeamExamplePayload } from "../../examplePayloads";
 import { listUsersInTeamInputs } from "../../inputs";
+import { listUsersOutputSchema } from "../../outputSchemas";
 export const listUsersInTeam = action({
   display: {
     label: "List Users in Team",
@@ -16,11 +17,16 @@ export const listUsersInTeam = action({
       params: {
         offset: params.offset,
         limit: params.limit,
-        workspace: params.workspaceId || undefined,
+        workspace: params.workspaceId,
       },
     });
     return { data };
   },
   inputs: listUsersInTeamInputs,
   examplePayload: listUsersInTeamExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listUsersOutputSchema,
+  }),
+  performSafety: PerformSafety.SAFE,
 });

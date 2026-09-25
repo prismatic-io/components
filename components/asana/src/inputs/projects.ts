@@ -1,6 +1,6 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { COLOR_INPUT_OPTIONS, PROJECT_OPT_FIELDS } from "../constants";
-import { cleanString, validateId } from "../util";
+import { toOptionalId, toOptionalString, validateId } from "../util";
 import {
   connectionInput,
   dueOn,
@@ -17,7 +17,6 @@ import {
   pagination,
   projectId,
   startOn,
-  teamId,
   workspaceId,
 } from "./common";
 const projectColor = input({
@@ -27,7 +26,7 @@ const projectColor = input({
   default: "light-green",
   comments: "The display color associated with the project in the Asana UI.",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 const archived = input({
   label: "Archived",
@@ -91,7 +90,7 @@ const team = input({
   example: "375893453",
   placeholder: "Enter team ID",
   required: false,
-  clean: validateId,
+  clean: toOptionalId,
 });
 const createProjectSettings = structuredObjectInput({
   label: "Project Settings",
@@ -113,19 +112,20 @@ const updateProjectSettings = structuredObjectInput({
 export const createProjectsInputs = {
   asanaConnection: connectionInput,
   defaultView,
-  dueOn,
-  followers,
-  htmlNotes,
+  owner,
+  team: { ...team, required: true, clean: validateId },
   name,
   notes,
-  optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
-  owner,
-  projectSettings: createProjectSettings,
+  htmlNotes,
+  dueOn,
   startOn,
-  team: { ...team, required: true },
+  followers,
+  projectSettings: createProjectSettings,
+  optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
   workspaceId: {
     ...workspaceId,
     required: false,
+    clean: toOptionalId,
     comments:
       "Include this value if you would like this project to be included in a workspace.",
   },
@@ -137,7 +137,7 @@ export const updateProjectInputs = {
   htmlNotes,
   name,
   notes,
-  owner: { ...owner, required: false },
+  owner: { ...owner, required: false, clean: toOptionalId },
   projectId,
   projectSettings: updateProjectSettings,
   startOn,
@@ -147,7 +147,7 @@ export const listProjectsInputs = {
   asanaConnection: connectionInput,
   optFields: { ...optFields, default: PROJECT_OPT_FIELDS },
   pagination,
-  workspaceId: { ...workspaceId, required: false },
+  workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
 export const getProjectInputs = {
   asanaConnection: connectionInput,
@@ -180,19 +180,4 @@ export const removeCustomFieldFromProjectInputs = {
   asanaConnection: connectionInput,
   fieldId,
   projectId,
-};
-export const selectProjectInputs = {
-  connection: connectionInput,
-  workspace: {
-    ...workspaceId,
-    required: false,
-    clean: cleanString,
-    dataSource: undefined,
-  },
-  team: {
-    ...teamId,
-    required: false,
-    clean: cleanString,
-    dataSource: undefined,
-  },
 };

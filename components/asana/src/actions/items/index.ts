@@ -1,2 +1,3 @@
-export { listPortfolioItems } from "./listPortfolioItems";
-export { removePortfolioItem } from "./removePortfolioItem";
+import { listPortfolioItems } from "./listPortfolioItems";
+import { removePortfolioItem } from "./removePortfolioItem";
+export default { listPortfolioItems, removePortfolioItem };

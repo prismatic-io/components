@@ -37,7 +37,9 @@ const statusUpdateText = input({
   clean: util.types.toString,
 });
 const statusType = input({
-  label: "This represents the current state of the object",
+  label: "Status Type",
+  comments:
+    "The current state of the project, portfolio, or goal (e.g. on track, at risk).",
   type: "string",
   default: "on_track",
   required: true,

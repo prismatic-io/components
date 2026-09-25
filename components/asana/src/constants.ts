@@ -1,3 +1,8 @@
+export const BASE_URL = "https://app.asana.com/api/1.0";
+export const DEFAULT_PAGE_LIMIT = 100;
+export const DEFAULT_BATCH_SIZE = 50;
+export const MAX_BATCHED_PAGE_SIZE = 500;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const WEBHOOK_SECRETS_STATE_KEY_PREFIX = "asana-webhook-secrets";
 export const WEBHOOK_SECRET_STATE_KEY_PREFIX = "asana-webhook-secret";
 export const WEBHOOK_SECRETS_LEGACY_KEY = "webhookSecrets";
@@ -23,7 +28,7 @@ const COLOR_OPTIONS = [
   "light-teal",
   "light-warm-gray",
   "light-yellow",
-];
+] as const;
 export const COLOR_INPUT_OPTIONS = COLOR_OPTIONS.map((color) => ({
   label: color,
   value: color,

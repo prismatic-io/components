@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { updateTaskExamplePayload } from "../../examplePayloads";
 import { updateTaskInputs } from "../../inputs";
+import { taskResponseSchema } from "../../outputSchemas";
 export const updateTask = action({
   display: {
     label: "Update Task",
     description: "Update the information and metadata of the given task.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -29,10 +31,10 @@ export const updateTask = action({
         notes: params.notes,
         parent: params.parentId,
         resource_subtype: params.resourceSubtype,
-        start_at: params.scheduling.startAt || undefined,
+        start_at: params.scheduling.startAt,
         start_on: params.scheduling.startOn,
-        workspace: params.workspaceId || undefined,
-        html_notes: params.htmlNotes || undefined,
+        workspace: params.workspaceId,
+        html_notes: params.htmlNotes,
       },
     };
     const { data } = await client.put(`/tasks/${params.taskId}`, taskData, {
@@ -44,4 +46,8 @@ export const updateTask = action({
   },
   inputs: updateTaskInputs,
   examplePayload: updateTaskExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: taskResponseSchema,
+  }),
 });

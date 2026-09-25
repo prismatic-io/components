@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { listSubtasksExamplePayload } from "../../examplePayloads";
-import { getSubtasks } from "../../helpers";
 import { listSubtasksInputs } from "../../inputs";
-import type { Task } from "../../types/Task";
+import { listSubtasksOutputSchema } from "../../outputSchemas";
+import type { Task } from "../../types";
+import { getSubtasks } from "../../util";
 export const listSubtasks = action({
   display: {
     label: "List Subtasks",
     description: "List all subtasks within a given task.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -51,4 +53,8 @@ export const listSubtasks = action({
   },
   inputs: listSubtasksInputs,
   examplePayload: listSubtasksExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSubtasksOutputSchema,
+  }),
 });

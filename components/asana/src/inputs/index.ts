@@ -1,6 +1,7 @@
 export * from "./attachments";
 export * from "./common";
 export * from "./customFields";
+export * from "./dataSources";
 export * from "./items";
 export * from "./misc";
 export * from "./portfolio";

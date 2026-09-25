@@ -1,6 +1,14 @@
-export { addTaskToSection } from "./addTaskToSection";
-export { createSection } from "./createSection";
-export { deleteSection } from "./deleteSection";
-export { getSection } from "./getSection";
-export { listSections } from "./listSections";
-export { updateSection } from "./updateSection";
+import { addTaskToSection } from "./addTaskToSection";
+import { createSection } from "./createSection";
+import { deleteSection } from "./deleteSection";
+import { getSection } from "./getSection";
+import { listSections } from "./listSections";
+import { updateSection } from "./updateSection";
+export default {
+  addTaskToSection,
+  createSection,
+  deleteSection,
+  getSection,
+  listSections,
+  updateSection,
+};

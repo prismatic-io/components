@@ -2,7 +2,7 @@ import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
 import { selectPortfolioExamplePayload } from "../examplePayloads";
 import { selectPortfolioInputs } from "../inputs";
-import type { DataSource } from "../types/Project";
+import type { DataSource } from "../types/resources";
 import {
   fetchMoreData,
   handleMultipleWorkspacesError,
@@ -28,7 +28,7 @@ const selectPortfolio = dataSource({
         [],
         true,
         {
-          workspace: workspaceId || undefined,
+          workspace: workspaceId,
           owner: userGid,
         },
       );

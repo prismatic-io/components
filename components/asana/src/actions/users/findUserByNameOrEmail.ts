@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { findUserByNameOrEmailExamplePayload } from "../../examplePayloads";
 import { findUserByNameOrEmailInputs } from "../../inputs";
+import { findUserByNameOrEmailOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, User } from "../../types";
 export const findUserByNameOrEmail = action({
   display: {
     label: "Find User by Name or Email",
     description: "Find a user by name or email address within a workspace.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -19,7 +21,7 @@ export const findUserByNameOrEmail = action({
       const response: PaginatedResponse<User> = await client.get(`/users`, {
         params: {
           offset,
-          workspace: params.workspaceId || undefined,
+          workspace: params.workspaceId,
           opt_fields: params.optFields,
         },
       });
@@ -41,4 +43,8 @@ export const findUserByNameOrEmail = action({
   },
   inputs: findUserByNameOrEmailInputs,
   examplePayload: findUserByNameOrEmailExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: findUserByNameOrEmailOutputSchema,
+  }),
 });

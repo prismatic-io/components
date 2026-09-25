@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { getStatusesForObjectExamplePayload } from "../../examplePayloads";
 import { getStatusesForObjectInputs } from "../../inputs";
+import { listStatusUpdatesOutputSchema } from "../../outputSchemas";
 export const getStatusesForObject = action({
   display: {
     label: "Get Status Updates from Object",
     description: "Get status updates from a project, portfolio, or goal.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -24,4 +26,8 @@ export const getStatusesForObject = action({
   },
   inputs: getStatusesForObjectInputs,
   examplePayload: getStatusesForObjectExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listStatusUpdatesOutputSchema,
+  }),
 });

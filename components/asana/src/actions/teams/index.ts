@@ -1,5 +1,12 @@
-export { addUserToTeam } from "./addUserToTeam";
-export { createTeam } from "./createTeam";
-export { findTeamByName } from "./findTeamByName";
-export { getTeam } from "./getTeam";
-export { listTeams } from "./listTeams";
+import { addUserToTeam } from "./addUserToTeam";
+import { createTeam } from "./createTeam";
+import { findTeamByName } from "./findTeamByName";
+import { getTeam } from "./getTeam";
+import { listTeams } from "./listTeams";
+export default {
+  addUserToTeam,
+  createTeam,
+  findTeamByName,
+  getTeam,
+  listTeams,
+};

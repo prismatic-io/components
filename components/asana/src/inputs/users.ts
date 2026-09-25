@@ -1,6 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { USER_OPT_FIELDS } from "../constants";
-import { cleanString } from "../util";
+import { toOptionalId, toOptionalString } from "../util";
 import {
   connectionInput,
   limit,
@@ -15,17 +15,21 @@ const userName = input({
   label: "User's Full Name",
   type: "string",
   example: "John Doe",
+  placeholder: "Enter user name",
   required: false,
   comments:
     "Note: if multiple users share a name, only one user will be returned.",
+  clean: toOptionalString,
 });
 const userEmail = input({
   label: "User's Email",
   type: "string",
   example: "john.doe@example.com",
+  placeholder: "Enter user email",
   required: false,
   comments:
     "Note: if multiple users share an email address, only one user will be returned.",
+  clean: toOptionalString,
 });
 export const getUsersInputs = {
   asanaConnection: connectionInput,
@@ -44,7 +48,9 @@ export const listUsersInputs = {
   workspaceId: {
     ...workspaceId,
     required: false,
-    comments: "Optionally filter by workspace ID",
+    clean: toOptionalId,
+    comments:
+      "The unique identifier for the workspace. When provided, only users in this workspace are returned.",
   },
 };
 export const listUsersInTeamInputs = {
@@ -52,7 +58,7 @@ export const listUsersInTeamInputs = {
   limit,
   offset,
   teamId,
-  workspaceId: { ...workspaceId, required: false },
+  workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
 export const findUserByNameOrEmailInputs = {
   asanaConnection: connectionInput,
@@ -62,14 +68,5 @@ export const findUserByNameOrEmailInputs = {
   optFields: {
     ...optFields,
     default: USER_OPT_FIELDS,
-  },
-};
-export const selectUserInputs = {
-  connection: connectionInput,
-  workspaceId: {
-    ...workspaceId,
-    required: false,
-    dataSource: undefined,
-    clean: cleanString,
   },
 };

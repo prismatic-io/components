@@ -1,8 +1,8 @@
 import { input, util } from "@prismatic-io/spectral";
-import { validateId } from "../util";
+import { toOptionalString, validateId } from "../util";
 import { connectionInput, teamId, userId, workspaceId } from "./common";
 const teamName = input({
-  label: "Name",
+  label: "Team Name",
   type: "string",
   example: "Engineering Team",
   placeholder: "Enter team name",
@@ -11,14 +11,14 @@ const teamName = input({
   clean: util.types.toString,
 });
 const teamDescription = input({
-  label: "Description",
+  label: "Team Description",
   type: "string",
   example: "This is an example description",
   placeholder: "Enter team description",
   comments:
     "Free-form description of the team's purpose, shown on the team page in Asana.",
   required: false,
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 const organizationId = input({
   label: "Organization or Workspace ID",
@@ -32,9 +32,12 @@ const organizationId = input({
 const findTeamNameInput = input({
   label: "Team Name",
   type: "string",
+  example: "Engineering",
+  placeholder: "Enter team name",
   required: true,
   comments:
     "Note: if multiple teams share a name, only one team will be returned.",
+  clean: util.types.toString,
 });
 export const createTeamInputs = {
   asanaConnection: connectionInput,
@@ -59,8 +62,4 @@ export const findTeamByNameInputs = {
   asanaConnection: connectionInput,
   teamName: findTeamNameInput,
   workspaceId,
-};
-export const selectTeamInputs = {
-  connection: connectionInput,
-  workspaceId: { ...workspaceId, dataSource: undefined },
 };

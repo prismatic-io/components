@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { findTeamByNameExamplePayload } from "../../examplePayloads";
 import { findTeamByNameInputs } from "../../inputs";
+import { findTeamByNameOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, Team } from "../../types";
 export const findTeamByName = action({
   display: {
     label: "Find Team by Name",
     description: "Find a team by name within a workspace.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -37,4 +39,8 @@ export const findTeamByName = action({
   },
   inputs: findTeamByNameInputs,
   examplePayload: findTeamByNameExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: findTeamByNameOutputSchema,
+  }),
 });

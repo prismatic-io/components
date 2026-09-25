@@ -40,16 +40,12 @@ export const deleteAttachmentInputs = {
 };
 export const listAttachmentsInputs = {
   asanaConnection: connectionInput,
-  pagination,
   taskId,
+  pagination,
 };
 export const attachFileToTaskInputs = {
   asanaConnection: connectionInput,
   file,
   fileName,
   taskId,
-};
-export const selectAttachmentInputs = {
-  connection: connectionInput,
-  taskId: { ...taskId, dataSource: undefined },
 };

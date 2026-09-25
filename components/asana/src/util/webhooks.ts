@@ -7,6 +7,7 @@ import {
 } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
 import {
+  DEFAULT_PAGE_LIMIT,
   WEBHOOK_SECRET_LEGACY_KEY,
   WEBHOOK_SECRET_STATE_KEY_PREFIX,
   WEBHOOK_SECRETS_LEGACY_KEY,
@@ -115,7 +116,7 @@ export const findWebhook = async ({
       }>("/webhooks", {
         params: {
           workspace: workspace.gid,
-          limit: 100,
+          limit: DEFAULT_PAGE_LIMIT,
           offset,
         },
       });

@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { addUserToPortfolioExamplePayload } from "../../examplePayloads";
 import { addUserToPortfolioInputs } from "../../inputs";
+import { portfolioResponseSchema } from "../../outputSchemas";
 export const addUserToPortfolio = action({
   display: {
     label: "Add Users to Portfolio",
     description: "Add existing users to the given portfolio.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -24,4 +26,8 @@ export const addUserToPortfolio = action({
   },
   inputs: addUserToPortfolioInputs,
   examplePayload: addUserToPortfolioExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: portfolioResponseSchema,
+  }),
 });

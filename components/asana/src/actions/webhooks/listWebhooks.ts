@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
+import { listWebhooksOutputSchema } from "../../outputSchemas";
 import type { AsanaWebhook } from "../../types";
 export const listWebhooks = action({
   display: {
@@ -10,6 +11,7 @@ export const listWebhooks = action({
       "List all webhooks configured in Asana, including those for other integrations.",
   },
   inputs: listWebhooksInputs,
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -33,4 +35,8 @@ export const listWebhooks = action({
     return { data: data.data };
   },
   examplePayload: listWebhooksExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listWebhooksOutputSchema,
+  }),
 });

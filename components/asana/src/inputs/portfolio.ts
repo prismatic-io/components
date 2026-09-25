@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanString } from "../util";
+import { toOptionalId, toOptionalString } from "../util";
 import {
   color,
   connectionInput,
@@ -40,11 +40,11 @@ export const createPortfolioInputs = {
 };
 export const updatePortfolioInputs = {
   asanaConnection: connectionInput,
-  color: { ...color, required: false },
+  color: { ...color, required: false, clean: toOptionalString },
   isPublic,
   portfolioId,
-  portfolioName: { ...portfolioName, required: false },
-  workspaceId: { ...workspaceId, required: false },
+  portfolioName: { ...portfolioName, required: false, clean: toOptionalString },
+  workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
 export const getPortfolioInputs = {
   asanaConnection: connectionInput,
@@ -86,13 +86,4 @@ export const removeCustomFieldFromPortfolioInputs = {
   asanaConnection: connectionInput,
   fieldId,
   portfolioId,
-};
-export const selectPortfolioInputs = {
-  connection: connectionInput,
-  workspaceId: {
-    ...workspaceId,
-    required: false,
-    dataSource: undefined,
-    clean: cleanString,
-  },
 };

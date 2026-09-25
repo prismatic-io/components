@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { findTagByNameExamplePayload } from "../../examplePayloads";
 import { findTagByNameInputs } from "../../inputs";
+import { findTagByNameOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, Tag } from "../../types";
 export const findTagByName = action({
   display: {
     label: "Find Tag by Name",
     description: "Find a tag by name within a workspace.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -40,4 +42,8 @@ export const findTagByName = action({
   },
   inputs: findTagByNameInputs,
   examplePayload: findTagByNameExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: findTagByNameOutputSchema,
+  }),
 });

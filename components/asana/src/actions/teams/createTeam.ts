@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { createTeamExamplePayload } from "../../examplePayloads";
 import { createTeamInputs } from "../../inputs";
+import { teamResponseSchema } from "../../outputSchemas";
 export const createTeam = action({
   display: {
     label: "Create Team",
     description: "Create a new team within an organization.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -14,13 +16,17 @@ export const createTeam = action({
     );
     const { data } = await client.post(`/teams`, {
       data: {
-        description: params.teamDescription || undefined,
+        description: params.teamDescription,
         name: params.teamName,
-        organization: params.organizationId || undefined,
+        organization: params.organizationId,
       },
     });
     return { data };
   },
   inputs: createTeamInputs,
   examplePayload: createTeamExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: teamResponseSchema,
+  }),
 });

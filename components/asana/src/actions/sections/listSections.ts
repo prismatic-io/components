@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { listSectionsExamplePayload } from "../../examplePayloads";
 import { listSectionsInputs } from "../../inputs";
+import { listSectionsOutputSchema } from "../../outputSchemas";
 export const listSections = action({
   display: {
     label: "List Sections",
     description: "List all sections in a given project.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -26,4 +28,8 @@ export const listSections = action({
   },
   inputs: listSectionsInputs,
   examplePayload: listSectionsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSectionsOutputSchema,
+  }),
 });

@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { createTaskExamplePayload } from "../../examplePayloads";
 import { createTaskInputs } from "../../inputs";
+import { taskResponseSchema } from "../../outputSchemas";
 export const createTask = action({
   display: {
     label: "Create Task",
     description: "Create a new task inside a workspace or organization.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -20,19 +22,19 @@ export const createTask = action({
         assignee_status: params.taskStatus.assigneeStatus,
         completed: params.taskStatus.isCompleted,
         completed_by: params.taskStatus.completedBy,
-        due_at: params.scheduling.dueAt || undefined,
-        due_on: params.scheduling.dueOn || undefined,
-        followers: params.followersList || undefined,
+        due_at: params.scheduling.dueAt,
+        due_on: params.scheduling.dueOn,
+        followers: params.followersList,
         liked: params.taskStatus.isLiked,
         name: params.name,
         notes: params.notes,
-        parent: params.parentId || undefined,
-        projects: params.projectList || undefined,
-        resource_subtype: params.resourceSubtype || undefined,
-        start_at: params.scheduling.startAt || undefined,
-        start_on: params.scheduling.startOn || undefined,
-        workspace: params.workspaceId || undefined,
-        html_notes: params.htmlNotes || undefined,
+        parent: params.parentId,
+        projects: params.projectList,
+        resource_subtype: params.resourceSubtype,
+        start_at: params.scheduling.startAt,
+        start_on: params.scheduling.startOn,
+        workspace: params.workspaceId,
+        html_notes: params.htmlNotes,
       },
     };
     const { data } = await client.post(`/tasks`, taskData, {
@@ -44,4 +46,8 @@ export const createTask = action({
   },
   inputs: createTaskInputs,
   examplePayload: createTaskExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: taskResponseSchema,
+  }),
 });

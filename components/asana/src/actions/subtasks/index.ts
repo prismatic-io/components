@@ -1,1 +1,2 @@
-export { listSubtasks } from "./listSubtasks";
+import { listSubtasks } from "./listSubtasks";
+export default { listSubtasks };

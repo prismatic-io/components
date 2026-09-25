@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { findWorkspaceByNameExamplePayload } from "../../examplePayloads";
 import { findWorkspaceByNameInputs } from "../../inputs";
+import { findWorkspaceByNameOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse, Workspace } from "../../types";
 export const findWorkspaceByName = action({
   display: {
     label: "Find Workspace by Name",
     description: "Find a workspace by name.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -37,4 +39,8 @@ export const findWorkspaceByName = action({
   },
   inputs: findWorkspaceByNameInputs,
   examplePayload: findWorkspaceByNameExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: findWorkspaceByNameOutputSchema,
+  }),
 });

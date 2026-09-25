@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import FormData from "form-data";
 import { createAsanaClient } from "../../client";
 import { attachFileToTaskExamplePayload } from "../../examplePayloads";
 import { attachFileToTaskInputs } from "../../inputs";
+import { attachmentResponseSchema } from "../../outputSchemas";
 export const attachFileToTask = action({
   display: {
     label: "Attach File to Task",
     description: "Attach a file to a task.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -24,4 +26,8 @@ export const attachFileToTask = action({
   },
   inputs: attachFileToTaskInputs,
   examplePayload: attachFileToTaskExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: attachmentResponseSchema,
+  }),
 });

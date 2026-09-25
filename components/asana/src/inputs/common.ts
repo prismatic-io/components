@@ -1,6 +1,15 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { COLOR_INPUT_OPTIONS } from "../constants";
-import { cleanCommaSeparatedList, cleanString, validateId } from "../util";
+import {
+  toCommaSeparatedList,
+  toOptionalDate,
+  toOptionalId,
+  toOptionalInt,
+  toOptionalString,
+  toStringArray,
+  validateId,
+  validateUserId,
+} from "../util";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
@@ -23,10 +32,11 @@ export const userId = input({
   type: "string",
   example: "375893453",
   placeholder: "Enter user ID",
-  comments: "The unique identifier for the user.",
+  comments:
+    "The unique identifier for the user, or me for the authenticated user.",
   required: true,
   dataSource: "selectUser",
-  clean: validateId,
+  clean: validateUserId,
 });
 export const optFields = input({
   label: "Optional Properties",
@@ -36,7 +46,7 @@ export const optFields = input({
   placeholder: "Enter comma-separated field names",
   comments:
     "A comma-separated list of fields to include in the API response. The default value contains the standard fields for this action. Add or remove fields as needed.",
-  clean: cleanCommaSeparatedList,
+  clean: toCommaSeparatedList,
 });
 export const limit = input({
   label: "Limit",
@@ -46,7 +56,7 @@ export const limit = input({
   comments:
     "The maximum number of items to return per page (between 1 and 100).",
   required: false,
-  clean: (value) => util.types.toInt(value) || undefined,
+  clean: toOptionalInt,
 });
 export const offset = input({
   label: "Offset",
@@ -56,7 +66,7 @@ export const offset = input({
   comments:
     "The pagination offset token returned from a previous query that had a next_page property.",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 export const pagination = structuredObjectInput({
   label: "Pagination",
@@ -72,7 +82,7 @@ export const name = input({
   example: "Example - Populate customers page with live data",
   placeholder: "Enter name",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 export const notes = input({
   label: "Notes",
@@ -82,7 +92,7 @@ export const notes = input({
   example: "These are some example notes.",
   placeholder: "Enter notes",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 export const htmlNotes = input({
   label: "HTML Notes",
@@ -92,7 +102,7 @@ export const htmlNotes = input({
     "The rich-text notes for the resource as HTML. See [Rich text in the Asana API](https://developers.asana.com/docs/rich-text) for supported markup.",
   example: "<body>Mittens is a <em>really</em> good cat.</body>",
   required: false,
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 export const dueOn = input({
   label: "Due On",
@@ -102,7 +112,7 @@ export const dueOn = input({
   example: "2019-09-15",
   placeholder: "Enter due date (YYYY-MM-DD)",
   required: false,
-  clean: (value) => (value ? util.types.toDate(value) : undefined),
+  clean: toOptionalDate,
 });
 export const startOn = input({
   label: "Start On",
@@ -112,7 +122,7 @@ export const startOn = input({
   example: "2021-11-14",
   placeholder: "Enter start date (YYYY-MM-DD)",
   required: false,
-  clean: (value) => (value ? util.types.toDate(value) : undefined),
+  clean: toOptionalDate,
 });
 export const followers = input({
   label: "Followers",
@@ -122,7 +132,7 @@ export const followers = input({
   example: "8570756435,375893453",
   placeholder: "Enter comma-separated user IDs",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 export const projectId = input({
   label: "Project ID",
@@ -163,6 +173,7 @@ export const members = input({
     "A list of users to add as members. Each value can be the string 'me', an email address, or the gid of a user.",
   required: false,
   collection: "valuelist",
+  clean: toStringArray,
 });
 export const color = input({
   label: "Color",
@@ -202,6 +213,7 @@ export const followersList = input({
   comments:
     "A list of user gids to add as followers. Provide one user ID per entry.",
   required: false,
+  clean: toStringArray,
 });
 export const insertAfter = input({
   label: "Insert After",
@@ -211,7 +223,7 @@ export const insertAfter = input({
   comments:
     "The gid of a sibling field or section after which the new item will be inserted.",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 export const insertBefore = input({
   label: "Insert Before",
@@ -221,7 +233,7 @@ export const insertBefore = input({
   comments:
     "The gid of a sibling field or section before which the new item will be inserted.",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 export const isImportant = input({
   label: "Is Important",
@@ -249,5 +261,5 @@ export const assigneeId = input({
   placeholder: "Enter assignee user ID",
   comments: "The unique identifier of the user assigned to the task.",
   required: false,
-  clean: (value) => validateId(value) || undefined,
+  clean: toOptionalId,
 });

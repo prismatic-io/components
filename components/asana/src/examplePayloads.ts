@@ -474,28 +474,28 @@ export const updateTaskExamplePayload = {
 export const getTaskExamplePayload = {
   data: {
     data: {
-      gid: "75834703724",
-      projects: "",
+      gid: "1202178854270531",
+      projects: [],
       resource_type: "task",
       name: "MyTask",
       notes: "These are my example task notes!",
       completed: false,
       resource_subtype: "default_task",
-      tags: "",
+      tags: [],
       workspace: {
-        gid: "867452364563",
+        gid: "1126509132283071",
         resource_type: "workspace",
         name: "Example Workspace",
       },
-      custom_fields: {},
+      custom_fields: [],
       assignee: {
-        gid: "32493284234",
+        gid: "1202178852626547",
         name: "Example Assignee",
         resource_type: "user",
       },
       parent: null,
       assignee_status: "inbox",
-      hearted: false,
+      liked: false,
     },
   },
 };
@@ -894,7 +894,7 @@ export const createTagExamplePayload = {
       create_at: "2022-06-15T17:03:26.911Z",
       name: "My Example Tag",
       workspace: {
-        gid: 1126509132283071,
+        gid: "1126509132283071",
         resource_type: "workspace",
       },
       color: "light-green",
@@ -1124,23 +1124,20 @@ export const listUsersExamplePayload = {
   },
 };
 export const listUsersInTeamExamplePayload = {
-  data: [
-    {
-      gid: "54630745323",
-      name: "Example User",
-      resource_type: "user",
-    },
-    {
-      gid: "54630745323",
-      name: "Example User",
-      resource_type: "user",
-    },
-    {
-      gid: "54630745323",
-      name: "Example User",
-      resource_type: "user",
-    },
-  ],
+  data: {
+    data: [
+      {
+        gid: "1202178852626547",
+        name: "Greg Sanchez",
+        resource_type: "user",
+      },
+      {
+        gid: "1202178852626590",
+        name: "Jane Kim",
+        resource_type: "user",
+      },
+    ],
+  },
 };
 export const findUserByNameOrEmailExamplePayload = {
   data: {
@@ -1213,34 +1210,34 @@ export const findWorkspaceByNameExamplePayload = {
     resource_type: "workspace",
   },
 };
-export const portfolioExamplePayload = {
+const portfolioResponsePayload = {
   data: {
     data: {
-      gid: "12345",
+      gid: "1202700984385401",
       resource_type: "portfolio",
       color: "light-green",
       name: "Bug Portfolio",
       created_at: "2012-02-22T02:06:58.147Z",
       created_by: {
-        gid: "12345",
+        gid: "1202178852626547",
         resource_type: "user",
         name: "Greg Sanchez",
       },
       current_status_update: {
-        gid: "12345",
+        gid: "1202700984385490",
         resource_type: "status_update",
         resource_subtype: "project_status_update",
         title: "Status Update - Jun 15",
       },
       custom_field_settings: [
         {
-          gid: "12345",
+          gid: "1202700984385510",
           resource_type: "custom_field_setting",
           custom_field: {
-            gid: "12345",
+            gid: "1202700984385520",
             resource_type: "custom_field",
             created_by: {
-              gid: "12345",
+              gid: "1202178852626547",
               resource_type: "user",
               name: "Greg Sanchez",
             },
@@ -1252,7 +1249,7 @@ export const portfolioExamplePayload = {
             enabled: true,
             enum_options: [
               {
-                gid: "12345",
+                gid: "1202700984385530",
                 resource_type: "enum_option",
                 color: "blue",
                 enabled: true,
@@ -1260,7 +1257,7 @@ export const portfolioExamplePayload = {
               },
             ],
             enum_value: {
-              gid: "12345",
+              gid: "1202700984385530",
               resource_type: "enum_option",
               color: "blue",
               enabled: true,
@@ -1271,7 +1268,7 @@ export const portfolioExamplePayload = {
             is_global_to_workspace: true,
             multi_enum_values: [
               {
-                gid: "12345",
+                gid: "1202700984385530",
                 resource_type: "enum_option",
                 color: "blue",
                 enabled: true,
@@ -1287,12 +1284,12 @@ export const portfolioExamplePayload = {
           },
           is_important: false,
           parent: {
-            gid: "12345",
+            gid: "1202453507919800",
             resource_type: "project",
             name: "Stuff to buy",
           },
           project: {
-            gid: "12345",
+            gid: "1202453507919800",
             resource_type: "project",
             name: "Stuff to buy",
           },
@@ -1301,13 +1298,13 @@ export const portfolioExamplePayload = {
       due_on: "2019-09-15",
       members: [
         {
-          gid: "12345",
+          gid: "1202178852626547",
           resource_type: "user",
           name: "Greg Sanchez",
         },
       ],
       owner: {
-        gid: "12345",
+        gid: "1202178852626547",
         resource_type: "user",
         name: "Greg Sanchez",
       },
@@ -1315,19 +1312,22 @@ export const portfolioExamplePayload = {
       public: false,
       start_on: "2019-09-14",
       workspace: {
-        gid: "12345",
+        gid: "1126509132283071",
         resource_type: "workspace",
         name: "My Company Workspace",
       },
     },
   },
 };
+export const createPortfolioExamplePayload = { ...portfolioResponsePayload };
+export const getPortfolioExamplePayload = { ...portfolioResponsePayload };
+export const updatePortfolioExamplePayload = { ...portfolioResponsePayload };
 export const deletePortfolioExamplePayload = { data: { data: {} } };
 export const listPortfoliosExamplePayload = {
   data: {
     data: [
       {
-        gid: "12345",
+        gid: "1202700984385401",
         resource_type: "portfolio",
         name: "Example Portfolio",
       },
@@ -1410,7 +1410,7 @@ export const listPortfolioItemsExamplePayload = {
   data: {
     data: [
       {
-        gid: "12345",
+        gid: "1202453507919800",
         resource_type: "project",
         name: "Stuff to buy",
       },
@@ -1437,7 +1437,7 @@ export const listWebhooksExamplePayload = {
 export const getAttachmentExamplePayload = {
   data: {
     data: {
-      gid: "12345",
+      gid: "1202700984385601",
       resource_type: "attachment",
       name: "Screenshot.png",
       resource_subtype: "dropbox",
@@ -1445,7 +1445,7 @@ export const getAttachmentExamplePayload = {
       download_url: "https://s3.amazonaws.com/assets/123/Screenshot.png",
       host: "dropbox",
       parent: {
-        gid: "12345",
+        gid: "1202178854270531",
         resource_type: "task",
         name: "Bug Task",
         resource_subtype: "default_task",
@@ -1460,7 +1460,7 @@ export const listAttachmentsExamplePayload = {
   data: {
     data: [
       {
-        gid: "12345",
+        gid: "1202700984385601",
         resource_type: "attachment",
         name: "Screenshot.png",
         resource_subtype: "dropbox",
@@ -1471,7 +1471,7 @@ export const listAttachmentsExamplePayload = {
 export const attachFileToTaskExamplePayload = {
   data: {
     data: {
-      gid: "12345",
+      gid: "1202700984385602",
       resource_type: "attachment",
       name: "Screenshot.png",
       resource_subtype: "asana",
@@ -1682,10 +1682,10 @@ export const listCustomFieldsExamplePayload = {
   },
 };
 export const selectPortfolioExamplePayload = {
-  result: [{ label: "Example Portfolio", key: "12345" }],
+  result: [{ label: "Example Portfolio", key: "1202700984385401" }],
 };
 export const selectAttachmentExamplePayload = {
-  result: [{ label: "Screenshot.png", key: "12345" }],
+  result: [{ label: "Screenshot.png", key: "1202700984385601" }],
 };
 export const selectCustomFieldExamplePayload = {
   result: [{ label: "Priority", key: "1202467472002610" }],

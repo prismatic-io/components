@@ -13,8 +13,9 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "strictNullChecks": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src"],
+  "include": ["src", ".spectral/*"],
   "exclude": ["src/**/*.test.ts"]
 }

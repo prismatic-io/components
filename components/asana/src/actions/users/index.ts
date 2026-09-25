@@ -1,5 +1,12 @@
-export { findUserByNameOrEmail } from "./findUserByNameOrEmail";
-export { getCurrentUser } from "./getCurrentUser";
-export { getUsers } from "./getUsers";
-export { listUsers } from "./listUsers";
-export { listUsersInTeam } from "./listUsersInTeam";
+import { findUserByNameOrEmail } from "./findUserByNameOrEmail";
+import { getCurrentUser } from "./getCurrentUser";
+import { getUsers } from "./getUsers";
+import { listUsers } from "./listUsers";
+import { listUsersInTeam } from "./listUsersInTeam";
+export default {
+  findUserByNameOrEmail,
+  getCurrentUser,
+  getUsers,
+  listUsers,
+  listUsersInTeam,
+};

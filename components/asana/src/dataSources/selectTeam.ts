@@ -1,7 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
 import { selectTeamInputs } from "../inputs";
-import type { DataSource } from "../types/Project";
+import type { DataSource } from "../types/resources";
 import { mapToLabelKey } from "../util";
 const selectTeam = dataSource({
   display: {

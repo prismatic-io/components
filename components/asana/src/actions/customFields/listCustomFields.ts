@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { listCustomFieldsExamplePayload } from "../../examplePayloads";
 import { listCustomFieldsInputs } from "../../inputs";
+import { listCustomFieldsOutputSchema } from "../../outputSchemas";
 export const listCustomFields = action({
   display: {
     label: "List Custom Fields",
     description: "List all custom fields in a workspace.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -26,4 +28,8 @@ export const listCustomFields = action({
   },
   inputs: listCustomFieldsInputs,
   examplePayload: listCustomFieldsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCustomFieldsOutputSchema,
+  }),
 });

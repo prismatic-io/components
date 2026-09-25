@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { listPortfolioItemsExamplePayload } from "../../examplePayloads";
 import { listPortfolioItemsInputs } from "../../inputs";
+import { listPortfolioItemsOutputSchema } from "../../outputSchemas";
 export const listPortfolioItems = action({
   display: {
     label: "List Portfolio Items",
     description: "List all items in a given portfolio.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -25,4 +27,8 @@ export const listPortfolioItems = action({
   },
   inputs: listPortfolioItemsInputs,
   examplePayload: listPortfolioItemsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listPortfolioItemsOutputSchema,
+  }),
 });

@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { listTagsInTaskExamplePayload } from "../../examplePayloads";
 import { listTagsInTaskInputs } from "../../inputs";
+import { listTagsOutputSchema } from "../../outputSchemas";
 export const listTagsInTask = action({
   display: {
     label: "List Tags in Task",
     description: "List all tags applied to a given task.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -23,4 +25,8 @@ export const listTagsInTask = action({
   },
   inputs: listTagsInTaskInputs,
   examplePayload: listTagsInTaskExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listTagsOutputSchema,
+  }),
 });

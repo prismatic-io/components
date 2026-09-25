@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { createStatusUpdateExamplePayload } from "../../examplePayloads";
 import { createStatusUpdateInputs } from "../../inputs";
+import { statusUpdateResponseSchema } from "../../outputSchemas";
 export const createStatusUpdate = action({
   display: {
     label: "Create Status Update",
     description: "Create a status update on a project, portfolio, or goal.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -33,4 +35,8 @@ export const createStatusUpdate = action({
   },
   inputs: createStatusUpdateInputs,
   examplePayload: createStatusUpdateExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: statusUpdateResponseSchema,
+  }),
 });

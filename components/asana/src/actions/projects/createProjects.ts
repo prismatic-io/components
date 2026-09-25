@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { createProjectsExamplePayload } from "../../examplePayloads";
 import { createProjectsInputs } from "../../inputs";
+import { projectResponseSchema } from "../../outputSchemas";
 export const createProjects = action({
   display: {
     label: "Create Project",
     description:
       "Create a new project inside an existing team or organization.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -25,7 +27,7 @@ export const createProjects = action({
         owner: params.owner,
         start_on: params.startOn,
         team: params.team,
-        html_notes: params.htmlNotes || undefined,
+        html_notes: params.htmlNotes,
         privacy_setting: params.projectSettings.privacySetting,
       },
     };
@@ -41,4 +43,8 @@ export const createProjects = action({
   },
   inputs: createProjectsInputs,
   examplePayload: createProjectsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: projectResponseSchema,
+  }),
 });

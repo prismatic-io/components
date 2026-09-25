@@ -1,7 +1,8 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
+import { DEFAULT_PAGE_LIMIT } from "../constants";
 import { selectWorkspaceInputs } from "../inputs";
-import type { DataSource } from "../types/Project";
+import type { DataSource } from "../types/resources";
 import { fetchMoreData, mapToLabelKey } from "../util";
 const selectWorkspace = dataSource({
   display: {
@@ -17,7 +18,7 @@ const selectWorkspace = dataSource({
       [],
       true,
       {
-        limit: 100,
+        limit: DEFAULT_PAGE_LIMIT,
       },
     );
     const result = mapToLabelKey(data);

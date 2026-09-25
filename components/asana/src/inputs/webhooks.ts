@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { validateId } from "../util";
+import { toOptionalObject, validateId } from "../util";
 import { connectionInput, pagination, workspaceId } from "./common";
 const filter = input({
   label: "Filter",
@@ -20,20 +20,12 @@ const filter = input({
   required: false,
   comments:
     "The filter parameters for the webhook expressed as a JSON array. See the [Asana webhooks guide](https://developers.asana.com/docs/webhooks-guide) for available filter options.",
-  clean: (filterInput: unknown) => {
-    if (filterInput !== "") {
-      const value = util.types.toString(filterInput);
-      if (!util.types.isJSON(value)) {
-        throw new Error("Invalid JSON provided for Filter.");
-      }
-      return JSON.parse(value);
-    }
-    return undefined;
-  },
+  clean: toOptionalObject,
 });
 const endpoint = input({
   label: "Webhook URL",
-  comments: "Reference a flow's URL from the trigger payload.",
+  comments:
+    "The URL that Asana will send webhook events to. Typically a flow's webhook URL from the trigger payload.",
   type: "string",
   example: "https://hooks.site.io/trigger/example",
   placeholder: "Enter webhook URL",
@@ -54,22 +46,24 @@ const webhookId = input({
   label: "Webhook ID",
   type: "string",
   example: "375893453",
-  comments: "The gid of the workspace",
+  placeholder: "Enter webhook ID",
+  comments: "The unique identifier for the webhook.",
   required: true,
   clean: validateId,
 });
 const showOnlyInstanceWebhooks = input({
-  label: "Show only instance webhooks",
-  comments: "Show only webhooks that point to this instance",
+  label: "Show Only Instance Webhooks",
+  comments:
+    "When true, filters results to only webhooks whose target URL matches this integration instance.",
   type: "boolean",
   default: "true",
   clean: util.types.toBool,
 });
 export const createWebhookInputs = {
+  asanaConnection: connectionInput,
   endpoint,
   resourceId: webhookResourceId,
   filter,
-  asanaConnection: connectionInput,
 };
 export const deleteWebhookInputs = {
   asanaConnection: connectionInput,

@@ -1,9 +1,13 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { connectionInput, pagination, userId, workspaceId } from "./common";
 const workspaceName = input({
   label: "Workspace Name",
   type: "string",
+  example: "My Workspace",
+  placeholder: "Enter workspace name",
+  comments: "The display name of the workspace to search for.",
   required: true,
+  clean: util.types.toString,
 });
 export const getWorkspaceInputs = {
   asanaConnection: connectionInput,
@@ -21,7 +25,4 @@ export const addUserInputs = {
   asanaConnection: connectionInput,
   userId,
   workspaceId,
-};
-export const selectWorkspaceInputs = {
-  connection: connectionInput,
 };

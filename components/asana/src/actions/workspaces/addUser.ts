@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { addUserExamplePayload } from "../../examplePayloads";
 import { addUserInputs } from "../../inputs";
+import { userResponseSchema } from "../../outputSchemas";
 export const addUser = action({
   display: {
     label: "Add User to Workspace",
     description: "Add a new user to the given workspace.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -22,4 +24,8 @@ export const addUser = action({
   },
   inputs: addUserInputs,
   examplePayload: addUserExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: userResponseSchema,
+  }),
 });

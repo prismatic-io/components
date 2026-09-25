@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { deleteTaskExamplePayload } from "../../examplePayloads";
 import { deleteTaskInputs } from "../../inputs";
+import { emptyResponseOutputSchema } from "../../outputSchemas";
 export const deleteTask = action({
   display: {
     label: "Delete Task",
     description: "Delete an existing task.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -17,4 +19,8 @@ export const deleteTask = action({
   },
   inputs: deleteTaskInputs,
   examplePayload: deleteTaskExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: emptyResponseOutputSchema,
+  }),
 });

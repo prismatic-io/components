@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { createTagExamplePayload } from "../../examplePayloads";
 import { createTagInputs } from "../../inputs";
+import { tagResponseSchema } from "../../outputSchemas";
 export const createTag = action({
   display: {
     label: "Create Tag",
     description: "Create a new tag in a workspace.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -33,4 +35,8 @@ export const createTag = action({
   },
   inputs: createTagInputs,
   examplePayload: createTagExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: tagResponseSchema,
+  }),
 });

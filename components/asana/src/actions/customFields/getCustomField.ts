@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { getCustomFieldExamplePayload } from "../../examplePayloads";
 import { getCustomFieldInputs } from "../../inputs";
+import { customFieldResponseSchema } from "../../outputSchemas";
 export const getCustomField = action({
   display: {
     label: "Get Custom Field",
     description: "Get the information and metadata of a custom field.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -22,4 +24,8 @@ export const getCustomField = action({
   },
   inputs: getCustomFieldInputs,
   examplePayload: getCustomFieldExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: customFieldResponseSchema,
+  }),
 });

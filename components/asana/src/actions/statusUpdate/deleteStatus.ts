@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { deleteStatusExamplePayload } from "../../examplePayloads";
 import { deleteStatusInputs } from "../../inputs";
+import { emptyResponseOutputSchema } from "../../outputSchemas";
 export const deleteStatus = action({
   display: {
     label: "Delete Status Update",
     description: "Delete an existing status update.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -17,4 +19,8 @@ export const deleteStatus = action({
   },
   inputs: deleteStatusInputs,
   examplePayload: deleteStatusExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: emptyResponseOutputSchema,
+  }),
 });

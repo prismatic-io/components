@@ -3,14 +3,17 @@ import {
   createClient,
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
+import { BASE_URL } from "./constants";
+import { getBearerToken, validateConnection } from "./util";
 export const createAsanaClient = async (
   asanaConnection: Connection,
   debug: boolean,
 ): Promise<HttpClient> => {
+  validateConnection(asanaConnection);
   const asanaClient = createClient({
-    baseUrl: "https://app.asana.com/api/1.0",
+    baseUrl: BASE_URL,
     headers: {
-      authorization: `Bearer ${asanaConnection?.token?.access_token || asanaConnection?.fields?.apiKey}`,
+      authorization: getBearerToken(asanaConnection),
     },
     debug,
   });

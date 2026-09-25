@@ -12,8 +12,8 @@ const itemId = input({
 });
 export const listPortfolioItemsInputs = {
   asanaConnection: connectionInput,
-  pagination,
   portfolioId,
+  pagination,
 };
 export const removePortfolioItemInputs = {
   asanaConnection: connectionInput,

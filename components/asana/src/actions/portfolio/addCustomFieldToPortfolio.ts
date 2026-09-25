@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { addCustomFieldToPortfolioExamplePayload } from "../../examplePayloads";
 import { addCustomFieldToPortfolioInputs } from "../../inputs";
+import { customFieldSettingResponseSchema } from "../../outputSchemas";
 export const addCustomFieldToPortfolio = action({
   display: {
     label: "Add Custom Field to Portfolio",
     description: "Add a custom field to an existing portfolio.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -27,4 +29,8 @@ export const addCustomFieldToPortfolio = action({
   },
   inputs: addCustomFieldToPortfolioInputs,
   examplePayload: addCustomFieldToPortfolioExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: customFieldSettingResponseSchema,
+  }),
 });

@@ -1,9 +1,20 @@
-export { addCustomFieldToPortfolio } from "./addCustomFieldToPortfolio";
-export { addUserToPortfolio } from "./addUserToPortfolio";
-export { createPortfolio } from "./createPortfolio";
-export { deletePortfolio } from "./deletePortfolio";
-export { getPortfolio } from "./getPortfolio";
-export { listPortfolios } from "./listPortfolios";
-export { removeCustomFieldFromPortfolio } from "./removeCustomFieldFromPortfolio";
-export { removeUserFromPortfolio } from "./removeUserFromPortfolio";
-export { updatePortfolio } from "./updatePortfolio";
+import { addCustomFieldToPortfolio } from "./addCustomFieldToPortfolio";
+import { addUserToPortfolio } from "./addUserToPortfolio";
+import { createPortfolio } from "./createPortfolio";
+import { deletePortfolio } from "./deletePortfolio";
+import { getPortfolio } from "./getPortfolio";
+import { listPortfolios } from "./listPortfolios";
+import { removeCustomFieldFromPortfolio } from "./removeCustomFieldFromPortfolio";
+import { removeUserFromPortfolio } from "./removeUserFromPortfolio";
+import { updatePortfolio } from "./updatePortfolio";
+export default {
+  addCustomFieldToPortfolio,
+  addUserToPortfolio,
+  createPortfolio,
+  deletePortfolio,
+  getPortfolio,
+  listPortfolios,
+  removeCustomFieldFromPortfolio,
+  removeUserFromPortfolio,
+  updatePortfolio,
+};

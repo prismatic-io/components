@@ -1,7 +1,8 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../client";
+import { DEFAULT_PAGE_LIMIT } from "../constants";
 import { selectProjectInputs } from "../inputs";
-import type { DataSource } from "../types/Project";
+import type { DataSource } from "../types/resources";
 import {
   fetchMoreData,
   handleMultipleWorkspacesError,
@@ -25,7 +26,7 @@ const selectProject = dataSource({
         {
           workspace,
           team,
-          limit: canPaginate ? 100 : undefined,
+          limit: canPaginate ? DEFAULT_PAGE_LIMIT : undefined,
         },
       );
       const result = mapToLabelKey(data);

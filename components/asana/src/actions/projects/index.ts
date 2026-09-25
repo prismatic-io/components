@@ -1,8 +1,18 @@
-export { addCustomFieldToProject } from "./addCustomFieldToProject";
-export { addUserToProject } from "./addUserToProject";
-export { createProjects } from "./createProjects";
-export { deleteProjects } from "./deleteProjects";
-export { getProject } from "./getProject";
-export { listProjects } from "./listProjects";
-export { removeCustomFieldFromProject } from "./removeCustomFieldFromProject";
-export { updateProject } from "./updateProject";
+import { addCustomFieldToProject } from "./addCustomFieldToProject";
+import { addUserToProject } from "./addUserToProject";
+import { createProjects } from "./createProjects";
+import { deleteProjects } from "./deleteProjects";
+import { getProject } from "./getProject";
+import { listProjects } from "./listProjects";
+import { removeCustomFieldFromProject } from "./removeCustomFieldFromProject";
+import { updateProject } from "./updateProject";
+export default {
+  addCustomFieldToProject,
+  addUserToProject,
+  createProjects,
+  deleteProjects,
+  getProject,
+  listProjects,
+  removeCustomFieldFromProject,
+  updateProject,
+};

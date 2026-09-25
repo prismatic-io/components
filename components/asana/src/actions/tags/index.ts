@@ -1,7 +1,16 @@
-export { createTag } from "./createTag";
-export { deleteTag } from "./deleteTag";
-export { findTagByName } from "./findTagByName";
-export { getTag } from "./getTag";
-export { listTags } from "./listTags";
-export { listTagsInTask } from "./listTagsInTask";
-export { updateTag } from "./updateTag";
+import { createTag } from "./createTag";
+import { deleteTag } from "./deleteTag";
+import { findTagByName } from "./findTagByName";
+import { getTag } from "./getTag";
+import { listTags } from "./listTags";
+import { listTagsInTask } from "./listTagsInTask";
+import { updateTag } from "./updateTag";
+export default {
+  createTag,
+  deleteTag,
+  findTagByName,
+  getTag,
+  listTags,
+  listTagsInTask,
+  updateTag,
+};

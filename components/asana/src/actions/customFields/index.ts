@@ -1,2 +1,3 @@
-export { getCustomField } from "./getCustomField";
-export { listCustomFields } from "./listCustomFields";
+import { getCustomField } from "./getCustomField";
+import { listCustomFields } from "./listCustomFields";
+export default { getCustomField, listCustomFields };

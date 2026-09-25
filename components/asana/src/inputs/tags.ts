@@ -1,4 +1,4 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { TAG_OPT_FIELDS } from "../constants";
 import {
   color,
@@ -15,9 +15,12 @@ import {
 const tagName = input({
   label: "Tag Name",
   type: "string",
+  example: "Priority",
+  placeholder: "Enter tag name",
   required: true,
   comments:
     "Note: if multiple tags share a name, only one tag will be returned.",
+  clean: util.types.toString,
 });
 export const createTagInputs = {
   asanaConnection: connectionInput,
@@ -63,8 +66,4 @@ export const findTagByNameInputs = {
   tagName,
   workspaceId,
   optFields: { ...optFields, default: TAG_OPT_FIELDS },
-};
-export const selectTagInputs = {
-  connection: connectionInput,
-  workspaceId: { ...workspaceId, dataSource: undefined },
 };

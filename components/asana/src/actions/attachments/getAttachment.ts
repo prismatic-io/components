@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { getAttachmentExamplePayload } from "../../examplePayloads";
 import { getAttachmentInputs } from "../../inputs";
+import { attachmentResponseSchema } from "../../outputSchemas";
 export const getAttachment = action({
   display: {
     label: "Get Attachment",
     description: "Get the information and metadata of an attachment.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -21,4 +23,8 @@ export const getAttachment = action({
   },
   inputs: getAttachmentInputs,
   examplePayload: getAttachmentExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: attachmentResponseSchema,
+  }),
 });

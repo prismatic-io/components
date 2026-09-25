@@ -12,8 +12,8 @@ const listAllNestedSubtasks = input({
 });
 export const listSubtasksInputs = {
   asanaConnection: connectionInput,
+  taskId,
   listAllNestedSubtasks,
   optFields: { ...optFields, default: OPTIONAL_FIELDS },
   pagination,
-  taskId,
 };

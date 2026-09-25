@@ -1,5 +1,17 @@
 ## Changelog
 
+### 2026-09-25
+
+Updated the **New and Updated Tasks** polling trigger and added output schemas and inline action calling:
+
+- Added output schemas across all actions for improved field mapping during configuration
+- Added inline action calling support to 27 actions for improved example output during configuration
+- Added opt-in batching to the **New and Updated Tasks** trigger, dispatching each changed record individually or in configured batches so a large backlog drains over several recurrences; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of records. The initial sync begins on the first recurrence and backfills every record modified on or after the specified date, seeding each once and ignoring the trigger's visibility filters; recurrences after the sync completes are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Added the **List Users in Team** action for listing the users in a team
+- Updated ID inputs to reject values that are not numeric Asana IDs
+- Fixed test runs of the **Webhook** trigger failing with a signature mismatch error
+
 ### 2026-08-05
 
 Removed **gid**, **resource_type**, and **layout** from **Optional Properties** default values (Asana returns these fields automatically, so requesting them is unnecessary)

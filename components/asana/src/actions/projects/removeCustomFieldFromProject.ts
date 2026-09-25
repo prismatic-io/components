@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createAsanaClient } from "../../client";
 import { removeCustomFieldFromProjectExamplePayload } from "../../examplePayloads";
 import { removeCustomFieldFromProjectInputs } from "../../inputs";
+import { emptyResponseOutputSchema } from "../../outputSchemas";
 export const removeCustomFieldFromProject = action({
   display: {
     label: "Remove Custom Field from Project",
     description: "Remove an existing custom field from an existing project.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = await createAsanaClient(
       params.asanaConnection,
@@ -24,4 +26,8 @@ export const removeCustomFieldFromProject = action({
   },
   inputs: removeCustomFieldFromProjectInputs,
   examplePayload: removeCustomFieldFromProjectExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: emptyResponseOutputSchema,
+  }),
 });

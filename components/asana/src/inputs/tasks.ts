@@ -1,10 +1,17 @@
-import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput } from "@prismatic-io/spectral";
 import {
   TAG_OPT_FIELDS,
   TASK_FOLLOWERS_OPT_FIELDS,
   TASK_OPT_FIELDS,
 } from "../constants";
-import { cleanString, validateId } from "../util";
+import {
+  toOptionalBool,
+  toOptionalDate,
+  toOptionalId,
+  toOptionalString,
+  toOptionalStringArray,
+  toOptionalTrimmedString,
+} from "../util";
 import {
   assigneeId,
   connectionInput,
@@ -33,7 +40,7 @@ const approvalStatus = input({
   ],
   comments: "The approval status to set on the task.",
   required: true,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 const assigneeSectionId = input({
   label: "Assignee Section ID",
@@ -43,7 +50,7 @@ const assigneeSectionId = input({
   comments:
     "The unique identifier for the section to assign the task to. The assignee section is a subdivision of a project that groups tasks together in the assignee's 'My Tasks' list.",
   required: false,
-  clean: (value) => validateId(value) || undefined,
+  clean: toOptionalId,
 });
 const assigneeStatus = input({
   label: "Assignee Status",
@@ -53,7 +60,7 @@ const assigneeStatus = input({
   comments:
     "The status the task has in relation to its assignee. This field is deprecated — it can still be used in requests but is not recommended for new records.",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 const isCompleted = input({
   label: "Completed",
@@ -67,7 +74,7 @@ const isCompleted = input({
   comments:
     "Whether the task is marked as complete. Select 'Do not change' to leave the existing value untouched.",
   required: false,
-  clean: (value) => (value === "" ? undefined : util.types.toBool(value)),
+  clean: toOptionalBool,
 });
 const completedBy = input({
   label: "Completed By",
@@ -77,7 +84,7 @@ const completedBy = input({
   comments:
     "The name of the user who completed the task. A user gid or email address may also be provided to reference an existing Asana user.",
   required: false,
-  clean: (value) => util.types.toString(value).trim() || undefined,
+  clean: toOptionalTrimmedString,
 });
 const isLiked = input({
   label: "Is Liked",
@@ -91,7 +98,7 @@ const isLiked = input({
   required: false,
   comments:
     "Whether the task is marked as 'liked' for the authenticated user. Select 'Do not change' to leave the existing value untouched.",
-  clean: (value) => (value === "" ? undefined : util.types.toBool(value)),
+  clean: toOptionalBool,
 });
 const parentId = input({
   label: "Parent ID",
@@ -100,7 +107,7 @@ const parentId = input({
   placeholder: "Enter parent ID",
   comments: "The unique identifier of the parent element.",
   required: false,
-  clean: (value) => validateId(value) || undefined,
+  clean: toOptionalId,
 });
 const resourceSubtype = input({
   label: "Resource Subtype",
@@ -110,7 +117,7 @@ const resourceSubtype = input({
   comments:
     "The subtype of the resource (e.g., 'default_task', 'milestone'). See [Asana resource subtypes](https://developers.asana.com/docs/object-hierarchy) for valid values.",
   required: false,
-  clean: cleanString,
+  clean: toOptionalString,
 });
 const dueAt = input({
   label: "Due At",
@@ -120,7 +127,7 @@ const dueAt = input({
   comments:
     "The date and time the task is due. Format: ISO 8601 in UTC. Should not be used together with Due On.",
   required: false,
-  clean: (value) => (value ? util.types.toDate(value) : undefined),
+  clean: toOptionalDate,
 });
 const startAt = input({
   label: "Start At",
@@ -130,7 +137,7 @@ const startAt = input({
   example: "2019-09-14T02:06:58.147Z",
   placeholder: "Enter start timestamp (ISO 8601)",
   required: false,
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 const projectList = input({
   label: "Project List",
@@ -141,6 +148,7 @@ const projectList = input({
   comments:
     "A list of project gids the task should belong to. Provide one project ID per entry.",
   required: false,
+  clean: toOptionalStringArray,
 });
 const scheduling = structuredObjectInput({
   label: "Scheduling",
@@ -182,7 +190,7 @@ export const createTaskInputs = {
   resourceSubtype,
   scheduling,
   taskStatus: createTaskStatus,
-  workspaceId,
+  workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
 export const updateTaskInputs = {
   asanaConnection: connectionInput,
@@ -197,15 +205,15 @@ export const updateTaskInputs = {
   scheduling,
   taskId,
   taskStatus: updateTaskStatus,
-  workspaceId: { ...workspaceId, required: false },
+  workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
 export const listTasksInputs = {
   asanaConnection: connectionInput,
   assigneeId: { ...assigneeId, required: false },
   optFields: { ...optFields, default: TASK_OPT_FIELDS },
   pagination,
-  projectId: { ...projectId, required: false },
-  workspaceId: { ...workspaceId, required: false },
+  projectId: { ...projectId, required: false, clean: toOptionalId },
+  workspaceId: { ...workspaceId, required: false, clean: toOptionalId },
 };
 export const getTaskInputs = {
   asanaConnection: connectionInput,
@@ -248,24 +256,4 @@ export const removeFollowersFromTaskInputs = {
 export const removeAssigneeFromTaskInputs = {
   asanaConnection: connectionInput,
   taskId,
-};
-export const selectTaskInputs = {
-  connection: connectionInput,
-  project: {
-    ...projectId,
-    required: false,
-    clean: cleanString,
-    dataSource: undefined,
-  },
-  workspace: {
-    ...workspaceId,
-    required: false,
-    clean: cleanString,
-    dataSource: undefined,
-    comments: `${workspaceId.comments} Workspace ID must be provided with an Assignee ID.`,
-  },
-  assignee: {
-    ...assigneeId,
-    comments: `${assigneeId.comments} Assignee ID must be provided with a Workspace ID.`,
-  },
 };
