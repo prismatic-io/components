@@ -1,19 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  categoryDescription,
-  categoryName,
-  connectionInput,
-  locale,
-  position,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { createCategoryExamplePayload } from "../../examplePayloads";
+import { createCategoryInputs } from "../../inputs";
+import { createCategoryOutputSchema } from "../../outputSchemas";
 import type { Category } from "../../types";
-import { createCategoryPayload } from "../../examplePayloads";
 export const createCategory = action({
   display: {
     label: "Create Category",
     description: "Create a category in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { zendeskConnection, categoryDescription, categoryName, locale, position },
@@ -32,21 +28,24 @@ export const createCategory = action({
     }>(`/help_center/${locale}/categories`, payload);
     return { data };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    categoryName: {
-      ...categoryName,
-      required: false,
+  examplePerform: async (
+    _context,
+    { categoryDescription, categoryName, locale },
+  ) => ({
+    data: {
+      ...createCategoryExamplePayload.data,
+      category: {
+        ...createCategoryExamplePayload.data.category,
+        ...(categoryName ? { name: categoryName } : {}),
+        ...(categoryDescription ? { description: categoryDescription } : {}),
+        ...(locale ? { locale } : {}),
+      },
     },
-    categoryDescription: {
-      ...categoryDescription,
-      required: false,
-    },
-    locale,
-    position: {
-      ...position,
-      comments: "The position of the category to be created.",
-    },
-  },
-  examplePayload: { data: createCategoryPayload },
+  }),
+  inputs: createCategoryInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createCategoryOutputSchema,
+  }),
+  examplePayload: createCategoryExamplePayload,
 });

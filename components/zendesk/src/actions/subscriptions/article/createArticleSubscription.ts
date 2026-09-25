@@ -1,21 +1,23 @@
-import { action } from "@prismatic-io/spectral";
-import { articleId, connectionInput, locale, userId } from "../../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../../auth";
+import { createArticleSubscriptionExamplePayload } from "../../../examplePayloads";
+import { createArticleSubscriptionInputs } from "../../../inputs";
+import { createArticleSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
-import { subscriptionPayload } from "../../../examplePayloads";
 export const createArticleSubscription = action({
   display: {
     label: "Create Article Subscription",
     description: "Create a subscription to an article in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { zendeskConnection, articleId, locale, userId },
   ) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const payload = {
-      user_id: userId || undefined,
-      source_locale: locale || undefined,
+      user_id: userId,
+      source_locale: locale,
     };
     const url = locale
       ? `/help_center/${locale}/articles/${articleId}/subscriptions`
@@ -25,23 +27,21 @@ export const createArticleSubscription = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    articleId,
-    userId: {
-      ...userId,
-      comments:
-        "The ID of the user to subscribe to the section. If none provided, the API assumes the current user.",
-      required: false,
+  examplePerform: async (_context, { articleId, locale, userId }) => ({
+    data: {
+      ...createArticleSubscriptionExamplePayload.data,
+      subscription: {
+        ...createArticleSubscriptionExamplePayload.data.subscription,
+        ...(articleId ? { content_id: articleId } : {}),
+        ...(userId ? { user_id: userId } : {}),
+        ...(locale ? { locale } : {}),
+      },
     },
-    locale: {
-      ...locale,
-      required: false,
-      model: undefined,
-      default: undefined,
-      comments:
-        "The locale of the article. If not provided, the default locale is used.",
-    },
-  },
-  examplePayload: { data: subscriptionPayload },
+  }),
+  inputs: createArticleSubscriptionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createArticleSubscriptionOutputSchema,
+  }),
+  examplePayload: createArticleSubscriptionExamplePayload,
 });

@@ -1,20 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  categoryId,
-  connectionInput,
-  locale,
-  position,
-  sectionDescription,
-  sectionName,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { createSectionExamplePayload } from "../../examplePayloads";
+import { createSectionInputs } from "../../inputs";
+import { createSectionOutputSchema } from "../../outputSchemas";
 import type { Section } from "../../types";
-import { createSectionPayload } from "../../examplePayloads";
 export const createSection = action({
   display: {
     label: "Create Section",
     description: "Create a section in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -32,7 +27,7 @@ export const createSection = action({
         name: sectionName,
         description: sectionDescription,
         locale,
-        position,
+        position: position,
       },
     };
     const { data } = await client.post<{
@@ -42,18 +37,25 @@ export const createSection = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    locale,
-    categoryId,
-    sectionName,
-    sectionDescription,
-    position: {
-      ...position,
-      comments: "The position of the section.",
+  examplePerform: async (
+    _context,
+    { locale, position, sectionDescription, sectionName },
+  ) => ({
+    data: {
+      ...createSectionExamplePayload.data,
+      section: {
+        ...createSectionExamplePayload.data.section,
+        ...(sectionName ? { name: sectionName } : {}),
+        ...(sectionDescription ? { description: sectionDescription } : {}),
+        ...(locale ? { locale } : {}),
+        ...(position ? { position } : {}),
+      },
     },
-  },
-  examplePayload: {
-    data: createSectionPayload,
-  },
+  }),
+  inputs: createSectionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createSectionOutputSchema,
+  }),
+  examplePayload: createSectionExamplePayload,
 });

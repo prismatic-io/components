@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanFile,
   cleanFunctionForLimitInput,
@@ -7,13 +7,21 @@ import {
   cleanValueList,
   cleanValueListToEncodedString,
   cleanValueListToString,
+  lookBackDateClean,
 } from "../util";
 import {
-  exampleTimestamp,
+  EXAMPLE_TIMESTAMP,
   postFilterByOptions,
   webhookEvents,
   zendeskLocales,
 } from "../constants";
+import type {
+  TicketPriority,
+  TicketStatus,
+  TicketType,
+  UserRole,
+} from "../types";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 export const requesterName = input({
   label: "Requester Name",
   type: "string",
@@ -82,7 +90,7 @@ export const ticketCommentHTML = input({
 export const ticketId = input({
   label: "Ticket ID",
   type: "string",
-  example: "ExampleTicketId",
+  example: "12345",
   placeholder: "Enter the ticket ID",
   required: true,
   comments: "The unique identifier for the ticket.",
@@ -100,7 +108,10 @@ export const ticketStatus = input({
     { label: "Open", value: "open" },
     { label: "Pending", value: "pending" },
     { label: "Solved", value: "solved" },
-  ],
+  ] satisfies {
+    label: string;
+    value: TicketStatus;
+  }[],
   comments: "The current workflow status of the ticket.",
   clean: cleanString,
 });
@@ -112,17 +123,21 @@ export const tags = input({
   required: false,
   collection: "valuelist",
   comments: "The list of tags to attach to the resource.",
+  clean: cleanValueList,
 });
 export const ticketType = input({
   label: "Ticket Type",
   type: "string",
   required: false,
   model: [
-    { label: "Incident", value: "Incident" },
-    { label: "Problem", value: "Problem" },
-    { label: "Question", value: "Question" },
-    { label: "Task", value: "Task" },
-  ],
+    { label: "Incident", value: "incident" },
+    { label: "Problem", value: "problem" },
+    { label: "Question", value: "question" },
+    { label: "Task", value: "task" },
+  ] satisfies {
+    label: string;
+    value: TicketType;
+  }[],
   comments: "The classification of the ticket.",
   clean: cleanString,
 });
@@ -144,7 +159,10 @@ export const ticketPriority = input({
     { label: "Low", value: "low" },
     { label: "Normal", value: "normal" },
     { label: "Urgent", value: "urgent" },
-  ],
+  ] satisfies {
+    label: string;
+    value: TicketPriority;
+  }[],
   comments: "The urgency level assigned to the ticket.",
   clean: cleanString,
 });
@@ -156,7 +174,7 @@ export const requesterOrganization = input({
   placeholder: "Enter the organization ID",
   comments:
     "The unique identifier for the organization the requester belongs to.",
-  clean: cleanString,
+  clean: cleanNumber,
 });
 export const followers = input({
   label: "Followers",
@@ -165,7 +183,8 @@ export const followers = input({
   example: "488042375842",
   placeholder: "Enter a follower user ID",
   collection: "valuelist",
-  comments: "The list of user IDs to add as followers on the issue.",
+  comments: "The list of user IDs to add as followers on the ticket.",
+  clean: cleanValueList,
 });
 export const userId = input({
   label: "User ID",
@@ -186,7 +205,10 @@ export const userRole = input({
     { label: "Admin", value: "admin" },
     { label: "Agent", value: "agent" },
     { label: "End User", value: "end-user" },
-  ],
+  ] satisfies {
+    label: string;
+    value: UserRole;
+  }[],
   clean: cleanString,
 });
 export const userEmail = input({
@@ -293,7 +315,7 @@ export const organizationId = input({
   required: false,
   placeholder: "Enter the organization ID",
   comments: "The unique identifier for the organization.",
-  clean: cleanString,
+  clean: cleanNumber,
 });
 export const connectionInput = input({
   label: "Connection",
@@ -308,13 +330,14 @@ export const webhookEventsInput = input({
   collection: "valuelist",
   model: webhookEvents.map((event) => ({ label: event, value: event })),
   comments: "The list of events that trigger the webhook to fire.",
+  clean: cleanValueList,
 });
 export const externalId = input({
   label: "External ID",
   type: "string",
   required: false,
   placeholder: "Enter the external ID",
-  comments: "The identifier for the issue from an external system.",
+  comments: "The identifier for the ticket from an external system.",
   clean: cleanString,
 });
 export const file = input({
@@ -353,7 +376,7 @@ export const pageLimit = input({
   clean: cleanFunctionForLimitInput,
 });
 export const cursor = input({
-  label: "Pagination Cursor",
+  label: "Cursor",
   type: "string",
   required: false,
   example: "aQAAAAAAAAAAZPPgaGUAAAAAaZo+HCjcBQAA",
@@ -375,7 +398,6 @@ export const sortOrder = input({
   type: "string",
   required: false,
   example: "asc",
-  placeholder: "asc",
   model: [
     { label: "Ascending", value: "asc" },
     { label: "Descending", value: "desc" },
@@ -398,11 +420,11 @@ export const startTime = input({
   label: "Start Time",
   type: "string",
   required: false,
-  example: exampleTimestamp,
+  example: EXAMPLE_TIMESTAMP,
   placeholder: "Enter the Unix timestamp",
   comments:
     "The start of the time range to search for events. Format: Unix timestamp (seconds since epoch).",
-  clean: util.types.toNumber,
+  clean: cleanNumber,
 });
 export const articleId = input({
   label: "Article ID",
@@ -466,7 +488,7 @@ export const title = input({
   placeholder: "Enter the article title",
   required: false,
   comments: "The headline displayed for the article.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const body = input({
   label: "Body",
@@ -475,7 +497,7 @@ export const body = input({
   placeholder: "Enter the article body",
   required: false,
   comments: "The main content of the article.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const promoted = input({
   label: "Promoted",
@@ -491,7 +513,7 @@ export const position = input({
   comments: "The numeric ordering position of the object within its list.",
   placeholder: "Enter the position",
   example: "42",
-  clean: util.types.toNumber,
+  clean: cleanNumber,
 });
 export const commentsDisabled = input({
   label: "Comments Disabled",
@@ -641,7 +663,7 @@ export const sectionDescription = input({
   example: "Example Description",
   placeholder: "Enter the section description",
   comments: "The descriptive text shown below the section title.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const parentSectionId = input({
   label: "Parent Section ID",
@@ -650,7 +672,7 @@ export const parentSectionId = input({
   example: "12",
   placeholder: "Enter the parent section ID",
   comments: "The unique identifier for the parent section.",
-  clean: util.types.toNumber,
+  clean: cleanNumber,
 });
 export const categoryName = input({
   label: "Category Name",
@@ -686,7 +708,7 @@ export const topicDescription = input({
   example: "Example Description",
   placeholder: "Enter the topic description",
   comments: "The descriptive text shown below the topic title.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const topicId = input({
   label: "Topic ID",
@@ -713,7 +735,7 @@ export const manageableBy = input({
     },
   ],
   comments: "The user segment allowed to manage the topic.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const authorId = input({
   label: "Author ID",
@@ -722,7 +744,7 @@ export const authorId = input({
   example: "12",
   placeholder: "Enter the author user ID",
   comments: "The unique identifier for the author.",
-  clean: util.types.toNumber,
+  clean: cleanNumber,
 });
 export const isPostClosed = input({
   label: "Closed",
@@ -737,7 +759,7 @@ export const postDetails = input({
   required: false,
   placeholder: "Enter the post details",
   comments: "The main body content of the post.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const isPostFeatured = input({
   label: "Featured",
@@ -773,7 +795,7 @@ export const postStatus = input({
     { label: "Completed", value: "completed" },
   ],
   comments: "The current workflow state of the post.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const postId = input({
   label: "Post ID",
@@ -818,7 +840,7 @@ export const filterCreatedBefore = input({
   placeholder: "2024-05-01",
   comments:
     "The upper bound used to filter results by creation date. Format: YYYY-MM-DD.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const filterCreatedAfter = input({
   label: "Created After",
@@ -828,7 +850,7 @@ export const filterCreatedAfter = input({
   placeholder: "2024-05-01",
   comments:
     "The lower bound used to filter results by creation date. Format: YYYY-MM-DD.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const filterCategoryId = input({
   label: "Category ID",
@@ -838,7 +860,7 @@ export const filterCategoryId = input({
   placeholder: "Enter the category ID",
   comments:
     "The unique identifier for the category used to filter the results.",
-  clean: util.types.toNumber,
+  clean: cleanNumber,
 });
 export const filterCreatedAt = input({
   label: "Created At",
@@ -848,7 +870,7 @@ export const filterCreatedAt = input({
   placeholder: "2024-05-01",
   comments:
     "The exact creation date used to filter the results. Format: YYYY-MM-DD.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const filterLabelNames = input({
   label: "Label Names",
@@ -874,7 +896,7 @@ export const filterSectionId = input({
   example: "12",
   placeholder: "Enter the section ID",
   comments: "The unique identifier for the section used to filter the results.",
-  clean: util.types.toNumber,
+  clean: cleanNumber,
 });
 export const filterUpdatedAt = input({
   label: "Updated At",
@@ -884,7 +906,7 @@ export const filterUpdatedAt = input({
   placeholder: "2024-05-01",
   comments:
     "The exact update date used to filter the results. Format: YYYY-MM-DD.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const filterUpdatedBefore = input({
   label: "Updated Before",
@@ -894,7 +916,7 @@ export const filterUpdatedBefore = input({
   placeholder: "2024-05-01",
   comments:
     "The upper bound used to filter results by update date. Format: YYYY-MM-DD.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const filterUpdatedAfter = input({
   label: "Updated After",
@@ -904,7 +926,7 @@ export const filterUpdatedAfter = input({
   placeholder: "2024-05-01",
   comments:
     "The lower bound used to filter results by update date. Format: YYYY-MM-DD.",
-  clean: util.types.toString,
+  clean: cleanString,
 });
 export const inline = input({
   label: "Inline",
@@ -940,3 +962,41 @@ export const showUpdatedRecords = input({
     "When true, tickets updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+export const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each ticket created or updated on or after this date once, ignoring the visibility filters.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { cursor, pageLimit },
+});
+export const dateRangeFilters = structuredObjectInput({
+  label: "Date Range Filters",
+  comments:
+    "Optional date filters. Narrow results by exact creation or update date, or by inclusive before and after bounds.",
+  inputs: {
+    filterCreatedAt,
+    filterCreatedAfter,
+    filterCreatedBefore,
+    filterUpdatedAt,
+    filterUpdatedAfter,
+    filterUpdatedBefore,
+  },
+});
+export const rawRequestInputs = {
+  connection: connectionInput,
+  ...(httpClientInputs as Omit<typeof httpClientInputs, "debugRequest">),
+  url: {
+    ...httpClientInputs.url,
+    comments:
+      "Input the path only (/users), The base URL is already included with the configured Zendesk domain (https://YOUR-ZENDESK-DOMAIN.zendesk.com/api/v2). For example, to connect to https://YOUR-ZENDESK-DOMAIN.zendesk.com/api/v2/users, only /users is entered in this field.",
+    example: "/users",
+  },
+};

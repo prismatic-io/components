@@ -1,16 +1,14 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  articleId,
-  connectionInput,
-  locale,
-  subscriptionId,
-} from "../../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../../auth";
+import { deleteArticleSubscriptionExamplePayload } from "../../../examplePayloads";
+import { deleteArticleSubscriptionInputs } from "../../../inputs";
+import { deleteArticleSubscriptionOutputSchema } from "../../../outputSchemas";
 export const deleteArticleSubscription = action({
   display: {
     label: "Delete Article Subscription",
     description: "Delete a subscription to an article in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { zendeskConnection, articleId, locale, subscriptionId },
@@ -24,21 +22,11 @@ export const deleteArticleSubscription = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    subscriptionId: {
-      ...subscriptionId,
-      dataSource: "selectArticleSubscription",
-    },
-    articleId,
-    locale: {
-      ...locale,
-      required: false,
-      model: undefined,
-      default: undefined,
-      comments:
-        "The locale of the article. If not provided, the default locale is used.",
-    },
-  },
-  examplePayload: { data: null },
+  examplePerform: async () => deleteArticleSubscriptionExamplePayload,
+  inputs: deleteArticleSubscriptionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteArticleSubscriptionOutputSchema,
+  }),
+  examplePayload: deleteArticleSubscriptionExamplePayload,
 });

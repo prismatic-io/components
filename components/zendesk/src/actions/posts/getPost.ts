@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { connectionInput, postId } from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getPostInputs } from "../../inputs";
 import { rawHttpClient } from "../../auth";
+import { getPostOutputSchema } from "../../outputSchemas";
 import type { Post } from "../../types";
-import { createPostPayload } from "../../examplePayloads";
+import { getPostExamplePayload } from "../../examplePayloads";
 export const getPost = action({
   display: {
     label: "Get Post",
     description: "Get a post from the Help Center.",
   },
+  performSafety: "safe",
   perform: async (context, { postId, zendeskConnection }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const { data } = await client.get<{
@@ -17,9 +19,10 @@ export const getPost = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    postId,
-  },
-  examplePayload: { data: createPostPayload },
+  inputs: getPostInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPostOutputSchema,
+  }),
+  examplePayload: getPostExamplePayload,
 });

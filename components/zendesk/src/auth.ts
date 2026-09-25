@@ -14,7 +14,7 @@ import {
   oauth2TemplateConnection,
 } from "./connections";
 import type { CreateClientProps, ZendeskConnectionProps } from "./types";
-import { cleanZendeskDomain } from "./helper";
+import { cleanZendeskDomain } from "./util";
 export const getConnectionProps = ({
   zendeskConnection,
   username,

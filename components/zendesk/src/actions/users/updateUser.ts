@@ -1,51 +1,37 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createClient } from "../../auth";
-import {
-  connectionInput,
-  isModerator,
-  isVerified,
-  organizationId,
-  userAlias,
-  userDetails,
-  userEmail,
-  userExternalIdInput,
-  userId,
-  userName,
-  userNotes,
-  userPhone,
-  userRole,
-  userTimeZone,
-} from "../../inputs";
-import { isRole } from "../../helper";
-import { convertBooleanInputIntoUpdateInput } from "../../util";
-import { updateUserPayload } from "../../examplePayloads";
+import { updateUserExamplePayload } from "../../examplePayloads";
+import { updateUserInputs } from "../../inputs";
+import { updateUserOutputSchema } from "../../outputSchemas";
+import { isRole } from "../../util";
 export const updateUser = action({
   display: {
     label: "Update User",
     description: "Update a user by ID.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
-    const userRoleString = util.types.toString(params.userRole);
+    const userRoleString = params.accountSettings.userRole;
     const { result } = await client.users.update(
       util.types.toInt(params.userId),
       {
         user: {
-          name: util.types.toString(params.userName) || undefined,
-          email: util.types.toString(params.userEmail) || undefined,
-          phone: util.types.toString(params.userPhone) || undefined,
-          external_id: util.types.toString(params.externalId) || undefined,
-          notes: util.types.toString(params.userNotes) || undefined,
-          details: util.types.toString(params.userDetails) || undefined,
-          moderator: params.isModerator,
-          alias: util.types.toString(params.userAlias) || undefined,
+          name: params.contactInfo.userName,
+          email: params.contactInfo.userEmail,
+          phone: params.contactInfo.userPhone,
+          external_id: params.externalId,
+          notes: params.profileDetails.userNotes,
+          details: params.profileDetails.userDetails,
+          moderator: params.accountSettings.isModerator,
+          alias: params.profileDetails.userAlias,
           role: isRole(userRoleString) ? userRoleString : undefined,
-          time_zone: util.types.toString(params.userTimeZone) || undefined,
-          verified: params.isVerified,
-          organization_id: util.types.toInt(params.organizationId) || undefined,
+          time_zone: params.profileDetails.userTimeZone,
+          verified: params.accountSettings.isVerified,
+          organization_id: params.organizationId,
         },
       },
     );
@@ -53,23 +39,39 @@ export const updateUser = action({
       data: result,
     };
   },
-  inputs: {
-    userId: { ...userId, required: true },
-    userRole,
-    userName: { ...userName, required: false },
-    userEmail: { ...userEmail, required: false },
-    userPhone,
-    externalId: userExternalIdInput,
-    userNotes,
-    userDetails,
-    isModerator: convertBooleanInputIntoUpdateInput(isModerator),
-    userAlias,
-    userTimeZone,
-    isVerified: convertBooleanInputIntoUpdateInput(isVerified),
-    organizationId,
-    zendeskConnection: connectionInput,
+  examplePerform: async (
+    _context,
+    params,
+  ): Promise<{
+    data: unknown;
+  }> => {
+    const { userRole: role } = params.accountSettings;
+    const {
+      userName: name,
+      userEmail: email,
+      userPhone: phone,
+    } = params.contactInfo;
+    const { userAlias: alias } = params.profileDetails;
+    const organizationId = params.organizationId;
+    return {
+      data: {
+        ...updateUserExamplePayload.data,
+        ...(name ? { name } : {}),
+        ...(email ? { email } : {}),
+        ...(phone ? { phone } : {}),
+        ...(alias ? { alias } : {}),
+        ...(isRole(role) ? { role } : {}),
+        ...(organizationId ? { organization_id: organizationId } : {}),
+        ...(params.accountSettings.isVerified === undefined
+          ? {}
+          : { verified: params.accountSettings.isVerified }),
+      },
+    };
   },
-  examplePayload: {
-    data: updateUserPayload as unknown,
-  },
+  inputs: updateUserInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateUserOutputSchema,
+  }),
+  examplePayload: updateUserExamplePayload,
 });

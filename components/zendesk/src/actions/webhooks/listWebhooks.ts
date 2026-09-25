@@ -1,23 +1,16 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
-import { listWebhooksPayload } from "../../examplePayloads";
-import { connectionInput } from "../../inputs";
-import { fetchWebhooks } from "./utils";
+import { listWebhooksExamplePayload } from "../../examplePayloads";
+import { listWebhooksInputs } from "../../inputs";
+import { listWebhooksOutputSchema } from "../../outputSchemas";
+import { fetchWebhooks } from "../../util";
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
     description: "List all webhooks configured in Zendesk.",
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    showOnlyInstanceWebhooks: input({
-      label: "Show only instance webhooks",
-      comments: "Show only webhooks that point to this instance",
-      type: "boolean",
-      default: "true",
-      clean: util.types.toBool,
-    }),
-  },
+  inputs: listWebhooksInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = rawHttpClient(params.zendeskConnection);
     const instanceWebhookUrls = Object.values(context.webhookUrls);
@@ -28,7 +21,10 @@ export const listWebhooks = action({
     });
     return { data: webhooks };
   },
-  examplePayload: {
-    data: listWebhooksPayload as unknown,
-  },
+  examplePerform: async () => listWebhooksExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listWebhooksOutputSchema,
+  }),
+  examplePayload: listWebhooksExamplePayload,
 });

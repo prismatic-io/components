@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { connectionInput, locale, articleId } from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { showArticleInputs } from "../../inputs";
 import { rawHttpClient } from "../../auth";
+import { showArticleOutputSchema } from "../../outputSchemas";
 import type { Article } from "../../types";
-import { getArticlePayload } from "../../examplePayloads";
+import { showArticleExamplePayload } from "../../examplePayloads";
 export const showArticle = action({
   display: {
     label: "Get Article",
     description: "Get an article from the Help Center.",
   },
+  performSafety: "safe",
   perform: async (context, { zendeskConnection, locale, articleId }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const { data } = await client.get<{
@@ -17,15 +19,10 @@ export const showArticle = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    locale: {
-      ...locale,
-      comments: "The locale of the articles to retrieve. Defaults to 'en-us'.",
-    },
-    articleId,
-  },
-  examplePayload: {
-    data: getArticlePayload,
-  },
+  inputs: showArticleInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: showArticleOutputSchema,
+  }),
+  examplePayload: showArticleExamplePayload,
 });

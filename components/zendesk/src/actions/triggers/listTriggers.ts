@@ -1,20 +1,25 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
-import { listTriggersPayload } from "../../examplePayloads";
-import { connectionInput } from "../../inputs";
-import { fetchTriggers } from "./utils";
+import { listTriggersExamplePayload } from "../../examplePayloads";
+import { listTriggersInputs } from "../../inputs";
+import { listTriggersOutputSchema } from "../../outputSchemas";
+import { fetchTriggers } from "../../util";
 export const listTriggers = action({
   display: {
     label: "List Triggers",
     description: "List all workflow triggers configured in Zendesk.",
   },
-  inputs: { connection: connectionInput },
-  perform: async (context, params) => {
+  inputs: listTriggersInputs,
+  performSafety: "notAllowed",
+  perform: async (_context, params) => {
     const client = rawHttpClient(params.connection);
     const triggers = await fetchTriggers(client);
     return { data: triggers };
   },
-  examplePayload: {
-    data: listTriggersPayload as unknown,
-  },
+  examplePerform: async () => listTriggersExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listTriggersOutputSchema,
+  }),
+  examplePayload: listTriggersExamplePayload,
 });

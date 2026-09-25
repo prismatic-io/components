@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
-import { deleteWebhookPayload } from "../../examplePayloads";
-import { connectionInput } from "../../inputs";
-import { fetchWebhooks } from "./utils";
+import { deleteInstanceWebhooksExamplePayload } from "../../examplePayloads";
+import { deleteInstanceWebhooksInputs } from "../../inputs";
+import { deleteInstanceWebhooksOutputSchema } from "../../outputSchemas";
+import { fetchWebhooks } from "../../util";
 export const deleteInstanceWebhooks = action({
   display: {
     label: "Delete Instance Webhooks",
     description: "Delete all webhooks pointing to this instance.",
   },
-  inputs: { zendeskConnection: connectionInput },
+  inputs: deleteInstanceWebhooksInputs,
+  performSafety: "notAllowed",
   perform: async ({ logger, webhookUrls }, params) => {
     const client = rawHttpClient(params.zendeskConnection);
     const instanceWebhookUrls = Object.values(webhookUrls);
@@ -23,7 +25,10 @@ export const deleteInstanceWebhooks = action({
     }
     return { data: null };
   },
-  examplePayload: {
-    data: deleteWebhookPayload,
-  },
+  examplePerform: async () => deleteInstanceWebhooksExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteInstanceWebhooksOutputSchema,
+  }),
+  examplePayload: deleteInstanceWebhooksExamplePayload,
 });

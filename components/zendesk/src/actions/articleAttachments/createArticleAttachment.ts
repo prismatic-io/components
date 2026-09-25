@@ -1,20 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  articleId,
-  connectionInput,
-  file,
-  fileName,
-  inline,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { createArticleAttachmentExamplePayload } from "../../examplePayloads";
+import { createArticleAttachmentInputs } from "../../inputs";
+import { createArticleAttachmentOutputSchema } from "../../outputSchemas";
 import type { ArticleAttachment } from "../../types";
-import { createArticleAttachmentPayload } from "../../examplePayloads";
-import FormData from "form-data";
 export const createArticleAttachment = action({
   display: {
     label: "Create Article Attachment",
     description: "Create an attachment for an article in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { zendeskConnection, file, articleId, inline, fileName },
@@ -34,22 +29,21 @@ export const createArticleAttachment = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    fileName: {
-      ...fileName,
-      example: "file.jpg",
-      placeholder: "file.jpg",
+  examplePerform: async (_context, { articleId, fileName, inline }) => ({
+    data: {
+      ...createArticleAttachmentExamplePayload.data,
+      article_attachment: {
+        ...createArticleAttachmentExamplePayload.data.article_attachment,
+        ...(articleId ? { article_id: articleId } : {}),
+        ...(fileName ? { file_name: fileName } : {}),
+        inline,
+      },
     },
-    file: {
-      ...file,
-      comments: "The File Attachment to upload.",
-      required: true,
-    },
-    inline,
-    articleId,
-  },
-  examplePayload: {
-    data: createArticleAttachmentPayload,
-  },
+  }),
+  inputs: createArticleAttachmentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createArticleAttachmentOutputSchema,
+  }),
+  examplePayload: createArticleAttachmentExamplePayload,
 });

@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { connectionInput, topicDescription, topicName } from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { createTopicExamplePayload } from "../../examplePayloads";
+import { createTopicInputs } from "../../inputs";
+import { createTopicOutputSchema } from "../../outputSchemas";
 import type { Topic } from "../../types";
-import { createTopicPayload } from "../../examplePayloads";
 export const createTopic = action({
   display: {
     label: "Create Topic",
     description: "Create a new topic in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { zendeskConnection, topicName, topicDescription },
@@ -26,10 +28,20 @@ export const createTopic = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    topicName,
-    topicDescription,
-  },
-  examplePayload: { data: createTopicPayload },
+  examplePerform: async (_context, { topicDescription, topicName }) => ({
+    data: {
+      ...createTopicExamplePayload.data,
+      topic: {
+        ...createTopicExamplePayload.data.topic,
+        ...(topicName ? { name: topicName } : {}),
+        ...(topicDescription ? { description: topicDescription } : {}),
+      },
+    },
+  }),
+  inputs: createTopicInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createTopicOutputSchema,
+  }),
+  examplePayload: createTopicExamplePayload,
 });

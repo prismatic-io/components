@@ -1,36 +1,23 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createClient } from "../../auth";
-import {
-  ticketComment,
-  ticketCommentHTML,
-  ticketStatus,
-  tags,
-  ticketType,
-  ticketSubject,
-  ticketId,
-  ticketPriority,
-  requesterOrganization,
-  assigneeEmail,
-  assigneeId,
-  connectionInput,
-  file,
-  fileName,
-} from "../../inputs";
-import { isPriority, isStatus, isType, validateComment } from "../.././helper";
-import { createTicketPayload } from "../../examplePayloads";
+import { updateTicketExamplePayload } from "../../examplePayloads";
+import { updateTicketInputs } from "../../inputs";
+import { updateTicketOutputSchema } from "../../outputSchemas";
+import { isPriority, isStatus, isType, validateComment } from "../../util";
 export const updateTicket = action({
   display: {
     label: "Update Ticket",
     description: "Update a ticket by ID.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
-    const ticketPriorityString = params.ticketPriority;
-    const ticketStatusString = params.ticketStatus;
-    const ticketTypeString = params.ticketType;
+    const ticketPriorityString = params.classification.ticketPriority;
+    const ticketStatusString = params.classification.ticketStatus;
+    const ticketTypeString = params.classification.ticketType;
     let attachment: Record<string, Record<string, unknown>> | undefined;
     if (params.file) {
       if (!params.fileName) {
@@ -48,13 +35,11 @@ export const updateTicket = action({
           assignee_id: util.types.isInt(params.assigneeId)
             ? util.types.toInt(params.assigneeId)
             : undefined,
-          assignee_email:
-            util.types.toString(params.assigneeEmail) || undefined,
+          assignee_email: params.assigneeEmail,
           priority: (isPriority(ticketPriorityString)
             ? ticketPriorityString
             : undefined) as undefined,
-          organization_id:
-            util.types.toInt(params.requesterOrganization) || undefined,
+          organization_id: params.requesterOrganization,
           comment: validateComment({
             bodyValue: params.ticketComment,
             htmlValue: params.ticketCommentHTML,
@@ -63,12 +48,11 @@ export const updateTicket = action({
           status: (isStatus(ticketStatusString)
             ? ticketStatusString
             : undefined) as undefined,
-          tags:
-            params.tags?.map((tag) => util.types.toString(tag)) || undefined,
+          tags: params.tags,
           type: (isType(ticketTypeString)
-            ? ticketTypeString
+            ? ticketTypeString?.toLowerCase()
             : undefined) as undefined,
-          subject: util.types.toString(params.ticketSubject) || undefined,
+          subject: params.ticketSubject,
         },
       },
     );
@@ -76,23 +60,40 @@ export const updateTicket = action({
       data: result,
     };
   },
-  inputs: {
-    ticketId,
-    ticketComment,
-    ticketCommentHTML,
-    file,
-    fileName,
-    ticketStatus,
-    assigneeEmail: { ...assigneeEmail, required: false },
-    assigneeId: { ...assigneeId, required: false },
-    tags,
-    ticketType,
-    ticketSubject,
-    ticketPriority,
-    requesterOrganization,
-    zendeskConnection: connectionInput,
+  examplePerform: async (
+    _context,
+    params,
+  ): Promise<{
+    data: unknown;
+  }> => {
+    const {
+      ticketPriority: priority,
+      ticketStatus: status,
+      ticketType: type,
+    } = params.classification;
+    const subject = params.ticketSubject;
+    const organizationId = params.requesterOrganization;
+    return {
+      data: {
+        ...updateTicketExamplePayload.data,
+        ...(subject ? { subject } : {}),
+        ...(isPriority(priority) ? { priority } : {}),
+        ...(isStatus(status) ? { status } : {}),
+        ...(isType(type) ? { type: type?.toLowerCase() } : {}),
+        ...(organizationId ? { organization_id: organizationId } : {}),
+        ...(util.types.isInt(params.assigneeId)
+          ? { assignee_id: util.types.toInt(params.assigneeId) }
+          : {}),
+        ...(params.tags?.length
+          ? { tags: params.tags.map((tag) => util.types.toString(tag)) }
+          : {}),
+      },
+    };
   },
-  examplePayload: {
-    data: createTicketPayload as unknown,
-  },
+  inputs: updateTicketInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateTicketOutputSchema,
+  }),
+  examplePayload: updateTicketExamplePayload,
 });

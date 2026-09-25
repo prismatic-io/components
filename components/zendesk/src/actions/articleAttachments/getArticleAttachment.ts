@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
-import { connectionInput, articleId, articleAttachmentId } from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getArticleAttachmentInputs } from "../../inputs";
 import { rawHttpClient } from "../../auth";
+import { getArticleAttachmentOutputSchema } from "../../outputSchemas";
 import type { ArticleAttachment } from "../../types";
-import { getArticleAttachmentPayload } from "../../examplePayloads";
+import { getArticleAttachmentExamplePayload } from "../../examplePayloads";
 export const getArticleAttachment = action({
   display: {
     label: "Get Article Attachment",
     description:
       "Get the properties of an attachment on an article in the Help Center.",
   },
+  performSafety: "safe",
   perform: async (
     context,
     { zendeskConnection, articleId, articleAttachmentId },
@@ -21,12 +23,10 @@ export const getArticleAttachment = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    articleId,
-    articleAttachmentId,
-  },
-  examplePayload: {
-    data: getArticleAttachmentPayload,
-  },
+  inputs: getArticleAttachmentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getArticleAttachmentOutputSchema,
+  }),
+  examplePayload: getArticleAttachmentExamplePayload,
 });

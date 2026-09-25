@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import { categoryId, connectionInput, locale } from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getCategoryInputs } from "../../inputs";
 import { rawHttpClient } from "../../auth";
+import { getCategoryOutputSchema } from "../../outputSchemas";
 import type { Category } from "../../types";
-import { getCategoryPayload } from "../../examplePayloads";
+import { getCategoryExamplePayload } from "../../examplePayloads";
 export const getCategory = action({
   display: {
     label: "Get Category",
     description: "Get a category from the Help Center.",
   },
+  performSafety: "safe",
   perform: async (context, { zendeskConnection, categoryId, locale }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const { data } = await client.get<{
@@ -15,12 +17,10 @@ export const getCategory = action({
     }>(`/help_center/${locale}/categories/${categoryId}`);
     return { data };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    locale,
-    categoryId,
-  },
-  examplePayload: {
-    data: getCategoryPayload,
-  },
+  inputs: getCategoryInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getCategoryOutputSchema,
+  }),
+  examplePayload: getCategoryExamplePayload,
 });

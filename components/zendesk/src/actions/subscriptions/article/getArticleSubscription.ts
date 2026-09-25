@@ -1,18 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  articleId,
-  connectionInput,
-  subscriptionId,
-  locale,
-} from "../../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getArticleSubscriptionInputs } from "../../../inputs";
 import { rawHttpClient } from "../../../auth";
+import { getArticleSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
-import { subscriptionPayload } from "../../../examplePayloads";
+import { getArticleSubscriptionExamplePayload } from "../../../examplePayloads";
 export const getArticleSubscription = action({
   display: {
     label: "Get Article Subscription",
     description: "Get an article subscription from the Help Center.",
   },
+  performSafety: "safe",
   perform: async (
     context,
     { zendeskConnection, articleId, subscriptionId, locale },
@@ -26,21 +23,10 @@ export const getArticleSubscription = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    subscriptionId: {
-      ...subscriptionId,
-      dataSource: "selectArticleSubscription",
-    },
-    articleId,
-    locale: {
-      ...locale,
-      required: false,
-      model: undefined,
-      default: undefined,
-      comments:
-        "The locale of the article. If not provided, the default locale is used.",
-    },
-  },
-  examplePayload: { data: subscriptionPayload },
+  inputs: getArticleSubscriptionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getArticleSubscriptionOutputSchema,
+  }),
+  examplePayload: getArticleSubscriptionExamplePayload,
 });

@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../auth";
-import { getByExternalIdPayload } from "../../examplePayloads";
-import { connectionInput, externalId } from "../../inputs";
+import { getByExternalIdExamplePayload } from "../../examplePayloads";
+import { getByExternalIdInputs } from "../../inputs";
+import { getByExternalIdOutputSchema } from "../../outputSchemas";
 export const getByExternalId = action({
   display: {
     label: "Get Ticket By External ID",
     description: "Get a ticket by external ID.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient({
       zendeskConnection: params.zendeskConnection,
@@ -20,11 +22,11 @@ export const getByExternalId = action({
       data: result,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    externalId,
-  },
-  examplePayload: {
-    data: getByExternalIdPayload as unknown,
-  },
+  examplePerform: async () => getByExternalIdExamplePayload,
+  inputs: getByExternalIdInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getByExternalIdOutputSchema,
+  }),
+  examplePayload: getByExternalIdExamplePayload,
 });

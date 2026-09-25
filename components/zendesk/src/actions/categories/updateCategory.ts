@@ -1,20 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  categoryDescription,
-  categoryId,
-  categoryName,
-  connectionInput,
-  locale,
-  position,
-} from "../../inputs";
-import { updateCategoryPayload } from "../../examplePayloads";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { updateCategoryExamplePayload } from "../../examplePayloads";
+import { updateCategoryInputs } from "../../inputs";
+import { updateCategoryOutputSchema } from "../../outputSchemas";
 import type { Category } from "../../types";
 export const updateCategory = action({
   display: {
     label: "Update Category",
     description: "Update a category in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -29,10 +24,10 @@ export const updateCategory = action({
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const payload = {
       category: {
-        name: categoryName || undefined,
-        description: categoryDescription || undefined,
-        locale: locale || undefined,
-        position: position || undefined,
+        name: categoryName,
+        description: categoryDescription,
+        locale: locale,
+        position: position,
       },
     };
     const { data } = await client.put<{
@@ -42,28 +37,25 @@ export const updateCategory = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    categoryId,
-    locale: {
-      ...locale,
-      required: false,
-      comments: "The locale of the category to be updated.",
+  examplePerform: async (
+    _context,
+    { categoryDescription, categoryId, categoryName, locale },
+  ) => ({
+    data: {
+      ...updateCategoryExamplePayload.data,
+      category: {
+        ...updateCategoryExamplePayload.data.category,
+        ...(categoryId ? { id: categoryId } : {}),
+        ...(categoryName ? { name: categoryName } : {}),
+        ...(categoryDescription ? { description: categoryDescription } : {}),
+        ...(locale ? { locale } : {}),
+      },
     },
-    categoryName: {
-      ...categoryName,
-      required: false,
-      comments: "The name of the category to be updated.",
-    },
-    categoryDescription: {
-      ...categoryDescription,
-      required: false,
-      comments: "The description of the category to be updated.",
-    },
-    position: {
-      ...position,
-      comments: "The position of the category to be updated.",
-    },
-  },
-  examplePayload: { data: updateCategoryPayload },
+  }),
+  inputs: updateCategoryInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateCategoryOutputSchema,
+  }),
+  examplePayload: updateCategoryExamplePayload,
 });

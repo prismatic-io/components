@@ -1,11 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../../auth";
-import { connectionInput, postId, subscriptionId } from "../../../inputs";
+import { deletePostSubscriptionExamplePayload } from "../../../examplePayloads";
+import { deletePostSubscriptionInputs } from "../../../inputs";
+import { deletePostSubscriptionOutputSchema } from "../../../outputSchemas";
 export const deletePostSubscription = action({
   display: {
     label: "Delete Post Subscription",
     description: "Delete a post subscription in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { zendeskConnection, postId, subscriptionId }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const { data } = await client.delete(
@@ -15,12 +18,11 @@ export const deletePostSubscription = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    postId,
-    subscriptionId: { ...subscriptionId, dataSource: "selectPostSubscription" },
-  },
-  examplePayload: {
-    data: null,
-  },
+  examplePerform: async () => deletePostSubscriptionExamplePayload,
+  inputs: deletePostSubscriptionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deletePostSubscriptionOutputSchema,
+  }),
+  examplePayload: deletePostSubscriptionExamplePayload,
 });

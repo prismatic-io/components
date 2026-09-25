@@ -1,21 +1,16 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  fetchAll,
-  locale,
-  pageLimit,
-  sortBy,
-  sortOrder,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { listCategoriesExamplePayload } from "../../examplePayloads";
+import { listCategoriesInputs } from "../../inputs";
+import { listCategoriesOutputSchema } from "../../outputSchemas";
 import type { Category, PaginatedResponse } from "../../types";
-import { listCategoriesPayload } from "../../examplePayloads";
 import { paginateResults } from "../../util";
 export const listCategories = action({
   display: {
     label: "List Categories",
     description: "List all categories in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { locale, sortBy, sortOrder, zendeskConnection, fetchAll, pageLimit },
@@ -31,14 +26,14 @@ export const listCategories = action({
             url,
             categories,
             "categories",
-            pageLimit || undefined,
+            pageLimit,
           ),
         },
       };
     }
     const params = {
-      sort_by: sortBy || undefined,
-      sort_order: sortOrder || undefined,
+      sort_by: sortBy,
+      sort_order: sortOrder,
     };
     const { data } = await client.get<
       | PaginatedResponse<{
@@ -54,34 +49,14 @@ export const listCategories = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    locale,
-    sortBy: {
-      ...sortBy,
-      model: [
-        {
-          label: "Position",
-          value: "position",
-        },
-        {
-          label: "Created At",
-          value: "created_at",
-        },
-        {
-          label: "Updated At",
-          value: "updated_at",
-        },
-      ].map((item) => {
-        return {
-          label: item.label,
-          value: item.value,
-        };
-      }),
-    },
-    sortOrder,
-    pageLimit,
-    fetchAll,
-  },
-  examplePayload: { data: listCategoriesPayload },
+  examplePerform: async (_context, { fetchAll }) =>
+    fetchAll
+      ? { data: { categories: listCategoriesExamplePayload.data.categories } }
+      : { data: listCategoriesExamplePayload.data },
+  inputs: listCategoriesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCategoriesOutputSchema,
+  }),
+  examplePayload: listCategoriesExamplePayload,
 });

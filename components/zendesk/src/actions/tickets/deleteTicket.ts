@@ -1,13 +1,15 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createClient } from "../../auth";
-import { ticketId, connectionInput } from "../../inputs";
-import { successMessagePayload } from "../../examplePayloads";
 import { SUCCESS_MESSAGE } from "../../constants";
+import { deleteTicketExamplePayload } from "../../examplePayloads";
+import { deleteTicketInputs } from "../../inputs";
+import { deleteTicketOutputSchema } from "../../outputSchemas";
 export const deleteTicket = action({
   display: {
     label: "Delete Ticket",
     description: "Delete a ticket by ID.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient({
       zendeskConnection: params.zendeskConnection,
@@ -18,11 +20,11 @@ export const deleteTicket = action({
       data: SUCCESS_MESSAGE,
     };
   },
-  inputs: {
-    ticketId,
-    zendeskConnection: connectionInput,
-  },
-  examplePayload: {
-    data: successMessagePayload,
-  },
+  examplePerform: async () => deleteTicketExamplePayload,
+  inputs: deleteTicketInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteTicketOutputSchema,
+  }),
+  examplePayload: deleteTicketExamplePayload,
 });

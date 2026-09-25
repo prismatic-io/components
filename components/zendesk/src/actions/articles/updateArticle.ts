@@ -1,44 +1,25 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
-import {
-  articleId,
-  authorId,
-  body,
-  commentsDisabled,
-  connectionInput,
-  contentTagIds,
-  labelNames,
-  locale,
-  permissionGroupId,
-  position,
-  promoted,
-  sectionId,
-  title,
-  userSegmentId,
-} from "../../inputs";
-import { updateArticlePayload } from "../../examplePayloads";
-import { convertBooleanInputIntoUpdateInput } from "../../util";
+import { updateArticleExamplePayload } from "../../examplePayloads";
+import { updateArticleInputs } from "../../inputs";
+import { updateArticleOutputSchema } from "../../outputSchemas";
 export const updateArticle = action({
   display: {
     label: "Update Article",
     description: "Update an existing article's metadata in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       zendeskConnection,
       locale,
-      promoted,
+      assignmentIds,
+      displayOptions,
       articleBody,
-      permissionGroupId,
-      commentsDisabled,
       contentTagIds,
-      sectionId,
-      authorId,
       articleTitle,
-      userSegmentId,
       labelNames,
-      position,
       articleId,
     },
   ) => {
@@ -47,17 +28,17 @@ export const updateArticle = action({
       `/help_center/${locale}/articles/${articleId}`,
       {
         article: {
-          user_segment_id: userSegmentId || undefined,
-          section_id: sectionId || undefined,
-          author_id: authorId || undefined,
-          body: articleBody || undefined,
-          permission_group_id: permissionGroupId || undefined,
-          promoted: promoted,
-          position: position || undefined,
-          comments_disabled: commentsDisabled,
-          label_names: labelNames.length ? labelNames : undefined,
-          content_tag_ids: contentTagIds.length ? contentTagIds : undefined,
-          title: articleTitle || undefined,
+          user_segment_id: assignmentIds.userSegmentId,
+          section_id: assignmentIds.sectionId,
+          author_id: assignmentIds.authorId,
+          body: articleBody,
+          permission_group_id: assignmentIds.permissionGroupId,
+          promoted: displayOptions.promoted,
+          position: displayOptions.position,
+          comments_disabled: displayOptions.commentsDisabled,
+          label_names: labelNames,
+          content_tag_ids: contentTagIds,
+          title: articleTitle,
         },
       },
     );
@@ -65,39 +46,50 @@ export const updateArticle = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    articleId,
-    sectionId: {
-      ...sectionId,
-      required: false,
+  examplePerform: async (
+    _context,
+    {
+      articleId,
+      articleTitle,
+      assignmentIds,
+      contentTagIds,
+      displayOptions,
+      locale,
     },
-    authorId,
-    articleTitle: {
-      ...title,
+  ) => ({
+    data: {
+      ...updateArticleExamplePayload.data,
+      article: {
+        ...updateArticleExamplePayload.data.article,
+        ...(articleId ? { id: articleId } : {}),
+        ...(articleTitle ? { title: articleTitle } : {}),
+        ...(locale ? { locale } : {}),
+        ...(assignmentIds.authorId
+          ? { author_id: assignmentIds.authorId }
+          : {}),
+        ...(assignmentIds.permissionGroupId
+          ? { permission_group_id: assignmentIds.permissionGroupId }
+          : {}),
+        ...(assignmentIds.userSegmentId
+          ? { user_segment_id: assignmentIds.userSegmentId }
+          : {}),
+        ...(displayOptions.position
+          ? { position: displayOptions.position }
+          : {}),
+        ...(displayOptions.promoted === undefined
+          ? {}
+          : { promoted: displayOptions.promoted }),
+        ...(displayOptions.commentsDisabled === undefined
+          ? {}
+          : { comments_disabled: displayOptions.commentsDisabled }),
+        ...(contentTagIds ? { content_tag_ids: contentTagIds } : {}),
+      },
     },
-    articleBody: {
-      ...body,
-    },
-    permissionGroupId: {
-      ...permissionGroupId,
-      required: false,
-    },
-    userSegmentId: {
-      ...userSegmentId,
-      required: false,
-    },
-    locale: {
-      ...locale,
-      required: false,
-    },
-    promoted: convertBooleanInputIntoUpdateInput(promoted),
-    position,
-    commentsDisabled: convertBooleanInputIntoUpdateInput(commentsDisabled),
-    contentTagIds,
-    labelNames,
-  },
-  examplePayload: {
-    data: updateArticlePayload,
-  },
+  }),
+  inputs: updateArticleInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateArticleOutputSchema,
+  }),
+  examplePayload: updateArticleExamplePayload,
 });

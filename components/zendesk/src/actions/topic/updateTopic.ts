@@ -1,21 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  manageableBy,
-  position,
-  topicDescription,
-  topicId,
-  topicName,
-  userSegmentId,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { updateTopicExamplePayload } from "../../examplePayloads";
+import { updateTopicInputs } from "../../inputs";
+import { updateTopicOutputSchema } from "../../outputSchemas";
 import type { Topic } from "../../types";
-import { updateTopicPayload } from "../../examplePayloads";
 export const updateTopic = action({
   display: {
     label: "Update Topic",
     description: "Update a topic in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -31,11 +25,11 @@ export const updateTopic = action({
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const payload = {
       topic: {
-        manageable_by: manageableBy || undefined,
-        description: topicDescription || undefined,
-        position: position || undefined,
-        name: topicName || undefined,
-        user_segment_id: userSegmentId || undefined,
+        manageable_by: manageableBy,
+        description: topicDescription,
+        position: position,
+        name: topicName,
+        user_segment_id: userSegmentId,
       },
     };
     const { data } = await client.put<{
@@ -45,23 +39,24 @@ export const updateTopic = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    topicId,
-    topicName,
-    userSegmentId: {
-      ...userSegmentId,
-      required: false,
-      comments: "The user segment ID to associate with the topic.",
+  examplePerform: async (
+    _context,
+    { topicDescription, topicId, topicName },
+  ) => ({
+    data: {
+      ...updateTopicExamplePayload.data,
+      topic: {
+        ...updateTopicExamplePayload.data.topic,
+        ...(topicId ? { id: topicId } : {}),
+        ...(topicName ? { name: topicName } : {}),
+        ...(topicDescription ? { description: topicDescription } : {}),
+      },
     },
-    position: {
-      ...position,
-      comments: "The position of the topic in the list of topics.",
-    },
-    topicDescription,
-    manageableBy,
-  },
-  examplePayload: {
-    data: updateTopicPayload,
-  },
+  }),
+  inputs: updateTopicInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateTopicOutputSchema,
+  }),
+  examplePayload: updateTopicExamplePayload,
 });

@@ -1,20 +1,36 @@
 The **New and Updated Tickets** polling trigger checks Zendesk on a configured schedule for tickets that were created or modified since the last poll. Unlike webhook-based triggers, polling does not require webhook subscription management and works reliably for low-frequency monitoring scenarios.
 
-The trigger uses Zendesk's Incremental Tickets Export endpoint with cursor-based pagination. This guarantees that no tickets are missed between runs and avoids re-processing old data, because Zendesk returns a stable cursor that points to the exact position in the ticket change stream.
+The trigger uses Zendesk's [Incremental Tickets Export](https://developer.zendesk.com/api-reference/ticketing/ticket-management/incremental_exports/) endpoint with cursor-based pagination. This guarantees that no tickets are missed between runs and avoids re-processing old data, because Zendesk returns a stable cursor that points to the exact position in the ticket change stream.
 
 #### How It Works
 
 On each scheduled execution, the trigger:
 
-1. Reads `lastPolledAt` and `afterCursor` from the polling state. On the first run, `start_time` is set to 60 seconds before the current time, because Zendesk requires `start_time` to be at least one minute in the past.
-2. Calls the Zendesk Incremental Tickets Export endpoint, resuming from the persisted `afterCursor` when available, or using `start_time` on the first run. The trigger drains all pages until `end_of_stream` is reached.
-3. Partitions the collected tickets into `created` and `updated` buckets by comparing each ticket's `created_at` against the `lastPolledAt` cutoff. Tickets whose `created_at` is after the cutoff land in `created`, all others land in `updated`.
-4. Persists both the new `afterCursor` and the current execution time as `lastPolledAt` for the next run.
+1. Reads `lastPolledAt` and `afterCursor` from the polling state. With no stored cursor and no **Look-back Date**, `start_time` is set to 60 seconds before the current time, because Zendesk requires `start_time` to be at least one minute in the past.
+2. Calls the Zendesk Incremental Tickets Export endpoint, resuming from the persisted `afterCursor` when available, or using `start_time` otherwise. It reads up to ten pages per recurrence with batching off, or one page per round with batching enabled, and stops earlier if the stream ends. Stopping at the limit is not an error: the cursor it stops on is a complete resume point. With batching off the remaining pages arrive on later recurrences; with batching on the platform re-invokes the trigger from that cursor until the stream ends, within the same recurrence.
+3. Partitions the collected tickets into `created` and `updated` buckets by comparing each ticket's `created_at` against the `lastPolledAt` cutoff. Tickets whose `created_at` is after the cutoff land in `created`; every other ticket the export returns lands in `updated`, because the export returns a ticket only when it has changed.
+4. Persists the new `afterCursor` on every recurrence. It advances `lastPolledAt` only once the stream ends, because that value is the cutoff step 3 compares against, and moving it while pages are still outstanding would place it ahead of tickets that have not been delivered yet. It then sets it to one minute before the recurrence started, because Zendesk withholds the most recent minute of changes until a later read.
 5. Emits the partitioned results filtered by the **Show New Records** and **Show Updated Records** toggles.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state, so inputs that narrow the change feed would leave gaps in it and are ignored for its duration, while inputs that shape how tickets are fetched still apply. Set a **Look-back Date** to start one: it begins on the first recurrence, seeds each ticket created or modified on or after that date exactly once, and ignores **Show New Records** and **Show Updated Records**.
+
+The window has no fixed upper bound, so a ticket modified while the sync is still draining is swept into the sync rather than left for the incremental recurrences. The trigger's position is Zendesk's own export cursor and advances page by page; when the stream ends, the trigger commits its created/updated cutoff, and every later recurrence resumes the export cursor from where the sync stopped and classifies against that cutoff, so nothing is lost. No field in the payload marks the handoff. With batching off the sync drains up to ten pages per scheduled recurrence and a large history therefore spans several of them; with batching on the platform drives the rounds and the sync drains inside one poll cycle.
+
+The **Connection** applies throughout. The sync is not affected by any page-size input, because the trigger has none: its page size is fixed by the component.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Zendesk.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads the arrays at `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one ticket, or an array of them at a batch size above one, as `{ "changeType": "created" | "updated", "record": { ... } }`. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow and leaves other flows using this trigger untouched.
 
 #### Returned Data
 
-The trigger emits a payload with two arrays, `created` and `updated`, each containing ticket resources from the Zendesk Incremental Tickets Export endpoint.
+With batching off, the trigger emits a payload with two arrays, `created` and `updated`, each containing ticket resources from the Zendesk Incremental Tickets Export endpoint.
 
 <details>
 <summary>Example Payload</summary>
@@ -44,6 +60,28 @@ The trigger emits a payload with two arrays, `created` and `updated`, each conta
         "requester_id": 114092137191
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one tagged item instead, or an array of them when the batch size is above one.
+
+<details>
+<summary>Example Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": 35437,
+    "subject": "New ticket received",
+    "status": "new",
+    "priority": "normal",
+    "created_at": "2026-05-20T14:00:00Z",
+    "updated_at": "2026-05-20T14:00:00Z",
+    "requester_id": 114092137191
   }
 }
 ```

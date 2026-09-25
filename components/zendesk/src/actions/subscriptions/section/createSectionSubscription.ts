@@ -1,19 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../../auth";
+import { createSectionSubscriptionExamplePayload } from "../../../examplePayloads";
+import { createSectionSubscriptionInputs } from "../../../inputs";
+import { createSectionSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
-import {
-  connectionInput,
-  includeComments,
-  locale,
-  sectionId,
-  userId,
-} from "../../../inputs";
-import { subscriptionPayload } from "../../../examplePayloads";
 export const createSectionSubscription = action({
   display: {
     label: "Create Section Subscription",
     description: "Create a section subscription in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { zendeskConnection, sectionId, locale, includeComments, userId },
@@ -23,7 +19,7 @@ export const createSectionSubscription = action({
       ? `/help_center/${locale}/sections/${sectionId}/subscriptions`
       : `/help_center/sections/${sectionId}/subscriptions`;
     const payload = {
-      user_id: userId || undefined,
+      user_id: userId,
       source_locale: locale,
       include_comments: includeComments,
     };
@@ -32,24 +28,21 @@ export const createSectionSubscription = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    sectionId,
-    userId: {
-      ...userId,
-      comments:
-        "The ID of the user to subscribe to the section. If none provided, the API assumes the current user.",
-      required: false,
+  examplePerform: async (_context, { locale, sectionId, userId }) => ({
+    data: {
+      ...createSectionSubscriptionExamplePayload.data,
+      subscription: {
+        ...createSectionSubscriptionExamplePayload.data.subscription,
+        ...(sectionId ? { content_id: sectionId } : {}),
+        ...(userId ? { user_id: userId } : {}),
+        ...(locale ? { locale } : {}),
+      },
     },
-    locale: {
-      ...locale,
-      required: false,
-      model: undefined,
-      default: undefined,
-      comments:
-        "The locale of the section. If not provided, the default locale is used.",
-    },
-    includeComments,
-  },
-  examplePayload: { data: subscriptionPayload },
+  }),
+  inputs: createSectionSubscriptionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createSectionSubscriptionOutputSchema,
+  }),
+  examplePayload: createSectionSubscriptionExamplePayload,
 });

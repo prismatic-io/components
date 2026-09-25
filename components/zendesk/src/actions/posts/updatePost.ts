@@ -1,33 +1,21 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  contentTagIds,
-  isPostClosed,
-  isPostFeatured,
-  isPostPinned,
-  postDetails,
-  postId,
-  postStatus,
-  postTitle,
-  topicId,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { updatePostExamplePayload } from "../../examplePayloads";
+import { updatePostInputs } from "../../inputs";
+import { updatePostOutputSchema } from "../../outputSchemas";
 import type { Post } from "../../types";
-import { createPostPayload } from "../../examplePayloads";
-import { convertBooleanInputIntoUpdateInput } from "../../util";
 export const updatePost = action({
   display: {
     label: "Update Post",
     description: "Update a post in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       postId,
       zendeskConnection,
-      isPostClosed,
-      isPostFeatured,
-      isPostPinned,
+      moderationFlags,
       postDetails,
       postStatus,
       postTitle,
@@ -39,14 +27,14 @@ export const updatePost = action({
     const url = `/community/posts/${postId}`;
     const payload = {
       post: {
-        title: postTitle || undefined,
-        content_tag_ids: contentTagIds.length ? contentTagIds : undefined,
-        details: postDetails || undefined,
-        featured: isPostFeatured,
-        pinned: isPostPinned,
-        status: postStatus || undefined,
-        topic_id: topicId || undefined,
-        closed: isPostClosed,
+        title: postTitle,
+        content_tag_ids: contentTagIds,
+        details: postDetails,
+        featured: moderationFlags.isPostFeatured,
+        pinned: moderationFlags.isPostPinned,
+        status: postStatus,
+        topic_id: topicId,
+        closed: moderationFlags.isPostClosed,
       },
     };
     const { data } = await client.put<{
@@ -56,25 +44,27 @@ export const updatePost = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    postId,
-    postTitle: {
-      ...postTitle,
-      required: false,
+  examplePerform: async (
+    _context,
+    { contentTagIds, moderationFlags, postId, postTitle },
+  ) => ({
+    data: {
+      ...updatePostExamplePayload.data,
+      post: {
+        ...updatePostExamplePayload.data.post,
+        ...(postId ? { id: postId } : {}),
+        ...(postTitle ? { title: postTitle } : {}),
+        ...(moderationFlags.isPostFeatured === undefined
+          ? {}
+          : { featured: moderationFlags.isPostFeatured }),
+        ...(contentTagIds ? { content_tag_ids: contentTagIds } : {}),
+      },
     },
-    postDetails,
-    postStatus,
-    topicId: {
-      ...topicId,
-      required: false,
-    },
-    isPostFeatured: convertBooleanInputIntoUpdateInput(isPostFeatured),
-    isPostPinned: convertBooleanInputIntoUpdateInput(isPostPinned),
-    isPostClosed: convertBooleanInputIntoUpdateInput(isPostClosed),
-    contentTagIds,
-  },
-  examplePayload: {
-    data: createPostPayload,
-  },
+  }),
+  inputs: updatePostInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updatePostOutputSchema,
+  }),
+  examplePayload: updatePostExamplePayload,
 });

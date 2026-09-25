@@ -1,21 +1,20 @@
-import { paginatedSubscriptionPayload } from "../../../examplePayloads";
-import { connectionInput, cursor, pageLimit, sectionId } from "../../../inputs";
+import { listSectionSubscriptionsInputs } from "../../../inputs";
 import { rawHttpClient } from "../../../auth";
+import { listSectionSubscriptionsOutputSchema } from "../../../outputSchemas";
 import type { PaginatedResponse, Subscription } from "../../../types";
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listSectionSubscriptionsExamplePayload } from "../../../examplePayloads";
 export const listSectionSubscriptions = action({
   display: {
     label: "List Section Subscriptions",
     description: "List all section subscriptions in the Help Center.",
   },
-  perform: async (
-    context,
-    { zendeskConnection, sectionId, cursor, pageLimit },
-  ) => {
+  performSafety: "safe",
+  perform: async (context, { zendeskConnection, sectionId, pagination }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const params = {
-      "page[size]": pageLimit || undefined,
-      "page[after]": cursor || undefined,
+      "page[size]": pagination.pageLimit,
+      "page[after]": pagination.cursor,
     };
     const { data } = await client.get<
       | PaginatedResponse<{
@@ -29,13 +28,10 @@ export const listSectionSubscriptions = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    cursor,
-    pageLimit,
-    sectionId,
-  },
-  examplePayload: {
-    data: paginatedSubscriptionPayload,
-  },
+  inputs: listSectionSubscriptionsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSectionSubscriptionsOutputSchema,
+  }),
+  examplePayload: listSectionSubscriptionsExamplePayload,
 });

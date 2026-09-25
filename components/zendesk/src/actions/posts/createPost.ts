@@ -1,23 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  contentTagIds,
-  postTitle,
-  postDetails,
-  isPostFeatured,
-  isPostPinned,
-  postStatus,
-  topicId,
-  notifySubscribers,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { createPostExamplePayload } from "../../examplePayloads";
+import { createPostInputs } from "../../inputs";
+import { createPostOutputSchema } from "../../outputSchemas";
 import type { Post } from "../../types";
-import { createPostPayload } from "../../examplePayloads";
 export const createPost = action({
   display: {
     label: "Create Post",
     description: "Create a new post in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -35,13 +27,13 @@ export const createPost = action({
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const payload = {
       post: {
-        topic_id: topicId || undefined,
-        status: postStatus || undefined,
+        topic_id: topicId,
+        status: postStatus,
         pinned: isPostPinned,
         title: postTitle,
-        details: postDetails || undefined,
+        details: postDetails,
         featured: isPostFeatured,
-        content_tag_ids: contentTagIds || undefined,
+        content_tag_ids: contentTagIds,
       },
       notify_subscribers: notifySubscribers,
     };
@@ -52,20 +44,26 @@ export const createPost = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    topicId: {
-      ...topicId,
-      comments: "The ID of the topic to create the post in.",
-      required: false,
+  examplePerform: async (
+    _context,
+    { contentTagIds, isPostFeatured, postTitle },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...createPostExamplePayload.data,
+      post: {
+        ...createPostExamplePayload.data.post,
+        ...(postTitle ? { title: postTitle } : {}),
+        featured: isPostFeatured,
+        ...(contentTagIds?.length ? { content_tag_ids: contentTagIds } : {}),
+      },
     },
-    postTitle,
-    postDetails,
-    isPostFeatured,
-    isPostPinned,
-    postStatus,
-    notifySubscribers,
-    contentTagIds,
-  },
-  examplePayload: { data: createPostPayload },
+  }),
+  inputs: createPostInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createPostOutputSchema,
+  }),
+  examplePayload: createPostExamplePayload,
 });

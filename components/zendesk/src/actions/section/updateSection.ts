@@ -1,22 +1,15 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  categoryId,
-  connectionInput,
-  locale,
-  parentSectionId,
-  position,
-  sectionDescription,
-  sectionId,
-  sectionName,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { updateSectionExamplePayload } from "../../examplePayloads";
+import { updateSectionInputs } from "../../inputs";
+import { updateSectionOutputSchema } from "../../outputSchemas";
 import type { Section } from "../../types";
-import { updateSectionPayload } from "../../examplePayloads";
 export const updateSection = action({
   display: {
     label: "Update Section",
     description: "Update a section in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -33,11 +26,11 @@ export const updateSection = action({
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const payload = {
       section: {
-        category_id: categoryId || undefined,
-        name: sectionName || undefined,
-        description: sectionDescription || undefined,
-        position: position || undefined,
-        parent_section_id: parentSectionId || undefined,
+        category_id: categoryId,
+        name: sectionName,
+        description: sectionDescription,
+        position: position,
+        parent_section_id: parentSectionId,
       },
     };
     const { data } = await client.put<{
@@ -45,32 +38,26 @@ export const updateSection = action({
     }>(`/help_center/${locale}/sections/${sectionId}`, payload);
     return { data };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    locale,
-    sectionId,
-    sectionName: {
-      ...sectionName,
-      required: false,
-      comments: "Name of the Section to update.",
+  examplePerform: async (
+    _context,
+    { locale, position, sectionDescription, sectionId, sectionName },
+  ) => ({
+    data: {
+      ...updateSectionExamplePayload.data,
+      section: {
+        ...updateSectionExamplePayload.data.section,
+        ...(sectionId ? { id: sectionId } : {}),
+        ...(sectionName ? { name: sectionName } : {}),
+        ...(sectionDescription ? { description: sectionDescription } : {}),
+        ...(locale ? { locale } : {}),
+        ...(position ? { position } : {}),
+      },
     },
-    sectionDescription: {
-      ...sectionDescription,
-      comments: "Description of the Section to update.",
-    },
-    position: {
-      ...position,
-      comments: "Position of the Section to update.",
-    },
-    categoryId: {
-      ...categoryId,
-      required: false,
-      comments: "Category ID of the Section to update.",
-    },
-    parentSectionId: {
-      ...parentSectionId,
-      comments: "Parent Section ID of the Section to update.",
-    },
-  },
-  examplePayload: { data: updateSectionPayload },
+  }),
+  inputs: updateSectionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateSectionOutputSchema,
+  }),
+  examplePayload: updateSectionExamplePayload,
 });

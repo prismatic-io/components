@@ -1,21 +1,20 @@
-import { action } from "@prismatic-io/spectral";
-import { articleId, connectionInput, cursor, pageLimit } from "../../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listArticleSubscriptionsInputs } from "../../../inputs";
 import { rawHttpClient } from "../../../auth";
+import { listArticleSubscriptionsOutputSchema } from "../../../outputSchemas";
 import type { PaginatedResponse, Subscription } from "../../../types";
-import { paginatedSubscriptionPayload } from "../../../examplePayloads";
+import { listArticleSubscriptionsExamplePayload } from "../../../examplePayloads";
 export const listArticleSubscriptions = action({
   display: {
     label: "List Article Subscriptions",
     description: "List all subscriptions for an article in the Help Center.",
   },
-  perform: async (
-    context,
-    { zendeskConnection, articleId, cursor, pageLimit },
-  ) => {
+  performSafety: "safe",
+  perform: async (context, { zendeskConnection, articleId, pagination }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const params = {
-      "page[size]": pageLimit || undefined,
-      "page[after]": cursor || undefined,
+      "page[size]": pagination.pageLimit,
+      "page[after]": pagination.cursor,
     };
     const { data } = await client.get<
       | PaginatedResponse<{
@@ -24,18 +23,17 @@ export const listArticleSubscriptions = action({
       | {
           subscriptions: Subscription[];
         }
-    >(`/community/articles/${articleId}/subscriptions`, {
+    >(`/help_center/articles/${articleId}/subscriptions`, {
       params,
     });
     return {
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    pageLimit,
-    cursor,
-    articleId,
-  },
-  examplePayload: { data: paginatedSubscriptionPayload },
+  inputs: listArticleSubscriptionsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listArticleSubscriptionsOutputSchema,
+  }),
+  examplePayload: listArticleSubscriptionsExamplePayload,
 });

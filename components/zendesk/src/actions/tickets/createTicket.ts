@@ -1,41 +1,26 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createClient } from "../../auth";
-import {
-  requesterName,
-  requesterEmail,
-  recipientEmail,
-  ticketComment,
-  ticketCommentHTML,
-  ticketStatus,
-  tags,
-  ticketType,
-  ticketSubject,
-  ticketPriority,
-  requesterOrganization,
-  followers,
-  assigneeId,
-  connectionInput,
-} from "../../inputs";
-import { isPriority, isStatus, isType, validateComment } from "../../helper";
-import { createTicketPayload } from "../../examplePayloads";
+import { createTicketExamplePayload } from "../../examplePayloads";
+import { createTicketInputs } from "../../inputs";
+import { createTicketOutputSchema } from "../../outputSchemas";
+import { isPriority, isStatus, isType, validateComment } from "../../util";
 export const createTicket = action({
   display: {
     label: "Create Ticket",
     description: "Create a new ticket.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
-    const ticketPriority = util.types.toString(params.ticketPriority);
-    const ticketStatusString = util.types.toString(params.ticketStatus);
-    const ticketTypeString = util.types.toString(params.ticketType);
+    const { ticketPriority, ticketStatus, ticketType } = params.classification;
     const { result } = await client.tickets.create({
       ticket: {
         requester: {
-          name: util.types.toString(params.requesterName),
-          email: util.types.toString(params.requesterEmail),
+          name: params.requesterName,
+          email: params.requesterEmail,
         },
         recipient: util.types.toString(params.recipientEmail),
         assignee_id: util.types.isInt(params.assigneeId)
@@ -44,8 +29,7 @@ export const createTicket = action({
         priority: (isPriority(ticketPriority)
           ? ticketPriority
           : undefined) as undefined,
-        organization_id:
-          util.types.toInt(params.requesterOrganization) || undefined,
+        organization_id: params.requesterOrganization,
         follower_ids:
           params.followers?.map((follower) => util.types.toInt(follower)) ||
           undefined,
@@ -53,44 +37,66 @@ export const createTicket = action({
           bodyValue: params.ticketComment,
           htmlValue: params.ticketCommentHTML,
         }),
-        status: (isStatus(ticketStatusString)
-          ? ticketStatusString
+        status: (isStatus(ticketStatus)
+          ? ticketStatus
           : undefined) as undefined,
-        tags: params.tags?.map((tag) => util.types.toString(tag)) || undefined,
-        type: (isType(ticketTypeString)
-          ? ticketTypeString
+        tags: params.tags,
+        type: (isType(ticketType)
+          ? ticketType?.toLowerCase()
           : undefined) as undefined,
-        subject: util.types.toString(params.ticketSubject) || undefined,
-        external_id: util.types.toString(params.externalId) || undefined,
+        subject: params.ticketSubject,
+        external_id: params.externalId,
       },
     });
     return {
       data: result,
     };
   },
-  inputs: {
-    requesterName,
-    requesterEmail,
-    assigneeId,
-    recipientEmail,
-    ticketSubject,
-    ticketPriority,
-    ticketStatus,
-    ticketComment,
-    ticketCommentHTML,
-    tags,
-    ticketType,
-    requesterOrganization,
-    followers,
-    zendeskConnection: connectionInput,
-    externalId: input({
-      label: "External ID",
-      type: "string",
-      required: false,
-      comments: "The ID of this issue from an external system",
-    }),
+  examplePerform: async (
+    _context,
+    params,
+  ): Promise<{
+    data: unknown;
+  }> => {
+    const {
+      ticketPriority: priority,
+      ticketStatus: status,
+      ticketType: type,
+    } = params.classification;
+    const subject = params.ticketSubject;
+    const recipient = params.recipientEmail;
+    const externalId = params.externalId;
+    const organizationId = params.requesterOrganization;
+    return {
+      data: {
+        ...createTicketExamplePayload.data,
+        ...(subject ? { subject } : {}),
+        ...(recipient ? { recipient } : {}),
+        ...(externalId ? { external_id: externalId } : {}),
+        ...(isPriority(priority) ? { priority } : {}),
+        ...(isStatus(status) ? { status } : {}),
+        ...(isType(type) ? { type: type?.toLowerCase() } : {}),
+        ...(organizationId ? { organization_id: organizationId } : {}),
+        ...(util.types.isInt(params.assigneeId)
+          ? { assignee_id: util.types.toInt(params.assigneeId) }
+          : {}),
+        ...(params.tags?.length
+          ? { tags: params.tags.map((tag) => util.types.toString(tag)) }
+          : {}),
+        ...(params.followers?.length
+          ? {
+              follower_ids: params.followers.map((follower) =>
+                util.types.toInt(follower),
+              ),
+            }
+          : {}),
+      },
+    };
   },
-  examplePayload: {
-    data: createTicketPayload as unknown,
-  },
+  inputs: createTicketInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createTicketOutputSchema,
+  }),
+  examplePayload: createTicketExamplePayload,
 });

@@ -1,11 +1,14 @@
-import { action } from "@prismatic-io/spectral";
-import { categoryId, connectionInput } from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
+import { deleteCategoryExamplePayload } from "../../examplePayloads";
+import { deleteCategoryInputs } from "../../inputs";
+import { deleteCategoryOutputSchema } from "../../outputSchemas";
 export const deleteCategory = action({
   display: {
     label: "Delete Category",
     description: "Delete a category in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { categoryId, zendeskConnection }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const { data } = await client.delete(
@@ -15,11 +18,11 @@ export const deleteCategory = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    categoryId,
-  },
-  examplePayload: {
-    data: null,
-  },
+  examplePerform: async () => deleteCategoryExamplePayload,
+  inputs: deleteCategoryInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteCategoryOutputSchema,
+  }),
+  examplePayload: deleteCategoryExamplePayload,
 });

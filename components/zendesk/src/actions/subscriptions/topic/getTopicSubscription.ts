@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../../auth";
-import { connectionInput, subscriptionId, topicId } from "../../../inputs";
+import { getTopicSubscriptionInputs } from "../../../inputs";
+import { getTopicSubscriptionOutputSchema } from "../../../outputSchemas";
 import type { SubscriptionResponse } from "../../../types";
-import { subscriptionPayload } from "../../../examplePayloads";
+import { getTopicSubscriptionExamplePayload } from "../../../examplePayloads";
 export const getTopicSubscription = action({
   display: {
     label: "Get Topic Subscription",
     description: "Get a topic subscription from the Help Center.",
   },
+  performSafety: "safe",
   perform: async (context, { zendeskConnection, topicId, subscriptionId }) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const { data } = await client.get<SubscriptionResponse>(
@@ -17,13 +19,10 @@ export const getTopicSubscription = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    subscriptionId: {
-      ...subscriptionId,
-      dataSource: "selectTopicSubscription",
-    },
-    topicId,
-  },
-  examplePayload: { data: subscriptionPayload },
+  inputs: getTopicSubscriptionInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getTopicSubscriptionOutputSchema,
+  }),
+  examplePayload: getTopicSubscriptionExamplePayload,
 });

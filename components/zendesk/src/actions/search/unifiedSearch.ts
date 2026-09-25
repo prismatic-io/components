@@ -1,19 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
-import { unifiedSearchPayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  pageLimit,
-  cursor,
-  brandIds,
-  categoryIds,
-  contentTypes,
-  externalSourceIds,
-  sectionIds,
-  topicIds,
-  locales,
-  searchQuery,
-} from "../../inputs";
+import { unifiedSearchExamplePayload } from "../../examplePayloads";
+import { unifiedSearchInputs } from "../../inputs";
+import { unifiedSearchOutputSchema } from "../../outputSchemas";
 import type { PaginatedResponse } from "../../types";
 export const unifiedSearch = action({
   display: {
@@ -21,13 +10,13 @@ export const unifiedSearch = action({
     description:
       "Search for knowledge base articles, community posts, and external records in the Help Center.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       zendeskConnection,
       searchQuery,
-      pageLimit,
-      cursor,
+      pagination,
       brandIds,
       categoryIds,
       contentTypes,
@@ -40,15 +29,15 @@ export const unifiedSearch = action({
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
     const params = {
       query: searchQuery,
-      "filter[brand_ids]": brandIds || undefined,
-      "filter[category_ids]": categoryIds || undefined,
-      "filter[content_types]": contentTypes || undefined,
-      "filter[external_source_ids]": externalSourceIds || undefined,
-      "filter[locales]": locales || undefined,
-      "filter[section_ids]": sectionIds || undefined,
-      "filter[topic_ids]": topicIds || undefined,
-      "page[size]": pageLimit || undefined,
-      "page[after]": cursor || undefined,
+      "filter[brand_ids]": brandIds,
+      "filter[category_ids]": categoryIds,
+      "filter[content_types]": contentTypes,
+      "filter[external_source_ids]": externalSourceIds,
+      "filter[locales]": locales,
+      "filter[section_ids]": sectionIds,
+      "filter[topic_ids]": topicIds,
+      "page[size]": pagination.pageLimit,
+      "page[after]": pagination.cursor,
     };
     const { data } = await client.get<
       PaginatedResponse<{
@@ -61,20 +50,11 @@ export const unifiedSearch = action({
       data,
     };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    locales,
-    searchQuery,
-    brandIds,
-    categoryIds,
-    contentTypes,
-    externalSourceIds,
-    sectionIds,
-    topicIds,
-    cursor,
-    pageLimit,
-  },
-  examplePayload: {
-    data: unifiedSearchPayload as unknown,
-  },
+  examplePerform: async () => unifiedSearchExamplePayload,
+  inputs: unifiedSearchInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: unifiedSearchOutputSchema,
+  }),
+  examplePayload: unifiedSearchExamplePayload,
 });

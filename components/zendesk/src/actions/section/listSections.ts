@@ -1,16 +1,9 @@
-import { action } from "@prismatic-io/spectral";
-import {
-  categoryId,
-  connectionInput,
-  fetchAll,
-  locale,
-  pageLimit,
-  sortBy,
-  sortOrder,
-} from "../../inputs";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
-import type { PaginatedResponse, Section } from "../../types";
 import { listSectionsExamplePayload } from "../../examplePayloads";
+import { listSectionsInputs } from "../../inputs";
+import { listSectionsOutputSchema } from "../../outputSchemas";
+import type { PaginatedResponse, Section } from "../../types";
 import { paginateResults } from "../../util";
 export const listSections = action({
   display: {
@@ -18,21 +11,14 @@ export const listSections = action({
     description:
       "Lists all the sections in the Help Center or in a specific category.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      sortBy,
-      categoryId,
-      sortOrder,
-      zendeskConnection,
-      locale,
-      pageLimit,
-      fetchAll,
-    },
+    { filters, zendeskConnection, locale, pageLimit, fetchAll },
   ) => {
     const client = rawHttpClient(zendeskConnection, context.debug.enabled);
-    const url = categoryId
-      ? `/help_center/${locale}/categories/${categoryId}/sections`
+    const url = filters.categoryId
+      ? `/help_center/${locale}/categories/${filters.categoryId}/sections`
       : `/help_center/${locale}/sections`;
     if (fetchAll) {
       const sections: Section[] = [];
@@ -43,14 +29,14 @@ export const listSections = action({
             url,
             sections,
             "sections",
-            pageLimit || undefined,
+            pageLimit,
           ),
         },
       };
     }
     const params = {
-      sort_by: sortBy || undefined,
-      sort_order: sortOrder || undefined,
+      sort_by: filters.sortBy,
+      sort_order: filters.sortOrder,
     };
     const { data } = await client.get<
       | PaginatedResponse<{
@@ -64,31 +50,19 @@ export const listSections = action({
     });
     return { data };
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    locale,
-    categoryId: {
-      ...categoryId,
-      comments: "Input a categoryId to filter out sections by the ID provided.",
-      required: false,
-    },
-    sortBy: {
-      ...sortBy,
-      model: [
-        { label: "Position (Default)", value: "position" },
-        {
-          label: "Created At",
-          value: "created_at",
-        },
-        {
-          label: "Updated At",
-          value: "updated_at",
-        },
-      ],
-    },
-    sortOrder,
-    pageLimit,
-    fetchAll,
-  },
-  examplePayload: { data: listSectionsExamplePayload },
+  examplePerform: async (
+    _context,
+    { fetchAll },
+  ): Promise<{
+    data: unknown;
+  }> =>
+    fetchAll
+      ? { data: { sections: listSectionsExamplePayload.data.sections } }
+      : { data: listSectionsExamplePayload.data },
+  inputs: listSectionsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSectionsOutputSchema,
+  }),
+  examplePayload: listSectionsExamplePayload,
 });

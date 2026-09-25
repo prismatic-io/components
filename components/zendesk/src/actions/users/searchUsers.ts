@@ -1,16 +1,14 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
 import { createClient } from "../../auth";
-import { searchUsersPayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  userExternalIdInput,
-  userQueryInput,
-} from "../../inputs";
+import { searchUsersExamplePayload } from "../../examplePayloads";
+import { searchUsersInputs } from "../../inputs";
+import { searchUsersOutputSchema } from "../../outputSchemas";
 export const searchUsers = action({
   display: {
     label: "Search Users",
     description: "Return an array of users who meet the search criteria.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { externalId: externalIdBase, zendeskConnection, query },
@@ -22,22 +20,17 @@ export const searchUsers = action({
     const externalId = util.types.toString(externalIdBase);
     const result = await client.users.search({
       ...(externalId ? { external_id: externalId } : {}),
-      query: util.types.toString(query) || undefined,
+      query: query,
     });
     return {
       data: result,
     };
   },
-  inputs: {
-    externalId: {
-      ...userExternalIdInput,
-      comments:
-        "The external_id parameter does not support the search syntax. It only accepts ids.",
-    },
-    query: userQueryInput,
-    zendeskConnection: connectionInput,
-  },
-  examplePayload: {
-    data: searchUsersPayload,
-  },
+  examplePerform: async () => searchUsersExamplePayload,
+  inputs: searchUsersInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: searchUsersOutputSchema,
+  }),
+  examplePayload: searchUsersExamplePayload,
 });

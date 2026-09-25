@@ -1,12 +1,14 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../auth";
-import { createTicketPayload } from "../../examplePayloads";
-import { ticketId, connectionInput } from "../../inputs";
+import { showTicketInputs } from "../../inputs";
+import { showTicketOutputSchema } from "../../outputSchemas";
+import { showTicketExamplePayload } from "../../examplePayloads";
 export const showTicket = action({
   display: {
     label: "Get Ticket",
     description: "Get a ticket by ID.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = createClient({
       zendeskConnection: params.zendeskConnection,
@@ -17,15 +19,10 @@ export const showTicket = action({
       data: result,
     };
   },
-  inputs: {
-    ticketId: {
-      ...ticketId,
-      required: true,
-      clean: util.types.toNumber,
-    },
-    zendeskConnection: connectionInput,
-  },
-  examplePayload: {
-    data: createTicketPayload as unknown,
-  },
+  inputs: showTicketInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: showTicketOutputSchema,
+  }),
+  examplePayload: showTicketExamplePayload,
 });

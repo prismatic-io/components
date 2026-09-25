@@ -1,71 +1,73 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../auth";
-import {
-  userRole,
-  userName,
-  userEmail,
-  userExternalIdInput,
-  userPhone,
-  userNotes,
-  userDetails,
-  isModerator,
-  userAlias,
-  isVerified,
-  organizationId,
-  connectionInput,
-} from "../../inputs";
-import { isRole } from "../../helper";
-import { createUserPayload } from "../../examplePayloads";
+import { createUserExamplePayload } from "../../examplePayloads";
+import { createUserInputs } from "../../inputs";
+import { createUserOutputSchema } from "../../outputSchemas";
+import { isRole } from "../../util";
 export const createUser = action({
   display: {
     label: "Create User",
     description: "Create a new user.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient({
       zendeskConnection: params.zendeskConnection,
       debug: context.debug.enabled,
     });
-    const userRole = util.types.toString(params.userRole);
+    const { userRole } = params.accountSettings;
     const optionalItems = Object.fromEntries(
       Object.entries({
-        email: util.types.toString(params.userEmail),
-        phone: util.types.toString(params.userPhone),
-        external_id: util.types.toString(params.externalId) || undefined,
-        notes: util.types.toString(params.userNotes),
-        details: util.types.toString(params.userDetails),
-        moderator: util.types.toBool(params.isModerator),
-        alias: util.types.toString(params.userAlias),
-        verified: util.types.toBool(params.isVerified),
-        organization_id: util.types.toInt(params.organizationId),
+        email: params.userEmail,
+        phone: params.userPhone,
+        external_id: params.externalId,
+        notes: params.profileDetails.userNotes,
+        details: params.profileDetails.userDetails,
+        moderator: params.accountSettings.isModerator,
+        alias: params.profileDetails.userAlias,
+        verified: params.accountSettings.isVerified,
+        organization_id: params.organizationId,
       }).filter(([, value]) => Boolean(value)),
     );
     const { result } = await client.users.create({
       user: {
         ...optionalItems,
         ...(isRole(userRole) ? { userRole } : {}),
-        name: util.types.toString(params.userName),
+        name: params.userName,
       },
     });
     return {
       data: result,
     };
   },
-  inputs: {
-    userName,
-    userEmail,
-    userRole,
-    userPhone,
-    externalId: userExternalIdInput,
-    userNotes,
-    userDetails,
-    isModerator,
-    userAlias,
-    isVerified,
-    organizationId,
-    zendeskConnection: connectionInput,
+  examplePerform: async (
+    _context,
+    params,
+  ): Promise<{
+    data: unknown;
+  }> => {
+    const name = params.userName;
+    const email = params.userEmail;
+    const phone = params.userPhone;
+    const { userAlias: alias } = params.profileDetails;
+    const { isVerified: verified } = params.accountSettings;
+    const organizationId = params.organizationId;
+    return {
+      data: {
+        ...createUserExamplePayload.data,
+        ...(name ? { name } : {}),
+        ...(email ? { email } : {}),
+        ...(phone ? { phone } : {}),
+        ...(alias ? { alias } : {}),
+        ...(verified ? { verified } : {}),
+        ...(organizationId ? { organization_id: organizationId } : {}),
+      },
+    };
   },
-  examplePayload: {
-    data: createUserPayload as unknown,
-  },
+  inputs: createUserInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createUserOutputSchema,
+  }),
+  examplePayload: createUserExamplePayload,
 });

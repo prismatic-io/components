@@ -1,39 +1,17 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { rawHttpClient } from "../../auth";
-import { createWebhookPayload } from "../../examplePayloads";
-import { connectionInput, webhookEventsInput } from "../../inputs";
-import { fetchWebhooks } from "./utils";
+import { createWebhookExamplePayload } from "../../examplePayloads";
+import { createWebhookInputs } from "../../inputs";
+import { createWebhookOutputSchema } from "../../outputSchemas";
+import { fetchWebhooks } from "../../util";
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
     description:
       "Create a webhook in Zendesk to receive notifications of changes to users, organizations, or tickets.",
   },
-  inputs: {
-    zendeskConnection: connectionInput,
-    callbackUrl: input({
-      label: "Callback URL",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The URL to send data to",
-    }),
-    name: input({
-      label: "Webhook Name",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "A unique name to assign this webhook",
-    }),
-    events: webhookEventsInput,
-    allowDuplicates: input({
-      label: "Allow Duplicates?",
-      type: "boolean",
-      required: true,
-      default: "false",
-      clean: util.types.toBool,
-    }),
-  },
+  inputs: createWebhookInputs,
+  performSafety: "notAllowed",
   perform: async ({ logger }, params) => {
     const client = rawHttpClient(params.zendeskConnection);
     const existingWebhooks = await fetchWebhooks({
@@ -59,7 +37,20 @@ export const createWebhook = action({
     });
     return { data };
   },
-  examplePayload: {
-    data: createWebhookPayload,
-  },
+  examplePerform: async (_context, { callbackUrl, events, name }) => ({
+    data: {
+      ...createWebhookExamplePayload.data,
+      webhook: {
+        ...createWebhookExamplePayload.data.webhook,
+        ...(name ? { name } : {}),
+        ...(callbackUrl ? { endpoint: callbackUrl } : {}),
+        ...(events?.length ? { subscriptions: events } : {}),
+      },
+    },
+  }),
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createWebhookOutputSchema,
+  }),
+  examplePayload: createWebhookExamplePayload,
 });
