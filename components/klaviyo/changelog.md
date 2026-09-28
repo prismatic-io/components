@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-09-28
+
+- Added output schemas to 37 actions for improved field mapping during configuration
+- Added inline action calling support to the **Get Account**, **Get Campaign**, **Get Event**, **Get Image**, **Get List**, **Get Profile**, **Get Segment**, **Get Template**, and **List Accounts** actions for improved example output during configuration
+- Added opt-in batching to the **New and Updated Campaigns** and **New and Updated Profiles and Lists** triggers, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of records on the **New and Updated Campaigns** and **New and Updated Profiles and Lists** triggers. The initial sync backfills every record modified on or after the specified date, seeding each once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Fixed the **New and Updated Campaigns** and **New and Updated Profiles and Lists** triggers reporting no changes on every recurrence, so new and updated records never reached the flow
+
 ### 2026-09-01
 
 Restructured action inputs into structured objects for an improved user experience.

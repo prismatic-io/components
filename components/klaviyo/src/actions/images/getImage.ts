@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getImageOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { getImageInputs as inputs } from "../../inputs/images";
-import type { FieldsImage } from "../../types/FieldsImage";
+import { getImageInputs as inputs } from "../../inputs";
 import { getImageExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
+import type { FieldsImage } from "../../types";
 export const getImage = action({
   display: {
     label: "Get Image",
     description: "Get the image with the given image ID.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, imageId, fieldsImage }) => {
     const imagesApi = getApi(connection, KlaviyoApi.Images);
     const debug = context.debug.enabled;
@@ -20,13 +22,22 @@ export const getImage = action({
         debug,
       });
     }
-    const { body } = await imagesApi.getImage(imageId!, {
+    const { body } = await imagesApi.getImage(imageId, {
       fieldsImage: fieldsImage as FieldsImage[],
     });
     return {
       data: body,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: getImageExamplePayload.data,
+  }),
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getImageOutputSchema,
+  }),
   examplePayload: getImageExamplePayload,
 });

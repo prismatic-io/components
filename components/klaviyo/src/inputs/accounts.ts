@@ -1,7 +1,6 @@
-import { input } from "@prismatic-io/spectral";
-import { connection, fields } from "./shared";
+import { input, util } from "@prismatic-io/spectral";
+import { connection, fields } from "./common";
 import { FIELDS_ACCOUNT_MODEL } from "../constants";
-import { cleanStringInput } from "../utils";
 const fieldsAccount = input({ ...fields, model: FIELDS_ACCOUNT_MODEL });
 export const listAccountsInputs = {
   connection,
@@ -9,13 +8,13 @@ export const listAccountsInputs = {
 };
 const accountId = input({
   label: "Account ID",
-  comments: "The ID of the account to retrieve.",
+  comments: "The unique identifier for the account.",
   type: "string",
   example: "AbC123",
-  placeholder: "AbC123",
+  placeholder: "Enter an account ID",
   dataSource: "selectAccount",
   required: true,
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 export const getAccountInputs = {
   connection,

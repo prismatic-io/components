@@ -1,14 +1,15 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection } from "../inputs/shared";
+import { selectImageInputs } from "../inputs";
+import { selectImageExamplePayload } from "../examplePayloads";
 import { getApi } from "../api";
-import { fetchImages } from "../utils";
-import { KlaviyoApi } from "../enums/KlaviyoApi";
+import { fetchImages } from "../util";
+import { KlaviyoApi } from "../constants";
 export const selectImage = dataSource({
   display: {
     label: "Select Image",
-    description: "Select an image from your Klaviyo account.",
+    description: "Select an image from a Klaviyo account.",
   },
-  inputs: { connection },
+  inputs: selectImageInputs,
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const imagesApi = getApi(connection, KlaviyoApi.Images);
@@ -21,7 +22,5 @@ export const selectImage = dataSource({
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
     return { result };
   },
-  examplePayload: {
-    result: [{ label: "Example Image", key: "155463624" }],
-  },
+  examplePayload: selectImageExamplePayload,
 });

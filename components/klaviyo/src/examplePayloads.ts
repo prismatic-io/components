@@ -31,6 +31,256 @@ import {
   type PostSegmentCreateResponse,
   type PostTemplateResponse,
 } from "klaviyo-api";
+import type { TriggerPayload } from "@prismatic-io/spectral";
+import type { KlaviyoRecord } from "./types";
+const triggerPayloadEnvelope: Omit<TriggerPayload, "body"> = {
+  headers: {},
+  queryParameters: {},
+  rawBody: { data: null },
+  pathFragment: "",
+  webhookUrls: {},
+  webhookApiKeys: {},
+  invokeUrl: "",
+  executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+  customer: {
+    id: "testCustomerId",
+    name: "Test Customer",
+    externalId: "testExternalId",
+  },
+  instance: { id: "testInstanceId", name: "Test Instance" },
+  user: {
+    id: "testUserId",
+    email: "user@example.com",
+    name: "Test User",
+    externalId: "testUserExternalId",
+  },
+  integration: {
+    id: "testIntegrationId",
+    name: "Test Integration",
+    versionSequenceId: "1",
+    externalVersion: "",
+  },
+  flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+  startedAt: "2024-01-15T00:00:00.000Z",
+  globalDebug: false,
+};
+const pollCampaignChangesTriggerBody: {
+  data: {
+    created: KlaviyoRecord[];
+    updated: KlaviyoRecord[];
+  };
+} = {
+  data: {
+    created: [
+      {
+        type: "campaign",
+        id: "01J5KQHG8AMVR0E92DHZY1GZWN",
+        attributes: {
+          name: "Summer Sale Announcement",
+          status: "Draft",
+          archived: false,
+          audiences: {
+            included: ["Y6nRLr"],
+            excluded: [],
+          },
+          sendOptions: {
+            useSmartSending: true,
+          },
+          trackingOptions: {
+            isAddUtm: true,
+            utmParams: [
+              {
+                name: "utm_medium",
+                value: "campaign",
+              },
+            ],
+            isTrackingClicks: true,
+            isTrackingOpens: true,
+          },
+          sendStrategy: {
+            method: "static",
+            optionsStatic: {
+              datetime: "2026-07-01T14:00:00+00:00",
+              isLocal: false,
+              sendPastRecipientsImmediately: false,
+            },
+          },
+          createdAt: "2026-06-15T10:30:00+00:00",
+          scheduledAt: "2026-07-01T14:00:00+00:00",
+          updatedAt: "2026-06-15T10:30:00+00:00",
+          sendTime: "2026-07-01T14:00:00+00:00",
+        },
+        links: {
+          self: "https://a.klaviyo.com/api/campaigns/01J5KQHG8AMVR0E92DHZY1GZWN",
+        },
+        relationships: {
+          campaignMessages: {
+            data: [
+              {
+                type: "campaign-message",
+                id: "01J5KQHG8AMVR0E92DHZY1GZWP",
+              },
+            ],
+            links: {
+              self: "https://a.klaviyo.com/api/campaigns/01J5KQHG8AMVR0E92DHZY1GZWN/relationships/campaign-messages",
+              related:
+                "https://a.klaviyo.com/api/campaigns/01J5KQHG8AMVR0E92DHZY1GZWN/campaign-messages",
+            },
+          },
+        },
+      },
+    ],
+    updated: [
+      {
+        type: "campaign",
+        id: "01J3ABCD1234EFGH5678IJKL90",
+        attributes: {
+          name: "Spring Newsletter",
+          status: "Sent",
+          archived: false,
+          audiences: {
+            included: ["UTd5ui"],
+            excluded: [],
+          },
+          sendOptions: {
+            useSmartSending: true,
+          },
+          trackingOptions: {
+            isAddUtm: true,
+            utmParams: [
+              {
+                name: "utm_medium",
+                value: "campaign",
+              },
+            ],
+            isTrackingClicks: true,
+            isTrackingOpens: true,
+          },
+          sendStrategy: {
+            method: "static",
+            optionsStatic: {
+              datetime: "2026-04-01T09:00:00+00:00",
+              isLocal: true,
+              sendPastRecipientsImmediately: true,
+            },
+          },
+          createdAt: "2026-03-20T08:00:00+00:00",
+          scheduledAt: "2026-04-01T09:00:00+00:00",
+          updatedAt: "2026-06-15T11:45:00+00:00",
+          sendTime: "2026-04-01T09:00:00+00:00",
+        },
+        links: {
+          self: "https://a.klaviyo.com/api/campaigns/01J3ABCD1234EFGH5678IJKL90",
+        },
+        relationships: {
+          campaignMessages: {
+            data: [
+              {
+                type: "campaign-message",
+                id: "01J3ABCD1234EFGH5678IJKL91",
+              },
+            ],
+            links: {
+              self: "https://a.klaviyo.com/api/campaigns/01J3ABCD1234EFGH5678IJKL90/relationships/campaign-messages",
+              related:
+                "https://a.klaviyo.com/api/campaigns/01J3ABCD1234EFGH5678IJKL90/campaign-messages",
+            },
+          },
+        },
+      },
+    ],
+  },
+};
+export const pollCampaignChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    ...triggerPayloadEnvelope,
+    body: pollCampaignChangesTriggerBody,
+  },
+};
+const pollProfileAndListChangesTriggerBody: {
+  data: {
+    created: KlaviyoRecord[];
+    updated: KlaviyoRecord[];
+  };
+} = {
+  data: {
+    created: [
+      {
+        type: "profile",
+        id: "01GDDKASAP8TKDDA2GRZDSVP4H",
+        attributes: {
+          email: "sarah.mason@klaviyo-demo.com",
+          phoneNumber: "+15005550006",
+          externalId: "ext-profile-001",
+          firstName: "Sarah",
+          lastName: "Mason",
+          organization: "Example Corporation",
+          locale: "en-US",
+          title: "Regional Manager",
+          created: "2026-06-15T10:30:00+00:00",
+          updated: "2026-06-15T10:30:00+00:00",
+          lastEventDate: "2026-06-15T10:30:00+00:00",
+          location: {
+            address1: "89 E 42nd St",
+            address2: "1st floor",
+            city: "New York",
+            country: "United States",
+            region: "NY",
+            zip: "10017",
+            timezone: "America/New_York",
+          },
+          properties: {},
+        },
+        links: {
+          self: "https://a.klaviyo.com/api/profiles/01GDDKASAP8TKDDA2GRZDSVP4H",
+        },
+      },
+    ],
+    updated: [
+      {
+        type: "profile",
+        id: "01GDDKBSAP9TKDDA3GRZDSVP5J",
+        attributes: {
+          email: "john.doe@example.com",
+          phoneNumber: "+15005550007",
+          externalId: "ext-profile-002",
+          firstName: "John",
+          lastName: "Doe",
+          organization: "Acme Inc",
+          locale: "en-US",
+          title: "Software Engineer",
+          created: "2026-05-01T08:00:00+00:00",
+          updated: "2026-06-15T11:45:00+00:00",
+          lastEventDate: "2026-06-15T11:45:00+00:00",
+          location: {
+            address1: "100 Main St",
+            city: "San Francisco",
+            country: "United States",
+            region: "CA",
+            zip: "94105",
+            timezone: "America/Los_Angeles",
+          },
+          properties: {
+            plan: "enterprise",
+          },
+        },
+        links: {
+          self: "https://a.klaviyo.com/api/profiles/01GDDKBSAP9TKDDA3GRZDSVP5J",
+        },
+      },
+    ],
+  },
+};
+export const pollProfileAndListChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    ...triggerPayloadEnvelope,
+    body: pollProfileAndListChangesTriggerBody,
+  },
+};
 export const getAccountExamplePayload: {
   data: GetAccountResponse;
 } = {
@@ -2583,4 +2833,30 @@ export const updateTemplateExamplePayload: {
       },
     },
   },
+};
+export const selectAccountExamplePayload = {
+  result: [{ label: "Klaviyo Demo", key: "01HABCDEF0123456789ABCDEF" }],
+};
+export const selectCampaignExamplePayload = {
+  result: [{ label: "Spring Sale Email", key: "01HABCDEF0123456789CAMPAIGN" }],
+};
+export const selectEventExamplePayload = {
+  result: [{ label: "Placed Order", key: "01HABCDEF0123456789EVENT01" }],
+};
+export const selectProfileExamplePayload = {
+  result: [
+    { label: "jane.doe@example.com", key: "01HPROFILE0123456789ABCDEF" },
+  ],
+};
+export const selectImageExamplePayload = {
+  result: [{ label: "Example Image", key: "155463624" }],
+};
+export const selectListExamplePayload = {
+  result: [{ label: "Example List", key: "RE83th" }],
+};
+export const selectSegmentExamplePayload = {
+  result: [{ label: "Example Segment", key: "WwKnkd" }],
+};
+export const selectTemplateExamplePayload = {
+  result: [{ label: "Welcome Email", key: "01HABCDEF012345678TEMPLATE" }],
 };

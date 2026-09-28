@@ -1,21 +1,20 @@
-import { input, structuredObjectInput } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   cleanArrayCodeInput,
   cleanCodeInput,
   cleanStringInput,
   cleanValueListInput,
-} from "../utils";
-import { connection, fields } from "./shared";
+} from "../util";
+import { connection, fields } from "./common";
 import { FIELDS_CAMPAIGN_MODEL } from "../constants";
 const filterCampaigns = input({
   label: "Filter Campaigns",
-  comments: "A filter to apply to the campaigns.",
+  comments: "A Klaviyo JSON:API filter expression to narrow the campaign list.",
   type: "string",
   example: "equals(messages.channel,'sms')",
-  placeholder: "equals(messages.channel,'sms')",
-  default: "equals(messages.channel,'sms')",
+  placeholder: "Enter a filter expression",
   required: true,
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 const fieldsCampaign = input({ ...fields, model: FIELDS_CAMPAIGN_MODEL });
 export const listCampaignsInputs = {
@@ -25,12 +24,12 @@ export const listCampaignsInputs = {
 };
 const campaignName = input({
   label: "Campaign Name",
-  comments: "The name of the campaign.",
+  comments: "A display name to identify the campaign.",
   type: "string",
   required: true,
   example: "My new campaign",
-  placeholder: "My new campaign",
-  clean: cleanStringInput,
+  placeholder: "Enter a campaign name",
+  clean: util.types.toString,
 });
 const campaignMessages = input({
   label: "Campaign Messages",
@@ -70,27 +69,28 @@ const campaignMessages = input({
 });
 const includedAudiences = input({
   label: "Included Audiences",
-  comments: "A list of included audiences.",
+  comments: "The IDs of lists or segments to receive the campaign.",
   type: "string",
   collection: "valuelist",
   example: "X7MYfE",
-  placeholder: "X7MYfE",
+  placeholder: "Enter an audience ID",
   required: true,
   clean: cleanValueListInput,
 });
 const excludedAudiences = input({
   label: "Excluded Audiences",
-  comments: "A list of excluded audiences.",
+  comments: "The IDs of lists or segments to exclude from the campaign.",
   type: "string",
   collection: "valuelist",
   example: "X7MYfE",
-  placeholder: "X7MYfE",
+  placeholder: "Enter an audience ID",
   required: true,
   clean: cleanValueListInput,
 });
 const trackingOptions = input({
   label: "Tracking Options",
-  comments: "The tracking options for the campaign.",
+  comments:
+    "UTM parameters, click tracking, and open tracking configuration. Provide as a JSON object.",
   type: "code",
   language: "json",
   example: JSON.stringify(
@@ -113,7 +113,8 @@ const trackingOptions = input({
 });
 const sendOptions = input({
   label: "Send Options",
-  comments: "The send options for the campaign.",
+  comments:
+    "Smart-sending and related delivery preferences. Provide as a JSON object.",
   type: "code",
   language: "json",
   example: JSON.stringify(
@@ -128,7 +129,8 @@ const sendOptions = input({
 });
 const sendStrategy = input({
   label: "Send Strategy",
-  comments: "The send strategy for the campaign.",
+  comments:
+    "Scheduling method and timing for campaign delivery. Provide as a JSON object.",
   type: "code",
   language: "json",
   example: JSON.stringify(
@@ -156,7 +158,7 @@ const sendStrategy = input({
 const campaignConfig = structuredObjectInput({
   label: "Campaign Configuration",
   required: false,
-  comments: "Tracking, send options, and delivery strategy.",
+  comments: "Tracking options, send options, and send strategy.",
   inputs: { trackingOptions, sendOptions, sendStrategy },
 });
 export const createCampaignInputs = {
@@ -169,13 +171,13 @@ export const createCampaignInputs = {
 };
 const campaignId = input({
   label: "Campaign ID",
-  comments: "The ID of the campaign.",
+  comments: "The unique identifier for the campaign.",
   type: "string",
   required: true,
   example: "01J2DNH88028WCAA2RK0BYBZVG",
-  placeholder: "01J2DNH88028WCAA2RK0BYBZVG",
+  placeholder: "Enter a campaign ID",
   dataSource: "selectCampaign",
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 export const getCampaignInputs = {
   connection,
@@ -189,7 +191,11 @@ export const deleteCampaignInputs = {
 export const updateCampaignInputs = {
   connection,
   campaignId,
-  campaignName: input({ ...campaignName, required: false }),
+  campaignName: input({
+    ...campaignName,
+    required: false,
+    clean: cleanStringInput,
+  }),
   includedAudiences: input({ ...includedAudiences, required: false }),
   excludedAudiences: input({ ...excludedAudiences, required: false }),
   campaignConfig,

@@ -1,15 +1,17 @@
-import { action } from "@prismatic-io/spectral";
-import { listCampaignsInputs as inputs } from "../../inputs/campaigns";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listCampaignsOutputSchema } from "../../outputSchemas";
+import { listCampaignsInputs as inputs } from "../../inputs";
 import { getApi } from "../../api";
-import type { FieldsCampaign } from "../../types/FieldsCampaign";
-import { fetchCampaigns } from "../../utils";
+import { fetchCampaigns } from "../../util";
 import { listCampaignsExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
+import type { FieldsCampaign } from "../../types";
 export const listCampaigns = action({
   display: {
     label: "List Campaigns",
     description: "Returns some or all campaigns based on filters.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, filterCampaigns, fieldsCampaign }) => {
     const campaignsApi = getApi(connection, KlaviyoApi.Campaigns);
     const debug = context.debug.enabled;
@@ -24,7 +26,7 @@ export const listCampaigns = action({
     const data = await fetchCampaigns(
       campaignsApi,
       fieldsCampaign as FieldsCampaign[],
-      filterCampaigns!,
+      filterCampaigns,
       [],
       undefined,
     );
@@ -33,5 +35,9 @@ export const listCampaigns = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCampaignsOutputSchema,
+  }),
   examplePayload: listCampaignsExamplePayload,
 });

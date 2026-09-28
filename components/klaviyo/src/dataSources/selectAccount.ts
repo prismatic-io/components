@@ -1,15 +1,16 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection } from "../inputs/shared";
+import { selectAccountInputs } from "../inputs";
+import { selectAccountExamplePayload } from "../examplePayloads";
 import { getApi } from "../api";
-import { KlaviyoApi } from "../enums/KlaviyoApi";
+import { KlaviyoApi } from "../constants";
 export const selectAccount = dataSource({
   display: {
     label: "Select Account",
     description: "Select an account to use.",
   },
-  inputs: { connection },
+  inputs: selectAccountInputs,
   dataSourceType: "picklist",
-  perform: async (context, { connection }) => {
+  perform: async (_context, { connection }) => {
     const accountsApi = getApi(connection, KlaviyoApi.Accounts);
     const { body } = await accountsApi.getAccounts({
       fieldsAccount: ["contact_information.default_sender_name"],
@@ -20,4 +21,5 @@ export const selectAccount = dataSource({
     }));
     return { result: objects };
   },
+  examplePayload: selectAccountExamplePayload,
 });

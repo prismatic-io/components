@@ -1,17 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listEventsOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { listEventsInputs as inputs } from "../../inputs/events";
-import type { FieldsEvent } from "../../types/FieldsEvent";
-import { fetchEvents } from "../../utils";
+import { listEventsInputs as inputs } from "../../inputs";
+import { fetchEvents } from "../../util";
 import { listEventsExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
-import type { FieldsMetric } from "../../types/FieldsMetric";
-import type { FieldsProfileEvent } from "../../types/FieldsProfileEvent";
+import { KlaviyoApi } from "../../constants";
+import type {
+  FieldsEvent,
+  FieldsMetric,
+  FieldsProfileEvent,
+} from "../../types";
 export const listEvents = action({
   display: {
     label: "List Events",
     description: "Get all events in an account.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, fieldsEvent, fieldsMetric, fieldsProfile },
@@ -40,5 +44,9 @@ export const listEvents = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listEventsOutputSchema,
+  }),
   examplePayload: listEventsExamplePayload,
 });

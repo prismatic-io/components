@@ -1,18 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { bulkCreateEventsOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { bulkCreateEventsInputs as inputs } from "../../inputs/events";
+import { bulkCreateEventsInputs as inputs } from "../../inputs";
 import {
   EventBulkCreateJobEnum,
   type EventsBulkCreateJob,
   type EventsBulkCreateQueryResourceObject,
 } from "klaviyo-api";
 import { bulkCreateEventsExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const bulkCreateEvents = action({
   display: {
     label: "Bulk Create Events",
     description: "Create a batch of events for one or more profiles.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, eventsArray }) => {
     const eventsApi = getApi(connection, KlaviyoApi.Events);
     const debug = context.debug.enabled;
@@ -39,5 +41,9 @@ export const bulkCreateEvents = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: bulkCreateEventsOutputSchema,
+  }),
   examplePayload: bulkCreateEventsExamplePayload,
 });

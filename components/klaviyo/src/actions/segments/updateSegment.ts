@@ -1,18 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateSegmentOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { updateSegmentInputs as inputs } from "../../inputs/segments";
+import { updateSegmentInputs as inputs } from "../../inputs";
 import {
   type ConditionGroup,
   SegmentEnum,
   type SegmentPartialUpdateQuery,
 } from "klaviyo-api";
 import { updateSegmentExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const updateSegment = action({
   display: {
     label: "Update Segment",
     description: "Update a segment with the given segment ID.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -47,14 +49,18 @@ export const updateSegment = action({
             : undefined,
           isStarred: isStarredSegmentOptional,
         },
-        id: segmentId!,
+        id: segmentId,
       },
     };
-    const { body } = await segmentsApi.updateSegment(segmentId!, segment);
+    const { body } = await segmentsApi.updateSegment(segmentId, segment);
     return {
       data: body,
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateSegmentOutputSchema,
+  }),
   examplePayload: updateSegmentExamplePayload,
 });

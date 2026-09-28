@@ -11,9 +11,9 @@ import {
   SegmentsApi,
   OAuthBasicSession,
 } from "klaviyo-api";
-import { validateConnection } from "./utils";
-import type { KlaviyoApiMap } from "./types/KlavyioApi";
-import { KlaviyoApi } from "./enums/KlaviyoApi";
+import { validateConnection } from "./util";
+import { KlaviyoApi } from "./constants";
+import type { KlaviyoApiMap } from "./types";
 const getKlaviyoSession = (connection: Connection) => {
   validateConnection(connection);
   switch (connection.key) {

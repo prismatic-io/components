@@ -1,7 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
-import { connection, fields } from "./shared";
+import { connection, fields } from "./common";
 import { FIELDS_IMAGE_MODEL } from "../constants";
-import { cleanBooleanInput, cleanStringInput } from "../utils";
+import { cleanBooleanInput, cleanStringInput } from "../util";
 const fieldsImage = input({ ...fields, model: FIELDS_IMAGE_MODEL });
 export const listImagesInputs = {
   connection,
@@ -13,7 +13,7 @@ const imageUrl = input({
     "An existing image url to import the image from. Alternatively, you may specify a base-64 encoded data-uri (`data:image/...`). Supported image formats: jpeg,png,gif. Maximum image size: 5MB. Use this field or File Data.",
   type: "string",
   example: "https://example.com/image.jpg",
-  placeholder: "https://example.com/image.jpg",
+  placeholder: "Enter an image URL",
   required: false,
   clean: cleanStringInput,
 });
@@ -23,7 +23,7 @@ const imageName = input({
     "A name for the image. Defaults to the filename if not provided. If the name matches an existing image, a suffix will be added.",
   type: "string",
   example: "My Image",
-  placeholder: "My Image",
+  placeholder: "Enter an image name",
   required: false,
   clean: cleanStringInput,
 });
@@ -44,12 +44,12 @@ export const uploadImageInputs = {
 };
 const imageId = input({
   label: "Image ID",
-  comments: "The ID of the image.",
+  comments: "The unique identifier for the image.",
   type: "string",
   example: "155463624",
-  placeholder: "155463624",
+  placeholder: "Enter an image ID",
   required: true,
-  clean: cleanStringInput,
+  clean: util.types.toString,
   dataSource: "selectImage",
 });
 export const getImageInputs = {
@@ -57,11 +57,11 @@ export const getImageInputs = {
   imageId,
   fieldsImage,
 };
-export const imageHidden = input({
+const imageHidden = input({
   label: "Image Hidden",
+  comments: "Controls whether the image is hidden in the image library.",
   type: "string",
   required: false,
-  default: undefined,
   model: ["True", "False"].map((choice) => ({
     label: choice,
     value: choice.toLowerCase(),

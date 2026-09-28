@@ -1,5 +1,5 @@
-import { input, structuredObjectInput } from "@prismatic-io/spectral";
-import { connection, fields } from "./shared";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import { connection, fields } from "./common";
 import {
   FIELDS_EVENT_MODEL,
   FIELDS_METRIC_MODEL,
@@ -10,7 +10,7 @@ import {
   cleanDate,
   cleanNumberInput,
   cleanStringInput,
-} from "../utils";
+} from "../util";
 const fieldsEvent = input({
   ...fields,
   label: "Event Fields",
@@ -37,7 +37,7 @@ export const listEventsInputs = {
 };
 const eventProperties = input({
   label: "Event Properties",
-  comments: "The properties of the event.",
+  comments: "A JSON object of custom key-value pairs to attach to the event.",
   type: "code",
   language: "json",
   required: true,
@@ -48,7 +48,7 @@ const eventProperties = input({
     null,
     2,
   ),
-  clean: (value) => cleanCodeInput(value, "Event Properties"),
+  clean: (value) => cleanCodeInput(value, "Event Properties") || {},
 });
 const eventTime = input({
   label: "Event Time",
@@ -57,7 +57,7 @@ const eventTime = input({
   type: "string",
   required: false,
   example: "2024-07-10T14:48:00.000Z",
-  placeholder: "2024-07-10T14:48:00.000Z",
+  placeholder: "Enter a timestamp",
   clean: (value) => cleanDate(value, "Event Time"),
 });
 const eventValue = input({
@@ -66,7 +66,7 @@ const eventValue = input({
   type: "string",
   required: false,
   example: "10",
-  placeholder: "10",
+  placeholder: "Enter a numeric value",
   clean: cleanNumberInput,
 });
 const eventValueCurrency = input({
@@ -76,7 +76,7 @@ const eventValueCurrency = input({
   type: "string",
   required: false,
   example: "USD",
-  placeholder: "USD",
+  placeholder: "Enter a currency code",
   clean: cleanStringInput,
 });
 const eventUniqueId = input({
@@ -85,17 +85,17 @@ const eventUniqueId = input({
   type: "string",
   required: false,
   example: "123",
-  placeholder: "123",
+  placeholder: "Enter a unique event ID",
   clean: cleanStringInput,
 });
 const eventName = input({
   label: "Event Name",
-  comments: "Name of the event.",
+  comments: "The metric name that identifies this event type.",
   type: "string",
   required: true,
   example: "Viewed Product",
-  placeholder: "Viewed Product",
-  clean: cleanStringInput,
+  placeholder: "Enter an event name",
+  clean: util.types.toString,
 });
 const eventProfile = input({
   label: "Event Profile",
@@ -146,7 +146,7 @@ const eventProfile = input({
 const eventFields = structuredObjectInput({
   label: "Event Details",
   required: false,
-  comments: "Optional event metadata and value details.",
+  comments: "Timestamp, monetary value, currency, and unique ID for the event.",
   inputs: { eventTime, eventValue, eventValueCurrency, eventUniqueId },
 });
 export const createEventInputs = {
@@ -158,13 +158,13 @@ export const createEventInputs = {
 };
 const eventId = input({
   label: "Event ID",
-  comments: "The ID of the event.",
+  comments: "The unique identifier for the event.",
   type: "string",
   required: true,
   example: "5nJKMJuHUQy",
-  placeholder: "5nJKMJuHUQy",
+  placeholder: "Enter an event ID",
   dataSource: "selectEvent",
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 export const getEventInputs = {
   connection,

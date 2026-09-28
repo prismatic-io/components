@@ -1,5 +1,6 @@
-import { action } from "@prismatic-io/spectral";
-import { updateCampaignInputs as inputs } from "../../inputs/campaigns";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateCampaignOutputSchema } from "../../outputSchemas";
+import { updateCampaignInputs as inputs } from "../../inputs";
 import { getApi } from "../../api";
 import {
   CampaignEnum,
@@ -7,12 +8,13 @@ import {
   type SendStrategySubObject,
 } from "klaviyo-api";
 import { updateCampaignExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const updateCampaign = action({
   display: {
     label: "Update Campaign",
     description: "Update a campaign with the given campaign ID.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -50,14 +52,18 @@ export const updateCampaign = action({
             excluded: excludedAudiences,
           },
         },
-        id: campaignId!,
+        id: campaignId,
       },
     };
-    const { body } = await campaignsApi.updateCampaign(campaignId!, campaign);
+    const { body } = await campaignsApi.updateCampaign(campaignId, campaign);
     return {
       data: body,
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateCampaignOutputSchema,
+  }),
   examplePayload: updateCampaignExamplePayload,
 });

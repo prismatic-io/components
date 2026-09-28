@@ -1,18 +1,22 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createEventOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { createEventInputs as inputs } from "../../inputs/events";
+import { createEventInputs as inputs } from "../../inputs";
 import {
   type EventCreateQueryV2,
   EventEnum,
   type EventProfileCreateQueryResourceObjectAttributes,
+  MetricEnum,
+  ProfileEnum,
 } from "klaviyo-api";
 import { createEventExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const createEvent = action({
   display: {
     label: "Create Event",
     description: "Create a new event to track a profiles activity.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, eventProperties, eventFields, eventName, eventProfile },
@@ -33,22 +37,22 @@ export const createEvent = action({
       data: {
         type: EventEnum.Event,
         attributes: {
-          properties: eventProperties!,
+          properties: eventProperties,
           time: eventFields.eventTime,
           value: eventFields.eventValue,
           valueCurrency: eventFields.eventValueCurrency,
           uniqueId: eventFields.eventUniqueId,
           metric: {
             data: {
-              type: "metric",
+              type: MetricEnum.Metric,
               attributes: {
-                name: eventName!,
+                name: eventName,
               },
             },
           },
           profile: {
             data: {
-              type: "profile",
+              type: ProfileEnum.Profile,
               attributes:
                 eventProfile as EventProfileCreateQueryResourceObjectAttributes,
             },
@@ -62,5 +66,9 @@ export const createEvent = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createEventOutputSchema,
+  }),
   examplePayload: createEventExamplePayload,
 });

@@ -3,7 +3,8 @@ import {
   MESSAGE_CHANNEL_MODEL,
   PROFILE_OR_LIST_RESOURCE_CONFIG,
 } from "../constants";
-import { connection } from "./shared";
+import { lookBackDateClean } from "../util";
+import { connection } from "./common";
 const profileOrListResourceModel = Object.entries(
   PROFILE_OR_LIST_RESOURCE_CONFIG,
 ).map(([value, { label }]) => ({ label, value }));
@@ -33,6 +34,16 @@ const showNewRecords = input({
     "When true, newly created records are included in the trigger output.",
   clean: util.types.toBool,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
@@ -45,12 +56,14 @@ const showUpdatedRecords = input({
 export const pollCampaignChangesInputs = {
   connection,
   pollMessageChannel,
+  lookBackDate,
   showNewRecords,
   showUpdatedRecords,
 };
 export const pollProfileAndListChangesInputs = {
   connection,
   pollProfileOrListResourceType,
+  lookBackDate,
   showNewRecords,
   showUpdatedRecords,
 };

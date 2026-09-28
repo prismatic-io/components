@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateImageOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { updateImageInputs as inputs } from "../../inputs/images";
+import { updateImageInputs as inputs } from "../../inputs";
 import { type ImagePartialUpdateQuery, ImageEnum } from "klaviyo-api";
 import { updateImageExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const updateImage = action({
   display: {
     label: "Update Image",
     description: "Update the image with the given image ID.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, imageId, imageName, imageHidden }) => {
     const imagesApi = getApi(connection, KlaviyoApi.Images);
     const debug = context.debug.enabled;
@@ -28,14 +30,18 @@ export const updateImage = action({
           name: imageName,
           hidden: imageHidden,
         },
-        id: imageId!,
+        id: imageId,
       },
     };
-    const { body } = await imagesApi.updateImage(imageId!, image);
+    const { body } = await imagesApi.updateImage(imageId, image);
     return {
       data: body,
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateImageOutputSchema,
+  }),
   examplePayload: updateImageExamplePayload,
 });

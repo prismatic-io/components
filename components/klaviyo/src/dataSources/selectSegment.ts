@@ -1,14 +1,15 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection } from "../inputs/shared";
+import { selectSegmentInputs } from "../inputs";
+import { selectSegmentExamplePayload } from "../examplePayloads";
 import { getApi } from "../api";
-import { fetchSegments } from "../utils";
-import { KlaviyoApi } from "../enums/KlaviyoApi";
+import { fetchSegments } from "../util";
+import { KlaviyoApi } from "../constants";
 export const selectSegment = dataSource({
   display: {
     label: "Select Segment",
-    description: "Select a segment from your Klaviyo account.",
+    description: "Select a segment from a Klaviyo account.",
   },
-  inputs: { connection },
+  inputs: selectSegmentInputs,
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const segmentsApi = getApi(connection, KlaviyoApi.Segments);
@@ -21,7 +22,5 @@ export const selectSegment = dataSource({
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
     return { result };
   },
-  examplePayload: {
-    result: [{ label: "Example Segment", key: "WwKnkd" }],
-  },
+  examplePayload: selectSegmentExamplePayload,
 });

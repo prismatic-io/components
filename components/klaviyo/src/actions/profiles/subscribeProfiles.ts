@@ -1,19 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { subscribeProfilesOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { subscribeProfilesInputs as inputs } from "../../inputs/profiles";
+import { subscribeProfilesInputs as inputs } from "../../inputs";
 import {
   ProfileSubscriptionBulkCreateJobEnum,
   type ProfileSubscriptionCreateQueryResourceObject,
   type SubscriptionCreateJobCreateQuery,
 } from "klaviyo-api";
 import { subscribeProfilesExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const subscribeProfiles = action({
   display: {
     label: "Subscribe Profiles",
     description:
       "Subscribe one or more profiles to email marketing, SMS marketing, or both.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, subscribeProfiles }) => {
     const profilesApi = getApi(connection, KlaviyoApi.Profiles);
     const debug = context.debug.enabled;
@@ -40,5 +42,9 @@ export const subscribeProfiles = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: subscribeProfilesOutputSchema,
+  }),
   examplePayload: subscribeProfilesExamplePayload,
 });

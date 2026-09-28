@@ -1,15 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listTemplatesOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { listTemplatesInputs as inputs } from "../../inputs/templates";
-import type { FieldsTemplate } from "../../types/FieldsTemplate";
-import { fetchTemplates } from "../../utils";
+import { listTemplatesInputs as inputs } from "../../inputs";
+import { fetchTemplates } from "../../util";
 import { listTemplatesExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
+import type { FieldsTemplate } from "../../types";
 export const listTemplates = action({
   display: {
     label: "List Templates",
     description: "Get all templates in an account.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, fieldsTemplate }) => {
     const templatesApi = getApi(connection, KlaviyoApi.Templates);
     const debug = context.debug.enabled;
@@ -27,5 +29,9 @@ export const listTemplates = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listTemplatesOutputSchema,
+  }),
   examplePayload: listTemplatesExamplePayload,
 });

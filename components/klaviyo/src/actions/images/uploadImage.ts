@@ -1,15 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { uploadImageOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { uploadImageInputs as inputs } from "../../inputs/images";
+import { uploadImageInputs as inputs } from "../../inputs";
 import { type ImageCreateQuery, ImageEnum } from "klaviyo-api";
-import { bufferToDataUri } from "../../utils";
+import { bufferToDataUri } from "../../util";
 import { uploadImageExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const uploadImage = action({
   display: {
     label: "Upload Image",
     description: "Import an image from a url or file.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, imageUrl, imageName, fileData }) => {
     const imagesApi = getApi(connection, KlaviyoApi.Images);
     const debug = context.debug.enabled;
@@ -39,5 +41,9 @@ export const uploadImage = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: uploadImageOutputSchema,
+  }),
   examplePayload: uploadImageExamplePayload,
 });

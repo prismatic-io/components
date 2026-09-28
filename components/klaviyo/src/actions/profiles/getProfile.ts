@@ -1,15 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getProfileOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { getProfileInputs as inputs } from "../../inputs/profiles";
-import type { AdditionalFieldsProfile } from "../../types/AdditionalFieldsProfile";
-import type { FieldsProfile } from "../../types/FieldsProfile";
+import { getProfileInputs as inputs } from "../../inputs";
 import { getProfileExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
+import type { AdditionalFieldsProfile, FieldsProfile } from "../../types";
 export const getProfile = action({
   display: {
     label: "Get Profile",
     description: "Get the profile with the given profile ID.",
   },
+  performSafety: "safe",
   perform: async (
     context,
     { connection, profileId, fieldsProfile, additionalFieldsProfile },
@@ -25,7 +26,7 @@ export const getProfile = action({
         debug,
       });
     }
-    const { body } = await profilesApi.getProfile(profileId!, {
+    const { body } = await profilesApi.getProfile(profileId, {
       fieldsProfile: fieldsProfile as FieldsProfile[],
       additionalFieldsProfile:
         additionalFieldsProfile as AdditionalFieldsProfile[],
@@ -34,6 +35,15 @@ export const getProfile = action({
       data: body,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: getProfileExamplePayload.data,
+  }),
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getProfileOutputSchema,
+  }),
   examplePayload: getProfileExamplePayload,
 });

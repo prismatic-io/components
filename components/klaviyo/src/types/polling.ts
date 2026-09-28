@@ -1,4 +1,4 @@
-import type { KlaviyoApi } from "../enums/KlaviyoApi";
+import type { KlaviyoApi } from "../constants";
 export interface PollingState {
   lastPolledAt?: string;
 }
@@ -13,5 +13,15 @@ export interface PollResourceConfig {
   api: KlaviyoApi;
   createdAtField: string;
   updatedAtField: string;
+  createdAtAttr?: string;
+  updatedAtAttr?: string;
 }
 export type KlaviyoPollableResource = "profiles" | "lists";
+export interface PollingRecordChange {
+  changeType: "created" | "updated";
+  record: KlaviyoRecord;
+}
+export interface PollingChangesObject {
+  created?: KlaviyoRecord[];
+  updated?: KlaviyoRecord[];
+}

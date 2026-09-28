@@ -1,9 +1,10 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanValueListInput } from "../utils";
+import { cleanValueListInput } from "../util";
 export const connection = input({
   label: "Connection",
   type: "connection",
   required: true,
+  comments: "The Klaviyo connection to use.",
 });
 export const fields = input({
   label: "Fields",

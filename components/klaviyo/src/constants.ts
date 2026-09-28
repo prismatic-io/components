@@ -1,5 +1,14 @@
-import type { PollResourceConfig } from "./types/polling";
-import { KlaviyoApi } from "./enums/KlaviyoApi";
+import type { PollResourceConfig } from "./types";
+export enum KlaviyoApi {
+  Accounts = "accounts",
+  Templates = "templates",
+  Profiles = "profiles",
+  Lists = "lists",
+  Images = "images",
+  Campaigns = "campaigns",
+  Events = "events",
+  Segments = "segments",
+}
 export const BASE_URL = "https://a.klaviyo.com";
 export const FIELDS_ACCOUNT_MODEL = [
   { label: "Test Account", value: "test_account" },
@@ -349,6 +358,8 @@ export const CAMPAIGN_RESOURCE_CONFIG: PollResourceConfig = {
   api: KlaviyoApi.Campaigns,
   createdAtField: "created_at",
   updatedAtField: "updated_at",
+  createdAtAttr: "createdAt",
+  updatedAtAttr: "updatedAt",
 };
 export const MESSAGE_CHANNEL_MODEL = [
   { label: "Email", value: "email" },
@@ -363,3 +374,4 @@ export const KLAVIYO_FILTER_OPS = {
 export const KLAVIYO_FILTER_FIELDS = {
   MESSAGES_CHANNEL: "messages.channel",
 } as const;
+export const POLL_BATCH_SIZE = 50;

@@ -1,16 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listListProfilesOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { listListProfilesInputs as inputs } from "../../inputs/lists";
-import type { AdditionalFieldsProfile } from "../../types/AdditionalFieldsProfile";
-import type { FieldsProfile } from "../../types/FieldsProfile";
-import { fetchListProfiles } from "../../utils";
+import { listListProfilesInputs as inputs } from "../../inputs";
+import { fetchListProfiles } from "../../util";
 import { listListProfilesExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
+import type { AdditionalFieldsProfile, FieldsProfile } from "../../types";
 export const listListProfiles = action({
   display: {
     label: "List List Profiles",
     description: "Get all profiles within a list with the given list ID.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, listId, additionalFieldsProfile, fieldsProfile },
@@ -28,7 +29,7 @@ export const listListProfiles = action({
     }
     const data = await fetchListProfiles(
       listsApi,
-      listId!,
+      listId,
       additionalFieldsProfile as AdditionalFieldsProfile[],
       fieldsProfile as FieldsProfile[],
       [],
@@ -39,5 +40,9 @@ export const listListProfiles = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listListProfilesOutputSchema,
+  }),
   examplePayload: listListProfilesExamplePayload,
 });

@@ -1,5 +1,6 @@
-import { action } from "@prismatic-io/spectral";
-import { createCampaignInputs as inputs } from "../../inputs/campaigns";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createCampaignOutputSchema } from "../../outputSchemas";
+import { createCampaignInputs as inputs } from "../../inputs";
 import { getApi } from "../../api";
 import {
   type CampaignCreateQuery,
@@ -8,13 +9,14 @@ import {
   type SendStrategySubObject,
 } from "klaviyo-api";
 import { createCampaignExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const createCampaign = action({
   display: {
     label: "Create Campaign",
     description:
       "Creates a campaign given a set of parameters, then returns it.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -43,7 +45,7 @@ export const createCampaign = action({
       data: {
         type: CampaignEnum.Campaign,
         attributes: {
-          name: campaignName!,
+          name: campaignName,
           sendStrategy: campaignConfig.sendStrategy as SendStrategySubObject,
           sendOptions: campaignConfig.sendOptions,
           trackingOptions: campaignConfig.trackingOptions,
@@ -63,5 +65,9 @@ export const createCampaign = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createCampaignOutputSchema,
+  }),
   examplePayload: createCampaignExamplePayload,
 });

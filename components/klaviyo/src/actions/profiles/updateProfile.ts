@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateProfileOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { updateProfileInputs as inputs } from "../../inputs/profiles";
+import { updateProfileInputs as inputs } from "../../inputs";
 import { ProfileEnum, type ProfilePartialUpdateQuery } from "klaviyo-api";
 import { updateProfileExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const updateProfile = action({
   display: {
     label: "Update Profile",
     description: "Update the profile with the given profile ID.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, profileId, contactInfo, profileFields },
@@ -39,14 +41,18 @@ export const updateProfile = action({
           location: profileFields.location,
           properties: profileFields.properties,
         },
-        id: profileId!,
+        id: profileId,
       },
     };
-    const { body } = await profilesApi.updateProfile(profileId!, profile);
+    const { body } = await profilesApi.updateProfile(profileId, profile);
     return {
       data: body,
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateProfileOutputSchema,
+  }),
   examplePayload: updateProfileExamplePayload,
 });

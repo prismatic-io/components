@@ -8,7 +8,7 @@ import type {
   EventsApi,
   SegmentsApi,
 } from "klaviyo-api";
-import type { KlaviyoApi } from "../enums/KlaviyoApi";
+import type { KlaviyoApi } from "../constants";
 export type KlaviyoApiMap = {
   [K in KlaviyoApi]: K extends KlaviyoApi.Accounts
     ? AccountsApi

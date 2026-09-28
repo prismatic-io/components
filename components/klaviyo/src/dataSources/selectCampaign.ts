@@ -1,16 +1,17 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection } from "../inputs/shared";
+import { selectCampaignInputs } from "../inputs";
+import { selectCampaignExamplePayload } from "../examplePayloads";
 import { getApi } from "../api";
-import { fetchCampaigns } from "../utils";
-import { KlaviyoApi } from "../enums/KlaviyoApi";
+import { fetchCampaigns } from "../util";
+import { KlaviyoApi } from "../constants";
 export const selectCampaign = dataSource({
   display: {
     label: "Select Campaign",
     description: "Select a campaign to use.",
   },
-  inputs: { connection },
+  inputs: selectCampaignInputs,
   dataSourceType: "picklist",
-  perform: async (context, { connection }) => {
+  perform: async (_context, { connection }) => {
     const campaignsApi = getApi(connection, KlaviyoApi.Campaigns);
     const data = await fetchCampaigns(
       campaignsApi,
@@ -25,4 +26,5 @@ export const selectCampaign = dataSource({
     }));
     return { result: objects };
   },
+  examplePayload: selectCampaignExamplePayload,
 });

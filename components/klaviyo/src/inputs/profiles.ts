@@ -1,14 +1,10 @@
-import { input, structuredObjectInput } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import {
   ADDITIONAL_FIELDS_PROFILE_MODEL,
   FIELDS_PROFILE_MODEL,
 } from "../constants";
-import { connection, fields } from "./shared";
-import {
-  cleanArrayCodeInput,
-  cleanCodeInput,
-  cleanStringInput,
-} from "../utils";
+import { connection, fields } from "./common";
+import { cleanArrayCodeInput, cleanCodeInput, cleanStringInput } from "../util";
 export const fieldsProfile = input({ ...fields, model: FIELDS_PROFILE_MODEL });
 export const additionalFieldsProfile = input({
   ...fields,
@@ -22,10 +18,10 @@ const profileId = input({
   comments: "Unique identifier for the profile.",
   type: "string",
   example: "01J18FVB5H8XR1X9AXEQFVRW7A",
-  placeholder: "01J18FVB5H8XR1X9AXEQFVRW7A",
+  placeholder: "Enter a profile ID",
   required: true,
   dataSource: "selectProfile",
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 export const listProfileInputs = {
   connection,
@@ -34,19 +30,19 @@ export const listProfileInputs = {
 };
 const email = input({
   label: "Email",
-  comments: "Individual's email address",
+  comments: "The primary email address used to reach this profile.",
   type: "string",
   example: "sarah.mason@klaviyo-demo.com",
-  placeholder: "sarah.mason@klaviyo-demo.com",
+  placeholder: "Enter an email address",
   required: false,
   clean: cleanStringInput,
 });
 const phoneNumber = input({
   label: "Phone Number",
-  comments: "Individual's phone number in E.164 format",
+  comments: "Individual's phone number in E.164 format.",
   type: "string",
   example: "+15005550006",
-  placeholder: "+15005550006",
+  placeholder: "Enter a phone number",
   required: false,
   clean: cleanStringInput,
 });
@@ -56,25 +52,25 @@ const externalId = input({
     "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
   type: "string",
   example: "12345",
-  placeholder: "12345",
+  placeholder: "Enter an external ID",
   required: false,
   clean: cleanStringInput,
 });
 const firstName = input({
   label: "First Name",
-  comments: "Individual's first name",
+  comments: "The given name of the profile contact.",
   type: "string",
   example: "Sarah",
-  placeholder: "Sarah",
+  placeholder: "Enter a first name",
   required: false,
   clean: cleanStringInput,
 });
 const lastName = input({
   label: "Last Name",
-  comments: "Individual's last name",
+  comments: "The family name of the profile contact.",
   type: "string",
   example: "Mason",
-  placeholder: "Mason",
+  placeholder: "Enter a last name",
   required: false,
   clean: cleanStringInput,
 });
@@ -84,26 +80,25 @@ const organization = input({
     "Name of the company or organization within the company for whom the individual works",
   type: "string",
   example: "Example Corporation",
-  placeholder: "Example Corporation",
+  placeholder: "Enter an organization name",
   required: false,
   clean: cleanStringInput,
 });
 const title = input({
   label: "Title",
-  comments: "Individual's job title",
+  comments: "The job title or role at the individual's organization.",
   type: "string",
   example: "Regional Manager",
-  placeholder: "Regional Manager",
+  placeholder: "Enter a job title",
   required: false,
   clean: cleanStringInput,
 });
 const image = input({
   label: "Image",
-  comments: "URL pointing to the location of a profile image",
+  comments: "URL pointing to the location of a profile image.",
   type: "string",
   example: "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
-  placeholder:
-    "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+  placeholder: "Enter a profile image URL",
   required: false,
   clean: cleanStringInput,
 });
@@ -150,13 +145,14 @@ const properties = input({
 const contactInfo = structuredObjectInput({
   label: "Contact Information",
   required: false,
-  comments: "Email, phone, and name details.",
+  comments: "Email, phone, and other contact channel details.",
   inputs: { email, phoneNumber, firstName, lastName },
 });
 const profileFields = structuredObjectInput({
-  label: "Profile Details",
+  label: "Additional Fields",
   required: false,
-  comments: "Optional profile details.",
+  comments:
+    "Additional optional fields: includes External ID, Organization, Title, Image, Location, and Properties.",
   inputs: { externalId, organization, title, image, location, properties },
 });
 export const createProfileInputs = {

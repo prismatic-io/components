@@ -1,19 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { unsubscribeProfilesOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { unsubscribeProfilesInputs as inputs } from "../../inputs/profiles";
+import { unsubscribeProfilesInputs as inputs } from "../../inputs";
 import {
   ProfileSubscriptionBulkDeleteJobEnum,
   type ProfileSubscriptionDeleteQueryResourceObject,
   type SubscriptionDeleteJobCreateQuery,
 } from "klaviyo-api";
 import { unsubscribeProfilesExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const unsubscribeProfiles = action({
   display: {
     label: "Unsubscribe Profiles",
     description:
       "Unsubscribe one or more profiles to email marketing, SMS marketing, or both.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, unsubscribeProfiles }) => {
     const profilesApi = getApi(connection, KlaviyoApi.Profiles);
     const debug = context.debug.enabled;
@@ -40,5 +42,9 @@ export const unsubscribeProfiles = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: unsubscribeProfilesOutputSchema,
+  }),
   examplePayload: unsubscribeProfilesExamplePayload,
 });

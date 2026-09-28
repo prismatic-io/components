@@ -1,18 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createSegmentOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { createSegmentInputs as inputs } from "../../inputs/segments";
+import { createSegmentInputs as inputs } from "../../inputs";
 import {
   type ConditionGroup,
   type SegmentCreateQuery,
   SegmentEnum,
 } from "klaviyo-api";
 import { createSegmentExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const createSegment = action({
   display: {
     label: "Create Segment",
     description: "Create a segment.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, segmentName, segmentConditionGroups, isStarredSegment },
@@ -32,7 +34,7 @@ export const createSegment = action({
       data: {
         type: SegmentEnum.Segment,
         attributes: {
-          name: segmentName!,
+          name: segmentName,
           definition: {
             conditionGroups: segmentConditionGroups as ConditionGroup[],
           },
@@ -46,5 +48,9 @@ export const createSegment = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createSegmentOutputSchema,
+  }),
   examplePayload: createSegmentExamplePayload,
 });

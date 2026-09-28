@@ -1,7 +1,7 @@
-import { input } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { FIELDS_TEMPLATE_MODEL } from "../constants";
-import { cleanStringInput } from "../utils";
-import { connection, fields } from "./shared";
+import { cleanStringInput } from "../util";
+import { connection, fields } from "./common";
 const fieldsTemplate = input({ ...fields, model: FIELDS_TEMPLATE_MODEL });
 export const listTemplatesInputs = {
   connection,
@@ -9,39 +9,40 @@ export const listTemplatesInputs = {
 };
 const templateName = input({
   label: "Template Name",
-  comments: "The name of the template.",
+  comments: "A display name to identify the template.",
   type: "string",
   example: "Monthly Newsletter Template",
-  placeholder: "Monthly Newsletter Template",
+  placeholder: "Enter a template name",
   required: true,
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 const templateHtml = input({
   label: "Template HTML",
-  comments: "The HTML content of the template.",
+  comments: "The HTML markup rendered to recipients.",
   type: "string",
   example: "<html><body><p>Hello, world!</p></body></html>",
-  placeholder: "<html><body><p>Hello, world!</p></body></html>",
+  placeholder: "Enter HTML content",
   required: false,
   clean: cleanStringInput,
 });
 const templateText = input({
   label: "Template Text",
-  comments: "The text content of the template.",
+  comments: "The plain-text fallback shown when HTML cannot be rendered.",
   type: "string",
   example: "Hello, world!",
-  placeholder: "Hello, world!",
+  placeholder: "Enter plain text content",
   required: false,
   clean: cleanStringInput,
 });
 const editorType = input({
   label: "Editor Type",
-  comments: "Restricted to CODE.",
+  comments:
+    "The editor used to author the template. Currently only CODE is supported.",
   type: "string",
   example: "CODE",
-  placeholder: "CODE",
+  placeholder: "Enter an editor type",
   required: true,
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 export const createTemplateInputs = {
   connection,
@@ -52,13 +53,13 @@ export const createTemplateInputs = {
 };
 const templateId = input({
   label: "Template ID",
-  comments: "The ID of the template.",
+  comments: "The unique identifier for the template.",
   type: "string",
   example: "123456",
-  placeholder: "123456",
+  placeholder: "Enter a template ID",
   required: true,
   dataSource: "selectTemplate",
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 export const getTemplateInputs = {
   connection,
@@ -68,7 +69,7 @@ export const getTemplateInputs = {
 export const updateTemplateInputs = {
   connection,
   templateId,
-  templateName: { ...templateName, required: false },
+  templateName: { ...templateName, required: false, clean: cleanStringInput },
   templateHtml,
   templateText,
 };

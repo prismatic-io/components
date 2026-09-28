@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "Klaviyo",
     description:
-      "Klaviyo is a cloud based email marketing solution that enables e-commerce businesses to create, send, and analyze email and SMS campaigns.",
+      "Manage email and SMS marketing campaigns, profiles, lists, segments, and templates in Klaviyo.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },

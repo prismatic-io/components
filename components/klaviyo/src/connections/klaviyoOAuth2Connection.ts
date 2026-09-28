@@ -1,5 +1,4 @@
 import {
-  connection,
   oauth2Connection,
   OAuth2PkceMethod,
   OAuth2Type,
@@ -10,7 +9,7 @@ export const klaviyoOAuth2Connection = oauth2Connection({
   key: "klaviyoOAuth2Connection",
   display: {
     label: "OAuth 2.0",
-    description: "Connection to Klaviyo using OAuth 2.0.",
+    description: "Authenticate using OAuth 2.0.",
   },
   inputs: {
     authorizeUrl: {
@@ -39,29 +38,14 @@ export const klaviyoOAuth2Connection = oauth2Connection({
       type: "string",
       required: true,
       shown: true,
+      comments: "The Client ID from the Klaviyo OAuth application.",
     },
     clientSecret: {
-      label: "Client secret",
+      label: "Client Secret",
       type: "password",
       required: true,
       shown: true,
+      comments: "The Client Secret from the Klaviyo OAuth application.",
     },
   },
 });
-export const klaviyoApiKeyConnection = connection({
-  key: "klaviyoApiKeyConnection",
-  display: {
-    label: "API Key",
-    description: "Connection to Klaviyo using an API Key.",
-  },
-  comments: "Connection to Klaviyo using an API Key.",
-  inputs: {
-    apiKey: {
-      label: "API Key",
-      type: "password",
-      required: true,
-      comments: "Your API Key for Klaviyo",
-    },
-  },
-});
-export default [klaviyoApiKeyConnection, klaviyoOAuth2Connection];

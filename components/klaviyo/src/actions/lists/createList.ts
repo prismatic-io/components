@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createListOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
 import { type ListCreateQuery, ListEnum } from "klaviyo-api";
-import { createListInputs as inputs } from "../../inputs/lists";
+import { createListInputs as inputs } from "../../inputs";
 import { createListExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const createList = action({
   display: {
     label: "Create List",
     description: "Create a new list.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, listName }) => {
     const listsApi = getApi(connection, KlaviyoApi.Lists);
     const debug = context.debug.enabled;
@@ -19,7 +21,7 @@ export const createList = action({
       data: {
         type: ListEnum.List,
         attributes: {
-          name: listName!,
+          name: listName,
         },
       },
     };
@@ -29,5 +31,9 @@ export const createList = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createListOutputSchema,
+  }),
   examplePayload: createListExamplePayload,
 });

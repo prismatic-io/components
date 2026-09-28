@@ -1,16 +1,17 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection } from "../inputs/shared";
+import { selectEventInputs } from "../inputs";
+import { selectEventExamplePayload } from "../examplePayloads";
 import { getApi } from "../api";
-import { KlaviyoApi } from "../enums/KlaviyoApi";
-import { fetchEvents } from "../utils";
+import { KlaviyoApi } from "../constants";
+import { fetchEvents } from "../util";
 export const selectEvent = dataSource({
   display: {
     label: "Select Event",
     description: "Select an event to use.",
   },
-  inputs: { connection },
+  inputs: selectEventInputs,
   dataSourceType: "picklist",
-  perform: async (context, { connection }) => {
+  perform: async (_context, { connection }) => {
     const eventsApi = getApi(connection, KlaviyoApi.Events);
     const { data, included } = await fetchEvents(
       eventsApi,
@@ -42,4 +43,5 @@ export const selectEvent = dataSource({
     });
     return { result: objects };
   },
+  examplePayload: selectEventExamplePayload,
 });

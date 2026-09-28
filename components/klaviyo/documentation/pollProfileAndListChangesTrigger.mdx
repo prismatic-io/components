@@ -3,23 +3,32 @@ This trigger polls the [Klaviyo API](https://developers.klaviyo.com/en/reference
 #### How It Works
 
 1. The trigger runs on the configured polling schedule
-2. On the first execution, the current timestamp is stored as the initial `lastPolledAt` state and no records are returned
+2. On the first execution, the **Look-back Date** determines the starting point. When set, the trigger seeds `lastPolledAt` to that date and fetches all records modified on or after it. When empty, the current timestamp is stored as the initial `lastPolledAt` and no records are returned
 3. On each subsequent execution, a server-side Klaviyo JSON:API filter is built from the stored `lastPolledAt`: `greater-than(updated,<lastPolledAt>)`
 4. All paginated records of the selected **Resource Type** matching the filter are fetched via the corresponding Klaviyo API (Profiles or Lists)
-5. Returned records are categorized client-side as **created** or **updated** based on the `created` timestamp relative to `lastPolledAt` — records whose `created` exceeds `lastPolledAt` are classified as created; all other records returned by the filter are classified as updated
+5. Returned records are categorized client-side as **created** or **updated** based on the `created` timestamp relative to `lastPolledAt`. Records whose `created` exceeds `lastPolledAt` are classified as created; all other records returned by the filter are classified as updated
 6. After the fetch completes, the current timestamp is stored as the new `lastPolledAt`
 7. If both **Show New Records** and **Show Updated Records** are disabled, the trigger short-circuits without calling the API and still advances `lastPolledAt`
 
 The trigger sets `polledNoChanges: true` when no matching records are returned, allowing downstream flows to skip execution when there is nothing to process.
 
-#### Configuration
+**Initial sync**
 
-Configure the following inputs:
+Setting a **Look-back Date** turns the first recurrence into an initial sync: the trigger seeds its position to that date and sweeps every record modified on or after it, each record once. No input is suppressed during the sync. **Resource Type**, **Show New Records**, and **Show Updated Records** apply on the first recurrence exactly as they do on later ones.
 
-- **Connection**: The Klaviyo connection used to authenticate API requests
-- **Resource Type**: The Klaviyo resource to poll — `Profiles` or `Lists`
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+The sync window has no fixed upper bound, so a record modified while the sync runs is swept into it rather than left for the next recurrence. On completion the position advances to the time that recurrence started, and the next recurrence resumes from exactly there. No field in the payload marks the handoff. The sync drains in a single recurrence whether or not batching is enabled.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Klaviyo.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching enabled, each execution receives a single `{ changeType, record }` object instead of the `created` and `updated` arrays. Any downstream step that reads `body.data.created` or `body.data.updated` must be updated to read the batched shape before enabling batching.
 
 #### Supported Resource Types
 
@@ -30,7 +39,7 @@ Configure the following inputs:
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for newly created records and `updated` for modified records. Each record follows the Klaviyo JSON:API resource shape for the selected resource type.
+The trigger returns an object with two arrays: `created` for newly created records and `updated` for modified records. Each record follows the Klaviyo JSON:API resource shape for the selected resource type. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload (Profiles)</summary>
@@ -44,16 +53,16 @@ The trigger returns an object with two arrays — `created` for newly created re
         "id": "01HPROFILE0123456789ABCDEF",
         "attributes": {
           "email": "jane.doe@example.com",
-          "phone_number": "+15555550123",
-          "first_name": "Jane",
-          "last_name": "Doe",
+          "phoneNumber": "+15555550123",
+          "firstName": "Jane",
+          "lastName": "Doe",
           "created": "2026-04-15T14:30:00Z",
           "updated": "2026-04-15T14:30:00Z",
-          "last_event_date": null,
+          "lastEventDate": null,
           "subscriptions": {
             "email": {
               "marketing": {
-                "can_receive_email_marketing": true,
+                "canReceiveEmailMarketing": true,
                 "consent": "SUBSCRIBED"
               }
             }
@@ -67,11 +76,11 @@ The trigger returns an object with two arrays — `created` for newly created re
         "id": "01HPROFILE9876543210ZYXWVU",
         "attributes": {
           "email": "john.smith@example.com",
-          "first_name": "John",
-          "last_name": "Smith",
+          "firstName": "John",
+          "lastName": "Smith",
           "created": "2025-12-01T09:00:00Z",
           "updated": "2026-04-15T16:22:00Z",
-          "last_event_date": "2026-04-15T16:22:00Z"
+          "lastEventDate": "2026-04-15T16:22:00Z"
         }
       }
     ]
@@ -95,7 +104,7 @@ The trigger returns an object with two arrays — `created` for newly created re
           "name": "Spring Newsletter",
           "created": "2026-04-15T14:30:00Z",
           "updated": "2026-04-15T14:30:00Z",
-          "opt_in_process": "double_opt_in"
+          "optInProcess": "double_opt_in"
         },
         "relationships": {
           "profiles": {
@@ -115,7 +124,7 @@ The trigger returns an object with two arrays — `created` for newly created re
           "name": "VIP Customers",
           "created": "2025-10-10T12:00:00Z",
           "updated": "2026-04-15T16:22:00Z",
-          "opt_in_process": "single_opt_in"
+          "optInProcess": "single_opt_in"
         }
       }
     ]
@@ -129,5 +138,5 @@ The trigger returns an object with two arrays — `created` for newly created re
 
 - The `greater-than(updated,...)` filter is applied server-side, so only records modified since the last poll are returned
 - A newly created record has `created == updated`, so the same record is never classified as both created and updated
-- Both `profiles` and `lists` use the `created` and `updated` attribute names — these differ from the `created_at` / `updated_at` names used by the Campaigns API
+- Both `profiles` and `lists` use the `created` and `updated` attribute names. These differ from the `created_at` / `updated_at` names used by the Campaigns API
 - Refer to the [Klaviyo API rate limits documentation](https://developers.klaviyo.com/en/docs/rate_limits_and_error_handling) for throttling behavior and the [Get Profiles](https://developers.klaviyo.com/en/reference/get_profiles) and [Get Lists](https://developers.klaviyo.com/en/reference/get_lists) endpoint references for the full list of returned attributes

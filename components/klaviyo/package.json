@@ -1,27 +1,23 @@
 {
   "name": "klaviyo",
   "private": true,
-  "license": "Apache-2.0",
   "scripts": {
-    "build": "webpack",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "publish": "npm run build && prism components:publish",
-    "test": "echo 'no tests'",
     "lint": "biome lint . --write",
-    "format": "biome format . --write"
+    "format": "biome format . --write",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.20.0",
+    "@prismatic-io/spectral": "10.31.1",
     "klaviyo-api": "^10.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
-    "@types/jest": "30.0.0",
-    "copy-webpack-plugin": "13.0.0",
-    "jest": "30.0.4",
-    "ts-jest": "29.4.0",
-    "ts-loader": "9.5.2",
-    "typescript": "5.8.3",
-    "webpack": "5.100.2",
-    "webpack-cli": "6.0.1"
+    "@types/node": "^22",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "^4.1.11"
   }
 }

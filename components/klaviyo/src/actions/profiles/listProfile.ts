@@ -1,16 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listProfileOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { listProfileInputs as inputs } from "../../inputs/profiles";
-import type { FieldsProfile } from "../../types/FieldsProfile";
-import type { AdditionalFieldsProfile } from "../../types/AdditionalFieldsProfile";
-import { fetchProfile } from "../../utils";
+import { listProfileInputs as inputs } from "../../inputs";
+import { fetchProfile } from "../../util";
 import { listProfileExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
+import type { AdditionalFieldsProfile, FieldsProfile } from "../../types";
 export const listProfile = action({
   display: {
-    label: "List Profile",
+    label: "List Profiles",
     description: "Get all profiles in an account.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, fieldsProfile, additionalFieldsProfile },
@@ -37,5 +38,9 @@ export const listProfile = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listProfileOutputSchema,
+  }),
   examplePayload: listProfileExamplePayload,
 });

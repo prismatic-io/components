@@ -6,7 +6,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src", ".spectral/*"]
 }

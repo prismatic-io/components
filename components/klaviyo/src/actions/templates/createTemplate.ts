@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createTemplateOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
 import { type TemplateCreateQuery, TemplateEnum } from "klaviyo-api";
-import { createTemplateInputs as inputs } from "../../inputs/templates";
+import { createTemplateInputs as inputs } from "../../inputs";
 import { createTemplateExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const createTemplate = action({
   display: {
     label: "Create Template",
     description: "Create a new custom HTML template.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, templateName, editorType, templateHtml, templateText },
@@ -29,8 +31,8 @@ export const createTemplate = action({
       data: {
         type: TemplateEnum.Template,
         attributes: {
-          name: templateName!,
-          editorType: editorType!,
+          name: templateName,
+          editorType: editorType,
           html: templateHtml,
           text: templateText,
         },
@@ -42,5 +44,9 @@ export const createTemplate = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createTemplateOutputSchema,
+  }),
   examplePayload: createTemplateExamplePayload,
 });

@@ -1,12 +1,12 @@
 import { input, util } from "@prismatic-io/spectral";
-import { connection, fields } from "./shared";
+import { connection, fields } from "./common";
 import { FIELDS_SEGMENT_MODEL } from "../constants";
 import {
   cleanArrayCodeInput,
   cleanBooleanInput,
   cleanStringInput,
-} from "../utils";
-export const fieldsSegment = input({ ...fields, model: FIELDS_SEGMENT_MODEL });
+} from "../util";
+const fieldsSegment = input({ ...fields, model: FIELDS_SEGMENT_MODEL });
 export const listSegmentsInputs = {
   connection,
   fieldsSegment,
@@ -15,10 +15,10 @@ const segmentName = input({
   type: "string",
   required: true,
   label: "Segment Name",
-  comments: "The name of the segment.",
+  comments: "A display name to identify the segment.",
   example: "A segment",
-  placeholder: "A segment",
-  clean: cleanStringInput,
+  placeholder: "Enter a segment name",
+  clean: util.types.toString,
 });
 const segmentConditionGroups = input({
   type: "code",
@@ -53,7 +53,8 @@ const isStarredSegment = input({
   type: "boolean",
   required: false,
   label: "Is Starred Segment",
-  comments: "Whether the segment is starred.",
+  comments:
+    "When true, pins the segment to the top of the segments list in the Klaviyo UI.",
   default: "false",
   clean: util.types.toBool,
 });
@@ -67,10 +68,10 @@ const segmentId = input({
   type: "string",
   required: true,
   label: "Segment ID",
-  comments: "The ID of the segment.",
+  comments: "The unique identifier for the segment.",
   example: "WwKnkd",
-  placeholder: "WwKnkd",
-  clean: cleanStringInput,
+  placeholder: "Enter a segment ID",
+  clean: util.types.toString,
   dataSource: "selectSegment",
 });
 export const getSegmentInputs = {
@@ -81,9 +82,9 @@ export const getSegmentInputs = {
 const isStarredSegmentOptional = input({
   label: "Is Starred Segment",
   type: "string",
-  comments: "Whether the segment is starred.",
+  comments:
+    "When true, pins the segment to the top of the segments list in the Klaviyo UI.",
   required: false,
-  default: undefined,
   model: ["True", "False"].map((choice) => ({
     label: choice,
     value: choice.toLowerCase(),
@@ -93,7 +94,11 @@ const isStarredSegmentOptional = input({
 export const updateSegmentInputs = {
   connection,
   segmentId,
-  segmentName: input({ ...segmentName, required: false }),
+  segmentName: input({
+    ...segmentName,
+    required: false,
+    clean: cleanStringInput,
+  }),
   segmentConditionGroups: input({ ...segmentConditionGroups, required: false }),
   isStarredSegmentOptional,
 };

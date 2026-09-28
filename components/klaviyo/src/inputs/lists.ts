@@ -1,7 +1,6 @@
-import { input } from "@prismatic-io/spectral";
-import { connection, fields } from "./shared";
+import { input, util } from "@prismatic-io/spectral";
+import { connection, fields } from "./common";
 import { FIELDS_LIST_MODEL } from "../constants";
-import { cleanStringInput } from "../utils";
 import { additionalFieldsProfile, fieldsProfile } from "./profiles";
 const fieldsList = input({ ...fields, model: FIELDS_LIST_MODEL });
 export const listListsInputs = {
@@ -13,10 +12,9 @@ const listName = input({
   comments: "A helpful name to label the list.",
   type: "string",
   example: "Newsletter",
-  placeholder: "Newsletter",
-  default: "Newsletter",
+  placeholder: "Enter a list name",
   required: true,
-  clean: cleanStringInput,
+  clean: util.types.toString,
 });
 export const createListInputs = {
   connection,
@@ -27,9 +25,9 @@ const listId = input({
   comments: "The unique identifier of the list.",
   type: "string",
   example: "RE83th",
-  placeholder: "RE83th",
+  placeholder: "Enter a list ID",
   required: true,
-  clean: cleanStringInput,
+  clean: util.types.toString,
   dataSource: "selectList",
 });
 export const getListInputs = {

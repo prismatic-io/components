@@ -1,14 +1,15 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { connection } from "../inputs/shared";
+import { selectListInputs } from "../inputs";
+import { selectListExamplePayload } from "../examplePayloads";
 import { getApi } from "../api";
-import { fetchLists } from "../utils";
-import { KlaviyoApi } from "../enums/KlaviyoApi";
+import { fetchLists } from "../util";
+import { KlaviyoApi } from "../constants";
 export const selectList = dataSource({
   display: {
     label: "Select List",
-    description: "Select a list from your Klaviyo account.",
+    description: "Select a list from a Klaviyo account.",
   },
-  inputs: { connection },
+  inputs: selectListInputs,
   dataSourceType: "picklist",
   perform: async (_context, { connection }) => {
     const listsApi = getApi(connection, KlaviyoApi.Lists);
@@ -21,7 +22,5 @@ export const selectList = dataSource({
       .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1));
     return { result };
   },
-  examplePayload: {
-    result: [{ label: "Example List", key: "RE83th" }],
-  },
+  examplePayload: selectListExamplePayload,
 });

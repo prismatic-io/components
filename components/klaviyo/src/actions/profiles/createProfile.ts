@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createProfileOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { createProfileInputs as inputs } from "../../inputs/profiles";
+import { createProfileInputs as inputs } from "../../inputs";
 import { type ProfileCreateQuery, ProfileEnum } from "klaviyo-api";
 import { createProfileExamplePayload } from "../../examplePayloads";
-import { KlaviyoApi } from "../../enums/KlaviyoApi";
+import { KlaviyoApi } from "../../constants";
 export const createProfile = action({
   display: {
     label: "Create Profile",
     description: "Create a new profile.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, contactInfo, profileFields }) => {
     const profilesApi = getApi(connection, KlaviyoApi.Profiles);
     const debug = context.debug.enabled;
@@ -43,5 +45,9 @@ export const createProfile = action({
     };
   },
   inputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createProfileOutputSchema,
+  }),
   examplePayload: createProfileExamplePayload,
 });
