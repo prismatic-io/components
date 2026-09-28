@@ -1,57 +1,36 @@
-import { dataSource, type Element, util } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { dataSource } from "@prismatic-io/spectral";
 import { getClient } from "../client";
-import { connectionInput } from "../inputs";
+import { DEFAULT_PAGE_SIZE, ENDPOINTS } from "../constants";
+import { selectTransactionExamplePayload } from "../examplePayloads";
+import { selectTransactionInputs } from "../inputs";
+import { toSortedElements } from "../utils";
 export const selectTransaction = dataSource({
   display: {
     label: "Select Transaction",
-    description: "A picklist of transactions in your Adobe Commerce store.",
+    description: "A picklist of transactions in the Adobe Commerce store.",
   },
-  inputs: {
-    connectionInput,
-  },
+  inputs: selectTransactionInputs,
   perform: async (_context, { connectionInput }) => {
     const client = await getClient(connectionInput, false);
-    try {
-      const {
-        data: {
-          data: { items },
-        },
-      } = await client.get<{
-        data: {
-          items: {
-            transaction_id: number;
-            txn_id: string;
-            txn_type: string;
-            order_id: number;
-          }[];
-        };
-      }>("/transactions", {
-        params: {
-          "searchCriteria[pageSize]": "100",
-        },
-      });
-      return {
-        result: (items || [])
-          .map<Element>((item) => ({
-            label: `${item.txn_id} (${item.txn_type} - Order #${item.order_id})`,
-            key: item.transaction_id.toString(),
-          }))
-          .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1)),
-      };
-    } catch (error) {
-      const handled = handleErrors(error);
-      const serialized = util.types.toJSON(handled);
-      throw new Error(serialized);
-    }
+    const { data } = await client.get<{
+      items: {
+        transaction_id: number;
+        txn_id: string;
+        txn_type: string;
+        order_id: number;
+      }[];
+    }>(ENDPOINTS.transactions, {
+      params: {
+        "searchCriteria[pageSize]": DEFAULT_PAGE_SIZE,
+      },
+    });
+    return {
+      result: toSortedElements(data?.items, (item) => ({
+        label: `${item.txn_id} (${item.txn_type} - Order #${item.order_id})`,
+        key: item.transaction_id.toString(),
+      })),
+    };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "txn-abc123 (capture - Order #1)",
-        key: "1",
-      },
-    ],
-  },
+  examplePayload: selectTransactionExamplePayload,
 });

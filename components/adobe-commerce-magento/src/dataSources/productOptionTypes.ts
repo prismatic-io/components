@@ -1,7 +1,9 @@
-import { dataSource, type Element, util } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { dataSource } from "@prismatic-io/spectral";
 import { getClient } from "../client";
-import { connectionInput } from "../inputs";
+import { ENDPOINTS } from "../constants";
+import { productOptionTypesExamplePayload } from "../examplePayloads";
+import { productOptionTypesInputs } from "../inputs";
+import { toSortedElements } from "../utils";
 export const productOptionTypes = dataSource({
   display: {
     label: "Product Option Types",
@@ -9,30 +11,22 @@ export const productOptionTypes = dataSource({
   },
   perform: async (_context, { connectionInput }) => {
     const client = await getClient(connectionInput, false);
-    try {
-      const {
-        data: { data },
-      } = await client.get<{
-        data: {
-          code: string;
-          label: string;
-          group: string;
-          extension_atributes: object;
-        }[];
-      }>("/products/options/types");
-      const result = data.map<Element>(({ code, label }) => ({
-        label: code,
-        key: label,
-      }));
-      return { result };
-    } catch (error) {
-      const handled = handleErrors(error);
-      const serialized = util.types.toJSON(handled);
-      throw new Error(serialized);
-    }
+    const { data } = await client.get<
+      {
+        code: string;
+        label: string;
+        group: string;
+        extension_attributes: object;
+      }[]
+    >(ENDPOINTS.productOptionTypes);
+    return {
+      result: toSortedElements(data, ({ code, label }) => ({
+        label,
+        key: code,
+      })),
+    };
   },
-  inputs: {
-    connectionInput,
-  },
+  inputs: productOptionTypesInputs,
   dataSourceType: "picklist",
+  examplePayload: productOptionTypesExamplePayload,
 });

@@ -1,24 +1,24 @@
-import { cancelOrder } from "./cancelOrder";
-import { createCustomer } from "./createCustomer";
-import { createOrder } from "./createOrder";
-import { createProductAttributes } from "./createProductAttributes";
-import { createProductOptions } from "./createProductOptions";
-import { createProducts } from "./createProducts";
-import { deleteCustomer } from "./deleteCustomer";
-import { getCustomer } from "./getCustomer";
-import { getOrder } from "./getOrder";
-import { getTransaction } from "./getTransaction";
-import { graphQLRawRequest } from "./graphQLRawRequest";
-import { listOrderItems } from "./listOrderItems";
-import { listOrders } from "./listOrders";
-import { listProductAttributes } from "./listProductAttributes";
-import { listProductOptionTypes } from "./listProductOptionTypes";
-import { listProducts } from "./listProducts";
-import { listProductTypes } from "./listProductTypes";
-import { listTransactions } from "./listTransactions";
-import { restRawRequest } from "./restRawRequest";
-import { searchCustomers } from "./searchCustomers";
-import { updateCustomer } from "./updateCustomer";
+import { createCustomer } from "./customers/createCustomer";
+import { deleteCustomer } from "./customers/deleteCustomer";
+import { getCustomer } from "./customers/getCustomer";
+import { searchCustomers } from "./customers/searchCustomers";
+import { updateCustomer } from "./customers/updateCustomer";
+import { graphQLRawRequest } from "./misc/graphQLRawRequest";
+import { restRawRequest } from "./misc/restRawRequest";
+import { cancelOrder } from "./orders/cancelOrder";
+import { createOrder } from "./orders/createOrder";
+import { getOrder } from "./orders/getOrder";
+import { listOrderItems } from "./orders/listOrderItems";
+import { listOrders } from "./orders/listOrders";
+import { createProductAttributes } from "./products/createProductAttributes";
+import { createProductOptions } from "./products/createProductOptions";
+import { createProducts } from "./products/createProducts";
+import { listProductAttributes } from "./products/listProductAttributes";
+import { listProductOptionTypes } from "./products/listProductOptionTypes";
+import { listProducts } from "./products/listProducts";
+import { listProductTypes } from "./products/listProductTypes";
+import { getTransaction } from "./transactions/getTransaction";
+import { listTransactions } from "./transactions/listTransactions";
 export default {
   listProducts,
   createProducts,

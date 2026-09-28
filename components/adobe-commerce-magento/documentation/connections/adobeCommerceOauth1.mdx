@@ -1,0 +1,34 @@
+**OAuth 1.0a** authenticates requests against a merchant's own Adobe Commerce store, and is the authentication method to use for reading and writing store data such as orders, products, customers and transactions.
+
+An integration activated in the Adobe Commerce Admin issues four credentials: a consumer key, a consumer secret, an access token and an access token secret. There is no login screen and no token to request: the four values sign every request directly, and neither secret is ever transmitted to the store.
+
+#### Prerequisites
+
+- A merchant-hosted Adobe Commerce store reachable over HTTPS. A store reachable only over plain HTTP is not supported.
+- An administrator account with permission to create integrations
+
+Adobe Commerce as a Cloud Service authenticates through Adobe's Identity Management System instead and is not supported by this connection. Refer to [Authentication in Adobe Commerce as a Cloud Service](https://developer.adobe.com/commerce/webapi/rest/authentication/).
+
+#### Setup Steps
+
+To create an integration and obtain its credentials:
+
+1. Log in to the Adobe Commerce Admin.
+2. Navigate to **System** > **Extensions** > **Integrations**.
+3. Click **Add New Integration** and enter a **Name**.
+4. Open the **API** tab and grant the resource access the integration requires. Reading orders, products and customers requires at least **Sales**, **Catalog** and **Customers**.
+5. Click **Save**.
+6. Click **Activate** on the new integration, review the requested access, and click **Allow**.
+7. Copy all four values from the **Integration Tokens for Extensions** dialog.
+
+The four values are shown only at activation, so they must be copied before the dialog is closed. Lost credentials are replaced by reauthorizing the integration, which issues a new set. The credentials do not expire. They stay valid until the integration is deactivated or reauthorized.
+
+Refer to [Integrations](https://experienceleague.adobe.com/en/docs/commerce-admin/systems/integrations) for more information on creating and activating an integration, and to [Authentication](https://developer.adobe.com/commerce/webapi/get-started/authentication/) for Adobe's description of the OAuth 1.0a method.
+
+#### Configure the Connection
+
+Create a connection of type **OAuth 1.0a** and configure the following fields:
+
+- Enter the store's base URL into **Store URL**, without a trailing slash and without the `/rest` path (for example, `https://www.example.com`).
+- Enter the four values copied at activation into **Consumer Key**, **Consumer Secret**, **Access Token** and **Access Token Secret**.
+- Optionally set **Store Code**. It defaults to `default`, the store view code a single-store installation ships with, and forms the `<store_code>` segment of the `/rest/<store_code>/V1` request path. Change it only on a store that serves multiple store views.

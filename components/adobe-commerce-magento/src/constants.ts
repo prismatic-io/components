@@ -1,19 +1,40 @@
 export const sandboxUrl = "https://commercedeveloper-sandbox-api.adobe.com";
 export const productionUrl = "https://commercedeveloper-api.adobe.com";
+export const DEFAULT_STORE_CODE = "default";
 export const MAX_PAGES = 100;
 export const DEFAULT_PAGE_SIZE = "100";
 export const POLL_PAGE_SIZE = 100;
 export const MAX_POLL_PAGES = 50;
+export const ENDPOINTS = {
+  orders: "/orders",
+  orderItems: "/orders/items",
+  products: "/products",
+  productTypes: "/products/types",
+  productAttributes: "/products/attributes",
+  productAttributeTypes: "/products/attributes/types",
+  productOptions: "/products/options",
+  productOptionTypes: "/products/options/types",
+  customers: "/customers",
+  customerSearch: "/customers/search",
+  transactions: "/transactions",
+} as const;
+export const POLL_RESOURCE_TYPES = ["orders", "customers", "products"] as const;
+export type PollResourceType = (typeof POLL_RESOURCE_TYPES)[number];
 export const POLL_RESOURCE_CONFIG: Record<
-  string,
+  PollResourceType,
   {
     endpoint: string;
     idField: string;
   }
 > = {
-  orders: { endpoint: "/orders", idField: "entity_id" },
-  customers: { endpoint: "/customers/search", idField: "id" },
-  products: { endpoint: "/products", idField: "id" },
+  orders: { endpoint: ENDPOINTS.orders, idField: "entity_id" },
+  customers: { endpoint: ENDPOINTS.customerSearch, idField: "id" },
+  products: { endpoint: ENDPOINTS.products, idField: "id" },
+};
+export const POLL_RESOURCE_LABELS: Record<PollResourceType, string> = {
+  orders: "Orders",
+  customers: "Customers",
+  products: "Products",
 };
 export const productJson = {
   product: {
@@ -1170,3 +1191,5 @@ export const customerJson = {
     ],
   },
 };
+export const OAUTH1_SIGNATURE_METHOD = "HMAC-SHA256";
+export const OAUTH1_VERSION = "1.0";

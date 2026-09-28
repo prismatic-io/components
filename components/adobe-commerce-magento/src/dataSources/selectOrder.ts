@@ -1,57 +1,36 @@
-import { dataSource, type Element, util } from "@prismatic-io/spectral";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import { dataSource } from "@prismatic-io/spectral";
 import { getClient } from "../client";
-import { connectionInput } from "../inputs";
+import { DEFAULT_PAGE_SIZE, ENDPOINTS } from "../constants";
+import { selectOrderExamplePayload } from "../examplePayloads";
+import { selectOrderInputs } from "../inputs";
+import { toSortedElements } from "../utils";
 export const selectOrder = dataSource({
   display: {
     label: "Select Order",
-    description: "A picklist of orders in your Adobe Commerce store.",
+    description: "A picklist of orders in the Adobe Commerce store.",
   },
-  inputs: {
-    connectionInput,
-  },
+  inputs: selectOrderInputs,
   perform: async (_context, { connectionInput }) => {
     const client = await getClient(connectionInput, false);
-    try {
-      const {
-        data: {
-          data: { items },
-        },
-      } = await client.get<{
-        data: {
-          items: {
-            entity_id: number;
-            increment_id: string;
-            grand_total: number;
-            status: string;
-          }[];
-        };
-      }>("/orders", {
-        params: {
-          "searchCriteria[pageSize]": "100",
-        },
-      });
-      return {
-        result: (items || [])
-          .map<Element>((item) => ({
-            label: `#${item.increment_id} - ${item.status} ($${item.grand_total})`,
-            key: item.entity_id.toString(),
-          }))
-          .sort((a, b) => ((a.label ?? "") < (b.label ?? "") ? -1 : 1)),
-      };
-    } catch (error) {
-      const handled = handleErrors(error);
-      const serialized = util.types.toJSON(handled);
-      throw new Error(serialized);
-    }
+    const { data } = await client.get<{
+      items: {
+        entity_id: number;
+        increment_id: string;
+        grand_total: number;
+        status: string;
+      }[];
+    }>(ENDPOINTS.orders, {
+      params: {
+        "searchCriteria[pageSize]": DEFAULT_PAGE_SIZE,
+      },
+    });
+    return {
+      result: toSortedElements(data?.items, (item) => ({
+        label: `#${item.increment_id} - ${item.status} ($${item.grand_total})`,
+        key: item.entity_id.toString(),
+      })),
+    };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      {
-        label: "#000000001 - pending ($49.99)",
-        key: "1",
-      },
-    ],
-  },
+  examplePayload: selectOrderExamplePayload,
 });

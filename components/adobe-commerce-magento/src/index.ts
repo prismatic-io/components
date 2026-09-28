@@ -1,4 +1,5 @@
 import { component } from "@prismatic-io/spectral";
+import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./dataSources";
@@ -11,7 +12,7 @@ export default component({
   display: {
     label: "Adobe Commerce Magento",
     description:
-      "Adobe Commerce (Magento) is an open-source e-commerce platform. Use the Adobe Commerce component to manage your Products, Orders, Customers, and Transactions.",
+      "Manage products, orders, customers, and transactions in an Adobe Commerce (Magento) store.",
     iconPath: "icon.png",
     category: "Application Connectors",
   },
@@ -19,4 +20,5 @@ export default component({
   triggers,
   dataSources,
   connections,
+  hooks: { error: handleErrors },
 });
