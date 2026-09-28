@@ -9,7 +9,7 @@ export interface GatewayAssetResponse {
     asset: QualysAsset[];
   };
 }
-export interface QpsServiceResponseBody<T> {
+interface QpsServiceResponseBody<T> {
   responseCode: string;
   count?: number;
   hasMoreRecords?: boolean;

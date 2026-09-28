@@ -25,5 +25,6 @@ export const listAssetRiskData = action({
     });
     return { data };
   },
+  examplePerform: async () => listAssetRiskDataExamplePayload,
   examplePayload: listAssetRiskDataExamplePayload,
 });

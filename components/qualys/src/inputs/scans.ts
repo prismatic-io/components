@@ -82,7 +82,7 @@ const launchedAfter = input({
   required: false,
   comments: "Filter scans launched after this date (YYYY-MM-DD).",
   clean: toOptionalString,
-  placeholder: "2024-01-01",
+  placeholder: "Enter date (YYYY-MM-DD)",
   example: "2024-01-01",
 });
 export const launchScanInputs = {

@@ -62,5 +62,6 @@ export const launchScan = action({
       },
     };
   },
+  examplePerform: async () => launchScanExamplePayload,
   examplePayload: launchScanExamplePayload,
 });

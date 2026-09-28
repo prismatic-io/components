@@ -46,5 +46,6 @@ export const updateTag = action({
     const parsed = await parseXml<QpsServiceResponse<QualysTag>>(response.data);
     return { data: parsed };
   },
+  examplePerform: async () => updateTagExamplePayload,
   examplePayload: updateTagExamplePayload,
 });

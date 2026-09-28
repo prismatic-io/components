@@ -17,7 +17,7 @@ const lastModified = input({
   comments:
     "Filter assets modified after this date/time (ISO 8601). Used as an incremental sync watermark.",
   clean: toOptionalString,
-  placeholder: "2024-01-01T00:00:00Z",
+  placeholder: "Enter date in ISO 8601 format",
   example: "2024-01-01T00:00:00Z",
 });
 const includeFields = input({
@@ -44,7 +44,7 @@ const connectorUuid = input({
   required: true,
   comments: "The connector UUID from the Qualys Connectors UI.",
   clean: util.types.toString,
-  placeholder: "489e8429-2e82-4599-a2a8-xxxxxxxxxxxx",
+  placeholder: "Enter connector UUID",
   example: "489e8429-2e82-4599-a2a8-xxxxxxxxxxxx",
 });
 const source = input({
@@ -53,7 +53,7 @@ const source = input({
   required: true,
   comments: "The source identifier for the sync request.",
   clean: util.types.toString,
-  placeholder: "WEBHOOK",
+  placeholder: "Enter source identifier",
   example: "WEBHOOK",
 });
 const requestId = input({
@@ -62,7 +62,7 @@ const requestId = input({
   required: false,
   comments: "An optional request identifier for tracking the sync operation.",
   clean: toOptionalString,
-  placeholder: "6562e033-8456-4c13-989f-7f4f6fc67e3b",
+  placeholder: "Enter request ID",
   example: "6562e033-8456-4c13-989f-7f4f6fc67e3b",
 });
 const assetCount = input({
@@ -71,7 +71,7 @@ const assetCount = input({
   required: false,
   comments: "An optional count of assets being synced.",
   clean: toOptionalString,
-  placeholder: "10",
+  placeholder: "Enter asset count",
   example: "10",
 });
 const connectorMetaData = structuredObjectInput({

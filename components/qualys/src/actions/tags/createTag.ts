@@ -57,5 +57,41 @@ export const createTag = action({
     const parsed = await parseXml<QpsServiceResponse<QualysTag>>(response.data);
     return { data: parsed };
   },
+  examplePerform: async (
+    _context,
+    { tagName, color, criticalityScore, ruleText },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...(createTagExamplePayload.data as Record<string, unknown>),
+      ServiceResponse: {
+        ...(
+          createTagExamplePayload.data as Record<string, unknown> & {
+            ServiceResponse: Record<string, unknown>;
+          }
+        ).ServiceResponse,
+        data: {
+          Tag: {
+            ...(
+              createTagExamplePayload.data as Record<string, unknown> & {
+                ServiceResponse: Record<string, unknown> & {
+                  data: {
+                    Tag: Record<string, unknown>;
+                  };
+                };
+              }
+            ).ServiceResponse.data.Tag,
+            name: tagName,
+            ...(color ? { color } : {}),
+            ...(criticalityScore
+              ? { criticalityScore: String(criticalityScore) }
+              : {}),
+            ...(ruleText ? { ruleText } : {}),
+          },
+        },
+      },
+    },
+  }),
   examplePayload: createTagExamplePayload,
 });

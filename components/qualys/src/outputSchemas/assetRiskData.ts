@@ -18,13 +18,13 @@ export const listAssetRiskDataOutputSchema = {
           severity5: { type: "number" },
         },
       },
-      lastScanDate: { type: "string" },
+      lastActivityDate: { type: "string" },
       derived: {
         type: "object",
         properties: {
           truRiskBand: { type: "string" },
           totalVulnerabilityCount: { type: "number" },
-          daysSinceLastScan: { type: "number" },
+          daysSinceLastActivity: { type: "number" },
         },
       },
     },

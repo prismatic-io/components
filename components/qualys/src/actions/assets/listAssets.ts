@@ -48,5 +48,6 @@ export const listAssets = action({
       },
     };
   },
+  examplePerform: async () => listAssetsExamplePayload,
   examplePayload: listAssetsExamplePayload,
 });

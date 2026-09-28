@@ -14,9 +14,7 @@ import type {
   HostRiskData,
 } from "../types";
 import { ensureArray, parseXml } from "./xml";
-export const deriveTruRiskBand = (
-  score: number,
-): DerivedRiskData["truRiskBand"] => {
+const deriveTruRiskBand = (score: number): DerivedRiskData["truRiskBand"] => {
   if (score >= TRURISK_SEVERE_THRESHOLD) return "Severe";
   if (score >= TRURISK_HIGH_THRESHOLD) return "High";
   if (score >= TRURISK_MEDIUM_THRESHOLD) return "Medium";
@@ -42,7 +40,7 @@ export const fetchClassicHostRiskData = async ({
       host_metadata: "all",
     };
     if (idMin) params.id_min = idMin;
-    const response = await client.get<string>("/api/2.0/fo/asset/host/", {
+    const response = await client.get<string>("/api/5.0/fo/asset/host/", {
       params,
     });
     const parsed = await parseXml<ClassicHostResponse>(response.data);
@@ -61,25 +59,29 @@ export const fetchClassicHostRiskData = async ({
 };
 export const deriveRiskData = (host: ClassicHost): HostRiskData => {
   const truRiskScore = util.types.toInt(host.TRURISK_SCORE);
-  const vulnCounts = host.VULN_COUNT || {};
-  const s1 = util.types.toInt(vulnCounts.VULN_COUNT_SEVERITY_1);
-  const s2 = util.types.toInt(vulnCounts.VULN_COUNT_SEVERITY_2);
-  const s3 = util.types.toInt(vulnCounts.VULN_COUNT_SEVERITY_3);
-  const s4 = util.types.toInt(vulnCounts.VULN_COUNT_SEVERITY_4);
-  const s5 = util.types.toInt(vulnCounts.VULN_COUNT_SEVERITY_5);
-  let daysSinceLastScan: number | null = null;
-  if (host.LAST_SCAN_DATETIME) {
-    const lastScan = new Date(host.LAST_SCAN_DATETIME);
-    if (!Number.isNaN(lastScan.getTime())) {
-      daysSinceLastScan = Math.floor(
-        (Date.now() - lastScan.getTime()) / MS_PER_DAY,
+  const vulnCountElements = ensureArray(host.TRURISK_SCORE_FACTORS?.VULN_COUNT);
+  const countBySeverity = (level: string): number => {
+    const el = vulnCountElements.find((v) => v.$?.qds_severity === level);
+    return util.types.toInt(el?._);
+  };
+  const s1 = countBySeverity("1");
+  const s2 = countBySeverity("2");
+  const s3 = countBySeverity("3");
+  const s4 = countBySeverity("4");
+  const s5 = countBySeverity("5");
+  let daysSinceLastActivity: number | null = null;
+  if (host.LAST_ACTIVITY) {
+    const lastActivity = new Date(host.LAST_ACTIVITY);
+    if (!Number.isNaN(lastActivity.getTime())) {
+      daysSinceLastActivity = Math.floor(
+        (Date.now() - lastActivity.getTime()) / MS_PER_DAY,
       );
     }
   }
   const derived: DerivedRiskData = {
     truRiskBand: deriveTruRiskBand(truRiskScore),
     totalVulnerabilityCount: s1 + s2 + s3 + s4 + s5,
-    daysSinceLastScan,
+    daysSinceLastActivity,
   };
   return {
     id: host.ID || "",
@@ -94,7 +96,7 @@ export const deriveRiskData = (host: ClassicHost): HostRiskData => {
       severity4: s4,
       severity5: s5,
     },
-    lastScanDate: host.LAST_SCAN_DATETIME || "",
+    lastActivityDate: host.LAST_ACTIVITY || "",
     derived,
   };
 };

@@ -55,5 +55,6 @@ export const updateAssetTags = action({
     );
     return { data: parsed };
   },
+  examplePerform: async () => updateAssetTagsExamplePayload,
   examplePayload: updateAssetTagsExamplePayload,
 });

@@ -44,5 +44,6 @@ export const editRemediationTickets = action({
       },
     };
   },
+  examplePerform: async () => editRemediationTicketsExamplePayload,
   examplePayload: editRemediationTicketsExamplePayload,
 });

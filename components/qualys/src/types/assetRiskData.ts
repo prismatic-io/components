@@ -1,10 +1,9 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-export interface ClassicVulnCount {
-  VULN_COUNT_SEVERITY_1?: string;
-  VULN_COUNT_SEVERITY_2?: string;
-  VULN_COUNT_SEVERITY_3?: string;
-  VULN_COUNT_SEVERITY_4?: string;
-  VULN_COUNT_SEVERITY_5?: string;
+interface ClassicVulnCountElement {
+  $?: {
+    qds_severity?: string;
+  };
+  _?: string;
 }
 export interface ClassicHost {
   ID?: string;
@@ -13,10 +12,12 @@ export interface ClassicHost {
   DNS?: string;
   NETBIOS?: string;
   OS?: string;
-  LAST_SCAN_DATETIME?: string;
+  LAST_ACTIVITY?: string;
   TRURISK_SCORE?: string;
   ASSET_RISK_SCORE?: string;
-  VULN_COUNT?: ClassicVulnCount;
+  TRURISK_SCORE_FACTORS?: {
+    VULN_COUNT?: ClassicVulnCountElement | ClassicVulnCountElement[];
+  };
 }
 export interface ClassicHostResponse {
   HOST_LIST_OUTPUT?: {
@@ -38,9 +39,9 @@ export interface ClassicHostResponse {
 export interface DerivedRiskData {
   truRiskBand: "Severe" | "High" | "Medium" | "Low";
   totalVulnerabilityCount: number;
-  daysSinceLastScan: number | null;
+  daysSinceLastActivity: number | null;
 }
-export interface VulnCounts {
+interface VulnCounts {
   severity1: number;
   severity2: number;
   severity3: number;
@@ -59,6 +60,6 @@ export interface HostRiskData {
   os: string;
   truRiskScore: number;
   vulnCounts: VulnCounts;
-  lastScanDate: string;
+  lastActivityDate: string;
   derived: DerivedRiskData;
 }

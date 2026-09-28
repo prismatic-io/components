@@ -53,5 +53,6 @@ export const listTags = action({
       },
     };
   },
+  examplePerform: async () => listTagsExamplePayload,
   examplePayload: listTagsExamplePayload,
 });

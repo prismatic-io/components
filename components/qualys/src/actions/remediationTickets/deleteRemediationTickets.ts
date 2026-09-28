@@ -62,5 +62,6 @@ export const deleteRemediationTickets = action({
       },
     };
   },
+  examplePerform: async () => deleteRemediationTicketsExamplePayload,
   examplePayload: deleteRemediationTicketsExamplePayload,
 });

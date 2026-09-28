@@ -17,7 +17,7 @@ const assignee = input({
   required: false,
   comments: "Filter tickets assigned to this user's email address.",
   clean: toOptionalString,
-  placeholder: "user@example.com",
+  placeholder: "Enter assignee email address",
   example: "user@example.com",
 });
 const ticketState = input({
@@ -51,7 +51,7 @@ const modifiedSinceDatetime = input({
   comments:
     "Return tickets modified on or after this date/time. Format: YYYY-MM-DD or YYYY-MM-DDTHH:MM:SSZ.",
   clean: toOptionalString,
-  placeholder: "2024-01-01",
+  placeholder: "Enter date (YYYY-MM-DD)",
   example: "2024-01-01",
 });
 const since = input({
@@ -61,7 +61,7 @@ const since = input({
   comments:
     "Return tickets updated on or after this date/time. Format: YYYY-MM-DDTHH:MM:SSZ.",
   clean: toOptionalString,
-  placeholder: "2024-01-01T00:00:00Z",
+  placeholder: "Enter date (YYYY-MM-DDTHH:MM:SSZ)",
   example: "2024-01-01T00:00:00Z",
 });
 const newAssignee = input({
@@ -70,7 +70,7 @@ const newAssignee = input({
   required: false,
   comments: "Reassign selected tickets to this user.",
   clean: toOptionalString,
-  placeholder: "user@example.com",
+  placeholder: "Enter new assignee email address",
   example: "user@example.com",
 });
 const newState = input({

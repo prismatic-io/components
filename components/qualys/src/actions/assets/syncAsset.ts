@@ -34,5 +34,6 @@ export const syncAsset = action({
     );
     return { data: response.data };
   },
+  examplePerform: async () => syncAssetExamplePayload,
   examplePayload: syncAssetExamplePayload,
 });

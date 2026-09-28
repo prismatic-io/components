@@ -58,7 +58,7 @@ const criticalityScore = input({
   comments:
     "Tag criticality score (1-5). Qualys derives an asset's criticality as the maximum score across its tags.",
   clean: toOptionalNumber,
-  placeholder: "3",
+  placeholder: "Enter criticality score (1-5)",
   example: "3",
 });
 const ruleType = input({
