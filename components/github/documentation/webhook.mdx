@@ -1,0 +1,75 @@
+The **Webhook** trigger receives and validates webhook requests from GitHub for manually configured webhook subscriptions. When a **Webhook Secret** is set, each request's `X-Hub-Signature-256` header is checked against an HMAC-SHA256 of the raw request body before the flow runs.
+
+#### How It Works
+
+When a webhook request is received, the trigger:
+
+1. Reads the `X-Hub-Signature-256` header from the request
+2. Computes an HMAC-SHA256 of the raw request body using the configured **Webhook Secret**
+3. Rejects the request when the header is missing or the two values differ
+4. Passes the request to the flow when they match
+
+When **Webhook Secret** is left empty, no verification is performed and every request is accepted.
+
+<details>
+<summary>Compute the signature</summary>
+
+```js
+const crypto = require("node:crypto");
+
+const signature = `sha256=${crypto
+  .createHmac("sha256", webhookSecret) // the same secret entered in GitHub
+  .update(rawRequestBody) // the raw body, before JSON parsing
+  .digest("hex")}`; // GitHub sends the hex digest, prefixed with sha256=
+```
+
+</details>
+
+See [GitHub's guide to validating webhook deliveries](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries) for the signature scheme.
+
+#### Setting Up the Webhook in GitHub
+
+1. Open the repository or organization **Settings**, then **Webhooks**, and click **Add webhook**
+2. Set **Payload URL** to the flow's webhook URL
+3. Set **Content type** to `application/json`
+4. Enter a **Secret**, and enter the same value in this trigger's **Webhook Secret** input
+5. Choose the events to deliver and save
+
+GitHub's [creating webhooks guide](https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks) covers each field.
+
+#### Event Types
+
+The events delivered are chosen in GitHub when the webhook is created. The full catalog, with a payload example for each, is in [GitHub's webhook events and payloads reference](https://docs.github.com/en/webhooks/webhook-events-and-payloads). Common choices are `push`, `pull_request`, `issues`, `issue_comment`, and `release`.
+
+#### Returned Data
+
+The trigger returns the request as GitHub sent it. The example below is an `issues` event with the `opened` action.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "action": "opened",
+  "issue": {
+    "id": 1,
+    "number": 1347,
+    "title": "Found a bug",
+    "state": "open",
+    "html_url": "https://github.com/octocat/Hello-World/issues/1347",
+    "user": { "login": "octocat", "id": 1 },
+    "created_at": "2026-05-26T14:30:00Z",
+    "updated_at": "2026-05-26T14:30:00Z"
+  },
+  "repository": {
+    "id": 1296269,
+    "name": "Hello-World",
+    "full_name": "octocat/Hello-World"
+  },
+  "sender": { "login": "octocat", "id": 1 }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

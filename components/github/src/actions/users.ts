@@ -1,7 +1,13 @@
-import { action, type Connection, util } from "@prismatic-io/spectral";
+import {
+  action,
+  type Connection,
+  outputSchema,
+  util,
+} from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { usersGetByUsernameExamplePayload } from "../examplePayloads";
-import { connectionInput } from "../inputs";
+import { connectionInput, usersGetByUsernameInputs } from "../inputs";
+import { usersGetByUsernameOutputSchema } from "../outputSchemas";
 const usersList = action({
   display: {
     label: "Users List",
@@ -49,26 +55,17 @@ const usersGetByUsername = action({
     description: "Get a user",
   },
   examplePayload: usersGetByUsernameExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: usersGetByUsernameOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection, username }) => {
-    const client = createClient(
-      connection as Connection,
-      context.debug.enabled,
-    );
+    const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/users/${username}`);
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    username: {
-      label: "Username",
-      type: "string",
-      required: true,
-      placeholder: "Enter username",
-      example: "octocat",
-      clean: (value) => util.types.toString(value) || undefined,
-      comments: "The GitHub username.",
-    },
-  },
+  inputs: usersGetByUsernameInputs,
 });
 const activityListEventsForAuthenticatedUser = action({
   display: {

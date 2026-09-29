@@ -17,7 +17,6 @@ const usedActions = [
   "reposCreateWebhook",
   "reposDeleteInstanceWebhooks",
   "reposDeleteWebhook",
-  "reposDeleteWebhook",
   "reposListForOrg",
   "reposListWebhooks",
   "usersGetByUsername",

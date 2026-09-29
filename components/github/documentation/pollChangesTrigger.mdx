@@ -8,17 +8,33 @@ The trigger checks for:
 #### How It Works
 
 1. The trigger runs on the configured schedule.
-2. It records the time of each run and queries the repository's issues endpoint using GitHub's `since` parameter, requesting records whose `updated_at` is at or after the time of the last poll.
-3. Because `since` is inclusive (greater than or equal to), a record may occasionally be returned in two consecutive polls. Downstream flows should treat delivery as at-least-once and handle the same record being seen more than once.
+2. It queries the repository's issues endpoint using GitHub's `since` parameter, requesting records whose `updated_at` is at or after its stored position, oldest first. The position is kept to the second, which is the precision GitHub reports.
+3. Because `since` is inclusive (greater than or equal to), a record updated in the same second as the position can be returned again. The trigger remembers which records it delivered in that second and does not emit them twice; downstream flows should still treat delivery as at-least-once.
 4. Closed issues and pull requests are included (`state=all`) so changes to closed records are not missed.
-5. Each returned record is partitioned by comparing its `created_at` to the last poll time. Records created within the window are emitted on the **created** branch; records that existed before the window but were modified are emitted on the **updated** branch.
-6. The trigger stores the current run time as the new last-poll time so the next run only retrieves records changed since.
+5. Each returned record is partitioned by comparing its `created_at` to the stored position. Records created at or after it are emitted on the **created** branch; records that existed before it but were modified are emitted on the **updated** branch.
+6. The trigger stores the `updated_at` of the newest record it received as its new position, so the next recurrence resumes from exactly there. A recurrence that receives nothing leaves the position unchanged.
 
 The **created** and **updated** branches can be enabled or disabled independently using the **Show New Records** and **Show Updated Records** inputs.
 
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record modified on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync rather than deferred to the schedule. Each recurrence advances the position to the newest record it actually received, never to the wall clock, and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff. With batching off the drain is uncapped and finishes in one recurrence; with batching on each recurrence returns at most 500 records, oldest first, so a larger window spans several recurrences before the toggles apply again. The one exception is a group of 500 or more records modified in the same second, which is delivered whole in one recurrence because GitHub offers no way to page within a second.
+
+**Owner** and **Repository Name** still apply throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to GitHub.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`, each an array of records. With batching on those two fields do not exist. Each execution receives one `{ "changeType": ..., "record": ... }` item instead, or an array of those items when the batch size is greater than 1. Every step that reads `body.data.created` or `body.data.updated` must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
+
 #### Returned Data
 
-The trigger returns an object under `body.data` with two arrays, `created` and `updated`, each containing GitHub issue records. Records that represent pull requests include a `pull_request` property.
+With batching off, the trigger returns an object under `body.data` with two arrays, `created` and `updated`, each containing GitHub issue records. Records that represent pull requests include a `pull_request` property.
 
 <details>
 <summary>Example Response</summary>
@@ -52,6 +68,30 @@ The trigger returns an object under `body.data` with two arrays, `created` and `
         }
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": 2147483647,
+    "number": 142,
+    "title": "Add dark mode toggle",
+    "state": "open",
+    "html_url": "https://github.com/octocat/Hello-World/issues/142",
+    "created_at": "2026-05-26T14:30:00Z",
+    "updated_at": "2026-05-26T14:30:00Z"
   }
 }
 ```

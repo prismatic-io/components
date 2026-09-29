@@ -518,6 +518,23 @@ export const usersGetByUsernameExamplePayload = {
     updated_at: "2024-01-15T10:00:00Z",
   },
 };
+export const usersGetAuthenticatedExamplePayload = {
+  data: {
+    ...usersGetByUsernameExamplePayload.data,
+    private_gists: 81,
+    total_private_repos: 100,
+    owned_private_repos: 100,
+    disk_usage: 10000,
+    collaborators: 8,
+    two_factor_authentication: true,
+    plan: {
+      name: "Medium",
+      space: 400,
+      private_repos: 20,
+      collaborators: 0,
+    },
+  },
+};
 export const orgsListForAuthenticatedUserExamplePayload = {
   data: [
     {
@@ -607,6 +624,12 @@ export const rawRequestExamplePayload = {
     message: "Example response from custom API endpoint",
   },
 };
+export const listReposForAuthenticatedUserExamplePayload = {
+  data: [exampleRepository],
+};
+export const selectUserFromOrganizationExamplePayload = {
+  data: [exampleUser],
+};
 export const pollChangesTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -667,7 +690,108 @@ export const pollChangesTriggerExamplePayload: {
       versionSequenceId: "1",
       externalVersion: "",
     },
-    flow: { id: "testFlowId", name: "Test Flow" },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
+};
+export const webhookExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    headers: {
+      "content-type": "application/json",
+      "user-agent": "GitHub-Hookshot/f4c9a2b",
+      "x-github-event": "issues",
+      "x-github-delivery": "d1f8a6e4-7c2b-11ee-9a4f-0242ac120002",
+      "x-hub-signature-256":
+        "sha256=7d38cdd689735b008b3c702edd92eea23791c5f6f3ba0d8f8b0d0f2a9e5b1c44",
+    },
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: {
+        action: "opened",
+        issue: issuesListForRepoExamplePayload.data[0],
+        repository: exampleRepository,
+        sender: exampleUser,
+      },
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+    customer: {
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
+    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
+    user: {
+      id: "testUserId",
+      email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
+    },
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
+};
+export const eventWebhookExamplePayload: {
+  payload: TriggerPayload;
+} = {
+  payload: {
+    headers: {
+      "content-type": "application/json",
+      "user-agent": "GitHub-Hookshot/f4c9a2b",
+      "x-github-event": "pull_request",
+      "x-github-delivery": "6b0c53a2-7c2b-11ee-8f3d-0242ac120002",
+      "x-hub-signature-256":
+        "sha256=1c0b8fe5c6a24d9f3b7e0a5d84c1f27e93ab6d40f5e2c8197ad3b6045e9c7f13",
+    },
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: {
+        action: "opened",
+        number: 1347,
+        pull_request: pullsCreateExamplePayload.data,
+        repository: exampleRepository,
+        sender: exampleUser,
+      },
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+    customer: {
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
+    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
+    user: {
+      id: "testUserId",
+      email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
+    },
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
     startedAt: "2024-01-15T00:00:00.000Z",
     globalDebug: false,
   },

@@ -5,13 +5,13 @@ import {
   sendRawRequest,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { baseUrl } from "../client";
-import { connectionInput } from "../inputs";
 import { rawRequestExamplePayload } from "../examplePayloads";
+import { connectionInput } from "../inputs";
 const { debugRequest: _, ...rawRequestInputs } = httpClientInputs;
 const rawRequest = action({
   display: {
     label: "Raw Request",
-    description: "Send raw HTTP request to Github",
+    description: "Send raw HTTP request to GitHub.",
   },
   examplePayload: rawRequestExamplePayload,
   inputs: {
@@ -23,6 +23,7 @@ const rawRequest = action({
       example: "/octocat",
     },
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...rawRequestInputs }) => {
     try {
       const { data } = await sendRawRequest(

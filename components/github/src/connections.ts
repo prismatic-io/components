@@ -3,7 +3,7 @@ export const oauth2 = oauth2Connection({
   key: "oauth2",
   display: {
     label: "OAuth 2.0",
-    description: "Authenticates with your Github account using OAuth 2.0",
+    description: "Authenticate using OAuth 2.0.",
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
   inputs: {
@@ -34,7 +34,7 @@ export const oauth2 = oauth2Connection({
       placeholder: "Enter scopes (space-separated)",
       example: "repo user admin:org",
       comments:
-        "Space-separated list of OAuth scopes. See [GitHub's documentation](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps) for available scopes.",
+        "Space-separated list of OAuth scopes. See [GitHub's documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps) for available scopes.",
     },
     clientId: {
       label: "Client ID",

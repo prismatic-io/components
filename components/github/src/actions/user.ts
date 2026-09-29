@@ -1,24 +1,45 @@
-import { action, type Connection, util } from "@prismatic-io/spectral";
+import {
+  action,
+  type Connection,
+  outputSchema,
+  util,
+} from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connectionInput, owner, page, perPage, repo } from "../inputs";
-import { orgsListForAuthenticatedUserExamplePayload } from "../examplePayloads";
+import {
+  orgsListForAuthenticatedUserExamplePayload,
+  usersGetAuthenticatedExamplePayload,
+} from "../examplePayloads";
+import {
+  connectionInput,
+  orgsListForAuthenticatedUserInputs,
+  owner,
+  page,
+  pagination,
+  perPage,
+  repo,
+  usersGetAuthenticatedInputs,
+} from "../inputs";
+import {
+  orgsListForAuthenticatedUserOutputSchema,
+  usersGetAuthenticatedOutputSchema,
+} from "../outputSchemas";
 const usersGetAuthenticated = action({
   display: {
     label: "Users Get Authenticated",
     description: "Get the authenticated user",
   },
+  examplePayload: usersGetAuthenticatedExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: usersGetAuthenticatedOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, { connection }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/user`);
     return { data };
   },
-  inputs: {
-    connection: {
-      label: "Connection",
-      type: "connection",
-      required: true,
-    },
-  },
+  inputs: usersGetAuthenticatedInputs,
 });
 const usersUpdateAuthenticated = action({
   display: {
@@ -2312,21 +2333,19 @@ const orgsListForAuthenticatedUser = action({
     description: "List organizations for the authenticated user",
   },
   examplePayload: orgsListForAuthenticatedUserExamplePayload,
-  perform: async (context, { connection, perPage, page }) => {
-    const client = createClient(
-      connection as Connection,
-      context.debug.enabled,
-    );
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: orgsListForAuthenticatedUserOutputSchema,
+  }),
+  performSafety: "safe",
+  perform: async (context, { connection, pagination }) => {
+    const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/user/orgs`, {
-      params: { per_page: perPage, page },
+      params: { per_page: pagination.perPage, page: pagination.page },
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    perPage,
-    page,
-  },
+  inputs: orgsListForAuthenticatedUserInputs,
 });
 const packagesListPackagesForAuthenticatedUser = action({
   display: {

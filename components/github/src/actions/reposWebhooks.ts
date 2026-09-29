@@ -1,21 +1,34 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action, input, outputSchema, util } from "@prismatic-io/spectral";
+import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { AxiosInstance } from "axios";
 import { createClient } from "../client";
+import {
+  DEFAULT_PAGE_SIZE,
+  LINK_HEADER_NEXT,
+  WEBHOOK_DEFAULTS,
+} from "../constants";
+import {
+  reposCreateWebhookExamplePayload,
+  reposDeleteInstanceWebhooksExamplePayload,
+  reposDeleteWebhookExamplePayload,
+  reposListWebhooksExamplePayload,
+} from "../examplePayloads";
 import {
   connectionInput,
   events as eventsInput,
   hookIdInput,
   owner as ownerInput,
   repo as repoInput,
+  reposCreateWebhookInputs,
+  reposDeleteInstanceWebhooksInputs,
+  reposDeleteWebhookInputs,
+  reposListWebhooksInputs,
   webhookSecretInput,
 } from "../inputs";
 import {
-  reposCreateWebhookExamplePayload,
-  reposListWebhooksExamplePayload,
-  reposDeleteWebhookExamplePayload,
-  reposDeleteInstanceWebhooksExamplePayload,
-} from "../examplePayloads";
-import { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+  reposCreateWebhookOutputSchema,
+  reposListWebhooksOutputSchema,
+} from "../outputSchemas";
 interface GitHubWebhook {
   id: number;
   name: string;
@@ -40,7 +53,7 @@ const fetchWebhooks = async ({
   instanceWebhookUrls,
 }: FetchWebhooksInput) => {
   let webhooks: GitHubWebhook[] = [];
-  const per_page = 100;
+  const per_page = DEFAULT_PAGE_SIZE;
   let page = 1;
   let link = "";
   do {
@@ -57,7 +70,7 @@ const fetchWebhooks = async ({
     ];
     page += 1;
     link = response.headers["link"];
-  } while (link && link.includes('rel="next"'));
+  } while (link && link.includes(LINK_HEADER_NEXT));
   return webhooks;
 };
 const reposListWebhooks = action({
@@ -66,6 +79,11 @@ const reposListWebhooks = action({
     description: "List webhooks of a repository",
   },
   examplePayload: reposListWebhooksExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: reposListWebhooksOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const instanceWebhookUrls = Object.values(context.webhookUrls);
@@ -78,18 +96,12 @@ const reposListWebhooks = action({
     });
     return { data: webhooks };
   },
-  inputs: {
-    connection: connectionInput,
-    owner: ownerInput,
-    repo: repoInput,
-    showOnlyInstanceWebhooks: input({
-      label: "Show only instance webhooks",
-      comments: "When true, shows only webhooks that point to this instance.",
-      type: "boolean",
-      default: "true",
-      clean: util.types.toBool,
-    }),
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: reposListWebhooksExamplePayload.data,
+  }),
+  inputs: reposListWebhooksInputs,
 });
 const reposCreateWebhook = action({
   display: {
@@ -97,16 +109,21 @@ const reposCreateWebhook = action({
     description: "Create a repository webhook",
   },
   examplePayload: reposCreateWebhookExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: reposCreateWebhookOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const { data } = await client.post(
       `/repos/${params.owner}/${params.repo}/hooks`,
       {
-        name: "web",
+        name: WEBHOOK_DEFAULTS.name,
         config: {
           url: params.callbackUrl,
-          content_type: "json",
-          insecure_ssl: "0",
+          content_type: WEBHOOK_DEFAULTS.contentType,
+          insecure_ssl: WEBHOOK_DEFAULTS.insecureSsl,
           secret: params.webhookSecret,
         },
         events: params.events,
@@ -115,22 +132,22 @@ const reposCreateWebhook = action({
     );
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    owner: ownerInput,
-    repo: repoInput,
-    callbackUrl: input({
-      label: "Callback URL",
-      type: "string",
-      required: true,
-      placeholder: "Enter callback URL",
-      example: "https://your-webhook-endpoint.com/webhook/abc123",
-      clean: util.types.toString,
-      comments: "The URL where webhook events will be sent.",
-    }),
-    events: eventsInput,
-    webhookSecret: webhookSecretInput,
-  },
+  examplePerform: async (
+    _context,
+    { callbackUrl, events },
+  ): Promise<{
+    data: unknown;
+  }> => ({
+    data: {
+      ...reposCreateWebhookExamplePayload.data,
+      events,
+      config: {
+        ...reposCreateWebhookExamplePayload.data.config,
+        url: callbackUrl,
+      },
+    },
+  }),
+  inputs: reposCreateWebhookInputs,
 });
 const reposDeleteWebhook = action({
   display: {
@@ -138,6 +155,7 @@ const reposDeleteWebhook = action({
     description: "Delete a repository webhook by ID",
   },
   examplePayload: reposDeleteWebhookExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const { data } = await client.delete(
@@ -145,12 +163,12 @@ const reposDeleteWebhook = action({
     );
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    owner: ownerInput,
-    repo: repoInput,
-    hookId: hookIdInput,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: reposDeleteWebhookExamplePayload.data,
+  }),
+  inputs: reposDeleteWebhookInputs,
 });
 const reposDeleteInstanceWebhooks = action({
   display: {
@@ -158,6 +176,7 @@ const reposDeleteInstanceWebhooks = action({
     description: "Delete all webhooks pointed at this instance",
   },
   examplePayload: reposDeleteInstanceWebhooksExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const client = createClient(params.connection, context.debug.enabled);
     const instanceWebhookUrls = Object.values(context.webhookUrls);
@@ -176,11 +195,12 @@ const reposDeleteInstanceWebhooks = action({
     }
     return { data: {} };
   },
-  inputs: {
-    connection: connectionInput,
-    owner: ownerInput,
-    repo: repoInput,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: reposDeleteInstanceWebhooksExamplePayload.data,
+  }),
+  inputs: reposDeleteInstanceWebhooksInputs,
 });
 export default {
   reposCreateWebhook,

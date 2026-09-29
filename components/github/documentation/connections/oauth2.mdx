@@ -1,5 +1,10 @@
 To connect to GitHub, [create a new OAuth 2.0 application](https://github.com/settings/applications/new).
 
+#### Prerequisites
+
+- A GitHub account with permission to create OAuth Apps for the user or organization that owns the repositories
+- Access to the repositories or organizations the integration will work with
+
 #### Setup Steps
 
 1. Navigate to [GitHub Developer Settings](https://github.com/settings/applications/new) to create a new OAuth App.
@@ -14,7 +19,7 @@ To connect to GitHub, [create a new OAuth 2.0 application](https://github.com/se
 #### Configure the Connection
 
 - Enter the **Client ID** and **Client Secret** from the OAuth App.
-- Determine [what scopes the use case requires](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps) and add those to **Scopes**, separating each with a space.
+- Determine [what scopes the use case requires](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps) and add those to **Scopes**, separating each with a space.
   - Common scopes include: `repo`, `user`, `admin:org`, `workflow`
   - For full repository access and workflow permissions, use: `repo user admin:org workflow`
 

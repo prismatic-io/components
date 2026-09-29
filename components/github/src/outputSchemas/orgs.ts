@@ -1,0 +1,33 @@
+export const orgsListForAuthenticatedUserOutputSchema = {
+  type: "array" as const,
+  items: {
+    type: "object" as const,
+    properties: {
+      login: { type: "string" },
+      id: { type: "integer" },
+      node_id: { type: "string" },
+      url: { type: "string", format: "uri" },
+      repos_url: { type: "string", format: "uri" },
+      events_url: { type: "string", format: "uri" },
+      hooks_url: { type: "string" },
+      issues_url: { type: "string" },
+      members_url: { type: "string" },
+      public_members_url: { type: "string" },
+      avatar_url: { type: "string" },
+      description: { type: ["string", "null"] },
+    },
+    required: [
+      "login",
+      "id",
+      "node_id",
+      "url",
+      "repos_url",
+      "events_url",
+      "hooks_url",
+      "issues_url",
+      "members_url",
+      "public_members_url",
+      "avatar_url",
+    ],
+  },
+};

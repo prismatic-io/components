@@ -1,5 +1,7 @@
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
+  lastSeenIds?: number[];
+  backfillActive?: boolean;
 }
 export interface GithubIssueRecord {
   id: number;
@@ -10,4 +12,12 @@ export interface GithubIssueRecord {
   created_at?: string;
   updated_at?: string;
   pull_request?: Record<string, unknown>;
+}
+export interface PollingChangesObject {
+  created?: GithubIssueRecord[];
+  updated?: GithubIssueRecord[];
+}
+export interface PollingRecordChange {
+  changeType: "created" | "updated";
+  record: GithubIssueRecord;
 }

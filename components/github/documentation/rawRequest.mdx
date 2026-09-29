@@ -1,7 +1,7 @@
-The **Raw Request** action allows you to interact with any [GitHub REST API](https://docs.github.com/en/rest/) endpoint.
+The **Raw Request** action allows interacting with any [GitHub REST API](https://docs.github.com/en/rest) endpoint.
 
-Suppose, for example, that you want to make use of GitHub's [Render a Markdown document](https://docs.github.com/en/rest/markdown#render-a-markdown-document) API endpoint.
-You can enter `/markdown` as the **URL**, select `POST` as the **Method**.
+Suppose, for example, a call to GitHub's [Render a Markdown document](https://docs.github.com/en/rest/markdown/markdown?apiVersion=2022-11-28#render-a-markdown-document) endpoint is needed.
+Enter `/markdown` as the **URL** and select `POST` as the **Method**.
 The HTTP request's body for that endpoint needs an object with `text` and `mode`, which can be a reference of a previous step.
 A previous code step, for example could look like this:
 

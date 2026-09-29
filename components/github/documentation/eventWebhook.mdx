@@ -14,6 +14,8 @@ When the integration instance is deleted:
 1. The trigger automatically removes the webhook from the GitHub repository
 2. The stored webhook ID and secret are cleaned up from cross-flow state
 
+When an instance is redeployed, the trigger compares the current **Owner**, **Repository Name**, and **Events** against the values stored when the webhook was created. If all three match, the existing webhook is left in place. If any of them differ, the existing GitHub webhook is deleted and a replacement is created for the current configuration, which also issues a new signing secret. The **Events** comparison ignores ordering, so selecting the same event types in a different order is not treated as a change.
+
 This automatic lifecycle management eliminates the need to manually configure webhooks in GitHub's repository settings.
 
 #### Webhook Signature Verification
@@ -31,9 +33,68 @@ The connection must have the following permissions:
 
 For organization owned repositories, the authenticated user or GitHub App must have admin access to the repository.
 
-#### Supported Event Types
+#### Event Types
 
-The trigger supports all GitHub webhook event types. For a complete list of event types and their payload structures, see the [GitHub webhook events and payloads documentation](https://docs.github.com/en/webhooks/webhook-events-and-payloads).
+The **Events** input offers a fixed list of 51 GitHub webhook event types, and the webhook is registered for the selected ones. For the payload structure of each event, see the [GitHub webhook events and payloads documentation](https://docs.github.com/en/webhooks/webhook-events-and-payloads).
+
+<details>
+<summary>Available Events (51)</summary>
+
+| Event | Description |
+|-------|-------------|
+| `commit_comment` | Activity on a commit comment. |
+| `create` | A Git branch or tag is created. |
+| `delete` | A Git branch or tag is deleted. |
+| `deploy_key` | Activity on a deploy key. |
+| `deployment` | Activity on a deployment. |
+| `deployment_status` | Activity on a deployment status. |
+| `discussion` | Activity on a discussion. |
+| `discussion_comment` | Activity on a comment in a discussion. |
+| `fork` | Someone forks the repository. |
+| `github_app_authorization` | A user revokes their authorization of a GitHub App. |
+| `gollum` | Someone creates or updates a wiki page. |
+| `installation` | Activity on a GitHub App installation. |
+| `installation_repositories` | A change to which repositories a GitHub App installation can access. |
+| `issue_comment` | Activity on a comment on an issue or pull request. |
+| `issues` | Activity on an issue. |
+| `label` | Activity on a label. |
+| `marketplace_purchase` | Activity on a GitHub Marketplace purchase. |
+| `member` | Activity on a repository collaborator. |
+| `membership` | Activity on team membership. |
+| `meta` | Activity on the webhook itself, such as its deletion. |
+| `milestone` | Activity on a milestone. |
+| `organization` | Activity on an organization and its members. |
+| `org_block` | An organization owner or moderator blocks or unblocks a non-member. |
+| `package` | Activity on a GitHub Packages package. |
+| `page_build` | An attempted build of a GitHub Pages site, whether or not it succeeds. |
+| `ping` | Sent once when the webhook is created. |
+| `project` | Activity on a project (classic). |
+| `project_card` | Activity on a card in a project (classic). |
+| `project_column` | Activity on a column in a project (classic). |
+| `projects_v2_item` | Activity on an item in an organization-level project. |
+| `public` | Repository visibility changes from private to public. |
+| `pull_request` | Activity on a pull request. |
+| `pull_request_review` | Activity on a pull request review. |
+| `pull_request_review_comment` | Activity on a comment in a pull request review. |
+| `pull_request_review_thread` | Activity on a comment thread in a pull request. |
+| `push` | A push to a repository branch. |
+| `release` | Activity on a release. |
+| `repository_dispatch` | A GitHub App sends a POST request to the repository's dispatches endpoint. |
+| `repository` | Activity on the repository itself. |
+| `repository_import` | A repository is imported to GitHub. |
+| `repository_vulnerability_alert` | Activity on a repository security vulnerability alert. GitHub is closing this event down. |
+| `security_advisory` | Activity on a global security advisory reviewed by GitHub. |
+| `sponsorship` | Activity on a sponsorship listing. |
+| `star` | Activity on repository stars. |
+| `status` | The status of a Git commit changes. |
+| `team` | Activity on a team in an organization. |
+| `team_add` | A team is added to the repository. |
+| `watch` | Activity on watching, or subscribing to, the repository. |
+| `workflow_dispatch` | A GitHub Actions workflow is manually triggered. |
+| `workflow_job` | Activity on a job in a GitHub Actions workflow run. |
+| `workflow_run` | Activity on a run of a GitHub Actions workflow. |
+
+</details>
 
 #### Returned Data
 
@@ -42,7 +103,7 @@ The trigger returns the complete webhook payload received from GitHub. The struc
 Example payload structure for a `pull_request` event:
 
 <details>
-  <summary>Example Event Payload</summary>
+<summary>Example Event Payload</summary>
 
 ```json
 {
@@ -83,4 +144,50 @@ Example payload structure for a `pull_request` event:
   }
 }
 ```
+
+</details>
+
+Example payload structure for an `issues` event:
+
+<details>
+<summary>Example `issues` Event Payload</summary>
+
+```json
+{
+  "action": "opened",
+  "issue": {
+    "id": 987654321,
+    "number": 142,
+    "state": "open",
+    "title": "Add dark mode toggle",
+    "user": {
+      "login": "octocat",
+      "id": 1
+    },
+    "body": "The settings page should offer a dark mode toggle",
+    "labels": [
+      {
+        "id": 208045946,
+        "name": "enhancement"
+      }
+    ],
+    "created_at": "2023-05-15T14:30:00Z",
+    "updated_at": "2023-05-15T14:30:00Z"
+  },
+  "repository": {
+    "id": 123456,
+    "name": "example-repo",
+    "full_name": "octocat/example-repo",
+    "owner": {
+      "login": "octocat",
+      "id": 1
+    }
+  },
+  "sender": {
+    "login": "octocat",
+    "id": 1
+  }
+}
+```
+
 </details>

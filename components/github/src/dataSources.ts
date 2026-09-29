@@ -1,13 +1,11 @@
 import {
-  Connection,
+  type Connection,
   dataSource,
   type Element,
   input,
   util,
 } from "@prismatic-io/spectral";
 import { createClient } from "./client";
-import { Organization } from "./interfaces/Organization";
-import { Issue } from "./interfaces/Issue";
 import {
   assignee,
   base,
@@ -22,14 +20,16 @@ import {
   sort,
   state,
 } from "./inputs";
-import { PullRequest } from "./interfaces/PullRequest";
+import type { Issue } from "./interfaces/Issue";
+import type { Organization } from "./interfaces/Organization";
+import type { PullRequest } from "./interfaces/PullRequest";
+import type { Repository } from "./interfaces/Respository";
+import type { User } from "./interfaces/User";
 import { paginateResults, sortBy } from "./utils";
-import { Repository } from "./interfaces/Respository";
-import { User } from "./interfaces/User";
 const listReposForAuthenticatedUser = dataSource({
   display: {
     label: "List Repos",
-    description: "List all of the authenticated user's repositories",
+    description: "List all of the authenticated user's repositories.",
   },
   perform: async (context, params) => {
     const client = createClient(params.connection, false);
@@ -62,7 +62,7 @@ const selectOrganizationsForAuthenticatedUser = dataSource({
   display: {
     label: "Select Organization",
     description:
-      "Select an organization from a list of organizations for the authenticated user",
+      "Select an organization from a list of organizations for the authenticated user.",
   },
   perform: async (context, params) => {
     const client = createClient(params.connection, false);
@@ -85,7 +85,7 @@ const selectOrganizationsForAuthenticatedUser = dataSource({
 const selectIssueForAuthenticatedUser = dataSource({
   display: {
     label: "Select Issue",
-    description: "Select an issue from the given owner/repo pair",
+    description: "Select an issue from the given owner/repo pair.",
   },
   perform: async (
     context,
@@ -146,7 +146,7 @@ export const selectPullRequestFromRepo = dataSource({
   display: {
     label: "Select Pull Request from Repo",
     description:
-      "Select a pull request from a list of pull requests given the provided owner/repo pair",
+      "Select a pull request from a list of pull requests given the provided owner/repo pair.",
   },
   perform: async (
     context,
@@ -196,7 +196,8 @@ export const selectPullRequestFromRepo = dataSource({
 export const selectUserFromOrganization = dataSource({
   display: {
     label: "Select User from Organization",
-    description: "Select a user from a list of github users in an organization",
+    description:
+      "Select a user from a list of GitHub users in an organization.",
   },
   perform: async (context, { connection, organization }) => {
     const client = createClient(connection as Connection, false);
