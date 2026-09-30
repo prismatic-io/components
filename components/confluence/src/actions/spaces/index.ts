@@ -1,5 +1,5 @@
-import { getSpace } from "./get";
-import { listSpaces } from "./list";
+import { getSpace } from "./getSpace";
+import { listSpaces } from "./listSpaces";
 export default {
   getSpace,
   listSpaces,

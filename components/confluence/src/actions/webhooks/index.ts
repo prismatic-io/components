@@ -1,7 +1,7 @@
-import { createWebhook } from "./create";
-import { deleteWebhook } from "./delete";
-import { listWebhooks } from "./list";
-import { refreshWebhook } from "./refresh";
+import { createWebhook } from "./createWebhook";
+import { deleteWebhook } from "./deleteWebhook";
+import { listWebhooks } from "./listWebhooks";
+import { refreshWebhook } from "./refreshWebhook";
 export default {
   createWebhook,
   deleteWebhook,

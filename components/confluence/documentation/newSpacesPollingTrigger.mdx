@@ -1,24 +1,30 @@
-Checks for new spaces on a configured schedule.
+Retrieves existing and ongoing spaces from Confluence. Load history once, check for changes on a schedule, or both.
 
 This trigger monitors the Confluence site for newly created spaces using the [Confluence Cloud REST API v2 spaces endpoint](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/).
 
 #### How It Works
 
 1. Runs on the configured schedule (e.g., every 5 minutes)
-2. Queries the Confluence API to retrieve all spaces accessible to the authenticated user
-3. Filters spaces based on their `createdAt` timestamp compared to the last poll time
-4. Returns only spaces created since the last poll
-5. Maintains state automatically to track the last poll time
-6. Returns all spaces on the first run (when no previous poll state exists)
+2. Queries the Confluence API to retrieve spaces accessible to the authenticated user
+3. Filters spaces by their `createdAt` timestamp against the stored cursor
+4. Emits only spaces created on or after the cursor
+5. Advances the cursor to the poll's start time and stores it as polling state
 
-The trigger uses cursor-based pagination to retrieve all spaces across multiple API requests if necessary.
+**Initial sync**
 
-#### Configuration
+Providing a **Look-back Date** seeds an initial sync: on the first recurrence the cursor starts at that date instead of the current time, so spaces created on or after it are emitted. With no Look-back Date the first recurrence seeds the cursor to the current time and emits nothing. The trigger has no change-narrowing inputs, so the sync suppresses none of its configuration.
 
-**Inputs:**
-- **Connection**: Confluence OAuth 2.0 connection with appropriate permissions to view spaces
+The look-back window has no fixed upper bound: the trigger requests every space and filters client-side, so a space created while the sync is running is included. Once the sync completes the cursor advances to the poll's start time; the next recurrence resumes from exactly there, and no field in the payload marks the handoff. The sync drains in a single recurrence.
 
-The schedule is configured in the integration's trigger configuration within the Prismatic platform.
+Page-size and field-selection behavior is unaffected by the initial sync.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each new space is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Confluence. When batching is enabled, the trigger requests smaller pages from Confluence (50 instead of 100).
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads the flat `body.data` array of spaces. With batching on that shape does not exist; each execution receives a single space record instead. Any step reading the older shape must be updated before batching is enabled. Batching is enabled per flow, so the change is scoped to that flow, not to the component or to other flows using this trigger.
 
 #### Returned Data
 
@@ -45,3 +51,5 @@ The trigger returns newly created spaces with the following structure:
 ```
 
 </details>
+
+Fields shown are representative. The full response object includes additional properties.

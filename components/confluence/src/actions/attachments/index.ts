@@ -1,7 +1,7 @@
-import { deleteAttachment } from "./delete";
-import { getAttachment } from "./get";
-import { getPageAttachment } from "./getForPage";
-import { listAttachments } from "./list";
+import { deleteAttachment } from "./deleteAttachment";
+import { getAttachment } from "./getAttachment";
+import { getPageAttachment } from "./getPageAttachment";
+import { listAttachments } from "./listAttachments";
 export default {
   deleteAttachment,
   getAttachment,

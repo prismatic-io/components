@@ -1,5 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
-import type { Page } from "../interfaces";
+import type { Page } from "../types";
 import type { DateExtractor, PollingState } from "./interfaces";
 export const filterByDate = <T>(
   items: T[],
@@ -46,23 +46,23 @@ export const categorizeByChangeType = <
   items: T[],
   lastPolled: string | undefined,
 ): {
-  created: T[];
-  updated: T[];
+  createdRecords: T[];
+  updatedRecords: T[];
 } =>
   items.reduce<{
-    created: T[];
-    updated: T[];
+    createdRecords: T[];
+    updatedRecords: T[];
   }>(
     (acc, item) => {
       if (
         !lastPolled ||
         (item.createdAt && new Date(item.createdAt) >= new Date(lastPolled))
       ) {
-        acc.created.push(item);
+        acc.createdRecords.push(item);
       } else {
-        acc.updated.push(item);
+        acc.updatedRecords.push(item);
       }
       return acc;
     },
-    { created: [], updated: [] },
+    { createdRecords: [], updatedRecords: [] },
   );

@@ -1,18 +1,18 @@
-import { createContentPropertyForAttachment } from "./createForAttachment";
-import { createContentPropertyForCustomContent } from "./createForCustomContent";
-import { createContentPropertyForPage } from "./createForPage";
-import { deleteContentPropertyForAttachment } from "./deleteForAttachment";
-import { deleteContentPropertyForCustomContent } from "./deleteForCustomContent";
-import { deleteContentPropertyForPage } from "./deleteForPage";
-import { getContentPropertiesForAttachments } from "./getForAttachment";
-import { getContentPropertiesForCustomContent } from "./getForCustomContent";
-import { getContentPropertiesForPage } from "./getForPage";
-import { listContentPropertiesForAttachments } from "./listForAttachments";
-import { listContentPropertiesForCustomContent } from "./listForCustomContent";
-import { listContentPropertiesForPage } from "./listForPage";
-import { updateContentPropertyForAttachment } from "./updateForAttachment";
-import { updateContentPropertyForCustomContent } from "./updateForCustomContent";
-import { updateContentPropertyForPage } from "./updateForPage";
+import { createContentPropertyForAttachment } from "./createContentPropertyForAttachment";
+import { createContentPropertyForCustomContent } from "./createContentPropertyForCustomContent";
+import { createContentPropertyForPage } from "./createContentPropertyForPage";
+import { deleteContentPropertyForAttachment } from "./deleteContentPropertyForAttachment";
+import { deleteContentPropertyForCustomContent } from "./deleteContentPropertyForCustomContent";
+import { deleteContentPropertyForPage } from "./deleteContentPropertyForPage";
+import { getContentPropertiesForAttachments } from "./getContentPropertiesForAttachments";
+import { getContentPropertiesForCustomContent } from "./getContentPropertiesForCustomContent";
+import { getContentPropertiesForPage } from "./getContentPropertiesForPage";
+import { listContentPropertiesForAttachments } from "./listContentPropertiesForAttachments";
+import { listContentPropertiesForCustomContent } from "./listContentPropertiesForCustomContent";
+import { listContentPropertiesForPage } from "./listContentPropertiesForPage";
+import { updateContentPropertyForAttachment } from "./updateContentPropertyForAttachment";
+import { updateContentPropertyForCustomContent } from "./updateContentPropertyForCustomContent";
+import { updateContentPropertyForPage } from "./updateContentPropertyForPage";
 export default {
   createContentPropertyForAttachment,
   createContentPropertyForCustomContent,

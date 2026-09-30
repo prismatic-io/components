@@ -3,7 +3,7 @@ import { basicConnection, confluenceOauth } from "./connections";
 import { createClient as createHttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { GraphQLClient } from "graphql-request";
 import axios from "axios";
-import type { AccessibleResource } from "./interfaces";
+import type { AccessibleResource } from "./types";
 export const buildAuthHeaders = (
   connection: Connection,
 ): Record<string, string> => {
