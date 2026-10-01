@@ -1,16 +1,26 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { gql } from "graphql-request";
 import { getMondayClient } from "../../client";
 import { createBoardExamplePayload } from "../../examplePayloads";
 import { createBoardInputs } from "../../inputs";
+import { createBoardOutputSchema } from "../../outputSchemas";
 export const createBoard = action({
   display: {
     label: "Create Board",
     description: "Creates a new board in Monday.",
   },
   inputs: createBoardInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createBoardOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = getMondayClient(params.connection, context.debug.enabled);
+    const client = getMondayClient(
+      params.connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const query = gql`
       mutation (
         $board_name: String!
@@ -40,5 +50,6 @@ export const createBoard = action({
     const data = await client.request(query, variables);
     return { data };
   },
+  examplePerform: async () => createBoardExamplePayload,
   examplePayload: createBoardExamplePayload,
 });

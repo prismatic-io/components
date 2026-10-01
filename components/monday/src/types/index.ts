@@ -1,2 +1,3 @@
-export * from "./Board";
-export * from "./Webhook";
+export * from "./boards";
+export * from "./polling";
+export * from "./webhooks";

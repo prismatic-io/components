@@ -1,6 +1,10 @@
-import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import { input, util } from "@prismatic-io/spectral";
 import { CURRENT_API_VERSION } from "../constants";
-import { toOptionalString } from "../util";
+import {
+  keyValPairListToObject,
+  toObjectOrEmpty,
+  toOptionalString,
+} from "../util";
 import { connectionInput } from "./common";
 const variablesObject = input({
   label: "Variables Object",
@@ -11,7 +15,7 @@ const variablesObject = input({
     "A JSON object of variables to pass to the GraphQL query or mutation. Use this for structured variable input.",
   placeholder: "Enter variables as JSON object",
   example: JSON.stringify({ boardId: 1234567890, limit: 50 }, null, 2),
-  clean: (value) => (value ? util.types.toObject(value) : {}),
+  clean: toObjectOrEmpty,
 });
 const variables = input({
   label: "Variables",
@@ -21,8 +25,7 @@ const variables = input({
   comments:
     "Key-value pairs of variables to pass to the GraphQL query or mutation. Use this for simple variable input.",
   placeholder: "Enter variable name",
-  clean: (val: unknown) =>
-    util.types.keyValPairListToObject(val as KeyValuePair<unknown>[]),
+  clean: keyValPairListToObject,
 });
 const query = input({
   label: "Query or Mutation",

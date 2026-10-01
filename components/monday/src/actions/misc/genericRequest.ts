@@ -8,8 +8,13 @@ export const genericRequest = action({
     description: "Issues any GraphQL query or mutation with variables.",
   },
   inputs: genericRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = getMondayClient(params.connection, context.debug.enabled);
+    const client = getMondayClient(
+      params.connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const data = await client.request(
       params.query,
       merge(params.variables, params.variablesObject),

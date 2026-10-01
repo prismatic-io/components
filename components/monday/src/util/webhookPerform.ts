@@ -1,7 +1,8 @@
-import type {
-  ActionContext,
-  HttpResponse,
-  TriggerPayload,
+import {
+  type ActionContext,
+  type HttpResponse,
+  type TriggerPayload,
+  util,
 } from "@prismatic-io/spectral";
 import type { ChallengeRequest } from "../types";
 export const perform = async (
@@ -28,8 +29,8 @@ export const perform = async (
     };
   }
   if (signingSecret && !context.isSimulatedTestExecution) {
-    const authorization =
-      payload.headers?.Authorization || payload.headers?.authorization;
+    const headers = util.types.lowerCaseHeaders(payload.headers);
+    const authorization = headers.authorization;
     if (authorization !== signingSecret) {
       context.logger.error("Webhook signature verification failed.");
       throw new Error(

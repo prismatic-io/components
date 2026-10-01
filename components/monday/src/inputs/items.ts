@@ -10,8 +10,8 @@ const columnId = input({
   placeholder: "Enter Column ID",
   clean: util.types.toString,
 });
-const getAllItems = input({
-  label: "Get All Items",
+const fetchAll = input({
+  label: "Fetch All",
   type: "boolean",
   required: false,
   comments:
@@ -34,5 +34,5 @@ export const getItemsByColumnValueNewInputs = {
   boardId,
   columnId,
   columnValue,
-  getAllItems,
+  getAllItems: fetchAll,
 };

@@ -76,6 +76,3 @@ export const archiveBoardInputs = {
   connection: connectionInput,
   boardId,
 };
-export const selectBoardInputs = {
-  connection: connectionInput,
-};

@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getMondayClient } from "../../client";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
+import { createWebhookOutputSchema } from "../../outputSchemas";
 import CreateWebhookMutation from "../../queries/createWebhook.gql";
 export const createWebhook = action({
   display: {
@@ -9,8 +10,17 @@ export const createWebhook = action({
     description: "Creates a webhook subscription for a board event.",
   },
   inputs: createWebhookInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createWebhookOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = getMondayClient(params.connection, context.debug.enabled);
+    const client = getMondayClient(
+      params.connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const variables = {
       board_id: params.boardId,
       url: params.webhookUrl,
@@ -33,5 +43,19 @@ export const createWebhook = action({
       throw error;
     }
   },
+  examplePerform: async (
+    _context,
+    { boardId, webhookEvent, webhookConfig },
+  ) => ({
+    data: {
+      ...createWebhookExamplePayload.data,
+      create_webhook: {
+        ...createWebhookExamplePayload.data.create_webhook,
+        board_id: boardId,
+        event: webhookEvent,
+        config: webhookConfig ? JSON.stringify(webhookConfig) : null,
+      },
+    },
+  }),
   examplePayload: createWebhookExamplePayload,
 });

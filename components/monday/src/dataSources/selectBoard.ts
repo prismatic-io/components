@@ -1,5 +1,6 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getMondayClient } from "../client";
+import { selectBoardExamplePayload } from "../examplePayloads";
 import { selectBoardInputs } from "../inputs";
 import type { BoardIdName } from "../types";
 import { getAllBoards } from "../util";
@@ -9,6 +10,7 @@ export const selectBoard = dataSource({
     description: "Select a board from the list of boards.",
   },
   inputs: selectBoardInputs,
+  examplePayload: selectBoardExamplePayload,
   perform: async (_context, { connection }) => {
     const client = getMondayClient(connection, false);
     const { boards } = await getAllBoards<BoardIdName>(client, true);

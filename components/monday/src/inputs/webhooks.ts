@@ -91,10 +91,3 @@ export const listWebhooksInputs = {
   connection: connectionInput,
   boardId,
 };
-export const selectWebhookInputs = {
-  connection: connectionInput,
-  boardId: {
-    ...boardId,
-    dataSource: undefined,
-  },
-};

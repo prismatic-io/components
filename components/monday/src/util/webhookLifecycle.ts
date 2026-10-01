@@ -22,7 +22,11 @@ export const onWebhookCreate = async (
     webhookConfig?: object;
   },
 ) => {
-  const client = getMondayClient(connection, context.debug.enabled);
+  const client = getMondayClient(
+    connection,
+    context.debug.enabled,
+    context.logger,
+  );
   const webhookUrl = context.webhookUrls[context.flow.name];
   const stateKey = getBase64FromUrl(webhookUrl);
   const state = context.crossFlowState as Record<string, unknown>;
@@ -74,7 +78,11 @@ export const onWebhookDelete = async (
     boardId: number;
   },
 ) => {
-  const client = getMondayClient(connection, context.debug.enabled);
+  const client = getMondayClient(
+    connection,
+    context.debug.enabled,
+    context.logger,
+  );
   const webhookUrl = context.webhookUrls[context.flow.name];
   const stateKey = getBase64FromUrl(webhookUrl);
   const state = context.crossFlowState as Record<string, unknown>;

@@ -1,17 +1,27 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { gql } from "graphql-request";
 import { getMondayClient } from "../../client";
 import { MAX_LIMIT } from "../../constants";
 import { getItemsByColumnValueNewExamplePayload } from "../../examplePayloads";
 import { getItemsByColumnValueNewInputs } from "../../inputs";
+import { getItemsByColumnValueNewOutputSchema } from "../../outputSchemas";
 export const getItemsByColumnValueNew = action({
   display: {
     label: "Get Items By Column Value",
     description: "Fetches items that have a certain column value.",
   },
   inputs: getItemsByColumnValueNewInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getItemsByColumnValueNewOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = getMondayClient(params.connection, context.debug.enabled);
+    const client = getMondayClient(
+      params.connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const ITEMS_PAGE = {
       arguments:
         "$boardId: ID!, $limit: Int, $columns: [ItemsPageByColumnValuesQuery!]",
@@ -97,5 +107,6 @@ export const getItemsByColumnValueNew = action({
     } while (params.getAllItems && cursor);
     return { data: { items_by_column_values: items } };
   },
+  examplePerform: async () => getItemsByColumnValueNewExamplePayload,
   examplePayload: getItemsByColumnValueNewExamplePayload,
 });

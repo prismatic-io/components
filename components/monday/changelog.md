@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-10-01
+
+Added batching, initial sync, and configuration improvements to the Monday.com component:
+
+- Added opt-in batching to the **New and Updated Items** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of records on the **New and Updated Items** trigger. The initial sync backfills every record modified on or after the specified date, beginning on the first recurrence and seeding each record once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Added inline action calling support to the **Archive Board**, **Create Board**, **Create Webhook**, **Delete Webhook**, **Get Board**, **Get Items By Column Value**, **List Boards**, and **List Webhooks** actions for improved example output during configuration
+- Added output schemas to the **Archive Board**, **Create Board**, **Create Webhook**, **Delete Webhook**, **Get Board**, **Get Items By Column Value**, **List Boards**, and **List Webhooks** actions for improved field mapping during configuration
+
 ### 2026-09-14
 
 Removed the **Get Items By Column Value (Deprecated)** action that is no longer in use; use **Get Items By Column Value** instead

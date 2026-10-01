@@ -1,28 +1,47 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { getMondayClient } from "../client";
+import { BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { MondayItem, PollingState } from "../types/PollingState";
-import { fetchAllItemsSince, partitionItemsByTimestamp } from "../util";
+import type { MondayItem, PollingChangesObject, PollingState } from "../types";
+import {
+  fetchAllItemsSince,
+  partitionItemsByTimestamp,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Items",
     description:
-      "Polls a Monday.com board for items created or updated since the last execution, separated into new and updated buckets.",
+      "Retrieves existing and ongoing items for a specified Monday.com board. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
   examplePayload: pollChangesTriggerExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }) =>
+      resolvePollingRecordChanges(
+        payload.body.data as PollingChangesObject | undefined,
+      ),
+  },
   perform: async (
     context,
     payload,
-    { connection, boardId, showNewRecords, showUpdatedRecords },
+    { connection, boardId, lookBackDate, showNewRecords, showUpdatedRecords },
   ) => {
     const now = new Date();
     const lastState = context.polling.getState() as PollingState | undefined;
     const sinceDate = lastState?.lastPolledAt
       ? new Date(lastState.lastPolledAt)
-      : now;
-    const client = getMondayClient(connection, context.debug.enabled);
+      : lookBackDate
+        ? new Date(`${lookBackDate}T00:00:00.000Z`)
+        : now;
+    const client = getMondayClient(
+      connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const items: MondayItem[] = await fetchAllItemsSince(
       client,
       boardId,

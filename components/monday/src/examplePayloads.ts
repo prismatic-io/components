@@ -176,6 +176,18 @@ export const listWebhooksExamplePayload = {
     ],
   },
 };
+export const selectBoardExamplePayload = {
+  result: [
+    { label: "H2 Kickoff", key: "2924980809" },
+    { label: "Engineering Backlog", key: "2924980810" },
+  ],
+};
+export const selectWebhookExamplePayload = {
+  result: [
+    { label: "147295839 - create_item", key: "147295839" },
+    { label: "147295840 - change_column_value", key: "147295840" },
+  ],
+};
 export const webhookExamplePayload = {
   payload: {
     headers: {

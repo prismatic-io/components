@@ -27,7 +27,7 @@ export interface CreateWebhookResponse {
     board_id: string;
   };
 }
-export interface WebhookNode {
+interface WebhookNode {
   id: string;
   board_id: string;
   config: string;

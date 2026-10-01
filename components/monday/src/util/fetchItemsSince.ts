@@ -1,6 +1,10 @@
 import { type GraphQLClient, gql } from "graphql-request";
 import { MAX_LIMIT } from "../constants";
-import type { MondayItem } from "../types/PollingState";
+import type {
+  ItemsPageResponse,
+  MondayItem,
+  NextItemsPageResponse,
+} from "../types";
 const POLL_ITEMS_QUERY = gql`
   query PollItemsByBoard($boardId: ID!, $compareValue: CompareValue!, $limit: Int!) {
     boards(ids: [$boardId]) {
@@ -43,20 +47,6 @@ const NEXT_PAGE_QUERY = gql`
     }
   }
 `;
-interface ItemsPageResponse {
-  boards?: Array<{
-    items_page?: {
-      cursor: string | null;
-      items: MondayItem[];
-    };
-  }>;
-}
-interface NextItemsPageResponse {
-  next_items_page?: {
-    cursor: string | null;
-    items: MondayItem[];
-  };
-}
 export const fetchAllItemsSince = async (
   client: GraphQLClient,
   boardId: number,

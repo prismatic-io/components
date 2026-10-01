@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getMondayClient } from "../../client";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
+import { deleteWebhookOutputSchema } from "../../outputSchemas";
 import DeleteWebhookMutation from "../../queries/deleteWebhook.gql";
 export const deleteWebhook = action({
   display: {
@@ -9,8 +10,17 @@ export const deleteWebhook = action({
     description: "Deletes an existing webhook subscription by ID.",
   },
   inputs: deleteWebhookInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteWebhookOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
-    const client = getMondayClient(params.connection, context.debug.enabled);
+    const client = getMondayClient(
+      params.connection,
+      context.debug.enabled,
+      context.logger,
+    );
     const variables = { id: params.webhookId };
     try {
       context.logger.info(`Deleting webhook ${params.webhookId}.`);
@@ -24,5 +34,14 @@ export const deleteWebhook = action({
       throw error;
     }
   },
+  examplePerform: async (_context, { webhookId }) => ({
+    data: {
+      ...deleteWebhookExamplePayload.data,
+      delete_webhook: {
+        ...deleteWebhookExamplePayload.data.delete_webhook,
+        id: webhookId,
+      },
+    },
+  }),
   examplePayload: deleteWebhookExamplePayload,
 });

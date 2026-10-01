@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { toOptionalString } from "../util";
+import { lookBackDateClean, toOptionalString } from "../util";
 import { boardId, connectionInput } from "./common";
 import { webhookConfig, webhookEvent } from "./webhooks";
 const signingSecret = input({
@@ -11,7 +11,17 @@ const signingSecret = input({
   placeholder: "Enter signing secret",
   clean: toOptionalString,
 });
-export const showNewRecords = input({
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
+const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
   required: false,
@@ -20,7 +30,7 @@ export const showNewRecords = input({
     "When true, newly created items are included in the trigger output.",
   clean: util.types.toBool,
 });
-export const showUpdatedRecords = input({
+const showUpdatedRecords = input({
   label: "Show Updated Records",
   type: "boolean",
   required: false,
@@ -29,7 +39,7 @@ export const showUpdatedRecords = input({
     "When true, items updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
-export const webhookTriggerInputs = {
+export const webhookInputs = {
   connection: connectionInput,
   boardId,
   webhookEvent,
@@ -39,6 +49,7 @@ export const webhookTriggerInputs = {
 export const pollChangesInputs = {
   connection: connectionInput,
   boardId,
+  lookBackDate,
   showNewRecords,
   showUpdatedRecords,
 };

@@ -1,5 +1,6 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getMondayClient } from "../client";
+import { selectWebhookExamplePayload } from "../examplePayloads";
 import { selectWebhookInputs } from "../inputs";
 import ListBoardWebhooksQuery from "../queries/listBoardWebhooks.gql";
 import type { ListWebhooksResponse } from "../types";
@@ -9,6 +10,7 @@ export const selectWebhook = dataSource({
     description: "Select a webhook from the board's webhook subscriptions.",
   },
   inputs: selectWebhookInputs,
+  examplePayload: selectWebhookExamplePayload,
   perform: async (_context, { connection, boardId }) => {
     const client = getMondayClient(connection, false);
     const data = await client.request<ListWebhooksResponse>(
