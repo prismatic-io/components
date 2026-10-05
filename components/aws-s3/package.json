@@ -5,10 +5,11 @@
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "build": "npm run format && npm run lint && webpack",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "publish": "npm run build && prism components:publish",
     "generate-regions-json": "aws ec2 describe-regions | jq '.Regions | map(.RegionName) | sort' > src/aws-regions.json",
-    "test": "echo 'no tests'"
+    "test": "vitest run"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1088.0",
@@ -16,21 +17,16 @@
     "@aws-sdk/client-sts": "3.1088.0",
     "@aws-sdk/lib-storage": "3.1088.0",
     "@aws-sdk/s3-request-presigner": "3.1088.0",
-    "@aws-sdk/signature-v4-crt": "3.1088.0",
-    "@prismatic-io/spectral": "10.22.1",
+    "@prismatic-io/spectral": "10.32.0",
     "aws-utils": "file:../../packages/aws-utils",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^18.19.0",
-    "copy-webpack-plugin": "^12.0.2",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.1.2",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.3.3",
-    "webpack": "^5.90.3",
-    "webpack-cli": "^5.1.4"
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26",
+    "@types/uuid": "^9.0.8",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

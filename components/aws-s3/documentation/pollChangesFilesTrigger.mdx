@@ -5,18 +5,24 @@ For more information on S3 objects, see [Working with Amazon S3 objects](https:/
 #### How It Works
 
 1. Run on the configured schedule (e.g., every 5 minutes)
-2. List objects in the bucket using the [ListObjectsV2 API](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ListingKeysUsingAPIs.html) (up to 4,000 objects)
-3. Compare each object's `LastModified` timestamp against the last poll time
-4. Return keys for any files modified since the last poll
+2. List every object in the bucket using the [ListObjectsV2 API](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ListingKeysUsingAPIs.html), paging through the bucket 1,000 keys per request, each request resuming after the last key of the previous one, until `IsTruncated` is `false`
+3. Compare each object's `LastModified` timestamp against the polled window, which runs from the last poll time up to the start of the current second
+4. Return keys for any files modified within that window
 5. Maintain state to track the last poll time automatically
 
-On the first run, the trigger sets the poll timestamp without returning files. Subsequent runs detect files created or modified after that timestamp.
+**Look-back Date** controls the first recurrence, before any position is stored. Left empty, the trigger records the current time and returns nothing; polling begins incrementally from the next recurrence. Set, the first recurrence runs as a one-time initial sync, returning every file whose `LastModified` is on or after that date; every other input behaves exactly as it does on a normal recurrence.
 
-#### Configuration
+Every window, the initial sync included, closes at the start of the second in which the recurrence began. Amazon S3 reports `LastModified` to the second, so a file modified during that second, or while the listing is in progress, falls in the next recurrence's window rather than being missed. Once a window is fully listed, the trigger stores its end as the next position, exactly as it does on every other recurrence.
 
-- **Connection**: AWS IAM credentials (Access Key or dynamic credentials)
-- **AWS Region**: The region where the S3 bucket is located
-- **Bucket Name**: The name of the S3 bucket to monitor
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed file is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Amazon S3.
+
+Batching also changes how the bucket is read. With batching off, each recurrence lists the whole bucket in one pass before returning. With batching on, the trigger lists one page of up to 1,000 keys at a time and returns that page's changed files before reading the next, so a large bucket never has to be held at once. The whole window is still listed within the same recurrence, and its position is stored only after the last page. If the recurrence stops partway, the next one resumes from the last page it reached.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data`, an array of keys; with batching on that array does not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data with Batching**). Any step reading the older shape must be updated before batching is enabled. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
 
 #### Returned Data
 
@@ -37,8 +43,51 @@ The trigger returns an array of object keys (file paths) that have been created 
 
 </details>
 
+Fields shown are representative. The full response object includes additional properties.
+
+#### Returned Data with Batching
+
+Batching replaces the array above with keys already tagged by how they changed, so a step never has to work out which item is which. Amazon S3 exposes only a single `LastModified` timestamp per object, so a key cannot be told apart as newly created versus modified; every item is tagged `changed`.
+
+With **Batch Size** set to 1, each execution receives a single tagged key:
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "changed",
+    "record": "path/to/new-file.txt"
+  }
+}
+```
+
+</details>
+
+With **Batch Size** greater than 1, each execution receives an array holding up to that many tagged keys:
+
+<details>
+<summary>Example Payload: batching enabled, batch size 3</summary>
+
+```json
+{
+  "data": [
+    { "changeType": "changed", "record": "path/to/new-file.txt" },
+    { "changeType": "changed", "record": "path/to/updated-file.pdf" },
+    { "changeType": "changed", "record": "images/photo.jpg" }
+  ]
+}
+```
+
+</details>
+
 #### Best Practices
 
 - **Polling Frequency**: Use 5-15 minute intervals for active buckets; longer intervals for low-activity buckets
-- **Object Limit**: The trigger checks up to 4,000 objects per poll; for larger buckets, consider using the [Webhook](#snss3notificationwebhook) trigger with SNS notifications instead
+- **Bucket Size**: The trigger lists the entire bucket on every poll, issuing one ListObjectsV2 request per 1,000 objects. Very large buckets mean many list requests on every poll; consider monitoring a narrower bucket, or using the [Webhook](#snss3notificationwebhook) trigger with SNS notifications instead
 - **Permissions**: The IAM credentials require `s3:ListBucket` permission on the bucket
+
+#### Limitations
+
+- **Large file uploads**: For multipart uploads, Amazon S3 sets `LastModified` to the time the upload started, not when it finished (see [Working with object metadata](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingMetadata.html)). A file whose multipart upload is still in progress when a poll runs may never be returned. For buckets that receive large uploads, use the [Webhook](#snss3notificationwebhook) trigger with SNS notifications, which fires when the upload completes

@@ -1,0 +1,95 @@
+The **New Buckets** trigger checks for new buckets in Amazon S3 on a configured schedule. It monitors bucket creation based on the `CreationDate` of each bucket.
+
+For more information on S3 buckets, see [Working with Amazon S3 buckets](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html).
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. List every bucket owned by the account using the [ListBuckets API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html), paging with `ContinuationToken` until no more pages remain
+3. Compare each bucket's `CreationDate` against the last poll time
+4. Return the buckets created since the last poll
+5. Maintain state to track the last poll time automatically
+
+**Look-back Date** controls the first recurrence, before any position is stored. Left empty, the trigger records the current time and returns nothing; polling begins incrementally from the next recurrence. Set, the first recurrence runs as a one-time initial sync, returning every bucket whose `CreationDate` is on or after that date; every other input behaves exactly as it does on a normal recurrence.
+
+The sync has no fixed upper bound: every recurrence lists every bucket on the account and filters only by a lower bound, so a bucket created while the sync's listing is in progress is included rather than deferred to a later recurrence. It always completes within a single recurrence; batching does not change that, only how the returned buckets are dispatched downstream. Once the listing completes, the trigger stores the wall-clock time as its next position, exactly as it does on every other recurrence.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each new bucket is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Amazon S3.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Enabling batching changes the payload a downstream step receives. With batching off a step reads `data`, an array of buckets; with batching on that array does not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data with Batching**). Any step reading the older shape must be updated before batching is enabled. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
+
+#### Returned Data
+
+The trigger returns an array of buckets created since the last poll, with `CreationDate` normalized to an ISO 8601 string. When no changes are detected, returns an empty array and sets `polledNoChanges` to `true`.
+
+<details>
+<summary>View example response</summary>
+
+```json
+{
+  "data": [
+    {
+      "Name": "bucket-1",
+      "CreationDate": "2024-03-08T23:30:22.000Z"
+    }
+  ]
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+#### Returned Data with Batching
+
+Batching replaces the array above with buckets already tagged by how they changed, so a step never has to work out which item is which. This trigger reports only new buckets, so every item is tagged `created`.
+
+With **Batch Size** set to 1, each execution receives a single tagged bucket:
+
+<details>
+<summary>Example Payload: batching enabled, batch size 1</summary>
+
+```json
+{
+  "data": {
+    "changeType": "created",
+    "record": {
+      "Name": "bucket-1",
+      "CreationDate": "2024-03-08T23:30:22.000Z"
+    }
+  }
+}
+```
+
+</details>
+
+With **Batch Size** greater than 1, each execution receives an array holding up to that many tagged buckets:
+
+<details>
+<summary>Example Payload: batching enabled, batch size 2</summary>
+
+```json
+{
+  "data": [
+    {
+      "changeType": "created",
+      "record": { "Name": "bucket-1", "CreationDate": "2024-03-08T23:30:22.000Z" }
+    },
+    {
+      "changeType": "created",
+      "record": { "Name": "bucket-2", "CreationDate": "2024-03-09T02:15:00.000Z" }
+    }
+  ]
+}
+```
+
+</details>
+
+#### Best Practices
+
+- **Polling Frequency**: Use 5-15 minute intervals; bucket creation is a low-frequency event for most accounts
+- **Permissions**: The IAM credentials require `s3:ListAllMyBuckets` permission on the account

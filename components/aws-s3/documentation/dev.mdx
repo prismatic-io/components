@@ -3,8 +3,8 @@ See our [looping over files](integrations/common-patterns/loop-over-files.mdx) q
 
 ### Listening for file changes
 
-You can leverage Amazon Simple Notification Service (SNS) to listen for file changes in S3.
-Our GitHub examples repo contains an example integration that illustrates how to listen for file changes in S3 and perform an action when a file is added or updated - you can [import](configure-prismatic/integrations-multiple-regions.mdx#importing-an-integrations-yaml-definition) and try it out for yourself.
+Amazon Simple Notification Service (SNS) can be used to listen for file changes in S3.
+Our GitHub examples repo contains an example integration that illustrates how to listen for file changes in S3 and perform an action when a file is added or updated; it can be [imported](configure-prismatic/integrations-multiple-regions.mdx#importing-an-integrations-yaml-definition) and tried out.
 
 <ExampleIntegrationLink
   href="https://github.com/prismatic-io/examples/blob/main/integrations/amazon-s3-events.yml"
@@ -17,30 +17,30 @@ The example integration contains three flows:
   It instructs SNS to notify the **Receive SNS Notifications** flow when a new file is added to an S3 bucket that a user selected as part of the configuration wizard.
 - **Receive SNS Notifications** will receive the SNS notification and extract the S3 bucket and key from the message.
   It will fetch the file that was added.
-  From there, you can process or send that file to another system.
+  From there, the file can be processed or sent to another system.
 - **Remove SNS Topic** will remove the SNS topic that was created in the first flow when an instance is deleted.
 
 ### Streaming large files to S3
 
-Amazon S3 offers a feature called [multipart upload](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html) that allows you to upload large files in parts.
+Amazon S3 offers a feature called [multipart upload](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html) that allows uploading large files in parts.
 This component supports multipart uploads in two ways:
 
-1. **File Streaming**: This is useful if you are looping over a paginated API and would like to stream the response to S3 as a CSV (or similar) file.
-   This option is useful when you have a large number of records to process and you want to avoid loading all of them into memory at once (which can cause an out-of-memory error).
-   When you use the **Upload Stream** actions, the component will automatically handle the multipart upload for you.
-   Within your integration you would:
+1. **File Streaming**: This is useful when looping over a paginated API and streaming the response to S3 as a CSV (or similar) file.
+   This option is useful when there is a large number of records to process and loading all of them into memory at once should be avoided (which can cause an out-of-memory error).
+   When the **Upload Stream** actions are used, the component automatically handles the multipart upload.
+   Within the integration:
 
-   - Run a **Upload Stream - Create Stream** action to create a new file stream.
-   - Loop over the records you want to write to the file.
-     - For each record, run a **Upload Stream - Write Data** action to write the record to the file stream.
-   - Run a **Upload Stream - Close Stream** action to close the file stream and upload the file to S3.
+   - Run a **Create Upload Stream** action to create a new file stream.
+   - Loop over the records to write to the file.
+     - For each record, run a **Write Upload Stream** action to write the record to the file stream.
+   - Run a **Close Upload Stream** action to close the file stream and upload the file to S3.
 
-2. **Multipart Upload**: This is useful if you have a file that is already split into parts and you want to upload the parts to S3 and then join them together.
-   Within your integration you would:
+2. **Multipart Upload**: This is useful if a file is already split into parts that need to be uploaded to S3 and then joined together.
+   Within the integration:
 
    - Run a **Create Multipart Upload** action to start a new multipart upload.
    - Run a **Generate Presigned URL for Multipart Uploads** action to generate a presigned URL for each part.
    - Run an HTTP component **Post** action to post each part to the presigned URL.
    - Run a **Complete Multipart Upload** to complete the multipart upload.
 
-   This option requires that you manually handle the multipart upload process and abide by the restrictions that Amazon S3 imposes on multipart uploads (like each part being at least 5MB in size, with the exception of the last part).
+   This option requires manually handling the multipart upload process and abiding by the restrictions that Amazon S3 imposes on multipart uploads (like each part being at least 5MB in size, with the exception of the last part).

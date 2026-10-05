@@ -136,3 +136,7 @@ export const OBJECT_ATTRIBUTES: ObjectAttributes[] = [
   "StorageClass",
   "ObjectSize",
 ];
+export const LIST_OBJECTS_V2_MAX_KEYS = 1000;
+export const LIST_BUCKETS_MAX_BUCKETS = 10000;
+export const DEFAULT_BATCH_SIZE = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
