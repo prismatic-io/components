@@ -39,7 +39,7 @@ const folderObject = {
       status: null,
       priority: null,
       assignee: null,
-      task_count: 8,
+      task_count: "8",
       due_date: null,
       start_date: null,
       space: {
@@ -48,7 +48,7 @@ const folderObject = {
         access: true,
       },
       archived: false,
-      override_statuses: null,
+      override_statuses: false,
       statuses: [
         {
           status: "to do",
@@ -83,5 +83,5 @@ export const updateFolderExamplePayload = {
   data: folderObject,
 };
 export const deleteFolderExamplePayload = {
-  data: null,
+  data: {},
 };

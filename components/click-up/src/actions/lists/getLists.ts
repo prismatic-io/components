@@ -1,15 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getListsExamplePayload } from "../../examplePayloads";
-import { connectionInput, getArchived, getFolderId } from "../../inputs";
-const folderId = getFolderId(true, "Folder ID");
-const archived = getArchived(false, "Filter for archived Lists?", false);
+import { getListsInputs } from "../../inputs";
+import { getListsOutputSchema } from "../../outputSchemas";
 export const getLists = action({
   display: {
     label: "List Lists in Folder",
     description: "List the lists within a folder.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getListsOutputSchema,
+  }),
   examplePayload: getListsExamplePayload,
+  performSafety: "safe",
   perform: async (context, { clickUpConnection, folderId, archived }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -23,9 +27,5 @@ export const getLists = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    folderId,
-    archived,
-  },
+  inputs: getListsInputs,
 });

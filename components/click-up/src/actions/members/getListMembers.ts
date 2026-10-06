@@ -1,14 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getListMembersExamplePayload } from "../../examplePayloads";
-import { connectionInput, getlistId } from "../../inputs";
-const listId = getlistId(true, "List ID");
+import { getListMembersInputs } from "../../inputs";
+import { getListMembersOutputSchema } from "../../outputSchemas";
 export const getListMembers = action({
   display: {
     label: "Get List Members",
     description: "List the people who have access to a list.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getListMembersOutputSchema,
+  }),
   examplePayload: getListMembersExamplePayload,
+  performSafety: "safe",
   perform: async (context, { clickUpConnection, listId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -19,8 +24,5 @@ export const getListMembers = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    listId,
-  },
+  inputs: getListMembersInputs,
 });

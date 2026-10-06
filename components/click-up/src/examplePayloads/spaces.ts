@@ -46,6 +46,8 @@ const spaceObject = {
     custom_items: { enabled: false },
     tags: { enabled: true },
     time_estimates: { enabled: true },
+    checklists: { enabled: true },
+    custom_fields: { enabled: true },
     check_unresolved: {
       enabled: true,
       subtasks: null,
@@ -56,6 +58,7 @@ const spaceObject = {
     milestones: { enabled: false },
     remap_dependencies: { enabled: true },
     dependency_warning: { enabled: true },
+    portfolios: { enabled: false },
     multiple_assignees: { enabled: true },
     emails: { enabled: true },
   },
@@ -76,5 +79,5 @@ export const updateSpaceExamplePayload = {
   data: spaceObject,
 };
 export const deleteSpaceExamplePayload = {
-  data: null,
+  data: {},
 };

@@ -1,36 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { updateSpaceExamplePayload } from "../../examplePayloads";
-import {
-  adminCanManage,
-  color,
-  connectionInput,
-  enableChecklists,
-  enableCustomFields,
-  enableDependencyWarning,
-  enableDueDates,
-  enablePortfolios,
-  enableRemapDependencies,
-  enableTags,
-  enableTimeEstimates,
-  enableTimeTracking,
-  getSpaceId,
-  multipleAssignees,
-  privateInput,
-  remapClosedDueDates,
-  remapDueDates,
-  spaceName,
-  useStartDate,
-} from "../../inputs";
-import type { Body } from "./types/Body";
-const spaceId = getSpaceId(true);
+import { updateSpaceInputs } from "../../inputs";
+import { updateSpaceOutputSchema } from "../../outputSchemas";
+import type { SpaceBody as Body } from "../../types";
 export const updateSpace = action({
   display: {
     label: "Update Space",
     description:
       "Rename a space, set its color, and enable ClickApps for the space.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateSpaceOutputSchema,
+  }),
   examplePayload: updateSpaceExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -103,25 +88,11 @@ export const updateSpace = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    spaceId,
-    spaceName,
-    multipleAssignees,
-    enableDueDates,
-    useStartDate,
-    remapDueDates,
-    remapClosedDueDates,
-    enableTimeTracking,
-    enableTags,
-    enableTimeEstimates,
-    enableChecklists,
-    enableCustomFields,
-    enableRemapDependencies,
-    enableDependencyWarning,
-    enablePortfolios,
-    color,
-    privateInput,
-    adminCanManage,
-  },
+  examplePerform: async (_context, { spaceName }) => ({
+    data: {
+      ...updateSpaceExamplePayload.data,
+      ...(spaceName && { name: spaceName }),
+    },
+  }),
+  inputs: updateSpaceInputs,
 });

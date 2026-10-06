@@ -1,30 +1,24 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { updateTeamExamplePayload } from "../../examplePayloads";
-import {
-  addMember,
-  connectionInput,
-  groupId,
-  removeMember,
-  teamHandle,
-  teamName,
-} from "../../inputs";
-interface Members {
-  add?: number[];
-  rem?: number[];
-}
-interface Body {
-  name?: string;
-  handle?: string;
-  members?: Members;
-}
+import { updateTeamInputs } from "../../inputs";
+import { updateTeamOutputSchema } from "../../outputSchemas";
+import type {
+  UpdateTeamBody as Body,
+  UpdateTeamMembers as Members,
+} from "../../types";
 export const updateTeam = action({
   display: {
     label: "Update Team",
     description:
       "Update a user group (Team) of users that can be assigned to items in a workspace.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateTeamOutputSchema,
+  }),
   examplePayload: updateTeamExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -53,12 +47,12 @@ export const updateTeam = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    groupId,
-    teamName,
-    teamHandle,
-    addMember,
-    removeMember,
-  },
+  examplePerform: async (_context, { teamName, teamHandle }) => ({
+    data: {
+      ...updateTeamExamplePayload.data,
+      ...(teamName && { name: teamName }),
+      ...(teamHandle && { handle: teamHandle }),
+    },
+  }),
+  inputs: updateTeamInputs,
 });

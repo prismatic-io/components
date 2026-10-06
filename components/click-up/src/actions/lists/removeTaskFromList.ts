@@ -1,9 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { removeTaskFromListExamplePayload } from "../../examplePayloads";
-import { connectionInput, getlistId, getTaskId } from "../../inputs";
-const listId = getlistId(true, "List ID");
-const taskId = getTaskId(true, "Task ID");
+import { removeTaskFromListInputs } from "../../inputs";
 export const removeTaskFromList = action({
   display: {
     label: "Remove Task from List",
@@ -11,6 +9,7 @@ export const removeTaskFromList = action({
       "Remove a task from an additional list. A task cannot be removed from its home list.",
   },
   examplePayload: removeTaskFromListExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, listId, taskId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -21,9 +20,6 @@ export const removeTaskFromList = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    listId,
-    taskId,
-  },
+  examplePerform: async () => removeTaskFromListExamplePayload,
+  inputs: removeTaskFromListInputs,
 });

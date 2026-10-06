@@ -1,14 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { listSpacesExamplePayload } from "../../examplePayloads";
-import { connectionInput, getTeamId } from "../../inputs";
-const teamId = getTeamId(true);
+import { listSpacesInputs } from "../../inputs";
+import { listSpacesOutputSchema } from "../../outputSchemas";
 export const listSpaces = action({
   display: {
     label: "List Spaces",
     description: "List the spaces available in a workspace.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listSpacesOutputSchema,
+  }),
   examplePayload: listSpacesExamplePayload,
+  performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -19,8 +24,5 @@ export const listSpaces = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-  },
+  inputs: listSpacesInputs,
 });

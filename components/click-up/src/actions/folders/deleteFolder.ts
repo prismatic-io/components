@@ -1,14 +1,14 @@
 import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { deleteFolderExamplePayload } from "../../examplePayloads";
-import { connectionInput, getFolderId } from "../../inputs";
-const folderId = getFolderId(true, "Folder ID");
+import { deleteFolderInputs } from "../../inputs";
 export const deleteFolder = action({
   display: {
     label: "Delete Folder",
     description: "Delete a folder from a workspace.",
   },
   examplePayload: deleteFolderExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, { connection, folderId }) => {
     const client = createClickUpClient(connection, context.debug.enabled);
     const { data } = await client.delete(`/folder/${folderId}`);
@@ -16,8 +16,6 @@ export const deleteFolder = action({
       data,
     };
   },
-  inputs: {
-    connection: connectionInput,
-    folderId,
-  },
+  examplePerform: async () => deleteFolderExamplePayload,
+  inputs: deleteFolderInputs,
 });

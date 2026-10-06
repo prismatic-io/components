@@ -1,45 +1,62 @@
+import { input, util } from "@prismatic-io/spectral";
+import { cleanString, toTimestampIfDate } from "../util";
 import {
   connectionInput,
-  fieldId,
-  fieldValue,
   getCustomTaskIds,
   getlistId,
   getTaskId,
   getTeamId,
-  valueType,
 } from "./common";
-const listId = getlistId(true);
-const taskIdForRemove = getTaskId(
-  true,
-  "The unique identifier of the task to update.",
-);
-const customTaskIdsForRemove = getCustomTaskIds(
-  false,
-  "When true, allows referencing the task by its Custom Task ID instead of the regular task ID.",
-  true,
-);
-const teamIdForRemove = getTeamId(
-  false,
-  "The Workspace (Team) ID. Only used when Custom Task ID is set to true.",
-);
-const taskIdForSet = getTaskId(
-  true,
-  "The unique identifier of the task to update.",
-);
+const fieldId = input({
+  label: "Field ID",
+  type: "string",
+  placeholder: "Enter Field ID",
+  required: true,
+  comments: "The universal unique identifier (UUID) of the Custom Field.",
+  clean: util.types.toString,
+  dataSource: "customFields",
+});
+const fieldValue = input({
+  label: "Field Value",
+  type: "data",
+  placeholder: "Field value from previous step",
+  comments: "The value to set for the custom field.",
+  required: true,
+  clean: toTimestampIfDate,
+});
+const valueType = input({
+  label: "Value Type",
+  type: "string",
+  placeholder: "Enter value type",
+  comments:
+    "Set to date when Field Value is a date, so it is converted to a Unix timestamp in milliseconds. Leave empty for other values.",
+  required: false,
+  clean: cleanString,
+});
 export const getAccessibleCustomFieldsInputs = {
   connection: connectionInput,
-  listId,
+  listId: getlistId(
+    true,
+    "The unique identifier for the List whose Custom Fields are returned.",
+  ),
 };
 export const removeCustomFieldValueInputs = {
   connection: connectionInput,
-  taskId: taskIdForRemove,
+  taskId: getTaskId(true, "The unique identifier for the task to update."),
   fieldId,
-  customTaskIds: customTaskIdsForRemove,
-  teamId: teamIdForRemove,
+  customTaskIds: getCustomTaskIds(
+    false,
+    "When true, the Task ID is treated as a custom task ID. Requires Team ID.",
+    true,
+  ),
+  teamId: getTeamId(
+    false,
+    "Only used when the custom_task_ids parameter is set to true",
+  ),
 };
 export const setCustomFieldValueInputs = {
   connection: connectionInput,
-  taskId: taskIdForSet,
+  taskId: getTaskId(true, "The unique identifier for the task to update."),
   fieldId,
   fieldValue,
   valueType,

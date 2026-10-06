@@ -16,7 +16,7 @@ export const getAccessibleCustomFieldsExamplePayload = {
               orderindex: 0,
             },
             {
-              id: "5bb4c4g8-2b13-5f68-b9dd-1fg9c2b0f18e",
+              id: "5bb4c4f8-2b13-4f68-b9dd-1fa9c2b0f18e",
               name: "Sprint 2",
               color: "#ff7043",
               orderindex: 1,
@@ -28,7 +28,7 @@ export const getAccessibleCustomFieldsExamplePayload = {
         required: false,
       },
       {
-        id: "1b63d597-8g16-514d-c5c1-3b2g7ee5c951",
+        id: "1b63d597-8a16-414d-a5c1-3b2e7ee5c951",
         name: "Story Points",
         type: "number",
         type_config: {},
@@ -40,8 +40,8 @@ export const getAccessibleCustomFieldsExamplePayload = {
   },
 };
 export const setCustomFieldValueExamplePayload = {
-  data: null,
+  data: {},
 };
 export const removeCustomFieldValueExamplePayload = {
-  data: null,
+  data: {},
 };

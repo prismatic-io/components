@@ -1,127 +1,119 @@
+import { input, util } from "@prismatic-io/spectral";
+import { cleanNumber, cleanStringByRequired } from "../util";
 import {
-  assigneeInt,
   connectionInput,
   getArchived,
   getAssignee,
-  getContent,
   getDueDateInt,
   getDueDateTime,
   getFolderId,
-  getListName,
   getlistId,
   getPriority,
   getStatus,
   getTaskId,
-  getUnsetStatus,
 } from "./common";
-const listIdForAdd = getlistId(true);
-const taskIdForAdd = getTaskId(true);
-const listNameForCreate = getListName(
-  true,
-  "The display name for the new List.",
-);
-const folderIdForCreate = getFolderId(true);
-const contentForCreate = getContent(false);
-const dueDateForCreate = getDueDateInt(
-  false,
-  "The initial due date for the new List as a Unix timestamp in milliseconds.",
-);
-const dueDateTimeForCreate = getDueDateTime(
-  false,
-  "When true, the due date includes a specific time of day.",
-  false,
-);
-const priorityForCreate = getPriority(
-  false,
-  "The initial priority for the new List, as an integer from 1 (Urgent) to 4 (Low).",
-);
-const statusForCreate = getStatus(
-  false,
-  "The List color. Status refers to the List color rather than the task Statuses available in the List.",
-);
-const listIdForDelete = getlistId(true);
-const listIdForGet = getlistId(true);
-const folderIdForList = getFolderId(true);
-const archivedForList = getArchived(
-  false,
-  "When true, includes archived Lists in the results.",
-  false,
-);
-const listIdForRemove = getlistId(true);
-const taskIdForRemove = getTaskId(true);
-const listIdForUpdate = getlistId(true);
-const listNameForUpdate = getListName(true, "The display name for the List.");
-const contentForUpdate = getContent(true);
-const dueDateForUpdate = getDueDateInt(
-  true,
-  "The due date for the List as a Unix timestamp in milliseconds.",
-);
-const dueDateTimeForUpdate = getDueDateTime(
-  true,
-  "When true, the due date includes a specific time of day.",
-  false,
-);
-const priorityForUpdate = getPriority(
-  true,
-  "The priority for the List, as an integer from 1 (Urgent) to 4 (Low).",
-);
-const assigneeForUpdate = getAssignee(
-  true,
-  "The user ID of the List assignee.",
-);
-const statusForUpdate = getStatus(
-  true,
-  "The List color. Status refers to the List color rather than the task Statuses available in the List.",
-);
-const unsetStatusForUpdate = getUnsetStatus(
-  true,
-  "When true, removes the List color (status). Defaults to false.",
-  false,
-);
+const assigneeInt = input({
+  label: "Assignee",
+  type: "string",
+  placeholder: "Enter assignee ID",
+  example: "12345678",
+  comments: "Include a user_id to assign this List.",
+  required: false,
+  clean: cleanNumber,
+});
+const getListName = (required: boolean, comments: string) =>
+  input({
+    label: "Name",
+    type: "string",
+    placeholder: "Enter name",
+    comments,
+    required,
+    clean: util.types.toString,
+  });
+const getContent = <R extends boolean>(required: R, comments: string) =>
+  input({
+    label: "Content",
+    type: "string",
+    placeholder: "Enter content",
+    comments,
+    required,
+    clean: cleanStringByRequired(required),
+  });
+const getUnsetStatus = (
+  required: boolean,
+  comments: string,
+  defaultValue?: boolean,
+) =>
+  input({
+    label: "Unset Status",
+    type: "boolean",
+    comments,
+    required,
+    ...(defaultValue !== undefined && { default: `${defaultValue}` }),
+    clean: util.types.toBool,
+  });
 export const addTaskToListInputs = {
   clickUpConnection: connectionInput,
-  listId: listIdForAdd,
-  taskId: taskIdForAdd,
+  listId: getlistId(true, "The unique identifier for the List."),
+  taskId: getTaskId(true, "The unique identifier for the task."),
 };
 export const createListInputs = {
   clickUpConnection: connectionInput,
-  folderId: folderIdForCreate,
-  listName: listNameForCreate,
-  content: contentForCreate,
-  dueDate: dueDateForCreate,
-  dueDateTime: dueDateTimeForCreate,
-  priority: priorityForCreate,
+  folderId: getFolderId(true, "The unique identifier for the Folder."),
+  listName: getListName(true, "Name of the new list"),
+  content: getContent(false, "The description of the List, in plain text."),
+  dueDate: getDueDateInt(false, "Initial due date of the new list"),
+  dueDateTime: getDueDateTime(
+    false,
+    "When true, the Due Date includes a time of day rather than only a date.",
+    false,
+  ),
+  priority: getPriority(false, "Initial priority of the new list"),
   assigneeInt,
-  status: statusForCreate,
-  name: listNameForCreate,
+  status: getStatus(
+    false,
+    "Status refers to the List color rather than the task Statuses available in the List.",
+  ),
+  name: getListName(true, "Name of the new list"),
 };
 export const deleteListInputs = {
   clickUpConnection: connectionInput,
-  listId: listIdForDelete,
+  listId: getlistId(true, "The unique identifier for the List."),
 };
 export const getListInputs = {
   clickUpConnection: connectionInput,
-  listId: listIdForGet,
+  listId: getlistId(true, "The unique identifier for the List."),
 };
 export const getListsInputs = {
   clickUpConnection: connectionInput,
-  folderId: folderIdForList,
-  archived: archivedForList,
+  folderId: getFolderId(true, "The unique identifier for the Folder."),
+  archived: getArchived(false, "When true, returns archived Lists.", false),
 };
 export const removeTaskFromListInputs = {
   clickUpConnection: connectionInput,
-  listId: listIdForRemove,
-  taskId: taskIdForRemove,
+  listId: getlistId(true, "The unique identifier for the List."),
+  taskId: getTaskId(true, "The unique identifier for the task."),
 };
 export const updateListInputs = {
   clickUpConnection: connectionInput,
-  listId: listIdForUpdate,
-  name: listNameForUpdate,
-  content: contentForUpdate,
-  dueDate: dueDateForUpdate,
-  dueDateTime: dueDateTimeForUpdate,
-  priority: priorityForUpdate,
-  assignee: assigneeForUpdate,
-  status: statusForUpdate,
-  unsetStatus: unsetStatusForUpdate,
+  listId: getlistId(true, "The unique identifier for the List."),
+  name: getListName(true, "Name of the list"),
+  content: getContent(true, "The description of the List, in plain text."),
+  dueDate: getDueDateInt(true, "Due date of the list"),
+  dueDateTime: getDueDateTime(
+    true,
+    "When true, the Due Date includes a time of day rather than only a date.",
+    false,
+  ),
+  priority: getPriority(true, "Priority of the list"),
+  assignee: getAssignee(true, "User ID of the list assignee"),
+  status: getStatus(
+    true,
+    "Status refers to the List color rather than the task Statuses available in the List.",
+  ),
+  unsetStatus: getUnsetStatus(
+    true,
+    "When true, removes the List color.",
+    false,
+  ),
 };

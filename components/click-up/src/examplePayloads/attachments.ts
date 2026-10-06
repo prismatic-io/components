@@ -20,9 +20,12 @@ export const createTaskAttachmentExamplePayload = {
       "https://t.attachments.clickup.com/9012345/ac905d76-3456-4d84-8c75-a7c0faa092ea/project-mockup.png",
     is_folder: null,
     mimetype: "image/png",
-    thumbnail_small: null,
-    thumbnail_medium: null,
-    thumbnail_large: null,
+    thumbnail_small:
+      "https://t.attachments.clickup.com/9012345/ac905d76-3456-4d84-8c75-a7c0faa092ea/project-mockup_small.png",
+    thumbnail_medium:
+      "https://t.attachments.clickup.com/9012345/ac905d76-3456-4d84-8c75-a7c0faa092ea/project-mockup_medium.png",
+    thumbnail_large:
+      "https://t.attachments.clickup.com/9012345/ac905d76-3456-4d84-8c75-a7c0faa092ea/project-mockup_large.png",
     extension: "png",
   },
 };

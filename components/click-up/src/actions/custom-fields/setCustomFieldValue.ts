@@ -1,23 +1,14 @@
 import { action, util } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { setCustomFieldValueExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  fieldId,
-  fieldValue,
-  getTaskId,
-  valueType,
-} from "../../inputs";
-const taskId = getTaskId(
-  true,
-  "Enter the task ID of the task you want to update.",
-);
+import { setCustomFieldValueInputs } from "../../inputs";
 export const setCustomFieldValue = action({
   display: {
     label: "Set Custom Field Value",
     description: "Update the value of a Custom Field on a task.",
   },
   examplePayload: setCustomFieldValueExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, taskId, fieldId, fieldValue, valueType },
@@ -34,11 +25,6 @@ export const setCustomFieldValue = action({
       data,
     };
   },
-  inputs: {
-    connection: connectionInput,
-    taskId,
-    fieldId,
-    fieldValue,
-    valueType,
-  },
+  examplePerform: async () => setCustomFieldValueExamplePayload,
+  inputs: setCustomFieldValueInputs,
 });

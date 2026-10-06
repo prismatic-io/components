@@ -1,26 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { removeGuestFromListExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getGuestId,
-  getIncludeShared,
-  getlistId,
-} from "../../inputs";
-import type { RemoveGuestFromListQueryParams } from "./types/RemoveGuestFromListQueryParams";
-const guestId = getGuestId(true, "Guest ID");
-const includeShared = getIncludeShared(
-  false,
-  "Exclude details of items shared with the guest by setting this parameter to false",
-  true,
-);
-const listId = getlistId(true, "List ID");
+import { removeGuestFromListInputs } from "../../inputs";
+import { removeGuestFromListOutputSchema } from "../../outputSchemas";
+import type { RemoveGuestFromListQueryParams } from "../../types";
 export const removeGuestFromList = action({
   display: {
     label: "Remove Guest from List",
     description: "Revoke a guest's access to a list.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: removeGuestFromListOutputSchema,
+  }),
   examplePayload: removeGuestFromListExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { clickUpConnection, listId, guestId, includeShared },
@@ -39,10 +33,6 @@ export const removeGuestFromList = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    listId,
-    guestId,
-    includeShared,
-  },
+  examplePerform: async () => removeGuestFromListExamplePayload,
+  inputs: removeGuestFromListInputs,
 });

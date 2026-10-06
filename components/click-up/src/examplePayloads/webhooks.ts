@@ -8,7 +8,7 @@ const webhookObject = {
   task_id: null,
   list_id: null,
   folder_id: null,
-  space_id: 790,
+  space_id: "790",
   health: {
     status: "active",
     fail_count: 0,
@@ -33,5 +33,5 @@ export const updateWebhookExamplePayload = {
   },
 };
 export const deleteWebhookExamplePayload = {
-  data: null,
+  data: {},
 };

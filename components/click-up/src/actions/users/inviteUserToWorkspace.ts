@@ -1,21 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { inviteUserToWorkspaceExamplePayload } from "../../examplePayloads";
-import {
-  admin,
-  connectionInput,
-  customRoleId,
-  getEmail,
-  getTeamId,
-} from "../../inputs";
-const teamId = getTeamId(true);
-const email = getEmail(true, "Email address of User being added");
+import { inviteUserToWorkspaceInputs } from "../../inputs";
+import { inviteUserToWorkspaceOutputSchema } from "../../outputSchemas";
 export const inviteUserToWorkspace = action({
   display: {
     label: "Invite User to Workspace",
     description: "Invite someone to join a workspace as a member.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: inviteUserToWorkspaceOutputSchema,
+  }),
   examplePayload: inviteUserToWorkspaceExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { teamId, clickUpConnection, email, admin, customRoleId },
@@ -32,11 +30,6 @@ export const inviteUserToWorkspace = action({
     const { data } = await client.post(`/team/${teamId}/user`, body);
     return { data };
   },
-  inputs: {
-    teamId,
-    clickUpConnection: connectionInput,
-    email,
-    admin,
-    customRoleId,
-  },
+  examplePerform: async () => inviteUserToWorkspaceExamplePayload,
+  inputs: inviteUserToWorkspaceInputs,
 });

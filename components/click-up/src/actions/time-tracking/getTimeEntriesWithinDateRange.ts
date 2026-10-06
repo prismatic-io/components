@@ -1,41 +1,22 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getTimeEntriesWithinDateRangeExamplePayload } from "../../examplePayloads";
-import { addToObjectIfContent, booleanToString } from "../../helpers";
-import {
-  connectionInput,
-  endDate,
-  getAssignee,
-  getCustomTaskIds,
-  getCustomTeamId,
-  getFolderId,
-  getlistId,
-  getSpaceId,
-  getTaskId,
-  getTeamId,
-  includeLocationNames,
-  includeTaskTags,
-  startDate,
-} from "../../inputs";
-import type { TimeEntriesDateRangeQueryParams } from "./types/TimeEntriesDateRangeQueryParams";
-const spaceId = getSpaceId(
-  false,
-  "Only include time entries associated with tasks in a specific Space.",
-);
-const teamId = getTeamId(true);
-const listId = getlistId(false);
-const folderId = getFolderId(false);
-const taskId = getTaskId(false);
-const customTeamId = getCustomTeamId(false);
-const customTaskIds = getCustomTaskIds(false);
-const assignee = getAssignee(false, "Filter by User ID");
+import { getTimeEntriesWithinDateRangeInputs } from "../../inputs";
+import { getTimeEntriesWithinDateRangeOutputSchema } from "../../outputSchemas";
+import type { TimeEntriesDateRangeQueryParams } from "../../types";
+import { addToObjectIfContent, booleanToString } from "../../util";
 export const getTimeEntriesWithinDateRange = action({
   display: {
     label: "Get Time Entries Within Date Range",
     description:
       "List time entries filtered by start and end date. By default, returns entries from the last 30 days created by the authenticated user.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getTimeEntriesWithinDateRangeOutputSchema,
+  }),
   examplePayload: getTimeEntriesWithinDateRangeExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -78,19 +59,6 @@ export const getTimeEntriesWithinDateRange = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-    startDate,
-    endDate,
-    assignee,
-    includeTaskTags,
-    includeLocationNames,
-    spaceId,
-    folderId,
-    listId,
-    taskId,
-    customTaskIds,
-    customTeamId,
-  },
+  examplePerform: async () => getTimeEntriesWithinDateRangeExamplePayload,
+  inputs: getTimeEntriesWithinDateRangeInputs,
 });

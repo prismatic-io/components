@@ -1,3 +1,3 @@
 import { pollChangesTrigger } from "./pollChangesTrigger";
-import { webhook } from "./webhookTrigger";
+import { webhook } from "./webhook";
 export default { webhook, pollChangesTrigger };

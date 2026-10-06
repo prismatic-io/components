@@ -1,18 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getTeamExamplePayload } from "../../examplePayloads";
-import { connectionInput, getTeamId, groupIds } from "../../inputs";
-const teamId = getTeamId(false);
-interface QueryParams {
-  team_id?: string;
-  group_ids?: string;
-}
+import { getTeamInputs } from "../../inputs";
+import { getTeamOutputSchema } from "../../outputSchemas";
+import type { GetTeamQueryParams as QueryParams } from "../../types";
 export const getTeam = action({
   display: {
     label: "Get Team",
     description: "Retrieve user groups (Teams) in a workspace.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getTeamOutputSchema,
+  }),
   examplePayload: getTeamExamplePayload,
+  performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId, groupIds }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -26,9 +28,5 @@ export const getTeam = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-    groupIds,
-  },
+  inputs: getTeamInputs,
 });

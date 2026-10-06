@@ -1,14 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getWorkspacePlanExamplePayload } from "../../examplePayloads";
-import { connectionInput, getTeamId } from "../../inputs";
-const teamId = getTeamId(true);
+import { getWorkspacePlanInputs } from "../../inputs";
+import { getWorkspacePlanOutputSchema } from "../../outputSchemas";
 export const getWorkspacePlan = action({
   display: {
     label: "Get Workspace Plan",
     description: "Retrieve the current plan for a specified workspace.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getWorkspacePlanOutputSchema,
+  }),
   examplePayload: getWorkspacePlanExamplePayload,
+  performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -19,8 +24,5 @@ export const getWorkspacePlan = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-  },
+  inputs: getWorkspacePlanInputs,
 });

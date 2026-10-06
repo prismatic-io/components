@@ -1,15 +1,14 @@
 import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getGuestExamplePayload } from "../../examplePayloads";
-import { connectionInput, getGuestId, getTeamId } from "../../inputs";
-const teamId = getTeamId(true);
-const guestId = getGuestId(true, "Guest ID");
+import { getGuestInputs } from "../../inputs";
 export const getGuest = action({
   display: {
     label: "Get Guest",
     description: "Retrieve information about a guest in a workspace.",
   },
   examplePayload: getGuestExamplePayload,
+  performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId, guestId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -20,9 +19,5 @@ export const getGuest = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-    guestId,
-  },
+  inputs: getGuestInputs,
 });

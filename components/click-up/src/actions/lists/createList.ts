@@ -1,34 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { createListExamplePayload } from "../../examplePayloads";
-import {
-  assigneeInt,
-  connectionInput,
-  getContent,
-  getDueDateInt,
-  getDueDateTime,
-  getFolderId,
-  getListName,
-  getPriority,
-  getStatus,
-} from "../../inputs";
-import type { CreateListBody } from "./types/CreateListBody";
-const listName = getListName(true, "Name of the new list");
-const folderId = getFolderId(true, "Folder ID");
-const content = getContent(false, "Content");
-const dueDate = getDueDateInt(false, "Initial due date of the new list");
-const dueDateTime = getDueDateTime(false, "Due Date Time", false);
-const priority = getPriority(false, "Initial priority of the new list");
-const status = getStatus(
-  false,
-  "Status refers to the List color rather than the task Statuses available in the List.",
-);
+import { createListInputs } from "../../inputs";
+import { createListOutputSchema } from "../../outputSchemas";
+import type { CreateListBody } from "../../types";
 export const createList = action({
   display: {
     label: "Create List",
     description: "Add a new list to a folder.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createListOutputSchema,
+  }),
   examplePayload: createListExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -61,16 +47,11 @@ export const createList = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    folderId,
-    listName,
-    content,
-    dueDate,
-    dueDateTime,
-    priority,
-    assigneeInt,
-    status,
-    name: listName,
-  },
+  examplePerform: async (_context, { name }) => ({
+    data: {
+      ...createListExamplePayload.data,
+      name,
+    },
+  }),
+  inputs: createListInputs,
 });

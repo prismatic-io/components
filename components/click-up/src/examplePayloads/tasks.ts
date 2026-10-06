@@ -122,16 +122,20 @@ const taskObject = {
 export const getTaskExamplePayload = {
   data: taskObject,
 };
+const taskObjectWithStringEstimate = {
+  ...taskObject,
+  time_estimate: "28800000",
+};
 export const listTasksExamplePayload = {
   data: {
-    tasks: [taskObject],
+    tasks: [taskObjectWithStringEstimate],
   },
 };
 export const createTaskExamplePayload = {
-  data: taskObject,
+  data: taskObjectWithStringEstimate,
 };
 export const updateTaskExamplePayload = {
-  data: taskObject,
+  data: taskObjectWithStringEstimate,
 };
 export const deleteTaskExamplePayload = {
   data: null,

@@ -4,11 +4,53 @@ The **New and Updated Tasks** polling trigger checks ClickUp on a configured sch
 
 On each scheduled execution, the trigger:
 
-1. Reads the last poll timestamp from the polling state (or uses the current execution time on the first run) and converts it to Unix milliseconds
-2. Queries the ClickUp tasks API with a `date_updated_gt` filter, scoped to either an entire Team (Workspace) or a single List depending on the **Scope** input
+1. Reads the last poll timestamp from the polling state. On the first run it starts from the **Look-back Date** when one is set (an initial sync), or from the current execution time when it is empty, and converts it to Unix milliseconds
+2. Queries the ClickUp tasks API with a `date_updated_gt` filter, including closed tasks and subtasks, scoped to either an entire Team (Workspace) or a single List depending on the **Scope** input
 3. Partitions the returned tasks into **created** and **updated** buckets by comparing each task's `date_created` Unix millisecond timestamp against the last poll cutoff. Tasks whose `date_created` falls after the cutoff land in **created**, while all others land in **updated**
 4. Persists the current execution time as the new last-poll timestamp for the next run
 5. Emits the partitioned results in the trigger payload, filtered by the **Show New Records** and **Show Updated Records** toggles
+
+On the initial sync, every task modified on or after the **Look-back Date** is returned once, sorted into **created** (created on or after that date) or **updated**, regardless of the **Show New Records** and **Show Updated Records** toggles; those toggles apply from the next recurrence on. The whole backlog is fetched in a single recurrence.
+
+The sync window has no fixed upper bound: the trigger stores the time the recurrence started as its position, so the next recurrence resumes from there and nothing is lost. A task modified while the sync is being fetched can appear again in that next recurrence. No payload field marks the handoff.
+
+The **Scope** and **Scope ID** inputs still apply to the initial sync.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to ClickUp.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads the `data.created` and `data.updated` arrays:
+
+<details>
+<summary>Unbatched payload</summary>
+
+```json
+{ "data": { "created": [ { "id": "abc123", "...": "..." } ], "updated": [ { "id": "def456", "...": "..." } ] } }
+```
+
+</details>
+
+With batching enabled, those arrays do not exist. Each execution receives one task (or a group of tasks, up to the configured batch size), tagged with how it changed:
+
+<details>
+<summary>Batched item</summary>
+
+```json
+{ "changeType": "created", "record": { "id": "abc123", "...": "..." } }
+```
+
+</details>
+
+Update any step that reads `data.created` or `data.updated` before enabling batching. Because batching is enabled per flow, the change affects only that flow, not other flows using this trigger.
+
+Each recurrence still fetches every task changed since the previous one before batching splits them, so a large initial sync is fetched in one recurrence and dispatched across many executions.
 
 #### Returned Data
 

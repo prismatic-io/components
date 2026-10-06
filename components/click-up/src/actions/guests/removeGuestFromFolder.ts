@@ -1,26 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { removeGuestFromFolderExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getFolderId,
-  getGuestId,
-  getIncludeShared,
-} from "../../inputs";
-import type { RemoveGuestFromFolderQueryParams } from "./types/RemoveGuestFromFolderQueryParams";
-const folderId = getFolderId(true, "Folder ID");
-const guestId = getGuestId(true, "Guest ID");
-const includeShared = getIncludeShared(
-  false,
-  "Exclude details of items shared with the guest by setting this parameter to false",
-  true,
-);
+import { removeGuestFromFolderInputs } from "../../inputs";
+import { removeGuestFromFolderOutputSchema } from "../../outputSchemas";
+import type { RemoveGuestFromFolderQueryParams } from "../../types";
 export const removeGuestFromFolder = action({
   display: {
     label: "Remove Guest from Folder",
     description: "Revoke a guest's access to a folder.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: removeGuestFromFolderOutputSchema,
+  }),
   examplePayload: removeGuestFromFolderExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { clickUpConnection, folderId, guestId, includeShared },
@@ -40,10 +34,6 @@ export const removeGuestFromFolder = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    folderId,
-    guestId,
-    includeShared,
-  },
+  examplePerform: async () => removeGuestFromFolderExamplePayload,
+  inputs: removeGuestFromFolderInputs,
 });

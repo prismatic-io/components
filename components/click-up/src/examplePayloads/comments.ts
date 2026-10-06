@@ -13,11 +13,28 @@ const commentObject = {
     email: "john.doe@example.com",
     color: "#7b68ee",
     initials: "JD",
-    profilePicture: null,
+    profilePicture:
+      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
   },
   resolved: false,
-  assignee: null,
-  assigned_by: null,
+  assignee: {
+    id: 81942673,
+    username: "John Doe",
+    email: "john.doe@example.com",
+    color: "#7b68ee",
+    initials: "JD",
+    profilePicture:
+      "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+  },
+  assigned_by: {
+    id: 81942670,
+    username: "Jane Smith",
+    email: "jane.smith@example.com",
+    color: "#e91e63",
+    initials: "JS",
+    profilePicture:
+      "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
+  },
   reactions: [],
   date: "1704153600000",
 };
@@ -28,14 +45,14 @@ export const getTaskCommentsExamplePayload = {
 };
 export const createTaskCommentExamplePayload = {
   data: {
-    id: 458,
+    id: "458",
     hist_id: "2b46a082-d55d-4a5e-957e-023af4f1d28e",
     date: 1704153600000,
   },
 };
 export const updateCommentExamplePayload = {
-  data: null,
+  data: {},
 };
 export const deleteCommentExamplePayload = {
-  data: null,
+  data: {},
 };

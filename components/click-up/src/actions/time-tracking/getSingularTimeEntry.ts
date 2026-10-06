@@ -1,22 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getSingularTimeEntryExamplePayload } from "../../examplePayloads";
-import { addToObjectIfContent, booleanToString } from "../../helpers";
-import {
-  connectionInput,
-  getTeamId,
-  includeLocationNames,
-  includeTaskTags,
-  timerId,
-} from "../../inputs";
-import type { SingularTimeEntryQueryParams } from "./types/SingularTimeEntryQueryParams";
-const teamId = getTeamId(true);
+import { getSingularTimeEntryInputs } from "../../inputs";
+import { getSingularTimeEntryOutputSchema } from "../../outputSchemas";
+import type { SingularTimeEntryQueryParams } from "../../types";
+import { addToObjectIfContent, booleanToString } from "../../util";
 export const getSingularTimeEntry = action({
   display: {
     label: "Get Time Entry",
     description: "Retrieve a single time entry.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getSingularTimeEntryOutputSchema,
+  }),
   examplePayload: getSingularTimeEntryExamplePayload,
+  performSafety: "safe",
   perform: async (
     context,
     {
@@ -45,11 +44,5 @@ export const getSingularTimeEntry = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-    timerId,
-    includeTaskTags,
-    includeLocationNames,
-  },
+  inputs: getSingularTimeEntryInputs,
 });

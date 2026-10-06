@@ -1,14 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getWebhooksExamplePayload } from "../../examplePayloads";
-import { connectionInput, getTeamId } from "../../inputs";
-const teamId = getTeamId(true);
+import { getWebhooksInputs } from "../../inputs";
+import { getWebhooksOutputSchema } from "../../outputSchemas";
 export const getWebhooks = action({
   display: {
     label: "List Webhooks",
     description: "List all webhooks for a workspace.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getWebhooksOutputSchema,
+  }),
   examplePayload: getWebhooksExamplePayload,
+  performSafety: "safe",
   perform: async (context, { clickUpConnection, teamId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -19,8 +24,5 @@ export const getWebhooks = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-  },
+  inputs: getWebhooksInputs,
 });

@@ -1,29 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { inviteGuestToWorkspaceExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  customRoleId,
-  getCanCreateViews,
-  getCanEditTags,
-  getCanSeeTimeEstimated,
-  getCanSeeTimeSpent,
-  getEmail,
-  getTeamId,
-} from "../../inputs";
-import type { InviteGuestToWorkspaceBody } from "./types/InviteGuestToWorkspaceBody";
-const teamId = getTeamId(true);
-const email = getEmail(true, "Email address of the invited guest");
-const canEditTags = getCanEditTags(true, "", true);
-const canSeeTimeSpent = getCanSeeTimeSpent(true, "", true);
-const canSeeTimeEstimated = getCanSeeTimeEstimated(true, "", true);
-const canCreateViews = getCanCreateViews(true, "", true);
+import { inviteGuestToWorkspaceInputs } from "../../inputs";
+import { inviteGuestToWorkspaceOutputSchema } from "../../outputSchemas";
+import type { InviteGuestToWorkspaceBody } from "../../types";
 export const inviteGuestToWorkspace = action({
   display: {
     label: "Invite Guest to Workspace",
     description: "Invite a new guest to a workspace.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: inviteGuestToWorkspaceOutputSchema,
+  }),
   examplePayload: inviteGuestToWorkspaceExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -54,14 +45,6 @@ export const inviteGuestToWorkspace = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-    email,
-    canEditTags,
-    canSeeTimeSpent,
-    canSeeTimeEstimated,
-    canCreateViews,
-    customRoleId,
-  },
+  examplePerform: async () => inviteGuestToWorkspaceExamplePayload,
+  inputs: inviteGuestToWorkspaceInputs,
 });

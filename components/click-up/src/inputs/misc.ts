@@ -8,7 +8,7 @@ export const rawRequestInputs = {
   url: {
     ...httpClientInputs.url,
     comments:
-      "The path-only URL to call (e.g. /space/${spaceId}/tag). The base URL https://api.clickup.com/api/v2 is added automatically.",
+      "Input the path only (/space/${spaceId}/tag), The base URL is already included (https://api.clickup.com/api/v2). For example, to connect to https://api.clickup.com/api/v2/space/${spaceId}/tag, only /space/${spaceId}/tag is entered in this field.",
     example: "/space/${spaceId}/tag",
   },
 };

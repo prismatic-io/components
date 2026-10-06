@@ -1,33 +1,23 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { addGuestToListExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getGuestId,
-  getIncludeShared,
-  getlistId,
-  getPermissionLevel,
-} from "../../inputs";
-import type { AddGuestToListBody } from "./types/AddGuestToListBody";
-import type { AddGuestToListQueryParams } from "./types/AddGuestToListQueryParams";
-const guestId = getGuestId(true, "Guest ID");
-const includeShared = getIncludeShared(
-  false,
-  "Exclude details of items shared with the guest by setting this parameter to false",
-  true,
-);
-const listId = getlistId(true, "List ID");
-const permissionLevel = getPermissionLevel(
-  true,
-  "Can be read (view only), comment, edit, or create (full).",
-  "create",
-);
+import { addGuestToListInputs } from "../../inputs";
+import { addGuestToListOutputSchema } from "../../outputSchemas";
+import type {
+  AddGuestToListBody,
+  AddGuestToListQueryParams,
+} from "../../types";
 export const addGuestToList = action({
   display: {
     label: "Add Guest to List",
     description: "Share a list with a guest.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addGuestToListOutputSchema,
+  }),
   examplePayload: addGuestToListExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { clickUpConnection, listId, guestId, includeShared, permissionLevel },
@@ -51,11 +41,6 @@ export const addGuestToList = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    listId,
-    guestId,
-    includeShared,
-    permissionLevel,
-  },
+  examplePerform: async () => addGuestToListExamplePayload,
+  inputs: addGuestToListInputs,
 });

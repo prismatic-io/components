@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.1/schema.json",
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -34,13 +34,11 @@
   "assist": {
     "actions": {
       "source": {
-        "organizeImports": {
-          "level": "on"
-        }
+        "organizeImports": "on"
       }
     }
   },
   "files": {
-    "includes": ["src/**/*.ts", "src/**/*.js"]
+    "includes": ["src/**/*.ts", "src/**/*.js", "!**/dist"]
   }
 }

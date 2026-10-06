@@ -13,11 +13,11 @@ const listObject = {
     color: "#ffcc00",
   },
   assignee: null,
-  task_count: 8,
+  task_count: "8",
   due_date: "1706745600000",
   due_date_time: false,
   start_date: "1704067200000",
-  start_date_time: false,
+  start_date_time: null,
   folder: {
     id: "457",
     name: "Website Redesign",
@@ -59,21 +59,36 @@ export const getListExamplePayload = {
 };
 export const getListsExamplePayload = {
   data: {
-    lists: [listObject],
+    lists: [
+      {
+        ...listObject,
+        override_statuses: false,
+      },
+    ],
   },
 };
 export const createListExamplePayload = {
-  data: listObject,
+  data: {
+    ...listObject,
+    assignee: {
+      id: 81942673,
+      color: "#7b68ee",
+      username: "John Doe",
+      initials: "JD",
+      profilePicture:
+        "https://attachments.clickup.com/profilePictures/81942673_abc.jpg",
+    },
+  },
 };
 export const updateListExamplePayload = {
   data: listObject,
 };
 export const deleteListExamplePayload = {
-  data: null,
+  data: {},
 };
 export const addTaskToListExamplePayload = {
-  data: null,
+  data: {},
 };
 export const removeTaskFromListExamplePayload = {
-  data: null,
+  data: {},
 };

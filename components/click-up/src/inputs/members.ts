@@ -1,11 +1,9 @@
 import { connectionInput, getlistId, getTaskId } from "./common";
-const listIdForGetList = getlistId(true);
-const taskIdForGetTask = getTaskId(true);
 export const getListMembersInputs = {
   clickUpConnection: connectionInput,
-  listId: listIdForGetList,
+  listId: getlistId(true, "The unique identifier for the List."),
 };
 export const getTaskMembersInputs = {
   clickUpConnection: connectionInput,
-  taskId: taskIdForGetTask,
+  taskId: getTaskId(true, "The unique identifier for the task."),
 };

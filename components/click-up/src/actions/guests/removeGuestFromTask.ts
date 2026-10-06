@@ -1,37 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { removeGuestFromTaskExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getCustomTaskIds,
-  getGuestId,
-  getIncludeShared,
-  getTaskId,
-  getTeamId,
-} from "../../inputs";
-import type { AddGuestToTaskQueryParams } from "./types/AddGuestToTaskQueryParams";
-const teamId = getTeamId(
-  false,
-  "Only used when the custom_task_ids parameter is set to true",
-);
-const taskId = getTaskId(true, "Task ID");
-const guestId = getGuestId(true, "Guest ID");
-const includeShared = getIncludeShared(
-  false,
-  "Exclude details of items shared with the guest by setting this parameter to false",
-  true,
-);
-const customTaskIds = getCustomTaskIds(
-  false,
-  "If you want to reference a task by its Custom Task ID, this value must be true.",
-  true,
-);
+import { removeGuestFromTaskInputs } from "../../inputs";
+import { removeGuestFromTaskOutputSchema } from "../../outputSchemas";
+import type { AddGuestToTaskQueryParams } from "../../types";
 export const removeGuestFromTask = action({
   display: {
     label: "Remove Guest from Task",
     description: "Revoke a guest's access to a task.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: removeGuestFromTaskOutputSchema,
+  }),
   examplePayload: removeGuestFromTaskExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -59,12 +42,6 @@ export const removeGuestFromTask = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    taskId,
-    guestId,
-    includeShared,
-    customTaskIds,
-    teamId,
-  },
+  examplePerform: async () => removeGuestFromTaskExamplePayload,
+  inputs: removeGuestFromTaskInputs,
 });

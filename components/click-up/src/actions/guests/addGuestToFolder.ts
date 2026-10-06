@@ -1,33 +1,23 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { addGuestToFolderExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getFolderId,
-  getGuestId,
-  getIncludeShared,
-  getPermissionLevel,
-} from "../../inputs";
-import type { AddGuestToFolder } from "./types/AddGuestToFolder";
-import type { AddGuestToFolderQueryParams } from "./types/AddGuestToFolderQueryParams";
-const folderId = getFolderId(true, "Folder ID");
-const guestId = getGuestId(true, "Guest ID");
-const includeShared = getIncludeShared(
-  false,
-  "Exclude details of items shared with the guest by setting this parameter to false",
-  true,
-);
-const permissionLevel = getPermissionLevel(
-  true,
-  "Can be read (view only), comment, edit, or create (full).",
-  "create",
-);
+import { addGuestToFolderInputs } from "../../inputs";
+import { addGuestToFolderOutputSchema } from "../../outputSchemas";
+import type {
+  AddGuestToFolderBody as AddGuestToFolder,
+  AddGuestToFolderQueryParams,
+} from "../../types";
 export const addGuestToFolder = action({
   display: {
     label: "Add Guest to Folder",
     description: "Share a folder with a guest.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addGuestToFolderOutputSchema,
+  }),
   examplePayload: addGuestToFolderExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { clickUpConnection, folderId, guestId, includeShared, permissionLevel },
@@ -51,11 +41,6 @@ export const addGuestToFolder = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    folderId,
-    guestId,
-    includeShared,
-    permissionLevel,
-  },
+  examplePerform: async () => addGuestToFolderExamplePayload,
+  inputs: addGuestToFolderInputs,
 });

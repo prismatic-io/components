@@ -5,7 +5,8 @@ export const getAuthorizedTeamsExamplePayload = {
         id: "9012345",
         name: "Acme Corp Workspace",
         color: "#536cfe",
-        avatar: null,
+        avatar:
+          "https://attachments.clickup.com/team_avatars/9012345_a1b2c.png",
         members: [
           {
             user: {
@@ -28,7 +29,8 @@ export const getAuthorizedTeamsExamplePayload = {
               color: "#e91e63",
               email: "jane.smith@example.com",
               initials: "JS",
-              profilePicture: null,
+              profilePicture:
+                "https://attachments.clickup.com/profilePictures/81942670_def.jpg",
             },
           },
         ],
@@ -39,7 +41,7 @@ export const getAuthorizedTeamsExamplePayload = {
 export const getWorkspaceSeatsExamplePayload = {
   data: {
     members: {
-      filled_member_seats: 15,
+      filled_members_seats: 15,
       total_member_seats: 25,
       empty_member_seats: 10,
     },
@@ -77,6 +79,7 @@ const teamGroupObject = {
   avatar: {
     attachment_id: null,
     color: "#40bc86",
+    source: null,
     icon: null,
   },
 };
@@ -92,5 +95,5 @@ export const updateTeamExamplePayload = {
   data: teamGroupObject,
 };
 export const deleteTeamExamplePayload = {
-  data: null,
+  data: {},
 };

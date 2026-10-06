@@ -1,60 +1,24 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { updateTaskExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getAddAssignees,
-  getArchived,
-  getCustomTaskIds,
-  getDescription,
-  getDueDateInt,
-  getDueDateTime,
-  getParent,
-  getPriority,
-  getRemoveAssignees,
-  getStartDateInt,
-  getStartDateTime,
-  getStatus,
-  getTaskId,
-  getTaskName,
-  getTeamId,
-  getTimeEstimate,
-  markdownDescription,
-} from "../../inputs";
-import type { Assignees } from "./types/Assignees";
-import type { UpdateTaskBody } from "./types/UpdateTaskBody";
-import type { UpdateTaskQueryParams } from "./types/UpdateTaskQueryParams";
-const taskId = getTaskId(true, "Task ID");
-const customTaskIds = getCustomTaskIds(
-  false,
-  "If you want to reference a task by it's custom task id, this value must be true.",
-);
-const teamId = getTeamId(
-  false,
-  "Only used when the custom_task_ids parameter is set to true.",
-);
-const name = getTaskName(false, "Task Name");
-const description = getDescription(false, "Task Description");
-const status = getStatus(false, "Task Status");
-const priority = getPriority(false, "Task Priority");
-const dueDate = getDueDateInt(false, "Task Due Date", "1508369194377");
-const dueDateTime = getDueDateTime(false, "Task Due Date Time", false);
-const parent = getParent(
-  false,
-  'You can move a subtask to another parent task by including "parent" with a valid task id.',
-);
-const timeEstimate = getTimeEstimate(false, "Task Time Estimate", "8640000");
-const startDate = getStartDateInt(false, "Task Start Date", "1567780450202");
-const startDateTime = getStartDateTime(false, "Task Start Date Time", false);
-const addAssignees = getAddAssignees(false, "Add Assignee");
-const removeAssignees = getRemoveAssignees(false, "Remove Assignee");
-const archived = getArchived(false, "Include Archived?", false);
+import { updateTaskInputs } from "../../inputs";
+import { updateTaskOutputSchema } from "../../outputSchemas";
+import type {
+  Assignees,
+  UpdateTaskBody,
+  UpdateTaskQueryParams,
+} from "../../types";
 export const updateTask = action({
   display: {
     label: "Update Task",
     description: "Update an existing task.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateTaskOutputSchema,
+  }),
   examplePayload: updateTaskExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -66,12 +30,8 @@ export const updateTask = action({
       description,
       status,
       priority,
-      dueDate,
-      dueDateTime,
+      schedule,
       parent,
-      timeEstimate,
-      startDate,
-      startDateTime,
       addAssignees,
       removeAssignees,
       archived,
@@ -88,12 +48,12 @@ export const updateTask = action({
       description,
       status,
       priority,
-      due_date: dueDate,
-      due_date_time: dueDateTime,
+      due_date: schedule?.dueDate,
+      due_date_time: schedule?.dueDateTime,
       parent,
-      time_estimate: timeEstimate,
-      start_date: startDate,
-      start_date_time: startDateTime,
+      time_estimate: schedule?.timeEstimate,
+      start_date: schedule?.startDate,
+      start_date_time: schedule?.startDateTime,
       assignees,
       archived: archived,
       markdown_description: markdownDescription,
@@ -109,24 +69,11 @@ export const updateTask = action({
       data,
     };
   },
-  inputs: {
-    connection: connectionInput,
-    taskId,
-    customTaskIds,
-    teamId,
-    name,
-    description,
-    markdownDescription,
-    status,
-    priority,
-    dueDate,
-    dueDateTime,
-    parent,
-    timeEstimate,
-    startDate,
-    startDateTime,
-    addAssignees,
-    removeAssignees,
-    archived,
-  },
+  examplePerform: async (_context, { name }) => ({
+    data: {
+      ...updateTaskExamplePayload.data,
+      ...(name && { name }),
+    },
+  }),
+  inputs: updateTaskInputs,
 });

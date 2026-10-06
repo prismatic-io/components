@@ -1,17 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { updateCommentExamplePayload } from "../../examplePayloads";
-import {
-  assigneeId,
-  connectionInput,
-  getCommentId,
-  getCommentText,
-  getResolved,
-} from "../../inputs";
-import type { UpdateCommentBody } from "./types/UpdateCommentBody";
-const commentId = getCommentId(true, "Comment ID");
-const commentText = getCommentText(true, "Comment Text");
-const resolved = getResolved(true, "Resolved?", false);
+import { updateCommentInputs } from "../../inputs";
+import type { UpdateCommentBody } from "../../types";
 export const updateComment = action({
   display: {
     label: "Update Comment",
@@ -19,6 +10,7 @@ export const updateComment = action({
       "Replace the content of a task comment, assign a comment, and mark a comment as resolved.",
   },
   examplePayload: updateCommentExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, commentId, commentText, resolved, assigneeId },
@@ -34,11 +26,6 @@ export const updateComment = action({
       data,
     };
   },
-  inputs: {
-    connection: connectionInput,
-    commentId,
-    commentText,
-    resolved,
-    assigneeId,
-  },
+  examplePerform: async () => updateCommentExamplePayload,
+  inputs: updateCommentInputs,
 });

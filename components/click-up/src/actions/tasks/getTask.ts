@@ -1,30 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { getTaskExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getCustomTaskIds,
-  getSubTasks,
-  getTaskId,
-  getTeamId,
-} from "../../inputs";
-import type { GetTaskQueryParams } from "./types/GetTaskQueryParams";
-const taskId = getTaskId(true, "Task ID");
-const customTaskIds = getCustomTaskIds(false);
-const teamId = getTeamId(
-  true,
-  "Only used when the custom_task_ids parameter is set to true.",
-);
-const subTasks = getSubTasks(
-  false,
-  "Include or exclude subtasks. By default, subtasks are excluded.",
-);
+import { getTaskInputs } from "../../inputs";
+import { getTaskOutputSchema } from "../../outputSchemas";
+import type { GetTaskQueryParams } from "../../types";
 export const getTask = action({
   display: {
     label: "Get Task",
     description: "Retrieve information about a task.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getTaskOutputSchema,
+  }),
   examplePayload: getTaskExamplePayload,
+  performSafety: "safe",
   perform: async (
     context,
     { connection, taskId, customTaskIds, teamId, subTasks },
@@ -42,11 +32,5 @@ export const getTask = action({
       data: data,
     };
   },
-  inputs: {
-    connection: connectionInput,
-    taskId,
-    customTaskIds,
-    teamId,
-    subTasks,
-  },
+  inputs: getTaskInputs,
 });

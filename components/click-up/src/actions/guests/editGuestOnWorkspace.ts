@@ -1,31 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { editGuestOnWorkspaceExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  customRoleId,
-  getCanCreateViews,
-  getCanEditTags,
-  getCanSeeTimeEstimated,
-  getCanSeeTimeSpent,
-  getGuestId,
-  getTeamId,
-  getUsername,
-} from "../../inputs";
-import type { EditGuestOnWorkspaceBody } from "./types/EditGuestOnWorkspaceBody";
-const teamId = getTeamId(true);
-const username = getUsername(true, "");
-const canEditTags = getCanEditTags(true, "", true);
-const canSeeTimeSpent = getCanSeeTimeSpent(true, "", true);
-const canSeeTimeEstimated = getCanSeeTimeEstimated(true, "", true);
-const canCreateViews = getCanCreateViews(true, "", true);
-const guestId = getGuestId(true, "Guest ID");
+import { editGuestOnWorkspaceInputs } from "../../inputs";
+import { editGuestOnWorkspaceOutputSchema } from "../../outputSchemas";
+import type { EditGuestOnWorkspaceBody } from "../../types";
 export const editGuestOnWorkspace = action({
   display: {
     label: "Edit Guest on Workspace",
     description: "Rename and configure options for a guest.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: editGuestOnWorkspaceOutputSchema,
+  }),
   examplePayload: editGuestOnWorkspaceExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -57,15 +46,6 @@ export const editGuestOnWorkspace = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-    username,
-    canEditTags,
-    canSeeTimeSpent,
-    canSeeTimeEstimated,
-    canCreateViews,
-    customRoleId,
-    guestId,
-  },
+  examplePerform: async () => editGuestOnWorkspaceExamplePayload,
+  inputs: editGuestOnWorkspaceInputs,
 });

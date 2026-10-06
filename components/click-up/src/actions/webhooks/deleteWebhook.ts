@@ -1,14 +1,14 @@
 import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { deleteWebhookExamplePayload } from "../../examplePayloads";
-import { connectionInput, getWebhookId } from "../../inputs";
-const webhookId = getWebhookId(true, "Webhook ID");
+import { deleteWebhookInputs } from "../../inputs";
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
     description: "Delete a webhook.",
   },
   examplePayload: deleteWebhookExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, webhookId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -19,8 +19,6 @@ export const deleteWebhook = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    webhookId,
-  },
+  examplePerform: async () => deleteWebhookExamplePayload,
+  inputs: deleteWebhookInputs,
 });

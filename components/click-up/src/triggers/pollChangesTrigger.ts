@@ -1,63 +1,73 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../client";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
+import { pollChangesTriggerInputs } from "../inputs";
+import type {
+  ClickUpTaskChange,
+  ClickUpTaskChangesObject,
+  PollingState,
+  PollScopeType,
+} from "../types";
 import {
   fetchTasksSince,
   formatClickUpTimestamp,
   partitionTasksByTimestamp,
-} from "../helpers";
-import {
-  connectionInput,
-  pollScopeId,
-  pollScopeType,
-  showNewRecords,
-  showUpdatedRecords,
-} from "../inputs";
-import type { PollingState } from "../types";
+  resolveClickUpTaskChanges,
+  resolvePollingWindowStart,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Tasks",
     description:
-      "Checks for new and updated tasks in ClickUp on a configured schedule.",
+      "Retrieves existing and ongoing tasks for a specified ClickUp workspace or list. Load history once, check for changes on a schedule, or both.",
   },
-  inputs: {
-    connection: connectionInput,
-    scopeType: pollScopeType,
-    scopeId: pollScopeId,
-    showNewRecords,
-    showUpdatedRecords,
+  inputs: pollChangesTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): ClickUpTaskChange[] =>
+      resolveClickUpTaskChanges(payload.body.data as ClickUpTaskChangesObject),
   },
   examplePayload: pollChangesTriggerExamplePayload,
   perform: async (
     context,
     payload,
-    { connection, scopeType, scopeId, showNewRecords, showUpdatedRecords },
+    {
+      connection,
+      scopeType,
+      scopeId,
+      lookBackDate,
+      showNewRecords,
+      showUpdatedRecords,
+    },
   ) => {
     const now = new Date();
     const lastState = context.polling.getState() as PollingState | undefined;
-    const sinceDate = lastState?.lastPolledAt
-      ? new Date(lastState.lastPolledAt)
-      : now;
-    const sinceMs = sinceDate.getTime();
+    const { sinceMs, isInitialSync } = resolvePollingWindowStart(
+      lastState,
+      lookBackDate,
+      now,
+    );
     const client = createClickUpClient(connection, context.debug.enabled);
     const tasks = await fetchTasksSince(
       client,
-      scopeType as "team" | "list",
+      scopeType as PollScopeType,
       scopeId,
-      formatClickUpTimestamp(sinceDate),
+      formatClickUpTimestamp(new Date(sinceMs)),
     );
     const { created, updated } = partitionTasksByTimestamp(tasks, sinceMs);
     context.polling.setState({ lastPolledAt: now.toISOString() } as Record<
       string,
       unknown
     >);
-    const result = {
-      created: showNewRecords ? created : [],
-      updated: showUpdatedRecords ? updated : [],
+    const result: ClickUpTaskChangesObject = {
+      created: showNewRecords || isInitialSync ? created : [],
+      updated: showUpdatedRecords || isInitialSync ? updated : [],
     };
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled ${scopeType} ${scopeId}: ${tasks.length} total → ${created.length} new, ${updated.length} updated`,
+        `Polled ${scopeType} ${scopeId}${isInitialSync ? " (initial sync)" : ""}: ${tasks.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
     return {

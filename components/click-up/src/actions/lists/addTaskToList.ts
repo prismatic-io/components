@@ -1,15 +1,14 @@
 import { action } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { addTaskToListExamplePayload } from "../../examplePayloads";
-import { connectionInput, getlistId, getTaskId } from "../../inputs";
-const listId = getlistId(true, "List ID");
-const taskId = getTaskId(true, "Task ID");
+import { addTaskToListInputs } from "../../inputs";
 export const addTaskToList = action({
   display: {
     label: "Add Task to List",
     description: "Add a task to an additional list.",
   },
   examplePayload: addTaskToListExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, listId, taskId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -20,9 +19,6 @@ export const addTaskToList = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    listId,
-    taskId,
-  },
+  examplePerform: async () => addTaskToListExamplePayload,
+  inputs: addTaskToListInputs,
 });

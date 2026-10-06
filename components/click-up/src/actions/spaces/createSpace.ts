@@ -1,32 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { createSpaceExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  enableChecklists,
-  enableCustomFields,
-  enableDependencyWarning,
-  enableDueDates,
-  enablePortfolios,
-  enableRemapDependencies,
-  enableTags,
-  enableTimeEstimates,
-  enableTimeTracking,
-  getTeamId,
-  multipleAssignees,
-  remapClosedDueDates,
-  remapDueDates,
-  spaceName,
-  useStartDate,
-} from "../../inputs";
-import type { Body } from "./types/Body";
-const teamId = getTeamId(true);
+import { createSpaceInputs } from "../../inputs";
+import { createSpaceOutputSchema } from "../../outputSchemas";
+import type { SpaceBody as Body } from "../../types";
 export const createSpace = action({
   display: {
     label: "Create Space",
     description: "Add a new space to a workspace.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createSpaceOutputSchema,
+  }),
   examplePayload: createSpaceExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -93,22 +81,11 @@ export const createSpace = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-    spaceName,
-    multipleAssignees,
-    enableDueDates,
-    useStartDate,
-    remapDueDates,
-    remapClosedDueDates,
-    enableTimeTracking,
-    enableTags,
-    enableTimeEstimates,
-    enableChecklists,
-    enableCustomFields,
-    enableRemapDependencies,
-    enableDependencyWarning,
-    enablePortfolios,
-  },
+  examplePerform: async (_context, { spaceName }) => ({
+    data: {
+      ...createSpaceExamplePayload.data,
+      name: spaceName,
+    },
+  }),
+  inputs: createSpaceInputs,
 });

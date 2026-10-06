@@ -4,15 +4,19 @@ import {
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import constants from "./constants";
+import { getBearerToken, validateConnection } from "./util";
 export const createClickUpClient = (
   clickUpConnection: Connection,
   debug = false,
 ): HttpClient => {
+  validateConnection(clickUpConnection);
   return createClient({
     debug,
     baseUrl: constants.CLICK_UP_API_URL,
+    responseType: "json",
     headers: {
-      Authorization: `Bearer ${clickUpConnection?.token?.access_token || clickUpConnection?.fields?.apiKey}`,
+      Accept: "application/json",
+      Authorization: `Bearer ${getBearerToken(clickUpConnection)}`,
     },
   });
 };

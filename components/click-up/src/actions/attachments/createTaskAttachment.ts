@@ -1,30 +1,21 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import FormData from "form-data";
 import { createClickUpClient } from "../../client";
 import { createTaskAttachmentExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getCustomTaskIds,
-  getFile,
-  getFileName,
-  getTaskId,
-  getTeamId,
-} from "../../inputs";
-import type { CreateTaskAttachmentQueryParams } from "./types/CreateTaskAttachmentQueryParams";
-const taskId = getTaskId(true, "Task ID");
-const customTaskIds = getCustomTaskIds(false);
-const teamId = getTeamId(
-  false,
-  "Only used when the custom_task_ids parameter is set to true.",
-);
-const file = getFile(true);
-const fileName = getFileName(true);
+import { createTaskAttachmentInputs } from "../../inputs";
+import { createTaskAttachmentOutputSchema } from "../../outputSchemas";
+import type { CreateTaskAttachmentQueryParams } from "../../types";
 export const createTaskAttachment = action({
   display: {
     label: "Create Task Attachment",
     description: "Upload a file to a task as an attachment.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createTaskAttachmentOutputSchema,
+  }),
   examplePayload: createTaskAttachmentExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, taskId, customTaskIds, teamId, file, fileName },
@@ -35,7 +26,7 @@ export const createTaskAttachment = action({
     const params: CreateTaskAttachmentQueryParams = {
       custom_task_ids: customTaskIds,
     };
-    if (teamId.length) params.team_id = teamId;
+    if (teamId?.length) params.team_id = teamId;
     const { data } = await client.post(
       `/task/${taskId}/attachment`,
       formData.getBuffer(),
@@ -48,12 +39,6 @@ export const createTaskAttachment = action({
       data,
     };
   },
-  inputs: {
-    connection: connectionInput,
-    taskId,
-    customTaskIds,
-    teamId,
-    file,
-    fileName,
-  },
+  examplePerform: async () => createTaskAttachmentExamplePayload,
+  inputs: createTaskAttachmentInputs,
 });

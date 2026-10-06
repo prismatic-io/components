@@ -1,39 +1,39 @@
+import { input, util } from "@prismatic-io/spectral";
 import {
   connectionInput,
-  folderName,
   getArchived,
   getFolderId,
   getSpaceId,
 } from "./common";
-const spaceIdForCreate = getSpaceId(true);
-const folderIdForDelete = getFolderId(true);
-const folderIdForGet = getFolderId(true);
-const spaceIdForList = getSpaceId(true);
-const archivedForList = getArchived(
-  false,
-  "When true, includes archived Folders in the results.",
-);
-const folderIdForUpdate = getFolderId(true);
+const folderName = input({
+  label: "Name",
+  type: "string",
+  placeholder: "Enter folder name",
+  example: "My Folder",
+  comments: "The name of the folder.",
+  required: true,
+  clean: util.types.toString,
+});
 export const createFolderInputs = {
   connection: connectionInput,
-  spaceId: spaceIdForCreate,
+  spaceId: getSpaceId(true),
   folderName,
 };
 export const deleteFolderInputs = {
   connection: connectionInput,
-  folderId: folderIdForDelete,
+  folderId: getFolderId(true, "The unique identifier for the Folder."),
 };
 export const getFolderInputs = {
   connection: connectionInput,
-  folderId: folderIdForGet,
+  folderId: getFolderId(true, "The unique identifier for the Folder."),
 };
 export const listFoldersInputs = {
   connection: connectionInput,
-  spaceId: spaceIdForList,
-  archived: archivedForList,
+  spaceId: getSpaceId(true),
+  archived: getArchived(false, "When true, returns archived Folders."),
 };
 export const updateFolderInputs = {
   connection: connectionInput,
-  folderId: folderIdForUpdate,
+  folderId: getFolderId(true, "The unique identifier for the Folder."),
   folderName,
 };

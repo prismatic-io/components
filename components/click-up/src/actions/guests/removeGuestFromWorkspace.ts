@@ -1,15 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { removeGuestFromWorkspaceExamplePayload } from "../../examplePayloads";
-import { connectionInput, getGuestId, getTeamId } from "../../inputs";
-const teamId = getTeamId(true);
-const guestId = getGuestId(true, "Guest ID");
+import { removeGuestFromWorkspaceInputs } from "../../inputs";
+import { removeGuestFromWorkspaceOutputSchema } from "../../outputSchemas";
 export const removeGuestFromWorkspace = action({
   display: {
     label: "Remove Guest from Workspace",
     description: "Revoke a guest's access to a workspace.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: removeGuestFromWorkspaceOutputSchema,
+  }),
   examplePayload: removeGuestFromWorkspaceExamplePayload,
+  performSafety: "notAllowed",
   perform: async (context, { clickUpConnection, teamId, guestId }) => {
     const client = createClickUpClient(
       clickUpConnection,
@@ -20,9 +24,6 @@ export const removeGuestFromWorkspace = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    teamId,
-    guestId,
-  },
+  examplePerform: async () => removeGuestFromWorkspaceExamplePayload,
+  inputs: removeGuestFromWorkspaceInputs,
 });

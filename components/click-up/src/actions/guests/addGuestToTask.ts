@@ -1,43 +1,23 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { addGuestToTaskExamplePayload } from "../../examplePayloads";
-import {
-  connectionInput,
-  getCustomTaskIds,
-  getGuestId,
-  getIncludeShared,
-  getPermissionLevel,
-  getTaskId,
-  getTeamId,
-} from "../../inputs";
-import type { AddGuestToTaskBody } from "./types/AddGuestToTaskBody";
-import type { AddGuestToTaskQueryParams } from "./types/AddGuestToTaskQueryParams";
-const teamId = getTeamId(
-  false,
-  "Only used when the custom_task_ids parameter is set to true",
-);
-const taskId = getTaskId(true, "Task ID");
-const guestId = getGuestId(true, "Guest ID");
-const includeShared = getIncludeShared(
-  false,
-  "Exclude details of items shared with the guest by setting this parameter to false",
-  true,
-);
-const customTaskIds = getCustomTaskIds(
-  false,
-  "If you want to reference a task by its Custom Task ID, this value must be true.",
-  true,
-);
-const permissionLevel = getPermissionLevel(
-  true,
-  "Can be read (view only), comment, edit, or create (full).",
-);
+import { addGuestToTaskInputs } from "../../inputs";
+import { addGuestToTaskOutputSchema } from "../../outputSchemas";
+import type {
+  AddGuestToTaskBody,
+  AddGuestToTaskQueryParams,
+} from "../../types";
 export const addGuestToTask = action({
   display: {
     label: "Add Guest to Task",
     description: "Share a task with a guest.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addGuestToTaskOutputSchema,
+  }),
   examplePayload: addGuestToTaskExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -71,13 +51,6 @@ export const addGuestToTask = action({
       data,
     };
   },
-  inputs: {
-    clickUpConnection: connectionInput,
-    taskId,
-    guestId,
-    includeShared,
-    customTaskIds,
-    teamId,
-    permissionLevel,
-  },
+  examplePerform: async () => addGuestToTaskExamplePayload,
+  inputs: addGuestToTaskInputs,
 });

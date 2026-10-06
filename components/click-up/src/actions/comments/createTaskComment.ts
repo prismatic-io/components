@@ -1,35 +1,23 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClickUpClient } from "../../client";
 import { createTaskCommentExamplePayload } from "../../examplePayloads";
-import {
-  assigneeId,
-  connectionInput,
-  getCommentText,
-  getCustomTaskIds,
-  getNotifyAll,
-  getTaskId,
-  getTeamId,
-} from "../../inputs";
-import type { CreateTaskCommentBody } from "./types/CreateTaskCommentBody";
-import type { CreateTaskCommentQueryParams } from "./types/CreateTaskCommentQueryParams";
-const taskId = getTaskId(true, "Task ID");
-const customTaskIds = getCustomTaskIds(false);
-const teamId = getTeamId(
-  false,
-  "Only used when the custom_task_ids parameter is set to true.",
-);
-const commentText = getCommentText(true, "Comment Text");
-const notifyAll = getNotifyAll(
-  true,
-  "If notify_all is true, notifications will be sent to everyone including the creator of the comment.",
-  true,
-);
+import { createTaskCommentInputs } from "../../inputs";
+import { createTaskCommentOutputSchema } from "../../outputSchemas";
+import type {
+  CreateTaskCommentBody,
+  CreateTaskCommentQueryParams,
+} from "../../types";
 export const createTaskComment = action({
   display: {
     label: "Create Task Comment",
     description: "Add a new comment to a task.",
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createTaskCommentOutputSchema,
+  }),
   examplePayload: createTaskCommentExamplePayload,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -59,16 +47,6 @@ export const createTaskComment = action({
       data,
     };
   },
-  inputs: {
-    connection: connectionInput,
-    taskId,
-    customTaskIds,
-    teamId,
-    commentText,
-    notifyAll,
-    assigneeId: {
-      ...assigneeId,
-      required: false,
-    },
-  },
+  examplePerform: async () => createTaskCommentExamplePayload,
+  inputs: createTaskCommentInputs,
 });
