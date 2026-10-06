@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-06
+
+Fixed an issue when a step using a customer **OAuth 2.0** connection was added to a flow in the designer
+
 ### 2026-04-30
 
 Updated spectral version

@@ -58,6 +58,7 @@ export const arcgisOAuth2Connection = oauth2Connection({
       collection: "keyvaluelist",
       required: false,
       shown: false,
+      default: [],
       comments: "Additional header to supply to authorization requests",
     },
   },

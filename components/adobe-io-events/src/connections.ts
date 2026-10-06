@@ -48,6 +48,7 @@ export const adobeIOConnection = oauth2Connection({
       collection: "keyvaluelist",
       required: false,
       shown: false,
+      default: [],
       comments: "Additional header to supply to authorization requests",
     },
   },
