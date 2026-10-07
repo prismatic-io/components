@@ -3,7 +3,7 @@ import {
   BULK_ACTION_ITEMS_DEFAULT,
   BULK_ACTION_UNPUBLISH_ITEMS_DEFAULT,
 } from "../constants";
-import { cleanCodeInput } from "../util";
+import { toOptionalObject } from "../util";
 import { connection, environmentId, spaceId } from "./common";
 const bulkActionId = input({
   label: "Bulk Action ID",
@@ -23,7 +23,7 @@ const bulkActionItems = input({
   placeholder: "Enter bulk action items JSON",
   default: JSON.stringify(BULK_ACTION_ITEMS_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const bulkActionUnpublishItems = input({
   label: "Items",
@@ -34,7 +34,7 @@ const bulkActionUnpublishItems = input({
   placeholder: "Enter unpublish items JSON",
   default: JSON.stringify(BULK_ACTION_UNPUBLISH_ITEMS_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 export const getBulkActionInputs = {
   connection,

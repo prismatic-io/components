@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   CollectionProp,
   Space,
@@ -7,11 +7,13 @@ import type {
 import { createClient } from "../../client";
 import { listWebhooksExamplePayload } from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
+import { listWebhooksOutputSchema } from "../../outputSchemas";
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
     description: "Retrieves all webhooks of a space.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, spaceId }) => {
     const client = createClient(connection, context);
     const space: Space = await client.getSpace(spaceId);
@@ -23,6 +25,13 @@ export const listWebhooks = action({
       data: items,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listWebhooksExamplePayload,
   inputs: listWebhooksInputs,
-  examplePayload: { data: listWebhooksExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listWebhooksOutputSchema,
+  }),
+  examplePayload: listWebhooksExamplePayload,
 });

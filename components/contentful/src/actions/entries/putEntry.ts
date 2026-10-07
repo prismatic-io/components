@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   Entry,
   EntryProps,
@@ -6,8 +6,9 @@ import type {
   KeyValueMap,
 } from "contentful-management";
 import { createClient } from "../../client";
-import { updateEntryExamplePayload } from "../../examplePayloads";
+import { putEntryExamplePayload } from "../../examplePayloads";
 import { putEntryInputs } from "../../inputs";
+import { putEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const putEntry = action({
   display: {
@@ -15,6 +16,7 @@ export const putEntry = action({
     description:
       "Replaces all fields of an existing entry with the provided data.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, environmentId, spaceId, entryId, entryData },
@@ -51,6 +53,13 @@ export const putEntry = action({
       data: data as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => putEntryExamplePayload,
   inputs: putEntryInputs,
-  examplePayload: { data: updateEntryExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: putEntryOutputSchema,
+  }),
+  examplePayload: putEntryExamplePayload,
 });

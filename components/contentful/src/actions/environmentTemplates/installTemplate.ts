@@ -7,6 +7,7 @@ export const installTemplate = action({
     label: "Install Template",
     description: "Installs a template to an environment.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, environmentId, spaceId, templateId },
@@ -20,5 +21,8 @@ export const installTemplate = action({
     };
   },
   inputs: installTemplateInputs,
-  examplePayload: { data: installTemplateExamplePayload },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => installTemplateExamplePayload,
+  examplePayload: installTemplateExamplePayload,
 });

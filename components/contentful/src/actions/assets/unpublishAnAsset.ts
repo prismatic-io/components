@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Asset, AssetProps, Environment } from "contentful-management";
 import { createClient } from "../../client";
-import { unpublishAssetExamplePayload } from "../../examplePayloads";
+import { unpublishAnAssetExamplePayload } from "../../examplePayloads";
 import { unpublishAnAssetInputs } from "../../inputs";
+import { unpublishAnAssetOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const unpublishAnAsset = action({
   display: {
     label: "Unpublish Asset",
     description: "Unpublishes an asset.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, environmentId, spaceId, assetId }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -22,6 +24,13 @@ export const unpublishAnAsset = action({
       data: data as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => unpublishAnAssetExamplePayload,
   inputs: unpublishAnAssetInputs,
-  examplePayload: { data: unpublishAssetExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: unpublishAnAssetOutputSchema,
+  }),
+  examplePayload: unpublishAnAssetExamplePayload,
 });

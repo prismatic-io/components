@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Environment, EnvironmentProps } from "contentful-management";
 import { createClient } from "../../client";
 import { updateEnvironmentExamplePayload } from "../../examplePayloads";
 import { updateEnvironmentInputs } from "../../inputs";
+import { updateEnvironmentOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const updateEnvironment = action({
   display: {
     label: "Update Environment",
     description: "Updates an existing environment.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, spaceId, environmentId, name }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -22,6 +24,13 @@ export const updateEnvironment = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateEnvironmentExamplePayload,
   inputs: updateEnvironmentInputs,
-  examplePayload: { data: updateEnvironmentExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateEnvironmentOutputSchema,
+  }),
+  examplePayload: updateEnvironmentExamplePayload,
 });

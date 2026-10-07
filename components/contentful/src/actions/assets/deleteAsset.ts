@@ -1,13 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Asset, Environment } from "contentful-management";
 import { createClient } from "../../client";
+import { deleteAssetExamplePayload } from "../../examplePayloads";
 import { deleteAssetInputs } from "../../inputs";
+import { deleteAssetOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const deleteAsset = action({
   display: {
     label: "Delete Asset",
     description: "Deletes an existing asset.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, environmentId, spaceId, assetId }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -21,6 +24,13 @@ export const deleteAsset = action({
       data: {},
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => deleteAssetExamplePayload,
   inputs: deleteAssetInputs,
-  examplePayload: { data: {} },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteAssetOutputSchema,
+  }),
+  examplePayload: deleteAssetExamplePayload,
 });

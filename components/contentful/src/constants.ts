@@ -165,3 +165,5 @@ export const WEBHOOK_EVENTS = [
   { label: "Scheduled Action Deleted", value: "ScheduledAction.delete" },
   { label: "Scheduled Action All", value: "ScheduledAction.*" },
 ];
+export const MAX_BATCHED_POLL_PAGES = 5;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

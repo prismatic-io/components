@@ -1,4 +1,5 @@
 import type { TriggerPayload } from "@prismatic-io/spectral";
+import { createEntryExamplePayload } from "./entries";
 export const pollChangesTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
@@ -69,8 +70,39 @@ export const pollChangesTriggerExamplePayload: {
       versionSequenceId: "1",
       externalVersion: "",
     },
-    flow: { id: "testFlowId", name: "Test Flow" },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
     startedAt: "2024-01-15T00:00:00.000Z",
     globalDebug: false,
   },
 };
+const buildContentfulWebhookHeaders = (
+  webhookName: string,
+): Record<string, string> => ({
+  "Content-Type": "application/vnd.contentful.management.v1+json",
+  "X-Contentful-Topic": "ContentManagement.Entry.publish",
+  "X-Contentful-Webhook-Name": webhookName,
+});
+const buildContentfulWebhookPayload = (
+  webhookName: string,
+): {
+  payload: TriggerPayload;
+} => ({
+  payload: {
+    ...pollChangesTriggerExamplePayload.payload,
+    headers: buildContentfulWebhookHeaders(webhookName),
+    rawBody: {
+      data: JSON.stringify(createEntryExamplePayload.data),
+      contentType: "application/vnd.contentful.management.v1+json",
+    },
+    body: {
+      data: createEntryExamplePayload.data,
+      contentType: "application/vnd.contentful.management.v1+json",
+    },
+  },
+});
+export const eventsTriggerExamplePayload: {
+  payload: TriggerPayload;
+} = buildContentfulWebhookPayload("Events Trigger - Test Flow");
+export const webhookExamplePayload: {
+  payload: TriggerPayload;
+} = buildContentfulWebhookPayload("Entry Publish Notifications");

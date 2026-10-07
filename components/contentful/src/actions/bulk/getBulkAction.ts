@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Environment } from "contentful-management";
 import { createClient } from "../../client";
 import { getBulkActionExamplePayload } from "../../examplePayloads";
 import { getBulkActionInputs } from "../../inputs";
+import { getBulkActionOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const getBulkAction = action({
   display: {
     label: "Get Bulk Action",
     description: "Retrieves a bulk action by ID.",
   },
+  performSafety: "safe",
   perform: async (
     context,
     { connection, spaceId, environmentId, bulkActionId },
@@ -27,5 +29,9 @@ export const getBulkAction = action({
     };
   },
   inputs: getBulkActionInputs,
-  examplePayload: { data: getBulkActionExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getBulkActionOutputSchema,
+  }),
+  examplePayload: getBulkActionExamplePayload,
 });

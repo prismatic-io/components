@@ -7,6 +7,7 @@ export const getEnvironmentTemplate = action({
     label: "Get Environment Template",
     description: "Retrieves a single environment template by ID.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, organizationId, templateId }) => {
     const client = createApiClient(connection, context.debug.enabled);
     const { data } = await client.get(
@@ -17,5 +18,5 @@ export const getEnvironmentTemplate = action({
     };
   },
   inputs: getEnvironmentTemplateInputs,
-  examplePayload: { data: getEnvironmentTemplateExamplePayload },
+  examplePayload: getEnvironmentTemplateExamplePayload,
 });

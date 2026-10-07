@@ -9,6 +9,7 @@ export const rawRequest = action({
     description: "Sends a raw HTTP request to the Contentful API.",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, ...httpClientInputs }) => {
     const { data } = await sendRawRequest(
       API_BASE_URL,

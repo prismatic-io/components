@@ -3,7 +3,7 @@ import bulk from "./bulk";
 import contentTypes from "./contentTypes";
 import entries from "./entries";
 import environments from "./environments";
-import { rawRequest } from "./misc/rawRequest";
+import misc from "./misc";
 import organizations from "./organizations";
 import spaces from "./spaces";
 import upload from "./upload";
@@ -18,5 +18,5 @@ export default {
   ...assets,
   ...webhooks,
   ...bulk,
-  rawRequest,
+  ...misc,
 };

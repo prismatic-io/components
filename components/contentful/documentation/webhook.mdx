@@ -1,0 +1,84 @@
+The **Webhook** trigger receives requests from a webhook created manually in [Contentful](https://www.contentful.com/). Unlike the [Event Subscription](#eventstrigger) trigger, it does not create or remove webhooks in Contentful.
+
+#### How It Works
+
+1. Deploy the instance and copy the flow's webhook URL.
+2. In Contentful, go to **Settings** > **Webhooks** and create a webhook whose URL is the flow's webhook URL.
+3. Select the topics the webhook sends, and save it. See [Contentful webhook configuration](https://www.contentful.com/developers/docs/extensibility/webhooks/configure-webhook/).
+
+Each request Contentful sends to that URL starts a flow execution. The trigger returns the request as received.
+
+#### Request Verification
+
+The optional **Webhook Signing Secret** input verifies that each request was sent by Contentful. To get the secret, in Contentful go to **Settings** > **Webhooks** > **Settings** and enable request verification. Contentful issues one 64-character secret per space, shared by every webhook in that space. See [Contentful webhook request verification](https://www.contentful.com/developers/docs/extensibility/webhooks/request-verification/).
+
+Verification runs only when the secret is set. The trigger then rejects any request whose signature is missing or does not match, or whose signature is more than 30 seconds old. Test executions skip verification, because they carry no signature.
+
+Verification assumes the request was sent with `POST` and signs the request path as the trigger received it. A webhook configured with a custom HTTP method, or a proxy that rewrites the URL between Contentful and the flow, fails verification. To recover, clear the **Webhook Signing Secret** input.
+
+#### Event Types
+
+The topics are selected on the webhook in Contentful, for example `Entry.publish`, `Asset.delete`, or `ContentType.*`. The [Event Subscription](#eventstrigger) trigger documentation lists the available topics.
+
+Each delivery carries headers that identify the event (see [Contentful webhook headers](https://www.contentful.com/developers/docs/extensibility/webhooks/headers/)):
+
+- `X-Contentful-Topic`: the event, in the form `ContentManagement.<Type>.<action>` (for example, `ContentManagement.Entry.publish`)
+- `X-Contentful-Webhook-Name`: the name given to the webhook in Contentful
+- `Content-Type`: `application/vnd.contentful.management.v1+json`
+
+The request body is the entity that changed. Entry and asset delete and unpublish events deliver a tombstone instead: only the `sys` block, with a `sys.type` of `DeletedEntry` or `DeletedAsset`.
+
+#### Returned Data
+
+Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "headers": {
+    "Content-Type": "application/vnd.contentful.management.v1+json",
+    "X-Contentful-Topic": "ContentManagement.Entry.publish",
+    "X-Contentful-Webhook-Name": "Entry Publish Notifications"
+  },
+  "body": {
+    "data": {
+      "fields": {
+        "title": { "en-US": "Hello, World!" },
+        "body": { "en-US": "Bacon is healthy!" }
+      },
+      "metadata": {
+        "tags": [
+          { "sys": { "type": "Link", "linkType": "Tag", "id": "nyCampaign" } }
+        ]
+      },
+      "sys": {
+        "id": "5KsDBWseXY6QegucYAoacS",
+        "type": "Entry",
+        "contentType": {
+          "sys": { "type": "Link", "linkType": "ContentType", "id": "hfM9RCJIk0wIm06WkEOQY" }
+        },
+        "version": 1,
+        "space": {
+          "sys": { "type": "Link", "linkType": "Space", "id": "yadj1kx9rmg0" }
+        },
+        "environment": {
+          "sys": { "type": "Link", "linkType": "Environment", "id": "staging" }
+        },
+        "createdAt": "2015-05-18T11:29:46.809Z",
+        "createdBy": {
+          "sys": { "type": "Link", "linkType": "User", "id": "7BslKh9TdKGOK41VmLDjFZ" }
+        },
+        "updatedAt": "2015-05-18T11:29:46.809Z",
+        "updatedBy": {
+          "sys": { "type": "Link", "linkType": "User", "id": "4FLrUHftHW3v2BLi9fzfjU" }
+        }
+      }
+    },
+    "contentType": "application/vnd.contentful.management.v1+json"
+  }
+}
+```
+
+</details>

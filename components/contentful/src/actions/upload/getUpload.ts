@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Environment, UploadProps } from "contentful-management";
 import { createClient } from "../../client";
 import { getUploadExamplePayload } from "../../examplePayloads";
 import { getUploadInputs } from "../../inputs";
+import { getUploadOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const getUpload = action({
   display: {
     label: "Get Upload",
     description: "Retrieves an unmodified image.",
   },
+  performSafety: "safe",
   perform: async (
     context,
     { connection, environmentId, spaceId, uploadId },
@@ -27,5 +29,9 @@ export const getUpload = action({
     };
   },
   inputs: getUploadInputs,
-  examplePayload: { data: getUploadExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getUploadOutputSchema,
+  }),
+  examplePayload: getUploadExamplePayload,
 });

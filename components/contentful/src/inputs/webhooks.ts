@@ -57,9 +57,6 @@ export const listWebhooksInputs = {
 export const updateWebhookInputs = {
   connection,
   spaceId,
-  name: {
-    ...webhookName,
-    comments: "The updated name for the webhook.",
-  },
+  name: webhookName,
   webhookId,
 };

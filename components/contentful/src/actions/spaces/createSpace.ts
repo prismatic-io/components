@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { SpaceProps } from "contentful-management";
 import { createClient } from "../../client";
 import { createSpaceExamplePayload } from "../../examplePayloads";
 import { createSpaceInputs } from "../../inputs";
+import { createSpaceOutputSchema } from "../../outputSchemas";
 export const createSpace = action({
   display: {
     label: "Create Space",
     description: "Creates a new space.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, organizationId, name, defaultLocale },
@@ -26,6 +28,13 @@ export const createSpace = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createSpaceExamplePayload,
   inputs: createSpaceInputs,
-  examplePayload: { data: createSpaceExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createSpaceOutputSchema,
+  }),
+  examplePayload: createSpaceExamplePayload,
 });

@@ -3,7 +3,7 @@ import {
   CONTENT_TYPE_TEMPLATES_DEFAULT,
   EDITOR_INTERFACE_TEMPLATES_DEFAULT,
 } from "../constants";
-import { cleanCodeInput } from "../util";
+import { toOptionalObject } from "../util";
 import { connection, environmentId, organizationId, spaceId } from "./common";
 const templateName = input({
   label: "Name",
@@ -52,7 +52,7 @@ const contentTypeTemplates = input({
   placeholder: "Enter content type templates JSON",
   default: JSON.stringify(CONTENT_TYPE_TEMPLATES_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const editorInterfaceTemplates = input({
   label: "Editor Interface Templates",
@@ -63,7 +63,7 @@ const editorInterfaceTemplates = input({
   placeholder: "Enter editor interface templates JSON",
   default: JSON.stringify(EDITOR_INTERFACE_TEMPLATES_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const templateId = input({
   label: "Template ID",
@@ -109,22 +109,10 @@ export const updateEnvironmentTemplateInputs = {
   connection,
   organizationId,
   templateId,
-  name: {
-    ...templateName,
-    comments: "The updated name for the template.",
-  },
-  description: {
-    ...templateDescription,
-    comments: "The updated description for the template.",
-  },
-  versionName: {
-    ...templateVersionName,
-    comments: "The updated name for the version.",
-  },
-  versionDescription: {
-    ...templateVersionDescription,
-    comments: "The updated description for the version.",
-  },
+  name: templateName,
+  description: templateDescription,
+  versionName: templateVersionName,
+  versionDescription: templateVersionDescription,
   contentTypeTemplates: {
     ...contentTypeTemplates,
     comments: "The updated content type definitions included in this template.",

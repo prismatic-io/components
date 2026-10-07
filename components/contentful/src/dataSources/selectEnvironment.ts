@@ -5,6 +5,7 @@ import type {
   Space,
 } from "contentful-management";
 import { createClient } from "../client";
+import { selectEnvironmentExamplePayload } from "../examplePayloads";
 import { selectEnvironmentInputs } from "../inputs";
 import { getAllPaginatedItems, mapItemsForPicklist } from "../util";
 export const selectEnvironment = dataSource({
@@ -24,4 +25,5 @@ export const selectEnvironment = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
+  examplePayload: selectEnvironmentExamplePayload,
 });

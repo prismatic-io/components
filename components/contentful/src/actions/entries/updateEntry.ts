@@ -14,6 +14,7 @@ export const updateEntry = action({
     label: "Update Entry",
     description: "Updates an existing entry.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, environmentId, spaceId, entryId, entryTitle, entryBody },
@@ -43,5 +44,8 @@ export const updateEntry = action({
     };
   },
   inputs: updateEntryInputs,
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateEntryExamplePayload,
   examplePayload: updateEntryExamplePayload,
 });

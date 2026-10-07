@@ -4,21 +4,30 @@ The **Event Subscription** trigger receives event notifications from [Contentful
 
 When this trigger is used in a flow:
 
-- **On Instance Deploy**: The trigger automatically creates a webhook in Contentful configured to send events to the instance's unique webhook URL.
-- **On Instance Deletion**: The trigger automatically removes the corresponding webhook from Contentful.
+- **On Instance Deploy**: The trigger looks for a webhook in the selected space whose URL is the flow's unique webhook URL. If one exists, its topics are updated in place to match the **Events** input; otherwise a new webhook is created. Any other webhooks pointing at the same URL are removed, so the flow is not invoked twice for one event. If the **Space ID** changed since the previous deployment, the webhook in the previously configured space is removed.
+- **On Instance Deletion**: The trigger removes the webhook from the configured space, and from the previously configured space if the **Space ID** changed.
 
 The trigger fires each time Contentful sends a matching event notification to the webhook endpoint.
+
+#### Request Verification
+
+The optional **Webhook Signing Secret** input verifies that each request was sent by Contentful. To get the secret, in Contentful go to **Settings** > **Webhooks** > **Settings** and enable request verification. Contentful issues one 64-character secret per space, shared by every webhook in that space. See [Contentful webhook request verification](https://www.contentful.com/developers/docs/extensibility/webhooks/request-verification/).
+
+Verification runs only when the secret is set. The trigger then rejects any request whose signature is missing or does not match, or whose signature is more than 30 seconds old. Test executions skip verification, because they carry no signature.
+
+Verification assumes the request was sent with `POST` and signs the request path as the trigger received it. A webhook configured with a custom HTTP method, or a proxy that rewrites the URL between Contentful and the flow, fails verification. To recover, clear the **Webhook Signing Secret** input.
 
 #### Configuration
 
 - **Connection**: The Contentful OAuth 2.0 connection to use for authentication.
 - **Space ID**: The unique identifier of the Contentful space to subscribe to.
 - **Events**: The event types to subscribe to (e.g., `Entry.publish`, `Asset.create`).
+- **Webhook Signing Secret**: Optional. The space's webhook signing secret. See [Request Verification](#request-verification).
 
 #### Event Types
 
 <details>
-<summary>Available Events (43)</summary>
+<summary>Available Events (54)</summary>
 
 | Event | Description |
 |-------|-------------|
@@ -79,7 +88,7 @@ The trigger fires each time Contentful sends a matching event notification to th
 
 </details>
 
-Refer to the [Contentful Webhook documentation](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/webhooks) for the complete and up-to-date list of available events.
+Refer to the [Contentful webhook configuration documentation](https://www.contentful.com/developers/docs/extensibility/webhooks/configure-webhook/) for the complete and up-to-date list of available events.
 
 #### Returned Data
 

@@ -1,28 +1,26 @@
 {
-  "name": "contentful",
+  "name": "@prismatic-io/contentful",
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "build": "npm run format && npm run lint && webpack",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "publish": "npm run build && prism components:publish",
-    "test": "echo 'no tests'",
+    "test": "vitest run",
     "lint": "biome check --write .",
     "format": "biome format --write ."
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1",
-    "contentful-management": "^11.24.3"
+    "@prismatic-io/spectral": "10.33.1",
+    "contentful-management": "^12.19.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.15",
-    "@types/jest": "30.0.0",
-    "@types/node": "^22.19.11",
-    "copy-webpack-plugin": "13.0.1",
-    "jest": "30.2.0",
-    "ts-jest": "29.4.6",
-    "ts-loader": "9.5.4",
-    "typescript": "5.9.3",
-    "webpack": "5.105.2",
-    "webpack-cli": "6.0.1"
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26.6.3",
+    "nock": "14.0.17",
+    "tsdown": "0.22.3",
+    "type-fest": "^5.10.0",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { stringOrUndefinedCleaner } from "../util";
+import { toOptionalString } from "../util";
 import { connection, environmentId, spaceId } from "./common";
 const environmentName = input({
   label: "Environment Name",
@@ -8,7 +8,7 @@ const environmentName = input({
   example: "Staging",
   placeholder: "Enter environment name",
   required: false,
-  clean: stringOrUndefinedCleaner,
+  clean: toOptionalString,
 });
 export const createEnvironmentInputs = {
   connection,
@@ -37,7 +37,6 @@ export const updateEnvironmentInputs = {
   name: {
     ...environmentName,
     required: true,
-    comments: "The updated name for the environment.",
     clean: util.types.toString,
   },
 };

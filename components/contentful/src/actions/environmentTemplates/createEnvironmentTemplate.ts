@@ -7,6 +7,7 @@ export const createEnvironmentTemplate = action({
     label: "Create Environment Template",
     description: "Creates a new environment template.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -40,5 +41,8 @@ export const createEnvironmentTemplate = action({
     };
   },
   inputs: createEnvironmentTemplateInputs,
-  examplePayload: { data: createEnvironmentTemplateExamplePayload },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createEnvironmentTemplateExamplePayload,
+  examplePayload: createEnvironmentTemplateExamplePayload,
 });

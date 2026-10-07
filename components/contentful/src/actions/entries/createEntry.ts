@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   EntryProps,
   Environment,
@@ -7,12 +7,14 @@ import type {
 import { createClient } from "../../client";
 import { createEntryExamplePayload } from "../../examplePayloads";
 import { createEntryInputs } from "../../inputs";
+import { createEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const createEntry = action({
   display: {
     label: "Create Entry",
     description: "Creates a new entry in a space.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, contentTypeId, environmentId, spaceId, entryData },
@@ -33,6 +35,13 @@ export const createEntry = action({
       data: data as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createEntryExamplePayload,
   inputs: createEntryInputs,
-  examplePayload: { data: createEntryExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createEntryOutputSchema,
+  }),
+  examplePayload: createEntryExamplePayload,
 });

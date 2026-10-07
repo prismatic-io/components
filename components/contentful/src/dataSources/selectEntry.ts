@@ -9,23 +9,7 @@ import type {
 import { createClient } from "../client";
 import { selectEntryExamplePayload } from "../examplePayloads";
 import { selectEntryInputs } from "../inputs";
-import { getAllPaginatedItems } from "../util";
-const getEntryLabel = (entry: EntryProps<KeyValueMap>): string => {
-  const { fields } = entry;
-  if (fields?.title) {
-    const firstLocale = Object.keys(fields.title)[0];
-    if (firstLocale && fields.title[firstLocale]) {
-      return String(fields.title[firstLocale]);
-    }
-  }
-  if (fields?.name) {
-    const firstLocale = Object.keys(fields.name)[0];
-    if (firstLocale && fields.name[firstLocale]) {
-      return String(fields.name[firstLocale]);
-    }
-  }
-  return entry.sys.id;
-};
+import { getAllPaginatedItems, getEntryLabel } from "../util";
 export const selectEntry = dataSource({
   display: {
     label: "Select Entry",

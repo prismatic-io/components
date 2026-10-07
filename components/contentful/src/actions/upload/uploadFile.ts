@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createApiClient } from "../../client";
 import { API_UPLOAD_URL } from "../../constants";
 import { uploadFileExamplePayload } from "../../examplePayloads";
 import { uploadFileInputs } from "../../inputs";
+import { uploadFileOutputSchema } from "../../outputSchemas";
 export const uploadFile = action({
   display: {
     label: "Upload File",
     description: "Uploads a file to temporary file storage.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, spaceId, fileContents }) => {
     const client = createApiClient(
       connection,
@@ -16,7 +18,7 @@ export const uploadFile = action({
     );
     const { data } = await client.post(
       `/spaces/${spaceId}/uploads`,
-      fileContents,
+      fileContents.data,
       {
         headers: {
           "Content-Type": "application/octet-stream",
@@ -27,6 +29,13 @@ export const uploadFile = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => uploadFileExamplePayload,
   inputs: uploadFileInputs,
-  examplePayload: { data: uploadFileExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: uploadFileOutputSchema,
+  }),
+  examplePayload: uploadFileExamplePayload,
 });

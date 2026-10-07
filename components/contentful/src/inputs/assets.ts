@@ -4,7 +4,7 @@ import {
   ASSET_FILE_DEFAULT,
   ASSET_TITLE_DEFAULT,
 } from "../constants";
-import { cleanCodeInput } from "../util";
+import { toOptionalObject } from "../util";
 import { connection, environmentId, spaceId } from "./common";
 const assetTitle = input({
   label: "Title",
@@ -14,7 +14,7 @@ const assetTitle = input({
   placeholder: "Enter asset title JSON",
   default: JSON.stringify(ASSET_TITLE_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const assetDescription = input({
   label: "Description",
@@ -24,7 +24,7 @@ const assetDescription = input({
   placeholder: "Enter asset description JSON",
   default: JSON.stringify(ASSET_DESCRIPTION_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const assetFile = input({
   label: "File",
@@ -35,7 +35,7 @@ const assetFile = input({
   placeholder: "Enter asset file JSON",
   default: JSON.stringify(ASSET_FILE_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const assetId = input({
   label: "Asset ID",

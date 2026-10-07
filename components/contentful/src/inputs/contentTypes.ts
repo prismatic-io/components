@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { FIELDS_DEFAULT } from "../constants";
-import { cleanCodeInput, stringOrUndefinedCleaner } from "../util";
+import { toOptionalObject, toOptionalString } from "../util";
 import { connection, contentTypeId, environmentId, spaceId } from "./common";
 const contentTypeName = input({
   label: "Content Type Name",
@@ -20,7 +20,7 @@ const contentTypeFields = input({
   placeholder: "Enter content type fields JSON",
   default: JSON.stringify(FIELDS_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const displayField = input({
   label: "Display Field",
@@ -30,7 +30,7 @@ const displayField = input({
   example: "title",
   placeholder: "Enter display field name",
   required: false,
-  clean: stringOrUndefinedCleaner,
+  clean: toOptionalString,
 });
 const contentTypeDescription = input({
   label: "Description",
@@ -40,7 +40,7 @@ const contentTypeDescription = input({
   example: "A blog post",
   placeholder: "Enter content type description",
   required: false,
-  clean: stringOrUndefinedCleaner,
+  clean: toOptionalString,
 });
 export const createContentTypeInputs = {
   connection,
@@ -64,13 +64,15 @@ export const updateContentTypeInputs = {
   name: {
     ...contentTypeName,
     required: false,
-    comments: "The updated name for the content type.",
-    clean: stringOrUndefinedCleaner,
+    comments:
+      "The new display name for the content type. Leave blank to keep the current name.",
+    clean: toOptionalString,
   },
   fields: {
     ...contentTypeFields,
     required: false,
-    comments: "The updated field definitions for the content type.",
+    comments:
+      "The field definitions as a JSON array of field objects. Replaces all existing fields on the content type; when empty, the current fields are kept.",
   },
   displayField: {
     ...displayField,
@@ -78,6 +80,7 @@ export const updateContentTypeInputs = {
   },
   description: {
     ...contentTypeDescription,
-    comments: "The updated description for the content type.",
+    comments:
+      "A brief explanation of what this content type is used for. Leave blank to keep the current description.",
   },
 };

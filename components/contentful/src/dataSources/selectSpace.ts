@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import type { Space, SpaceProps } from "contentful-management";
 import { createClient } from "../client";
+import { selectSpaceExamplePayload } from "../examplePayloads";
 import { selectSpaceInputs } from "../inputs";
 import { getAllPaginatedItems, mapItemsForPicklist } from "../util";
 export const selectSpace = dataSource({
@@ -19,4 +20,5 @@ export const selectSpace = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
+  examplePayload: selectSpaceExamplePayload,
 });

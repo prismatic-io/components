@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   Entry,
   EntryProps,
@@ -8,12 +8,14 @@ import type {
 import { createClient } from "../../client";
 import { listEntriesExamplePayload } from "../../examplePayloads";
 import { listEntriesInputs } from "../../inputs";
+import { listEntriesOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems, getEnvironment } from "../../util";
 export const listEntries = action({
   display: {
     label: "List Entries",
     description: "Retrieves all entries of a space.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, environmentId, spaceId }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -29,6 +31,13 @@ export const listEntries = action({
       data: allItems as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listEntriesExamplePayload,
   inputs: listEntriesInputs,
-  examplePayload: { data: listEntriesExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listEntriesOutputSchema,
+  }),
+  examplePayload: listEntriesExamplePayload,
 });

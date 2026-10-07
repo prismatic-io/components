@@ -4,7 +4,7 @@ import {
   ENTRY_DEFAULT,
   ENTRY_TITLE_DEFAULT,
 } from "../constants";
-import { cleanCodeInput } from "../util";
+import { toOptionalObject } from "../util";
 import { connection, contentTypeId, environmentId, spaceId } from "./common";
 const entryId = input({
   label: "Entry ID",
@@ -25,7 +25,7 @@ const entryData = input({
   placeholder: "Enter entry data JSON",
   example: JSON.stringify(ENTRY_DEFAULT, null, 2),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const entryTitle = input({
   label: "Title",
@@ -36,7 +36,7 @@ const entryTitle = input({
   placeholder: "Enter entry title JSON",
   default: JSON.stringify(ENTRY_TITLE_DEFAULT, null, 2),
   required: false,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const entryBody = input({
   label: "Body",
@@ -47,7 +47,7 @@ const entryBody = input({
   placeholder: "Enter entry body JSON",
   example: JSON.stringify(ENTRY_BODY_DEFAULT, null, 2),
   required: false,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const patchOperations = input({
   label: "Patch Operations",
@@ -67,7 +67,7 @@ const patchOperations = input({
     2,
   ),
   required: true,
-  clean: cleanCodeInput,
+  clean: toOptionalObject,
 });
 const entryVersion = input({
   label: "Entry Version",

@@ -7,6 +7,7 @@ export const updateEnvironmentTemplate = action({
     label: "Update Environment Template",
     description: "Updates an existing environment template.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -41,5 +42,8 @@ export const updateEnvironmentTemplate = action({
     };
   },
   inputs: updateEnvironmentTemplateInputs,
-  examplePayload: { data: updateEnvironmentTemplateExamplePayload },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateEnvironmentTemplateExamplePayload,
+  examplePayload: updateEnvironmentTemplateExamplePayload,
 });

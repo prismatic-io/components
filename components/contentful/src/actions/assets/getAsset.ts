@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { AssetProps, Environment } from "contentful-management";
 import { createClient } from "../../client";
 import { getAssetExamplePayload } from "../../examplePayloads";
 import { getAssetInputs } from "../../inputs";
+import { getAssetOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const getAsset = action({
   display: {
     label: "Get Asset",
     description: "Retrieves a single asset by ID.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, environmentId, spaceId, assetId }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -24,5 +26,9 @@ export const getAsset = action({
     };
   },
   inputs: getAssetInputs,
-  examplePayload: { data: getAssetExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getAssetOutputSchema,
+  }),
+  examplePayload: getAssetExamplePayload,
 });

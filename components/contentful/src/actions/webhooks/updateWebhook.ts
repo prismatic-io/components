@@ -1,13 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Space, WebHooks, WebhookProps } from "contentful-management";
 import { createClient } from "../../client";
 import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhookInputs } from "../../inputs";
+import { updateWebhookOutputSchema } from "../../outputSchemas";
 export const updateWebhook = action({
   display: {
     label: "Update Webhook",
     description: "Updates an existing webhook.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, spaceId, name, webhookId }) => {
     const client = createClient(connection, context);
     const space: Space = await client.getSpace(spaceId);
@@ -18,6 +20,13 @@ export const updateWebhook = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateWebhookExamplePayload,
   inputs: updateWebhookInputs,
-  examplePayload: { data: updateWebhookExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateWebhookOutputSchema,
+  }),
+  examplePayload: updateWebhookExamplePayload,
 });

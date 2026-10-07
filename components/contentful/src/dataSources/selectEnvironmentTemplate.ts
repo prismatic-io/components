@@ -1,4 +1,5 @@
 import { dataSource } from "@prismatic-io/spectral";
+import { selectEnvironmentTemplateExamplePayload } from "../examplePayloads";
 import { selectEnvironmentTemplateInputs } from "../inputs";
 export const selectEnvironmentTemplate = dataSource({
   display: {
@@ -10,4 +11,5 @@ export const selectEnvironmentTemplate = dataSource({
     return Promise.resolve({ result: [] });
   },
   dataSourceType: "picklist",
+  examplePayload: selectEnvironmentTemplateExamplePayload,
 });

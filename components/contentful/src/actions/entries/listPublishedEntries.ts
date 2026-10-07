@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   Entry,
   EntryProps,
@@ -6,14 +6,16 @@ import type {
   KeyValueMap,
 } from "contentful-management";
 import { createClient } from "../../client";
-import { listEntriesExamplePayload } from "../../examplePayloads";
+import { listPublishedEntriesExamplePayload } from "../../examplePayloads";
 import { listPublishedEntriesInputs } from "../../inputs";
+import { listPublishedEntriesOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems, getEnvironment } from "../../util";
 export const listPublishedEntries = action({
   display: {
     label: "List Published Entries",
     description: "Retrieves all published entries of a space.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, environmentId, spaceId }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -35,6 +37,13 @@ export const listPublishedEntries = action({
       data: allItems as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listPublishedEntriesExamplePayload,
   inputs: listPublishedEntriesInputs,
-  examplePayload: { data: listEntriesExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listPublishedEntriesOutputSchema,
+  }),
+  examplePayload: listPublishedEntriesExamplePayload,
 });

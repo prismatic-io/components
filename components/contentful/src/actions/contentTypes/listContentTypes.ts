@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   ContentType,
   ContentTypeProps,
@@ -8,12 +8,14 @@ import type {
 import { createClient } from "../../client";
 import { listContentTypesExamplePayload } from "../../examplePayloads";
 import { listContentTypesInputs } from "../../inputs";
+import { listContentTypesOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems } from "../../util";
 export const listContentTypes = action({
   display: {
     label: "List Content Types",
     description: "Retrieves all content types of a space.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, environmentId, spaceId }) => {
     const client = createClient(connection, context);
     const space: Space = await client.getSpace(spaceId);
@@ -26,6 +28,13 @@ export const listContentTypes = action({
       data: allItems,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listContentTypesExamplePayload,
   inputs: listContentTypesInputs,
-  examplePayload: { data: listContentTypesExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listContentTypesOutputSchema,
+  }),
+  examplePayload: listContentTypesExamplePayload,
 });

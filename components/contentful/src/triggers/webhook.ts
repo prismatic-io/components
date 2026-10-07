@@ -1,17 +1,23 @@
 import { trigger } from "@prismatic-io/spectral";
-import { connection } from "../inputs";
+import { webhookExamplePayload } from "../examplePayloads";
+import { webhookInputs } from "../inputs";
+import { validateContentfulWebhookRequest } from "../util";
 export const webhook = trigger({
   display: {
     label: "Webhook",
     description:
-      "Receive and validate webhook requests from Contentful for webhooks you configure.",
+      "Receive and validate webhook requests from Contentful for manually configured webhook subscriptions.",
   },
-  perform: async (_context, payload) => {
+  perform: async (context, payload, { signingSecret }) => {
+    validateContentfulWebhookRequest(payload, {
+      signingSecret,
+      isSimulatedTestExecution: context.isSimulatedTestExecution,
+      flowWebhookUrl: context.webhookUrls[context.flow.name],
+    });
     return { payload };
   },
-  inputs: {
-    connection,
-  },
+  inputs: webhookInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
+  examplePayload: webhookExamplePayload,
 });

@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   Entry,
   EntryProps,
@@ -8,12 +8,14 @@ import type {
 import { createClient } from "../../client";
 import { publishEntryExamplePayload } from "../../examplePayloads";
 import { publishEntryInputs } from "../../inputs";
+import { publishEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const publishEntry = action({
   display: {
     label: "Publish Entry",
     description: "Publishes an entry.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, environmentId, spaceId, entryId }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -29,6 +31,13 @@ export const publishEntry = action({
       data: data as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => publishEntryExamplePayload,
   inputs: publishEntryInputs,
-  examplePayload: { data: publishEntryExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: publishEntryOutputSchema,
+  }),
+  examplePayload: publishEntryExamplePayload,
 });

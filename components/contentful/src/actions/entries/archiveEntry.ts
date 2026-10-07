@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   Entry,
   EntryProps,
@@ -6,14 +6,16 @@ import type {
   KeyValueMap,
 } from "contentful-management";
 import { createClient } from "../../client";
-import { createEntryExamplePayload } from "../../examplePayloads";
+import { archiveEntryExamplePayload } from "../../examplePayloads";
 import { archiveEntryInputs } from "../../inputs";
+import { archiveEntryOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const archiveEntry = action({
   display: {
     label: "Archive Entry",
     description: "Archives an existing entry.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, environmentId, spaceId, entryId }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -29,6 +31,13 @@ export const archiveEntry = action({
       data: data as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => archiveEntryExamplePayload,
   inputs: archiveEntryInputs,
-  examplePayload: { data: createEntryExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: archiveEntryOutputSchema,
+  }),
+  examplePayload: archiveEntryExamplePayload,
 });

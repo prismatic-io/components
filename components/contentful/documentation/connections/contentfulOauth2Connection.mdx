@@ -10,13 +10,9 @@ To connect to Contentful, create a new OAuth application.
 2. Click **Create New Application**
 3. Enter the **Redirect URI** as <OauthCallbackUrl />
 4. Select **Confidential** for the client type
-5. Select the applicable scope (e.g., **Content management manage**)
+5. Select a single scope (e.g., **Content management manage**). The manage scope includes read access.
 6. Save the application
 7. Copy the **Client ID** and **Client Secret**
-
-:::note[Single Scope Requirement]
-Contentful only accepts a single scope per authorization request. The `content_management_manage` scope includes read access, so a separate `content_management_read` scope is not needed.
-:::
 
 #### Available Scopes
 
@@ -31,4 +27,4 @@ Create a connection of type **OAuth 2.0** and enter:
 
 - **Client ID**: Enter the Client ID from the OAuth application
 - **Client Secret**: Enter the Client Secret from the OAuth application
-- **Scopes**: Enter a single scope (e.g., `content_management_manage`)
+- **Scopes**: Select the scope chosen for the OAuth application: **Content Management Manage** (the default) or **Content Management Read**

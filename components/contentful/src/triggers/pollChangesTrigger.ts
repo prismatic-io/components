@@ -1,64 +1,72 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import type { EntryProps, KeyValueMap } from "contentful-management";
 import { createClient } from "../client";
+import { MAX_BATCHED_POLL_PAGES, MAX_POLL_PAGES } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { PollingState } from "../types";
-import { fetchEntriesSince, getEnvironment } from "../util";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
+import {
+  getEnvironment,
+  pollEntryChanges,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Entries",
     description:
-      "Checks for new and updated entries in a selected Contentful environment on a configured schedule.",
+      "Retrieves existing and ongoing entries for a specified Contentful environment. Load history once, check for changes on a schedule, or both.",
   },
   examplePayload: pollChangesTriggerExamplePayload,
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
+  },
   perform: async (context, payload, params) => {
-    const now = new Date().toISOString();
-    const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const isBatching = context.batch?.enabled === true;
+    const maxPages = isBatching ? MAX_BATCHED_POLL_PAGES : MAX_POLL_PAGES;
     const client = createClient(params.connection, context);
     const environment = await getEnvironment(
       client,
       params.spaceId,
       params.environmentId,
     );
-    const { records, truncated } = await fetchEntriesSince(
+    const result = await pollEntryChanges(
       environment,
-      lastPolledAt,
-      params.contentTypeId,
+      context.polling.getState() as PollingState | undefined,
+      {
+        lookBackDate: params.lookBackDate,
+        contentTypeId: params.contentTypeId,
+        showNewRecords: params.showNewRecords !== false,
+        showUpdatedRecords: params.showUpdatedRecords !== false,
+        maxPages,
+        now: new Date().toISOString(),
+      },
     );
-    const lastPolledAtDate = new Date(lastPolledAt);
-    const created: EntryProps<KeyValueMap>[] = [];
-    const updated: EntryProps<KeyValueMap>[] = [];
-    for (const record of records) {
-      const createdValue = record.sys?.createdAt;
-      const createdAtDate =
-        typeof createdValue === "string" ? new Date(createdValue) : null;
-      const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
-      if (isNew && params.showNewRecords !== false) created.push(record);
-      else if (!isNew && params.showUpdatedRecords !== false)
-        updated.push(record);
-    }
-    let nextCursor = now;
-    if (truncated) {
-      const oldestUpdatedAt = records[records.length - 1]?.sys?.updatedAt;
-      nextCursor =
-        typeof oldestUpdatedAt === "string" ? oldestUpdatedAt : lastPolledAt;
+    const { created, updated } = result.changes;
+    if (result.stalled) {
       context.logger.warn(
-        `Polling truncated at the page cap for Contentful entries. Advancing cursor to ${nextCursor}; next poll will resume from there.`,
+        `Polling truncated at the page cap and every fetched Contentful entry shares the cursor timestamp ${result.since}; the cursor cannot advance.`,
+      );
+    } else if (result.truncated) {
+      context.logger.warn(
+        `Polling truncated at the page cap for Contentful entries. Advancing cursor to ${result.nextState.lastPolledAt}; next poll will resume from there.`,
       );
     }
-    context.polling.setState({ lastPolledAt: nextCursor });
+    context.polling.setState(result.nextState);
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled Contentful entries: ${records.length} fetched, ${created.length} created, ${updated.length} updated, truncated=${truncated}`,
+        `Polled Contentful entries${result.isInitialSync ? " (initial sync)" : ""}: ${result.fetched} fetched, ${created.length} created, ${updated.length} updated, truncated=${result.truncated}`,
       );
     }
-    const totalMatched = created.length + updated.length;
     return {
       payload: { ...payload, body: { data: { created, updated } } },
-      polledNoChanges: totalMatched === 0,
+      polledNoChanges: created.length + updated.length === 0,
     };
   },
 });

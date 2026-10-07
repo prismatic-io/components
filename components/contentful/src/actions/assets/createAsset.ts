@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Asset, AssetProps, Environment } from "contentful-management";
 import { createClient } from "../../client";
 import { createAssetExamplePayload } from "../../examplePayloads";
 import { createAssetInputs } from "../../inputs";
+import { createAssetOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const createAsset = action({
   display: {
     label: "Create Asset",
     description: "Creates a new asset.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, environmentId, spaceId, title, description, file },
@@ -33,6 +35,13 @@ export const createAsset = action({
       data: data as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createAssetExamplePayload,
   inputs: createAssetInputs,
-  examplePayload: { data: createAssetExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createAssetOutputSchema,
+  }),
+  examplePayload: createAssetExamplePayload,
 });

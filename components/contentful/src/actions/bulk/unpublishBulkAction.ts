@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   BulkAction,
   BulkActionUnpublishPayload,
@@ -7,12 +7,14 @@ import type {
 import { createClient } from "../../client";
 import { unpublishBulkActionExamplePayload } from "../../examplePayloads";
 import { unpublishBulkActionInputs } from "../../inputs";
+import { unpublishBulkActionOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const unpublishBulkAction = action({
   display: {
     label: "Unpublish Bulk Action",
     description: "Unpublishes a bulk action.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, spaceId, environmentId, items }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -32,6 +34,13 @@ export const unpublishBulkAction = action({
       data: bulkActionCompleted.toPlainObject() as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => unpublishBulkActionExamplePayload,
   inputs: unpublishBulkActionInputs,
-  examplePayload: { data: unpublishBulkActionExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: unpublishBulkActionOutputSchema,
+  }),
+  examplePayload: unpublishBulkActionExamplePayload,
 });

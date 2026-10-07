@@ -1,6 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import type { Organization, OrganizationProp } from "contentful-management";
 import { createClient } from "../client";
+import { selectOrganizationExamplePayload } from "../examplePayloads";
 import { selectOrganizationInputs } from "../inputs";
 import { getAllPaginatedItems, mapItemsForPicklist } from "../util";
 export const selectOrganization = dataSource({
@@ -19,4 +20,5 @@ export const selectOrganization = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
+  examplePayload: selectOrganizationExamplePayload,
 });

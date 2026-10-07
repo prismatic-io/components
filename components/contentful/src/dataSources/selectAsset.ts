@@ -8,17 +8,7 @@ import type {
 import { createClient } from "../client";
 import { selectAssetExamplePayload } from "../examplePayloads";
 import { selectAssetInputs } from "../inputs";
-import { getAllPaginatedItems } from "../util";
-const getAssetLabel = (asset: AssetProps): string => {
-  const { fields } = asset;
-  if (fields?.title) {
-    const firstLocale = Object.keys(fields.title)[0];
-    if (firstLocale && fields.title[firstLocale]) {
-      return String(fields.title[firstLocale]);
-    }
-  }
-  return asset.sys.id;
-};
+import { getAllPaginatedItems, getAssetLabel } from "../util";
 export const selectAsset = dataSource({
   display: {
     label: "Select Asset",

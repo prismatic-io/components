@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   Collection,
   Space,
@@ -6,13 +6,16 @@ import type {
   WebhookProps,
 } from "contentful-management";
 import { createClient } from "../../client";
+import { deleteInstancedWebhooksExamplePayload } from "../../examplePayloads";
 import { deleteInstancedWebhooksInputs } from "../../inputs";
+import { deleteInstancedWebhooksOutputSchema } from "../../outputSchemas";
 export const deleteInstancedWebhooks = action({
   display: {
     label: "Delete Instanced Webhooks",
     description:
       "Deletes all webhooks that point to a flow in the current instance.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, spaceId }) => {
     const client = createClient(connection, context);
     const space: Space = await client.getSpace(spaceId);
@@ -29,5 +32,13 @@ export const deleteInstancedWebhooks = action({
       },
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => deleteInstancedWebhooksExamplePayload,
   inputs: deleteInstancedWebhooksInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteInstancedWebhooksOutputSchema,
+  }),
+  examplePayload: deleteInstancedWebhooksExamplePayload,
 });

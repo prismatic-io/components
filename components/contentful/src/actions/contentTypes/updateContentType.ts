@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   ContentFields,
   ContentType,
@@ -9,12 +9,14 @@ import type {
 import { createClient } from "../../client";
 import { updateContentTypeExamplePayload } from "../../examplePayloads";
 import { updateContentTypeInputs } from "../../inputs";
+import { updateContentTypeOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const updateContentType = action({
   display: {
     label: "Update Content Type",
     description: "Updates an existing content type.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -45,6 +47,13 @@ export const updateContentType = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateContentTypeExamplePayload,
   inputs: updateContentTypeInputs,
-  examplePayload: { data: updateContentTypeExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateContentTypeOutputSchema,
+  }),
+  examplePayload: updateContentTypeExamplePayload,
 });

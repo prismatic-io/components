@@ -1,4 +1,4 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type {
   ContentFields,
   ContentTypeProps,
@@ -8,12 +8,14 @@ import type {
 import { createClient } from "../../client";
 import { createContentTypeExamplePayload } from "../../examplePayloads";
 import { createContentTypeInputs } from "../../inputs";
+import { createContentTypeOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const createContentType = action({
   display: {
     label: "Create Content Type",
     description: "Creates a new content type.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -44,6 +46,13 @@ export const createContentType = action({
       data: contentType,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createContentTypeExamplePayload,
   inputs: createContentTypeInputs,
-  examplePayload: { data: createContentTypeExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createContentTypeOutputSchema,
+  }),
+  examplePayload: createContentTypeExamplePayload,
 });

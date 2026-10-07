@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Asset, AssetProps, Environment } from "contentful-management";
 import { createClient } from "../../client";
 import { updateAssetExamplePayload } from "../../examplePayloads";
 import { updateAssetInputs } from "../../inputs";
+import { updateAssetOutputSchema } from "../../outputSchemas";
 import { getEnvironment } from "../../util";
 export const updateAsset = action({
   display: {
     label: "Update Asset",
     description: "Updates an existing asset.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, environmentId, spaceId, title, description, assetId },
@@ -37,6 +39,13 @@ export const updateAsset = action({
       data: data as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateAssetExamplePayload,
   inputs: updateAssetInputs,
-  examplePayload: { data: updateAssetExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateAssetOutputSchema,
+  }),
+  examplePayload: updateAssetExamplePayload,
 });

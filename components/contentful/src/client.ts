@@ -9,28 +9,34 @@ import {
   createClient as createContentfulClient,
 } from "contentful-management";
 import { API_BASE_URL } from "./constants";
-import { getAccessToken, getAuthHeaders } from "./util";
+import { getAccessToken, getAuthHeaders, validateConnection } from "./util";
 export const createClient = (
   connection: Connection,
   context?: ActionContext,
 ): ClientAPI => {
-  return createContentfulClient({
-    accessToken: getAccessToken(connection),
-    requestLogger(request) {
-      if (context?.debug?.enabled) {
-        context.logger.debug(request);
-      }
+  validateConnection(connection);
+  return createContentfulClient(
+    {
+      accessToken: getAccessToken(connection),
+      requestLogger(request) {
+        if (context?.debug?.enabled) {
+          context.logger.debug(request);
+        }
+      },
     },
-  });
+    { type: "legacy" },
+  );
 };
 export const createApiClient = (
   connection: Connection,
   debug = false,
   baseUrl = API_BASE_URL,
 ): HttpClient => {
+  validateConnection(connection);
   return createAxiosClient({
     baseUrl,
     headers: getAuthHeaders(connection),
+    responseType: "json",
     debug,
   });
 };

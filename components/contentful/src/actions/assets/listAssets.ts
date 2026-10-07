@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import type { Asset, AssetProps, Environment } from "contentful-management";
 import { createClient } from "../../client";
 import { listAssetsExamplePayload } from "../../examplePayloads";
 import { listAssetsInputs } from "../../inputs";
+import { listAssetsOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedItems, getEnvironment } from "../../util";
 export const listAssets = action({
   display: {
     label: "List Assets",
     description: "Retrieves all assets of a space.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, environmentId, spaceId }) => {
     const client = createClient(connection, context);
     const environment: Environment = await getEnvironment(
@@ -24,6 +26,13 @@ export const listAssets = action({
       data: allItems as unknown,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listAssetsExamplePayload,
   inputs: listAssetsInputs,
-  examplePayload: { data: listAssetsExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listAssetsOutputSchema,
+  }),
+  examplePayload: listAssetsExamplePayload,
 });
