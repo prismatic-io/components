@@ -30,26 +30,24 @@ export const accountReports = action({
       connection: connection,
       debugEnabled: context.debug.enabled,
     });
-    const startDate = new Date(startDateInput ?? "");
-    const endDate = new Date(endDateInput ?? "");
-    const startDateDay = startDate.getDate();
-    const startDateMonth = startDate.getMonth() + 1;
-    const startDateYear = startDate.getFullYear();
-    const endDateDay = endDate.getDate();
-    const endDateMonth = endDate.getMonth() + 1;
-    const endDateYear = endDate.getFullYear();
+    const startDate = startDateInput ? new Date(startDateInput) : undefined;
+    const endDate = endDateInput ? new Date(endDateInput) : undefined;
     const query = `manager_customer_id:${managerCustomerIdInput}${customerIds && customerIds !== "" ? `;${customerIds}` : ""}`;
     const { data } = await client.get("/accountReports:search", {
       params: {
         query,
         pageSize: pagination.pageSizeInput || undefined,
         pageToken: pagination.pageTokenInput || undefined,
-        "startDate.day": startDateDay,
-        "startDate.month": startDateMonth,
-        "startDate.year": startDateYear,
-        "endDate.day": endDateDay,
-        "endDate.month": endDateMonth,
-        "endDate.year": endDateYear,
+        ...(startDate && {
+          "startDate.day": startDate.getDate(),
+          "startDate.month": startDate.getMonth() + 1,
+          "startDate.year": startDate.getFullYear(),
+        }),
+        ...(endDate && {
+          "endDate.day": endDate.getDate(),
+          "endDate.month": endDate.getMonth() + 1,
+          "endDate.year": endDate.getFullYear(),
+        }),
       },
     });
     return { data };

@@ -1,4 +1,16 @@
-import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
+import {
+  createConnection,
+  defaultTriggerPayload,
+  invokeTrigger,
+} from "@prismatic-io/spectral/dist/testing";
+import nock from "nock";
+import { oauth } from "../connections";
+import {
+  DEFAULT_ALERT_THRESHOLD,
+  GOOGLE_ADS_API_VERSION,
+  GOOGLE_ADS_BASE_URL,
+  googleAdsSearchPath,
+} from "../constants";
 import type {
   BudgetAlertChangesObject,
   BudgetStatus,
@@ -8,6 +20,10 @@ import type {
   ChangeHistoryChangesObject,
 } from "../types";
 import {
+  clampToChangeEventWindow,
+  getCurrentDate,
+  getGAQLDateTime,
+  getPreviousDate,
   resolveBudgetAlerts,
   resolveCampaignChanges,
   resolveChangeHistoryItems,
@@ -219,4 +235,453 @@ test("budgetAlertTrigger resolveItems flattens the payload shape perform returns
       payload,
     }),
   ).toEqual([{ changeType: "warning", record: alert }]);
+});
+describe("trigger performs", () => {
+  const CUSTOMER_ID = "1234567890";
+  const SEARCH_PATH = `/${GOOGLE_ADS_API_VERSION}${googleAdsSearchPath(CUSTOMER_ID)}`;
+  const TIMEZONE_QUERY = "SELECT customer.time_zone FROM customer LIMIT 1";
+  const connection = createConnection(
+    oauth,
+    { developerToken: "test-developer-token" },
+    { access_token: "test-access-token" },
+  );
+  const mockTimezone = () =>
+    nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, { query: TIMEZONE_QUERY })
+      .reply(200, { results: [{ customer: { timeZone: "UTC" } }] });
+  const asTrigger = (trigger: unknown) => trigger as never;
+  const pollingContext = (state: Record<string, unknown>) => {
+    const setState = vi.fn();
+    const context = {
+      polling: { getState: () => state, setState },
+    } as never;
+    return { context, setState };
+  };
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-03-15T12:00:00Z"));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+    nock.cleanAll();
+  });
+  test("changeHistoryTrigger clamps a cursor older than the change_event window", async () => {
+    const staleCursor = getGAQLDateTime("UTC", 40 * 24);
+    let changeQuery = "";
+    const timezoneScope = mockTimezone();
+    const searchScope = nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, (body) => {
+        if (!String(body.query).includes("FROM change_event")) return false;
+        changeQuery = body.query;
+        return true;
+      })
+      .reply(200, { results: [] });
+    const { context } = pollingContext({
+      lastChangeTime: staleCursor,
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    await invokeTrigger(asTrigger(changeHistoryTrigger), context, undefined, {
+      connection,
+      customerId: CUSTOMER_ID,
+      managerCustomerId: undefined,
+      resourceTypes: [],
+      includeUserInfo: false,
+    });
+    expect(timezoneScope.isDone()).toBe(true);
+    expect(searchScope.isDone()).toBe(true);
+    const lowerBound = /change_date_time >= '([^']+)'/.exec(changeQuery)?.[1];
+    expect(lowerBound).not.toBe(staleCursor);
+    expect(lowerBound).toBe(clampToChangeEventWindow(staleCursor, "UTC"));
+  });
+  test("campaignChangesTrigger: with no polling state, a look-back date seeds the initial sync (clamped to the 30-day window)", async () => {
+    const lookBackDate = "2025-01-01";
+    let capturedQuery = "";
+    const timezoneScope = mockTimezone();
+    const searchScope = nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, (body) => {
+        if (!String(body.query).includes("FROM change_event")) return false;
+        capturedQuery = body.query;
+        return true;
+      })
+      .reply(200, { results: [] });
+    const { context } = pollingContext({});
+    await invokeTrigger(asTrigger(campaignChangesTrigger), context, undefined, {
+      connection,
+      customerId: CUSTOMER_ID,
+      managerCustomerId: undefined,
+      lookBackDate,
+      changeTypes: ["all"],
+    });
+    expect(timezoneScope.isDone()).toBe(true);
+    expect(searchScope.isDone()).toBe(true);
+    const lowerBound = /change_event\.change_date_time >= '([^']+)'/.exec(
+      capturedQuery,
+    )?.[1];
+    expect(lowerBound).toBe(
+      clampToChangeEventWindow(`${lookBackDate} 00:00:00`, "UTC"),
+    );
+  });
+  test("campaignChangesTrigger: with existing polling state, the look-back date is ignored", async () => {
+    const persistedCursor = getGAQLDateTime("UTC", 2);
+    let capturedQuery = "";
+    const timezoneScope = mockTimezone();
+    const searchScope = nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, (body) => {
+        if (!String(body.query).includes("FROM change_event")) return false;
+        capturedQuery = body.query;
+        return true;
+      })
+      .reply(200, { results: [] });
+    const { context } = pollingContext({
+      lastChangeTime: persistedCursor,
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    await invokeTrigger(asTrigger(campaignChangesTrigger), context, undefined, {
+      connection,
+      customerId: CUSTOMER_ID,
+      managerCustomerId: undefined,
+      lookBackDate: "2020-01-01",
+      changeTypes: ["all"],
+    });
+    expect(timezoneScope.isDone()).toBe(true);
+    expect(searchScope.isDone()).toBe(true);
+    const lowerBound = /change_event\.change_date_time >= '([^']+)'/.exec(
+      capturedQuery,
+    )?.[1];
+    expect(lowerBound).toBe(persistedCursor);
+  });
+  test("changeHistoryTrigger: with no polling state, a look-back date seeds the initial sync (clamped to the 30-day window)", async () => {
+    const lookBackDate = "2025-01-01";
+    let capturedQuery = "";
+    const timezoneScope = mockTimezone();
+    const searchScope = nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, (body) => {
+        if (!String(body.query).includes("FROM change_event")) return false;
+        capturedQuery = body.query;
+        return true;
+      })
+      .reply(200, { results: [] });
+    const { context } = pollingContext({});
+    await invokeTrigger(asTrigger(changeHistoryTrigger), context, undefined, {
+      connection,
+      customerId: CUSTOMER_ID,
+      managerCustomerId: undefined,
+      lookBackDate,
+      resourceTypes: [],
+      includeUserInfo: false,
+    });
+    expect(timezoneScope.isDone()).toBe(true);
+    expect(searchScope.isDone()).toBe(true);
+    const lowerBound = /change_event\.change_date_time >= '([^']+)'/.exec(
+      capturedQuery,
+    )?.[1];
+    expect(lowerBound).toBe(
+      clampToChangeEventWindow(`${lookBackDate} 00:00:00`, "UTC"),
+    );
+  });
+  test("changeHistoryTrigger: with existing polling state, the look-back date is ignored", async () => {
+    const persistedCursor = getGAQLDateTime("UTC", 2);
+    let capturedQuery = "";
+    const timezoneScope = mockTimezone();
+    const searchScope = nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, (body) => {
+        if (!String(body.query).includes("FROM change_event")) return false;
+        capturedQuery = body.query;
+        return true;
+      })
+      .reply(200, { results: [] });
+    const { context } = pollingContext({
+      lastChangeTime: persistedCursor,
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    await invokeTrigger(asTrigger(changeHistoryTrigger), context, undefined, {
+      connection,
+      customerId: CUSTOMER_ID,
+      managerCustomerId: undefined,
+      lookBackDate: "2020-01-01",
+      resourceTypes: [],
+      includeUserInfo: false,
+    });
+    expect(timezoneScope.isDone()).toBe(true);
+    expect(searchScope.isDone()).toBe(true);
+    const lowerBound = /change_event\.change_date_time >= '([^']+)'/.exec(
+      capturedQuery,
+    )?.[1];
+    expect(lowerBound).toBe(persistedCursor);
+  });
+  test("budgetAlertTrigger reports the default threshold when none is set", async () => {
+    const timezoneScope = mockTimezone();
+    const searchScope = nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, (body) => body.query !== TIMEZONE_QUERY)
+      .reply(200, { results: [] });
+    const { context } = pollingContext({
+      lastSyncDate: "2026-03-14",
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    const { result } = await invokeTrigger(
+      asTrigger(budgetAlertTrigger),
+      context,
+      undefined,
+      {
+        connection,
+        customerId: CUSTOMER_ID,
+        managerCustomerId: undefined,
+        alertThreshold: undefined,
+        includeSharedBudgets: false,
+      },
+    );
+    expect(timezoneScope.isDone()).toBe(true);
+    expect(searchScope.isDone()).toBe(true);
+    const data = result?.payload.body.data as BudgetAlertChangesObject;
+    expect(data.alertThreshold).toBe(DEFAULT_ALERT_THRESHOLD);
+  });
+  test("campaignChangesTrigger: first poll sends the default bounds and persists the new cursor", async () => {
+    const invokePoll = (state: Record<string, unknown>) => {
+      let capturedQuery = "";
+      const timezoneScope = mockTimezone();
+      const searchScope = nock(GOOGLE_ADS_BASE_URL)
+        .post(SEARCH_PATH, (body) => {
+          if (!String(body.query).includes("FROM change_event")) return false;
+          capturedQuery = body.query;
+          return true;
+        })
+        .reply(200, { results: [] });
+      const { context, setState } = pollingContext(state);
+      return {
+        timezoneScope,
+        searchScope,
+        context,
+        setState,
+        getQuery: () => capturedQuery,
+      };
+    };
+    const runTrigger = async (context: never) => {
+      const { result } = await invokeTrigger(
+        asTrigger(campaignChangesTrigger),
+        context,
+        undefined,
+        {
+          connection,
+          customerId: CUSTOMER_ID,
+          managerCustomerId: undefined,
+          changeTypes: ["all"],
+        },
+      );
+      return result;
+    };
+    const first = invokePoll({});
+    const firstResult = await runTrigger(first.context);
+    expect(first.timezoneScope.isDone()).toBe(true);
+    expect(first.searchScope.isDone()).toBe(true);
+    const lower1 = /change_event\.change_date_time >= '([^']+)'/.exec(
+      first.getQuery(),
+    )?.[1];
+    const upper1 = /change_event\.change_date_time < '([^']+)'/.exec(
+      first.getQuery(),
+    )?.[1];
+    expect(lower1).toBe(getGAQLDateTime("UTC", 1));
+    expect(upper1).toBe(getGAQLDateTime("UTC"));
+    expect(first.setState).toHaveBeenCalledWith({
+      lastChangeTime: upper1,
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    expect(firstResult?.polledNoChanges).toBe(true);
+    vi.setSystemTime(new Date("2026-03-15T13:00:00Z"));
+    const persisted = first.setState.mock.calls[0][0] as Record<
+      string,
+      unknown
+    >;
+    const second = invokePoll(persisted);
+    const secondResult = await runTrigger(second.context);
+    expect(second.timezoneScope.isDone()).toBe(true);
+    expect(second.searchScope.isDone()).toBe(true);
+    const lower2 = /change_event\.change_date_time >= '([^']+)'/.exec(
+      second.getQuery(),
+    )?.[1];
+    expect(lower2).toBe(upper1);
+    expect(secondResult?.polledNoChanges).toBe(true);
+  });
+  test("changeHistoryTrigger: first poll sends the default bounds and persists the new cursor", async () => {
+    const invokePoll = (state: Record<string, unknown>) => {
+      let capturedQuery = "";
+      const timezoneScope = mockTimezone();
+      const searchScope = nock(GOOGLE_ADS_BASE_URL)
+        .post(SEARCH_PATH, (body) => {
+          if (!String(body.query).includes("FROM change_event")) return false;
+          capturedQuery = body.query;
+          return true;
+        })
+        .reply(200, { results: [] });
+      const { context, setState } = pollingContext(state);
+      return {
+        timezoneScope,
+        searchScope,
+        context,
+        setState,
+        getQuery: () => capturedQuery,
+      };
+    };
+    const runTrigger = async (context: never) => {
+      const { result } = await invokeTrigger(
+        asTrigger(changeHistoryTrigger),
+        context,
+        undefined,
+        {
+          connection,
+          customerId: CUSTOMER_ID,
+          managerCustomerId: undefined,
+          resourceTypes: [],
+          includeUserInfo: false,
+        },
+      );
+      return result;
+    };
+    const first = invokePoll({});
+    const firstResult = await runTrigger(first.context);
+    expect(first.timezoneScope.isDone()).toBe(true);
+    expect(first.searchScope.isDone()).toBe(true);
+    const lower1 = /change_event\.change_date_time >= '([^']+)'/.exec(
+      first.getQuery(),
+    )?.[1];
+    const upper1 = /change_event\.change_date_time < '([^']+)'/.exec(
+      first.getQuery(),
+    )?.[1];
+    expect(lower1).toBe(getGAQLDateTime("UTC", 1));
+    expect(upper1).toBe(getGAQLDateTime("UTC"));
+    expect(first.setState).toHaveBeenCalledWith({
+      lastChangeTime: upper1,
+      changeCount: 0,
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    expect(firstResult?.polledNoChanges).toBe(true);
+    vi.setSystemTime(new Date("2026-03-15T13:00:00Z"));
+    const persisted = first.setState.mock.calls[0][0] as Record<
+      string,
+      unknown
+    >;
+    const second = invokePoll(persisted);
+    const secondResult = await runTrigger(second.context);
+    expect(second.timezoneScope.isDone()).toBe(true);
+    expect(second.searchScope.isDone()).toBe(true);
+    const lower2 = /change_event\.change_date_time >= '([^']+)'/.exec(
+      second.getQuery(),
+    )?.[1];
+    expect(lower2).toBe(upper1);
+    expect(secondResult?.polledNoChanges).toBe(true);
+  });
+  test("budgetAlertTrigger: first poll sends the default bounds and persists the new cursor", async () => {
+    const invokePoll = (state: Record<string, unknown>) => {
+      let capturedQuery = "";
+      const timezoneScope = mockTimezone();
+      const searchScope = nock(GOOGLE_ADS_BASE_URL)
+        .post(SEARCH_PATH, (body) => {
+          if (body.query === TIMEZONE_QUERY) return false;
+          capturedQuery = body.query;
+          return true;
+        })
+        .reply(200, { results: [] });
+      const { context, setState } = pollingContext(state);
+      return {
+        timezoneScope,
+        searchScope,
+        context,
+        setState,
+        getQuery: () => capturedQuery,
+      };
+    };
+    const runTrigger = async (context: never) => {
+      const { result } = await invokeTrigger(
+        asTrigger(budgetAlertTrigger),
+        context,
+        undefined,
+        {
+          connection,
+          customerId: CUSTOMER_ID,
+          managerCustomerId: undefined,
+          alertThreshold: undefined,
+          includeSharedBudgets: false,
+        },
+      );
+      return result;
+    };
+    const first = invokePoll({});
+    const firstResult = await runTrigger(first.context);
+    expect(first.timezoneScope.isDone()).toBe(true);
+    expect(first.searchScope.isDone()).toBe(true);
+    expect(first.getQuery()).toContain("segments.date DURING TODAY");
+    expect(first.setState).toHaveBeenCalledWith({
+      lastSyncDate: getCurrentDate("UTC"),
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    expect(firstResult?.polledNoChanges).toBe(true);
+    vi.setSystemTime(new Date("2026-03-16T12:00:00Z"));
+    const persisted = first.setState.mock.calls[0][0] as Record<
+      string,
+      unknown
+    >;
+    const second = invokePoll(persisted);
+    await runTrigger(second.context);
+    expect(second.timezoneScope.isDone()).toBe(true);
+    expect(second.searchScope.isDone()).toBe(true);
+    expect(second.getQuery()).toContain("segments.date DURING TODAY");
+  });
+  test("budgetAlertTrigger: the daily comparison always queries today's spend, regardless of the persisted cursor", async () => {
+    const staleCursor = getPreviousDate("UTC");
+    let capturedQuery = "";
+    const timezoneScope = mockTimezone();
+    const searchScope = nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, (body) => {
+        if (body.query === TIMEZONE_QUERY) return false;
+        capturedQuery = body.query;
+        return true;
+      })
+      .reply(200, { results: [] });
+    const { context } = pollingContext({
+      lastSyncDate: staleCursor,
+      errorCount: 0,
+      consecutiveErrors: 0,
+    });
+    await invokeTrigger(asTrigger(budgetAlertTrigger), context, undefined, {
+      connection,
+      customerId: CUSTOMER_ID,
+      managerCustomerId: undefined,
+      alertThreshold: undefined,
+      includeSharedBudgets: false,
+    });
+    expect(timezoneScope.isDone()).toBe(true);
+    expect(searchScope.isDone()).toBe(true);
+    expect(capturedQuery).toContain("segments.date DURING TODAY");
+    expect(capturedQuery).toContain(
+      "campaign_budget.explicitly_shared = FALSE",
+    );
+  });
+  test("budgetAlertTrigger: includeSharedBudgets true (the default) does not filter out shared budgets", async () => {
+    let capturedQuery = "";
+    const timezoneScope = mockTimezone();
+    const searchScope = nock(GOOGLE_ADS_BASE_URL)
+      .post(SEARCH_PATH, (body) => {
+        if (body.query === TIMEZONE_QUERY) return false;
+        capturedQuery = body.query;
+        return true;
+      })
+      .reply(200, { results: [] });
+    const { context } = pollingContext({});
+    await invokeTrigger(asTrigger(budgetAlertTrigger), context, undefined, {
+      connection,
+      customerId: CUSTOMER_ID,
+      managerCustomerId: undefined,
+      alertThreshold: undefined,
+      includeSharedBudgets: true,
+    });
+    expect(timezoneScope.isDone()).toBe(true);
+    expect(searchScope.isDone()).toBe(true);
+    expect(capturedQuery).not.toContain("explicitly_shared");
+  });
 });

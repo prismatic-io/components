@@ -47,17 +47,17 @@ export const consentExampleInput = {
   adUserData: "GRANTED",
   adPersonalization: "GRANTED",
 };
-export const conversionsExampleInput = [
+export const clickConversionsExampleInput = [
   {
-    gbraid: "gbraid_identifier_string",
-    wbraid: "wbraid_identifier_string",
+    gbraid: "CjwKCAjwABCDEF1234567890ghijklMNOPQRstuvwxyz",
+    wbraid: "CjwKCAjwZYXWVU0987654321LKJIHGfedcbaSTUVWXqr",
     externalAttributionData: externalAttributionDataExampleInput,
     customVariables: [customVariableExampleInput],
     cartData: cartDataExampleInput,
     userIdentifiers: [userIdentifierExampleInput],
     conversionEnvironment: "WEB",
     consent: consentExampleInput,
-    gclid: "TeSter123.gClIdString_xYz",
+    gclid: "CjwKCAjw1234567890abcdefGHIJKLmnoPQRStuvwxyz",
     conversionAction: "customers/1234567890/conversionActions/987654321",
     conversionDateTime: "2026-01-15 10:30:00-05:00",
     conversionValue: 149.99,

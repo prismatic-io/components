@@ -5,10 +5,31 @@ import type {
   CampaignResource,
   ChangeEventResponse,
 } from "./ChangeEventResponse";
+export type BudgetSeverity =
+  (typeof BUDGET_SEVERITY)[keyof typeof BUDGET_SEVERITY];
 export interface BasePollingState {
   errorCount?: number;
   consecutiveErrors?: number;
   [key: string]: unknown;
+}
+export interface ChangeEventCursor {
+  sinceTime: string;
+  toTime: string;
+  boundaryResourceNames: string[];
+  [key: string]: unknown;
+}
+export interface ChangeEventPollingState extends BasePollingState {
+  lastChangeTime: string;
+  errorCount: number;
+  consecutiveErrors: number;
+  inFlightCursor?: ChangeEventCursor;
+  changeCount?: number;
+}
+export interface ChangeEventIdentity {
+  changeEvent?: {
+    resourceName?: string;
+    changeDateTime: string;
+  };
 }
 export interface TriggerClientContext {
   debug: {
@@ -32,8 +53,8 @@ export interface CampaignChange {
   campaignId: string;
   campaignName: string;
   field: string;
-  oldValue: CampaignQueryRow | CampaignResource | string | null | undefined;
-  newValue: CampaignQueryRow | CampaignResource | string | null | undefined;
+  oldValue: CampaignQueryRow | CampaignResource | string | null;
+  newValue: CampaignQueryRow | CampaignResource | string | null;
   changedAt: string;
 }
 export interface BudgetStatus {
@@ -45,7 +66,7 @@ export interface BudgetStatus {
   remaining: number;
   period: string;
   shouldAlert: boolean;
-  severity: BUDGET_SEVERITY;
+  severity: BudgetSeverity;
   message: string;
 }
 export interface CampaignChangeBatchItem {
@@ -57,7 +78,7 @@ export interface ChangeHistoryBatchItem {
   record: ChangeEventResponse;
 }
 export interface BudgetAlertBatchItem {
-  changeType: BUDGET_SEVERITY;
+  changeType: BudgetSeverity;
   record: BudgetStatus;
 }
 export interface CampaignChangesObject {

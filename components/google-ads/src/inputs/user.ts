@@ -15,7 +15,7 @@ const accessRole = input({
   type: "string",
   required: true,
   comments:
-    "The access role to grant to the user. See [Access roles documentation](https://developers.google.com/google-ads/api/reference/rpc/latest/AccessRoleEnum.AccessRole).",
+    "The access role to grant to the user. See [Access roles documentation](https://developers.google.com/google-ads/api/reference/rpc/v25/AccessRoleEnum.AccessRole).",
   model: ["ADMIN", "STANDARD", "READ_ONLY", "EMAIL_ONLY"].map((role) => ({
     label: role,
     value: role,

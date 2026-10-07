@@ -1,20 +1,31 @@
-The New and Updated Campaigns trigger checks for new and updated campaigns in a Google Ads account on a configured schedule. It monitors campaign properties including status, budget, bidding strategy, and settings by comparing the current state against the previous polling state.
+The New and Updated Campaigns trigger checks for new and updated campaigns in a Google Ads account on a configured schedule. It monitors campaign properties including status, budget, bidding strategy, and settings by reading each change directly from Google's own change history rather than storing a snapshot of campaign state to diff against.
 
-This trigger uses the [Google Ads API Campaign resource](https://developers.google.com/google-ads/api/fields/v25/campaign) to query campaign data and performs client-side change detection between polling intervals.
+This trigger uses the Google Ads [Change Event resource](https://developers.google.com/google-ads/api/docs/change-event) to query campaign and campaign budget changes. Each change_event row carries its own before-and-after values, so the trigger's polling state stays a timestamp cursor rather than a snapshot of every campaign.
+
+The **Change Types to Monitor** input's **Campaign Settings** option is not yet implemented: selecting it has no effect, since no settings fields are currently evaluated for changes. Only status, budget, and bidding strategy changes are detected.
+
+The optional **Look-back Date** input seeds a one-time historical backfill: on the very first run (no polling state yet), the trigger queries change_event rows from that date forward instead of the default one hour. It has no effect once polling state exists, and Google's change_event window still caps how far back a query can reach to the past 30 days.
 
 #### How It Works
 
 1. Run on the configured schedule (e.g., every 15 minutes)
-2. Query campaigns modified since the last poll using [Google Ads Query Language](https://developers.google.com/google-ads/api/docs/query/overview)
-3. Compare current campaign data against stored state to identify changes
-4. Categorize changes as "created", "updated", or "deleted"
-5. Update state with current campaign data for the next poll
+2. Query the change_event resource for campaign and campaign budget modifications since the last poll using [Google Ads Query Language](https://developers.google.com/google-ads/api/docs/query/overview)
+3. Read the old and new values directly from each change_event row's before-and-after fields
+4. Categorize changes as "created", "status", "budget", "bidding", or "deleted"
+5. Once the window is exhausted, store its end as the position for the next recurrence
 
 **Batching**
 
-This trigger supports opt-in batching. When batching is enabled on the flow, each campaign change (or each group of up to the configured batch size) is dispatched as its own execution rather than delivering all changes in a single payload. The default batch size is 50.
+Batching is enabled per flow on this trigger: each campaign change is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Google Ads.
 
-Batching splits the executions, not the fetch: the trigger still retrieves the full set of changed campaigns in a single poll before any dispatching happens. When batching is enabled, each execution receives one item:
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.changes`. With batching on that field does not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+The trigger reads change events oldest first, in pages of at most 10,000 (1,000 with batching on), from a window whose end is fixed when it opens. A window holding more drains within the same recurrence with batching on, or one page per recurrence with batching off, each page resuming where the last stopped, so a backlog larger than one page is not truncated. When batching is enabled, each execution receives one item:
+
+<details>
+<summary>Batched execution payload</summary>
 
 ```json
 {
@@ -30,6 +41,8 @@ Batching splits the executions, not the fetch: the trigger still retrieves the f
   }
 }
 ```
+
+</details>
 
 #### Returned Data
 

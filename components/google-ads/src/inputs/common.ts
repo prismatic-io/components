@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanCustomerId, cleanString } from "../util";
+import { cleanCustomerId, cleanString, toOptionalInt } from "../util";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
@@ -34,7 +34,7 @@ export const pageSizeInput = input({
   type: "string",
   required: false,
   example: "100",
-  clean: util.types.toNumber,
+  clean: toOptionalInt,
   comments: "The maximum number of results to return per page.",
 });
 export const pageTokenInput = input({

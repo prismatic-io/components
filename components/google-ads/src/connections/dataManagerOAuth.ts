@@ -1,5 +1,8 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
-import { GOOGLE_DATA_MANAGER_API_VERSION } from "../constants";
+import {
+  GOOGLE_DATA_MANAGER_API_VERSION,
+  GOOGLE_DATA_MANAGER_OAUTH_SCOPE,
+} from "../constants";
 export const dataManagerOAuth = oauth2Connection({
   key: "dataManagerOAuth",
   display: {
@@ -41,7 +44,7 @@ export const dataManagerOAuth = oauth2Connection({
       shown: false,
       comments:
         "Space-separated OAuth 2.0 permission scopes for the Google Data Manager API. See [OAuth scopes documentation](https://developers.google.com/identity/protocols/oauth2/scopes).",
-      default: "https://www.googleapis.com/auth/datamanager",
+      default: GOOGLE_DATA_MANAGER_OAUTH_SCOPE,
     },
     clientId: {
       label: "Client ID",

@@ -3,6 +3,7 @@ import {
   campaignCriteriaOperationsExampleInput,
   campaignOperationsExampleInput,
 } from "../examplePayloads";
+import { toOptionalCustomerId } from "../util";
 import {
   connectionInput,
   customerIdInput,
@@ -26,7 +27,7 @@ const operations = input({
   required: true,
   default: JSON.stringify(campaignOperationsExampleInput, null, 2),
   comments:
-    "The list of operations to perform on individual campaigns. See [Campaign operations documentation](https://developers.google.com/google-ads/api/reference/rpc/latest/CampaignOperation).",
+    "The list of operations to perform on individual campaigns. See [Campaign operations documentation](https://developers.google.com/google-ads/api/reference/rpc/v25/CampaignOperation).",
   clean: util.types.toObject,
 });
 export const mutateCampaignInputs = {
@@ -34,7 +35,11 @@ export const mutateCampaignInputs = {
   customerId: customerIdInput,
   operations,
   partialFailure,
-  managerCustomerId: { ...managerCustomerIdInput, required: false },
+  managerCustomerId: {
+    ...managerCustomerIdInput,
+    required: false,
+    clean: toOptionalCustomerId,
+  },
   validateOnly,
 };
 export const mutateCampaignCriteriaInputs = {
@@ -43,8 +48,15 @@ export const mutateCampaignCriteriaInputs = {
   operations: {
     ...operations,
     default: JSON.stringify(campaignCriteriaOperationsExampleInput, null, 2),
+    placeholder: "Enter campaign criterion operations as a JSON array",
+    comments:
+      "The list of operations to create, update, or remove individual campaign criteria. See [Campaign criterion operations documentation](https://developers.google.com/google-ads/api/reference/rpc/v25/CampaignCriterionOperation).",
   },
   partialFailure,
-  managerCustomerId: { ...managerCustomerIdInput, required: false },
+  managerCustomerId: {
+    ...managerCustomerIdInput,
+    required: false,
+    clean: toOptionalCustomerId,
+  },
   validateOnly,
 };

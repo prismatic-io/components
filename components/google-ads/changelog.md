@@ -1,5 +1,21 @@
 ## Changelog
 
+### 2026-10-07
+
+Updated the component for Google's developer token sunset, added an initial sync to the change history triggers, and fixed several trigger, action, and data source issues:
+
+- Updated the **OAuth 2.0** connection so **Developer Token** is optional and no longer sent with any request, following Google's September 9, 2026 developer token sunset; the connection setup guidance now describes Google Cloud project access levels instead of the API Center
+- Added an optional **Look-back Date** input on the **New and Updated Campaigns** and **Account Change History** triggers for performing an initial sync of changes. The initial sync begins on the first recurrence and backfills every change made on or after the specified date, up to Google's 30-day change history window, seeding each once; without batching, a large backfill can span several recurrences before normal polling resumes. Leave it empty to start from one hour before the first recurrence
+- Fixed the **New and Updated Campaigns** and **Account Change History** triggers losing the oldest changes when a recurrence found more than a single query returns (10,000 changes and 1,000 changes respectively); changes are now read oldest first and the remainder is delivered on the following recurrences, or within the same recurrence when batching is enabled
+- Fixed **New and Updated Campaigns** reporting only created and removed campaigns when **Change Types to Monitor** is left empty; an empty selection now detects all change types as documented, so flows that leave it empty also receive status, bidding strategy, and budget changes
+- Updated **New and Updated Campaigns** to report a missing `oldValue` or `newValue` as `null` instead of omitting the field
+- Fixed **Account Change History** failing every recurrence when **Resource Types** includes **Keywords**, or once more than 30 days passed without a successful recurrence; **Keywords** now returns ad group criterion changes, which include keyword changes, and the query start is limited to Google's 30-day change history window
+- Fixed **Campaign Budget Alerts** ignoring **Include Shared Budgets** when turned off, comparing daily budgets against spend accumulated since the last recurrence (which could include earlier days) instead of today's spend, and omitting `alertThreshold` when **Alert Threshold (%)** is left empty; the default threshold is now reported
+- Fixed **Get Account Reports** and **Get Detailed Lead Reports** sending invalid date values when **Start Date** or **End Date** is left empty; an empty date is now omitted from the request
+- Fixed **Search Ads** sending **Return Total Results Count** as a request field the Google Ads API does not recognize; it is now sent in the search settings, so the total count is returned
+- Fixed the **List Accessible Sub Accounts** data source failing when **Customer Client Level** is left empty; it now defaults to level 1
+- Updated the **Upload Click Conversions** description to state that only developer tokens with no offline conversion upload between December 17, 2025 and June 15, 2026 lose access to the endpoint, rather than the action stopping for everyone after June 15, 2026
+
 ### 2026-08-31
 
 Updated the component to Google Ads API `v25` with reworked campaign change detection and opt-in batching across all polling triggers:

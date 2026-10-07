@@ -1,13 +1,15 @@
 import { CAMPAIGN_CHANGE_RESOURCE_TYPE, CHANGE_TYPE } from "../../constants";
 import type { CampaignChange, CampaignChangeEventRow } from "../../types";
+export const isAllChangeTypesSelected = (changeTypes: string[]): boolean =>
+  changeTypes.length === 0 || changeTypes.includes(CHANGE_TYPE.ALL);
 const isSelected = (changeTypes: string[], changeType: string): boolean =>
-  changeTypes.includes(changeType) || changeTypes.includes(CHANGE_TYPE.ALL);
+  changeTypes.includes(changeType) || isAllChangeTypesSelected(changeTypes);
 export const mapChangeEventsToCampaignChanges = (
   rows: CampaignChangeEventRow[],
   changeTypes: string[],
 ): CampaignChange[] => {
   const changes: CampaignChange[] = [];
-  for (const row of rows) {
+  for (const row of [...rows].reverse()) {
     const event = row.changeEvent;
     if (!event) {
       continue;
@@ -52,8 +54,8 @@ export const mapChangeEventsToCampaignChanges = (
           campaignId,
           campaignName,
           field: "status",
-          oldValue: oldCampaign?.status,
-          newValue: newCampaign?.status,
+          oldValue: oldCampaign?.status ?? null,
+          newValue: newCampaign?.status ?? null,
           changedAt,
         });
       }
@@ -66,8 +68,8 @@ export const mapChangeEventsToCampaignChanges = (
           campaignId,
           campaignName,
           field: "bidding_strategy_type",
-          oldValue: oldCampaign?.biddingStrategyType,
-          newValue: newCampaign?.biddingStrategyType,
+          oldValue: oldCampaign?.biddingStrategyType ?? null,
+          newValue: newCampaign?.biddingStrategyType ?? null,
           changedAt,
         });
       }
@@ -84,8 +86,8 @@ export const mapChangeEventsToCampaignChanges = (
         campaignId,
         campaignName,
         field: "budget_amount_micros",
-        oldValue: oldAmount,
-        newValue: newAmount,
+        oldValue: oldAmount ?? null,
+        newValue: newAmount ?? null,
         changedAt,
       });
     }

@@ -1,17 +1,26 @@
 The Account Change History trigger checks for account modifications with user attribution on a configured schedule. Unlike the New and Updated Campaigns trigger which monitors only campaigns, this trigger captures changes across all resource types using the Google Ads [Change Event API](https://developers.google.com/google-ads/api/docs/change-event).
 
+The optional **Look-back Date** input seeds a one-time historical backfill: on the very first run (no polling state yet), the trigger queries change_event rows from that date forward instead of the default one hour. It has no effect once polling state exists, and Google's change_event window still caps how far back a query can reach to the past 30 days.
+
 #### How It Works
 
 1. Run on the configured schedule (e.g., every 15 minutes)
 2. Query the change_event resource for modifications since the last poll
 3. Return change details including what changed, who made the change, and when
-4. Update state with the current timestamp for the next poll
+4. Once the window is exhausted, store its end as the position for the next recurrence
 
 **Batching**
 
-This trigger supports opt-in batching. When batching is enabled on the flow, each change event (or each group of up to the configured batch size) is dispatched as its own execution rather than delivering all changes in a single payload. The default batch size is 50.
+Batching is enabled per flow on this trigger: each change event is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Google Ads.
 
-Batching splits the executions, not the fetch: the trigger still retrieves the full set of change events in a single poll before any dispatching happens. When batching is enabled, each execution receives one item:
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.changes`. With batching on that field does not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+The trigger reads change events oldest first, in pages of at most 10,000 (1,000 with batching on), from a window whose end is fixed when it opens. A window holding more drains within the same recurrence with batching on, or one page per recurrence with batching off, each page resuming where the last stopped, so a backlog larger than one page is not truncated. When batching is enabled, each execution receives one item:
+
+<details>
+<summary>Batched execution payload</summary>
 
 ```json
 {
@@ -29,6 +38,8 @@ Batching splits the executions, not the fetch: the trigger still retrieves the f
   }
 }
 ```
+
+</details>
 
 #### Returned Data
 

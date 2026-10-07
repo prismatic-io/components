@@ -7,7 +7,7 @@ export const uploadClickConversions = action({
   display: {
     label: "Upload Click Conversions",
     description:
-      "Upload offline click conversions into Google Ads in order to track ads that led to sales. This action will stop working after June 15, 2026. Use Ingest Offline Conversions instead.",
+      "Upload offline click conversions into Google Ads in order to track ads that led to sales. Developer tokens that have not sent an offline conversion upload request between December 17, 2025 and June 15, 2026 will lose access to this endpoint; new integrations should use Ingest Offline Conversions (Data Manager API) instead.",
   },
   inputs: uploadClickConversionsInputs,
   outputSchema: outputSchema({

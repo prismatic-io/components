@@ -14,7 +14,7 @@ Google documents many [common errors](https://developers.google.com/google-ads/a
 
 These v25 changes do **not** affect this component's actions. It does not configure lifecycle or acquisition goals, call the incentive services, request reach forecasts or creator insights, or read benchmark metrics. For full details, see the [v25 release notes](https://developers.google.com/google-ads/api/docs/release-notes).
 
-The `LocalServicesLead.ContactDetails.email` removal is worth noting explicitly because it sounds like it should affect this component's Local Services actions, but it does not. **Search Ads Local Services**, **Account Reports**, and **Detailed Lead Reports** call the separate Local Services API at `localservices.googleapis.com/v1`, which versions independently of the Google Ads API and is unaffected by this change.
+The `LocalServicesLead.ContactDetails.email` removal is worth noting explicitly because it sounds like it should affect this component's Local Services actions, but it does not. **Account Reports** and **Detailed Lead Reports** call the separate Local Services API at `localservices.googleapis.com/v1`, which versions independently of the Google Ads API and is unaffected by this change. **Search Ads** is unaffected for a different reason: despite its name, it calls `googleAds:search` on the Google Ads API itself and never reaches the Local Services API.
 
 If a **Raw Request** action is used to call any of the removed or renamed fields above, those calls must be updated before moving to v25.
 

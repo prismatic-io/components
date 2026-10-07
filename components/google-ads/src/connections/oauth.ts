@@ -2,6 +2,8 @@ import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
 import {
   GOOGLE_ADS_API_VERSION,
   GOOGLE_ADS_MINIMUM_SUPPORTED_API_VERSION,
+  GOOGLE_ADS_OAUTH_SCOPE,
+  GOOGLE_DATA_MANAGER_OAUTH_SCOPE,
 } from "../constants";
 export const oauth = oauth2Connection({
   key: "oauth",
@@ -43,9 +45,8 @@ export const oauth = oauth2Connection({
       shown: true,
       comments:
         "Space-separated OAuth 2.0 permission scopes for the Google Ads and Data Manager APIs. See [OAuth scopes documentation](https://developers.google.com/identity/protocols/oauth2/scopes).",
-      example:
-        "https://www.googleapis.com/auth/adwords https://www.googleapis.com/auth/datamanager",
-      default: "https://www.googleapis.com/auth/adwords",
+      example: `${GOOGLE_ADS_OAUTH_SCOPE} ${GOOGLE_DATA_MANAGER_OAUTH_SCOPE}`,
+      default: GOOGLE_ADS_OAUTH_SCOPE,
     },
     clientId: {
       label: "Client ID",
@@ -70,12 +71,12 @@ export const oauth = oauth2Connection({
     },
     developerToken: {
       label: "Developer Token",
-      placeholder: "Enter developer token",
+      placeholder: "Leave blank",
       type: "password",
-      required: true,
+      required: false,
       shown: true,
       comments:
-        "The Developer Token for the Google Ads Manager account. Obtain from the [Google Ads API Center](https://ads.google.com/aw/apicenter).",
+        "Leave blank. Google [sunset developer tokens](https://developers.google.com/google-ads/api/docs/api-policy/developer-token) on September 9, 2026, and API access is now granted to the Google Cloud project that owns the OAuth credentials. A saved token is not sent to the Google Ads API.",
       example: "ABcdeFGH93KL-NOPQ_RsTuv",
     },
     apiVersion: {

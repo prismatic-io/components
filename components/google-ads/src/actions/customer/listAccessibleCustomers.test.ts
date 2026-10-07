@@ -14,14 +14,28 @@ describe("listAccessibleCustomers action", () => {
   afterEach(() => nock.cleanAll());
   test("returns the accessible customer resource names", async () => {
     const scope = nock(GOOGLE_ADS_BASE_URL, {
-      reqheaders: {
-        authorization: "Bearer test-access-token",
-        "developer-token": "test-developer-token",
-      },
+      reqheaders: { authorization: "Bearer test-access-token" },
+      badheaders: ["developer-token"],
     })
       .get(PATH)
       .reply(200, listAccessibleCustomersExamplePayload.data);
     const { result } = await invoke(listAccessibleCustomers, { connection });
+    expect(result.data).toEqual(listAccessibleCustomersExamplePayload.data);
+    expect(scope.isDone()).toBe(true);
+  });
+  test("accepts a connection with no Developer Token", async () => {
+    const scope = nock(GOOGLE_ADS_BASE_URL, {
+      badheaders: ["developer-token"],
+    })
+      .get(PATH)
+      .reply(200, listAccessibleCustomersExamplePayload.data);
+    const { result } = await invoke(listAccessibleCustomers, {
+      connection: createConnection(
+        oauth,
+        {},
+        { access_token: "test-access-token" },
+      ),
+    });
     expect(result.data).toEqual(listAccessibleCustomersExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });

@@ -26,9 +26,9 @@ describe("mutateCampaign", () => {
     const scope = nock(GOOGLE_ADS_BASE_URL, {
       reqheaders: {
         authorization: "Bearer test-access-token",
-        "developer-token": "test-developer-token",
         "login-customer-id": MANAGER_CUSTOMER_ID,
       },
+      badheaders: ["developer-token"],
     })
       .post(PATH, {
         operations: params.operations,

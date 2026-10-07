@@ -2,19 +2,13 @@ This component uses OAuth 2.0 to connect to the Google Ads API.
 
 #### Prerequisites
 
-- A [Developer Token](https://developers.google.com/google-ads/api/docs/api-policy/developer-token) is required to work with Google Ads
-- The Customer ID of the Ads Manager account (the hyphenated number in the top-left corner of the Ads app) must be noted
+- The Google Cloud project that owns the OAuth credentials must have Google Ads API access. Google grants [API access levels](https://developers.google.com/google-ads/api/docs/api-policy/access-levels) to the project; a Developer Token is no longer needed
+- The Customer ID of the Ads Manager account (the hyphenated number in the top-right corner of the Ads app) must be noted
 - A [Google Developer account](https://console.cloud.google.com/) is required
 
 #### Setup Steps
 
-The Developer Token is obtained from a Google Ads Manager account:
-
 1. Sign in to [Google Ads](https://ads.google.com/) with the Google account that will be used for the integration
-1. Click **Tools & Settings** in the top right corner
-1. Under **Setup**, click **API Center**
-1. In the **Developer token** section, click **Create token** or view the existing token
-1. Copy and save the **Developer Token** value securely
 1. Take note of the **Customer ID** displayed in the top-right corner of Google Ads (XXX-XXX-XXXX). This will be needed when configuring the connection.
 
 #### Configure Google Cloud Project
@@ -24,6 +18,7 @@ The Developer Token is obtained from a Google Ads Manager account:
 1. Click **Enable APIs and Services** towards the top of the screen
 1. Search for "google ads api" and select **Google Ads API** in the results (avoid selecting AdWords as that is deprecated)
 1. Click the **Enable** button to add the API to the project
+1. Open the **Google Ads API Overview** page of the project and check the access level it displays. A project at **Test** access can only reach test accounts; under **Upgrade access level**, apply for **Explorer** or a higher level to reach production accounts. Refer to [Google's access levels documentation](https://developers.google.com/google-ads/api/docs/api-policy/access-levels) for the limits and review process of each level.
 1. On the sidebar, select **Credentials**.
 1. An OAuth 2.0 app includes a "Consent Screen". Click **CONFIGURE CONSENT SCREEN**.
    1. The app will be externally available to customers, so choose a **User Type** of **External**.
@@ -46,7 +41,7 @@ Create a connection of type **OAuth 2.0** and provide the following values:
 
 - **Client ID**: From the Google Cloud Console OAuth client credentials
 - **Client Secret**: From the Google Cloud Console OAuth client credentials
-- **Developer Token**: From the Google Ads API Center
+- **Developer Token**: Leave blank. Google [sunset developer tokens](https://developers.google.com/google-ads/api/docs/api-policy/developer-token) on September 9, 2026. Existing connections with a saved token keep working; the token is not sent with any request.
 - **API Version**: The Google Ads API version to use. Refer to the [Google Ads API release notes](https://developers.google.com/google-ads/api/docs/release-notes) for the latest version.
 - **Scopes**: Defaults to `https://www.googleapis.com/auth/adwords`. Refer to [Google's OAuth 2.0 scopes documentation](https://developers.google.com/identity/protocols/oauth2/scopes) for additional scope information.
 
@@ -68,7 +63,7 @@ Because v22 is the minimum, the EU Political Advertising self-declaration requir
 
 Google publishes nearer-term sunsets as tentative and firms them up closer to the date, so treat these as subject to change. v22 in particular retires in October 2026. Minor releases (for example v25.1) do not need to be selected here; Google updates the major-version endpoint automatically. See the official [deprecation and sunset schedule](https://developers.google.com/google-ads/api/docs/sunset-dates) for the latest information.
 
-After entering the credentials, authorize the connection by signing in with the Google account used to create the Developer Token and OAuth credentials.
+After entering the credentials, authorize the connection by signing in with the Google account used to create the OAuth credentials.
 
 #### Passkey Requirement
 

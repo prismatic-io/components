@@ -1,6 +1,9 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { GET_ACCOUNT_HIERARCHY_QUERY } from "../constants";
+import {
+  DEFAULT_CUSTOMER_CLIENT_LEVEL,
+  GET_ACCOUNT_HIERARCHY_QUERY,
+} from "../constants";
 import { listAccessibleSubAccountsExamplePayload } from "../examplePayloads";
 import { listAccessibleSubAccountsInputs } from "../inputs";
 import type { CustomerClientResult } from "../types";
@@ -21,7 +24,7 @@ export const listAccessibleSubAccounts = dataSource({
     const data = await searchGoogleAds<CustomerClientResult>(client, {
       customerId,
       params: {
-        query: `${GET_ACCOUNT_HIERARCHY_QUERY}${customerClientLevel}`,
+        query: `${GET_ACCOUNT_HIERARCHY_QUERY}${customerClientLevel ?? DEFAULT_CUSTOMER_CLIENT_LEVEL}`,
       },
       fetchAll: true,
     });

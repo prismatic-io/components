@@ -15,16 +15,13 @@ import type {
   CreateClientProps,
   CreateDataManagerClientProps,
   CreateLocalServicesClientProps,
+  GoogleAdsConnectionValues,
 } from "./types";
 import {
   validateApiVersion,
   validateDataManagerApiVersion,
 } from "./util/apiVersion";
 import { cleanCustomerId } from "./util/clean";
-interface Values {
-  accessToken: string;
-  developerToken: string;
-}
 const extractAccessToken = (connection: Connection): string => {
   const accessToken = util.types.toString(connection.token?.access_token);
   if (!accessToken) {
@@ -35,19 +32,17 @@ const extractAccessToken = (connection: Connection): string => {
   }
   return accessToken;
 };
-export const validateConnection = (connection: Connection): Values => {
+export const validateConnection = (
+  connection: Connection,
+): GoogleAdsConnectionValues => {
   if (connection.key !== adsConnection.key) {
     throw new ConnectionError(
       connection,
       `Unexpected connection type received: ${connection.key}`,
     );
   }
-  const developerToken = util.types.toString(connection.fields?.developerToken);
-  if (!developerToken) {
-    throw new ConnectionError(connection, "Did not receive a Developer Token.");
-  }
   const accessToken = extractAccessToken(connection);
-  return { accessToken, developerToken };
+  return { accessToken };
 };
 export const createClient = ({
   connection,
@@ -55,13 +50,12 @@ export const createClient = ({
   logger,
   loginCustomerId,
 }: CreateClientProps): HttpClient => {
-  const { accessToken, developerToken } = validateConnection(connection);
+  const { accessToken } = validateConnection(connection);
   const parsedVersion = util.types.toString(connection.fields?.apiVersion);
   const apiVersion = validateApiVersion(parsedVersion, logger);
   const headers: Record<string, string> = {
     Accept: "application/json",
     Authorization: `Bearer ${accessToken}`,
-    "developer-token": developerToken,
   };
   if (loginCustomerId) {
     headers["login-customer-id"] = cleanCustomerId(loginCustomerId);
@@ -117,11 +111,10 @@ export const createLocalServicesClient = ({
   debugEnabled,
   loginCustomerId,
 }: CreateLocalServicesClientProps): HttpClient => {
-  const { accessToken, developerToken } = validateConnection(connection);
+  const { accessToken } = validateConnection(connection);
   const headers: Record<string, string> = {
     Accept: "application/json",
     Authorization: `Bearer ${accessToken}`,
-    "developer-token": developerToken,
   };
   if (loginCustomerId) {
     headers["login-customer-id"] = cleanCustomerId(loginCustomerId);

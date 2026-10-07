@@ -15,3 +15,6 @@ export interface CreateLocalServicesClientProps {
   debugEnabled: boolean;
   loginCustomerId?: string;
 }
+export interface GoogleAdsConnectionValues {
+  accessToken: string;
+}

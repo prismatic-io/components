@@ -11,7 +11,6 @@ export const mutateResourceNameResultSchema = {
   properties: {
     resourceName: { type: "string" },
   },
-  required: ["resourceName"],
 };
 export const localServicesAggregatorInfoSchema = {
   type: "object" as const,

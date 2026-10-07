@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
-import { conversionsExampleInput } from "../examplePayloads";
-import { cleanString } from "../util";
+import { clickConversionsExampleInput } from "../examplePayloads";
+import { cleanString, toOptionalCustomerId } from "../util";
 import {
   connectionInput,
   customerIdInput,
@@ -13,9 +13,9 @@ const conversions = input({
   type: "code",
   language: "json",
   required: true,
-  example: JSON.stringify(conversionsExampleInput, null, 2),
+  example: JSON.stringify(clickConversionsExampleInput, null, 2),
   comments:
-    "The conversions that are being uploaded. See [Click conversions documentation](https://developers.google.com/google-ads/api/docs/conversions/upload-clicks).",
+    "The click conversions to upload, each identifying the click (for example, by GCLID) and the conversion action, time, and value. See [Offline conversions documentation](https://developers.google.com/google-ads/api/docs/conversions/upload-offline).",
   clean: util.types.toObject,
 });
 const eventsInput = input({
@@ -96,35 +96,48 @@ export const uploadCallConversionsInputs = {
   conversions: {
     ...conversions,
     example: JSON.stringify(
-      {
-        customVariables: [
-          {
-            conversionCustomVariable: "string",
-            value: "string",
+      [
+        {
+          callerId: "+16505550100",
+          callStartDateTime: "2026-01-15 10:00:00-05:00",
+          conversionAction: "customers/1234567890/conversionActions/987654321",
+          conversionDateTime: "2026-01-15 10:30:00-05:00",
+          conversionValue: 149.99,
+          currencyCode: "USD",
+          consent: {
+            adUserData: "GRANTED",
+            adPersonalization: "GRANTED",
           },
-        ],
-        consent: {
-          adUserData: "UNSPECIFIED | UNKNOWN | GRANTED | DENIED",
-          adPersonalization: "UNSPECIFIED | UNKNOWN | GRANTED | DENIED",
+          customVariables: [
+            {
+              conversionCustomVariable:
+                "customers/1234567890/conversionCustomVariables/111222333",
+              value: "premium",
+            },
+          ],
         },
-        callerId: "string",
-        callStartDateTime: "string",
-        conversionAction: "string",
-        conversionDateTime: "string",
-        conversionValue: 123,
-        currencyCode: "string",
-      },
+      ],
       null,
       2,
     ),
+    comments:
+      "The call conversions to upload, each identifying the call by caller ID and call start time. See [Call conversions documentation](https://developers.google.com/google-ads/api/docs/conversions/upload-calls).",
   },
-  managerCustomerId: { ...managerCustomerIdInput, required: false },
+  managerCustomerId: {
+    ...managerCustomerIdInput,
+    required: false,
+    clean: toOptionalCustomerId,
+  },
   validateOnly,
 };
 export const uploadClickConversionsInputs = {
   connection: connectionInput,
   customerId: customerIdInput,
   conversions,
-  managerCustomerId: { ...managerCustomerIdInput, required: false },
+  managerCustomerId: {
+    ...managerCustomerIdInput,
+    required: false,
+    clean: toOptionalCustomerId,
+  },
   validateOnly,
 };

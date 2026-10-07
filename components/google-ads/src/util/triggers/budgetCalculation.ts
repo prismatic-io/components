@@ -4,7 +4,11 @@ import {
   CRITICAL_ALERT_THRESHOLD,
   MICROS_TO_DOLLARS_CONVERSION_FACTOR,
 } from "../../constants";
-import type { BudgetStatus, CampaignQueryRow } from "../../types";
+import type {
+  BudgetSeverity,
+  BudgetStatus,
+  CampaignQueryRow,
+} from "../../types";
 export const calculateBudgetStatus = (
   campaign: CampaignQueryRow,
   alertThreshold: number,
@@ -17,7 +21,7 @@ export const calculateBudgetStatus = (
   const spent = costMicros / MICROS_TO_DOLLARS_CONVERSION_FACTOR;
   const percentSpent = budgetAmount > 0 ? (spent / budgetAmount) * 100 : 0;
   const remaining = budgetAmount - spent;
-  let severity: BUDGET_SEVERITY = BUDGET_SEVERITY.INFO;
+  let severity: BudgetSeverity = BUDGET_SEVERITY.INFO;
   let shouldAlert = false;
   let message = "";
   const period = campaign.campaignBudget?.period?.toLowerCase() || "budget";

@@ -40,7 +40,9 @@ export const searchAdsLocalServices = action({
       params: {
         pageToken: pageTokenInput || undefined,
         query: query || undefined,
-        returnTotalResultsCount: returnTotalResultsCount || undefined,
+        searchSettings: returnTotalResultsCount
+          ? { returnTotalResultsCount: true }
+          : undefined,
       },
     });
     return { data };

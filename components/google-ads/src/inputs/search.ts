@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { toOptionalCustomerId } from "../util";
 import {
   connectionInput,
   customerIdInput,
@@ -39,6 +40,10 @@ export const searchAdsLocalServicesInputs = {
   query,
   fetchAll,
   pageTokenInput,
-  managerCustomerId: { ...managerCustomerIdInput, required: false },
+  managerCustomerId: {
+    ...managerCustomerIdInput,
+    required: false,
+    clean: toOptionalCustomerId,
+  },
   returnTotalResultsCount,
 };

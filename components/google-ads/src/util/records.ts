@@ -1,7 +1,9 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import { googleAdsSearchPath } from "../constants";
-const NO_DESCRIPTIVE_NAME = "(No descriptive name)";
-const DESCRIPTIVE_NAME_UNAVAILABLE = "No Description";
+import {
+  DESCRIPTIVE_NAME_UNAVAILABLE,
+  googleAdsSearchPath,
+  NO_DESCRIPTIVE_NAME,
+} from "../constants";
 export const getCustomerDescriptiveName = async (
   client: HttpClient,
   customerId: string,

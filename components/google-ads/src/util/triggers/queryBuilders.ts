@@ -1,12 +1,13 @@
 import {
   CAMPAIGN_CHANGE_RESOURCE_TYPE,
-  CHANGE_EVENT_ROW_LIMIT,
+  CHANGE_HISTORY_RESOURCE_TYPE_QUERY_VALUE,
   CHANGE_TYPE,
 } from "../../constants";
+import { isAllChangeTypesSelected } from "./changeDetection";
 const resolveCampaignChangeResourceTypes = (
   changeTypes: string[],
 ): string[] => {
-  const all = changeTypes.includes(CHANGE_TYPE.ALL);
+  const all = isAllChangeTypesSelected(changeTypes);
   const types: string[] = [CAMPAIGN_CHANGE_RESOURCE_TYPE.CAMPAIGN];
   if (all || changeTypes.includes(CHANGE_TYPE.BUDGET)) {
     types.push(CAMPAIGN_CHANGE_RESOURCE_TYPE.CAMPAIGN_BUDGET);
@@ -17,13 +18,15 @@ export const buildCampaignChangeEventQuery = (options: {
   sinceTime: string;
   toTime: string;
   changeTypes: string[];
+  limit: number;
 }): string => {
-  const { sinceTime, toTime, changeTypes } = options;
+  const { sinceTime, toTime, changeTypes, limit } = options;
   const resourceTypes = resolveCampaignChangeResourceTypes(changeTypes)
     .map((type) => `'${type}'`)
     .join(",");
   return `
     SELECT
+      change_event.resource_name,
       change_event.change_date_time,
       change_event.change_resource_type,
       change_event.change_resource_name,
@@ -37,15 +40,17 @@ export const buildCampaignChangeEventQuery = (options: {
     WHERE change_event.change_date_time >= '${sinceTime}'
       AND change_event.change_date_time < '${toTime}'
       AND change_event.change_resource_type IN (${resourceTypes})
-    ORDER BY change_event.change_date_time DESC
-    LIMIT ${CHANGE_EVENT_ROW_LIMIT}
+    ORDER BY change_event.change_date_time ASC
+    LIMIT ${limit}
   `.trim();
 };
 export const buildBudgetAlertQuery = (options: {
-  sinceDate: string;
-  toDate: string;
+  includeSharedBudgets: boolean;
 }): string => {
-  const { sinceDate, toDate } = options;
+  const { includeSharedBudgets } = options;
+  const sharedBudgetFilter = includeSharedBudgets
+    ? ""
+    : "\n      AND campaign_budget.explicitly_shared = FALSE";
   const query = `
     SELECT
       campaign.id,
@@ -55,8 +60,8 @@ export const buildBudgetAlertQuery = (options: {
       campaign_budget.period,
       metrics.cost_micros
     FROM campaign
-    WHERE segments.date >= '${sinceDate}' AND segments.date <= '${toDate}'
-      AND campaign.status = 'ENABLED'
+    WHERE segments.date DURING TODAY
+      AND campaign.status = 'ENABLED'${sharedBudgetFilter}
   `;
   return query.trim();
 };
@@ -65,17 +70,24 @@ export const buildChangeHistoryQuery = (options: {
   toTime: string;
   resourceTypes: string[];
   includeUserInfo: boolean;
+  limit: number;
 }): string => {
-  const { sinceTime, toTime, resourceTypes, includeUserInfo } = options;
+  const { sinceTime, toTime, resourceTypes, includeUserInfo, limit } = options;
   const resourceFilter =
     resourceTypes.length > 0
-      ? `AND change_event.change_resource_type IN (${resourceTypes.map((type) => `'${type}'`).join(",")})`
+      ? `AND change_event.change_resource_type IN (${resourceTypes
+          .map(
+            (type) =>
+              `'${CHANGE_HISTORY_RESOURCE_TYPE_QUERY_VALUE[type] ?? type}'`,
+          )
+          .join(",")})`
       : "";
   const userFields = includeUserInfo
     ? "change_event.user_email,\n          change_event.client_type,"
     : "";
   const query = `
     SELECT
+      change_event.resource_name,
       change_event.change_date_time,
       change_event.change_resource_type,
       change_event.change_resource_name,
@@ -87,8 +99,8 @@ export const buildChangeHistoryQuery = (options: {
     WHERE change_event.change_date_time >= '${sinceTime}'
       AND change_event.change_date_time < '${toTime}'
       ${resourceFilter}
-    ORDER BY change_event.change_date_time DESC
-    LIMIT 1000
+    ORDER BY change_event.change_date_time ASC
+    LIMIT ${limit}
   `;
   return query.trim();
 };

@@ -9,20 +9,18 @@ This trigger uses the [Google Ads API Campaign resource](https://developers.goog
 3. Calculate spending percentage, remaining budget, and severity level for each campaign
 4. Return only campaigns that exceed the alert threshold
 
-#### Severity Levels
-
-Budget alerts are classified by severity:
-
-- **Warning** - Spending has reached or exceeded the alert threshold (default: 80%) but is below 100%
-- **Critical** - Spending has reached or exceeded 100% of the configured budget
-
-Only campaigns with Warning or Critical severity are included in the results.
-
 **Batching**
 
-This trigger supports opt-in batching. When batching is enabled on the flow, each budget alert (or each group of up to the configured batch size) is dispatched as its own execution rather than delivering all alerts in a single payload. The default batch size is 50.
+Batching is enabled per flow on this trigger: each budget alert is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Google Ads.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.alerts`. With batching on that field does not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 Batching splits the executions, not the fetch: the trigger still retrieves the full set of budget alerts in a single poll before any dispatching happens. When batching is enabled, each execution receives one item:
+
+<details>
+<summary>Batched execution payload</summary>
 
 ```json
 {
@@ -31,9 +29,9 @@ Batching splits the executions, not the fetch: the trigger still retrieves the f
     "campaignId": "23302011123",
     "campaignName": "Example-Campaign-1",
     "budgetAmount": 100,
-    "spent": 95,
-    "percentSpent": 95,
-    "remaining": 5,
+    "spent": 85,
+    "percentSpent": 85,
+    "remaining": 15,
     "period": "DAILY",
     "shouldAlert": true,
     "severity": "warning",
@@ -41,6 +39,17 @@ Batching splits the executions, not the fetch: the trigger still retrieves the f
   }
 }
 ```
+
+</details>
+
+#### Severity Levels
+
+Budget alerts are classified by severity:
+
+- **Warning** - Spending has reached or exceeded the alert threshold (default: 80%) but is below 95%
+- **Critical** - Spending has reached or exceeded 95% of the configured budget
+
+Only campaigns with Warning or Critical severity are included in the results.
 
 #### Returned Data
 
@@ -59,12 +68,12 @@ Fields shown are representative. The full response object includes additional pr
         "campaignId": "23302011123",
         "campaignName": "Example-Campaign-1",
         "budgetAmount": 100,
-        "spent": 95,
-        "percentSpent": 95,
-        "remaining": 5,
+        "spent": 85,
+        "percentSpent": 85,
+        "remaining": 15,
         "period": "DAILY",
         "shouldAlert": true,
-        "severity": "WARNING",
+        "severity": "warning",
         "message": "Campaign approaching daily budget limit"
       }
     ],

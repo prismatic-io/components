@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { toOptionalCustomerId } from "../util";
 import {
   connectionInput,
   customerIdInput,
@@ -13,7 +14,7 @@ const managerLinkId = input({
   required: true,
   example: "1234567890",
   comments:
-    "The unique identifier of the manager link. See [Customer manager link documentation](https://developers.google.com/google-ads/api/reference/rpc/latest/CustomerManagerLink).",
+    "The unique identifier of the manager link. See [Customer manager link documentation](https://developers.google.com/google-ads/api/reference/rpc/v25/CustomerManagerLink).",
   clean: util.types.toString,
 });
 export const confirmClientLinkInputs = {
@@ -30,8 +31,12 @@ export const createClientLinkInputs = {
 export const customerEntityInputs = {
   connection: connectionInput,
   customerId: customerIdInput,
-  managerCustomerId: { ...managerCustomerIdInput, required: false },
   pageToken: pageTokenInput,
+  managerCustomerId: {
+    ...managerCustomerIdInput,
+    required: false,
+    clean: toOptionalCustomerId,
+  },
 };
 export const listCustomersInputs = {
   connection: connectionInput,

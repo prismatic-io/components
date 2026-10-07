@@ -39,6 +39,25 @@ describe("searchAdsLocalServices", () => {
     expect(result.data).toEqual(responseBody);
     expect(scope.isDone()).toBe(true);
   });
+  test.each([
+    [true, { returnTotalResultsCount: true }],
+    [false, undefined],
+  ])("sends returnTotalResultsCount=%s inside searchSettings", async (returnTotalResultsCount, searchSettings) => {
+    let body: Record<string, unknown> = {};
+    const scope = nock(GOOGLE_ADS_BASE_URL)
+      .post(PATH, (requestBody) => {
+        body = requestBody;
+        return true;
+      })
+      .reply(200, responseBody);
+    await invoke(searchAdsLocalServices, {
+      ...params,
+      returnTotalResultsCount,
+    });
+    expect(scope.isDone()).toBe(true);
+    expect(body).not.toHaveProperty("returnTotalResultsCount");
+    expect(body.searchSettings).toEqual(searchSettings);
+  });
   test("surfaces an API error response", async () => {
     nock(GOOGLE_ADS_BASE_URL)
       .post(PATH)

@@ -14,10 +14,8 @@ describe("rawRequest", () => {
   afterEach(() => nock.cleanAll());
   test("forwards the method, path and auth headers and returns the body untouched", async () => {
     const scope = nock(GOOGLE_ADS_BASE_URL, {
-      reqheaders: {
-        authorization: "Bearer test-access-token",
-        "developer-token": "test-developer-token",
-      },
+      reqheaders: { authorization: "Bearer test-access-token" },
+      badheaders: ["developer-token"],
     })
       .get(PATH)
       .reply(200, rawRequestExamplePayload.data);

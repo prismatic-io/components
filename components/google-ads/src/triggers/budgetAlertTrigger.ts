@@ -4,7 +4,7 @@ import type {
   TriggerPayload,
 } from "@prismatic-io/spectral";
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { DEFAULT_ALERT_THRESHOLD } from "../constants";
+import { DEFAULT_ALERT_THRESHOLD, TRIGGER_BATCH_SIZE } from "../constants";
 import { budgetAlertTriggerExamplePayload } from "../examplePayloads";
 import { budgetAlertTriggerInputs } from "../inputs";
 import type {
@@ -36,25 +36,20 @@ const budgetAlertPerform = async (
     consecutiveErrors: 0,
   });
   const newSyncDate = getCurrentDate(timezone);
+  const threshold = params.alertThreshold ?? DEFAULT_ALERT_THRESHOLD;
   try {
     const data = await searchGoogleAds<CampaignQueryRow>(client, {
       customerId: params.customerId,
       params: {
         query: buildBudgetAlertQuery({
-          sinceDate: pollState.lastSyncDate,
-          toDate: newSyncDate,
+          includeSharedBudgets: params.includeSharedBudgets ?? true,
         }),
       },
       fetchAll: true,
     });
     const results = data.results ?? [];
     const budgetAlerts = results
-      .map((campaign) =>
-        calculateBudgetStatus(
-          campaign,
-          params.alertThreshold ?? DEFAULT_ALERT_THRESHOLD,
-        ),
-      )
+      .map((campaign) => calculateBudgetStatus(campaign, threshold))
       .filter((status) => status.shouldAlert);
     context.polling.setState({
       lastSyncDate: newSyncDate,
@@ -65,7 +60,7 @@ const budgetAlertPerform = async (
       payload: buildTriggerPayload(payload, {
         alerts: budgetAlerts,
         totalCampaignsMonitored: results.length,
-        alertThreshold: params.alertThreshold,
+        alertThreshold: threshold,
       }),
       polledNoChanges: budgetAlerts.length === 0,
     });
@@ -81,7 +76,7 @@ export const budgetAlertTrigger = pollingTrigger({
   },
   inputs: budgetAlertTriggerInputs,
   triggerResolverSupport: "valid",
-  batchConfig: { batchSize: 50 },
+  batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
   triggerResolver: {
     resolveItems: (_context, { payload }): BudgetAlertBatchItem[] =>
       resolveBudgetAlerts(payload.body.data as BudgetAlertChangesObject),

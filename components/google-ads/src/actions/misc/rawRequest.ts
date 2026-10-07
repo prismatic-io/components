@@ -1,6 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { validateConnection } from "../../client";
+import { GOOGLE_ADS_BASE_URL } from "../../constants";
 import { rawRequestExamplePayload } from "../../examplePayloads";
 import { rawRequestInputs } from "../../inputs";
 export const rawRequest = action({
@@ -11,13 +12,12 @@ export const rawRequest = action({
   inputs: rawRequestInputs,
   performSafety: "notAllowed",
   perform: async (context, { connection, ...rawRequestInputs }) => {
-    const { accessToken, developerToken } = validateConnection(connection);
+    const { accessToken } = validateConnection(connection);
     const authorizationHeaders: Record<string, string> = {
       Authorization: `Bearer ${accessToken}`,
-      "developer-token": developerToken,
     };
     const { data } = await sendRawRequest(
-      "https://googleads.googleapis.com",
+      GOOGLE_ADS_BASE_URL,
       { ...rawRequestInputs, debugRequest: context.debug.enabled },
       authorizationHeaders,
     );
