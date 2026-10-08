@@ -1,8 +1,8 @@
 import { action, outputSchema, PerformSafety } from "@prismatic-io/spectral";
-import { createClient } from "../client";
-import { publishMessagesExamplePayload } from "../examplePayloads";
-import { brokers, clientId, connection, messages, topic } from "../inputs";
-import { publishMessagesOutputSchema } from "../outputSchemas";
+import { createClient } from "../../client";
+import { publishMessagesExamplePayload } from "../../examplePayloads";
+import { publishMessagesInputs } from "../../inputs";
+import { publishMessagesOutputSchema } from "../../outputSchemas";
 export const publishMessages = action({
   display: {
     label: "Publish Messages",
@@ -21,15 +21,20 @@ export const publishMessages = action({
       context.debug.enabled,
     );
     const producer = kafka.producer();
-    await producer.connect();
-    const result = await producer.send({
-      topic,
-      messages: messages.map((x) => ({
-        value: x.value,
-      })),
-    });
-    await producer.disconnect();
-    return { data: result };
+    try {
+      await producer.connect();
+      const result = await producer.send({
+        topic,
+        messages: messages.map((x) => ({
+          value: x.value,
+        })),
+      });
+      await producer.disconnect();
+      return { data: result };
+    } catch (error) {
+      await producer.disconnect().catch(() => {});
+      throw error;
+    }
   },
   performSafety: PerformSafety.NOT_ALLOWED,
   examplePerform: async (_context, { topic }) => ({
@@ -38,11 +43,10 @@ export const publishMessages = action({
       topicName: topic,
     })),
   }),
-  inputs: { connection, clientId, brokers, topic, messages },
+  inputs: publishMessagesInputs,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: publishMessagesOutputSchema,
   }),
   examplePayload: publishMessagesExamplePayload,
 });
-export default publishMessages;

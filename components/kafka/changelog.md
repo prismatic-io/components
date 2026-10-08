@@ -1,5 +1,16 @@
 ## Changelog
 
+### 2026-10-08
+
+Added Amazon MSK IAM authentication, along with connection and trigger updates:
+
+- Added the **IAM Access Key and Secret** and **IAM Role ARN** connections for Amazon MSK clusters that use IAM access control
+- Added a required **AWS Region** dropdown to the **IAM Access Key and Secret** and **IAM Role ARN** connections for selecting the region of the Amazon MSK cluster
+- Updated the **Schema Registry API Key** field on the **Basic Authentication** connection to a masked password field
+- Updated the **Kafka Consumer** trigger to group **From Beginning**, **Auto Commit**, and **Deserialize Keys as Avro** into a **Consumer Options** structured object, and to show **Session Timeout (ms)** and **Heartbeat Interval (ms)** as top-level inputs again in place of the **Session Timing** group
+- Updated the **Kafka Consumer** trigger to fail the run when the consumer cannot start, such as when it cannot join its consumer group, and to reject a **Max Messages** value below 1
+- Updated the **Publish Messages** action to close its broker connection when sending messages fails
+
 ### 2026-08-13
 
 Enhanced component capabilities:

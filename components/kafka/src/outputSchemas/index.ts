@@ -1,5 +1,3 @@
 export { getConsumerGroupStatusOutputSchema } from "./consumer";
-export {
-  listTopicsOutputSchema,
-  publishMessagesOutputSchema,
-} from "./messages";
+export { publishMessagesOutputSchema } from "./messages";
+export { listTopicsOutputSchema } from "./topics";

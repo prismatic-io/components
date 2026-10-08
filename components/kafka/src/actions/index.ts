@@ -1,8 +1,8 @@
-import getConsumerGroupStatus from "./getConsumerGroupStatus";
-import listTopics from "./listTopics";
-import publishMessages from "./publishMessages";
+import consumerGroupsActions from "./consumerGroups";
+import messagesActions from "./messages";
+import topicsActions from "./topics";
 export default {
-  publishMessages,
-  listTopics,
-  getConsumerGroupStatus,
+  ...consumerGroupsActions,
+  ...messagesActions,
+  ...topicsActions,
 };

@@ -2,7 +2,6 @@ export {
   getConsumerGroupStatusExamplePayload,
   kafkaConsumerExamplePayload,
 } from "./consumer";
-export {
-  listTopicsExamplePayload,
-  publishMessagesExamplePayload,
-} from "./messages";
+export { selectTopicExamplePayload } from "./dataSources";
+export { publishMessagesExamplePayload } from "./messages";
+export { listTopicsExamplePayload } from "./topics";

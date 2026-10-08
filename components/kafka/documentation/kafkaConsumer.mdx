@@ -26,8 +26,10 @@ Configure the following inputs:
 - **Max Messages**: Maximum number of messages to consume per trigger execution (default: `100`)
 - **Session Timeout (ms)**: The timeout for consumer session in milliseconds (default: `30000`)
 - **Heartbeat Interval (ms)**: The interval for sending heartbeats to the broker in milliseconds (default: `3000`)
-- **From Beginning**: Whether to start consuming from the beginning of the topic (default: `false`)
-- **Auto Commit**: Whether to automatically commit offsets after processing messages (default: `true`)
+- **Consumer Options**: A group holding the following fields:
+  - **From Beginning**: Whether to start consuming from the beginning of the topic (default: `false`)
+  - **Auto Commit**: Whether to automatically commit offsets after processing messages (default: `true`)
+  - **Deserialize Keys as Avro**: Whether to also deserialize message keys from Avro format. Requires **Enable Avro Deserialization** on the connection (default: `false`)
 
 #### Returned Data
 

@@ -3,17 +3,20 @@ import {
   invokeDataSource,
 } from "@prismatic-io/spectral/dist/testing";
 import { Kafka } from "kafkajs";
+import { type Mock, vi } from "vitest";
+import { awsAccessKeySecret } from "../connections/awsAccessKeySecret";
 import { basic } from "../connections/basic";
+import { selectTopicExamplePayload } from "../examplePayloads";
 import { selectTopic } from "./selectTopic";
-jest.mock("kafkajs", () => ({
-  ...jest.requireActual("kafkajs"),
-  Kafka: jest.fn(),
+vi.mock("kafkajs", async () => ({
+  ...(await vi.importActual<typeof import("kafkajs")>("kafkajs")),
+  Kafka: vi.fn(),
 }));
-const mockedKafka = Kafka as unknown as jest.Mock;
+const mockedKafka = Kafka as unknown as Mock;
 const adminMock = {
-  connect: jest.fn(),
-  listTopics: jest.fn(),
-  disconnect: jest.fn(),
+  connect: vi.fn(),
+  listTopics: vi.fn(),
+  disconnect: vi.fn(),
 };
 const connection = createConnection(basic, {
   username: "user",
@@ -25,26 +28,43 @@ const params = {
   clientId: "my-app",
   brokers: ["broker-1.example.com:9092", "broker-2.example.com:9092"],
 };
+const iamConnection = createConnection(awsAccessKeySecret, {
+  accessKeyId: "AKIAIOSFODNN7EXAMPLE",
+  secretAccessKey: "wJalrXUtNFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+  awsRegion: "us-east-1",
+});
 const topicNames = [
-  "order-events",
-  "user-activity",
+  ...selectTopicExamplePayload.result.map((element) => element.key),
   "__consumer_offsets",
   "__transaction_state",
 ];
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   adminMock.connect.mockResolvedValue(undefined);
   adminMock.disconnect.mockResolvedValue(undefined);
   adminMock.listTopics.mockResolvedValue(topicNames);
-  mockedKafka.mockImplementation(() => ({ admin: () => adminMock }));
+  // biome-ignore lint/complexity/useArrowFunction: must stay constructible, the mocked class is invoked with `new`
+  mockedKafka.mockImplementation(function () {
+    return { admin: () => adminMock };
+  });
 });
 describe("selectTopic", () => {
+  test("builds a TLS + OAUTHBEARER client for an Amazon MSK IAM connection", async () => {
+    await invokeDataSource(selectTopic, {
+      ...params,
+      connection: iamConnection,
+      brokers: ["b-1.cluster.kafka.us-east-1.amazonaws.com:9098"],
+    });
+    expect(mockedKafka).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ssl: true,
+        sasl: expect.objectContaining({ mechanism: "oauthbearer" }),
+      }),
+    );
+  });
   test("returns label/key elements with internal topics filtered out", async () => {
     const { result } = await invokeDataSource(selectTopic, params);
-    expect(result).toEqual([
-      { label: "order-events", key: "order-events" },
-      { label: "user-activity", key: "user-activity" },
-    ]);
+    expect(result).toEqual(selectTopicExamplePayload.result);
     for (const element of result) {
       expect(element).toHaveProperty("label");
       expect(element).toHaveProperty("key");

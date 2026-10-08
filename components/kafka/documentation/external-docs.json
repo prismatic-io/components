@@ -1,7 +1,7 @@
 [
   {
     "label": "Kafka Docs",
-    "href": "https://kafka.apache.org/documentation/"
+    "href": "https://kafka.apache.org/43/getting-started/introduction/"
   },
   {
     "label": "Node.js Client Docs",

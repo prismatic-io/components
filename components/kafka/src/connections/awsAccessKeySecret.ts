@@ -1,51 +1,43 @@
 import { connection } from "@prismatic-io/spectral";
-import { SUPPORTED_MECHANISM_TYPES } from "../constants";
-export const basic = connection({
-  key: "basic",
+import { awsRegions } from "aws-utils";
+export const awsAccessKeySecret = connection({
+  key: "awsAccessKeySecret",
   display: {
-    label: "Basic Authentication",
+    label: "IAM Access Key and Secret",
     description:
-      "Authenticate using a username and password, with optional SSL/TLS support.",
+      "Authenticates to an Amazon MSK cluster that uses IAM access control with an AWS IAM access key and secret.",
   },
   inputs: {
-    username: {
-      label: "Username",
-      placeholder: "Username",
+    accessKeyId: {
+      label: "Access Key ID",
+      placeholder: "Enter AWS IAM Access Key ID",
       type: "string",
       required: true,
       shown: true,
       comments:
-        "The SASL username used to authenticate with the Kafka brokers, issued by the cluster administrator or the managed Kafka provider's console.",
-      example: "kafka-user",
+        "AWS IAM Access Key ID used for programmatic access. Create access keys in the [AWS IAM Console](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) under Security Credentials.",
+      example: "AKIAIOSFODNN7EXAMPLE",
     },
-    password: {
-      label: "Password",
-      placeholder: "Password",
+    secretAccessKey: {
+      label: "Secret Access Key",
+      placeholder: "Enter AWS IAM Secret Access Key",
       type: "password",
       required: true,
       shown: true,
       comments:
-        "The SASL password paired with the username, issued alongside it by the cluster administrator or the managed Kafka provider's console.",
-      example: "kafka-password",
+        "AWS IAM Secret Access Key paired with the Access Key ID. This value is only shown once when created in the [AWS IAM Console](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).",
+      example: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
     },
-    authMechanism: {
-      label: "Authentication Mechanism",
+    awsRegion: {
+      label: "AWS Region",
+      placeholder: "Select AWS Region",
       type: "string",
       required: true,
       shown: true,
-      comments: "Desired authorization method for passing username/password.",
-      model: SUPPORTED_MECHANISM_TYPES.map((value) => ({
-        label: value,
-        value,
-      })),
-    },
-    sslEnabled: {
-      label: "Enable SSL/TLS",
-      type: "boolean",
-      required: false,
-      shown: true,
-      comments: "Enable SSL/TLS for secure connections.",
-      default: "false",
+      comments:
+        "The AWS Region of the Amazon MSK cluster, used to sign the authentication token.",
+      example: "us-east-1",
+      model: awsRegions.map((region) => ({ label: region, value: region })),
     },
     caCert: {
       label: "CA Certificate",
@@ -54,31 +46,9 @@ export const basic = connection({
       required: false,
       shown: true,
       comments:
-        "Certificate Authority (CA) certificate in PEM format. Leave blank to use the default trust store when the brokers present a publicly trusted certificate.",
+        "Certificate Authority (CA) certificate in PEM format. Leave blank to trust the Amazon-issued broker certificates through the default trust store.",
       example:
         "-----BEGIN CERTIFICATE-----\nMIIDdzCCAl+gAwIBAgIEAgAAuTANBgkqhkiG9w0BAQUFADBaMQswCQYDVQQGEwJJ\n-----END CERTIFICATE-----",
-    },
-    clientCert: {
-      label: "Client Certificate",
-      placeholder: "Paste a client certificate in PEM format",
-      type: "text",
-      required: false,
-      shown: true,
-      comments:
-        "Client certificate in PEM format (if required by the Kafka cluster).",
-      example:
-        "-----BEGIN CERTIFICATE-----\nMIIDdzCCAl+gAwIBAgIEAgAAuTANBgkqhkiG9w0BAQUFADBaMQswCQYDVQQGEwJJ\n-----END CERTIFICATE-----",
-    },
-    clientKey: {
-      label: "Client Key",
-      placeholder: "Paste a client private key in PEM format",
-      type: "text",
-      required: false,
-      shown: true,
-      comments:
-        "Client private key in PEM format (if required by the Kafka cluster).",
-      example:
-        "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7VJTUt9Us8cKB\n-----END PRIVATE KEY-----",
     },
     avroEnabled: {
       label: "Enable Avro Deserialization",

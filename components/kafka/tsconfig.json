@@ -9,13 +9,13 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
-    "types": ["node", "jest"],
+    "moduleResolution": "bundler",
+    "types": ["node", "vitest/globals"],
     "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "strictNullChecks": true,
     "noImplicitAny": false
   },
-  "include": ["src"]
+  "include": ["src", ".spectral/*"]
 }

@@ -4,18 +4,20 @@ import {
   invokeTrigger,
 } from "@prismatic-io/spectral/dist/testing";
 import { Kafka } from "kafkajs";
+import { type Mock, vi } from "vitest";
+import { awsAccessKeySecret } from "../connections/awsAccessKeySecret";
 import { basic } from "../connections/basic";
 import type { KafkaMessage } from "../types/consumer";
 import { kafkaConsumer } from "./kafkaConsumer";
-jest.mock("kafkajs", () => ({
-  ...jest.requireActual("kafkajs"),
-  Kafka: jest.fn(),
+vi.mock("kafkajs", async () => ({
+  ...(await vi.importActual<typeof import("kafkajs")>("kafkajs")),
+  Kafka: vi.fn(),
 }));
-jest.mock("@kafkajs/confluent-schema-registry", () => ({
-  SchemaRegistry: jest.fn(),
+vi.mock("@kafkajs/confluent-schema-registry", () => ({
+  SchemaRegistry: vi.fn(),
 }));
-const mockedKafka = Kafka as unknown as jest.Mock;
-const mockedSchemaRegistry = SchemaRegistry as unknown as jest.Mock;
+const mockedKafka = Kafka as unknown as Mock;
+const mockedSchemaRegistry = SchemaRegistry as unknown as Mock;
 interface EachMessagePayload {
   topic: string;
   partition: number;
@@ -28,13 +30,13 @@ interface EachMessagePayload {
   };
 }
 const consumerMock = {
-  connect: jest.fn(),
-  subscribe: jest.fn(),
-  run: jest.fn(),
-  stop: jest.fn(),
-  disconnect: jest.fn(),
+  connect: vi.fn(),
+  subscribe: vi.fn(),
+  run: vi.fn(),
+  stop: vi.fn(),
+  disconnect: vi.fn(),
 };
-const consumerFactory = jest.fn(() => consumerMock);
+const consumerFactory = vi.fn(() => consumerMock);
 let feed: EachMessagePayload[] = [];
 let runComplete: Promise<void> = Promise.resolve();
 let eachMessageCallCount = 0;
@@ -66,10 +68,13 @@ const buildParams = (overrides: Record<string, unknown> = {}) => ({
   consumerGroupId: "order-processing-group",
   topics: ["order-events"],
   maxMessages: 2,
-  sessionTiming: { sessionTimeout: 30000, heartbeatInterval: 3000 },
-  fromBeginning: false,
-  autoCommit: true,
-  deserializeKeys: false,
+  sessionTimeout: 30000,
+  heartbeatInterval: 3000,
+  consumerOptions: {
+    fromBeginning: false,
+    autoCommit: true,
+    deserializeKeys: false,
+  },
   ...overrides,
 });
 const messagesFrom = (result: {
@@ -85,8 +90,24 @@ const messagesFrom = (result: {
     }
   ).messages;
 beforeEach(() => {
-  jest.useFakeTimers({ doNotFake: ["nextTick", "queueMicrotask"] });
-  jest.clearAllMocks();
+  vi.useFakeTimers({
+    toFake: [
+      "Date",
+      "hrtime",
+      "performance",
+      "requestAnimationFrame",
+      "cancelAnimationFrame",
+      "requestIdleCallback",
+      "cancelIdleCallback",
+      "setImmediate",
+      "clearImmediate",
+      "setInterval",
+      "clearInterval",
+      "setTimeout",
+      "clearTimeout",
+    ],
+  });
+  vi.clearAllMocks();
   feed = [];
   eachMessageCallCount = 0;
   runComplete = Promise.resolve();
@@ -108,13 +129,47 @@ beforeEach(() => {
     },
   );
   consumerFactory.mockReturnValue(consumerMock);
-  mockedKafka.mockImplementation(() => ({ consumer: consumerFactory }));
+  // biome-ignore lint/complexity/useArrowFunction: must stay constructible, the mocked class is invoked with `new`
+  mockedKafka.mockImplementation(function () {
+    return { consumer: consumerFactory };
+  });
 });
 afterEach(() => {
-  jest.clearAllTimers();
-  jest.useRealTimers();
+  vi.clearAllTimers();
+  vi.useRealTimers();
 });
 describe("kafkaConsumer", () => {
+  test("rethrows when the consumer fails to run instead of waiting out the idle cut-off", async () => {
+    consumerMock.run.mockRejectedValueOnce(new Error("group join failed"));
+    await expect(
+      invokeTrigger(kafkaConsumer, undefined, undefined, buildParams()),
+    ).rejects.toThrow("group join failed");
+    expect(consumerMock.disconnect).toHaveBeenCalledTimes(1);
+  });
+  test("builds a TLS + OAUTHBEARER client for an Amazon MSK IAM connection", async () => {
+    feed = [buildMessage("142", "order-12345", { orderId: "order-12345" })];
+    await invokeTrigger(
+      kafkaConsumer,
+      undefined,
+      undefined,
+      buildParams({
+        connection: createConnection(awsAccessKeySecret, {
+          accessKeyId: "AKIAIOSFODNN7EXAMPLE",
+          secretAccessKey: "wJalrXUtNFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+          awsRegion: "us-east-1",
+        }),
+        brokers: ["b-1.cluster.kafka.us-east-1.amazonaws.com:9098"],
+        maxMessages: 1,
+      }),
+    );
+    await runComplete;
+    expect(mockedKafka).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ssl: true,
+        sasl: expect.objectContaining({ mechanism: "oauthbearer" }),
+      }),
+    );
+  });
   test("maps each consumed message and wraps the batch into the trigger payload", async () => {
     feed = [
       buildMessage("142", "order-12345", { orderId: "order-12345" }),
@@ -181,7 +236,7 @@ describe("kafkaConsumer", () => {
       ).messageCount,
     ).toBe(1);
   });
-  test("subscribes once per topic and unwraps sessionTiming onto the consumer config", async () => {
+  test("subscribes once per topic and passes the session timing onto the consumer config", async () => {
     feed = [buildMessage("142", "order-12345", { orderId: "order-12345" })];
     await invokeTrigger(
       kafkaConsumer,
@@ -190,7 +245,11 @@ describe("kafkaConsumer", () => {
       buildParams({
         maxMessages: 1,
         topics: ["order-events", "user-activity"],
-        fromBeginning: true,
+        consumerOptions: {
+          fromBeginning: true,
+          autoCommit: true,
+          deserializeKeys: false,
+        },
       }),
     );
     await runComplete;
@@ -214,8 +273,11 @@ describe("kafkaConsumer", () => {
   });
   test("routes values through the schema registry when Avro is enabled, leaving keys as strings", async () => {
     const decoded = { orderId: "order-12345", amount: 99.99 };
-    const decode = jest.fn().mockResolvedValue(decoded);
-    mockedSchemaRegistry.mockImplementation(() => ({ decode }));
+    const decode = vi.fn().mockResolvedValue(decoded);
+    // biome-ignore lint/complexity/useArrowFunction: must stay constructible, the mocked class is invoked with `new`
+    mockedSchemaRegistry.mockImplementation(function () {
+      return { decode };
+    });
     feed = [buildMessage("142", "order-12345", "raw-avro-bytes")];
     const { result } = await invokeTrigger(
       kafkaConsumer,
@@ -223,7 +285,11 @@ describe("kafkaConsumer", () => {
       undefined,
       buildParams({
         maxMessages: 1,
-        deserializeKeys: false,
+        consumerOptions: {
+          fromBeginning: false,
+          autoCommit: true,
+          deserializeKeys: false,
+        },
         connection: createConnection(basic, {
           username: "user",
           password: "pass",

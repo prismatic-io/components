@@ -1,16 +1,17 @@
 import { SchemaRegistry } from "@kafkajs/confluent-schema-registry";
 import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { type Mock, vi } from "vitest";
 import { basic } from "../connections/basic";
 import {
   createSchemaRegistryClient,
   deserializeBuffer,
 } from "./schemaRegistry";
-jest.mock("@kafkajs/confluent-schema-registry", () => ({
-  SchemaRegistry: jest.fn(),
+vi.mock("@kafkajs/confluent-schema-registry", () => ({
+  SchemaRegistry: vi.fn(),
 }));
-const mockedSchemaRegistry = SchemaRegistry as unknown as jest.Mock;
+const mockedSchemaRegistry = SchemaRegistry as unknown as Mock;
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 describe("createSchemaRegistryClient", () => {
   test("uses schemaRegistryUrl as the host and omits auth when no API key is set", () => {
@@ -55,12 +56,12 @@ describe("createSchemaRegistryClient", () => {
   });
 });
 describe("deserializeBuffer", () => {
-  const stubRegistry = (decode: jest.Mock): SchemaRegistry =>
+  const stubRegistry = (decode: Mock): SchemaRegistry =>
     ({ decode }) as unknown as SchemaRegistry;
   test("returns the decoded record on success", async () => {
     const decoded = { orderId: "order-12345", amount: 99.99 };
-    const decode = jest.fn().mockResolvedValue(decoded);
-    const logger = { warn: jest.fn() };
+    const decode = vi.fn().mockResolvedValue(decoded);
+    const logger = { warn: vi.fn() };
     const buffer = Buffer.from("avro-encoded-bytes");
     const result = await deserializeBuffer(
       stubRegistry(decode),
@@ -72,8 +73,8 @@ describe("deserializeBuffer", () => {
     expect(logger.warn).not.toHaveBeenCalled();
   });
   test("does not throw on decode failure: warns and falls back to the raw string", async () => {
-    const decode = jest.fn().mockRejectedValue(new Error("bad magic byte"));
-    const logger = { warn: jest.fn() };
+    const decode = vi.fn().mockRejectedValue(new Error("bad magic byte"));
+    const logger = { warn: vi.fn() };
     const buffer = Buffer.from("not-really-avro");
     const result = await deserializeBuffer(
       stubRegistry(decode),
@@ -86,8 +87,8 @@ describe("deserializeBuffer", () => {
     );
   });
   test("labels a non-Error rejection as an unknown decode error", async () => {
-    const decode = jest.fn().mockRejectedValue("a bare string rejection");
-    const logger = { warn: jest.fn() };
+    const decode = vi.fn().mockRejectedValue("a bare string rejection");
+    const logger = { warn: vi.fn() };
     const result = await deserializeBuffer(
       stubRegistry(decode),
       Buffer.from("payload"),

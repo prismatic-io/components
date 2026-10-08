@@ -1,6 +1,9 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { INTERNAL_TOPIC_PREFIX } from "../constants";
+import { selectTopicExamplePayload } from "../examplePayloads";
 import { selectTopicInputs } from "../inputs";
+import { withAdmin } from "../utils";
 export const selectTopic = dataSource({
   display: {
     label: "Select Topic",
@@ -17,22 +20,15 @@ export const selectTopic = dataSource({
       },
       false,
     );
-    const admin = kafka.admin();
-    try {
-      await admin.connect();
-      const topics = await admin.listTopics();
-      await admin.disconnect();
-      const result = topics
-        .filter((topic) => !topic.startsWith("__"))
-        .map<Element>((topic) => ({
-          label: topic,
-          key: topic,
-        }));
-      return { result };
-    } catch (error) {
-      await admin.disconnect().catch(() => {});
-      throw error;
-    }
+    const topics = await withAdmin(kafka, (admin) => admin.listTopics());
+    const result = topics
+      .filter((topic) => !topic.startsWith(INTERNAL_TOPIC_PREFIX))
+      .map<Element>((topic) => ({
+        label: topic,
+        key: topic,
+      }));
+    return { result };
   },
   dataSourceType: "picklist",
+  examplePayload: selectTopicExamplePayload,
 });

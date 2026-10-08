@@ -3,9 +3,9 @@ import {
   clientId,
   getConsumerGroupStatusInputs,
   kafkaConsumerInputs,
-  messages,
+  publishMessagesInputs,
   topic,
-} from "./inputs";
+} from "./index";
 const cleanFn = (field: { clean?: (value: unknown) => unknown }) => {
   const { clean } = field;
   if (!clean) {
@@ -13,8 +13,8 @@ const cleanFn = (field: { clean?: (value: unknown) => unknown }) => {
   }
   return clean;
 };
-const { sessionTimeout, heartbeatInterval } =
-  kafkaConsumerInputs.sessionTiming.inputs;
+const { fromBeginning, autoCommit, deserializeKeys } =
+  kafkaConsumerInputs.consumerOptions.inputs;
 describe("integer coercion clean fns (util.types.toInt)", () => {
   const intInputs: [
     string,
@@ -23,8 +23,8 @@ describe("integer coercion clean fns (util.types.toInt)", () => {
     },
   ][] = [
     ["maxMessages", kafkaConsumerInputs.maxMessages],
-    ["sessionTiming.sessionTimeout", sessionTimeout],
-    ["sessionTiming.heartbeatInterval", heartbeatInterval],
+    ["sessionTimeout", kafkaConsumerInputs.sessionTimeout],
+    ["heartbeatInterval", kafkaConsumerInputs.heartbeatInterval],
   ];
   test.each(intInputs)("%s parses a numeric string", (_name, field) => {
     expect(cleanFn(field)("100")).toBe(100);
@@ -38,6 +38,23 @@ describe("integer coercion clean fns (util.types.toInt)", () => {
   test.each(intInputs)("%s throws on a non-numeric string", (_name, field) => {
     expect(() => cleanFn(field)("abc")).toThrow(
       "Value 'abc' cannot be coerced to int.",
+    );
+  });
+  test("an empty or absent value falls back to each input's declared default", () => {
+    expect(cleanFn(kafkaConsumerInputs.maxMessages)(undefined)).toBe(100);
+    expect(cleanFn(kafkaConsumerInputs.maxMessages)("")).toBe(100);
+  });
+  test("maxMessages rejects zero and negative values", () => {
+    expect(() => cleanFn(kafkaConsumerInputs.maxMessages)("0")).toThrow(
+      "Max Messages must be at least 1.",
+    );
+    expect(() => cleanFn(kafkaConsumerInputs.maxMessages)("-5")).toThrow(
+      "Max Messages must be at least 1.",
+    );
+    expect(cleanFn(kafkaConsumerInputs.maxMessages)("1")).toBe(1);
+    expect(cleanFn(kafkaConsumerInputs.sessionTimeout)(undefined)).toBe(30000);
+    expect(cleanFn(kafkaConsumerInputs.heartbeatInterval)(undefined)).toBe(
+      3000,
     );
   });
 });
@@ -70,11 +87,13 @@ describe("unchecked array/list cast clean fns", () => {
       { key: "k1", value: "first message" },
       { key: "k2", value: "second message" },
     ];
-    expect(cleanFn(messages)(value)).toBe(value);
+    expect(cleanFn(publishMessagesInputs.messages)(value)).toBe(value);
   });
   test("messages passes a non-array value through unchanged instead of throwing", () => {
-    expect(cleanFn(messages)("not-a-list")).toBe("not-a-list");
-    expect(cleanFn(messages)(undefined)).toBeUndefined();
+    expect(cleanFn(publishMessagesInputs.messages)("not-a-list")).toBe(
+      "not-a-list",
+    );
+    expect(cleanFn(publishMessagesInputs.messages)(undefined)).toBeUndefined();
   });
 });
 describe("string coercion clean fns (util.types.toString)", () => {
@@ -108,9 +127,9 @@ describe("boolean coercion clean fns (util.types.toBool)", () => {
       clean?: (value: unknown) => unknown;
     },
   ][] = [
-    ["fromBeginning", kafkaConsumerInputs.fromBeginning],
-    ["autoCommit", kafkaConsumerInputs.autoCommit],
-    ["deserializeKeys", kafkaConsumerInputs.deserializeKeys],
+    ["consumerOptions.fromBeginning", fromBeginning],
+    ["consumerOptions.autoCommit", autoCommit],
+    ["consumerOptions.deserializeKeys", deserializeKeys],
   ];
   test.each(boolInputs)('%s parses the string "true"', (_name, field) => {
     expect(cleanFn(field)("true")).toBe(true);
@@ -118,11 +137,12 @@ describe("boolean coercion clean fns (util.types.toBool)", () => {
   test.each(boolInputs)('%s parses the string "false"', (_name, field) => {
     expect(cleanFn(field)("false")).toBe(false);
   });
-  test.each(
-    boolInputs,
-  )("%s coerces an empty or absent value to false rather than throwing", (_name, field) => {
-    expect(cleanFn(field)("")).toBe(false);
-    expect(cleanFn(field)(undefined)).toBe(false);
+  test("an empty or absent value falls back to each input's declared default", () => {
+    expect(cleanFn(fromBeginning)("")).toBe(false);
+    expect(cleanFn(fromBeginning)(undefined)).toBe(false);
+    expect(cleanFn(deserializeKeys)(undefined)).toBe(false);
+    expect(cleanFn(autoCommit)("")).toBe(true);
+    expect(cleanFn(autoCommit)(undefined)).toBe(true);
   });
   test.each(
     boolInputs,

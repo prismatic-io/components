@@ -1,0 +1,64 @@
+AWS Assume Role authentication connects to an Amazon MSK cluster that uses [IAM access control](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html) by assuming an IAM role with temporary security credentials.
+This method is useful for cross account access or when implementing principle of least privilege.
+
+Refer to the [AWS documentation on assuming roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_manage-assume.html) for detailed information.
+
+#### Prerequisites
+
+- Completed [IAM Access Key and Secret](#awsaccesskeysecret) connection setup (access key pair required)
+- Appropriate permissions to create IAM roles
+- Network access from the integration runtime to the cluster's IAM bootstrap brokers
+
+#### Setup Steps
+
+An IAM user with access keys is required to assume a role. If access keys have not been created, follow the [IAM Access Key and Secret](#awsaccesskeysecret) setup steps first, then return here to create the IAM role.
+
+##### Create an IAM Role with Trust Policy
+
+1. Sign in to the [AWS Console](https://aws.amazon.com/), open **Identity and Access Management (IAM)**, navigate to **Roles** and select **Create Role**
+2. Select **Custom trust policy** as the trusted entity type
+3. Enter the trust policy below, replacing `USER_ARN` with the IAM user ARN:
+
+<details>
+<summary>View trust policy template</summary>
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "USER_ARN"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+</details>
+
+4. Click **Next** and attach a policy that grants the [`kafka-cluster` actions](https://docs.aws.amazon.com/msk/latest/developerguide/kafka-actions.html) the integration needs (for example `kafka-cluster:Connect`, `kafka-cluster:DescribeTopic`, `kafka-cluster:ReadData`, `kafka-cluster:WriteData`, `kafka-cluster:DescribeGroup`, and `kafka-cluster:AlterGroup`)
+5. Complete the remaining steps and select **Create Role**
+6. Copy the **Role ARN** from the role summary (format: `arn:aws:iam::123456789012:role/role-name`)
+
+#### Configure the Connection
+
+Create a connection of type **IAM Role ARN** and enter:
+
+- **Role ARN**: The ARN of the IAM role to assume
+- **Access Key ID**: From the IAM user (see [IAM Access Key and Secret](#awsaccesskeysecret))
+- **Secret Access Key**: From the IAM user
+- **External ID** (optional): The external ID that the role's trust policy checks with an `sts:ExternalId` condition, used for cross-account access. Refer to the [AWS documentation on external IDs](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html#id_roles_third-party_external-id)
+- **AWS Region**: The Region of the MSK cluster (e.g., `us-east-1`), used both for the STS call that assumes the role and to sign the authentication token
+- **CA Certificate** (optional): A CA certificate in PEM format. Leave blank to trust the Amazon-issued broker certificates
+- **Enable Avro Deserialization** and the **Schema Registry** fields (optional): Only needed when the **Kafka Consumer** trigger should decode Avro messages through a Confluent Schema Registry
+
+On every action, trigger, and topic dropdown that uses this connection, also fill in:
+
+- **Brokers**: The cluster's IAM bootstrap broker addresses
+
+#### Verify Connection
+
+The IAM user credentials assume the role, which provides temporary credentials with the role's attached permissions. Ensure the trust policy correctly references the IAM user ARN. The role is assumed once per client and the signed token is reused for every broker connection made by that client.

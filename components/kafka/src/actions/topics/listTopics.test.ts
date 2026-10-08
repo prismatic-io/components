@@ -1,18 +1,20 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { Kafka } from "kafkajs";
-import { basic } from "../connections/basic";
-import { listTopicsExamplePayload } from "../examplePayloads";
+import { type Mock, vi } from "vitest";
+import { awsAccessKeySecret } from "../../connections/awsAccessKeySecret";
+import { basic } from "../../connections/basic";
+import { listTopicsExamplePayload } from "../../examplePayloads";
 import { listTopics } from "./listTopics";
-jest.mock("kafkajs", () => ({
-  ...jest.requireActual("kafkajs"),
-  Kafka: jest.fn(),
+vi.mock("kafkajs", async () => ({
+  ...(await vi.importActual<typeof import("kafkajs")>("kafkajs")),
+  Kafka: vi.fn(),
 }));
-const mockedKafka = Kafka as unknown as jest.Mock;
+const mockedKafka = Kafka as unknown as Mock;
 const adminMock = {
-  connect: jest.fn(),
-  listTopics: jest.fn(),
-  fetchTopicMetadata: jest.fn(),
-  disconnect: jest.fn(),
+  connect: vi.fn(),
+  listTopics: vi.fn(),
+  fetchTopicMetadata: vi.fn(),
+  disconnect: vi.fn(),
 };
 const connection = createConnection(basic, {
   username: "user",
@@ -24,6 +26,11 @@ const params = {
   clientId: "my-app",
   brokers: ["broker-1.example.com:9092"],
 };
+const iamConnection = createConnection(awsAccessKeySecret, {
+  accessKeyId: "AKIAIOSFODNN7EXAMPLE",
+  secretAccessKey: "wJalrXUtNFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+  awsRegion: "us-east-1",
+});
 const partitionsOfLength = (count: number) =>
   Array.from({ length: count }, (_unused, partitionId) => ({
     partitionId,
@@ -40,14 +47,30 @@ const topicMetadata = {
   ],
 };
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   adminMock.connect.mockResolvedValue(undefined);
   adminMock.disconnect.mockResolvedValue(undefined);
   adminMock.listTopics.mockResolvedValue(topicNames);
   adminMock.fetchTopicMetadata.mockResolvedValue(topicMetadata);
-  mockedKafka.mockImplementation(() => ({ admin: () => adminMock }));
+  // biome-ignore lint/complexity/useArrowFunction: must stay constructible, the mocked class is invoked with `new`
+  mockedKafka.mockImplementation(function () {
+    return { admin: () => adminMock };
+  });
 });
 describe("listTopics", () => {
+  test("builds a TLS + OAUTHBEARER client for an Amazon MSK IAM connection", async () => {
+    await invoke(listTopics, {
+      ...params,
+      connection: iamConnection,
+      brokers: ["b-1.cluster.kafka.us-east-1.amazonaws.com:9098"],
+    });
+    expect(mockedKafka).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ssl: true,
+        sasl: expect.objectContaining({ mechanism: "oauthbearer" }),
+      }),
+    );
+  });
   test("splits topics from internal topics on the __ prefix", async () => {
     const { result } = await invoke(listTopics, params);
     expect(result.data.topics).toEqual([

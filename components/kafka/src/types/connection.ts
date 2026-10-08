@@ -1,6 +1,3 @@
-export const supportedMechanismTypes = [
-  "plain",
-  "scram-sha-256",
-  "scram-sha-512",
-] as const;
-export type SupportedMechanismTypes = (typeof supportedMechanismTypes)[number];
+import type { SUPPORTED_MECHANISM_TYPES } from "../constants";
+export type SupportedMechanismTypes =
+  (typeof SUPPORTED_MECHANISM_TYPES)[number];

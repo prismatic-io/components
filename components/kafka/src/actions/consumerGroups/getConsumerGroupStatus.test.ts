@@ -1,20 +1,22 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import { Kafka } from "kafkajs";
-import { basic } from "../connections/basic";
-import { getConsumerGroupStatusExamplePayload } from "../examplePayloads";
+import { type Mock, vi } from "vitest";
+import { awsAccessKeySecret } from "../../connections/awsAccessKeySecret";
+import { basic } from "../../connections/basic";
+import { getConsumerGroupStatusExamplePayload } from "../../examplePayloads";
 import { getConsumerGroupStatus } from "./getConsumerGroupStatus";
-jest.mock("kafkajs", () => ({
-  ...jest.requireActual("kafkajs"),
-  Kafka: jest.fn(),
+vi.mock("kafkajs", async () => ({
+  ...(await vi.importActual<typeof import("kafkajs")>("kafkajs")),
+  Kafka: vi.fn(),
 }));
-const mockedKafka = Kafka as unknown as jest.Mock;
+const mockedKafka = Kafka as unknown as Mock;
 const adminMock = {
-  connect: jest.fn(),
-  describeGroups: jest.fn(),
-  listTopics: jest.fn(),
-  fetchOffsets: jest.fn(),
-  fetchTopicOffsets: jest.fn(),
-  disconnect: jest.fn(),
+  connect: vi.fn(),
+  describeGroups: vi.fn(),
+  listTopics: vi.fn(),
+  fetchOffsets: vi.fn(),
+  fetchTopicOffsets: vi.fn(),
+  disconnect: vi.fn(),
 };
 const connection = createConnection(basic, {
   username: "user",
@@ -28,6 +30,11 @@ const params = {
   consumerGroupId: "order-processing-group",
   topicsToCheck: ["order-events"],
 };
+const iamConnection = createConnection(awsAccessKeySecret, {
+  accessKeyId: "AKIAIOSFODNN7EXAMPLE",
+  secretAccessKey: "wJalrXUtNFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+  awsRegion: "us-east-1",
+});
 const describeGroupsReply = {
   groups: [
     {
@@ -61,16 +68,32 @@ const fetchTopicOffsetsReply = [
   { partition: 1, offset: "980", high: "980", low: "0" },
 ];
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   adminMock.connect.mockResolvedValue(undefined);
   adminMock.disconnect.mockResolvedValue(undefined);
   adminMock.describeGroups.mockResolvedValue(describeGroupsReply);
   adminMock.listTopics.mockResolvedValue(["order-events"]);
   adminMock.fetchOffsets.mockResolvedValue(fetchOffsetsReply);
   adminMock.fetchTopicOffsets.mockResolvedValue(fetchTopicOffsetsReply);
-  mockedKafka.mockImplementation(() => ({ admin: () => adminMock }));
+  // biome-ignore lint/complexity/useArrowFunction: must stay constructible, the mocked class is invoked with `new`
+  mockedKafka.mockImplementation(function () {
+    return { admin: () => adminMock };
+  });
 });
 describe("getConsumerGroupStatus", () => {
+  test("builds a TLS + OAUTHBEARER client for an Amazon MSK IAM connection", async () => {
+    await invoke(getConsumerGroupStatus, {
+      ...params,
+      connection: iamConnection,
+      brokers: ["b-1.cluster.kafka.us-east-1.amazonaws.com:9098"],
+    });
+    expect(mockedKafka).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ssl: true,
+        sasl: expect.objectContaining({ mechanism: "oauthbearer" }),
+      }),
+    );
+  });
   test("computes per-partition lag and the summed totals as strings", async () => {
     const { result } = await invoke(getConsumerGroupStatus, params);
     expect(result.data).toEqual(getConsumerGroupStatusExamplePayload.data);

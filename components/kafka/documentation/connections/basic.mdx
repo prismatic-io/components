@@ -26,7 +26,7 @@ Refer to the [Kafka SASL authentication documentation](https://kafka.apache.org/
 
 #### Configure the Connection
 
-Create a connection of type **Basic Username/Password** and enter:
+Create a connection of type **Basic Authentication** and enter:
 
 - **Username**: Enter the username provided by the Kafka administrator or service provider
 - **Password**: Enter the password or API key
@@ -35,14 +35,7 @@ Create a connection of type **Basic Username/Password** and enter:
   - `scram-sha-256` - SCRAM-SHA-256 mechanism (recommended for production)
   - `scram-sha-512` - SCRAM-SHA-512 mechanism (higher security)
 - **Enable SSL/TLS**: Check this option if the Kafka cluster requires secure connections
-- **CA Certificate** (if SSL is enabled): Paste the Certificate Authority (CA) certificate in PEM format. This is required for SSL connections.
+- **CA Certificate** (if SSL is enabled): Paste the Certificate Authority (CA) certificate in PEM format. This is required for SSL connections. Convert certificates in other formats (JKS, PKCS12) to PEM before pasting.
 - **Client Certificate** (if required): Paste the client certificate in PEM format (only if the cluster requires mutual TLS authentication)
 - **Client Key** (if required): Paste the client private key in PEM format (only if the cluster requires mutual TLS authentication)
-
-:::warning[Security Recommendation]
-For production environments, use SCRAM-SHA-256 or SCRAM-SHA-512 with SSL/TLS enabled. The PLAIN mechanism transmits credentials without hashing and should only be used over encrypted connections.
-:::
-
-:::info[SSL/TLS Certificates]
-Certificates must be in PEM format. If the certificates are in other formats (JKS, PKCS12), convert them to PEM before pasting into the connection configuration.
-:::
+- **Enable Avro Deserialization** and the **Schema Registry** fields (optional): Only needed when the **Kafka Consumer** trigger should decode Avro messages through a Confluent Schema Registry

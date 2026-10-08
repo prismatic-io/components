@@ -4,16 +4,17 @@ import {
   PerformSafety,
   util,
 } from "@prismatic-io/spectral";
-import { createClient } from "../client";
-import { getConsumerGroupStatusExamplePayload } from "../examplePayloads";
-import { getConsumerGroupStatusInputs } from "../inputs";
-import { getConsumerGroupStatusOutputSchema } from "../outputSchemas";
+import { createClient } from "../../client";
+import { getConsumerGroupStatusExamplePayload } from "../../examplePayloads";
+import { getConsumerGroupStatusInputs } from "../../inputs";
+import { getConsumerGroupStatusOutputSchema } from "../../outputSchemas";
 import type {
   ConsumerGroupMember,
   ConsumerGroupStatus,
   PartitionLag,
   TopicLag,
-} from "../types/consumer";
+} from "../../types/consumer";
+import { withAdmin } from "../../utils";
 export const getConsumerGroupStatus = action({
   display: {
     label: "Get Consumer Group Status",
@@ -32,10 +33,8 @@ export const getConsumerGroupStatus = action({
       },
       context.debug.enabled,
     );
-    const admin = kafka.admin();
-    try {
-      await admin.connect();
-      const groupId = consumerGroupId;
+    const groupId = consumerGroupId;
+    const { group, topicsWithLag } = await withAdmin(kafka, async (admin) => {
       const groups = await admin.describeGroups([groupId]);
       const group = groups.groups[0];
       let topicsToProcess: string[];
@@ -43,9 +42,7 @@ export const getConsumerGroupStatus = action({
         topicsToProcess = topicsToCheck;
       } else {
         const allTopics = await admin.listTopics();
-        topicsToProcess = allTopics.filter(
-          (topic) => !topic.startsWith("__") && !topic.startsWith("_"),
-        );
+        topicsToProcess = allTopics.filter((topic) => !topic.startsWith("_"));
       }
       const topicsWithLag: TopicLag[] = [];
       const allOffsets = await Promise.all(
@@ -95,34 +92,31 @@ export const getConsumerGroupStatus = action({
           }
         } catch (_e) {}
       }
-      await admin.disconnect();
-      const result: ConsumerGroupStatus = {
-        groupId,
-        state: group.state,
-        protocolType: group.protocolType,
-        protocol: group.protocol,
-        members: group.members.map(
-          (m): ConsumerGroupMember => ({
-            memberId: m.memberId,
-            clientId: m.clientId,
-            clientHost: m.clientHost,
-          }),
+      return { group, topicsWithLag };
+    });
+    const result: ConsumerGroupStatus = {
+      groupId,
+      state: group.state,
+      protocolType: group.protocolType,
+      protocol: group.protocol,
+      members: group.members.map(
+        (m): ConsumerGroupMember => ({
+          memberId: m.memberId,
+          clientId: m.clientId,
+          clientHost: m.clientHost,
+        }),
+      ),
+      topicsWithOffsets: topicsWithLag,
+      totalLag: util.types.toString(
+        topicsWithLag.reduce(
+          (sum, t) => sum + util.types.toBigInt(t.totalLag),
+          util.types.toBigInt(0),
         ),
-        topicsWithOffsets: topicsWithLag,
-        totalLag: util.types.toString(
-          topicsWithLag.reduce(
-            (sum, t) => sum + util.types.toBigInt(t.totalLag),
-            util.types.toBigInt(0),
-          ),
-        ),
-      };
-      return {
-        data: result,
-      };
-    } catch (error) {
-      await admin.disconnect().catch(() => {});
-      throw error;
-    }
+      ),
+    };
+    return {
+      data: result,
+    };
   },
   performSafety: PerformSafety.NOT_ALLOWED,
   examplePerform: async (_context, { consumerGroupId }) => ({
@@ -138,4 +132,3 @@ export const getConsumerGroupStatus = action({
   }),
   examplePayload: getConsumerGroupStatusExamplePayload,
 });
-export default getConsumerGroupStatus;

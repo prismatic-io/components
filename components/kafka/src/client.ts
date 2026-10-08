@@ -1,4 +1,4 @@
-import { ConnectionError, util } from "@prismatic-io/spectral";
+import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import {
   Kafka,
   type KafkaConfig,
@@ -6,27 +6,54 @@ import {
   type SASLOptions,
 } from "kafkajs";
 import { basic } from "./connections/basic";
+import { SUPPORTED_MECHANISM_TYPES } from "./constants";
 import type { CreateClientProps } from "./types/client";
+import type { SupportedMechanismTypes } from "./types/connection";
 import {
-  type SupportedMechanismTypes,
-  supportedMechanismTypes,
-} from "./types/connection";
-import { normalizeLineBreaks } from "./utils";
-export const getPayload = ({
-  clientId,
-  brokers,
-  connection,
-}: CreateClientProps): KafkaConfig => {
+  createMskOauthBearerProvider,
+  isMskIamConnection,
+  normalizeLineBreaks,
+} from "./utils";
+const getMskIamPayload = (
+  { clientId, brokers }: CreateClientProps,
+  connection: Connection,
+): KafkaConfig => {
+  const region = util.types.toString(connection.fields.awsRegion).trim();
+  if (!region) {
+    throw new ConnectionError(
+      connection,
+      "AWS Region is required when using an Amazon MSK IAM connection.",
+    );
+  }
+  const caCert = util.types.toString(connection.fields.caCert);
+  return {
+    clientId,
+    brokers,
+    ssl: caCert ? { ca: normalizeLineBreaks(caCert) } : true,
+    sasl: {
+      mechanism: "oauthbearer",
+      oauthBearerProvider: createMskOauthBearerProvider(connection, region),
+    },
+  };
+};
+export const getPayload = (props: CreateClientProps): KafkaConfig => {
+  const { clientId, brokers, connection } = props;
   if (!connection) {
     return { clientId, brokers };
   }
+  if (isMskIamConnection(connection)) {
+    return getMskIamPayload(props, connection);
+  }
   if (connection.key !== basic.key) {
-    throw new ConnectionError(connection, "Unknown Connection type provided.");
+    throw new ConnectionError(
+      connection,
+      `Unknown Connection type provided: '${connection.key}'.`,
+    );
   }
   const mechanism = util.types.toString(
     connection.fields.authMechanism,
   ) as SupportedMechanismTypes;
-  if (!supportedMechanismTypes.includes(mechanism)) {
+  if (!SUPPORTED_MECHANISM_TYPES.includes(mechanism)) {
     throw new ConnectionError(
       connection,
       `Invalid Authentication Mechanism specified: '${mechanism}'.`,
@@ -37,14 +64,17 @@ export const getPayload = ({
     brokers,
   };
   const sslEnabled = util.types.toBool(connection.fields.sslEnabled);
+  const caCert = util.types.toString(connection.fields.caCert);
+  const clientCert = util.types.toString(connection.fields.clientCert);
+  const clientKey = util.types.toString(connection.fields.clientKey);
   if (sslEnabled) {
     config.ssl = {};
-    if (connection.fields.caCert) {
-      config.ssl.ca = normalizeLineBreaks(connection.fields.caCert);
+    if (caCert) {
+      config.ssl.ca = normalizeLineBreaks(caCert);
     }
-    if (connection.fields.clientCert && connection.fields.clientKey) {
-      config.ssl.cert = normalizeLineBreaks(connection.fields.clientCert);
-      config.ssl.key = normalizeLineBreaks(connection.fields.clientKey);
+    if (clientCert && clientKey) {
+      config.ssl.cert = normalizeLineBreaks(clientCert);
+      config.ssl.key = normalizeLineBreaks(clientKey);
     }
   }
   const username = connection.fields.username
@@ -53,8 +83,7 @@ export const getPayload = ({
   const password = connection.fields.password
     ? util.types.toString(connection.fields.password).trim()
     : "";
-  const hasClientCerts =
-    connection.fields.clientCert && connection.fields.clientKey;
+  const hasClientCerts = clientCert && clientKey;
   if (username && password && !hasClientCerts) {
     config.sasl = {
       mechanism,
