@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-09
+
+- Added opt-in batching to the **New Records** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input to the **New Records** trigger for performing an initial sync of calls. The initial sync begins on the first recurrence and backfills every call started on or after the specified date, seeding each once and ignoring the visibility filter. It applies to the Calls resource only and has no effect on Users. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-05-20
 
 Applied automated security patches and code formatting updates

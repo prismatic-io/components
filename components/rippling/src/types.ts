@@ -9,3 +9,11 @@ export interface RipplingRecord {
   updated_at: string;
   [key: string]: unknown;
 }
+export interface RipplingChangesObject {
+  created: RipplingRecord[];
+  updated: RipplingRecord[];
+}
+export interface RipplingRecordChange {
+  changeType: "created" | "updated";
+  record: RipplingRecord;
+}

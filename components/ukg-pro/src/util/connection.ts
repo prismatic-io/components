@@ -83,3 +83,25 @@ export const cleanString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
 export const cleanNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
+export const lookBackDateClean = (value: unknown): string => {
+  const str = util.types.toString(value).trim();
+  if (!str) return "";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+    throw new Error("Look-back Date must be in YYYY-MM-DD format.");
+  }
+  const [year, month, day] = str
+    .split("-")
+    .map((part) => util.types.toNumber(part));
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
+  }
+  if (parsed.getTime() > Date.now()) {
+    throw new Error("Look-back Date cannot be a future date.");
+  }
+  return str;
+};

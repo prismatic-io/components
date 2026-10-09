@@ -1,6 +1,25 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { OpsAlertSummary, ServiceRequest } from "../types";
+import type {
+  OpsAlertChange,
+  OpsAlertChangesObject,
+  OpsAlertSummary,
+  ServiceRequest,
+  ServiceRequestChange,
+  ServiceRequestChangesObject,
+} from "../types";
 import { getOpsPaginatedData, getPaginatedData } from "./pagination";
+export const resolveServiceRequestChanges = (
+  data: ServiceRequestChangesObject | undefined,
+): ServiceRequestChange[] =>
+  (data ?? []).map(
+    (record): ServiceRequestChange => ({ changeType: "created", record }),
+  );
+export const resolveOpsAlertChanges = (
+  data: OpsAlertChangesObject | undefined,
+): OpsAlertChange[] =>
+  (data ?? []).map(
+    (record): OpsAlertChange => ({ changeType: "created", record }),
+  );
 export const fetchNewRequestsSince = async (
   client: HttpClient,
   lastPolledAtMs: number,

@@ -6,8 +6,13 @@ import type {
   NewHireStatusChange,
   NewHireStatusEntry,
   NewHireStatusPollingState,
+  NewHireStatusRecordChange,
 } from "../types";
-import { fetchAllPages, getTenantIdentifier } from "../util";
+import {
+  fetchAllPages,
+  getTenantIdentifier,
+  resolveNewHireStatusChanges,
+} from "../util";
 export const pollNewHireStatus = pollingTrigger({
   display: {
     label: "New Hire Status",
@@ -15,6 +20,12 @@ export const pollNewHireStatus = pollingTrigger({
       "Checks for new and updated new hire onboarding records on a configured schedule.",
   },
   inputs: pollNewHireStatusInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): NewHireStatusRecordChange[] =>
+      resolveNewHireStatusChanges(payload.body.data as NewHireStatusChange[]),
+  },
   perform: async (context, payload, { connection }) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as NewHireStatusPollingState;

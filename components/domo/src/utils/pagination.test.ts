@@ -1,4 +1,4 @@
-jest.mock("@prismatic-io/spectral", () => ({
+vi.mock("@prismatic-io/spectral", () => ({
   util: {
     types: {
       toNumber: (val: string) => Number.parseInt(val, 10),
@@ -6,13 +6,14 @@ jest.mock("@prismatic-io/spectral", () => ({
     },
   },
 }));
+import type { Mock } from "vitest";
 import { paginateResults } from "./pagination";
 const createMockClient = (
   responses: {
     data: unknown;
   }[],
 ) => {
-  const get = jest.fn();
+  const get = vi.fn();
   for (const response of responses) {
     get.mockResolvedValueOnce(response);
   }
@@ -118,7 +119,7 @@ describe("paginateResults", () => {
         params: expect.objectContaining({ offset: "0" }),
       }),
     );
-    const callParams = (client.get as jest.Mock).mock.calls[0][1].params;
+    const callParams = (client.get as Mock).mock.calls[0][1].params;
     expect(callParams).not.toHaveProperty("offset", "500");
   });
   it("passes Accept: application/json header", async () => {
@@ -140,7 +141,7 @@ describe("paginateResults", () => {
       nameLike: "test",
       sort: "name",
     });
-    const callParams = (client.get as jest.Mock).mock.calls[0][1].params;
+    const callParams = (client.get as Mock).mock.calls[0][1].params;
     expect(callParams).toMatchObject({
       nameLike: "test",
       sort: "name",

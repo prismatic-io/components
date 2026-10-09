@@ -4,7 +4,12 @@ import type {
   HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import FormData from "form-data";
-import type { AmazonRecord } from "./types";
+import { PollResource } from "./constants";
+import type {
+  AmazonRecord,
+  PollingChangesObject,
+  PollingRecordChange,
+} from "./types";
 export const jsonInputClean = (value: unknown) => {
   if (typeof value === "string") {
     if (value !== null && value.trim() !== "") {
@@ -116,20 +121,26 @@ export const paginateResults = async <T>(
   const results: T[] = [];
   let nextToken: string | undefined;
   do {
-    const { data } = await client.get<{
+    type Page = {
       NextToken?: string;
       [key: string]: unknown;
-    }>(url, {
+    };
+    const { data } = await client.get<
+      Page & {
+        payload?: Page;
+      }
+    >(url, {
       params: {
         ...params,
         NextToken: nextToken,
       },
     });
-    const pageResults = data[resultArrayKey] as T[] | undefined;
+    const body = data.payload ?? data;
+    const pageResults = body[resultArrayKey] as T[] | undefined;
     if (pageResults && Array.isArray(pageResults)) {
       results.push(...pageResults);
     }
-    nextToken = data.NextToken;
+    nextToken = body.NextToken;
     if (!fetchAll) {
       break;
     }
@@ -138,7 +149,7 @@ export const paginateResults = async <T>(
 };
 export const toOptionalString = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
-export const fetchOrdersSince = async (
+const fetchOrdersSince = async (
   client: HttpClient,
   lastUpdatedAfter: string,
   marketplaceIdValues: string | undefined,
@@ -154,7 +165,7 @@ export const fetchOrdersSince = async (
     true,
   );
 };
-export const fetchFeedsSince = async (
+const fetchFeedsSince = async (
   client: HttpClient,
   createdSince: string,
 ): Promise<AmazonRecord[]> => {
@@ -174,4 +185,78 @@ export const fetchFeedsSince = async (
     nextToken = data.nextToken;
   } while (nextToken);
   return allFeeds;
+};
+export const fetchPollingChanges = async (
+  client: HttpClient,
+  resourceType: string,
+  lastPolledAt: string,
+  marketplaceIds: string | undefined,
+): Promise<Required<PollingChangesObject>> => {
+  if (resourceType !== PollResource.ORDERS) {
+    return {
+      created: await fetchFeedsSince(client, lastPolledAt),
+      updated: [],
+    };
+  }
+  const records = await fetchOrdersSince(client, lastPolledAt, marketplaceIds);
+  const lastPolledDate = new Date(lastPolledAt);
+  const created: AmazonRecord[] = [];
+  const updated: AmazonRecord[] = [];
+  for (const record of records) {
+    const purchaseDate = record.PurchaseDate as string;
+    if (purchaseDate && new Date(purchaseDate) > lastPolledDate) {
+      created.push(record);
+    } else {
+      updated.push(record);
+    }
+  }
+  return { created, updated };
+};
+const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+export const lookBackDateClean = (value: unknown): string => {
+  if (value === undefined || value === null) {
+    return "";
+  }
+  const raw = typeof value === "string" ? value.trim() : String(value);
+  if (raw === "") {
+    return "";
+  }
+  const match =
+    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  if (!match) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  const [, yearStr, monthStr, dayStr] = match;
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  if (parsed.getTime() > Date.now()) {
+    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  }
+  return parsed.toISOString();
+};
+export const resolvePollingRecordChanges = (
+  data: PollingChangesObject | undefined,
+): PollingRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

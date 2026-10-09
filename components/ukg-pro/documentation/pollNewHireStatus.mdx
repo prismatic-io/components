@@ -39,6 +39,8 @@ The trigger compares the current state of each new hire against the stored state
 2. **StatusChange** - The status field changed (e.g., "In Progress" → "Completed")
 3. **ProgressUpdate** - The onboarding progress percentage changed without a status change
 
+On the first recurrence the state map is empty, so every current new hire is reported as **NewHireAdded**.
+
 **Multi-Endpoint Polling**
 
 To capture new hires transitioning from in-progress to completed status, the trigger polls two endpoints:
@@ -47,13 +49,26 @@ To capture new hires transitioning from in-progress to completed status, the tri
 
 This dual-endpoint approach ensures status changes are detected even when a new hire completes onboarding between poll intervals.
 
-#### Configuration
+**Batching**
 
-This trigger requires no additional configuration inputs beyond the UKG Pro connection. It automatically polls all new hire records accessible to the authenticated tenant.
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to UKG Pro.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads the `body.data` array and the `body.inProgressCount`
+and `body.completedCount` totals. With batching on those fields do not exist: each execution
+receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size
+is greater than 1, and the totals are not carried. Any step reading the older shape must be
+updated before batching is enabled. Because batching is enabled per flow, that change is scoped to
+the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with detected changes:
+With batching off, the trigger returns the detected changes under `data`, with summary counts alongside. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -94,8 +109,31 @@ The trigger returns an object with detected changes:
     }
   ],
   "inProgressCount": 8,
-  "completedCount": 50,
-  "pollTime": "2024-01-15T10:30:00.000Z"
+  "completedCount": 50
+}
+```
+
+</details>
+
+With batching on, each execution receives one change tagged with its own `changeType` (**NewHireAdded**, **StatusChange**, or **ProgressUpdate**), or an array of such items when the batch size is greater than 1. The `data` array and the summary counts are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "StatusChange",
+  "record": {
+    "newHireId": "NH-12346",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "changeType": "StatusChange",
+    "previousStatus": "In Progress",
+    "currentStatus": "Completed",
+    "previousProgress": 100,
+    "currentProgress": 100,
+    "detectedAt": "2024-01-15T10:30:00.000Z"
+  }
 }
 ```
 
@@ -118,7 +156,6 @@ Each change object includes:
 The response also includes summary counts:
 - **inProgressCount** - Total number of in-progress new hires in current poll
 - **completedCount** - Number of completed new hires retrieved (up to 50)
-- **pollTime** - Timestamp of the poll execution
 
 </details>
 

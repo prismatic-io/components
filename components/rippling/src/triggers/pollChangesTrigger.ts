@@ -2,19 +2,31 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { API_VERSION, POLL_RESOURCE_CONFIG } from "../constants";
 import { pollChangesTriggerInputs } from "../inputs";
-import type { PollingState, RipplingRecord } from "../types";
-import { fetchAllRecords } from "../utils";
+import type {
+  PollingState,
+  RipplingChangesObject,
+  RipplingRecord,
+  RipplingRecordChange,
+} from "../types";
+import { fetchAllRecords, resolvePollingRecordChanges } from "../utils";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in Rippling on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified Rippling resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): RipplingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as RipplingChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as unknown as PollingState;
-    const lastPolledAt: string = pollState?.lastPolledAt || now;
+    const lastPolledAt: string =
+      pollState?.lastPolledAt || params.lookBackDate || now;
     const resourceType = params.pollResourceType;
     const endpoint = `/${resourceType}`;
     if (context.debug.enabled) {

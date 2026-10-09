@@ -5,8 +5,6 @@ export const ukgProBasicAuth = connection({
     label: "Basic Authentication",
     description: "Authenticate using username and password",
   },
-  comments:
-    "Use this connection for Personnel API (employee data, demographics, changes) and Configuration API (positions, jobs, locations). Create service accounts in System Configuration > Security > Service Account Administration.",
   inputs: {
     baseUrl: {
       label: "API Base URL",

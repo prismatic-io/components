@@ -80,3 +80,10 @@ export interface PollingState extends Record<string, unknown> {
 export type ParsedRegistrant = Omit<Registrant, "registrantKey"> & {
   registrantKey: string;
 };
+export interface PollingChangesObject {
+  created: ParsedRegistrant[];
+}
+export interface PollingRecordChange {
+  changeType: "created";
+  record: ParsedRegistrant;
+}

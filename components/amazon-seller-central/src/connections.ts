@@ -12,8 +12,6 @@ export const amazonOauth = oauth2Connection({
     label: "OAuth 2.0",
     description: "OAuth 2.0 connection for Amazon Seller Central",
   },
-  comments:
-    "Authenticate requests to Amazon Seller Central using values obtained from the developer console.",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",
@@ -97,8 +95,6 @@ export const amazonClientCredentials = oauth2Connection({
     description:
       "OAuth 2.0 Client Credentials connection for Amazon Seller Central",
   },
-  comments:
-    "Authenticate requests to Amazon Seller Central using OAuth 2.0 Client Credentials flow. Use this for server-to-server integrations.",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

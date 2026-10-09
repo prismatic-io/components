@@ -3,29 +3,29 @@ This trigger polls the [Amazon Selling Partner API](https://developer-docs.amazo
 #### How It Works
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes)
-2. It fetches records from the selected Amazon Seller Central resource, optionally filtered by marketplace
-3. Records are categorized as **created** or **updated** based on timestamp fields, compared against the last successful poll time
+2. It fetches records from the selected **Resource Type**: Orders modified since the last successful poll, limited to the selected **Marketplace IDs**, or Feeds created since then
+3. Records are categorized as **created** or **updated** based on timestamp fields, compared against the last successful poll time, and **Show New Records** and **Show Updated Records** (Orders only) control which of the two groups are returned
 4. The trigger updates its internal state after each poll, storing the poll timestamp for use in the next execution
 
-#### Configuration
+**Initial Sync**
 
-Configure the following inputs:
+An initial sync seeds a complete starting state rather than a change feed, so an input that narrows which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are both ignored while it runs, and they are the only inputs it ignores. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, not a future date) is set, and seeds every order modified, or feed created, on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
 
-- **Connection**: The Amazon Seller Central connection used to authenticate API requests
-- **Resource Type**: The Amazon Seller Central resource to monitor. Available options:
+The window has no fixed upper bound, so a record changed while the sync is running can be swept into it. The trigger stores the time the sync began as its position, and the first incremental recurrence resumes from exactly there, so such a record can be delivered again; nothing in the payload marks the handoff. The whole window is fetched within one recurrence whether batching is on or off, because no per-recurrence cap applies.
 
-  | Resource | Change Detection | Tracks New | Tracks Updated |
-  |----------|-----------------|------------|---------------|
-  | Orders | Timestamp (`PurchaseDate`) | Yes | Yes |
-  | Feeds | Timestamp (submission date) | Yes | No |
+**Resource Type** and **Marketplace IDs** (Orders only) still apply throughout, so the sync stays within the selected resource and marketplaces. The trigger has no page-size or field-selection input, so nothing else is suppressed. Orders are still classified as **created** or **updated** against the **Look-back Date**. Amazon retains feeds for a maximum of 90 days, so a **Look-back Date** older than that cannot backfill Feeds beyond it.
 
-- **Marketplace IDs**: An optional list of marketplace IDs used to filter Orders results to specific Amazon marketplaces. When left empty, orders across all accessible marketplaces are returned. Does not apply to Feeds
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Applies only to Orders. Defaults to `true`
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Amazon.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on, those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. For Feeds, `updated` is always an empty array.
+With batching off, the trigger returns an object with two arrays: `created` for new records and `updated` for modified records. For Feeds, `updated` is always an empty array. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -55,8 +55,27 @@ The trigger returns an object with two arrays — `created` for new records and 
 
 </details>
 
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "AmazonOrderId": "111-1234567-1234567",
+    "PurchaseDate": "2024-01-15T10:30:00Z",
+    "OrderStatus": "Pending",
+    "MarketplaceId": "ATVPDKIKX0DER"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
-- Orders use `PurchaseDate` for both new and updated detection — an order is classified as **created** if its `PurchaseDate` exceeds the last poll time; updated orders (status changes, shipment updates) are detected via a separate `LastUpdateDate` field
+- Orders are fetched by last update time. An order is classified as **created** if its `PurchaseDate` is later than the last poll time, and as **updated** otherwise (status changes, shipment updates)
 - Feeds do not expose an update timestamp, so only newly submitted feeds are tracked
-- Marketplace ID filtering applies only to Orders; specifying marketplace IDs when monitoring Feeds has no effect
+- **Marketplace IDs** is a required input, but it applies only to Orders; the selected marketplace IDs have no effect when monitoring Feeds

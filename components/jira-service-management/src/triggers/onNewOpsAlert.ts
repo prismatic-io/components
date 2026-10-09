@@ -2,25 +2,35 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { createOpsManagementClient } from "../client";
 import { onNewOpsAlertExamplePayload } from "../examplePayloads";
 import { onNewOpsAlertInputs } from "../inputs/triggers";
-import type { PollingState } from "../types";
-import { fetchNewOpsAlertsSince } from "../util";
+import type {
+  OpsAlertChange,
+  OpsAlertChangesObject,
+  PollingState,
+} from "../types";
+import { fetchNewOpsAlertsSince, resolveOpsAlertChanges } from "../util";
 export const onNewOpsAlert = pollingTrigger({
   display: {
     label: "New Ops Alerts",
     description:
-      "Fetches new alerts created in Jira Service Management Ops on a recurring schedule.",
+      "Retrieves existing and ongoing alerts from Jira Service Management Ops. Load history once, check for changes on a schedule, or both.",
   },
   inputs: onNewOpsAlertInputs,
   allowsBranching: false,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): OpsAlertChange[] =>
+      resolveOpsAlertChanges(payload.body.data as OpsAlertChangesObject),
+  },
   examplePayload: onNewOpsAlertExamplePayload,
   perform: async (
     context,
     payload,
-    { connection, opsAlertAdditionalQuery },
+    { connection, opsAlertAdditionalQuery, lookBackDate },
   ) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const lastPolledAtMs = new Date(lastPolledAt).getTime();
     const { client } = await createOpsManagementClient(
       connection,

@@ -4,28 +4,32 @@ This trigger polls the [Gong API](https://gong.app.gong.io/settings/api/document
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes)
 2. It fetches records from the selected Gong resource using the appropriate change detection strategy:
-   - **Calls**: fetches calls with a `fromDateTime`/`toDateTime` range spanning from the last poll time to the current time — only calls created within that window are returned
+   - **Calls**: fetches calls with a `fromDateTime`/`toDateTime` range spanning from the last poll time to the current time. Only calls created within that window are returned
    - **Users**: fetches all users and compares the returned IDs against the set of previously known IDs to identify newly appearing records
-3. All records identified as new are classified as **created**; neither Calls nor Users support update tracking
-4. The trigger updates its internal state after each poll — storing the poll timestamp for Calls and the current set of known IDs for Users
+3. All records identified as new are classified as **created**; neither Calls nor Users support update tracking. Outside an initial sync, turning **Show New Records** off empties the `created` array
+4. The trigger updates its internal state after each poll, storing the poll timestamp for Calls and the current set of known IDs for Users
 
-#### Configuration
+**Initial Sync**
 
-Configure the following inputs:
+An initial sync seeds a complete starting state rather than a change feed, so an input that narrows which changes are reported would leave gaps in it: **Show New Records** is ignored while it runs, and is the only input it ignores. It applies to the **Calls** resource only. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, not a future date) is set, and seeds every call started on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
 
-- **Connection**: The Gong connection used to authenticate API requests
-- **Resource Type**: The Gong resource to monitor. Available options:
+The **Look-back Date** has no effect on the **Users** resource. Users are detected by comparing against the stored set of known IDs, so the first Users recurrence stores that baseline and returns nothing, whether or not a date is set.
 
-  | Resource | Change Detection                        | Tracks New | Tracks Updated |
-  | -------- | --------------------------------------- | ---------- | -------------- |
-  | Calls    | Timestamp (`fromDateTime`/`toDateTime`) | Yes        | No             |
-  | Users    | ID-based                                | Yes        | No             |
+The window ends at the time the sync begins, so calls started mid-drain are left to the schedule. The trigger stores that time as its position, and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff. The whole window is fetched within one recurrence whether batching is on or off, because no per-recurrence cap applies.
 
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Gong.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on, those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. The `updated` array is always empty for both Calls and Users, as neither resource supports update tracking.
+With batching off, the trigger returns an object with two arrays: `created` for new records and `updated` for modified records. The `updated` array is always empty for both Calls and Users, as neither resource supports update tracking. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -49,8 +53,28 @@ The trigger returns an object with two arrays — `created` for new records and 
 
 </details>
 
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "7782342274025937895",
+    "title": "Discovery Call - Acme Corp",
+    "started": "2024-01-16T15:00:00Z",
+    "duration": 1823,
+    "direction": "Outbound"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
 - For Calls: the time window is bounded by the last poll time and the current execution time. Calls outside this window are not returned
-- For Users: on the first poll, the trigger captures a baseline snapshot of all known user IDs. No records are returned on the first execution — subsequent polls detect additions against that baseline
+- For Users: on the first poll, the trigger captures a baseline snapshot of all known user IDs. No records are returned on the first execution. Subsequent polls detect additions against that baseline
 - Refer to the [Gong API documentation](https://gong.app.gong.io/settings/api/documentation) for rate limit details and available fields

@@ -4,12 +4,43 @@ This trigger polls a [GoToWebinar](https://www.goto.com/webinar) webinar on a co
 
 GoToWebinar's registrants endpoint exposes a per-registrant `registrationDate` (creation time) but no modification timestamp, and it offers no server-side date filter. So on each scheduled run the trigger fetches the webinar's registrants and keeps only those whose `registrationDate` is after the previous poll time. The current run time is stored as the cursor for the next run.
 
-- **First run**: the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical registrants on deploy.
+- **First run**: with no **Look-back Date**, the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical registrants on deploy. With one, it runs the initial sync described below.
 - **Subsequent runs**: only registrants added since the last run are returned.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state, so an input that narrowed which registrants are
+reported would leave gaps in it. This trigger has no such input, so the sync ignores none. It
+begins on the first recurrence, when the trigger has no stored position and a **Look-back Date**
+(`YYYY-MM-DD`) is set, and seeds each registrant whose `registrationDate` is on or after midnight
+UTC on that date exactly once. Left empty, there is no sync.
+
+The window has no fixed upper bound: the sync covers every registrant the webinar has when the
+recurrence fetches them. The trigger then stores the time that recurrence began as its position,
+and the next recurrence resumes from exactly there; nothing in the payload marks the handoff. The
+sync finishes in one recurrence whether batching is on or off.
+
+**Webinar Key** still applies throughout. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to GoToWebinar.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created`. With batching on that field does
+not exist: each execution receives one `{ "changeType": "created", "record": ... }` item, or an
+array of them when the batch size is greater than 1. Any step reading the older shape must be
+updated before batching is enabled. Because batching is enabled per flow, that change is scoped to
+the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns the newly added registrants under `data.created`. Fields shown are representative. The full response object includes additional properties.
+With batching off, the trigger returns the newly added registrants under `data.created`. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -33,8 +64,29 @@ The trigger returns the newly added registrants under `data.created`. Fields sho
 
 </details>
 
+With batching on, each execution receives one registrant tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` array is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "registrantKey": "1234567890",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane.doe@example.com",
+    "status": "APPROVED",
+    "registrationDate": "2026-05-30T14:22:00Z"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
 - This trigger detects **new registrants only**. Registrants carry a creation timestamp but no modification timestamp, so edits to existing registrants are not detected.
 - It is scoped to a single webinar (set by **Webinar Key**). Add one flow per webinar to monitor.
-- Because there is no server-side date filter, each run lists the webinar's registrants and filters them in memory.
+- Because there is no server-side date filter, each run lists the webinar's registrants and filters them in memory. A run reads at most 50 pages of 200 registrants, so registrants beyond that bound are not seen, by the initial sync or by later runs.

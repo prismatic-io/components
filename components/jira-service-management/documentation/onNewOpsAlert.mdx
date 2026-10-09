@@ -4,26 +4,33 @@ The **New Ops Alerts** trigger polls the Jira Service Management Ops (Operations
 
 On each scheduled run, the trigger:
 
-1. Reads the last polled timestamp from polling state (defaults to the current time on the first run)
-2. Builds an OpsGenie query language filter of the form `createdAt > <epochMs>`, optionally combined with the **Additional Query** input
+1. Reads the last polled timestamp from polling state. On the first recurrence with no stored position, it uses the **Look-back Date** when one is set, and otherwise the current time
+2. Builds an OpsGenie query language filter of the form `createdAt > <epochMs>`, optionally combined with the **Additional Query** input. Refer to the [OpsGenie query language documentation](https://support.atlassian.com/opsgenie/docs/search-queries-for-alerts/) for filter syntax
 3. Fetches matching alerts from the [List alerts](https://developer.atlassian.com/cloud/jira/service-desk-ops/rest/api-group-alerts/) endpoint
 4. Updates polling state to the current timestamp
 5. If no new alerts are found, the flow is not executed (the trigger reports `polledNoChanges: true`)
 
-Filtering happens server-side via the OpsGenie query language. The `createdAt` filter uses epoch milliseconds and must not be converted to an ISO string — the API rejects that format.
+Filtering happens server-side via the OpsGenie query language. The `createdAt` filter uses epoch milliseconds and must not be converted to an ISO string. The API rejects that format.
 
-#### Configuration
+**Initial Sync**
 
-| Input | Required | Description |
-|-------|----------|-------------|
-| **Connection** | Yes | An OAuth 2.0 connection to Jira Service Management with Ops Management scopes |
-| **Additional Query** | No | Atlassian Ops query terms appended to the built-in `createdAt` filter. Uses OpsGenie query language syntax (e.g., `status: open AND priority: P1`). |
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it. This trigger has no such input, so none is ignored. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every alert created on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
 
-Refer to the [OpsGenie query language documentation](https://support.atlassian.com/opsgenie/docs/search-queries-for-alerts/) for filter syntax.
+The window has no fixed upper bound. The position is set to the time the recurrence started, never to the newest alert received, and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff. The trigger fetches every matching alert with no per-recurrence cap, so the sync finishes in one recurrence whether batching is on or off.
+
+**Additional Query** still applies throughout, so only alerts matching it are seeded. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Jira Service Management.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data`, an array of alerts. With batching on that field does not exist: each execution receives one `{ "changeType": "created", "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger payload contains an array of new Ops alerts in `body.data`. Each entry is an alert summary from the JSM Ops API.
+With batching off, the trigger payload contains an array of new Ops alerts in `body.data`. Each entry is an alert summary from the JSM Ops API. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -41,6 +48,27 @@ The trigger payload contains an array of new Ops alerts in `body.data`. Each ent
         "createdAt": 1730462523000
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one alert tagged with how it changed, or an array of such items when the batch size is greater than 1. The `body.data` array is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "70413b54-5cfd-4f2e-bb2d-2e0a2f1c9b14",
+    "tinyId": "1791",
+    "alias": "event_573",
+    "message": "Disk usage above 90% on host-12",
+    "status": "open",
+    "createdAt": 1730462523000
   }
 }
 ```

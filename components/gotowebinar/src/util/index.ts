@@ -4,6 +4,8 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type {
   GoToWebinarResponse,
   ParsedRegistrant,
+  PollingChangesObject,
+  PollingRecordChange,
   Registrant,
   UserSubscription,
   Webhook,
@@ -31,6 +33,28 @@ export const toOptionalObject = (value: unknown) => {
     return undefined;
   }
   return util.types.toObject(value);
+};
+export const lookBackDateClean = (value: unknown): string => {
+  const str = util.types.toString(value).trim();
+  if (!str) return "";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+    throw new Error("Look-back Date must be in YYYY-MM-DD format.");
+  }
+  const [year, month, day] = str
+    .split("-")
+    .map((part) => util.types.toNumber(part));
+  const parsed = new Date(year, month - 1, day);
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
+  }
+  if (parsed > new Date()) {
+    throw new Error("Look-back Date cannot be a future date.");
+  }
+  return str;
 };
 export const getT = async <T>(
   client: HttpClient,
@@ -187,4 +211,16 @@ export const filterRegistrantsRegisteredAfter = <
       : Number.NaN;
     return !Number.isNaN(registeredMs) && registeredMs > lastPolledAtMs;
   });
+};
+export const lookBackDateToCursor = (lookBackDate: string): string =>
+  new Date(Date.parse(`${lookBackDate}T00:00:00.000Z`) - 1).toISOString();
+export const resolvePollingRecordChanges = (
+  data: PollingChangesObject | undefined,
+): PollingRecordChange[] => {
+  const changesObject = data ?? { created: [] };
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "created", record }),
+    ),
+  ];
 };

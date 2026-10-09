@@ -1,5 +1,10 @@
+import type { EmployeeChange } from "./employee";
 export interface EmployeeChangesPollingState {
   lastPollTime?: string;
+}
+export interface EmployeeChangeRecordChange {
+  changeType: "changed";
+  record: EmployeeChange;
 }
 export interface NewHireStatusPollingState {
   lastStatusMap?: Record<string, NewHireStatusEntry>;
@@ -19,4 +24,8 @@ export interface NewHireStatusChange {
   previousProgress?: number;
   currentProgress?: number;
   detectedAt: string;
+}
+export interface NewHireStatusRecordChange {
+  changeType: NewHireStatusChange["changeType"];
+  record: NewHireStatusChange;
 }

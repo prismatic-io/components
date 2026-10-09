@@ -2,25 +2,42 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { getDomoClient } from "../client";
 import { RESOURCE_CONFIG } from "../constants";
 import { pollChangesTriggerInputs } from "../inputs";
-import type { PollingState } from "../types";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
 import {
   buildPollingResult,
   fetchAllRecords,
   filterByNewIds,
   filterByTimestamp,
   getLastPolled,
+  resolvePollingRecordChanges,
 } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in a selected Domo resource type on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified Domo resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
+  },
   perform: async (
     context,
     payload,
-    { connection, resourceType, showNewRecords, showUpdatedRecords },
+    {
+      connection,
+      resourceType,
+      lookBackDate,
+      showNewRecords,
+      showUpdatedRecords,
+    },
   ) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
@@ -31,7 +48,9 @@ export const pollChangesTrigger = pollingTrigger({
     const client = await getDomoClient(connection, context.debug.enabled);
     const records = await fetchAllRecords(client, config);
     const hasTimestamps = config.createdAtField !== null;
-    const lastPolled = getLastPolled(lastState, now);
+    const lastPolled = getLastPolled(lastState, now, lookBackDate);
+    const isInitialSync =
+      hasTimestamps && !lastState?.lastPolled && Boolean(lookBackDate);
     let result: {
       created: typeof records;
       updated: typeof records;
@@ -44,8 +63,8 @@ export const pollChangesTrigger = pollingTrigger({
         config.updatedAtField,
       );
       result = {
-        created: showNewRecords ? filtered.created : [],
-        updated: showUpdatedRecords ? filtered.updated : [],
+        created: isInitialSync || showNewRecords ? filtered.created : [],
+        updated: isInitialSync || showUpdatedRecords ? filtered.updated : [],
       };
     } else {
       const knownIds = lastState?.knownIds ?? [];

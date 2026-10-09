@@ -134,6 +134,7 @@ export {
   uploadDataPartInputs,
 } from "./streams";
 export {
+  lookBackDate,
   pollChangesTriggerInputs,
   resourceType,
   showNewRecords,

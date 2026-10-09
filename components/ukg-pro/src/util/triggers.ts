@@ -1,4 +1,10 @@
 import * as crypto from "node:crypto";
+import type {
+  EmployeeChange,
+  EmployeeChangeRecordChange,
+  NewHireStatusChange,
+  NewHireStatusRecordChange,
+} from "../types";
 export const isValidHmacSignature = (
   payload: string,
   signature: string,
@@ -17,3 +23,18 @@ export const isValidHmacSignature = (
     return false;
   }
 };
+export const resolveEmployeeChangeRecords = (
+  data: EmployeeChange[] | undefined,
+): EmployeeChangeRecordChange[] =>
+  (data ?? []).map(
+    (record): EmployeeChangeRecordChange => ({ changeType: "changed", record }),
+  );
+export const resolveNewHireStatusChanges = (
+  data: NewHireStatusChange[] | undefined,
+): NewHireStatusRecordChange[] =>
+  (data ?? []).map(
+    (record): NewHireStatusRecordChange => ({
+      changeType: record.changeType,
+      record,
+    }),
+  );

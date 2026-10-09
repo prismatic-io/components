@@ -13,3 +13,11 @@ export interface DomoRecord {
   id: string | number;
   [key: string]: unknown;
 }
+export interface PollingChangesObject {
+  created?: DomoRecord[];
+  updated?: DomoRecord[];
+}
+export interface PollingRecordChange {
+  changeType: "created" | "updated";
+  record: DomoRecord;
+}

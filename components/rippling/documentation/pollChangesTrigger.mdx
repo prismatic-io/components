@@ -3,22 +3,27 @@ This trigger polls the [Rippling API](https://developer.rippling.com/documentati
 #### How It Works
 
 1. The trigger runs on the configured schedule
-2. It fetches records from Rippling for the selected resource type — Workers and Users are queried with a server-side `updated_at gt lastPolledAt` filter for efficiency; Departments and Teams fetch all records and apply timestamp comparison client-side
+2. It fetches records from Rippling for the selected resource type. Workers and Users are queried with a server-side `updated_at gt lastPolledAt` filter for efficiency; Departments and Teams fetch all records and apply timestamp comparison client-side
 3. Records are categorized as **created** or **updated** based on their timestamps relative to the last poll time
 4. The trigger updates its internal state after each poll
 
-#### Configuration
+**Initial sync**
 
-Configure the following inputs:
+By default the trigger reports only changes made after the flow's first recurrence. Set **Look-back Date** to also report the records created or updated since that date, once, on the first recurrence. No input is ignored during an initial sync: **Resource Type**, **Show New Records**, and **Show Updated Records** apply as they do on every recurrence.
 
-- **Connection**: The Rippling connection used to authenticate API requests
-- **Resource Type**: The type of records to monitor — Workers, Users, Departments, or Teams
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+The sync has no fixed upper bound and fetches every page in a single recurrence, whether batching is on or off. The trigger then stores the time the recurrence began as its position, and the next recurrence resumes from there. No field in the payload marks the handoff.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Rippling.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a step reads records from `data.created` and `data.updated`. With batching on, those fields do not exist: each execution receives one item (or a group of items, up to the configured batch size) shaped `{ "changeType": "created" | "updated", "record": { ... } }`. Update any step that reads the older shape before enabling batching. Because batching is enabled per flow, the change applies only to that flow, not to other flows using this trigger.
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+With batching off, the trigger returns an object with two arrays: `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -50,8 +55,26 @@ The trigger returns an object with two arrays — `created` for new records and 
 
 </details>
 
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "wrk_01H9ZQ2KBCDEF12345",
+    "created_at": "2026-01-02T00:00:00.000Z",
+    "updated_at": "2026-01-02T00:00:00.000Z"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
-- All four resource types — Workers, Users, Departments, and Teams — support both new and updated record detection
+- All four resource types (Workers, Users, Departments, and Teams) support both new and updated record detection
 - Workers and Users use a server-side filter (`updated_at gt lastPolledAt`) for efficient retrieval; Departments and Teams fetch all records and filter client-side by comparing timestamps
 - Refer to the [Rippling API documentation](https://developer.rippling.com/documentation/) for rate limit details and available fields per resource type

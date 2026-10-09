@@ -1,20 +1,24 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { PollResource } from "../constants";
 import {
   connectionInput,
+  lookBackDate,
   MarketplaceIds,
   pollResourceType,
   showNewRecords,
   showUpdatedRecords,
 } from "../inputs";
-import type { AmazonRecord, PollingState } from "../types";
-import { fetchFeedsSince, fetchOrdersSince } from "../util";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
+import { fetchPollingChanges, resolvePollingRecordChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated orders or feeds in Amazon Seller Central on a configured schedule.",
+      "Retrieves existing and ongoing orders or feeds for a specified Amazon Seller Central resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     connection: connectionInput,
@@ -22,6 +26,13 @@ export const pollChangesTrigger = pollingTrigger({
     marketplaceIds: MarketplaceIds,
     showNewRecords,
     showUpdatedRecords,
+    lookBackDate,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
   },
   perform: async (
     context,
@@ -32,34 +43,23 @@ export const pollChangesTrigger = pollingTrigger({
       marketplaceIds,
       showNewRecords,
       showUpdatedRecords,
+      lookBackDate,
     },
   ) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const isInitialSync =
+      pollState?.lastPolledAt === undefined && Boolean(lookBackDate);
+    const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const client = createClient(connection, context.debug.enabled);
-    let created: AmazonRecord[] = [];
-    const updated: AmazonRecord[] = [];
-    if (resourceType === PollResource.ORDERS) {
-      const records = await fetchOrdersSince(
-        client,
-        lastPolledAt,
-        marketplaceIds,
-      );
-      const lastPolledDate = new Date(lastPolledAt);
-      for (const record of records) {
-        const purchaseDate = record.PurchaseDate as string;
-        if (purchaseDate && new Date(purchaseDate) > lastPolledDate) {
-          created.push(record);
-        } else {
-          updated.push(record);
-        }
-      }
-    } else {
-      created = await fetchFeedsSince(client, lastPolledAt);
-    }
-    const filteredCreated = showNewRecords ? created : [];
-    const filteredUpdated = showUpdatedRecords ? updated : [];
+    const { created, updated } = await fetchPollingChanges(
+      client,
+      resourceType,
+      lastPolledAt,
+      marketplaceIds,
+    );
+    const filteredCreated = showNewRecords || isInitialSync ? created : [];
+    const filteredUpdated = showUpdatedRecords || isInitialSync ? updated : [];
     const totalChanges = filteredCreated.length + filteredUpdated.length;
     context.polling.setState({
       lastPolledAt: now,

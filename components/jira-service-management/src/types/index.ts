@@ -194,3 +194,13 @@ export interface OpsAlertSummary {
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
+export type ServiceRequestChangesObject = ServiceRequest[];
+export interface ServiceRequestChange {
+  changeType: "created";
+  record: ServiceRequest;
+}
+export type OpsAlertChangesObject = OpsAlertSummary[];
+export interface OpsAlertChange {
+  changeType: "created";
+  record: OpsAlertSummary;
+}

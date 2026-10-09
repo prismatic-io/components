@@ -8,23 +8,49 @@ The trigger polls the UKG Pro Employee Changes API endpoint at the configured po
 
 **State Management**
 
-- **First Run**: On the initial execution, the trigger retrieves changes from the past 24 hours
+- **First Run**: With no **Look-back Date**, the initial execution retrieves changes from the current date. With one, it runs the initial sync described below
 - **Subsequent Runs**: The trigger tracks the `lastPollTime` in state and queries for changes since that timestamp
 - **State Updates**: After each successful poll, the current timestamp is stored as the new `lastPollTime`
 
 **Date Range Handling**
 
 The trigger converts poll timestamps to ISO date format (YYYY-MM-DD) for the UKG Pro API:
-- `startDate`: The date of the last successful poll
-- `endDate`: The current poll date
+- `start_date`: The date of the last successful poll
+- `end_date`: The current poll date
 
-These date parameters are included in the response payload to indicate the time range covered by the poll.
+Because the API filters by date rather than by time, changes made earlier on the date of the last poll are returned again by the next recurrence.
 
-#### Configuration
+**Initial Sync**
 
-Configure the following input:
+An initial sync seeds a complete starting state, so an input that narrowed which changes are
+reported would leave gaps in it. This trigger has no such input, so the sync ignores none. It
+begins on the first recurrence, when the trigger has no stored position and a **Look-back Date**
+(`YYYY-MM-DD`) is set, and seeds each employee change made on or after that date.
 
-- **Company ID** (Optional): Filter changes to a specific company within the UKG Pro tenant. When omitted, the trigger retrieves changes for all companies accessible to the authenticated connection.
+The window's upper bound is the date the sync's recurrence begins. The trigger then stores the
+time that recurrence began as its position, not the newest change received, and the next
+recurrence resumes from that date, so changes made on it are delivered again. Nothing in the
+payload marks the handoff. The sync finishes in one recurrence whether batching is on or off.
+
+**Company ID** still applies throughout. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to UKG Pro.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads the `body.data` array. With batching on that array does
+not exist: each execution receives one `{ "changeType": "changed", "record": ... }` item, or an
+array of them when the batch size is greater than 1. Any step reading the older shape must be
+updated before batching is enabled. Because batching is enabled per flow, that change is scoped to
+the flow rather than to the component or to other flows using the same trigger.
+
+#### Event Types
 
 <details>
 <summary>Change Types (8)</summary>
@@ -42,7 +68,7 @@ Configure the following input:
 
 #### Returned Data
 
-The trigger returns an object with the following structure:
+With batching off, the trigger returns the changes under `data`. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -86,16 +112,41 @@ The trigger returns an object with the following structure:
       "changeTimestamp": "2024-01-15T16:45:00.000Z",
       "lastModifiedDate": "2024-01-15"
     }
-  ],
-  "pollStartDate": "2024-01-10",
-  "pollEndDate": "2024-01-15",
-  "totalCount": 3
+  ]
 }
 ```
 
 </details>
 
+With batching on, each execution receives one change record tagged as changed, or an array of such items when the batch size is greater than 1. The `data` array is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "changed",
+  "record": {
+    "employeeId": "EMP-12345",
+    "companyId": "COMP-001",
+    "employeeNumber": "E12345",
+    "firstName": "John",
+    "lastName": "Doe",
+    "changeType": "Update",
+    "changeTypeCode": "UPD",
+    "changedFields": ["jobTitle", "department", "payRate"],
+    "changeTimestamp": "2024-01-15T14:30:00.000Z",
+    "lastModifiedDate": "2024-01-15"
+  }
+}
+```
+
+</details>
 
 **Changed Fields**
 
 For update changes, the `changedFields` array indicates which specific employee attributes were modified (e.g., `jobTitle`, `department`, `payRate`, `employmentStatus`).
+
+#### Notes
+
+- A recurrence, including an initial sync, reads at most 100 pages of 100 changes. Changes beyond that bound are not delivered, and the stored position still advances past them, so a **Look-back Date** far enough back to exceed it loses the remainder.

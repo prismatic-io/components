@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-09
+
+- Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input to the **New and Updated Records** trigger for performing an initial sync of records. For resources tracked by timestamp, the initial sync begins on the first recurrence and backfills every record created or modified on or after the specified date, seeding each once and ignoring the visibility filters. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-06-30
 
 Grouped related optional inputs into structured objects across list, user, task, and project actions.

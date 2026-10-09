@@ -1,9 +1,9 @@
 import {
+  paginateV1CompanyActivity,
   paginateV1Results,
   paginateV2Results,
-  paginateV1CompanyActivity,
 } from "./pagination";
-const mockGet = jest.fn();
+const mockGet = vi.fn();
 const mockClient = { get: mockGet } as any;
 beforeEach(() => {
   mockGet.mockReset();

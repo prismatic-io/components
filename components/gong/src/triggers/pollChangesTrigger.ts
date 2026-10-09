@@ -1,29 +1,49 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { connection } from "../inputs";
-import { fetchAllCalls, fetchAllUsers } from "../util";
-import { pollResourceType, showNewRecords } from "../inputs";
+import {
+  fetchAllCalls,
+  fetchAllUsers,
+  resolvePollingRecordChanges,
+} from "../util";
+import { lookBackDate, pollResourceType, showNewRecords } from "../inputs";
 import { PollResource } from "../constants";
-import type { GongRecord, PollingState } from "../types";
+import type {
+  GongRecord,
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Records",
     description:
-      "Checks for new calls or users in Gong on a configured schedule.",
+      "Retrieves existing and ongoing calls, or new users, for a specified Gong resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     connection,
     resourceType: pollResourceType,
     showNewRecords,
+    lookBackDate,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
   },
   perform: async (
     context,
     payload,
-    { connection, resourceType, showNewRecords },
+    { connection, resourceType, lookBackDate, showNewRecords },
   ) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
-    const lastPolledAt = lastState?.lastPolledAt ?? now;
+    const isInitialSync =
+      resourceType === PollResource.CALLS &&
+      lastState?.lastPolledAt === undefined &&
+      Boolean(lookBackDate);
+    const lastPolledAt = lastState?.lastPolledAt ?? (lookBackDate || now);
     const client = createClient(connection, context.debug.enabled);
     let created: GongRecord[];
     if (resourceType === PollResource.CALLS) {
@@ -57,7 +77,7 @@ export const pollChangesTrigger = pollingTrigger({
         lastPolledAt: now,
       } as unknown as Record<string, unknown>);
     }
-    const filteredCreated = showNewRecords ? created : [];
+    const filteredCreated = showNewRecords || isInitialSync ? created : [];
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${resourceType}: ${filteredCreated.length} new`,
