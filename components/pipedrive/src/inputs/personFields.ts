@@ -1,14 +1,19 @@
 import {
   connectionInput,
+  cursorPagination,
+  fetchAll,
   fieldCodeInput,
-  paginationLimitInput,
-  paginationStartInput,
+  offsetPagination,
   personFieldIdInput,
 } from "./common";
 export const getPersonFieldsInputs = {
   connection: connectionInput,
-  start: paginationStartInput,
-  limit: paginationLimitInput,
+  pagination: offsetPagination,
+};
+export const getPersonFieldsV2Inputs = {
+  connection: connectionInput,
+  fetchAll,
+  pagination: cursorPagination,
 };
 export const getPersonFieldInputs = {
   connection: connectionInput,

@@ -1,11 +1,14 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, organizationIdInput } from "../../inputs";
+import { mergeOrganizationsInputs } from "../../inputs";
+import { mergeOrganizationsExamplePayload } from "../../examplePayloads";
+import { mergeOrganizationsOutputSchema } from "../../outputSchemas";
 export const mergeOrganizations = action({
   display: {
     label: "Merge Organizations",
     description: "Merges two organizations.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, id, mergeWithId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.patch(`/organizations/${id}/merge`, {
@@ -13,16 +16,10 @@ export const mergeOrganizations = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: organizationIdInput,
-    mergeWithId: input({
-      label: "Merge With ID",
-      type: "string",
-      required: true,
-      clean: util.types.toNumber,
-      comments:
-        "The ID of the organization that the organization will be merged with",
-    }),
-  },
+  inputs: mergeOrganizationsInputs,
+  examplePayload: mergeOrganizationsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: mergeOrganizationsOutputSchema,
+  }),
 });

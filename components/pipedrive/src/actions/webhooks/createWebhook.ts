@@ -1,12 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhook as createWebhookFn } from "../../util";
+import { createWebhookExamplePayload } from "../../examplePayloads";
+import { createWebhookOutputSchema } from "../../outputSchemas";
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
     description: "Creates a new webhook.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -33,4 +36,9 @@ export const createWebhook = action({
     return { data };
   },
   inputs: createWebhookInputs,
+  examplePayload: createWebhookExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createWebhookOutputSchema,
+  }),
 });

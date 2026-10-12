@@ -1,33 +1,23 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, filterIdInput } from "../../inputs";
-import { cleanString } from "../../util";
+import { updateFilterInputs } from "../../inputs";
+import { updateFilterExamplePayload } from "../../examplePayloads";
+import { updateFilterOutputSchema } from "../../outputSchemas";
 export const updateFilter = action({
   display: {
     label: "Update Filter",
     description: "Updates a filter.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, id, name, conditions }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.patch(`/filters/${id}`, { name, conditions });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: filterIdInput,
-    conditions: input({
-      label: "Conditions",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The conditions of the filter as a JSON object",
-    }),
-    name: input({
-      label: "Name",
-      type: "string",
-      required: false,
-      clean: cleanString,
-      comments: "The name of the filter",
-    }),
-  },
+  inputs: updateFilterInputs,
+  examplePayload: updateFilterExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateFilterOutputSchema,
+  }),
 });

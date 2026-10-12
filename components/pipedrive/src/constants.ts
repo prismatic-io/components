@@ -1,5 +1,6 @@
 import type { PollResourceConfig } from "./types";
 export const PAGINATION_LIMIT = 500;
+export const DEFAULT_BATCH_SIZE = 100;
 export const BASE_URL = "https://api.pipedrive.com";
 export enum TriggerBranches {
   Notification = "Notification",

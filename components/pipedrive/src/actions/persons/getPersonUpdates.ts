@@ -1,20 +1,17 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  paginationLimitInput,
-  paginationStartInput,
-  personIdInput,
-} from "../../inputs";
-import { cleanString } from "../../util";
+import { getPersonUpdatesInputs } from "../../inputs";
+import { getPersonUpdatesExamplePayload } from "../../examplePayloads";
+import { getPersonUpdatesOutputSchema } from "../../outputSchemas";
 export const getPersonUpdates = action({
   display: {
     label: "Get Person Updates",
     description: "Lists updates about a person.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, id, start, limit, allChanges, items },
+    { connection, id, pagination: { start, limit } = {}, allChanges, items },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/persons/${id}/flow`, {
@@ -22,23 +19,10 @@ export const getPersonUpdates = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: personIdInput,
-    start: paginationStartInput,
-    limit: paginationLimitInput,
-    allChanges: input({
-      label: "All Changes",
-      type: "string",
-      clean: cleanString,
-      comments: "Whether to show custom field updates or not",
-    }),
-    items: input({
-      label: "Items",
-      type: "string",
-      clean: cleanString,
-      comments:
-        "A comma-separated string for filtering out item specific updates",
-    }),
-  },
+  inputs: getPersonUpdatesInputs,
+  examplePayload: getPersonUpdatesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPersonUpdatesOutputSchema,
+  }),
 });

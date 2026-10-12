@@ -1,22 +1,25 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  dealIdInput,
-  paginationLimitInput,
-  sortBy,
-  sortDirection,
-} from "../../inputs";
+import { getDealActivitiesInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getDealActivitiesExamplePayload } from "../../examplePayloads";
+import { getDealActivitiesOutputSchema } from "../../outputSchemas";
 export const getDealActivities = action({
   display: {
     label: "Get Deal Activities",
     description: "Lists activities associated with a deal.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, id, limit, done, sortBy, sortDirection, cursor },
+    {
+      connection,
+      id,
+      pagination: { limit, cursor } = {},
+      done,
+      sortBy,
+      sortDirection,
+    },
   ) => {
     const client = createClient(
       connection,
@@ -35,18 +38,10 @@ export const getDealActivities = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: dealIdInput,
-    limit: paginationLimitInput,
-    cursor,
-    done: input({
-      label: "Done",
-      type: "boolean",
-      comments: "Whether the activity is done or not",
-      clean: util.types.toBool,
-    }),
-    sortBy: sortBy,
-    sortDirection: sortDirection,
-  },
+  inputs: getDealActivitiesInputs,
+  examplePayload: getDealActivitiesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getDealActivitiesOutputSchema,
+  }),
 });

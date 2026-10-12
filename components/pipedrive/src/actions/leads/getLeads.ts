@@ -1,20 +1,24 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  paginationLimitInput,
-  paginationStartInput,
-  sortInput,
-} from "../../inputs";
-import { cleanNumber, cleanString } from "../../util";
+import { getLeadsInputs } from "../../inputs";
+import { getLeadsExamplePayload } from "../../examplePayloads";
+import { getLeadsOutputSchema } from "../../outputSchemas";
 export const getLeads = action({
   display: {
     label: "Get Leads",
     description: "Gets all leads.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, limit, start, archivedStatus, ownerId, filterId, sort },
+    {
+      connection,
+      pagination: { limit, start } = {},
+      archivedStatus,
+      ownerId,
+      filterId,
+      sort,
+    },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get("/leads", {
@@ -29,36 +33,10 @@ export const getLeads = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    limit: paginationLimitInput,
-    start: paginationStartInput,
-    archivedStatus: input({
-      label: "Archived Status",
-      type: "string",
-      model: [
-        { label: "Archived", value: "archived" },
-        { label: "Not Archived", value: "not_archived" },
-        { label: "All", value: "all" },
-      ],
-      clean: cleanString,
-      comments: "Filtering based on the archived status of a lead",
-    }),
-    ownerId: input({
-      label: "Owner ID",
-      type: "string",
-      example: "1",
-      clean: cleanNumber,
-      comments:
-        "If supplied, only leads matching the given user will be returned",
-    }),
-    filterId: input({
-      label: "Filter ID",
-      type: "string",
-      example: "1",
-      clean: cleanNumber,
-      comments: "The ID of the filter to use",
-    }),
-    sort: sortInput,
-  },
+  inputs: getLeadsInputs,
+  examplePayload: getLeadsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getLeadsOutputSchema,
+  }),
 });

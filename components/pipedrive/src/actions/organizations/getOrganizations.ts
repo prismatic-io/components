@@ -1,26 +1,27 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  fetchAll,
-  filterId,
-  paginationLimitInput,
-  sortBy,
-  sortDirection,
-} from "../../inputs";
+import { getOrganizationsInputs } from "../../inputs";
 import { paginateRecordsWithCursor } from "../../util";
 import type { Organization } from "../../types/organization";
-import { getOrganizationExamplePayload } from "../../examplePayloads/organizations";
+import { getOrganizationExamplePayload } from "../../examplePayloads";
 import { WebhookVersion } from "../../constants";
+import { getOrganizationsOutputSchema } from "../../outputSchemas";
 export const getOrganizations = action({
   display: {
     label: "Get Organizations",
     description: "Gets all organizations.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, filterId, limit, sortBy, sortDirection, fetchAll, cursor },
+    {
+      connection,
+      filterId,
+      pagination: { limit, cursor } = {},
+      sortBy,
+      sortDirection,
+      fetchAll,
+    },
   ) => {
     const client = createClient(
       connection,
@@ -41,16 +42,10 @@ export const getOrganizations = action({
     );
     return { data };
   },
-  inputs: {
-    fetchAll,
-    limit: paginationLimitInput,
-    cursor,
-    sortBy,
-    sortDirection,
-    filterId,
-    connection: connectionInput,
-  },
-  examplePayload: {
-    data: getOrganizationExamplePayload,
-  },
+  inputs: getOrganizationsInputs,
+  examplePayload: getOrganizationExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getOrganizationsOutputSchema,
+  }),
 });

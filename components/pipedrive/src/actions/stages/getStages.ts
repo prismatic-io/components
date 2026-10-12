@@ -1,22 +1,24 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  paginationLimitInput,
-  sortBy,
-  sortDirection,
-} from "../../inputs";
-import { cleanNumber } from "../../util";
+import { getStagesInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getStagesExamplePayload } from "../../examplePayloads";
+import { getStagesOutputSchema } from "../../outputSchemas";
 export const getStages = action({
   display: {
     label: "Get Stages",
     description: "Gets all stages.",
   },
+  performSafety: "safe",
   perform: async (
     context,
-    { connection, pipelineId, sortBy, sortDirection, limit, cursor },
+    {
+      connection,
+      pipelineId,
+      sortBy,
+      sortDirection,
+      pagination: { limit, cursor } = {},
+    },
   ) => {
     const client = createClient(
       connection,
@@ -34,17 +36,11 @@ export const getStages = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    pipelineId: input({
-      label: "Pipeline ID",
-      type: "string",
-      clean: cleanNumber,
-      comments: "The ID of the pipeline to fetch stages for",
-    }),
-    sortBy,
-    sortDirection,
-    limit: paginationLimitInput,
-    cursor,
-  },
+  inputs: getStagesInputs,
+  examplePayload: getStagesExamplePayload,
+  examplePerform: async () => getStagesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getStagesOutputSchema,
+  }),
 });

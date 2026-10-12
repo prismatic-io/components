@@ -1,23 +1,25 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  paginationLimitInput,
-  sortBy,
-  sortDirection,
-  stageIdInput,
-} from "../../inputs";
-import { cleanNumber } from "../../util";
+import { getStageDealsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getStageDealsExamplePayload } from "../../examplePayloads";
+import { getStageDealsOutputSchema } from "../../outputSchemas";
 export const getStageDeals = action({
   display: {
     label: "Get Stage Deals",
     description: "Gets deals in a stage.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, id, filterId, limit, sortBy, sortDirection, cursor },
+    {
+      connection,
+      id,
+      filterId,
+      pagination: { limit, cursor } = {},
+      sortBy,
+      sortDirection,
+    },
   ) => {
     const client = createClient(
       connection,
@@ -36,19 +38,10 @@ export const getStageDeals = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: stageIdInput,
-    filterId: input({
-      label: "Filter ID",
-      type: "string",
-      clean: cleanNumber,
-      comments:
-        "If supplied, only deals matching the given filter will be returned",
-    }),
-    limit: paginationLimitInput,
-    cursor,
-    sortBy,
-    sortDirection,
-  },
+  inputs: getStageDealsInputs,
+  examplePayload: getStageDealsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getStageDealsOutputSchema,
+  }),
 });

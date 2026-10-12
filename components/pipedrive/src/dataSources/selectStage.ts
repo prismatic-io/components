@@ -3,6 +3,7 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { paginateRecordsWithCursor, sortRecords } from "../util";
 import { WebhookVersion } from "../constants";
+import { selectStageExamplePayload } from "../examplePayloads";
 interface Stage {
   id: number;
   name: string;
@@ -33,7 +34,5 @@ export const selectStage = dataSource({
     return { result: objects };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "Qualified (Sales Pipeline)", key: "1" }],
-  },
+  examplePayload: selectStageExamplePayload,
 });

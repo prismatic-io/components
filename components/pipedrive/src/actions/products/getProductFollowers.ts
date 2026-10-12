@@ -1,18 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  paginationLimitInput,
-  productIdInput,
-} from "../../inputs";
+import { getProductFollowersInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getProductFollowersExamplePayload } from "../../examplePayloads";
+import { getProductFollowersOutputSchema } from "../../outputSchemas";
 export const getProductFollowers = action({
   display: {
     label: "Get Product Followers",
     description: "Lists followers of a product.",
   },
-  perform: async (context, { connection, id, limit, cursor }) => {
+  performSafety: "notAllowed",
+  perform: async (
+    context,
+    { connection, id, pagination: { limit, cursor } = {} },
+  ) => {
     const client = createClient(
       connection,
       context.debug.enabled,
@@ -23,10 +24,10 @@ export const getProductFollowers = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: productIdInput,
-    limit: paginationLimitInput,
-    cursor,
-  },
+  inputs: getProductFollowersInputs,
+  examplePayload: getProductFollowersExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getProductFollowersOutputSchema,
+  }),
 });

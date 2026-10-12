@@ -1,21 +1,23 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  paginationLimitInput,
-  paginationStartInput,
-  personIdInput,
-  sortInput,
-} from "../../inputs";
-import { cleanNumber } from "../../util";
+import { getPersonFilesInputs } from "../../inputs";
+import { getPersonFilesExamplePayload } from "../../examplePayloads";
+import { getPersonFilesOutputSchema } from "../../outputSchemas";
 export const getPersonFiles = action({
   display: {
     label: "Get Person Files",
     description: "Lists files attached to a person.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, id, start, limit, includeDeletedFiles, sort },
+    {
+      connection,
+      id,
+      pagination: { start, limit } = {},
+      includeDeletedFiles,
+      sort,
+    },
   ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/persons/${id}/files`, {
@@ -28,22 +30,10 @@ export const getPersonFiles = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: personIdInput,
-    start: paginationStartInput,
-    limit: paginationLimitInput,
-    includeDeletedFiles: input({
-      label: "Include Deleted Files",
-      type: "string",
-      model: [
-        { label: "0", value: "0" },
-        { label: "1", value: "1" },
-      ],
-      clean: cleanNumber,
-      comments:
-        "When enabled, the list of files will also include deleted files",
-    }),
-    sort: sortInput,
-  },
+  inputs: getPersonFilesInputs,
+  examplePayload: getPersonFilesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPersonFilesOutputSchema,
+  }),
 });

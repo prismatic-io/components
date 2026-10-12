@@ -1,12 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { activityIdInput, connectionInput } from "../../inputs";
+import { getActivityInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getActivityExamplePayload } from "../../examplePayloads";
+import { getActivityOutputSchema } from "../../outputSchemas";
 export const getActivity = action({
   display: {
     label: "Get Activity",
     description: "Gets details of an activity.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, id }) => {
     const client = createClient(
       connection,
@@ -16,8 +19,11 @@ export const getActivity = action({
     const { data } = await client.get(`/activities/${id}`);
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: activityIdInput,
-  },
+  inputs: getActivityInputs,
+  examplePayload: getActivityExamplePayload,
+  examplePerform: async () => getActivityExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getActivityOutputSchema,
+  }),
 });

@@ -1,12 +1,14 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput } from "../../inputs";
-import { cleanNumber } from "../../util";
+import { getMailMessageInputs } from "../../inputs";
+import { getMailMessageExamplePayload } from "../../examplePayloads";
+import { getMailMessageOutputSchema } from "../../outputSchemas";
 export const getMailMessage = action({
   display: {
     label: "Get Mail Message",
     description: "Gets one mail message.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, id, includeBody }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/mailbox/mailMessages/${id}`, {
@@ -14,25 +16,11 @@ export const getMailMessage = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: input({
-      label: "Id",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The ID of the mail message to fetch",
-    }),
-    includeBody: input({
-      label: "Include Body",
-      type: "string",
-      default: "1",
-      model: [
-        { label: "0", value: "0" },
-        { label: "1", value: "1" },
-      ],
-      clean: cleanNumber,
-      comments: "Whether to include the full message body or not",
-    }),
-  },
+  inputs: getMailMessageInputs,
+  examplePayload: getMailMessageExamplePayload,
+  examplePerform: async () => getMailMessageExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getMailMessageOutputSchema,
+  }),
 });

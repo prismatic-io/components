@@ -32,7 +32,7 @@ export const pipedriveTrigger = trigger({
   },
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
-  perform: async (context, payload, params) => {
+  perform: async (_context, payload) => {
     return Promise.resolve({
       payload,
       response: {

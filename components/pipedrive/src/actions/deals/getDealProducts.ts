@@ -1,22 +1,24 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  dealIdInput,
-  paginationLimitInput,
-  sortBy,
-  sortDirection,
-} from "../../inputs";
+import { getDealProductsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getDealProductsExamplePayload } from "../../examplePayloads";
+import { getDealProductsOutputSchema } from "../../outputSchemas";
 export const getDealProducts = action({
   display: {
     label: "Get Deal Products",
     description: "Lists products attached to a deal.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, id, limit, sortBy, sortDirection, cursor },
+    {
+      connection,
+      id,
+      pagination: { limit, cursor } = {},
+      sortBy,
+      sortDirection,
+    },
   ) => {
     const client = createClient(
       connection,
@@ -28,12 +30,10 @@ export const getDealProducts = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: dealIdInput,
-    limit: paginationLimitInput,
-    cursor,
-    sortBy: sortBy,
-    sortDirection: sortDirection,
-  },
+  inputs: getDealProductsInputs,
+  examplePayload: getDealProductsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getDealProductsOutputSchema,
+  }),
 });

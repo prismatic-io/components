@@ -1,11 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, mailThreadIdInput } from "../../inputs";
+import { getMailThreadMessagesInputs } from "../../inputs";
+import { getMailThreadMessagesExamplePayload } from "../../examplePayloads";
+import { getMailThreadMessagesOutputSchema } from "../../outputSchemas";
 export const getMailThreadMessages = action({
   display: {
     label: "Get Mail Thread Messages",
     description: "Gets all mail messages of a mail thread.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, id }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(
@@ -13,8 +16,11 @@ export const getMailThreadMessages = action({
     );
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: mailThreadIdInput,
-  },
+  inputs: getMailThreadMessagesInputs,
+  examplePayload: getMailThreadMessagesExamplePayload,
+  examplePerform: async () => getMailThreadMessagesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getMailThreadMessagesOutputSchema,
+  }),
 });

@@ -1,10 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  connectionInput,
-  mailThreadIdInput,
-  paginationLimitInput,
-  paginationStartInput,
-} from "./common";
+import { connectionInput, mailThreadIdInput, offsetPagination } from "./common";
 import { cleanNumber } from "../util";
 const mailMessageId = input({
   label: "Mail Message ID",
@@ -52,8 +47,7 @@ export const getMailMessageInputs = {
 export const getMailThreadsInputs = {
   connection: connectionInput,
   folder,
-  start: paginationStartInput,
-  limit: paginationLimitInput,
+  pagination: offsetPagination,
 };
 export const deleteMailThreadInputs = {
   connection: connectionInput,

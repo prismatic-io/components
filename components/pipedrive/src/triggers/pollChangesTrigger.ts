@@ -1,18 +1,18 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { POLL_RESOURCE_CONFIG } from "../constants";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads/triggers";
-import type { PollingState } from "../types";
-import {
-  connectionInput,
-  pollResourceType,
-  showNewRecords,
-  showUpdatedRecords,
-} from "../inputs";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
+import { pollChangesTriggerInputs } from "../inputs";
 import {
   fetchRecentsSince,
   formatPipedriveTimestamp,
   partitionByTimestamp,
+  resolvePollingRecordChanges,
 } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
@@ -20,26 +20,39 @@ export const pollChangesTrigger = pollingTrigger({
     description:
       "Checks for new and updated records in a selected Pipedrive resource type on a configured schedule.",
   },
-  inputs: {
-    connection: connectionInput,
-    resourceType: pollResourceType,
-    showNewRecords,
-    showUpdatedRecords,
+  inputs: pollChangesTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
   },
-  perform: async (context, payload, params) => {
+  perform: async (
+    context,
+    payload,
+    {
+      connection,
+      resourceType,
+      lookBackDate,
+      showNewRecords,
+      showUpdatedRecords,
+    },
+  ) => {
     const now = new Date();
     const lastState = context.polling.getState() as PollingState | undefined;
     const sinceDate = lastState?.lastPolledAt
       ? new Date(lastState.lastPolledAt)
-      : now;
+      : lookBackDate
+        ? new Date(lookBackDate)
+        : now;
     const sinceTimestamp = formatPipedriveTimestamp(sinceDate);
-    const client = createClient(params.connection, context.debug.enabled);
+    const client = createClient(connection, context.debug.enabled);
     const records = await fetchRecentsSince(
       client,
       sinceTimestamp,
-      params.resourceType,
+      resourceType,
     );
-    const config = POLL_RESOURCE_CONFIG[params.resourceType] ?? {
+    const config = POLL_RESOURCE_CONFIG[resourceType] ?? {
       createdAtField: null,
       updatedAtField: null,
     };
@@ -52,13 +65,14 @@ export const pollChangesTrigger = pollingTrigger({
       string,
       unknown
     >);
+    const isInitialSync = !lastState?.lastPolledAt && !!lookBackDate;
     const result = {
-      created: params.showNewRecords ? created : [],
-      updated: params.showUpdatedRecords ? updated : [],
+      created: isInitialSync || showNewRecords ? created : [],
+      updated: isInitialSync || showUpdatedRecords ? updated : [],
     };
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled ${params.resourceType}: ${records.length} total → ${created.length} new, ${updated.length} updated`,
+        `Polled ${resourceType}: ${records.length} total → ${created.length} new, ${updated.length} updated`,
       );
     }
     return {

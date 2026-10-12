@@ -1,9 +1,8 @@
 import { input, util } from "@prismatic-io/spectral";
 import {
   connectionInput,
-  cursor,
-  paginationLimitInput,
-  paginationStartInput,
+  cursorPagination,
+  offsetPagination,
   userIdInput,
 } from "./common";
 import { cleanNumber } from "../util";
@@ -48,8 +47,7 @@ export const getUserInputs = {
 export const getUserFollowersInputs = {
   connection: connectionInput,
   id: userIdInput,
-  limit: paginationLimitInput,
-  cursor,
+  pagination: cursorPagination,
 };
 export const getUserPermissionsInputs = {
   connection: connectionInput,
@@ -58,8 +56,7 @@ export const getUserPermissionsInputs = {
 export const getUserRoleAssignmentsInputs = {
   connection: connectionInput,
   id: userIdInput,
-  start: paginationStartInput,
-  limit: paginationLimitInput,
+  pagination: offsetPagination,
 };
 export const getUserRoleSettingsInputs = {
   connection: connectionInput,

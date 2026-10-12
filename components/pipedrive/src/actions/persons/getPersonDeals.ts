@@ -1,23 +1,25 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  paginationLimitInput,
-  personIdInput,
-  sortBy,
-  sortDirection,
-} from "../../inputs";
-import { cleanString } from "../../util";
+import { getPersonDealsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getPersonDealsExamplePayload } from "../../examplePayloads";
+import { getPersonDealsOutputSchema } from "../../outputSchemas";
 export const getPersonDeals = action({
   display: {
     label: "Get Person Deals",
     description: "Lists deals associated with a person.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, id, limit, status, sortBy, sortDirection, cursor },
+    {
+      connection,
+      id,
+      pagination: { limit, cursor } = {},
+      status,
+      sortBy,
+      sortDirection,
+    },
   ) => {
     const client = createClient(
       connection,
@@ -36,24 +38,10 @@ export const getPersonDeals = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: personIdInput,
-    limit: paginationLimitInput,
-    cursor,
-    status: input({
-      label: "Status",
-      type: "string",
-      model: [
-        { label: "Open", value: "open" },
-        { label: "Won", value: "won" },
-        { label: "Lost", value: "lost" },
-        { label: "Deleted", value: "deleted" },
-      ],
-      clean: cleanString,
-      comments: "Only fetch deals with a specific status",
-    }),
-    sortBy,
-    sortDirection,
-  },
+  inputs: getPersonDealsInputs,
+  examplePayload: getPersonDealsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPersonDealsOutputSchema,
+  }),
 });

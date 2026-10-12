@@ -1,0 +1,43 @@
+export const getActivityTypesExamplePayload = {
+  data: {
+    success: true,
+    data: [
+      {
+        id: 1,
+        order_nr: 1,
+        name: "Call",
+        key_string: "call",
+        icon_key: "call",
+        active_flag: true,
+        color: null,
+        is_custom_flag: false,
+        add_time: "2024-01-01 00:00:00",
+        update_time: "2024-01-01 00:00:00",
+      },
+      {
+        id: 2,
+        order_nr: 2,
+        name: "Meeting",
+        key_string: "meeting",
+        icon_key: "meeting",
+        active_flag: true,
+        color: null,
+        is_custom_flag: false,
+        add_time: "2024-01-01 00:00:00",
+        update_time: "2024-01-01 00:00:00",
+      },
+      {
+        id: 3,
+        order_nr: 3,
+        name: "Task",
+        key_string: "task",
+        icon_key: "task",
+        active_flag: true,
+        color: null,
+        is_custom_flag: false,
+        add_time: "2024-01-01 00:00:00",
+        update_time: "2024-01-01 00:00:00",
+      },
+    ],
+  },
+};

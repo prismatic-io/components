@@ -1,22 +1,25 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  paginationLimitInput,
-  sortBy,
-  sortDirection,
-} from "../../inputs";
-import { cleanNumber, cleanString } from "../../util";
+import { getProductsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getProductsExamplePayload } from "../../examplePayloads";
+import { getProductsOutputSchema } from "../../outputSchemas";
 export const getProducts = action({
   display: {
     label: "Get Products",
     description: "Gets all products.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, filterId, ids, limit, sortBy, sortDirection, cursor },
+    {
+      connection,
+      filterId,
+      ids,
+      pagination: { limit, cursor } = {},
+      sortBy,
+      sortDirection,
+    },
   ) => {
     const client = createClient(
       connection,
@@ -35,28 +38,10 @@ export const getProducts = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    filterId: input({
-      label: "Filter ID",
-      type: "string",
-      clean: cleanNumber,
-      comments: "The ID of the filter to use",
-      example: "123",
-      placeholder: "Enter Filter ID",
-    }),
-    ids: input({
-      label: "Ids",
-      type: "string",
-      clean: cleanString,
-      comments:
-        "An array of integers with the IDs of the products that should be returned in the response",
-      example: "123,456,789",
-      placeholder: "Enter Product IDs (comma-separated)",
-    }),
-    limit: paginationLimitInput,
-    cursor,
-    sortBy,
-    sortDirection,
-  },
+  inputs: getProductsInputs,
+  examplePayload: getProductsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getProductsOutputSchema,
+  }),
 });

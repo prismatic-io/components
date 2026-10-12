@@ -1,5 +1,16 @@
 ## Changelog
 
+### 2026-10-12
+
+- List and search actions group their page-size, offset, and cursor inputs into **Pagination**; **Fetch All** stays a top-level toggle where applicable
+- **Add Deal**, **Update Deal**, **Add Lead**, and **Update Lead** actions group optional attributes into **Additional Fields**
+- **Update Deal Product** groups optional product attributes into **Additional Fields**
+- **Add Person** and **Update Person** actions group contact details into **Contact Information**
+- Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of records; the backfill begins on the first recurrence, seeds each record once, and ignores the trigger's visibility filters
+- Added inline action calling support to 50 actions for improved example output during configuration
+- Added output schemas to 157 actions for improved field mapping during configuration
+
 ### 2026-09-14
 
 Removed the **Cancel Recurring Subscription (Deprecated)**, **Delete Subscription (Deprecated)**, **Find Subscription By Deal (Deprecated)**, **Get Subscription (Deprecated)**, **Get Subscription Payments (Deprecated)**, and **Get Deal Persons (Deprecated)** actions that are no longer in use. No subscription actions remain on the component

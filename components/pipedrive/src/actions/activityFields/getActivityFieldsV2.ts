@@ -1,19 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  fetchAll,
-  paginationLimitInput,
-} from "../../inputs";
+import { getActivityFieldsV2Inputs } from "../../inputs";
 import { paginateRecordsWithCursor } from "../../util";
 import { WebhookVersion } from "../../constants";
+import { getActivityFieldsV2ExamplePayload } from "../../examplePayloads";
+import { getActivityFieldsV2OutputSchema } from "../../outputSchemas";
 export const getActivityFieldsV2 = action({
   display: {
     label: "Get Activity Fields (V2)",
     description: "Gets all activity fields.",
   },
-  perform: async (context, { connection, limit, fetchAll, cursor }) => {
+  performSafety: "notAllowed",
+  perform: async (
+    context,
+    { connection, pagination: { limit, cursor } = {}, fetchAll },
+  ) => {
     const client = createClient(
       connection,
       context.debug.enabled,
@@ -30,10 +31,10 @@ export const getActivityFieldsV2 = action({
     );
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    fetchAll,
-    limit: paginationLimitInput,
-    cursor,
-  },
+  inputs: getActivityFieldsV2Inputs,
+  examplePayload: getActivityFieldsV2ExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getActivityFieldsV2OutputSchema,
+  }),
 });

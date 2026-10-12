@@ -1,30 +1,34 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput } from "../../inputs";
-import { cleanNumber, cleanString } from "../../util";
+import { addDealInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { addDealExamplePayload } from "../../examplePayloads";
+import { addDealOutputSchema } from "../../outputSchemas";
 export const addDeal = action({
   display: {
     label: "Add Deal",
     description: "Adds a deal.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       title,
-      value,
-      currency,
       personId,
       orgId,
       pipelineId,
       stageId,
-      status,
-      expectedCloseDate,
-      probability,
-      lostReason,
-      visibleTo,
-      addTime,
+      additionalFields: {
+        value,
+        currency,
+        status,
+        expectedCloseDate,
+        probability,
+        lostReason,
+        visibleTo,
+        addTime,
+      } = {},
     },
   ) => {
     const client = createClient(
@@ -49,134 +53,10 @@ export const addDeal = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    title: input({
-      label: "Title",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The title of the deal",
-      example: "Q1 Software License Deal",
-      placeholder: "Enter deal title",
-    }),
-    value: input({
-      label: "Value",
-      type: "string",
-      required: false,
-      clean: cleanString,
-      comments: "The value of the deal",
-      example: "5000",
-      placeholder: "Enter deal value",
-    }),
-    currency: input({
-      label: "Currency",
-      type: "string",
-      required: false,
-      clean: cleanString,
-      comments: "The currency of the deal",
-      example: "USD",
-      placeholder: "Enter currency code",
-    }),
-    personId: input({
-      label: "Person ID",
-      type: "string",
-      required: false,
-      clean: cleanNumber,
-      comments: "The ID of a person which this deal will be linked to",
-      example: "123",
-      placeholder: "Enter Person ID",
-    }),
-    orgId: input({
-      label: "Org ID",
-      type: "string",
-      required: false,
-      clean: cleanNumber,
-      comments: "The ID of an organization which this deal will be linked to",
-      example: "123",
-      placeholder: "Enter Organization ID",
-    }),
-    pipelineId: input({
-      label: "Pipeline ID",
-      type: "string",
-      required: false,
-      clean: cleanNumber,
-      comments: "The ID of the pipeline this deal will be added to",
-      example: "123",
-      placeholder: "Enter Pipeline ID",
-    }),
-    stageId: input({
-      label: "Stage ID",
-      type: "string",
-      required: false,
-      clean: cleanNumber,
-      comments: "The ID of the stage this deal will be added to",
-      example: "123",
-      placeholder: "Enter Stage ID",
-    }),
-    status: input({
-      label: "Status",
-      type: "string",
-      required: false,
-      model: [
-        { label: "Open", value: "open" },
-        { label: "Won", value: "won" },
-        { label: "Lost", value: "lost" },
-        { label: "Deleted", value: "deleted" },
-      ],
-      clean: cleanString,
-      comments: "open = Open, won = Won, lost = Lost, deleted = Deleted",
-    }),
-    expectedCloseDate: input({
-      label: "Expected Close Date",
-      type: "string",
-      required: false,
-      clean: cleanString,
-      comments: "The expected close date of the deal",
-      example: "2024-12-31",
-      placeholder: "Enter date (YYYY-MM-DD)",
-    }),
-    probability: input({
-      label: "Probability",
-      type: "string",
-      required: false,
-      clean: cleanNumber,
-      comments: "The success probability percentage of the deal",
-      example: "75",
-      placeholder: "Enter probability percentage",
-    }),
-    lostReason: input({
-      label: "Lost Reason",
-      type: "string",
-      required: false,
-      clean: cleanString,
-      comments:
-        "The optional message about why the deal was lost (to be used when status = lost)",
-      example: "Budget constraints",
-      placeholder: "Enter reason for losing deal",
-    }),
-    visibleTo: input({
-      label: "Visible To",
-      type: "string",
-      required: false,
-      model: [
-        { label: "1", value: "1" },
-        { label: "3", value: "3" },
-        { label: "5", value: "5" },
-        { label: "7", value: "7" },
-      ],
-      clean: cleanString,
-      comments:
-        "The visibility of the deal. See [Pipedrive API documentation](https://developers.pipedrive.com/docs/api/v1/Deals#addDeal) for more information.",
-    }),
-    addTime: input({
-      label: "Add Time",
-      type: "string",
-      required: false,
-      clean: cleanString,
-      comments: "The optional creation date & time of the deal in UTC",
-      example: "2024-01-15T10:30:00Z",
-      placeholder: "Enter date & time (ISO 8601 format)",
-    }),
-  },
+  inputs: addDealInputs,
+  examplePayload: addDealExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addDealOutputSchema,
+  }),
 });

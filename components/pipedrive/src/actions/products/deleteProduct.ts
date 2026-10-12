@@ -1,12 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, productIdInput } from "../../inputs";
+import { deleteProductInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { deleteProductExamplePayload } from "../../examplePayloads";
+import { deleteProductOutputSchema } from "../../outputSchemas";
 export const deleteProduct = action({
   display: {
     label: "Delete Product",
     description: "Deletes a product.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, id }) => {
     const client = createClient(
       connection,
@@ -16,8 +19,10 @@ export const deleteProduct = action({
     const { data } = await client.delete(`/products/${id}`);
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: productIdInput,
-  },
+  inputs: deleteProductInputs,
+  examplePayload: deleteProductExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteProductOutputSchema,
+  }),
 });

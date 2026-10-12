@@ -1,7 +1,6 @@
 import {
   connectionInput,
-  paginationLimitInput,
-  paginationStartInput,
+  offsetPagination,
   permissionSetIdInput,
 } from "./common";
 export const getPermissionSetsInputs = {
@@ -14,6 +13,5 @@ export const getPermissionSetInputs = {
 export const getPermissionSetAssignmentsInputs = {
   connection: connectionInput,
   id: permissionSetIdInput,
-  start: paginationStartInput,
-  limit: paginationLimitInput,
+  pagination: offsetPagination,
 };

@@ -1,18 +1,19 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  paginationLimitInput,
-  personIdInput,
-} from "../../inputs";
+import { getPersonActivitiesInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getPersonActivitiesExamplePayload } from "../../examplePayloads";
+import { getPersonActivitiesOutputSchema } from "../../outputSchemas";
 export const getPersonActivities = action({
   display: {
     label: "Get Person Activities",
     description: "Lists activities associated with a person.",
   },
-  perform: async (context, { connection, id, limit, done, cursor }) => {
+  performSafety: "notAllowed",
+  perform: async (
+    context,
+    { connection, id, pagination: { limit, cursor } = {}, done },
+  ) => {
     const client = createClient(
       connection,
       context.debug.enabled,
@@ -23,16 +24,10 @@ export const getPersonActivities = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: personIdInput,
-    limit: paginationLimitInput,
-    cursor,
-    done: input({
-      label: "Done",
-      type: "boolean",
-      clean: util.types.toBool,
-      comments: "When true, returns only completed activities",
-    }),
-  },
+  inputs: getPersonActivitiesInputs,
+  examplePayload: getPersonActivitiesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPersonActivitiesOutputSchema,
+  }),
 });

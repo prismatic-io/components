@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { sortRecords } from "../util";
+import { selectUserExamplePayload } from "../examplePayloads";
 interface User {
   id: number;
   name: string;
@@ -32,7 +33,5 @@ export const selectUser = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "John Doe (john@example.com)", key: "1" }],
-  },
+  examplePayload: selectUserExamplePayload,
 });

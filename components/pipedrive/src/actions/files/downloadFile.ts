@@ -1,24 +1,30 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, fileIdInput } from "../../inputs";
+import { downloadFileInputs } from "../../inputs";
+import { downloadFileExamplePayload } from "../../examplePayloads";
+import { downloadFileOutputSchema } from "../../outputSchemas";
 export const downloadFile = action({
   display: {
     label: "Download File",
     description: "Downloads one file.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, id }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data, headers } = await client.get(`/files/${id}/download`, {
       responseType: "arraybuffer",
     });
-    return { data, contentType: headers["content-type"] };
+    const contentType = headers["content-type"];
+    return {
+      data,
+      contentType: typeof contentType === "string" ? contentType : undefined,
+    };
   },
-  inputs: {
-    connection: connectionInput,
-    id: fileIdInput,
-  },
-  examplePayload: {
-    data: Buffer.from("Hello, World"),
-    contentType: "text/plain",
-  },
+  inputs: downloadFileInputs,
+  examplePayload: downloadFileExamplePayload,
+  examplePerform: async () => downloadFileExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: downloadFileOutputSchema,
+  }),
 });

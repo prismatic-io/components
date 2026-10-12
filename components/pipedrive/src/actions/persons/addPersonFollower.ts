@@ -1,12 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, personIdInput, userId } from "../../inputs";
+import { addPersonFollowerInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { addPersonFollowerExamplePayload } from "../../examplePayloads";
+import { addPersonFollowerOutputSchema } from "../../outputSchemas";
 export const addPersonFollower = action({
   display: {
     label: "Add Person Follower",
     description: "Adds a follower to a person.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, id, userId }) => {
     const client = createClient(
       connection,
@@ -18,12 +21,10 @@ export const addPersonFollower = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: personIdInput,
-    userId: {
-      ...userId,
-      required: true,
-    },
-  },
+  inputs: addPersonFollowerInputs,
+  examplePayload: addPersonFollowerExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addPersonFollowerOutputSchema,
+  }),
 });

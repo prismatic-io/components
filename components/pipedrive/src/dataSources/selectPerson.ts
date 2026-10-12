@@ -3,7 +3,7 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { paginateRecordsWithCursor, sortRecords } from "../util";
 import type { Person } from "../types/persons";
-import { personsDatasource } from "../examplePayloads/datasources";
+import { selectPersonExamplePayload } from "../examplePayloads";
 import { WebhookVersion } from "../constants";
 export const selectPerson = dataSource({
   display: {
@@ -28,7 +28,5 @@ export const selectPerson = dataSource({
     return { result: objects };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: personsDatasource,
-  },
+  examplePayload: selectPersonExamplePayload,
 });

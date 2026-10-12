@@ -1,21 +1,18 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  paginationLimitInput,
-  sortBy,
-  sortDirection,
-} from "../../inputs";
+import { getPipelinesInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getPipelinesExamplePayload } from "../../examplePayloads";
+import { getPipelinesOutputSchema } from "../../outputSchemas";
 export const getPipelines = action({
   display: {
     label: "Get Pipelines",
     description: "Gets all pipelines.",
   },
+  performSafety: "safe",
   perform: async (
     context,
-    { connection, sortBy, sortDirection, limit, cursor },
+    { connection, sortBy, sortDirection, pagination: { limit, cursor } = {} },
   ) => {
     const client = createClient(
       connection,
@@ -27,11 +24,11 @@ export const getPipelines = action({
     });
     return { data };
   },
-  inputs: {
-    sortBy,
-    sortDirection,
-    limit: paginationLimitInput,
-    cursor,
-    connection: connectionInput,
-  },
+  inputs: getPipelinesInputs,
+  examplePayload: getPipelinesExamplePayload,
+  examplePerform: async () => getPipelinesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPipelinesOutputSchema,
+  }),
 });

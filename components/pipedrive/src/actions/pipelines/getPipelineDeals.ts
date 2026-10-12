@@ -1,23 +1,26 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  paginationLimitInput,
-  pipelineIdInput,
-  sortBy,
-  sortDirection,
-} from "../../inputs";
-import { cleanNumber } from "../../util";
+import { getPipelineDealsInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getPipelineDealsExamplePayload } from "../../examplePayloads";
+import { getPipelineDealsOutputSchema } from "../../outputSchemas";
 export const getPipelineDeals = action({
   display: {
     label: "Get Pipeline Deals",
     description: "Gets deals in a pipeline.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, id, filterId, stageId, limit, cursor, sortBy, sortDirection },
+    {
+      connection,
+      id,
+      filterId,
+      stageId,
+      pagination: { limit, cursor } = {},
+      sortBy,
+      sortDirection,
+    },
   ) => {
     const client = createClient(
       connection,
@@ -37,29 +40,10 @@ export const getPipelineDeals = action({
     });
     return { data };
   },
-  inputs: {
-    id: pipelineIdInput,
-    filterId: input({
-      label: "Filter ID",
-      type: "string",
-      clean: cleanNumber,
-      comments:
-        "If supplied, only deals matching the given filter will be returned",
-    }),
-    stageId: input({
-      label: "Stage ID",
-      type: "string",
-      clean: cleanNumber,
-      comments:
-        "If supplied, only deals within the given stage will be returned",
-    }),
-    limit: paginationLimitInput,
-    cursor,
-    sortBy,
-    sortDirection: {
-      ...sortDirection,
-      default: "desc",
-    },
-    connection: connectionInput,
-  },
+  inputs: getPipelineDealsInputs,
+  examplePayload: getPipelineDealsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPipelineDealsOutputSchema,
+  }),
 });

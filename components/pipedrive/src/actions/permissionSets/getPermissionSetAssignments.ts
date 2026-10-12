@@ -1,27 +1,28 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  paginationLimitInput,
-  paginationStartInput,
-  permissionSetIdInput,
-} from "../../inputs";
+import { getPermissionSetAssignmentsInputs } from "../../inputs";
+import { getPermissionSetAssignmentsExamplePayload } from "../../examplePayloads";
+import { getPermissionSetAssignmentsOutputSchema } from "../../outputSchemas";
 export const getPermissionSetAssignments = action({
   display: {
     label: "Get Permission Set Assignments",
     description: "Lists permission set assignments.",
   },
-  perform: async (context, { connection, id, start, limit }) => {
+  performSafety: "notAllowed",
+  perform: async (
+    context,
+    { connection, id, pagination: { start, limit } = {} },
+  ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/permissionSets/${id}/assignments`, {
       params: { start, limit },
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: permissionSetIdInput,
-    start: paginationStartInput,
-    limit: paginationLimitInput,
-  },
+  inputs: getPermissionSetAssignmentsInputs,
+  examplePayload: getPermissionSetAssignmentsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPermissionSetAssignmentsOutputSchema,
+  }),
 });

@@ -1,10 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import {
-  callLogIdInput,
-  connectionInput,
-  paginationLimitInput,
-  paginationStartInput,
-} from "./common";
+import { callLogIdInput, connectionInput, offsetPagination } from "./common";
 import { cleanNumber, cleanString } from "../util";
 const userIdOptional = input({
   label: "User ID",
@@ -151,8 +146,7 @@ export const addCallLogInputs = {
 };
 export const getUserCallLogsInputs = {
   connection: connectionInput,
-  start: paginationStartInput,
-  limit: paginationLimitInput,
+  pagination: offsetPagination,
 };
 export const deleteCallLogInputs = {
   connection: connectionInput,

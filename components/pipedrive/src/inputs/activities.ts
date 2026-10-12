@@ -2,8 +2,7 @@ import { input } from "@prismatic-io/spectral";
 import {
   activityIdInput,
   connectionInput,
-  cursor,
-  paginationLimitInput,
+  cursorPagination,
   sortBy,
   sortDirection,
 } from "./common";
@@ -40,9 +39,8 @@ const updatedUntil = input({
 });
 export const getActivitiesInputs = {
   connection: connectionInput,
-  limit: paginationLimitInput,
-  cursor,
   filterId: filterIdOptional,
+  pagination: cursorPagination,
   updatedSince,
   updatedUntil,
   sortBy,

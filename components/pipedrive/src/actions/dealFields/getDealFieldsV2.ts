@@ -1,19 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  fetchAll,
-  paginationLimitInput,
-} from "../../inputs";
+import { getDealFieldsV2Inputs } from "../../inputs";
 import { paginateRecordsWithCursor } from "../../util";
 import { WebhookVersion } from "../../constants";
+import { getDealFieldsV2ExamplePayload } from "../../examplePayloads";
+import { getDealFieldsV2OutputSchema } from "../../outputSchemas";
 export const getDealFieldsV2 = action({
   display: {
     label: "Get Deal Fields (V2)",
     description: "Gets all deal fields.",
   },
-  perform: async (context, { connection, limit, fetchAll, cursor }) => {
+  performSafety: "notAllowed",
+  perform: async (
+    context,
+    { connection, pagination: { limit, cursor } = {}, fetchAll },
+  ) => {
     const client = createClient(
       connection,
       context.debug.enabled,
@@ -30,10 +31,10 @@ export const getDealFieldsV2 = action({
     );
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    fetchAll,
-    limit: paginationLimitInput,
-    cursor,
-  },
+  inputs: getDealFieldsV2Inputs,
+  examplePayload: getDealFieldsV2ExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getDealFieldsV2OutputSchema,
+  }),
 });

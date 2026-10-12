@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanNumber, cleanString } from "../util";
 export { debugRequest } from "@prismatic-io/spectral/dist/clients/http/inputs";
 export const connectionInput = input({
@@ -60,7 +60,7 @@ export const fieldCodeInput = input({
   type: "string",
   required: true,
   clean: util.types.toString,
-  comments: "The field code of the field.",
+  comments: "The internal API key used to identify a custom field definition.",
   example: "d4de1c1518b4531717c676029a45911c340390a6",
   placeholder: "Enter field code",
 });
@@ -154,6 +154,31 @@ export const paginationLimitInput = input({
   comments: "The maximum number of results to return per page.",
   example: "100",
   placeholder: "Enter limit",
+});
+export const cursorPagination = structuredObjectInput({
+  label: "Pagination",
+  comments: "Cursor and page-size controls.",
+  inputs: {
+    limit: paginationLimitInput,
+    cursor,
+  },
+});
+export const offsetPagination = structuredObjectInput({
+  label: "Pagination",
+  comments: "Offset and page-size controls.",
+  inputs: {
+    start: paginationStartInput,
+    limit: paginationLimitInput,
+  },
+});
+export const mixedPagination = structuredObjectInput({
+  label: "Pagination",
+  comments: "Offset, cursor, and page-size controls.",
+  inputs: {
+    start: paginationStartInput,
+    limit: paginationLimitInput,
+    cursor,
+  },
 });
 export const personIdInput = input({
   label: "Person ID",

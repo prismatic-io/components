@@ -1,40 +1,28 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  paginationLimitInput,
-  paginationStartInput,
-  productIdInput,
-} from "../../inputs";
-import { cleanString } from "../../util";
+import { getProductDealsInputs } from "../../inputs";
+import { getProductDealsExamplePayload } from "../../examplePayloads";
+import { getProductDealsOutputSchema } from "../../outputSchemas";
 export const getProductDeals = action({
   display: {
     label: "Get Product Deals",
     description: "Gets deals that a product is attached to.",
   },
-  perform: async (context, { connection, id, start, limit, status }) => {
+  performSafety: "notAllowed",
+  perform: async (
+    context,
+    { connection, id, pagination: { start, limit } = {}, status },
+  ) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(`/products/${id}/deals`, {
       params: { start, limit, status },
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: productIdInput,
-    start: paginationStartInput,
-    limit: paginationLimitInput,
-    status: input({
-      label: "Status",
-      type: "string",
-      model: [
-        { label: "Open", value: "open" },
-        { label: "Won", value: "won" },
-        { label: "Lost", value: "lost" },
-        { label: "Deleted", value: "deleted" },
-      ],
-      clean: cleanString,
-      comments: "Only fetch deals with a specific status",
-    }),
-  },
+  inputs: getProductDealsInputs,
+  examplePayload: getProductDealsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getProductDealsOutputSchema,
+  }),
 });

@@ -1,12 +1,15 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput } from "../../inputs";
+import { addPipelineInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { addPipelineExamplePayload } from "../../examplePayloads";
+import { addPipelineOutputSchema } from "../../outputSchemas";
 export const addPipeline = action({
   display: {
     label: "Add Pipeline",
     description: "Adds a new pipeline.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, name, isDealProbabilityEnabled }) => {
     const client = createClient(
       connection,
@@ -19,22 +22,10 @@ export const addPipeline = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    name: input({
-      label: "Name",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The name of the pipeline",
-    }),
-    isDealProbabilityEnabled: input({
-      label: "Deal Probability",
-      type: "boolean",
-      required: false,
-      clean: util.types.toBool,
-      comments:
-        "Whether deal probability is disabled or enabled for this pipeline",
-    }),
-  },
+  inputs: addPipelineInputs,
+  examplePayload: addPipelineExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: addPipelineOutputSchema,
+  }),
 });

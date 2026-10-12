@@ -1,14 +1,19 @@
 import {
   connectionInput,
+  cursorPagination,
   dealFieldIdInput,
+  fetchAll,
   fieldCodeInput,
-  paginationLimitInput,
-  paginationStartInput,
+  offsetPagination,
 } from "./common";
 export const getDealFieldsInputs = {
   connection: connectionInput,
-  start: paginationStartInput,
-  limit: paginationLimitInput,
+  pagination: offsetPagination,
+};
+export const getDealFieldsV2Inputs = {
+  connection: connectionInput,
+  fetchAll,
+  pagination: cursorPagination,
 };
 export const getDealFieldInputs = {
   connection: connectionInput,

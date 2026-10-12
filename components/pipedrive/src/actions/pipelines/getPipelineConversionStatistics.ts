@@ -1,12 +1,14 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, pipelineIdInput } from "../../inputs";
-import { cleanNumber } from "../../util";
+import { getPipelineConversionStatisticsInputs } from "../../inputs";
+import { getPipelineConversionStatisticsExamplePayload } from "../../examplePayloads";
+import { getPipelineConversionStatisticsOutputSchema } from "../../outputSchemas";
 export const getPipelineConversionStatistics = action({
   display: {
     label: "Get Pipeline Conversion Statistics",
     description: "Gets deal conversion rates in a pipeline.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, id, startDate, endDate, userId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.get(
@@ -17,28 +19,11 @@ export const getPipelineConversionStatistics = action({
     );
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: pipelineIdInput,
-    startDate: input({
-      label: "Start Date",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The start of the period",
-    }),
-    endDate: input({
-      label: "End Date",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The end of the period",
-    }),
-    userId: input({
-      label: "User ID",
-      type: "string",
-      clean: cleanNumber,
-      comments: 'The ID of the user who"s pipeline metrics statistics to fetch',
-    }),
-  },
+  inputs: getPipelineConversionStatisticsInputs,
+  examplePayload: getPipelineConversionStatisticsExamplePayload,
+  examplePerform: async () => getPipelineConversionStatisticsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPipelineConversionStatisticsOutputSchema,
+  }),
 });

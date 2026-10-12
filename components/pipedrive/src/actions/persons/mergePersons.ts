@@ -1,11 +1,14 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, personIdInput } from "../../inputs";
+import { mergePersonsInputs } from "../../inputs";
+import { mergePersonsExamplePayload } from "../../examplePayloads";
+import { mergePersonsOutputSchema } from "../../outputSchemas";
 export const mergePersons = action({
   display: {
     label: "Merge Persons",
     description: "Merges two persons.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, id, mergeWithId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.patch(`/persons/${id}/merge`, {
@@ -13,15 +16,10 @@ export const mergePersons = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: personIdInput,
-    mergeWithId: input({
-      label: "Merge With ID",
-      type: "string",
-      required: true,
-      clean: util.types.toNumber,
-      comments: "The ID of the person that will not be overwritten",
-    }),
-  },
+  inputs: mergePersonsInputs,
+  examplePayload: mergePersonsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: mergePersonsOutputSchema,
+  }),
 });

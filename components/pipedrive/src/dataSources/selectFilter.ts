@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { sortRecords } from "../util";
+import { selectFilterExamplePayload } from "../examplePayloads";
 interface Filter {
   id: number;
   name: string;
@@ -28,7 +29,5 @@ export const selectFilter = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "My Deals (deals)", key: "1" }],
-  },
+  examplePayload: selectFilterExamplePayload,
 });

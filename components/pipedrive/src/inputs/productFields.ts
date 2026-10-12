@@ -1,9 +1,10 @@
 import { input, util } from "@prismatic-io/spectral";
 import {
   connectionInput,
+  cursorPagination,
+  fetchAll,
   fieldCodeInput,
-  paginationLimitInput,
-  paginationStartInput,
+  offsetPagination,
 } from "./common";
 const productFieldId = input({
   label: "Product Field ID",
@@ -16,8 +17,12 @@ const productFieldId = input({
 });
 export const getProductFieldsInputs = {
   connection: connectionInput,
-  start: paginationStartInput,
-  limit: paginationLimitInput,
+  pagination: offsetPagination,
+};
+export const getProductFieldsV2Inputs = {
+  connection: connectionInput,
+  fetchAll,
+  pagination: cursorPagination,
 };
 export const deleteProductFieldInputs = {
   connection: connectionInput,

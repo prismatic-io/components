@@ -2,7 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { paginateRecordsWithCursor, sortRecords } from "../util";
-import { organizationsDatasource } from "../examplePayloads/datasources";
+import { selectOrganizationExamplePayload } from "../examplePayloads";
 import type { Organization } from "../types/organization";
 import { WebhookVersion } from "../constants";
 export const selectOrganization = dataSource({
@@ -28,7 +28,5 @@ export const selectOrganization = dataSource({
     return { result: objects };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: organizationsDatasource,
-  },
+  examplePayload: selectOrganizationExamplePayload,
 });

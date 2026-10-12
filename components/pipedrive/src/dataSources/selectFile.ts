@@ -2,6 +2,7 @@ import { dataSource, type Element } from "@prismatic-io/spectral";
 import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { sortRecords } from "../util";
+import { selectFileExamplePayload } from "../examplePayloads";
 interface PipedriveFile {
   id: number;
   file_name: string;
@@ -28,7 +29,5 @@ export const selectFile = dataSource({
     return { result };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "document.pdf", key: "123" }],
-  },
+  examplePayload: selectFileExamplePayload,
 });

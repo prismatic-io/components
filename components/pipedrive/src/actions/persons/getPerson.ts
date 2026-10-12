@@ -1,12 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, personIdInput } from "../../inputs";
+import { getPersonInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getPersonExamplePayload } from "../../examplePayloads";
+import { singlePersonV2OutputSchema } from "../../outputSchemas";
 export const getPerson = action({
   display: {
     label: "Get Person",
     description: "Gets details of a person.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, id }) => {
     const client = createClient(
       connection,
@@ -16,8 +19,11 @@ export const getPerson = action({
     const { data } = await client.get(`/persons/${id}`);
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: personIdInput,
-  },
+  inputs: getPersonInputs,
+  examplePayload: getPersonExamplePayload,
+  examplePerform: async () => getPersonExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: singlePersonV2OutputSchema,
+  }),
 });

@@ -1,12 +1,15 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, dealIdInput } from "../../inputs";
+import { deleteDealFollowerInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { deleteDealFollowerExamplePayload } from "../../examplePayloads";
+import { deleteDealFollowerOutputSchema } from "../../outputSchemas";
 export const deleteDealFollower = action({
   display: {
     label: "Delete Deal Follower",
     description: "Deletes a follower from a deal.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, id, followerId }) => {
     const client = createClient(
       connection,
@@ -18,15 +21,10 @@ export const deleteDealFollower = action({
     );
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: dealIdInput,
-    followerId: input({
-      label: "Follower ID",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The ID of the follower",
-    }),
-  },
+  inputs: deleteDealFollowerInputs,
+  examplePayload: deleteDealFollowerExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteDealFollowerOutputSchema,
+  }),
 });

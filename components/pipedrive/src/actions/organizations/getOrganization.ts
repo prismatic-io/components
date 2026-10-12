@@ -1,12 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, organizationIdInput } from "../../inputs";
+import { getOrganizationInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getOrganizationSingleExamplePayload } from "../../examplePayloads";
+import { singleOrganizationV2OutputSchema } from "../../outputSchemas";
 export const getOrganization = action({
   display: {
     label: "Get Organization",
     description: "Gets details of an organization.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, id }) => {
     const client = createClient(
       connection,
@@ -16,8 +19,11 @@ export const getOrganization = action({
     const { data } = await client.get(`/organizations/${id}`);
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: organizationIdInput,
-  },
+  inputs: getOrganizationInputs,
+  examplePayload: getOrganizationSingleExamplePayload,
+  examplePerform: async () => getOrganizationSingleExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: singleOrganizationV2OutputSchema,
+  }),
 });

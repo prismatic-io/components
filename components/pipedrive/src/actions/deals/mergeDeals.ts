@@ -1,11 +1,14 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, dealIdInput } from "../../inputs";
+import { mergeDealsInputs } from "../../inputs";
+import { mergeDealsExamplePayload } from "../../examplePayloads";
+import { mergeDealsOutputSchema } from "../../outputSchemas";
 export const mergeDeals = action({
   display: {
     label: "Merge Deals",
     description: "Merges two deals.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, id, mergeWithId }) => {
     const client = createClient(connection, context.debug.enabled);
     const { data } = await client.put(`/deals/${id}/merge`, {
@@ -13,15 +16,10 @@ export const mergeDeals = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: dealIdInput,
-    mergeWithId: input({
-      label: "Merge With ID",
-      type: "string",
-      required: true,
-      clean: util.types.toNumber,
-      comments: "The ID of the deal that the deal will be merged with",
-    }),
-  },
+  inputs: mergeDealsInputs,
+  examplePayload: mergeDealsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: mergeDealsOutputSchema,
+  }),
 });

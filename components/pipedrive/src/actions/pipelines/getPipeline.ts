@@ -1,13 +1,15 @@
-import { action, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, pipelineIdInput } from "../../inputs";
-import { cleanString } from "../../util";
+import { getPipelineInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { getPipelineExamplePayload } from "../../examplePayloads";
+import { getPipelineOutputSchema } from "../../outputSchemas";
 export const getPipeline = action({
   display: {
     label: "Get Pipeline",
     description: "Gets one pipeline.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, id, totalsConvertCurrency }) => {
     const client = createClient(
       connection,
@@ -19,14 +21,11 @@ export const getPipeline = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    id: pipelineIdInput,
-    totalsConvertCurrency: input({
-      label: "Totals Convert Currency",
-      type: "string",
-      clean: cleanString,
-      comments: "The 3-letter currency code of any of the supported currencies",
-    }),
-  },
+  inputs: getPipelineInputs,
+  examplePayload: getPipelineExamplePayload,
+  examplePerform: async () => getPipelineExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPipelineOutputSchema,
+  }),
 });

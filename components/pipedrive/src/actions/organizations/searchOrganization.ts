@@ -1,16 +1,24 @@
-import { action, util, input } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { connectionInput, cursor, paginationLimitInput } from "../../inputs";
-import { cleanString } from "../../util";
+import { searchOrganizationInputs } from "../../inputs";
 import { WebhookVersion } from "../../constants";
+import { searchOrganizationExamplePayload } from "../../examplePayloads";
+import { searchOrganizationOutputSchema } from "../../outputSchemas";
 export const searchOrganization = action({
   display: {
     label: "Search Organization",
     description: "Searches organizations.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, term, fields, exactMatch, limit, cursor },
+    {
+      connection,
+      term,
+      fields,
+      exactMatch,
+      pagination: { limit, cursor } = {},
+    },
   ) => {
     const client = createClient(
       connection,
@@ -22,34 +30,10 @@ export const searchOrganization = action({
     });
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    term: input({
-      label: "Term",
-      type: "string",
-      required: true,
-      clean: util.types.toString,
-      comments: "The search term to look for",
-      example: "Acme Corporation",
-      placeholder: "Enter search term",
-    }),
-    fields: input({
-      label: "Fields",
-      type: "string",
-      default: "address,custom_fields,notes,name",
-      clean: cleanString,
-      comments: "A comma-separated string array",
-      example: "address,custom_fields,notes,name",
-      placeholder: "Enter fields (comma-separated)",
-    }),
-    exactMatch: input({
-      label: "Exact Match",
-      type: "boolean",
-      clean: util.types.toBool,
-      comments:
-        "When true, only full exact matches against the given term are returned",
-    }),
-    limit: paginationLimitInput,
-    cursor,
-  },
+  inputs: searchOrganizationInputs,
+  examplePayload: searchOrganizationExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: searchOrganizationOutputSchema,
+  }),
 });

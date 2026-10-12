@@ -1,19 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import {
-  connectionInput,
-  cursor,
-  fetchAll,
-  paginationLimitInput,
-} from "../../inputs";
+import { getPersonFieldsV2Inputs } from "../../inputs";
 import { paginateRecordsWithCursor } from "../../util";
 import { WebhookVersion } from "../../constants";
+import { getPersonFieldsV2ExamplePayload } from "../../examplePayloads";
+import { getPersonFieldsV2OutputSchema } from "../../outputSchemas";
 export const getPersonFieldsV2 = action({
   display: {
     label: "Get Person Fields (V2)",
     description: "Gets all person fields.",
   },
-  perform: async (context, { connection, limit, fetchAll, cursor }) => {
+  performSafety: "notAllowed",
+  perform: async (
+    context,
+    { connection, pagination: { limit, cursor } = {}, fetchAll },
+  ) => {
     const client = createClient(
       connection,
       context.debug.enabled,
@@ -30,10 +31,10 @@ export const getPersonFieldsV2 = action({
     );
     return { data };
   },
-  inputs: {
-    connection: connectionInput,
-    fetchAll,
-    limit: paginationLimitInput,
-    cursor,
-  },
+  inputs: getPersonFieldsV2Inputs,
+  examplePayload: getPersonFieldsV2ExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPersonFieldsV2OutputSchema,
+  }),
 });

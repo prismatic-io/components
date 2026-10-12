@@ -3,6 +3,7 @@ import { connectionInput } from "../inputs";
 import { createClient } from "../client";
 import { paginateRecordsWithCursor, sortRecords } from "../util";
 import { WebhookVersion } from "../constants";
+import { selectActivityExamplePayload } from "../examplePayloads";
 interface Activity {
   id: number;
   subject: string;
@@ -33,7 +34,5 @@ export const selectActivity = dataSource({
     return { result: objects };
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [{ label: "Follow-up call (call)", key: "1" }],
-  },
+  examplePayload: selectActivityExamplePayload,
 });
