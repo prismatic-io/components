@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
-import getPriceBandInputs from "../../inputs/priceBand/getPriceBandInputs";
 import { getPriceBandPayload } from "../../examplePayloads";
+import { company, connection, site } from "../../inputs/general";
+import getPriceBandInputs from "../../inputs/priceBand/getPriceBandInputs";
 export const getPriceBand = action({
   display: {
     label: "Get Price Band",

@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
-import getProductGroupInputs from "../../inputs/productGroups/getProductGroupInputs";
 import { getProductGroupPayload } from "../../examplePayloads";
+import { company, connection, site } from "../../inputs/general";
+import getProductGroupInputs from "../../inputs/productGroups/getProductGroupInputs";
 export const getProductGroup = action({
   display: {
     label: "Get Product Group",

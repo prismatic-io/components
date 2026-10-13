@@ -2,15 +2,34 @@ The **New and Updated Payments** polling trigger fetches Square payments that we
 
 #### How It Works
 
-1. On the first run, the trigger captures the current time and returns no records (the baseline is established).
-2. On each subsequent run, the trigger calls Square's [List Payments](https://developer.squareup.com/reference/square/payments-api/list-payments) endpoint with the `begin_time` set to the previous poll timestamp and paginates through all results.
-3. Each payment's `created_at` and `updated_at` timestamps are compared against the previous poll timestamp to partition results into `created` (new payments) and `updated` (payments modified after creation).
-4. The new poll timestamp is persisted to polling state for the next execution.
-5. If both buckets are empty, the trigger reports `polledNoChanges: true` so the flow does not execute unnecessarily.
+1. The trigger runs on the configured schedule.
+2. It calls Square's [List Payments](https://developer.squareup.com/reference/square/payments-api/list-payments) endpoint for payments updated at or after its stored position, sorted by `updated_at` ascending and paginated with Square's server cursor.
+3. Each payment is classified as `created` when its `created_at` is at or after the stored position, and otherwise as `updated`. A payment landing exactly on the stored position is included only if it was not already delivered on an earlier recurrence.
+4. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. Turning either off empties that array, and both keys remain present in the payload.
+5. The position is stored in polling state as the newest `updated_at` actually received, together with the ids of the payments delivered at that exact timestamp, never the time of the recurrence. A recurrence that receives nothing leaves it unchanged. While a backlog is still draining, Square's server cursor is also stored, so the next round resumes where the last one stopped.
+6. If both buckets are empty and nothing remains to drain, the trigger reports `polledNoChanges: true` so the flow does not execute unnecessarily.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every payment created or updated on or after that date exactly once. Left empty, there is no sync and the trigger starts from the time of its first recurrence.
+
+The window has no fixed upper bound, so a payment updated mid-drain is swept into the sync rather than deferred to the schedule. The position advances to the newest payment received, never to the wall clock, and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff. With batching off, each recurrence drains a bounded window of 10 pages (up to 1,000 payments), so a larger window spans several recurrences. With batching on, the drain completes within one recurrence. The toggles apply again once the sync is exhausted.
+
+The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Square.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching on, each round reads one page of 50 payments and the platform drives further rounds until the backlog is drained, all within one recurrence. With batching off, each recurrence reads up to 10 pages of 100 payments and a larger backlog drains one window per recurrence.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with `created` and `updated` arrays under `body.data`. Each array contains full Square `Payment` objects.
+With batching off, the trigger returns an object with `created` and `updated` arrays under `body.data`. Each array contains full Square `Payment` objects.
 
 <details>
 <summary>Example Payload</summary>
@@ -55,10 +74,35 @@ The trigger returns an object with `created` and `updated` arrays under `body.da
 
 </details>
 
+With batching on, each execution receives one payment tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "KkAkhdMsgzn59SM8A89WgKwekxLZY",
+    "status": "COMPLETED",
+    "amount_money": {
+      "amount": 100,
+      "currency": "USD"
+    },
+    "source_type": "CARD",
+    "location_id": "L8MR4Y5BMDJSC",
+    "order_id": "03O3USaPaAaFnI6kkwB1JxGgBsUZY",
+    "created_at": "2026-05-20T22:55:45.183Z",
+    "updated_at": "2026-05-20T22:55:45.273Z"
+  }
+}
+```
+
+</details>
+
 Fields shown are representative. The full response object includes additional properties.
 
 #### Notes
 
 - The polling interval is configured on the integration instance, not on the trigger itself.
-- The `begin_time` filter uses Square's server time. Clock skew between the integration runtime and Square may cause edge-case records near the boundary to be classified differently across runs.
 - For high-volume merchants, consider pairing this trigger with the **Webhook** trigger to receive real-time `payment.created` and `payment.updated` events and reduce polling load.

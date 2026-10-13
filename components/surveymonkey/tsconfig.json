@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2018",
     "lib": ["es2018"],
-    "module": "commonjs",
+    "module": "esnext",
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
@@ -10,8 +10,9 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node"
+    "moduleResolution": "bundler",
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", ".spectral/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

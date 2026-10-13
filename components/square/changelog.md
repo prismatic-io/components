@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-10-13
+
+Added an initial sync and opt-in batching to the **New and Updated Payments** trigger, and capped how many payments one recurrence returns without batching:
+
+- Added an optional **Look-back Date** input to the **New and Updated Payments** trigger for performing an initial sync of payments. The initial sync begins on the first recurrence and backfills every payment created or updated on or after the specified date, seeding each once and ignoring the trigger's filters; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Added opt-in batching to the **New and Updated Payments** trigger, dispatching each changed payment individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Updated the **New and Updated Payments** trigger to return at most 1,000 payments per recurrence when batching is off, oldest update first, so a larger backlog drains across later recurrences instead of in one execution
+
 ### 2026-07-02
 
 Grouped pagination and sorting inputs into structured objects and added a Fetch All option to list actions

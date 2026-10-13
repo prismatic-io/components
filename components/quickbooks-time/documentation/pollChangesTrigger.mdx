@@ -3,21 +3,51 @@ This trigger polls the [QuickBooks Time API](https://tsheetsteam.github.io/api_d
 #### How It Works
 
 1. The trigger runs on the configured schedule
-2. It fetches records from QuickBooks Time for the selected resource type — for Timesheets, a `start_date` parameter derived from the last poll time is passed as an optimization to limit the result set
+2. It fetches records from QuickBooks Time for the selected resource type. For Timesheets, a `start_date` parameter derived from the last poll time is passed as an optimization to limit the result set
 3. New records are identified by comparing returned IDs against the set of known IDs from previous polls
 4. The trigger updates its internal state after each poll
 
-#### Configuration
+**Initial Sync**
 
-Configure the following inputs:
+An initial sync seeds a complete starting state rather than a change feed, so an input that narrows
+which changes are reported would leave gaps in it: **Show New Records** is ignored while it runs,
+and is the only input it ignores. It begins on the first recurrence when a **Look-back Date**
+(`YYYY-MM-DD`) is set, and seeds each record exactly once: Timesheets whose work `date` is on or
+after that date, and Users or Job Codes whose `created` timestamp is on or after 00:00 UTC of that
+date. Left empty, there is no sync: the first Users or Job Codes recurrence only records a baseline
+and returns nothing, and the first Timesheets recurrence reports the timesheets dated on or after
+the current UTC date.
 
-- **Connection**: The QuickBooks Time connection used to authenticate API requests
-- **Resource Type**: The type of records to monitor — Timesheets, Users, or Job Codes
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+The sync has no fixed upper bound and finishes in one recurrence with batching on or off, because
+the trigger fetches every page before it returns. It then stores the IDs it received as its
+position (for Timesheets, together with that recurrence's date), and the next recurrence reports
+only records whose IDs are not in that set, so no seeded record is reported twice. Nothing in the
+payload marks the handoff.
+
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input,
+so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to QuickBooks Time,
+which limits requests to 300 per 5 minutes per access token.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` (`body.data.updated` is always
+empty). With batching on those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled. Because
+batching is enabled per flow, that change is scoped to the flow rather than to the component or to
+other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with a `created` array containing new records detected since the last poll. No `updated` array is returned — this trigger detects additions only.
+With batching off, the trigger returns an object with a `created` array containing new records detected since the last poll, and an `updated` array that is always empty because this trigger detects additions only. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -40,7 +70,30 @@ The trigger returns an object with a `created` array containing new records dete
         "created": "2024-01-16T17:01:12-06:00",
         "last_modified": "2024-01-16T17:01:12-06:00"
       }
-    ]
+    ],
+    "updated": []
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. `changeType` is always `created`. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": 135288482,
+    "user_id": 317046,
+    "jobcode_id": 18080900,
+    "date": "2024-01-16",
+    "type": "regular",
+    "created": "2024-01-16T17:01:12-06:00",
+    "last_modified": "2024-01-16T17:01:12-06:00"
   }
 }
 ```
@@ -49,7 +102,7 @@ The trigger returns an object with a `created` array containing new records dete
 
 #### Notes
 
-- The first poll establishes a baseline — no records are returned on the initial execution. Subsequent polls detect additions against that baseline
+- For Timesheets, each recurrence queries from the date of the previous recurrence, so a timesheet added later with an earlier work date is not reported
 - For Timesheets, the `start_date` filter is applied as a query optimization, but change detection still relies on ID comparison rather than timestamps
-- Update detection is not supported for any resource type — only new records are returned
+- Update detection is not supported for any resource type. Only new records are returned
 - Refer to the [QuickBooks Time API documentation](https://tsheetsteam.github.io/api_docs/) for details on available fields per resource type

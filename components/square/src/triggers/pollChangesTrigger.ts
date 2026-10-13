@@ -1,54 +1,69 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
+import { TRIGGER_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesTriggerInputs } from "../inputs";
-import type { Payment, PollingState } from "../types";
-import { fetchAllPaymentsSince, partitionPaymentsByTimestamp } from "../util";
+import type {
+  PaymentChange,
+  PaymentChangesObject,
+  PollingCursor,
+  PollingState,
+} from "../types";
+import { pollPaymentsCycle, resolvePaymentChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Payments",
     description:
-      "Fetches Square payments created or updated since the last poll on a recurring schedule, separated into new and updated buckets.",
+      "Retrieves existing and ongoing payments from Square. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PaymentChange[] =>
+      resolvePaymentChanges(payload.body.data as PaymentChangesObject),
+    getNextPaginationState: (_context, { payload }): PollingCursor | null =>
+      (payload.paginationState as PollingCursor | undefined) ?? null,
+  },
   perform: async (
     context,
     payload,
-    { squareConnection, showNewRecords, showUpdatedRecords },
+    { squareConnection, lookBackDate, showNewRecords, showUpdatedRecords },
   ) => {
-    const now = new Date();
-    const lastState = context.polling.getState() as PollingState | undefined;
-    const sinceDate = lastState?.lastPolledAt
-      ? new Date(lastState.lastPolledAt)
-      : now;
     const client = await createAuthorizedClient(
       squareConnection,
       context.debug.enabled,
     );
-    const payments: Payment[] = await fetchAllPaymentsSince(
+    const incoming = payload.paginationState as PollingCursor | undefined;
+    const cycle = await pollPaymentsCycle({
       client,
-      sinceDate.toISOString(),
-    );
-    const { created, updated } = partitionPaymentsByTimestamp(
-      payments,
-      sinceDate,
-    );
-    context.polling.setState({
-      lastPolledAt: now.toISOString(),
-    } as Record<string, unknown>);
-    const result = {
-      created: showNewRecords ? created : [],
-      updated: showUpdatedRecords ? updated : [],
+      state: (context.polling.getState() ?? {}) as PollingState,
+      incoming,
+      seed: lookBackDate ? new Date(lookBackDate) : new Date(),
+      hasLookBackDate: Boolean(lookBackDate),
+      batching: context.batch?.enabled === true,
+    });
+    context.polling.setState(cycle.state);
+    const result: PaymentChangesObject = {
+      created: cycle.backfill || showNewRecords ? cycle.created : [],
+      updated: cycle.backfill || showUpdatedRecords ? cycle.updated : [],
     };
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled payments: ${payments.length} total → ${created.length} new, ${updated.length} updated`,
+        `Polled payments: ${cycle.read} read → ${cycle.created.length} new, ${cycle.updated.length} updated, ${cycle.next ? "more pending" : "stream drained"}`,
       );
     }
     return {
-      payload: { ...payload, body: { data: result } },
+      payload: {
+        ...payload,
+        paginationState: cycle.next ?? undefined,
+        body: { data: result },
+      },
       polledNoChanges:
-        result.created.length === 0 && result.updated.length === 0,
+        !result.created?.length &&
+        !result.updated?.length &&
+        cycle.next === null &&
+        !incoming,
     };
   },
   examplePayload: pollChangesTriggerExamplePayload,

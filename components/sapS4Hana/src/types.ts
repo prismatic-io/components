@@ -11,3 +11,11 @@ export interface PollResourceConfig {
   createdAtField: string;
   updatedAtField: string;
 }
+export interface PollingChangesObject {
+  created: SapRecord[];
+  updated: SapRecord[];
+}
+export interface PollingRecordChange {
+  changeType: "created" | "updated";
+  record: SapRecord;
+}

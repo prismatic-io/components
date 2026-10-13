@@ -1,61 +1,83 @@
 import { pollingTrigger, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { PollResource } from "../constants";
-import { connection, pollResourceType, showNewRecords } from "../inputs";
-import type { PollingState } from "../types";
-import { fetchRecords } from "../util";
+import {
+  connection,
+  lookBackDate,
+  pollResourceType,
+  showNewRecords,
+} from "../inputs";
+import type {
+  PollingState,
+  QBTimeRecordChange,
+  QBTimeRecordChanges,
+} from "../types";
+import {
+  fetchRecords,
+  filterCreatedOnOrAfter,
+  resolveQBTimeRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Records",
     description:
-      "Checks for new timesheets, users, or job codes in QuickBooks Time on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified QuickBooks Time resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     connection,
     resourceType: pollResourceType,
     showNewRecords,
+    lookBackDate,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): QBTimeRecordChange[] =>
+      resolveQBTimeRecordChanges(payload.body.data as QBTimeRecordChanges),
   },
   perform: async (
     context,
     payload,
-    { connection, resourceType, showNewRecords },
+    { connection, resourceType, showNewRecords, lookBackDate },
   ) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
     const client = createClient(connection, context.debug.enabled);
     const queryParams: Record<string, string> = {};
-    if (resourceType === PollResource.TIMESHEETS) {
-      const lastPolledAt = lastState?.lastPolledAt ?? now;
-      queryParams.start_date = lastPolledAt.split("T")[0];
+    const isIdBased = resourceType !== PollResource.TIMESHEETS;
+    const knownIds = lastState?.knownIds;
+    const hasNoBaseline =
+      knownIds === undefined ||
+      (knownIds.length > 0 &&
+        knownIds.every((id) => util.types.toString(id) === ""));
+    const isFirstPoll = isIdBased ? hasNoBaseline : !lastState?.lastPolledAt;
+    const isInitialSync = isFirstPoll && Boolean(lookBackDate);
+    if (!isIdBased) {
+      queryParams.start_date = (
+        lastState?.lastPolledAt ||
+        lookBackDate ||
+        now
+      ).split("T")[0];
     }
     const records = await fetchRecords(client, resourceType, queryParams);
     const currentIds = records.map((r) => util.types.toString(r.id));
-    const isIdBased = resourceType !== PollResource.TIMESHEETS;
-    const isFirstPoll = isIdBased && lastState?.knownIds === undefined;
-    if (isFirstPoll) {
-      context.polling.setState({
-        lastPolledAt: now,
-        knownIds: currentIds,
-      } as unknown as Record<string, unknown>);
+    const newState: PollingState = { lastPolledAt: now, knownIds: currentIds };
+    if (isIdBased && isFirstPoll && !isInitialSync) {
+      context.polling.setState(newState as unknown as Record<string, unknown>);
       return {
-        payload: {
-          ...payload,
-          body: { data: { created: [], updated: [] } },
-        },
+        payload: { ...payload, body: { data: { created: [], updated: [] } } },
         polledNoChanges: true,
       };
     }
-    const knownIds = lastState?.knownIds ?? [];
-    const knownSet = new Set(knownIds.map((id) => util.types.toString(id)));
-    const created = records.filter(
-      (r) => !knownSet.has(util.types.toString(r.id)),
+    const knownSet = new Set(
+      (lastState?.knownIds ?? []).map((id) => util.types.toString(id)),
     );
-    const newState: PollingState = {
-      lastPolledAt: now,
-      knownIds: currentIds,
-    };
+    const created =
+      isIdBased && isInitialSync
+        ? filterCreatedOnOrAfter(records, lookBackDate)
+        : records.filter((r) => !knownSet.has(util.types.toString(r.id)));
     context.polling.setState(newState as unknown as Record<string, unknown>);
-    const filteredCreated = showNewRecords ? created : [];
+    const filteredCreated = showNewRecords || isInitialSync ? created : [];
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${resourceType}: ${records.length} total, ${filteredCreated.length} new`,

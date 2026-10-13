@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-10-13
+
+Added opt-in batching and an initial sync to the **New and Updated Orders** trigger:
+
+- Added opt-in batching to the **New and Updated Orders** trigger, dispatching each changed order individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input to the **New and Updated Orders** trigger for performing an initial sync of orders. The initial sync begins on the first recurrence and backfills every order modified on or after the specified date, seeding each once and ignoring the visibility filters; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-06-05
 
 Added the **New and Updated Orders** polling trigger that checks for orders created or updated since the last run using ShipBob's order update date filter

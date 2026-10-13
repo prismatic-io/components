@@ -1,11 +1,12 @@
+import type { Mock } from "vitest";
 import { paginateResults } from "./pagination";
-const createMockClient = (getMock: jest.Mock) => ({
+const createMockClient = (getMock: Mock) => ({
   get: getMock,
 });
 describe("paginateResults", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   describe("fetchAll=false", () => {
     it("makes a single call and returns full response", async () => {

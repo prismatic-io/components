@@ -1,12 +1,13 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { Mock } from "vitest";
 import { getAllPaginatedData } from "./util";
-const createMockClient = (getMock: jest.Mock): Pick<HttpClient, "get"> => ({
+const createMockClient = (getMock: Mock): Pick<HttpClient, "get"> => ({
   get: getMock,
 });
 describe("getAllPaginatedData", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   it("single page: returns items when total-pages is 1", async () => {
     const items = [{ id: 1 }, { id: 2 }];

@@ -15,13 +15,31 @@ The trigger checks for:
 
 The **created** and **updated** branches can be enabled or disabled independently using the **Show New Records** and **Show Updated Records** inputs.
 
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence, when the trigger has no stored time and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every response modified on or after the start of that day (UTC) exactly once. Left empty, there is no sync and the first recurrence only records the time of the run.
+
+The window has no fixed upper bound, so a response modified mid-drain is swept into the sync rather than deferred to the schedule. The sync reads the whole window in a single recurrence, whether or not batching is on. The trigger then stores the time the recurrence started, and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff. The toggles apply again from that recurrence on.
+
+The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to SurveyMonkey.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Batching splits one recurrence's responses into separate executions; it does not change how many are fetched, so each recurrence still reads every matching response before dispatching them.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
 :::note[Required Scope]
 This trigger requires the `responses_read_detail` OAuth scope, which is available on paid SurveyMonkey plans.
 :::
 
 #### Returned Data
 
-The trigger returns an object under `body.data` with two arrays, `created` and `updated`, each containing SurveyMonkey response records.
+With batching off, the trigger returns an object under `body.data` with two arrays, `created` and `updated`, each containing SurveyMonkey response records.
 
 <details>
 <summary>Example Response</summary>
@@ -53,6 +71,29 @@ The trigger returns an object under `body.data` with two arrays, `created` and `
         "pages": []
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one response tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "5007154401",
+    "survey_id": "1234567890",
+    "collector_id": "987654321",
+    "response_status": "completed",
+    "date_created": "2026-05-26T14:30:00+00:00",
+    "date_modified": "2026-05-26T14:30:00+00:00",
+    "href": "https://api.surveymonkey.com/v3/surveys/1234567890/responses/5007154401",
+    "pages": []
   }
 }
 ```

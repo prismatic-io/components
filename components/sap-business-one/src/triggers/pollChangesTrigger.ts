@@ -3,17 +3,31 @@ import { createClient } from "../client";
 import { POLL_RESOURCE_CONFIG } from "../constants";
 import { connection } from "../inputs/general";
 import { pollChangesInputs } from "../inputs/polling";
-import type { PollingState, SAPBusinessOneRecord } from "../types";
-import { fetchAllData, filterByTimestamp, toSapB1DateFilter } from "../util";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
+import {
+  fetchChanges,
+  resolvePollingRecordChanges,
+  resolvePollWindow,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in SAP Business One on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified SAP Business One resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     connection,
     ...pollChangesInputs,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
   },
   perform: async (context, payload, params) => {
     const config = POLL_RESOURCE_CONFIG[params.pollResourceType];
@@ -21,9 +35,13 @@ export const pollChangesTrigger = pollingTrigger({
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
     const now = new Date().toISOString();
-    const state = context.polling.getState() as PollingState;
-    const lastPolledAt = state?.lastPolledAt ?? now;
-    if (!params.showNewRecords && !params.showUpdatedRecords) {
+    const state = context.polling.getState() as PollingState | undefined;
+    const { since, isBackfill } = resolvePollWindow(
+      state,
+      params.lookBackDate,
+      now,
+    );
+    if (!isBackfill && !params.showNewRecords && !params.showUpdatedRecords) {
       context.polling.setState({ lastPolledAt: now });
       return {
         payload: { ...payload, body: { data: { created: [], updated: [] } } },
@@ -35,30 +53,19 @@ export const pollChangesTrigger = pollingTrigger({
       context,
       context.debug.enabled,
     );
-    const lastPolledDay = toSapB1DateFilter(lastPolledAt);
-    const allRecords = (await fetchAllData(
-      client,
-      config.endpoint,
-      { $filter: `${config.updatedField} ge '${lastPolledDay}'` },
-      true,
-    )) as SAPBusinessOneRecord[];
-    const { created: allCreated, updated: allUpdated } = filterByTimestamp(
-      allRecords,
-      config,
-      lastPolledAt,
-    );
-    const created = params.showNewRecords ? allCreated : [];
-    const updated = params.showUpdatedRecords ? allUpdated : [];
-    const totalMatched = created.length + updated.length;
+    const changes = await fetchChanges(client, config, since, isBackfill);
+    const created = isBackfill || params.showNewRecords ? changes.created : [];
+    const updated =
+      isBackfill || params.showUpdatedRecords ? changes.updated : [];
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled ${allRecords.length} ${params.pollResourceType} records: ${created.length} created, ${updated.length} updated since last poll.`,
+        `Polled ${changes.total} ${params.pollResourceType} records: ${created.length} created, ${updated.length} updated since last poll.`,
       );
     }
     context.polling.setState({ lastPolledAt: now });
     return {
       payload: { ...payload, body: { data: { created, updated } } },
-      polledNoChanges: totalMatched === 0,
+      polledNoChanges: created.length + updated.length === 0,
     };
   },
 });

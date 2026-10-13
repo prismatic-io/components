@@ -6,10 +6,28 @@ For details on the underlying API, refer to the [SAP Business One Service Layer 
 
 The trigger maintains a `lastPolledAt` timestamp in polling state and uses it to fetch only records changed since the previous run.
 
-1. **Initial Poll**: On the first execution, `lastPolledAt` is initialized to the current time so historical records are not flooded into the workflow.
+1. **First Recurrence**: With no stored position and no **Look-back Date**, `lastPolledAt` is initialized to the current time so historical records are not flooded into the workflow. With a **Look-back Date**, an initial sync runs instead (see below).
 2. **Subsequent Polls**: The trigger fetches records where `UpdateDate >= lastPolledAt` (day-precision) using a server-side OData `$filter`.
 3. **Categorization**: Records are split client-side into `created` (where `CreateDate > lastPolledAt`) and `updated` (where only `UpdateDate > lastPolledAt`) buckets.
 4. **State Persistence**: After each successful poll, the current timestamp is saved as the new `lastPolledAt`.
+
+Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. If both are disabled, the trigger emits an empty payload and skips the API call.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record dated on or after that day exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound, so a record modified mid-fetch is swept into the sync rather than deferred to the schedule. The sync is fetched in full within one recurrence, whether or not batching is on. The trigger then stores the time that recurrence began as its position, the first incremental recurrence resumes from exactly there, and nothing in the payload marks the handoff. A stored position always takes precedence over the **Look-back Date**.
+
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to SAP Business One.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 **Date Precision**
 
@@ -17,18 +35,7 @@ SAP Business One Service Layer reports `CreateDate` and `UpdateDate` with day-on
 
 **Known Limitation**
 
-SAP Business One session cookies returned by the `/Login` endpoint expire server-side (default ~30 minutes). When `Fetch All` issues many parallel paged requests, a cookie that expires mid-fetch will cause remaining requests to fail. Cookie refresh is intentionally out of scope for this trigger; reduce the polling interval or batch size if this is encountered frequently.
-
-#### Configuration
-
-The trigger requires the following inputs:
-
-- **Connection** (Required): The SAP Business One connection to use.
-- **Resource Type** (Required): The Service Layer collection to monitor for changes. See the supported resource types below.
-- **Show New Records** (Optional, default `true`): When enabled, newly created records are included in the trigger output.
-- **Show Updated Records** (Optional, default `true`): When enabled, records that were updated after the last poll are included in the trigger output.
-
-If both **Show New Records** and **Show Updated Records** are disabled, the trigger emits an empty payload and skips the API call.
+SAP Business One session cookies returned by the `/Login` endpoint expire server-side (default ~30 minutes). When `Fetch All` issues many parallel paged requests, a cookie that expires mid-fetch will cause remaining requests to fail. Cookie refresh is intentionally out of scope for this trigger; reduce the polling interval if this is encountered frequently.
 
 #### Supported Resource Types
 
@@ -49,7 +56,7 @@ If both **Show New Records** and **Show Updated Records** are disabled, the trig
 
 #### Returned Data
 
-The trigger returns a payload with separate arrays for newly created and updated records.
+With batching off, the trigger returns a payload with separate arrays for newly created and updated records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -85,10 +92,32 @@ The trigger returns a payload with separate arrays for newly created and updated
 
 </details>
 
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "CardCode": "C20000",
+    "CardName": "Acme Corporation",
+    "CardType": "cCustomer",
+    "CreateDate": "2026-04-23",
+    "UpdateDate": "2026-04-23",
+    "Phone1": "555-0100",
+    "EmailAddress": "contact@acme.example"
+  }
+}
+```
+
+</details>
+
 The exact fields returned depend on the resource type selected. Refer to the [SAP Business One Service Layer API Reference](https://help.sap.com/doc/056f69366b5345a386bb8149f1700c19/10.0/en-US/Service%20Layer%20API%20Reference.html) for the full schema of each entity.
 
 #### Best Practices
 
-- **Polling Frequency**: Use intervals of at least 5–15 minutes. Polling more frequently than the API's date precision (one day) does not surface additional records sooner — it only adds load.
+- **Polling Frequency**: Use intervals of at least 5–15 minutes. Polling more frequently than the API's date precision (one day) does not surface additional records sooner and only adds load.
 - **Resource-per-Trigger**: Configure one trigger per resource type. Running multiple triggers for different resources lets each maintain its own `lastPolledAt` cursor.
 - **Session Cookie Awareness**: Avoid extremely long polling intervals on high-volume tenants where the cookie may expire mid-poll. Shorter, more frequent polls reduce the chance of mid-fetch session expiry.

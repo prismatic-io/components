@@ -1,7 +1,12 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import connections from "./connections";
-import { POLL_RESOURCE_CONFIG } from "./constants";
-import type { Sage200Record } from "./types";
+import { LOOK_BACK_DATE_PATTERN, POLL_RESOURCE_CONFIG } from "./constants";
+import type {
+  PollingState,
+  Sage200Changes,
+  Sage200Record,
+  Sage200RecordChange,
+} from "./types";
 export const cleanNumberInput = (value: unknown) =>
   value ? util.types.toNumber(value) : undefined;
 export const cleanStringInput = (value: unknown) =>
@@ -46,6 +51,41 @@ export const cleanOptionalBoolean = (value: unknown) => {
   }
   return util.types.toBool(value);
 };
+export const lookBackDateClean = (value: unknown): string => {
+  if (
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim() === "")
+  ) {
+    return "";
+  }
+  const raw = typeof value === "string" ? value.trim() : String(value);
+  const match =
+    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  if (!match) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  const [, yearStr, monthStr, dayStr] = match;
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  if (parsed.getTime() > Date.now()) {
+    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  }
+  return parsed.toISOString();
+};
 export const filterByTimestamp = (
   records: Sage200Record[],
   lastPolledAt: string,
@@ -75,6 +115,46 @@ export const filterByTimestamp = (
     }
   }
   return { created, updated };
+};
+export const resolvePollWindow = (
+  state: PollingState | undefined,
+  params: {
+    lookBackDate: string;
+    showNewRecords: boolean;
+    showUpdatedRecords: boolean;
+  },
+  now: string,
+): {
+  lastPolledAt: string;
+  includeNew: boolean;
+  includeUpdated: boolean;
+} => {
+  const stored = state?.lastPolledAt;
+  if (stored != null || !params.lookBackDate) {
+    return {
+      lastPolledAt: stored ?? now,
+      includeNew: params.showNewRecords,
+      includeUpdated: params.showUpdatedRecords,
+    };
+  }
+  return {
+    lastPolledAt: new Date(Date.parse(params.lookBackDate) - 1).toISOString(),
+    includeNew: true,
+    includeUpdated: true,
+  };
+};
+export const resolveSage200RecordChanges = (
+  data: Sage200Changes | undefined,
+): Sage200RecordChange[] => {
+  const changesObject = data ?? { created: [], updated: [] };
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): Sage200RecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): Sage200RecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({

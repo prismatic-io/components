@@ -290,3 +290,11 @@ export interface CreateWebhookInput {
   authorization?: string;
 }
 export type RegionKey = "us" | "eu" | "ca";
+export interface SurveyResponseChangesObject {
+  created: SurveyResponseDetails[];
+  updated: SurveyResponseDetails[];
+}
+export interface SurveyResponseChange {
+  changeType: "created" | "updated";
+  record: SurveyResponseDetails;
+}

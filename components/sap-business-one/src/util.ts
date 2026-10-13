@@ -17,7 +17,12 @@ import type {
   MapPicklist,
   Records,
 } from "./interfaces/general";
-import type { SAPBusinessOneRecord } from "./types";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+  SAPBusinessOneRecord,
+} from "./types";
 import type { AxiosInstance, AxiosProxyConfig } from "axios";
 import FormData from "form-data";
 export const validateConnection = (connection: Connection) => {
@@ -228,4 +233,112 @@ export const toFormData = (
     }),
   );
   return form;
+};
+const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+export const lookBackDateClean = (value: unknown): string => {
+  const raw = util.types.toString(value).trim();
+  if (raw === "") {
+    return "";
+  }
+  const match = raw.match(LOOK_BACK_DATE_PATTERN);
+  if (!match) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  const [, yearStr, monthStr, dayStr] = match;
+  const year = util.types.toNumber(yearStr);
+  const month = util.types.toNumber(monthStr);
+  const day = util.types.toNumber(dayStr);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  if (parsed.getTime() > Date.now()) {
+    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  }
+  return parsed.toISOString();
+};
+export const resolvePollWindow = (
+  state: PollingState | undefined,
+  lookBackDate: string | undefined,
+  now: string,
+): {
+  since: string;
+  isBackfill: boolean;
+} => {
+  if (state?.lastPolledAt) {
+    return { since: state.lastPolledAt, isBackfill: false };
+  }
+  if (lookBackDate) {
+    return { since: lookBackDate, isBackfill: true };
+  }
+  return { since: now, isBackfill: false };
+};
+export const partitionBackfill = (
+  records: SAPBusinessOneRecord[],
+  config: {
+    createdField: string;
+    updatedField: string;
+  },
+  lookBackDate: string,
+): {
+  created: SAPBusinessOneRecord[];
+  updated: SAPBusinessOneRecord[];
+} => {
+  const since = new Date(lookBackDate);
+  const created: SAPBusinessOneRecord[] = [];
+  const updated: SAPBusinessOneRecord[] = [];
+  for (const record of records) {
+    const createdValue = record[config.createdField];
+    const createdAtDate =
+      typeof createdValue === "string" ? new Date(createdValue) : null;
+    if (createdAtDate !== null && createdAtDate >= since) created.push(record);
+    else updated.push(record);
+  }
+  return { created, updated };
+};
+export const resolvePollingRecordChanges = (
+  data: PollingChangesObject | undefined,
+): PollingRecordChange[] => {
+  const changesObject = data ?? { created: [], updated: [] };
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
+};
+export const fetchChanges = async (
+  client: AxiosInstance,
+  config: {
+    endpoint: string;
+    createdField: string;
+    updatedField: string;
+  },
+  since: string,
+  isBackfill: boolean,
+): Promise<{
+  created: SAPBusinessOneRecord[];
+  updated: SAPBusinessOneRecord[];
+  total: number;
+}> => {
+  const records = (await fetchAllData(
+    client,
+    config.endpoint,
+    { $filter: `${config.updatedField} ge '${toSapB1DateFilter(since)}'` },
+    true,
+  )) as SAPBusinessOneRecord[];
+  const split = isBackfill
+    ? partitionBackfill(records, config, since)
+    : filterByTimestamp(records, config, since);
+  return { ...split, total: records.length };
 };

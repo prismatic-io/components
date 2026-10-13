@@ -35,3 +35,5 @@ export const WEBHOOK_EVENT_TYPES = [
   { label: "Collector Updated", key: "collector_updated" },
   { label: "Collector Deleted", key: "collector_deleted" },
 ];
+export const TRIGGER_BATCH_SIZE = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

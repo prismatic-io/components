@@ -2,7 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { listPricingSourceTypesPayload } from "../../examplePayloads";
 import { paginateResults } from "../../helpers/pagination";
-import { connection, site, company, fetchAll } from "../../inputs/general";
+import { company, connection, fetchAll, site } from "../../inputs/general";
 export const listPricingSourceTypes = action({
   display: {
     label: "List Pricing Source Types",

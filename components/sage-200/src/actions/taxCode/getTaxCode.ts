@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
-import { taxCodeId } from "../../inputs/taxCode/getTaxCodeInputs";
 import { getTaxCodePayload } from "../../examplePayloads";
+import { company, connection, site } from "../../inputs/general";
+import { taxCodeId } from "../../inputs/taxCode/getTaxCodeInputs";
 export const getTaxCode = action({
   display: {
     label: "Get Tax Code",

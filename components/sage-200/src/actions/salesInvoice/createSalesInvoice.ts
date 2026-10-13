@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
-import createSalesInvoiceInputs from "../../inputs/salesInvoice/createSalesInvoiceInputs";
 import { createSalesInvoicePayload } from "../../examplePayloads";
+import { company, connection, site } from "../../inputs/general";
+import createSalesInvoiceInputs from "../../inputs/salesInvoice/createSalesInvoiceInputs";
 export const createSalesInvoice = action({
   display: {
     label: "Create Sales Invoice",

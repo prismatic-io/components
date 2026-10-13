@@ -30,3 +30,4 @@ export const POLL_RESOURCE_CONFIG: Record<
   salesOrders: { endpoint: "/sop_orders", label: "Sales Orders" },
   taxCodes: { endpoint: "/tax_codes", label: "Tax Codes" },
 };
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

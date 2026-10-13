@@ -8,7 +8,25 @@ This trigger polls the [Sage 200 Professional/Extra Online API](https://develope
 4. A record is classified as **created** when `date_time_created` is newer than the last poll time; otherwise, when `date_time_updated` is newer than the last poll time, the record is classified as **updated** (created beats updated)
 5. The trigger updates its internal state with the current timestamp after each poll so subsequent executions only surface records changed since the previous run
 6. When no records match on a given run, the trigger reports `polledNoChanges` so downstream flows are not invoked unnecessarily
-7. On the very first execution, `lastPolledAt` defaults to the current time so no historical records flood the workflow — only changes that occur after the trigger is enabled will be surfaced
+7. On the first recurrence without a **Look-back Date**, the trigger only records the time of the run, so only changes that occur after the trigger is enabled are surfaced. With a **Look-back Date** set, the first recurrence runs the initial sync described below
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence, when the trigger has no stored time and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record modified on or after the start of that day (UTC) exactly once.
+
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync rather than deferred to the schedule. The sync reads the whole window in a single request within one recurrence, whether or not batching is on. The trigger then stores the time the recurrence started, and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff. The toggles apply again from that recurrence on.
+
+**Resource Type**, **Site** and **Company** still apply during the sync. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Sage 200.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Batching splits one recurrence's records into separate executions; it does not change how many are fetched.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Supported Resource Types
 
@@ -29,25 +47,9 @@ This trigger polls the [Sage 200 Professional/Extra Online API](https://develope
 
 </details>
 
-#### Configuration
-
-Configure the following inputs:
-
-<details>
-<summary>Available Inputs (6)</summary>
-
-- **Connection**: The Sage 200 connection used to authenticate API requests
-- **Site**: The site ID. This value can be obtained from the *Get Site and Company Information* action
-- **Company**: The company ID. This value can be obtained from the *Get Site and Company Information* action
-- **Resource Type**: The Sage 200 resource type to poll for new or updated records
-- **Show New Records**: When enabled, newly created records are included in the trigger output. Defaults to `true`
-- **Show Updated Records**: When enabled, records updated after the last poll are included in the trigger output. Defaults to `true`
-
-</details>
-
 #### Returned Data
 
-The trigger returns an object containing two arrays — `created` for newly created records and `updated` for modified records. Each array contains full Sage 200 resource objects matching the selected resource type.
+With batching off, the trigger returns an object containing two arrays: `created` for newly created records and `updated` for modified records. Each array contains full Sage 200 resource objects matching the selected resource type.
 
 <details>
 <summary>Example Response</summary>
@@ -79,9 +81,31 @@ The trigger returns an object containing two arrays — `created` for newly crea
 
 </details>
 
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "a1b2c3d4-1234-5678-90ab-cdef12345678",
+    "code": "CUST001",
+    "name": "Acme Corporation",
+    "date_time_created": "2026-04-27T10:15:00Z",
+    "date_time_updated": "2026-04-27T10:15:00Z"
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
 #### Notes
 
-- The trigger sends `lastPolledAt` directly to the Sage 200 OData `$filter` query as an ISO 8601 string (e.g. `2026-04-27T10:00:00Z`). The API parses the ISO string directly — no datetime literal wrapping is required
-- When both *Show New Records* and *Show Updated Records* are disabled, the trigger short-circuits without calling the API and reports `polledNoChanges`
+- The trigger sends `lastPolledAt` directly to the Sage 200 OData `$filter` query as an ISO 8601 string (e.g. `2026-04-27T10:00:00Z`). The API parses the ISO string directly. No datetime literal wrapping is required
+- Outside the initial sync, when both *Show New Records* and *Show Updated Records* are disabled, the trigger short-circuits without calling the API and reports `polledNoChanges`
 - A record qualifying as both new and updated is reported as **created** (created beats updated) so downstream flows do not process the same record twice on the run it first appears
 - Refer to the [Sage 200 Professional/Extra Online API Reference](https://developer.sage.com/200-uk) for rate limit details and the full set of fields available on each resource type

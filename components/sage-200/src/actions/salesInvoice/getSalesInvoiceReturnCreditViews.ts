@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
 import { getSalesInvoiceReturnCreditViewsPayload } from "../../examplePayloads";
+import { company, connection, site } from "../../inputs/general";
 export const getSalesInvoiceReturnCreditViews = action({
   display: {
     label: "Get Sales Invoice, Return, and Credit Views",

@@ -1,34 +1,62 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { getSapClient } from "../client";
-import { connectionInput } from "../inputs";
 import {
+  connectionInput,
+  lookBackDate,
   pollResourceType,
   showNewRecords,
   showUpdatedRecords,
 } from "../inputs";
 import { POLL_RESOURCE_CONFIG } from "../constants";
-import type { PollingState, SapRecord } from "../types";
-import { toSapDateTime, fetchAllRecords } from "../util";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+  SapRecord,
+} from "../types";
+import {
+  toSapDateTime,
+  fetchAllRecords,
+  resolvePollWindow,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in SAP S/4HANA on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified SAP S/4HANA resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     connection: connectionInput,
     resourceType: pollResourceType,
     showNewRecords,
     showUpdatedRecords,
+    lookBackDate,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
   },
   perform: async (
     context,
     payload,
-    { connection, resourceType, showNewRecords, showUpdatedRecords },
+    {
+      connection,
+      resourceType,
+      showNewRecords,
+      showUpdatedRecords,
+      lookBackDate,
+    },
   ) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const { since: lastPolledAt, isBackfill } = resolvePollWindow(
+      pollState,
+      lookBackDate,
+      now,
+    );
     const config = POLL_RESOURCE_CONFIG[resourceType];
     if (!config) {
       throw new Error(`Unsupported resource type: ${resourceType}`);
@@ -48,8 +76,8 @@ export const pollChangesTrigger = pollingTrigger({
         updated.push(record);
       }
     }
-    const filteredCreated = showNewRecords ? created : [];
-    const filteredUpdated = showUpdatedRecords ? updated : [];
+    const filteredCreated = isBackfill || showNewRecords ? created : [];
+    const filteredUpdated = isBackfill || showUpdatedRecords ? updated : [];
     const totalChanges = filteredCreated.length + filteredUpdated.length;
     context.polling.setState({
       lastPolledAt: now,

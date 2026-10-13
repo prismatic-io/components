@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
 import { searchCustomersPayload } from "../../examplePayloads";
+import { company, connection, site } from "../../inputs/general";
 export const searchCustomers = action({
   display: {
     label: "Search Customers",

@@ -2,13 +2,13 @@
   "compilerOptions": {
     "target": "es6",
     "lib": ["esnext"],
-    "types": ["node", "jest"],
+    "types": ["node", "vitest/globals"],
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "ignoreDeprecations": "6.0"
   },
-  "include": ["src"]
+  "include": ["src", ".spectral/*"]
 }

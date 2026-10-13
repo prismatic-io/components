@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
-import deleteCustomerInputs from "../../inputs/customer/deleteCustomerInputs";
 import { emptyPayload } from "../../examplePayloads";
+import deleteCustomerInputs from "../../inputs/customer/deleteCustomerInputs";
+import { company, connection, site } from "../../inputs/general";
 export const deleteCustomer = action({
   display: {
     label: "Delete Customer",

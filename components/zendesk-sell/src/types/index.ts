@@ -15,3 +15,16 @@ export interface ZendeskSellResponse {
     };
   };
 }
+export interface ZendeskSellRecordChanges {
+  created: ZendeskSellRecord[];
+  updated: ZendeskSellRecord[];
+}
+export interface ZendeskSellRecordChange {
+  changeType: "created" | "updated";
+  record: ZendeskSellRecord;
+}
+export interface PollWindow {
+  lastPolledAt: string;
+  includeNew: boolean;
+  includeUpdated: boolean;
+}

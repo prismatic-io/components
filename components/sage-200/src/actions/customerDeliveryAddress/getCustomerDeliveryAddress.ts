@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
-import getCustomerDeliveryAddressInputs from "../../inputs/customerDeliveryAddress/getCustomerDeliveryAddressInputs";
 import { getCustomerDeliveryAddressPayload } from "../../examplePayloads";
+import getCustomerDeliveryAddressInputs from "../../inputs/customerDeliveryAddress/getCustomerDeliveryAddressInputs";
+import { company, connection, site } from "../../inputs/general";
 export const getCustomerDeliveryAddress = action({
   display: {
     label: "Get Customer Delivery Address",

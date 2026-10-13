@@ -7,24 +7,27 @@ This trigger polls the [SAP S/4HANA Cloud OData API](https://api.sap.com/package
 3. Records are classified as **created** if their creation timestamp (`CreatedOn` or `CreationDateTime`) exceeds the last poll time; all other returned records are classified as **updated**
 4. The trigger updates its internal state after each poll
 
-#### Configuration
+**Initial sync**
 
-Configure the following inputs:
+When a **Look-back Date** is set and the trigger has no saved position, its first recurrence is an initial sync. Because a sync seeds a complete starting state, the **Show New Records** and **Show Updated Records** toggles do not narrow it: every record modified on or after the look-back date is returned once, still split into `created` and `updated` as usual.
 
-- **Connection**: The SAP S/4HANA connection used to authenticate API requests
-- **Resource Type**: The type of SAP S/4HANA record to monitor
+The sync sends only a lower bound (`<filter field> ge <look-back date at 00:00:00>`) and no upper bound, so a record modified while the sync is running is swept into it. The trigger saves the time the poll ran as its position, and the next scheduled poll resumes from there. All matching records are fetched in the same recurrence, whether or not batching is enabled; batching splits the result into executions but does not spread the fetch over several recurrences. Connection and Resource Type still apply. When no Look-back Date is set, the first recurrence only records its position and returns nothing that existed before it.
 
-  | Resource | Filter Field | Tracks New | Tracks Updated |
-  |----------|-------------|------------|----------------|
-  | Change Records | `LastChangeDateTime` | Yes | Yes |
-  | Projects | `ChangedOn` | Yes | Yes |
+**Batching**
 
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to SAP S/4HANA.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads records from `data.created` and `data.updated`. With batching on, those fields do not exist: each execution receives items shaped `{ "changeType", "record" }` instead. Update any step that reads the older shape before enabling batching. Because batching is enabled per flow, the change applies only to that flow.
 
 #### Returned Data
 
-Returns an object with two arrays — `created` for new records and `updated` for modified records.
+With batching off, returns an object with two arrays: `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -52,7 +55,25 @@ Returns an object with two arrays — `created` for new records and `updated` fo
 
 </details>
 
+With batching on, each execution receives items of this shape:
+
+<details>
+<summary>Batched item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "ChangeRecord": "0000001234",
+    "LastChangeDateTime": "/Date(1705398600000)/",
+    "CreationDateTime": "/Date(1705398600000)/"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
 - SAP S/4HANA uses OData datetime format internally. The trigger converts ISO timestamps to SAP datetime format before constructing the `$filter` query
-- The filter field varies by resource type — `LastChangeDateTime` is used for Change Records and `ChangedOn` for Projects
+- The filter field varies by resource type. `LastChangeDateTime` is used for Change Records and `ChangedOn` for Projects

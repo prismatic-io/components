@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
-import { connection, site, company } from "../../inputs/general";
-import updateCustomerInputs from "../../inputs/customer/updateCustomerInputs";
 import { updateCustomerPayload } from "../../examplePayloads";
+import updateCustomerInputs from "../../inputs/customer/updateCustomerInputs";
+import { company, connection, site } from "../../inputs/general";
 export const updateCustomer = action({
   display: {
     label: "Update Customer",
