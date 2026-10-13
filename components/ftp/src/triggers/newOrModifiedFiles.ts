@@ -1,9 +1,19 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { newOrModifiedFilesExamplePayload } from "../examplePayloads";
 import { newOrModifiedFilesInputs } from "../inputs";
-import type { FileMap, PollingState } from "../types";
-import { computeFileChanges, listFilesRecursive } from "../util";
+import type {
+  FileMap,
+  FtpChangesObject,
+  FtpFileChange,
+  PollingState,
+} from "../types";
+import {
+  computeFileChanges,
+  listFilesRecursive,
+  resolvePollingFileChanges,
+} from "../util";
 export const newOrModifiedFiles = pollingTrigger({
   display: {
     label: "New or Modified Files",
@@ -12,6 +22,12 @@ export const newOrModifiedFiles = pollingTrigger({
   },
   inputs: newOrModifiedFilesInputs,
   examplePayload: newOrModifiedFilesExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): FtpFileChange[] =>
+      resolvePollingFileChanges(payload.body.data as FtpChangesObject),
+  },
   perform: async (
     context,
     payload,

@@ -1,0 +1,67 @@
+This trigger polls an Adobe Commerce (Magento) store on a configured schedule for records whose `updated_at` is at or after the last poll time. Records are split into created and updated arrays based on their `created_at` timestamp.
+
+#### How It Works
+
+1. Run on the configured schedule (e.g., every 5 minutes)
+2. Query the selected resource collection (Orders, Customers, or Products) using `searchCriteria` filtering on `updated_at >= lastPolledAt`, sorted ascending
+3. Split results: records whose `created_at` is also after the last poll are categorized as **created**; older records modified since the last poll are categorized as **updated**
+4. Persist the new poll timestamp to trigger state for use on the next run
+5. If the page cap is reached, advance the cursor to the newest fetched `updated_at` to resume from there on the next poll (at-least-once semantics)
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, read as midnight UTC) is set, and seeds each record modified on or after that date once. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync. Each recurrence fetches up to a fixed page cap, with batching on or off alike. A window that fits under the cap finishes in one recurrence, and the position is set to that recurrence's start time. A larger window spans several recurrences: the position advances to the newest `updated_at` received, the next recurrence resumes from exactly there, and the record on that boundary can be delivered twice. Only the first recurrence ignores the toggles, so records delivered by later recurrences of the same drain are filtered by them. Nothing in the payload marks the handoff.
+
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Adobe Commerce.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+#### Returned Data
+
+With batching off, the trigger returns an object with two arrays: `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "entity_id": 1042,
+        "increment_id": "000000142",
+        "status": "pending",
+        "state": "new",
+        "customer_email": "jane.doe@example.com",
+        "grand_total": 199.5,
+        "order_currency_code": "USD",
+        "created_at": "2026-05-26 14:30:00",
+        "updated_at": "2026-05-26 14:30:00"
+      }
+    ],
+    "updated": [
+      {
+        "entity_id": 980,
+        "increment_id": "000000087",
+        "status": "complete",
+        "state": "complete",
+        "customer_email": "john.smith@example.com",
+        "grand_total": 75.25,
+        "order_currency_code": "USD",
+        "created_at": "2026-04-12 09:00:00",
+        "updated_at": "2026-05-26 15:45:00"
+      }
+    ]
+  }
+}
+```
+
+</details>

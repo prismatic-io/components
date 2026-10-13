@@ -8,9 +8,10 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", ".spectral/*"]
 }

@@ -23,9 +23,9 @@ export const getFolderEntries = async <T extends BoxRawEntry = BoxRawEntry>({
       },
     });
     initial = false;
-    allEntries = allEntries.concat(
-      (response.entries ?? []).map((entry) => entry.rawData as T),
-    );
+    const rawEntries =
+      ((response.rawData as Record<string, unknown>)?.entries as T[]) ?? [];
+    allEntries = allEntries.concat(rawEntries);
     marker = response.nextMarker;
   }
   return allEntries;

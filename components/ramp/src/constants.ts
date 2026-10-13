@@ -9,6 +9,8 @@ export const TOKEN_URL = [
 export const DEFAULT_SCOPES =
   "accounting:read accounting:write bills:read business:read cards:read cards:write cashbacks:read departments:read departments:write entities:read leads:read leads:write limits:read limits:write locations:read locations:write memos:read merchants:read receipt_integrations:read receipt_integrations:write receipts:read reimbursements:read spend_programs:read spend_programs:write statements:read transactions:read transfers:read users:read users:write";
 export const INVALID_CONNECTION = "Invalid connection provided";
+export const DEFAULT_BATCH_SIZE = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const GENERIC_DELETE_RESPONSE = "Deleted successfully";
 export const BOOLEAN_VALUES = {
   True: "true",

@@ -2,10 +2,26 @@ This trigger polls [PDQ](https://www.pdq.com/) on a configured schedule and emit
 
 #### How It Works
 
-PDQ's list endpoints expose an `insertedAt` (creation) timestamp on each record but no modification timestamp, and no confirmed server-side date filter. On each scheduled run the trigger fetches all records of the selected resource (sorted by `insertedAtDesc`) and keeps only those whose `insertedAt` is after the previous poll time. The current run time is stored as the cursor for the next run.
+PDQ's list endpoints expose an `insertedAt` (creation) timestamp on each record but no modification timestamp, and no confirmed server-side date filter. On each scheduled run the trigger pages through records of the selected resource newest first (sorted by `insertedAtDesc`), stops at the first page that reaches the previous poll time, and keeps only those whose `insertedAt` is after it. The current run time is stored as the cursor for the next run.
 
-- **First run**: the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical records on deploy.
+- **First run (without a Look-back Date)**: the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical records on deploy.
 - **Subsequent runs**: only records added since the last run are returned.
+
+**Initial Sync**
+
+An initial sync seeds a starting state from history. The trigger has no input that narrows which records are reported, so an initial sync ignores none. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers every record whose `insertedAt` is after that date.
+
+The window has no fixed upper bound and no per-recurrence cap: the trigger pages newest first until it reaches a record inserted at or before the look-back date, whether batching is on or off, so the sync completes in one recurrence. The position is then set to the wall-clock time at which that recurrence started, not to the newest record received, and the first incremental recurrence resumes from there. Nothing in the payload marks the handoff. Records are not de-duplicated, so a record inserted while the pages are read can shift a page boundary and cause another record to be delivered twice.
+
+**Resource Type** still applies. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to PDQ.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created`. With batching on that field does not exist: each execution receives one `{ "changeType": "created", "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
@@ -34,4 +50,4 @@ The trigger returns the newly added records under `data.created`. Fields shown a
 #### Notes
 
 - This trigger detects **new records only**. PDQ exposes a creation timestamp (`insertedAt`) but no modification timestamp, so edits to existing devices or groups are not detected.
-- Because there is no confirmed server-side date filter, each run lists all records of the resource and filters them in memory.
+- Because there is no confirmed server-side date filter, each run reads pages newest first until it reaches the previous poll time and filters them in memory.

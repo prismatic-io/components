@@ -17,6 +17,7 @@ import {
   cleanKeyValueList,
   cleanNumber,
   cleanString,
+  lookBackDateClean,
   mapModel,
   mapObjectModel,
 } from "./util";
@@ -303,4 +304,14 @@ export const showUpdatedRecords = input({
   default: "true",
   comments: "Include updated records in trigger results.",
   clean: util.types.toBool,
+});
+export const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. On resources without timestamps (Departments, Locations, Business Entities), the first poll always emits all current records regardless of this setting.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
 });

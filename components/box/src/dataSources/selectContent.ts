@@ -10,7 +10,7 @@ export const selectContent = dataSource({
     description: "Select file or folder from Box account base path.",
   },
   dataSourceType: "picklist",
-  perform: async (context, params) => {
+  perform: async (_context, params) => {
     const client = createAuthorizedClient({
       boxConnection: params.boxConnection,
     });

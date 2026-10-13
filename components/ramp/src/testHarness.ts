@@ -112,25 +112,10 @@ export const createPollingStore = (
   };
 };
 export const freezeClockAt = (isoInstant: string): void => {
-  jest.useFakeTimers({
-    doNotFake: [
-      "cancelAnimationFrame",
-      "cancelIdleCallback",
-      "clearImmediate",
-      "clearInterval",
-      "clearTimeout",
-      "hrtime",
-      "nextTick",
-      "performance",
-      "queueMicrotask",
-      "requestAnimationFrame",
-      "requestIdleCallback",
-      "setImmediate",
-      "setInterval",
-      "setTimeout",
-    ],
+  vi.useFakeTimers({
+    toFake: ["Date"],
   });
-  jest.setSystemTime(new Date(isoInstant));
+  vi.setSystemTime(new Date(isoInstant));
 };
 export const resetNock = (): void => {
   nock.cleanAll();

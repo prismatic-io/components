@@ -52,6 +52,13 @@ import {
   updateProductModifierAction,
 } from "./actions/productModifiers";
 import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  updateProduct,
+  updateProductsBatch,
+} from "./actions/products";
+import {
   createProductVariantAction,
   createVariantImageAction,
   deleteProductVariantAction,
@@ -59,13 +66,6 @@ import {
   getProductVariantAction,
   updateProductVariantAction,
 } from "./actions/productVariants";
-import {
-  createProduct,
-  deleteProduct,
-  getAllProducts,
-  updateProduct,
-  updateProductsBatch,
-} from "./actions/products";
 import {
   createWebhookAction,
   deleteInstancedWebhooksAction,

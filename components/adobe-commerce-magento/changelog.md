@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-13
+
+Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+
 ### 2026-09-28
 
 Added merchant store authentication so that actions, triggers, and data sources read and write data in an Adobe Commerce store:

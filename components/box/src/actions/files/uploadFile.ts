@@ -12,7 +12,7 @@ export const uploadFile = action({
     description: "Upload a file to the specified path.",
   },
   performSafety: "notAllowed",
-  perform: async (context, { path, fileContents, boxConnection }) => {
+  perform: async (_context, { path, fileContents, boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(
       client,

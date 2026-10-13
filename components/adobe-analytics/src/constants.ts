@@ -1,3 +1,4 @@
+export const DEFAULT_BATCH_SIZE = 50;
 export const PollResource = {
   REPORT_SUITES: "reportSuites",
   COMPANIES: "companies",

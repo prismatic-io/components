@@ -1,14 +1,20 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { POLL_RESOURCE_CONFIG } from "../constants";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
 import {
   connection,
+  lookBackDate,
   pollResourceType,
   showNewRecords,
   showUpdatedRecords,
 } from "../inputs";
-import type { PollingState, RampRecord } from "../types";
-import { fetchAllData } from "../util";
+import type {
+  PollingState,
+  RampChangesObject,
+  RampRecord,
+  RampRecordChange,
+} from "../types";
+import { fetchAllData, resolvePollingRecordChanges } from "../util";
 const filterByTimestamp = (
   records: RampRecord[],
   lastPolledAt: string,
@@ -47,18 +53,31 @@ export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in a selected Ramp resource type on a configured schedule.",
+      "Retrieves existing and ongoing records for a selected Ramp resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     connection,
     resourceType: pollResourceType,
     showNewRecords,
     showUpdatedRecords,
+    lookBackDate,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): RampRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as RampChangesObject),
   },
   perform: async (
     context,
     payload,
-    { connection, resourceType, showNewRecords, showUpdatedRecords },
+    {
+      connection,
+      resourceType,
+      showNewRecords,
+      showUpdatedRecords,
+      lookBackDate,
+    },
   ) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
@@ -74,7 +93,7 @@ export const pollChangesTrigger = pollingTrigger({
       true,
     );
     const hasTimestamps = config.createdAtField !== null;
-    const lastPolledAt = lastState?.lastPolledAt ?? now;
+    const lastPolledAt = lastState?.lastPolledAt ?? (lookBackDate || now);
     let result: {
       created: RampRecord[];
       updated: RampRecord[];

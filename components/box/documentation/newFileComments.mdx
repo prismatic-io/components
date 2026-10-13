@@ -7,19 +7,31 @@ This polling trigger monitors comments on a specific Box file at regular interva
 The trigger operates as follows:
 
 1. Runs on the configured schedule (e.g., every 5 minutes)
-2. Fetches all comments for the specified file using the [Box Comments API](https://developer.box.com/reference/get-files-id-comments)
+2. Fetches all comments for the specified file using the [Box Comments API](https://developer.box.com/reference/get-files-id-comments), paging through the results 1,000 at a time
 3. Normalizes timestamps to UTC for accurate comparison (Box stores dates with timezone offsets)
 4. Compares comment creation timestamps against the last poll time
 5. Returns comments where `created_at` is after the last poll time
-6. Maintains polling state automatically to track the last poll time
+6. Stores the time the recurrence started as the last poll time for the next recurrence
 
-#### State Management
+**Initial Sync**
 
-The trigger stores the last poll timestamp in the polling state. On the first execution, if no previous state exists, the trigger uses the current time as the baseline. This means the initial poll establishes the baseline and subsequent polls detect comments created after that point.
+The trigger has no input that narrows which changes are reported, so an initial sync ignores no input. It begins on the first recurrence when a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers every comment created on or after that date exactly once. Left empty, there is no sync: the first recurrence stores its start time as the position and reports only comments added after it.
 
-Each poll updates the state with the current timestamp, ensuring accurate tracking of when comments were added.
+The window has no fixed upper bound: the trigger lists every comment on the file, so a comment added while that listing runs is included. The position stored is the time the recurrence started, not the newest comment received, so such a comment can be delivered again on the next recurrence, which resumes from that position. Nothing in the payload marks the handoff. The sync finishes in one recurrence with batching on or off.
 
-The trigger fetches all comments on the specified file during each poll. Box's API returns all comments without pagination for most files.
+**File ID** still applies. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Box.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.newComments.data`. With batching on that field does not exist: each execution receives one `{ "changeType": "new", "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 

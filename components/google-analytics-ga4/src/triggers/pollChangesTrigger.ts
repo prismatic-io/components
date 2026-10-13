@@ -1,21 +1,34 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createAnalyticsClient } from "../client";
-import { POLL_RESOURCE_KEYS } from "../constants";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_KEYS } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { Account, GA4Record, PollingState, Property } from "../types";
-import { paginateRecords } from "../util";
+import type {
+  Account,
+  GA4ChangesObject,
+  GA4Record,
+  GA4RecordChange,
+  PollingState,
+  Property,
+} from "../types";
+import { paginateRecords, resolvePollingRecordChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in Google Analytics GA4 on a configured schedule.",
+      "Retrieves existing and ongoing records in Google Analytics GA4. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): GA4RecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as GA4ChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
-    const lastPolledAt = state?.lastPolledAt ?? now;
+    const lastPolledAt = state?.lastPolledAt ?? (params.lookBackDate || now);
     const client = createAnalyticsClient({
       connection: params.connection,
       endpointType: "adminv1beta",

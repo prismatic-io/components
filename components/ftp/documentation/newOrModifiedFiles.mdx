@@ -12,6 +12,20 @@ The trigger checks for:
 4. Files are categorized as "new" or "modified" based on their presence and attributes
 5. The trigger updates its state with the current file map for the next poll
 
+The first recurrence starts from an empty file map, so every file that currently matches **Path**, **Pattern**, and **Include Subdirectories** is reported as new. The trigger has no **Look-back Date** input, because the first recurrence already reports the full current state.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to the FTP server.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.newFiles` and `body.data.modifiedFiles`. With batching on those fields do not exist: each execution receives one `{ "changeType": "new" | "modified", "file": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
 #### Returned Data
 
 The trigger returns an object with two arrays.

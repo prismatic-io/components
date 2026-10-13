@@ -6,7 +6,11 @@ import {
   POLL_RESOURCE_CONFIG,
   type PollResourceType,
 } from "../constants";
-import type { MagentoRecord } from "../types";
+import type {
+  MagentoChangesObject,
+  MagentoRecord,
+  MagentoRecordChange,
+} from "../types";
 import { toMagentoDateTime } from "./dates";
 export const fetchMagentoRecordsSince = async (
   connection: Connection,
@@ -42,4 +46,17 @@ export const fetchMagentoRecordsSince = async (
     }
   }
   return { records, truncated: true };
+};
+export const resolvePollingRecordChanges = (
+  data: MagentoChangesObject | undefined,
+): MagentoRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): MagentoRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): MagentoRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

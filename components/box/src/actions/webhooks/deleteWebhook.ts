@@ -9,7 +9,7 @@ export const deleteWebhook = action({
   },
   inputs: deleteWebhookInputs,
   performSafety: "notAllowed",
-  perform: async (context, { boxConnection, webhookId }) => {
+  perform: async (_context, { boxConnection, webhookId }) => {
     const client = createAuthorizedClient({ boxConnection });
     await client.webhooks.deleteWebhookById(util.types.toString(webhookId));
     return { data: null };

@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-13
+
+- Added opt-in batching to the **New and Updated Orders** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of orders. The initial sync backfills every order modified on or after the specified date, seeding each once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-05-26
 
 Added the **New and Updated Orders** polling trigger that monitors orders in BigCommerce on a configured schedule using the `min_date_modified` filter on `GET /v2/orders`. Results are partitioned into created and updated buckets based on each order's `date_created` timestamp

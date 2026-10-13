@@ -4,7 +4,7 @@ The **New and Updated Orders** polling trigger checks BigCommerce on a configure
 
 On each scheduled execution, the trigger:
 
-1. Reads the last poll timestamp from the polling state (or uses the current execution time on the first run)
+1. Reads the last poll timestamp from the polling state (on the first run, the **Look-back Date** if set, otherwise the current execution time)
 2. Calls the BigCommerce orders endpoint with a `min_date_modified` filter and page-based pagination, draining all pages of results
 3. Partitions the returned orders into **created** and **updated** buckets by comparing each order's `date_created` against the last poll timestamp: orders created after the cutoff land in **created**, and all others land in **updated**
 4. Persists the current execution time as the new last-poll timestamp for the next run
@@ -12,9 +12,25 @@ On each scheduled execution, the trigger:
 
 If both **Show New Orders** and **Show Updated Orders** are disabled, the trigger emits empty arrays for both buckets.
 
+**Initial Sync**
+
+An initial sync seeds a starting state from history. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, read as midnight UTC) is set, and seeds each order modified on or after that date once. It ignores no input. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound: the trigger requests every order modified since the look-back date, so an order modified mid-sync is included. The drain is uncapped and finishes in one recurrence, with batching on or off. The trigger then stores that recurrence's start time as its position and the first incremental recurrence resumes from there, so an order modified during that recurrence can be reported again on the next one. Nothing in the payload marks the handoff.
+
+**Store Hash**, **Show New Orders** and **Show Updated Orders** still apply throughout, so turning either toggle off leaves those orders out of the starting state. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to BigCommerce.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
 #### Returned Data
 
-The trigger emits a payload with two arrays, `created` and `updated`, each containing order resources returned by BigCommerce.
+With batching off, the trigger emits a payload with two arrays, `created` and `updated`, each containing order resources returned by BigCommerce.
 
 <details>
 <summary>Example Payload</summary>

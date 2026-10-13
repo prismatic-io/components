@@ -10,7 +10,7 @@ export const deleteObject = action({
     description: "Delete a Folder or File at the specified path.",
   },
   performSafety: "notAllowed",
-  perform: async (context, { path, boxConnection }) => {
+  perform: async (_context, { path, boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(client, util.types.toString(path));
     const { id, type, name } = pathEntries.slice(-1)[0];

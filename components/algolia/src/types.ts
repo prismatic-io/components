@@ -1,4 +1,4 @@
-export interface PollingState {
+export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
 export interface AlgoliaIndex {
@@ -9,4 +9,12 @@ export interface AlgoliaIndex {
   dataSize: number;
   fileSize: number;
   [key: string]: unknown;
+}
+export interface AlgoliaChangesObject {
+  created?: AlgoliaIndex[];
+  updated?: AlgoliaIndex[];
+}
+export interface AlgoliaRecordChange {
+  changeType: "created" | "updated";
+  record: AlgoliaIndex;
 }

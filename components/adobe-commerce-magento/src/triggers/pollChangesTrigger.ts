@@ -1,16 +1,31 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { MagentoRecord, PollingState } from "../types";
-import { fetchMagentoRecordsSince } from "../utils";
+import type {
+  MagentoChangesObject,
+  MagentoRecord,
+  MagentoRecordChange,
+  PollingState,
+} from "../types";
+import {
+  fetchMagentoRecordsSince,
+  resolvePollingRecordChanges,
+} from "../utils";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks a Magento resource collection (orders, customers, or products) on a configured schedule for records whose `updated_at` is at or after the last poll. Records whose `created_at` is also after the last poll are included in the payload's `body.data.created` array; older records modified since the last poll are included in `body.data.updated`.",
+      "Retrieves existing and ongoing records for a specified Adobe Commerce resource type. Load history once, check for changes on a schedule, or both.",
   },
   examplePayload: pollChangesExamplePayload,
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): MagentoRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as MagentoChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;

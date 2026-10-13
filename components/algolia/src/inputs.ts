@@ -164,6 +164,17 @@ export const cursorInput = input({
     "cursor:AhNmaWx0ZXJzPWxhbmd1YWdlOmVuAgEoMjAyMjJlNjNjNjliZGQ1NWRkYzcyOGU3Y2M4M2M2ZDRiODI3ZmQ1Mw==",
   comments: "Provide a string value for the cursor. This is optional.",
 });
+import { lookBackDateClean } from "./util";
+export const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",

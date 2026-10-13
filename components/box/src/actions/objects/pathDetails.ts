@@ -1,6 +1,6 @@
 import { action, outputSchema, util } from "@prismatic-io/spectral";
-import { FILE_TYPE, FOLDER_TYPE } from "../../constants";
 import { createAuthorizedClient } from "../../client";
+import { FILE_TYPE, FOLDER_TYPE } from "../../constants";
 import { pathDetailsExamplePayload } from "../../examplePayloads";
 import { pathDetailsInputs } from "../../inputs";
 import { pathDetailsOutputSchema } from "../../outputSchemas";
@@ -12,7 +12,7 @@ export const pathDetails = action({
       "Get detailed information about folders/files in the specified path.",
   },
   performSafety: "notAllowed",
-  perform: async (context, { path, boxConnection }) => {
+  perform: async (_context, { path, boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(client, util.types.toString(path));
     return {

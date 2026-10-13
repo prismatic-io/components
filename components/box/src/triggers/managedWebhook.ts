@@ -1,10 +1,10 @@
 import { trigger, util } from "@prismatic-io/spectral";
-import { managedWebhookInputs } from "../inputs";
 import { createAuthorizedClient } from "../client";
 import {
   BOX_SIGNATURE_PRIMARY_HEADER,
   BOX_SIGNATURE_SECONDARY_HEADER,
 } from "../constants";
+import { managedWebhookInputs } from "../inputs";
 import type { StoreState, WebhookTriggerType } from "../types";
 import {
   createWebhookFN,

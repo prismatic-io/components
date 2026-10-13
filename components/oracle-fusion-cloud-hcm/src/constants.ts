@@ -22,4 +22,6 @@ export const REST_RESOURCE_CONFIG: Record<
   Locations: { label: "Locations", endpoint: "/locationsV2" },
 };
 export const FETCH_ALL_PAGE_SIZE = 500;
+export const DEFAULT_BATCH_SIZE = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const DATASOURCE_PAGE_SIZE = 500;

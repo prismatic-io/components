@@ -1,18 +1,12 @@
 import type { BoxClient } from "box-node-sdk";
-import { getPathEntries } from "./index";
 import folderTree from "../../tests/fixtures/files.json";
+import { getPathEntries } from "./index";
 const buildMockClient = () =>
   ({
     folders: {
-      getFolderItems: jest
+      getFolderItems: vi
         .fn()
         .mockImplementation((id: string, { queryParams }) => {
-          const result: {
-            entries: {
-              rawData: Record<string, unknown>;
-            }[];
-            nextMarker: string | null;
-          } = { entries: [], nextMarker: null };
           const allEntries = folderTree.files.filter(
             (entry) => entry.parent === id,
           );
@@ -20,10 +14,13 @@ const buildMockClient = () =>
           let index = Number.parseInt(queryParams?.marker, 10);
           if (Number.isNaN(index)) index = 0;
           const { id: fileId, name, type } = allEntries[index];
-          result.entries.push({ rawData: { id: fileId, name, type } });
-          index += 1;
-          if (index < allEntries.length) result.nextMarker = index.toString();
-          return Promise.resolve(result);
+          let nextMarker: string | null = null;
+          if (index + 1 < allEntries.length)
+            nextMarker = (index + 1).toString();
+          return Promise.resolve({
+            rawData: { entries: [{ id: fileId, name, type }] },
+            nextMarker,
+          });
         }),
     },
   }) as unknown as BoxClient;

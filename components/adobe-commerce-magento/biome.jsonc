@@ -13,7 +13,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "complexity": {
         "noForEach": "off",
         "noStaticOnlyClass": "off"

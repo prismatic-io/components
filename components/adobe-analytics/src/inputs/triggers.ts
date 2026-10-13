@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
-import { connectionInput, globalCompanyIdInput } from "./common";
 import { pollResourceModel } from "../constants";
+import { connectionInput, globalCompanyIdInput } from "./common";
 export const pollResourceType = input({
   label: "Resource Type",
   type: "string",

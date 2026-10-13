@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-10-13
+
+Fixed errors in the polling triggers and path-based actions, and added batching and initial sync support:
+
+- Fixed an error that caused the **New and Updated Files** and **New Folders** polling triggers, the **Select File or Folder** data source, and the **List Folder** action with **Fetch All** enabled to fail, along with every path-based action given any path other than the root folder: **List Folder**, **Download File**, **Upload File**, **Create Folder**, **Get File Download URL**, **Delete Object**, **Get Path Details**, **Move Object**, and **Copy Object**
+- Fixed the **New File Comments** trigger, which failed whenever the file had comments, and updated it to check every page of the file's comments instead of only the first
+- Added opt-in batching to the **New and Updated Files**, **New Folders**, and **New File Comments** triggers, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input across all polling triggers for performing an initial sync of records. The initial sync backfills every record modified after the specified date, seeding each once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-09-14
 
 Removed the **List Folder (Deprecated)** action that is no longer in use; use **List Folder** instead

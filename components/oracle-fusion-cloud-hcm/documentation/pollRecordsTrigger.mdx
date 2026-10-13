@@ -12,7 +12,23 @@ For more information on Oracle HCM REST API filtering, refer to the [Oracle Fusi
 4. Persist the new poll timestamp to trigger state for use on the next run
 5. Return the combined list of records along with the resource type; if no records are returned, set `polledNoChanges` to `true`
 
-On the first run, the trigger sets the poll timestamp to the current time and returns no records. Subsequent runs return only records updated after that timestamp.
+On the first run (without a Look-back Date), the trigger sets the poll timestamp to the current time and returns no records. Subsequent runs return only records updated after that timestamp.
+
+**Initial Sync**
+
+An initial sync seeds a starting state from history. The trigger has no input that narrows which records are reported, so an initial sync ignores none. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers every record whose `LastUpdateDate` is on or after that date.
+
+The window has no fixed upper bound and no per-recurrence cap: the trigger pages until `hasMore` is `false` whether batching is on or off, so the sync completes in one recurrence. The position is then set to the wall-clock time at which that recurrence started, not to the newest record received, and the first incremental recurrence resumes from there. Nothing in the payload marks the handoff. Records are not de-duplicated, so a record updated while the pages are read can be delivered again on the next recurrence.
+
+**Resource Type** still applies, and **Page Size** sets the size of each page request rather than capping the sync.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Oracle HCM.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.records` and `body.data.resourceType`. With batching on those fields do not exist: each execution receives one `{ "changeType": "updated", "record": ... }` item, or an array of them when the batch size is greater than 1, and the resource type is not included. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Event Types
 

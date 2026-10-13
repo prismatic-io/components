@@ -1,13 +1,19 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { DEFAULT_BATCH_SIZE, PollResource } from "../constants";
 import { pollChangesTriggerInputs } from "../inputs";
-import { PollResource } from "../constants";
 import type {
   DiscoveryResponse,
   ReportSuite,
   ReportSuiteListResponse,
 } from "../types";
-import type { AdobeRecord, PollingState } from "../types/triggers";
+import type {
+  AdobeChangesObject,
+  AdobeRecord,
+  AdobeRecordChange,
+  PollingState,
+} from "../types/triggers";
+import { resolvePollingRecordChanges } from "../util";
 const getRecordId = (record: AdobeRecord, resourceType: string): string => {
   if (resourceType === PollResource.REPORT_SUITES)
     return record.rsid ?? record.id ?? "";
@@ -20,6 +26,12 @@ export const pollChangesTrigger = pollingTrigger({
       "Checks for new report suites or companies in Adobe Analytics on a configured schedule.",
   },
   inputs: pollChangesTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): AdobeRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as AdobeChangesObject),
+  },
   perform: async (
     context,
     payload,

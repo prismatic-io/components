@@ -7,17 +7,25 @@ This trigger polls the [Algolia Search API](https://www.algolia.com/doc/rest-api
 3. Records are categorized as **created** or **updated** based on their `createdAt` and `updatedAt` timestamp fields, compared against the last successful poll time
 4. The trigger updates its internal state after each poll, storing the poll timestamp for use in the next execution
 
-#### Configuration
+**Initial Sync**
 
-Configure the following inputs:
+An initial sync seeds a starting state from history. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, read as midnight UTC) is set, and seeds each index created or updated after that point once. It ignores no input.
 
-- **Connection**: The Algolia connection used to authenticate API requests
-- **Show New Records**: When enabled, includes newly created indices in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified indices in the results. Defaults to `true`
+The window has no fixed upper bound: the trigger lists every index and keeps those changed after the look-back point, so an index modified mid-sync is included. The drain is uncapped and finishes in one recurrence, with batching on or off. The trigger then stores that recurrence's start time as its position and the first incremental recurrence resumes from there, so an index modified during that recurrence can be reported again on the next one. Nothing in the payload marks the handoff.
+
+**Show New Records** and **Show Updated Records** still apply throughout, so turning either off leaves those indices out of the starting state. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Algolia.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new indices and `updated` for modified indices.
+With batching off, the trigger returns an object with two arrays: `created` for new indices and `updated` for modified indices. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -52,4 +60,4 @@ The trigger returns an object with two arrays — `created` for new indices and 
 #### Notes
 
 - A record is classified as **created** if its `createdAt` timestamp exceeds the last poll time. If `createdAt` does not exceed the cutoff but `updatedAt` does, the record is classified as **updated**
-- On the first poll, the trigger uses the current time as the initial cutoff; no records are returned unless indices were created or updated in the same polling window
+- Without a **Look-back Date**, the first recurrence uses the current time as the initial cutoff; no records are returned unless indices were created or updated in the same polling window

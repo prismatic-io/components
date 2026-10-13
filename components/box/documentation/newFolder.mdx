@@ -14,7 +14,27 @@ The trigger operates as follows:
 6. Returns folders where `created_at` is after the last poll time
 7. Maintains polling state automatically to track the last poll time
 
-The trigger fetches up to 1,000 items per poll from the specified folder using Box's pagination mechanism.
+Each recurrence fetches every item in the specified folder, 1,000 per request, using Box's marker-based pagination.
+
+**Initial Sync**
+
+The trigger has no input that narrows which changes are reported, so an initial sync ignores no input. It begins on the first recurrence when a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers every subfolder created on or after that date exactly once. Left empty, there is no sync: the first recurrence stores its start time as the position and reports only folders created after it.
+
+The window has no fixed upper bound: the trigger lists every item in the folder, so a folder created while that listing runs is included. The position stored is the time the recurrence started, not the newest folder received, so such a folder can be delivered again on the next recurrence, which resumes from that position. Nothing in the payload marks the handoff. The sync finishes in one recurrence with batching on or off.
+
+**Folder ID** still applies. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Box.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.newFolders.data`. With batching on that field does not exist: each execution receives one `{ "changeType": "new", "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 

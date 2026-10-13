@@ -1,8 +1,8 @@
-import { webhook } from "./webhook";
 import { managedWebhook } from "./managedWebhook";
-import { newOrUpdatedFile } from "./newOrUpdatedFile";
-import { newFolder } from "./newFolder";
 import { newFileComments } from "./newFileComments";
+import { newFolder } from "./newFolder";
+import { newOrUpdatedFile } from "./newOrUpdatedFile";
+import { webhook } from "./webhook";
 export default {
   webhook,
   managedWebhook,

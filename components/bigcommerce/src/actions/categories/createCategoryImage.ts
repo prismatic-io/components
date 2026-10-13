@@ -1,6 +1,6 @@
-import FormData from "form-data";
 import { action, util } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
+import FormData from "form-data";
 import { createAuthorizedClient } from "../../client";
 import { createCategoryImageExamplePayload } from "../../examplePayloads";
 import {

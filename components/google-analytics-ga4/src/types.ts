@@ -34,3 +34,11 @@ export type PollingState = {
   lastPolledAt: string;
 };
 export type GA4Record = Account | Property;
+export interface GA4ChangesObject {
+  created?: GA4Record[];
+  updated?: GA4Record[];
+}
+export interface GA4RecordChange {
+  changeType: "created" | "updated";
+  record: GA4Record;
+}

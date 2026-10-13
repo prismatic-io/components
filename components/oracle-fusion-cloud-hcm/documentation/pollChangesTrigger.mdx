@@ -5,12 +5,28 @@ Atom feeds are the recommended mechanism for receiving lifecycle events from Ora
 #### How It Works
 
 1. Run on the configured schedule (e.g., every 5 minutes)
-2. Request the selected Atom feed using `GET /hcmRestApi/atomFeed/{feedName}` with an `updated-min` query parameter set to the timestamp of the last successful poll
+2. Request the selected Atom feed using `GET /hcmRestApi/atomFeed/{feedName}` with an `updated-min` query parameter set to the timestamp of the last successful poll, reading every page (oldest entries first) until a page returns fewer entries than **Page Size**
 3. Parse the Atom 1.0 XML response into structured entries, including the inner HCM business object payload and the list of `changedAttributes`
 4. Persist the new poll timestamp to trigger state for use on the next run
 5. Return the parsed entries; if no new entries are found, return an empty array and set `polledNoChanges` to `true`
 
-On the first run, the trigger sets the poll timestamp to the current time and returns no entries. Subsequent runs return only entries published or updated after that timestamp.
+On the first run (without a Look-back Date), the trigger sets the poll timestamp to the current time and returns no entries. Subsequent runs return only entries published or updated after that timestamp.
+
+**Initial Sync**
+
+An initial sync seeds a starting state from the feed's history. The trigger has no input that narrows which entries are reported, so an initial sync ignores none. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and requests the feed with `updated-min` set to that date.
+
+The window has no fixed upper bound and no per-recurrence cap: the trigger reads every page whether batching is on or off, so the sync completes in one recurrence. The position is then set to the wall-clock time at which that recurrence started, not to the newest entry received, and the first incremental recurrence resumes from there. Nothing in the payload marks the handoff. Entries are not de-duplicated, so an entry updated while the pages are read can be delivered again, and the trigger does not guarantee that each entry arrives exactly once.
+
+**Feed Name** still applies, and **Page Size** sets the size of each page request rather than capping the sync.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Oracle HCM.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.entries`. With batching on that field does not exist: each execution receives one `{ "changeType": "updated", "record": ... }` item, where `record` is a single feed entry, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Event Types
 

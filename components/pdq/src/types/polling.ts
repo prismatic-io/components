@@ -6,3 +6,10 @@ export interface PollableRecord {
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
+export interface PdqChangesObject {
+  created?: PollableRecord[];
+}
+export interface PdqRecordChange {
+  changeType: "created";
+  record: PollableRecord;
+}

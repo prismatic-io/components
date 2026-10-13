@@ -1,4 +1,5 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { Mock } from "vitest";
 import { paginateResults } from "./pagination";
 const mockProduct = (id: number, name: string, sku: string) => ({
   id,
@@ -24,13 +25,13 @@ const v3Response = (
   },
 });
 const v2Response = (items: unknown[]) => ({ data: items });
-const createMockClient = (getMock: jest.Mock): Pick<HttpClient, "get"> => ({
+const createMockClient = (getMock: Mock): Pick<HttpClient, "get"> => ({
   get: getMock,
 });
 describe("paginateResults", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   it("fetchAll=false: makes a single call and passes params through", async () => {
     const responseData = v3Response(

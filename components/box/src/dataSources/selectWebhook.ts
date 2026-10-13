@@ -9,7 +9,7 @@ export const selectWebhook = dataSource({
     description: "Select webhook from Box account.",
   },
   dataSourceType: "picklist",
-  perform: async (context, { boxConnection }) => {
+  perform: async (_context, { boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const { entries } = await getAllWebhookEntries(client);
     const webhooks = await Promise.all(

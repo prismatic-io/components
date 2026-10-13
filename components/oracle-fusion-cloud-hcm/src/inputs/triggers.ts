@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { atomFeedModel, restResourceModel } from "../util";
+import { atomFeedModel, lookBackDateClean, restResourceModel } from "../util";
 import { connection } from "./common";
 const feedName = input({
   label: "Feed Name",
@@ -45,13 +45,25 @@ const recordsPageSize = input({
   example: "100",
   clean: util.types.toNumber,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const pollChangesInputs = {
   connection,
   feedName,
   pageSize: changesPageSize,
+  lookBackDate,
 };
 export const pollRecordsInputs = {
   connection,
   resourceType,
   pageSize: recordsPageSize,
+  lookBackDate,
 };

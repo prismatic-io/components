@@ -11,7 +11,7 @@ export const listFolderWithPagination = action({
     description: "List Folder contents at the specified path. ",
   },
   performSafety: "notAllowed",
-  perform: async (context, params) => {
+  perform: async (_context, params) => {
     const client = createAuthorizedClient({
       boxConnection: params.boxConnection,
     });

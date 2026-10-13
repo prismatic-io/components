@@ -65,7 +65,7 @@ const poll = async (
 describe("pollChangesTrigger", () => {
   afterEach(() => {
     resetNock();
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
   describe("timestamp path", () => {
     test("advances the cursor and suppresses records the previous poll already emitted", async () => {

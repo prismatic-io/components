@@ -1,6 +1,15 @@
+import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import { DEFAULT_PAGE_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
-import type { PollableRecord } from "../types";
+import {
+  DEFAULT_PAGE_SIZE,
+  LOOK_BACK_DATE_PATTERN,
+  POLL_RESOURCE_CONFIG,
+} from "../constants";
+import type {
+  PdqChangesObject,
+  PdqRecordChange,
+  PollableRecord,
+} from "../types";
 import { fetchData } from "./pagination";
 export const TComparator = <
   T extends {
@@ -59,4 +68,35 @@ export const fetchAllInsertedAfter = async (
     page++;
   } while (keepFetching);
   return records;
+};
+export const resolvePollingRecordChanges = (
+  data: PdqChangesObject | undefined,
+): PdqRecordChange[] => {
+  const changesObject = data ?? {};
+  return (changesObject.created ?? []).map(
+    (record): PdqRecordChange => ({ changeType: "created", record }),
+  );
+};
+export const lookBackDateClean = (value: unknown): string => {
+  const str = util.types.toString(value).trim();
+  if (!str) return "";
+  if (!LOOK_BACK_DATE_PATTERN.test(str)) {
+    throw new Error("Look-back Date must be in YYYY-MM-DD format.");
+  }
+  const parts = str.split("-");
+  const year = util.types.toNumber(parts[0]);
+  const month = util.types.toNumber(parts[1]);
+  const day = util.types.toNumber(parts[2]);
+  const parsed = new Date(year, month - 1, day);
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
+  }
+  if (parsed > new Date()) {
+    throw new Error("Look-back Date cannot be a future date.");
+  }
+  return str;
 };

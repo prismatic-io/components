@@ -1,25 +1,33 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { newOrUpdatedFileInputs } from "../inputs";
 import { createAuthorizedClient } from "../client";
+import { DEFAULT_BATCH_SIZE, FOLDER_TYPE, MAX_PAGE_SIZE } from "../constants";
+import { newOrUpdatedFileInputs } from "../inputs";
+import type { BoxChangesObject, BoxRecordChange, PollingState } from "../types";
 import {
   buildPollingResult,
   computeNewEntries,
   getFolderEntries,
-  getLastPolledAt,
   normalizeDatesBetweenEntries,
+  resolvePollingRecordChanges,
 } from "../util";
-import { FOLDER_TYPE, MAX_PAGE_SIZE } from "../constants";
 export const newOrUpdatedFile = pollingTrigger({
   display: {
     label: "New and Updated Files",
     description:
-      "Checks for new and updated files in a specified folder on a configured schedule.",
+      "Retrieves existing and ongoing files in a specified Box folder. Load history once, check for changes on a schedule, or both.",
   },
   inputs: newOrUpdatedFileInputs,
-  perform: async (context, payload, { connection, folderId }) => {
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): BoxRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as BoxChangesObject),
+  },
+  perform: async (context, payload, { connection, folderId, lookBackDate }) => {
     const now = new Date().toISOString();
     const client = createAuthorizedClient({ boxConnection: connection });
-    const lastPolledAt = getLastPolledAt(context, now);
+    const pollState = context.polling.getState() as PollingState;
+    const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const fields = "name,created_at,modified_at,id,type";
     context.logger.debug(`Polling for changes from: ${lastPolledAt} to ${now}`);
     const entries = await getFolderEntries({

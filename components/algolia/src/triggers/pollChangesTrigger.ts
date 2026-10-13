@@ -1,27 +1,45 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createAlgoliaClient } from "../client";
-import { connectionInput, showNewRecords, showUpdatedRecords } from "../inputs";
-import type { AlgoliaIndex, PollingState } from "../types";
-import { fetchAllIndices } from "../util";
+import { DEFAULT_BATCH_SIZE } from "../constants";
+import {
+  connectionInput,
+  lookBackDate,
+  showNewRecords,
+  showUpdatedRecords,
+} from "../inputs";
+import type {
+  AlgoliaChangesObject,
+  AlgoliaIndex,
+  AlgoliaRecordChange,
+  PollingState,
+} from "../types";
+import { fetchAllIndices, resolvePollingRecordChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Indices",
     description:
-      "Checks for new and updated indices in Algolia on a configured schedule.",
+      "Retrieves existing and ongoing indices in Algolia. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     algoliaConnection: connectionInput,
     showNewRecords,
     showUpdatedRecords,
+    lookBackDate,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): AlgoliaRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as AlgoliaChangesObject),
   },
   perform: async (
     context,
     payload,
-    { algoliaConnection, showNewRecords, showUpdatedRecords },
+    { algoliaConnection, showNewRecords, showUpdatedRecords, lookBackDate },
   ) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const client = createAlgoliaClient({
       algoliaConnection,
       isGoingToRead: true,

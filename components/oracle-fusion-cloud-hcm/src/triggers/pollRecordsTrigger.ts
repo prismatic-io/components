@@ -1,23 +1,36 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { REST_RESOURCE_CONFIG } from "../constants";
+import { DEFAULT_BATCH_SIZE, REST_RESOURCE_CONFIG } from "../constants";
 import { pollRecordsExamplePayload } from "../examplePayloads/triggers";
 import { pollRecordsInputs } from "../inputs/triggers";
-import type { PollingState } from "../types";
-import { fetchRecordsSince } from "../util";
+import type {
+  HcmRestChangesObject,
+  HcmRestRecordChange,
+  PollingState,
+} from "../types";
+import { fetchRecordsSince, resolveRestPollingRecordChanges } from "../util";
 export const pollRecordsTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in a selected Oracle HCM resource type on a configured schedule.",
+      "Retrieves existing and ongoing records in a selected Oracle HCM resource type. Load history once, check for changes on a schedule, or both.",
   },
   allowsBranching: false,
   examplePayload: pollRecordsExamplePayload,
   inputs: pollRecordsInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): HcmRestRecordChange[] =>
+      resolveRestPollingRecordChanges(
+        payload.body.data as HcmRestChangesObject,
+      ),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const lastPolledAt =
+      pollState?.lastPolledAt ?? (params.lookBackDate || now);
     const resourceConfig = REST_RESOURCE_CONFIG[params.resourceType];
     if (!resourceConfig) {
       throw new Error(`Unknown resource type: ${params.resourceType}`);

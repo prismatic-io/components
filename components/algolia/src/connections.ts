@@ -5,7 +5,6 @@ export const algoliaApiKey = connection({
     label: "API Key",
     description: "API Key connection for Algolia",
   },
-  comments: "Retrieve this from the Algolia dashboard.",
   inputs: {
     apiKey: {
       label: "API Key",

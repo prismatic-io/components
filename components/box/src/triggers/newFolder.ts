@@ -1,24 +1,32 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import { newFolderInputs } from "../inputs";
 import { createAuthorizedClient } from "../client";
+import { DEFAULT_BATCH_SIZE, FOLDER_TYPE, MAX_PAGE_SIZE } from "../constants";
+import { newFolderInputs } from "../inputs";
+import type { BoxFolderChange, BoxFolderChangesObject } from "../types";
 import {
   buildPollingResult,
   getFolderEntries,
   getLastPolledAt,
   normalizeDatesBetweenEntries,
+  resolveFolderChanges,
 } from "../util";
-import { FOLDER_TYPE, MAX_PAGE_SIZE } from "../constants";
 export const newFolder = pollingTrigger({
   display: {
     label: "New Folders",
     description:
-      "Checks for new folders in a specified folder on a configured schedule.",
+      "Retrieves existing and ongoing folders in a specified Box folder. Load history once, check for changes on a schedule, or both.",
   },
   inputs: newFolderInputs,
-  perform: async (context, payload, { connection, folderId }) => {
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): BoxFolderChange[] =>
+      resolveFolderChanges(payload.body.data as BoxFolderChangesObject),
+  },
+  perform: async (context, payload, { connection, folderId, lookBackDate }) => {
     const now = new Date().toISOString();
     const client = createAuthorizedClient({ boxConnection: connection });
-    const lastPolledAt = getLastPolledAt(context, now);
+    const lastPolledAt = getLastPolledAt(context, lookBackDate || now);
     const fields = "name,created_at,id,type";
     context.logger.debug(`Polling for changes from: ${lastPolledAt} to ${now}`);
     const entries = await getFolderEntries({

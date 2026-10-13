@@ -1,6 +1,6 @@
 import { action, outputSchema, util } from "@prismatic-io/spectral";
-import { FOLDER_TYPE } from "../../constants";
 import { createAuthorizedClient } from "../../client";
+import { FOLDER_TYPE } from "../../constants";
 import { createFolderExamplePayload } from "../../examplePayloads";
 import { createFolderInputs } from "../../inputs";
 import { createFolderOutputSchema } from "../../outputSchemas";
@@ -11,7 +11,7 @@ export const createFolder = action({
     description: "Create a Folder at the specified path.",
   },
   performSafety: "notAllowed",
-  perform: async (context, { path, boxConnection }) => {
+  perform: async (_context, { path, boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(
       client,

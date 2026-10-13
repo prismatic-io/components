@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-10-13
+
+Added batching, initial sync, and a pagination fix to the polling triggers:
+- Fixed the **Atom Feed Notifications** trigger silently dropping feed entries beyond the first page
+- Added batching support to the **Atom Feed Notifications** and **New and Updated Records** polling triggers; enabling it changes the shape a downstream step receives
+- Added initial sync via the **Look-back Date** input on the **Atom Feed Notifications** and **New and Updated Records** polling triggers; the backfill begins on the first recurrence and each record is seeded once
+
 ### 2026-08-10
 
 Initial release of the Oracle Fusion Cloud HCM component with the following capabilities:

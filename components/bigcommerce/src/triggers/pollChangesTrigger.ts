@@ -1,28 +1,53 @@
 import { pollingTrigger, util } from "@prismatic-io/spectral";
 import { createAuthorizedClient } from "../client";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { BigCommerceOrder, PollingState } from "../types";
+import type {
+  BigCommerceChangesObject,
+  BigCommerceOrder,
+  BigCommerceRecordChange,
+  PollingState,
+} from "../types";
 import {
   fetchAllOrdersModifiedSince,
   partitionOrdersByTimestamp,
+  resolvePollingRecordChanges,
 } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Orders",
     description:
-      "Checks for new and updated orders in BigCommerce on a configured schedule.",
+      "Retrieves existing and ongoing orders in BigCommerce. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
   examplePayload: pollChangesTriggerExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): BigCommerceRecordChange[] =>
+      resolvePollingRecordChanges(
+        payload.body.data as BigCommerceChangesObject,
+      ),
+  },
   perform: async (
     context,
     payload,
-    { bigCommerceConnection, storeHash, showNewOrders, showUpdatedOrders },
+    {
+      bigCommerceConnection,
+      storeHash,
+      showNewOrders,
+      showUpdatedOrders,
+      lookBackDate,
+    },
   ) => {
     const now = new Date();
     const pollState = context.polling.getState() as PollingState | undefined;
-    const sinceISO = pollState?.lastPolledAt ?? now.toISOString();
+    const lookBackISO = lookBackDate
+      ? new Date(lookBackDate).toISOString()
+      : undefined;
+    const sinceISO =
+      pollState?.lastPolledAt ?? lookBackISO ?? now.toISOString();
     const sinceDate = new Date(sinceISO);
     const client = await createAuthorizedClient(
       bigCommerceConnection,

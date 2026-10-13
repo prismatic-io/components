@@ -6,6 +6,6 @@ export * from "./customFields";
 export * from "./misc";
 export * from "./productImages";
 export * from "./productModifiers";
-export * from "./productVariants";
 export * from "./products";
+export * from "./productVariants";
 export * from "./webhooks";

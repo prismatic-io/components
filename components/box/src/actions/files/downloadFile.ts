@@ -1,7 +1,7 @@
 import { action, util } from "@prismatic-io/spectral";
-import { FILE_TYPE } from "../../constants";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
 import { createAuthorizedClient } from "../../client";
+import { FILE_TYPE } from "../../constants";
 import { downloadFileExamplePayload } from "../../examplePayloads";
 import { downloadFileInputs } from "../../inputs";
 import { getPathEntries } from "../../util";
@@ -11,7 +11,7 @@ export const downloadFile = action({
     description: "Download the file at the specified path.",
   },
   performSafety: "notAllowed",
-  perform: async (context, { path, boxConnection }) => {
+  perform: async (_context, { path, boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const pathEntries = await getPathEntries(client, util.types.toString(path));
     const { id, type, name } = pathEntries.slice(-1)[0];

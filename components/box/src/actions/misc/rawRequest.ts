@@ -10,7 +10,7 @@ export const rawRequest = action({
   },
   inputs: rawRequestInputs,
   performSafety: "notAllowed",
-  perform: async (context, { connection, ...httpClientInputs }) => {
+  perform: async (_context, { connection, ...httpClientInputs }) => {
     const accessToken = getAccessToken({ boxConnection: connection });
     const { data } = await sendRawRequest(API_ROOT_URL, httpClientInputs, {
       Authorization: `Bearer ${accessToken}`,

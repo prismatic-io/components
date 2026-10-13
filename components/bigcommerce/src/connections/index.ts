@@ -6,8 +6,6 @@ export const bigCommerceConnection = oauth2Connection({
     label: "OAuth 2.0",
     description: "Authenticate using OAuth 2.0.",
   },
-  comments:
-    "Authenticate requests to BigCommerce using OAuth 2.0 credentials. Obtain these from the [BigCommerce Developer Portal](https://docs.bigcommerce.com/developer/docs/integrations/apps/guide/auth) > My Apps > Create an App.",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

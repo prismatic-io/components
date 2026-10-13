@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-13
+
+- Added batching to the **New and Updated Indices** polling trigger; enabling it changes the shape a downstream step receives
+- Added an initial sync to the **New and Updated Indices** polling trigger via the **Look-back Date** input; the backfill seeds every index updated after the specified date once on the first recurrence
+
 ### 2026-05-20
 
 Applied automated security patches and code formatting updates

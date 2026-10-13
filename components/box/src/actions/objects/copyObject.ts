@@ -11,7 +11,7 @@ export const copyObject = action({
     description: "Copy a Folder or File from one path to another.",
   },
   performSafety: "notAllowed",
-  perform: async (context, { fromPath, toPath, boxConnection }) => {
+  perform: async (_context, { fromPath, toPath, boxConnection }) => {
     const client = createAuthorizedClient({ boxConnection });
     const fromPathEntries = await getPathEntries(
       client,

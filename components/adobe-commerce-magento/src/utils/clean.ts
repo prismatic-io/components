@@ -1,4 +1,5 @@
 import { util } from "@prismatic-io/spectral";
+import { LOOK_BACK_DATE_PATTERN } from "../constants";
 export const cleanString = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
 export const cleanNumber = (value: unknown): number | undefined =>
@@ -12,38 +13,26 @@ export const asJsonObject = (
   }
   return { ...(value as Record<string, unknown>) };
 };
-const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const lookBackDateClean = (value: unknown): string | undefined => {
-  if (value === undefined || value === null) {
-    return undefined;
+  const str = util.types.toString(value).trim();
+  if (!str) return undefined;
+  if (!LOOK_BACK_DATE_PATTERN.test(str)) {
+    throw new Error("Look-back Date must be a date in YYYY-MM-DD format.");
   }
-  const raw = typeof value === "string" ? value.trim() : String(value);
-  if (raw === "") {
-    return undefined;
-  }
-  const match =
-    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
-  if (!match) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
-  }
-  const [, yearStr, monthStr, dayStr] = match;
-  const year = Number(yearStr);
-  const month = Number(monthStr);
-  const day = Number(dayStr);
-  const parsed = new Date(Date.UTC(year, month - 1, day));
+  const parts = str.split("-");
+  const year = util.types.toNumber(parts[0]);
+  const month = util.types.toNumber(parts[1]);
+  const day = util.types.toNumber(parts[2]);
+  const utc = new Date(Date.UTC(year, month - 1, day));
   if (
-    parsed.getUTCFullYear() !== year ||
-    parsed.getUTCMonth() !== month - 1 ||
-    parsed.getUTCDate() !== day
+    utc.getUTCFullYear() !== year ||
+    utc.getUTCMonth() !== month - 1 ||
+    utc.getUTCDate() !== day
   ) {
-    throw new Error(
-      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
-    );
+    throw new Error("Look-back Date must be a date in YYYY-MM-DD format.");
   }
-  if (parsed.getTime() > Date.now()) {
-    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  if (utc > new Date()) {
+    throw new Error("Look-back Date cannot be a future date.");
   }
-  return parsed.toISOString();
+  return utc.toISOString();
 };

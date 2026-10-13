@@ -17,12 +17,12 @@ import {
   name_like,
   pageTitle,
   pageTitle_like,
-  parentId,
   parent_id_greater,
   parent_id_in,
   parent_id_less,
   parent_id_max,
   parent_id_min,
+  parentId,
   storeHash,
 } from "../../inputs";
 export const deleteCategories = action({

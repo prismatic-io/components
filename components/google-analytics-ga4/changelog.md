@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-13
+
+- Added batching to the **New and Updated Records** polling trigger; enabling it changes the shape a downstream step receives
+- Added initial sync to the **New and Updated Records** polling trigger via the **Look-back Date** input; the backfill begins on the first recurrence and each record is seeded once
+
 ### 2026-08-17
 
 Restructured list action inputs into structured objects and improved paging reliability:

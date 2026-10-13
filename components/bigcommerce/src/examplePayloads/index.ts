@@ -65,13 +65,13 @@ export {
   updateProductVariantExamplePayload,
 } from "./productVariants";
 export {
+  myTriggerExamplePayload,
+  pollChangesTriggerExamplePayload,
+} from "./triggers";
+export {
   createWebhookExamplePayload,
   deleteInstancedWebhooksExamplePayload,
   deleteWebhookExamplePayload,
   getWebhooksExamplePayload,
   updateWebhookExamplePayload,
 } from "./webhooks";
-export {
-  myTriggerExamplePayload,
-  pollChangesTriggerExamplePayload,
-} from "./triggers";
