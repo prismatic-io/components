@@ -3,27 +3,46 @@ This trigger polls the [WooCommerce REST API](https://woocommerce.github.io/wooc
 #### How It Works
 
 1. The trigger runs on the configured schedule
-2. It queries WooCommerce for records created after the timestamp of the last poll, using the `after` parameter
+2. For Orders, Products and Coupons, it queries WooCommerce for records created on or after the stored position and no later than one minute before the recurrence began, sorted oldest first, in pages of 100 records
 3. All records returned by the API are treated as newly created
-4. The trigger updates its internal state after each poll, recording the current timestamp for use in the next request
+4. The trigger stores its new position, the creation time of the newest record it delivered, for use in the next recurrence
 
-#### Configuration
+WooCommerce records creation times to the second, so the trigger remembers which records it already delivered at the stored position and skips them. A record is therefore delivered once. Records created within the last minute are left for a later recurrence, so a record that is committed late with an earlier creation time is not skipped.
 
-Configure the following inputs:
+If many records share one second, the trigger drains that second by asking WooCommerce to exclude the records it has already delivered, up to 200 of them. A second holding more than 200 records cannot be drained that way: the trigger stops with an error that names the timestamp, keeps its position, and loses nothing. It repeats the same error on later recurrences until the records at that second are fewer than the limit, so it needs a person to look at it.
 
-- **Connection**: The WooCommerce connection to authenticate API requests
-- **Resource Type**: The type of WooCommerce resource to monitor for new records
+With batching off, each recurrence fetches at most 10 pages (1,000 records). When the limit is reached, the trigger keeps its place in the backlog and the next recurrence continues from there, so no record is skipped. The stored position moves forward only once the backlog is fully drained. With batching on, the platform requests one page at a time until the backlog is drained within the same run.
 
-| Resource | Tracks New | Tracks Updated |
-|----------|------------|---------------|
-| Orders | Yes | No |
-| Customers | Yes | No |
-| Products | Yes | No |
-| Coupons | Yes | No |
+**Customers**
+
+The Customers endpoint documents no date filter and no date sort, so the position cannot be tracked this way. For Customers, each recurrence fetches every page of records created after the previous recurrence began, in one run and whether batching is on or off, and stores the time the recurrence began. A customer created while that fetch is running can be delivered twice, and a large Customers backlog is not split across recurrences.
+
+**Initial Sync**
+
+An initial sync seeds a starting state of existing records. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers every record created on or after 00:00:00 UTC on that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence. This trigger has no inputs that narrow the records it reports, so the sync ignores none of them, and **Resource Type** applies throughout.
+
+For Orders, Products and Coupons the sync is the first stretch of the same drain: it starts at the Look-back Date, reads oldest first, and a backlog larger than one recurrence reads (the 1,000-record limit with batching off) continues on later recurrences from where it stopped, until it is drained. A record created while the sync drains is picked up at its place in the sequence. The first incremental recurrence resumes from exactly where the sync ended. Nothing in the payload marks the handoff. The trigger has no page-size input.
+
+The date filter WooCommerce applies is strict and works in whole seconds, so the trigger asks for the second before the Look-back Date and reads the creation time in GMT, which makes the window start exactly at 00:00:00 UTC on that date. The sync does not need to ask for an earlier window or trim records afterwards.
+
+**Customers** is the exception. The sync cannot narrow the request on the server, so it asks for a window one day earlier and then keeps only records whose `date_created_gmt` is on or after the Look-back Date. It fetches every page within the first recurrence, whether batching is on or off, and a customer created while it runs can be delivered by the sync and again by the next recurrence.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each new record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to WooCommerce.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on, those fields do not exist: each execution receives one `{ "changeType": "created" | "updated", "record": <record> }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
+
+For Orders, Products and Coupons, batching splits the new records across executions. It also lets the backlog drain within one run, one page per request, instead of across scheduled recurrences. For Customers, batching splits the records across executions and does not change what is fetched: every page is still retrieved in one recurrence.
 
 #### Returned Data
 
-Returns an object with two arrays — `created` for new records and `updated` for modified records.
+Returns an object with two arrays: `created` for new records and `updated` for modified records. The `updated` array is always empty, because this trigger does not track modifications to existing records.
+
+<details>
+<summary>Example Response</summary>
 
 ```json
 {
@@ -40,9 +59,30 @@ Returns an object with two arrays — `created` for new records and `updated` fo
 }
 ```
 
-The `updated` array is always empty — this trigger does not track modifications to existing records.
+</details>
+
+With batching on, each execution receives one item per new record, or an array of items when the batch size is greater than 1.
+
+<details>
+<summary>Example Response (Batched)</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": 1234,
+    "date_created": "2024-11-10T10:30:00",
+    "status": "processing"
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
 
 #### Notes
 
-- This trigger does not detect updates to existing records. Only records created after the last poll time are returned.
-- Records are fetched in ascending date order, up to 100 per page, with automatic pagination across all pages.
+- This trigger does not detect updates to existing records. Only records created at or after the stored position are returned.
+- Records are fetched in ascending creation order, 100 per page. Orders, Products and Coupons are drained by a stored position, as described under How It Works. Customers are fetched in full each recurrence.
+- Orders, Products and Coupons records are delivered at least one minute after they are created.

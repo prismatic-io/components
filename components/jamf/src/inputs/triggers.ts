@@ -1,5 +1,10 @@
 import { input } from "@prismatic-io/spectral";
-import { asStringArray, toOptionalString, webhookEventOptions } from "../util";
+import {
+  asStringArray,
+  lookBackDateClean,
+  toOptionalString,
+  webhookEventOptions,
+} from "../util";
 import { connection } from "./common";
 const authHeaderName = input({
   label: "Auth Header Name",
@@ -32,6 +37,16 @@ const events = input({
     "The Jamf Pro events to subscribe to. One webhook is created per selected event.",
   clean: asStringArray,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each computer enrolled on or after this date once.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const webhookEventsInputs = { connection, events };
-export const pollComputersInputs = { connection };
+export const pollComputersInputs = { connection, lookBackDate };
 export const pollMobileDevicesInputs = { connection };

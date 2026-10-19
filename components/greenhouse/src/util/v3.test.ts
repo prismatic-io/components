@@ -13,7 +13,7 @@ const makeClient = (
       }
   >,
 ) => {
-  const get = jest.fn(async () => {
+  const get = vi.fn(async () => {
     const next = queue.shift();
     if (next && "throw429" in next) {
       throw {
@@ -61,7 +61,7 @@ describe("fetchAllV3", () => {
     expect(get).toHaveBeenCalledTimes(2);
   });
   test("rethrows non-429 errors", async () => {
-    const get = jest.fn(async () => {
+    const get = vi.fn(async () => {
       throw { response: { status: 401 } };
     });
     const client = { get } as unknown as HttpClient;

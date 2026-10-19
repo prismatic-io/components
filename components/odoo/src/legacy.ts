@@ -4,11 +4,13 @@ import {
   DEFAULT_PAGE_SIZE,
   FETCH_ALL_PAGE_SIZE,
   LEGACY_CONNECTION_KEY,
-  MAX_POLL_PAGES,
-  POLL_PAGE_SIZE,
 } from "./constants";
-import type { LegacyPagination, OdooRecord, PollResult } from "./types";
-import { toOdooDate } from "./util";
+import type {
+  FetchPollPage,
+  LegacyPagination,
+  OdooRecord,
+  PollPageQuery,
+} from "./types";
 export const isLegacyConnection = (connection: Connection): boolean =>
   connection.key === LEGACY_CONNECTION_KEY;
 export const createOdooAwaitClient = async (
@@ -71,23 +73,7 @@ export const paginateSearchLegacy = async <T>({
   }
   return records;
 };
-export const fetchOdooRecordsSinceLegacy = async (
-  client: Odoo,
-  model: string,
-  lastPolledAt: string,
-): Promise<PollResult> => {
-  const domain = [["write_date", ">=", toOdooDate(lastPolledAt)]];
-  const records: OdooRecord[] = [];
-  for (let page = 0; page < MAX_POLL_PAGES; page++) {
-    const batch = await client.searchRead<OdooRecord>(model, domain, [], {
-      limit: POLL_PAGE_SIZE,
-      offset: page * POLL_PAGE_SIZE,
-      order: "write_date asc",
-    });
-    records.push(...batch);
-    if (batch.length < POLL_PAGE_SIZE) {
-      return { records, truncated: false };
-    }
-  }
-  return { records, truncated: true };
-};
+export const fetchOdooPageLegacy =
+  (client: Odoo, model: string): FetchPollPage =>
+  async ({ domain, order, limit }: PollPageQuery): Promise<OdooRecord[]> =>
+    client.searchRead<OdooRecord>(model, domain, [], { limit, order });

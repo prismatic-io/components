@@ -1,41 +1,76 @@
-This trigger checks for newly enrolled computers in [Jamf Pro](https://developer.jamf.com/jamf-pro/reference/get_v1-computers-inventory) on a configured schedule.
+This trigger checks for newly enrolled computers in [Jamf Pro](https://developer.jamf.com/jamf-pro/reference/get_v3-computers-inventory) on a configured schedule.
 
 #### How It Works
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes).
-2. It queries the Jamf Pro `GET /v1/computers-inventory` endpoint using an RSQL filter on `general.lastEnrolledDate` to fetch only computers enrolled since the last poll time.
-3. Each computer returned by the API is treated as a newly enrolled device for the current poll window.
-4. The trigger updates its internal state to record the current poll time so subsequent runs only return computers enrolled after this point.
+2. It queries the Jamf Pro `GET /v3/computers-inventory` endpoint with an RSQL filter on `general.lastEnrolledDate`, sorted oldest enrollment first, and reads one page at a time.
+3. Each computer returned by the API that has not been delivered before is treated as a newly enrolled device.
+4. The trigger stores a position in its internal state, so a backlog larger than one page is read across consecutive rounds or recurrences without skipping or repeating computers.
 
 **State Management**
 
-The trigger persists a single value between executions:
+The trigger persists a small position between executions:
 
 <details>
 <summary>State Shape</summary>
 
 ```typescript
 {
-  // ISO 8601 timestamp of the most recent poll execution.
-  // Used in the RSQL filter on general.lastEnrolledDate for the next run.
-  lastPolledAt: "2026-04-15T10:30:00.000Z"
+  // The committed position: the enrollment time (to the second) the last fully read poll reached.
+  lastPolledAt: "2026-04-15T10:30:00.000Z",
+  // Ids already delivered at exactly lastPolledAt, so they are not delivered twice.
+  boundaryIds: ["4821"],
+  // Present only while a backlog is still being read. Holds the position the next round resumes from.
+  cursor: { watermark: "2026-04-15T10:30:00.000Z", boundaryIds: ["4821"] }
 }
 ```
 
 </details>
 
-On the first execution, `lastPolledAt` is initialized to the current timestamp so no historical computers are returned. From that point forward, only computers enrolled after the previous poll time are emitted.
+The position comes from the computers themselves (their newest enrollment time), never from the time the poll ran. Each request asks for computers enrolled at or after that position and at least one minute in the past, so a computer whose enrollment is recorded late is not stepped over; computers newer than that wait for the next poll. If more computers share one enrollment second than fit on a page, they are read by increasing id within that second, and each computer is still delivered once.
 
-#### Configuration
+**Initial Sync**
 
-The trigger accepts the following inputs:
+An initial sync seeds a complete starting state rather than a change feed, so an input that narrowed
+which computers are reported would leave gaps in it. This trigger has no such input, so an initial
+sync ignores none. It begins on the first recurrence, when the trigger has no stored position and a
+**Look-back Date** (`YYYY-MM-DD`) is set, and seeds each computer enrolled on or after 00:00 UTC on
+that date once. Left empty, there is no sync: the first recurrence records the current time as its
+starting position and delivers nothing, and later recurrences deliver computers enrolled after it.
 
-- **Connection**: The Jamf Pro connection to use.
-- **Page Size**: The maximum number of computers to return per poll (defaults to 100, maximum 1000).
+The backlog is read oldest enrollment first, one page of up to 1000 computers per round. With
+batching on, the platform runs one round after another until the backlog is read. With batching off,
+each scheduled recurrence reads up to 20 pages and stores where it stopped, so a larger backlog
+drains over several recurrences, one window per recurrence, and the next recurrence continues from
+the stored position rather than starting over. The first incremental recurrence after the sync
+resumes from the position the sync reached; nothing is lost and nothing is repeated. Nothing in the
+payload marks the handoff. A trigger deployed before this change carries only the old poll-time
+position; it resumes from that time, and computers enrolled within that same second may be delivered
+once more.
+
+**Connection** still applies. The trigger has no page-size or field-selection input, so nothing
+else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. It also lets a large backlog be read in
+consecutive rounds within one recurrence, one page per round. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Jamf Pro.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads the computer array at `body.data`. With batching on that
+array does not exist: each execution receives one `{ "changeType": "created", "record": ... }`
+item, or an array of them when the batch size is greater than 1. Any step reading the older shape
+must be updated before batching is enabled. Because batching is enabled per flow, that change is
+scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns the list of newly enrolled computers in the `data` array. When no new computers are found, the trigger emits an empty array and marks the poll as having no changes.
+With batching off, the trigger returns the list of newly enrolled computers in the `data` array. When no new computers are found, the trigger emits an empty array and marks the poll as having no changes. The trigger requests only the `GENERAL` inventory section, so each computer carries `id`, `udid`, and `general`. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -54,31 +89,6 @@ The trigger returns the list of newly enrolled computers in the `data` array. Wh
         "reportDate": "2026-04-15T10:22:00.000Z",
         "remoteManagement": { "managed": true },
         "supervised": true
-      },
-      "hardware": {
-        "make": "Apple",
-        "model": "MacBook Pro (16-inch, 2023)",
-        "serialNumber": "C02XY1234567",
-        "processorType": "Apple M2 Pro",
-        "totalRamMegabytes": 16384
-      },
-      "operatingSystem": {
-        "name": "macOS",
-        "version": "15.4.0",
-        "build": "24E248"
-      },
-      "userAndLocation": {
-        "username": "jdoe",
-        "realname": "Jane Doe",
-        "email": "jdoe@example.com",
-        "department": "Engineering",
-        "building": null
-      },
-      "security": {
-        "sipStatus": "ENABLED",
-        "gatekeeperStatus": "APP_STORE_AND_IDENTIFIED_DEVELOPERS",
-        "xprotectVersion": "2199",
-        "firewall": true
       }
     }
   ]
@@ -87,10 +97,38 @@ The trigger returns the list of newly enrolled computers in the `data` array. Wh
 
 </details>
 
-Refer to the [Jamf Pro Computer Inventory API reference](https://developer.jamf.com/jamf-pro/reference/get_v1-computers-inventory) for the complete list of fields returned for each computer.
+With batching on, each execution receives one computer tagged with how it changed, or an array of such items when the batch size is greater than 1. Every item has `changeType` `created`. The `data` array is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "1",
+    "udid": "A8C5F29D-1234-5678-ABCD-9E0F1B2C3D4E",
+    "general": {
+      "name": "MacBook-Pro-001",
+      "lastContactTime": "2026-04-15T10:23:00.000Z",
+      "platform": "Mac",
+      "assetTag": null,
+      "reportDate": "2026-04-15T10:22:00.000Z",
+      "remoteManagement": { "managed": true },
+      "supervised": true
+    }
+  }
+}
+```
+
+</details>
+
+Refer to the [Jamf Pro Computer Inventory API reference](https://developer.jamf.com/jamf-pro/reference/get_v3-computers-inventory) for the complete list of fields in the `general` section.
 
 #### Notes
 
-- The first execution after deployment establishes the baseline timestamp and does not emit any computers. New computers enrolled after that baseline will appear in subsequent polls.
+- Without a **Look-back Date**, the first execution after deployment establishes the baseline timestamp and does not emit any computers. New computers enrolled after that baseline will appear in subsequent polls.
+- A computer enrolled in the last minute is delivered by a later poll, not the current one.
+- This trigger reads Jamf Pro's `/v3/computers-inventory` endpoint, which Jamf has deprecated in favor of `/v4`.
 - Frequent polling schedules (under one minute) may be subject to Jamf Pro API rate limits. A polling interval of 5 minutes or longer is recommended for most use cases.
 - The RSQL filter relies on `general.lastEnrolledDate`. Computers that have been re-enrolled (rather than newly enrolled) will also match the filter when their re-enrollment falls within the polling window.

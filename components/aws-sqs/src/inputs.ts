@@ -1,6 +1,6 @@
 import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
 import { awsRegion, connectionInput, dynamicAccessAllInputs } from "aws-utils";
-import { cleanIntInput, cleanStringInput } from "./utils";
+import { cleanIntInput, cleanStringInput, lookBackDateClean } from "./utils";
 export const message = input({
   label: "Message",
   type: "string",
@@ -188,4 +188,14 @@ export const fetchAll = input({
   comments:
     "Turn this On to fetch all results. It will ignore the Max Results and Next Token inputs.",
   clean: util.types.toBool,
+});
+export const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each message still retained in the queue and sent on or after this date once.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
 });

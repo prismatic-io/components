@@ -1,0 +1,88 @@
+This trigger polls the [Odoo External API](https://www.odoo.com/documentation/19.0/developer/reference/external_api.html) for new and updated records of a specified model on a configured schedule.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule
+2. It queries the selected model for records whose `write_date` is on or after the stored position and no later than one minute before the recurrence began, sorted oldest first (by `write_date`, then `id`), in pages of 200 records
+3. A fetched record is classified as **created** when its `create_date` is after the stored position, and otherwise as **updated**
+4. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. Turning either off empties that array, and both keys remain present in the payload
+5. The trigger stores its new position and reports no changes when both arrays are empty
+
+The `write_date` comparison is inclusive because Odoo records `write_date` with one-second granularity. The trigger remembers which records it already delivered at the stored position and skips them, so a record is delivered again only when it is modified again. Records modified within the last minute are left for a later recurrence, so a record that is committed late with an earlier `write_date` is not skipped.
+
+With batching off, each recurrence fetches at most 50 pages (10,000 records). When the cap is reached, the trigger keeps its place in the backlog and the next recurrence continues from there, so no record is skipped. The stored position moves forward only once the backlog is fully drained. With batching on, the platform requests one page at a time until the backlog is drained within the same run.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record modified on or after 00:00:00 UTC on that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+A record modified while the sync drains is picked up at its new position in the sequence rather than deferred to the schedule. The first recurrence stores a position, and the first incremental recurrence resumes from exactly there. Nothing in the payload marks the handoff. If a backlog is larger than one recurrence reads (the 10,000-record cap with batching off), the sync continues on later recurrences from where it stopped, still ignoring **Show New Records** and **Show Updated Records**, until the backlog drains. A larger window therefore spans several recurrences when batching is off.
+
+**Model** still applies throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Odoo.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on, those fields do not exist: each execution receives one `{ "changeType": "created" | "updated", "record": <record> }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
+
+Batching splits the changed records across executions. It also lets the backlog drain within one run, one page per request, instead of across scheduled recurrences.
+
+#### Returned Data
+
+With batching off, the trigger returns an object with two arrays: `created` for new records and `updated` for modified records. Each array contains the Odoo records of the selected model, with all fields returned by the API. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": 14,
+        "name": "Acme Corporation",
+        "display_name": "Acme Corporation",
+        "email": "billing@acme.example.com",
+        "create_date": "2026-05-26 14:30:00",
+        "write_date": "2026-05-26 14:30:00"
+      }
+    ],
+    "updated": [
+      {
+        "id": 9,
+        "name": "Fabrikam, Inc.",
+        "display_name": "Fabrikam, Inc.",
+        "email": "ap@fabrikam.example.com",
+        "create_date": "2026-04-12 09:00:00",
+        "write_date": "2026-05-26 15:45:00"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one item per changed record, or an array of items when the batch size is greater than 1.
+
+<details>
+<summary>Example Response (Batched)</summary>
+
+```json
+{
+  "changeType": "updated",
+  "record": {
+    "id": 9,
+    "name": "Fabrikam, Inc.",
+    "display_name": "Fabrikam, Inc.",
+    "email": "ap@fabrikam.example.com",
+    "create_date": "2026-04-12 09:00:00",
+    "write_date": "2026-05-26 15:45:00"
+  }
+}
+```
+
+</details>

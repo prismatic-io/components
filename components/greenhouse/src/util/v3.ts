@@ -1,6 +1,7 @@
 import { ConnectionError, type Connection, util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import {
+  V3_BASE_URL,
   V3_DEFAULT_RETRY_AFTER_SECONDS,
   V3_MAX_PER_PAGE,
   V3_MAX_RETRY_AFTER_SECONDS,
@@ -78,6 +79,55 @@ export const fetchAllV3 = async <T>(
     currentParams = undefined;
   }
   return results;
+};
+const cursorFromNextLink = (linkHeader: string | undefined): string | null => {
+  const nextUrl = parseNextLink(linkHeader);
+  if (!nextUrl) {
+    return null;
+  }
+  const cursor = new URL(nextUrl, V3_BASE_URL).searchParams.get("cursor");
+  if (!cursor) {
+    throw new Error(
+      `Greenhouse returned a next page link without a cursor: ${nextUrl}`,
+    );
+  }
+  return cursor;
+};
+export const fetchV3Window = async <T>(
+  client: HttpClient,
+  path: string,
+  {
+    after,
+    params = {},
+    perPage,
+    maxPages,
+  }: {
+    after?: string;
+    params?: Record<string, unknown>;
+    perPage: number;
+    maxPages: number;
+  },
+): Promise<{
+  records: T[];
+  after: string | null;
+}> => {
+  const records: T[] = [];
+  let requestParams: Record<string, unknown> = after
+    ? { cursor: after }
+    : { per_page: perPage, ...params };
+  let next: string | null = null;
+  for (let page = 0; page < maxPages; page++) {
+    const response = await getRateLimitedPage<T>(client, path, requestParams);
+    if (Array.isArray(response.data)) {
+      records.push(...response.data);
+    }
+    next = cursorFromNextLink(response.headers?.link as string | undefined);
+    if (!next) {
+      break;
+    }
+    requestParams = { cursor: next };
+  }
+  return { records, after: next };
 };
 export const paginateV3 = async <T>(
   client: HttpClient,

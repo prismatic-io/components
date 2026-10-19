@@ -19,6 +19,7 @@ export interface ComputerInventory {
   general?: {
     name: string;
     lastContactTime: string | null;
+    lastEnrolledDate?: string | null;
     platform: string;
     assetTag: string | null;
     reportDate: string | null;
@@ -52,6 +53,11 @@ export interface ComputerInventory {
     xprotectVersion: string | null;
     firewall: boolean | null;
   };
+}
+export type NewComputersChanges = ComputerInventory[];
+export interface NewComputerChange {
+  changeType: "created";
+  record: ComputerInventory;
 }
 export interface MobileDevice {
   id: string;
@@ -276,8 +282,30 @@ export interface ManagedWebhookState {
   webhookIds: number[];
   webhookAuthValue: string;
 }
-export interface ComputerPollingState {
+export interface ComputerPollCursor extends Record<string, unknown> {
+  watermark: string;
+  boundaryIds: string[];
+  tieGroup?: {
+    lastKey: string | null;
+  };
+}
+export interface ComputerPollingState extends Record<string, unknown> {
   lastPolledAt?: string;
+  boundaryIds?: string[];
+  cursor?: ComputerPollCursor;
+}
+export interface ComputerPageQuery {
+  filter: string;
+  sort: string;
+  pageSize: number;
+}
+export type FetchComputerPage = (
+  query: ComputerPageQuery,
+) => Promise<ComputerInventory[]>;
+export interface ComputerDrainRound {
+  delivered: ComputerInventory[];
+  cursor: ComputerPollCursor;
+  drained: boolean;
 }
 export interface MobileDevicePollingState {
   lastMaxId?: number;

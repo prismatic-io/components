@@ -3,15 +3,54 @@ This trigger polls the [Greenhouse Harvest v3 API](https://harvestdocs.greenhous
 #### How It Works
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes)
-2. On each execution, applications with activity since the last poll are fetched from the `GET /v3/applications` endpoint using the `last_activity_at[gte]` query parameter, following the cursor-based pagination until all pages are read
-3. Records are partitioned client-side into **created** or **updated** by comparing each application's `created_at` and `last_activity_at` timestamps against the timestamp of the last successful poll
-4. Applications whose `created_at` is newer than the last poll time are classified as created; applications with later activity that were created before the last poll are classified as updated
-5. The trigger updates its internal state with the current timestamp after each poll so subsequent executions only surface records changed since the previous run
-6. When no records match on a given run, the trigger reports `polledNoChanges` so downstream flows are not invoked unnecessarily
+2. Applications are fetched from the `GET /v3/applications` endpoint with `last_activity_at[gte]` set to the trigger's stored position. Reading every page for one position is a drain: its filter is fixed when it begins and carried by the Harvest pagination cursor until it ends
+3. With batching off, a recurrence reads up to 10 pages of 500 applications; if more remain, the trigger stores the cursor and the next recurrence continues from it. With batching on, each round reads one page of 100 applications and the trigger is re-invoked within the same recurrence until the drain is finished
+4. Each application is classified as **created** when its `created_at` is later than the drain's starting position, and otherwise as **updated** when its `last_activity_at` is later than it
+5. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. Turning either off empties that array, and both keys remain present in the payload
+6. The stored position advances only when a drain finishes, to the instant that drain began. Delivery is at-least-once: an application changed while a drain runs also falls inside the next drain's window, so it can be delivered twice
+7. When a recurrence finds no changes and no pages remain, the trigger reports `polledNoChanges` so downstream flows are not invoked unnecessarily
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow
+which changes are reported would leave gaps in it: **Show New Records** and **Show Updated
+Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first
+recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, read as
+midnight UTC) is set, and seeds every application with activity on or after that date once. Left
+empty, there is no sync: the first drain starts from the current time and no historical
+applications are emitted.
+
+The request sets no upper bound, and Harvest does not document whether its cursor picks up an
+application modified mid-drain. Once the sync is exhausted, the trigger stores the instant it began
+as its position, and the first incremental drain resumes from exactly there, so an application
+modified mid-drain is delivered by that drain, a second time if the sync already returned it.
+Nothing in the payload marks the handoff. With batching on the sync finishes within one recurrence;
+with batching off it spans as many recurrences as it takes to read 5,000 applications per
+recurrence.
+
+The connection still applies. The trigger has no page-size or field-selection input, so nothing
+else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Greenhouse.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled. Because
+batching is enabled per flow, that change is scoped to the flow rather than to the component or to
+other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object containing two arrays: `created` for newly created applications and `updated` for applications with new activity since the last poll. Each array contains full Harvest v3 application objects.
+With batching off, the trigger returns an object containing two arrays: `created` for newly created applications and `updated` for applications with new activity since the drain's starting position. Each array contains full Harvest v3 application objects.
 
 <details>
 <summary>Example Response</summary>
@@ -62,9 +101,31 @@ The trigger returns an object containing two arrays: `created` for newly created
 
 Fields shown are representative. The full response object includes additional properties.
 
+With batching on, each execution receives one application tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": 69306314,
+    "candidate_id": 57683957,
+    "job_id": 107761,
+    "stage_name": "Application Review",
+    "status": "in_process",
+    "created_at": "2026-05-20T14:00:00Z",
+    "last_activity_at": "2026-05-20T14:00:00Z"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
 - This trigger requires the **OAuth 2.0 Client Credentials (Harvest V3)** connection. The deprecated API Key connection only reaches the sunsetting v1/v2 API
 - Compared to the v1 application shape, v3 returns flat ID references (`referrer_id`, `source_id`, `job_id`) instead of embedded objects, and uses `created_at` instead of `applied_at`
-- On the very first execution, the trigger has no prior poll timestamp and uses the current time as its baseline, so no historical applications are emitted on the initial run. Only changes that occur after the trigger is enabled will be surfaced
+- Harvest does not document how long a pagination cursor stays valid. With batching off, a drain larger than one recurrence's window resumes from a cursor stored between recurrences; if Harvest rejects that cursor, the recurrence fails and later recurrences retry the same cursor
 - Refer to the [List Applications endpoint documentation](https://harvestdocs.greenhouse.io/reference/get_v3-applications) for the full set of fields returned on each application and to the [API rate limiting documentation](https://harvestdocs.greenhouse.io/docs/api-rate-limiting) for rate limit details

@@ -1,5 +1,11 @@
 ## Changelog
 
+### 2026-10-19
+
+- Added an optional **Look-back Date** input to the **New and Updated Orders**, **New and Updated Products**, and **New and Updated Shipments** triggers for performing an initial sync of orders, products, and shipments. The initial sync begins on the first recurrence and backfills every record on or after the specified date, seeding each once; recurrences after the sync completes are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Added opt-in batching to the **New and Updated Orders** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added opt-in batching to the **New and Updated Products** and **New and Updated Shipments** triggers, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+
 ### 2026-07-16
 
 Grouped related list-action inputs into structured objects for clearer configuration

@@ -9,3 +9,5 @@ export const POLL_RESOURCE_CONFIG = {
 export const pollResourceModel = Object.entries(POLL_RESOURCE_CONFIG).map(
   ([value, { label }]) => ({ label, value }),
 );
+export const SECONDS_PER_DAY = 86400;
+export const DEFAULT_BATCH_SIZE = 50;

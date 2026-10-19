@@ -3,10 +3,11 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import Odoo from "odoo-await";
 import { odooBasicAuth } from "../../connections/odooBasicAuth";
+import { type Mock, vi } from "vitest";
 import { rawRequest } from "./rawRequest";
-jest.mock("odoo-await");
+vi.mock("odoo-await");
 nock.disableNetConnect();
-const MockedOdoo = Odoo as unknown as jest.Mock;
+const MockedOdoo = Odoo as unknown as Mock;
 const legacyConnection = createConnection(odooBasicAuth, {
   baseUrl: "https://odoo.example.com",
   db: "odoo_db",
@@ -14,16 +15,16 @@ const legacyConnection = createConnection(odooBasicAuth, {
   password: "test-password",
 }) as unknown as Connection;
 describe("rawRequest", () => {
-  let connect: jest.Mock;
-  let executeKw: jest.Mock;
+  let connect: Mock;
+  let executeKw: Mock;
   beforeEach(() => {
-    connect = jest.fn().mockResolvedValue(undefined);
-    executeKw = jest.fn();
+    connect = vi.fn().mockResolvedValue(undefined);
+    executeKw = vi.fn();
     MockedOdoo.mockReset();
-    MockedOdoo.mockImplementation(() => ({
-      connect,
-      execute_kw: executeKw,
-    }));
+    // biome-ignore lint/complexity/useArrowFunction: the code under test calls `new Odoo(...)`, and vitest only allows `new` on a constructible mock implementation.
+    MockedOdoo.mockImplementation(function () {
+      return { connect, execute_kw: executeKw };
+    });
   });
   afterEach(() => nock.cleanAll());
   test("forwards the model, method, and positional arguments to execute_kw and returns the result untouched", async () => {

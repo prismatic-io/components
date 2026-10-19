@@ -14,3 +14,5 @@ export const FETCH_ALL_PAGE_SIZE = 1000;
 export const DEFAULT_PAGE_SIZE = 100;
 export const POLL_PAGE_SIZE = 200;
 export const MAX_POLL_PAGES = 50;
+export const WATERMARK_SKEW_MARGIN_MS = 60000;
+export const DEFAULT_BATCH_SIZE = 50;

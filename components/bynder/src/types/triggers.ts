@@ -11,3 +11,11 @@ export interface BynderRecord {
   id: string;
   [key: string]: unknown;
 }
+export interface BynderChangesObject {
+  created: BynderRecord[];
+  updated: BynderRecord[];
+}
+export interface BynderRecordChange {
+  changeType: "created" | "updated";
+  record: BynderRecord;
+}

@@ -1,3 +1,4 @@
+import type { Application } from "../v1/Applications";
 export interface V3Application {
   id: number;
   candidate_id: number;
@@ -122,4 +123,25 @@ export interface V3CustomField {
   name: string;
   field_type: string;
   [key: string]: unknown;
+}
+export interface V3ApplicationChangesObject {
+  created: Application[];
+  updated: Application[];
+}
+export interface V3ApplicationChange {
+  changeType: "created" | "updated";
+  record: Application;
+}
+export interface V3PollWindowStart extends Record<string, unknown> {
+  since: string;
+  drainStartedAt: string;
+  backfill: boolean;
+  after?: string;
+}
+export interface V3PollingCursor extends V3PollWindowStart {
+  after: string;
+}
+export interface V3PollingState extends Record<string, unknown> {
+  lastPolledAt?: string;
+  cursor?: V3PollingCursor;
 }

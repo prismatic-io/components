@@ -1,53 +1,95 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createV3Client } from "../../client";
+import { DEFAULT_BATCH_SIZE } from "../../constants";
 import { pollChangesTriggerV3ExamplePayload } from "../../examplePayloads/v3/triggers";
 import { pollChangesV3Inputs } from "../../inputs/v3/triggers";
-import type { PollingState, V3Application } from "../../types";
+import type {
+  V3Application,
+  V3ApplicationChange,
+  V3ApplicationChangesObject,
+  V3PollingCursor,
+  V3PollingState,
+} from "../../types";
 import { partitionApplicationsByTimestamp } from "../../util";
-import { fetchAllV3 } from "../../util/v3";
+import {
+  resolveV3ApplicationChanges,
+  resolveV3PollStart,
+  v3PollWindowBounds,
+} from "../../util/polling";
+import { fetchV3Window } from "../../util/v3";
 export const pollChangesTriggerV3 = pollingTrigger({
   display: {
     label: "New and Updated Applications",
     description:
-      "Checks for new and updated applications in Greenhouse on a configured schedule.",
+      "Retrieves existing and ongoing applications in Greenhouse. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesV3Inputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): V3ApplicationChange[] =>
+      resolveV3ApplicationChanges(
+        payload.body.data as V3ApplicationChangesObject,
+      ),
+    getNextPaginationState: (_context, { payload }): V3PollingCursor | null =>
+      (payload.paginationState as V3PollingCursor | undefined) ?? null,
+  },
   perform: async (
     context,
     payload,
-    { connection, showNewRecords, showUpdatedRecords },
+    { connection, lookBackDate, showNewRecords, showUpdatedRecords },
   ) => {
-    const now = new Date();
-    const lastState = context.polling.getState() as PollingState | undefined;
-    const sinceDate = lastState?.lastPolledAt
-      ? new Date(lastState.lastPolledAt)
-      : now;
+    const state = (context.polling.getState() ?? {}) as V3PollingState;
+    const incoming = payload.paginationState as V3PollingCursor | undefined;
+    const start = resolveV3PollStart(
+      incoming ?? state.cursor,
+      state.lastPolledAt,
+      lookBackDate,
+      new Date(),
+    );
+    const { perPage, maxPages } = v3PollWindowBounds(
+      context.batch?.enabled === true,
+    );
     const client = createV3Client(connection, context.debug.enabled);
-    const applications = await fetchAllV3<V3Application>(
+    const { records, after } = await fetchV3Window<V3Application>(
       client,
       "/applications",
-      { "last_activity_at[gte]": sinceDate.toISOString() },
+      {
+        after: start.after,
+        params: { "last_activity_at[gte]": start.since },
+        perPage,
+        maxPages,
+      },
     );
     const { created, updated } = partitionApplicationsByTimestamp(
-      applications,
-      sinceDate,
+      records,
+      new Date(start.since),
     );
+    const next: V3PollingCursor | null = after ? { ...start, after } : null;
     context.polling.setState({
-      lastPolledAt: now.toISOString(),
-    } as Record<string, unknown>);
-    const result = {
-      created: showNewRecords ? created : [],
-      updated: showUpdatedRecords ? updated : [],
+      lastPolledAt: next ? state.lastPolledAt : start.drainStartedAt,
+      ...(next ? { cursor: next } : {}),
+    } satisfies V3PollingState);
+    const result: V3ApplicationChangesObject = {
+      created: start.backfill || showNewRecords ? created : [],
+      updated: start.backfill || showUpdatedRecords ? updated : [],
     };
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled applications (v3): ${applications.length} total → ${created.length} new, ${updated.length} updated`,
+        `Polled applications (v3): ${records.length} read → ${created.length} new, ${updated.length} updated, ${next ? "more pending" : "drained"}`,
       );
     }
     return {
-      payload: { ...payload, body: { data: result } },
+      payload: {
+        ...payload,
+        paginationState: next ?? undefined,
+        body: { data: result },
+      },
       polledNoChanges:
-        result.created.length === 0 && result.updated.length === 0,
+        result.created.length === 0 &&
+        result.updated.length === 0 &&
+        next === null &&
+        !incoming,
     };
   },
   examplePayload: pollChangesTriggerV3ExamplePayload,

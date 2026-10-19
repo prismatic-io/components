@@ -1003,3 +1003,4 @@ export const RESOURCE_CONFIG: Record<
   tickets: { endpoint: "/tickets" },
   customers: { endpoint: "/customers" },
 };
+export const DEFAULT_BATCH_SIZE = 50;

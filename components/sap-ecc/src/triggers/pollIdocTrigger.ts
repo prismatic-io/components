@@ -1,22 +1,19 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import {
-  DEFAULT_DELIMITER,
+  DEFAULT_BATCH_SIZE,
   DEFAULT_DOCNUM,
-  EDIDC_FIELDS,
   ENDPOINTS,
-  RFC_FUNCTIONS,
+  MAX_BATCHED_PAGE_SIZE,
 } from "../constants";
 import { pollIdocExamplePayload } from "../examplePayloads";
 import { pollIdocInputs } from "../inputs";
-import type { IdocPollingState } from "../types";
-import {
-  buildSoapAction,
-  buildSoapEnvelope,
-  formatTableData,
-  handlePollingError,
-  parseAndCheckFault,
-} from "../util";
+import type {
+  IdocChangesObject,
+  IdocPollingState,
+  IdocRecordChange,
+} from "../types";
+import { fetchNewIdocs, handlePollingError, resolveIdocChanges } from "../util";
 export const pollIdocTrigger = pollingTrigger({
   display: {
     label: "New IDocs",
@@ -25,6 +22,12 @@ export const pollIdocTrigger = pollingTrigger({
   },
   inputs: pollIdocInputs,
   examplePayload: pollIdocExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): IdocRecordChange[] =>
+      resolveIdocChanges(payload.body.data as IdocChangesObject),
+  },
   perform: async (
     context,
     payload,
@@ -41,47 +44,21 @@ export const pollIdocTrigger = pollingTrigger({
     const { lastDocnum } = pollState;
     try {
       const client = createClient(connection, context, context.debug.enabled);
-      const fieldItems = EDIDC_FIELDS.map(
-        (f) => `<item><FIELDNAME>${f}</FIELDNAME></item>`,
-      ).join("");
-      let params = "<QUERY_TABLE>EDIDC</QUERY_TABLE>";
-      params += `<DELIMITER>${DEFAULT_DELIMITER}</DELIMITER>`;
-      params += `<ROWCOUNT>${rowCount || 50}</ROWCOUNT>`;
-      params += `<FIELDS>${fieldItems}</FIELDS>`;
-      const options: string[] = [`DOCNUM GT '${lastDocnum}'`];
-      if (messageType) options.push(`AND MESTYP EQ '${messageType}'`);
-      if (direction) options.push(`AND DIRECT EQ '${direction}'`);
-      const optionItems = options
-        .map((t) => `<item><TEXT>${t}</TEXT></item>`)
-        .join("");
-      params += `<OPTIONS>${optionItems}</OPTIONS>`;
-      params += "<DATA/>";
-      const soapBody = buildSoapEnvelope(RFC_FUNCTIONS.READ_TABLE, params);
-      const { data } = await client.post(
-        endpoint || ENDPOINTS.SOAP_RFC,
-        soapBody,
-        {
-          headers: { SOAPAction: buildSoapAction(RFC_FUNCTIONS.READ_TABLE) },
-        },
+      const requestedPageSize = rowCount || 50;
+      const pageSize = context.batch?.enabled
+        ? Math.min(requestedPageSize, MAX_BATCHED_PAGE_SIZE)
+        : requestedPageSize;
+      const records = await fetchNewIdocs(client, {
+        endpoint: endpoint || ENDPOINTS.SOAP_RFC,
+        lastDocnum,
+        pageSize,
+        messageType,
+        direction,
+      });
+      const newLastDocnum = records.reduce(
+        (max, r) => (r.idocNumber > max ? r.idocNumber : max),
+        lastDocnum,
       );
-      const parsed = await parseAndCheckFault(data);
-      const tableData = formatTableData(parsed, DEFAULT_DELIMITER);
-      const records = tableData.rows.map((row) => ({
-        idocNumber: row.DOCNUM,
-        status: row.STATUS,
-        messageType: row.MESTYP,
-        idocType: row.IDOCTP,
-        createdDate: row.CREDAT,
-        createdTime: row.CRETIM,
-        direction: row.DIRECT,
-      }));
-      const newLastDocnum =
-        records.length > 0
-          ? records.reduce(
-              (max, r) => (r.idocNumber > max ? r.idocNumber : max),
-              lastDocnum,
-            )
-          : lastDocnum;
       context.polling.setState({
         lastDocnum: newLastDocnum,
         errorCount: 0,

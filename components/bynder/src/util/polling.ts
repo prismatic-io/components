@@ -1,7 +1,12 @@
 import type { Connection } from "@prismatic-io/spectral";
 import { createApiClient, createClient, createWorkflowClient } from "../client";
+import type {
+  BynderChangesObject,
+  BynderRecord,
+  BynderRecordChange,
+  PollResourceConfig,
+} from "../types/triggers";
 import { fetchAllRecords, fetchCollections } from "./index";
-import type { BynderRecord } from "../types/triggers";
 export const fetchRecordsForResource = async (
   conn: Connection,
   resourceType: string,
@@ -65,28 +70,62 @@ export const fetchRecordsForResource = async (
       throw new Error(`Unsupported resource type: ${resourceType}`);
   }
 };
-export const filterByTimestamp = (
+const filterByTimestamp = (
   records: BynderRecord[],
-  lastPolledAt: string,
+  since: string,
   createdAtField: string,
   updatedAtField: string | null,
-): {
-  created: BynderRecord[];
-  updated: BynderRecord[];
-} => {
-  const lastPolledDate = new Date(lastPolledAt);
+  inclusive: boolean,
+): BynderChangesObject => {
+  const sinceMs = new Date(since).getTime();
+  const isAfter = (value: unknown) => {
+    const ms = value ? new Date(value as string).getTime() : Number.NaN;
+    return !Number.isNaN(ms) && (inclusive ? ms >= sinceMs : ms > sinceMs);
+  };
   const created: BynderRecord[] = [];
   const updated: BynderRecord[] = [];
   for (const record of records) {
-    const createdAt = record[createdAtField] as string;
-    const updatedAt = updatedAtField
-      ? (record[updatedAtField] as string)
-      : null;
-    if (createdAt && new Date(createdAt) > lastPolledDate) {
+    if (isAfter(record[createdAtField])) {
       created.push(record);
-    } else if (updatedAt && new Date(updatedAt) > lastPolledDate) {
+    } else if (updatedAtField && isAfter(record[updatedAtField])) {
       updated.push(record);
     }
   }
   return { created, updated };
+};
+export const collectRecordChanges = (
+  records: BynderRecord[],
+  since: string,
+  config: PollResourceConfig,
+  options: {
+    isInitialSync: boolean;
+    showNewRecords: boolean;
+    showUpdatedRecords: boolean;
+  },
+): BynderChangesObject => {
+  const { isInitialSync, showNewRecords, showUpdatedRecords } = options;
+  const { created, updated } = filterByTimestamp(
+    records,
+    since,
+    config.createdAtField,
+    config.updatedAtField,
+    isInitialSync,
+  );
+  return {
+    created: isInitialSync || showNewRecords ? created : [],
+    updated: isInitialSync || showUpdatedRecords ? updated : [],
+  };
+};
+export const resolveBynderRecordChanges = (
+  data: BynderChangesObject | undefined,
+): BynderRecordChange[] => {
+  const changesObject = data ?? { created: [], updated: [] };
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): BynderRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): BynderRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

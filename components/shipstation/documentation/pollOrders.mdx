@@ -3,13 +3,43 @@ This trigger polls [ShipStation](https://www.shipstation.com/docs/api/) for new 
 #### How It Works
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes)
-2. It queries the ShipStation Orders API for records modified since the last poll time
-3. Records are categorized as "new" or "updated" based on their `createDate` and `modifyDate` timestamps
-4. The trigger updates its internal state to track the last successful poll time
+2. It asks ShipStation for orders modified on or after its stored position and no later than one minute before the recurrence began, oldest first, in pages of 500 orders
+3. Records are categorized as "new" or "updated": an order is new when its `createDate` is after the stored position, and updated otherwise
+4. The trigger stores its new position, which is the `modifyDate` of the newest order it delivered (cut to whole seconds), and reports no changes when nothing new came back
+
+The position comes from the orders' own `modifyDate`, not from the time the recurrence ran. ShipStation records `modifyDate` with sub-second precision but filters by whole seconds, and does not document whether `modifyDateStart` includes the boundary. So the trigger asks from one second before its position, remembers which orders it already delivered at that second, and skips them, along with anything older than the position. An order is delivered again only when it is modified again. Orders modified within the last minute are left for a later recurrence, so an order that is committed late with an earlier `modifyDate` is not skipped.
+
+With batching off, each recurrence reads at most 20 pages (10,000 orders). When that limit is reached, the trigger keeps its place in the backlog and the next recurrence continues from there, so no order is skipped; the stored position moves forward only once the backlog is drained. With batching on, the platform requests one page at a time until the backlog is drained within the same run.
+
+**Too many orders in one second**
+
+ShipStation offers no way to page past more than 500 orders that share the same `modifyDate` second: there is no secondary sort key and no filter to exclude orders already seen. If a full page of 500 orders all fall in the second the trigger is positioned at, it cannot advance, so it stops with an error naming that second instead of repeating the same page silently. Nothing is skipped: orders before that second are still delivered first, the trigger keeps its position, and it stops at the same point on every following poll until fewer orders fill that second (for example, because some of them are modified again). A bulk import that stamps thousands of orders with the same second is the realistic way to hit this.
+
+**Initial Sync**
+
+An initial sync seeds a starting state of existing orders. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers every order created or modified on or after 00:00:00 UTC on that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence. This trigger has no inputs that narrow the orders it reports, so the sync ignores none of them.
+
+A larger history is read in the same way as any backlog, so with batching off it spans several recurrences, 10,000 orders at a time, and with batching on it drains within one run. An order changed while the sync runs is picked up at its new position in the sequence. Nothing in the payload marks the handoff from the sync to the schedule.
+
+ShipStation does not document whether `modifyDateStart` is inclusive, so the sync asks for a window one day earlier than the Look-back Date and then keeps only orders whose `createDate` or `modifyDate` is on or after the Look-back Date. Orders created on or after the date are delivered as `created`, and orders created earlier but modified on or after it are delivered as `updated`.
+
+**Time zone**
+
+ShipStation's documentation is inconsistent about the zone of its date parameters, and its timestamps carry no zone. The trigger treats every ShipStation timestamp as UTC: it reads `modifyDate` as UTC and sends its date filters as UTC times.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed order is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to ShipStation.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on, those fields do not exist: each execution receives one `{ "changeType": "created" | "updated", "record": <record> }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
+
+Batching splits the changed orders across executions. It also lets a backlog drain within one run, one page of 500 orders per request, instead of across scheduled recurrences.
 
 #### Returned Data
 
-The trigger returns an object containing arrays for new and updated records.
+The trigger returns an object containing `created` and `updated` arrays. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -17,7 +47,7 @@ The trigger returns an object containing arrays for new and updated records.
 ```json
 {
   "data": {
-    "newRecords": [
+    "created": [
       {
         "orderId": 123456789,
         "orderNumber": "TEST-001",
@@ -26,7 +56,7 @@ The trigger returns an object containing arrays for new and updated records.
         "modifyDate": "2024-01-15T10:30:00.0000000"
       }
     ],
-    "updatedRecords": [
+    "updated": [
       {
         "orderId": 987654321,
         "orderNumber": "TEST-002",
@@ -35,6 +65,26 @@ The trigger returns an object containing arrays for new and updated records.
         "modifyDate": "2024-01-16T14:22:00.0000000"
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one item per changed order, or an array of items when the batch size is greater than 1.
+
+<details>
+<summary>Example Response (Batched)</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "orderId": 123456789,
+    "orderNumber": "TEST-001",
+    "orderStatus": "awaiting_shipment",
+    "createDate": "2024-01-15T10:30:00.0000000",
+    "modifyDate": "2024-01-15T10:30:00.0000000"
   }
 }
 ```

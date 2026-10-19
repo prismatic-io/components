@@ -1,21 +1,31 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { RESOURCE_CONFIG } from "../constants";
+import { DEFAULT_BATCH_SIZE, RESOURCE_CONFIG } from "../constants";
 import { pollChangesInputs } from "../inputs/polling";
 import type {
   CreateApiPaginationResponse,
   GorgiasRecord,
+  PollingChangesObject,
+  PollingRecordChange,
   PollingState,
 } from "../types";
 import { fetchAllWithPagination } from "../utils/fetchAllWithPagination";
 import { filterByTimestamp } from "../utils/filterByTimestamp";
+import { resolvePollingRecordChanges } from "../utils/resolvePollingRecordChanges";
+import { resolvePollWindow } from "../utils/resolvePollWindow";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in a selected Gorgias resource type on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified Gorgias resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
+  },
   async perform(context, payload, params) {
     const config = RESOURCE_CONFIG[params.pollResourceType];
     if (!config) {
@@ -23,7 +33,11 @@ export const pollChangesTrigger = pollingTrigger({
     }
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
-    const lastPolledAt = state?.lastPolledAt ?? now;
+    const { lastPolledAt, isBackfill } = resolvePollWindow(
+      state,
+      params.lookBackDate,
+      now,
+    );
     const client = createClient({
       connection: params.connection,
       debug: context.debug.enabled,
@@ -39,8 +53,8 @@ export const pollChangesTrigger = pollingTrigger({
     const { created, updated } = filterByTimestamp(
       allRecords,
       lastPolledAt,
-      params.showNewRecords,
-      params.showUpdatedRecords,
+      isBackfill || params.showNewRecords,
+      isBackfill || params.showUpdatedRecords,
     );
     const totalMatched = created.length + updated.length;
     context.logger.debug(

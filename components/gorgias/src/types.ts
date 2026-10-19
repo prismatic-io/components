@@ -22,6 +22,14 @@ export interface GorgiasRecord {
   updated_datetime: string | null;
   [key: string]: unknown;
 }
+export interface PollingChangesObject {
+  created: GorgiasRecord[];
+  updated: GorgiasRecord[];
+}
+export interface PollingRecordChange {
+  changeType: "created" | "updated";
+  record: GorgiasRecord;
+}
 export interface DebugLoggerProps {
   debug: boolean;
   logger: ActionLogger;

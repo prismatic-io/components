@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-19
+
+- Added opt-in batching to the **New IDocs** trigger, dispatching each IDoc individually or in configured batches; enabling it changes the shape a downstream step receives
+
 ### 2026-04-30
 
 Updated spectral version

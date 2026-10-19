@@ -1,29 +1,25 @@
 {
   "name": "jamf",
-  "version": "0.0.1",
   "private": true,
   "scripts": {
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "build": "npm run format && npm run lint && webpack",
-    "test": "echo 'no tests'",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "publish": "npm run build && prism components:publish",
     "generate:manifest": "npm run build && npx @prismatic-io/spectral component-manifest",
     "generate:manifest:dev": "npm run build && npx @prismatic-io/spectral component-manifest --skip-signature-verify"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.19.0"
+    "@prismatic-io/spectral": "10.32.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.16",
-    "@types/jest": "30.0.0",
-    "@types/node": "^25.9.1",
-    "copy-webpack-plugin": "14.0.0",
-    "jest": "30.4.2",
-    "ts-jest": "29.4.11",
-    "ts-loader": "9.6.0",
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26.6.4",
+    "nock": "^14.0.17",
+    "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "webpack": "5.107.2",
-    "webpack-cli": "7.0.3"
+    "vitest": "4.1.9"
   }
 }

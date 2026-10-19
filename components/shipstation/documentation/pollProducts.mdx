@@ -3,13 +3,31 @@ This trigger polls [ShipStation](https://www.shipstation.com/docs/api/) for new 
 #### How It Works
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes)
-2. It queries the ShipStation Products API for records modified since the last poll time
+2. It queries ShipStation for products using the `startDate` filter, set to the stored position
 3. Records are categorized as "new" or "updated" based on their `createDate` and `modifyDate` timestamps
 4. The trigger updates its internal state to track the last successful poll time
 
+**Initial Sync**
+
+An initial sync seeds a starting state of existing products. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers every product ShipStation returns for a `startDate` filter at 00:00:00 UTC on that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence. This trigger has no inputs that narrow the products it reports, so the sync ignores none of them.
+
+The window has no fixed upper bound, so a product changed while the sync is fetching can be delivered by the sync and again by the next recurrence. The first recurrence stores the time it began as the position, and the next recurrence resumes from exactly there. Nothing in the payload marks the handoff. The sync fetches every page, 500 per request, within the first recurrence, whether batching is on or off.
+
+ShipStation does not document the semantics of `startDate` on the products endpoint, and the product inputs elsewhere in this component describe it as a creation-date filter. The Look-back Date therefore promises only that products the endpoint returns for that filter, and whose `createDate` or `modifyDate` is on or after the date, are delivered once; it does not promise that products created earlier and modified since are included. To avoid losing a product at the boundary, the sync asks for a window one day earlier and then keeps only products whose `createDate` or `modifyDate` is on or after the Look-back Date. ShipStation timestamps carry no time zone, and they are read as UTC.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed product is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to ShipStation.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on, those fields do not exist: each execution receives one `{ "changeType": "created" | "updated", "record": <record> }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
+
+Batching splits the changed products across executions and does not change what is fetched: every page is still retrieved in one recurrence.
+
 #### Returned Data
 
-The trigger returns an object containing arrays for new and updated records.
+The trigger returns an object containing `created` and `updated` arrays. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -17,7 +35,7 @@ The trigger returns an object containing arrays for new and updated records.
 ```json
 {
   "data": {
-    "newRecords": [
+    "created": [
       {
         "productId": 123456789,
         "sku": "PROD-001",
@@ -26,7 +44,7 @@ The trigger returns an object containing arrays for new and updated records.
         "modifyDate": "2024-01-15T10:30:00.0000000"
       }
     ],
-    "updatedRecords": [
+    "updated": [
       {
         "productId": 987654321,
         "sku": "PROD-002",
@@ -35,6 +53,26 @@ The trigger returns an object containing arrays for new and updated records.
         "modifyDate": "2024-01-16T14:22:00.0000000"
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one item per changed product, or an array of items when the batch size is greater than 1.
+
+<details>
+<summary>Example Response (Batched)</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "productId": 123456789,
+    "sku": "PROD-001",
+    "name": "Example Product",
+    "createDate": "2024-01-15T10:30:00.0000000",
+    "modifyDate": "2024-01-15T10:30:00.0000000"
   }
 }
 ```

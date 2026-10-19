@@ -3,31 +3,51 @@ This trigger polls the [Bynder API](https://bynder.docs.apiary.io/) for new and 
 #### How It Works
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes)
-2. It fetches records from the selected Bynder resource type
-3. Records are categorized as **created** or **updated** based on their `dateCreated` and `dateModified` timestamp fields, compared against the last successful poll time
-4. The trigger updates its internal state after each poll, storing the poll timestamp for use in the next execution
+2. It fetches every record of the selected Bynder resource type and compares their timestamps against the last successful poll time itself
+3. Records are categorized as **created** or **updated** based on their creation and modification timestamps. Assets, Collections, Campaigns, and Jobs use `dateCreated` and `dateModified`. Orders use `date_created` only, so they are tracked as new records only
+4. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. **Show Updated Records** has no effect for Orders
+5. The trigger updates its internal state after each poll, storing the poll timestamp for use in the next execution
 
-#### Configuration
+**Initial Sync**
 
-Configure the following inputs:
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow
+which changes are reported would leave gaps in it: **Show New Records** and **Show Updated
+Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first
+recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set,
+and seeds each record created or modified on or after that date exactly once (for Orders, created
+on or after it). Left empty, there is no sync: the first recurrence reports nothing and only
+stores its position.
 
-- **Connection**: The Bynder connection used to authenticate API requests
-- **Resource Type**: The Bynder resource to monitor. Available options:
+The sync finishes within the first recurrence whether batching is on or off, because the trigger
+lists every record of the resource type and filters by date itself. The window has no upper bound,
+so a record modified while that recurrence runs is swept into the sync and can be reported again
+by the next recurrence. The trigger stores the time the first recurrence began as its position, and
+the first incremental recurrence resumes from exactly there; nothing in the payload marks the
+handoff.
 
-  | Resource | Change Detection | Tracks New | Tracks Updated |
-  |----------|-----------------|------------|---------------|
-  | Assets | Timestamp (`dateCreated`, `dateModified`) | Yes | Yes |
-  | Collections | Timestamp (`dateCreated`, `dateModified`) | Yes | Yes |
-  | Campaigns | Timestamp (`dateCreated`, `dateModified`) | Yes | Yes |
-  | Jobs | Timestamp (`dateCreated`, `dateModified`) | Yes | Yes |
-  | Orders | Timestamp (`dateCreated`) | Yes | No |
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input,
+so nothing else is suppressed.
 
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Applies only to resource types that support update tracking (Assets, Collections, Campaigns, Jobs). Defaults to `true`
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Bynder.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled. Because
+batching is enabled per flow, that change is scoped to the flow rather than to the component or to
+other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. For Orders, `updated` is always an empty array because the API does not expose an update timestamp.
+With batching off, the trigger returns an object with two arrays: `created` for new records and `updated` for modified records. For Orders, `updated` is always an empty array because the API does not expose an update timestamp. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -57,7 +77,26 @@ The trigger returns an object with two arrays — `created` for new records and 
 
 </details>
 
+With batching on, each execution receives one record tagged with how it changed (`changeType` is `created` or `updated`), or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
+    "name": "Product Launch Banner",
+    "dateCreated": "2024-01-15T10:30:00Z",
+    "dateModified": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
-- A record is classified as **created** if its `dateCreated` exceeds the last poll time. If `dateCreated` does not exceed the cutoff but `dateModified` does, the record is classified as **updated**
+- A record is classified as **created** if its creation timestamp exceeds the last poll time (or is on or after the **Look-back Date** during an initial sync). Otherwise, if its modification timestamp does, the record is classified as **updated**
 - Orders lack a `dateModified` field in the Bynder API response, so update tracking is not available for that resource type

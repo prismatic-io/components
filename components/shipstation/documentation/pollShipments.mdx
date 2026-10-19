@@ -3,13 +3,31 @@ This trigger polls [ShipStation](https://www.shipstation.com/docs/api/) for new 
 #### How It Works
 
 1. The trigger runs on the configured schedule (e.g., every 5 minutes)
-2. It queries the ShipStation Shipments API for records created since the last poll time
+2. It queries ShipStation for shipments created on or after the stored position, using the `createDateStart` filter
 3. Records are categorized as "new" or "updated" based on their `createDate` and `modifyDate` timestamps
 4. The trigger updates its internal state to track the last successful poll time
 
+**Initial Sync**
+
+An initial sync seeds a starting state of existing shipments. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers every shipment created on or after 00:00:00 UTC on that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence. This trigger has no inputs that narrow the shipments it reports, so the sync ignores none of them.
+
+The window has no fixed upper bound, so a shipment changed while the sync is fetching can be delivered by the sync and again by the next recurrence. The first recurrence stores the time it began as the position, and the next recurrence resumes from exactly there. Nothing in the payload marks the handoff. The sync fetches every page, 500 per request, within the first recurrence, whether batching is on or off.
+
+ShipStation documents `createDateStart` as returning shipments created on or after the specified date, and the filter applies to creation only. The Look-back Date therefore seeds shipments created on or after it, and cannot seed a shipment that was created earlier and modified since. To avoid losing a shipment created exactly on the Look-back Date, the sync asks for a window one day earlier and then keeps only shipments whose `createDate` or `modifyDate` is on or after the Look-back Date. A shipment created in that extra day and modified on or after the Look-back Date is therefore delivered as `updated`. ShipStation timestamps carry no time zone, and they are read as UTC.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed shipment is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to ShipStation.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on, those fields do not exist: each execution receives one `{ "changeType": "created" | "updated", "record": <record> }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
+
+Batching splits the changed shipments across executions and does not change what is fetched: every page is still retrieved in one recurrence.
+
 #### Returned Data
 
-The trigger returns an object containing arrays for new and updated records.
+The trigger returns an object containing `created` and `updated` arrays. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -17,7 +35,7 @@ The trigger returns an object containing arrays for new and updated records.
 ```json
 {
   "data": {
-    "newRecords": [
+    "created": [
       {
         "shipmentId": 123456789,
         "orderId": 987654321,
@@ -26,7 +44,7 @@ The trigger returns an object containing arrays for new and updated records.
         "modifyDate": "2024-01-15T10:30:00.0000000"
       }
     ],
-    "updatedRecords": [
+    "updated": [
       {
         "shipmentId": 111222333,
         "orderId": 444555666,
@@ -35,6 +53,26 @@ The trigger returns an object containing arrays for new and updated records.
         "modifyDate": "2024-01-16T14:22:00.0000000"
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one item per changed shipment, or an array of items when the batch size is greater than 1.
+
+<details>
+<summary>Example Response (Batched)</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "shipmentId": 123456789,
+    "orderId": 987654321,
+    "orderNumber": "TEST-001",
+    "createDate": "2024-01-15T10:30:00.0000000",
+    "modifyDate": "2024-01-15T10:30:00.0000000"
   }
 }
 ```

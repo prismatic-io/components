@@ -7,7 +7,6 @@ export const oauth = oauth2Connection({
     description: "OAuth 2.0",
     label: "OAuth 2.0",
   },
-  comments: "Bynder OAuth connection",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",
@@ -66,7 +65,6 @@ export const oauthCredentials = oauth2Connection({
     description: "Client Credentials OAuth 2.0",
     label: "OAuth 2.0 Client Credentials",
   },
-  comments: "Bynder Client Credentials OAuth connection",
   inputs: {
     tokenUrl: {
       label: "Token URL",

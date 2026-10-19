@@ -1,5 +1,11 @@
 ## Changelog
 
+### 2026-10-19
+
+- Added an optional **Look-back Date** input to the **New and Updated Applications** trigger for performing an initial sync of applications. The initial sync begins on the first recurrence and backfills every application with activity on or after the specified date, seeding each once and ignoring the trigger's filters; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Added opt-in batching to the **New and Updated Applications** trigger, dispatching each changed application individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Updated the **New and Updated Applications** trigger to return at most 5,000 applications per recurrence when batching is off, so a larger backlog drains across later recurrences instead of in one execution
+
 ### 2026-07-08
 
 Restructured action inputs into structured objects for an improved configuration experience

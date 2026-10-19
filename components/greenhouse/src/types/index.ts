@@ -36,12 +36,17 @@ export type {
 export type { UserDataSources } from "./v1/User";
 export type {
   V3Application,
+  V3ApplicationChange,
+  V3ApplicationChangesObject,
   V3Attachment,
   V3Candidate,
   V3CustomField,
   V3Department,
   V3Job,
   V3Office,
+  V3PollingCursor,
+  V3PollingState,
+  V3PollWindowStart,
   V3RejectionReason,
   V3User,
 } from "./v3";

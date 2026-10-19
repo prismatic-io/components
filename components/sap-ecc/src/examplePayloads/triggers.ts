@@ -19,6 +19,7 @@ export const pollIdocExamplePayload: {
     flow: {
       id: "",
       name: "",
+      stableId: "",
     },
     startedAt: "",
     globalDebug: false,

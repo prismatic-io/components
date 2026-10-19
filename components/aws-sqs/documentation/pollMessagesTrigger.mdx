@@ -1,10 +1,89 @@
-It is recommended that when using the New Message trigger to use basic scenarios. More complex scenarios may have limitations:
+The **New Messages** trigger polls an Amazon SQS queue for new messages on a scheduled basis. It is recommended for basic scenarios; more complex scenarios are subject to the limitations listed below.
 
-#### Unpredictable Return Behavior:
-SQS doesn’t guarantee that all available messages will be returned in a single return. Even when using the maximum allowed settings.
+#### How It Works
 
-#### Confirming Empty Queues:
-An empty response does not mean the queue is fully drained. Messages might still be delayed, invisible, or not returned due to SQS’s distributed nature.
+1. The trigger runs on the configured schedule
+2. It receives messages from the queue repeatedly, using long polling, until a request returns no messages
+3. It keeps only the messages whose `SentTimestamp` is later than its stored position, and stores the time the recurrence started as its new position
+4. The trigger never deletes messages. Each message it receives stays hidden from other consumers of the queue for the queue's visibility timeout, and a message sent after a recurrence starts can be emitted by that recurrence and again by the next one
 
-#### Delayed Messages:
-Messages sent with DelaySeconds will remain hidden until the delay expires.
+**Initial Sync**
+
+An initial sync seeds a starting state from the messages already in the queue. The trigger has no input that narrows which messages are reported, so the sync ignores no inputs. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and emits once every message still retained in the queue whose `SentTimestamp` is on or after that date. Amazon SQS retains a message for at most 14 days (4 by default), per [Amazon SQS message quotas](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html), so the date cannot reach further back than the queue's retention period. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound, so a message sent while the sync drains is swept into it. The trigger then stores the time the recurrence started as its position, and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff. The drain finishes in one recurrence whether batching is on or off.
+
+**Queue URL**, **AWS Region**, and the connection inputs still apply throughout. The trigger has no page-size or field-selection input, so nothing else is in play.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Amazon SQS.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads the message array at `body.data`. With batching on that array does not exist: each execution receives one `{ "changeType": "created", "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+#### Returned Data
+
+With batching off, the trigger returns the new messages as an array in `data`. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": [
+    {
+      "MessageId": "00000000-00000000-00000000-00000000",
+      "ReceiptHandle": "Example Receipt Handle",
+      "MD5OfBody": "e909509655c5154f008e0ee43ed655b2",
+      "Body": "My Test Message",
+      "Attributes": {
+        "SenderId": "EXAMPLE5OBBA2B7URDN4G",
+        "ApproximateFirstReceiveTimestamp": "1646857534190",
+        "ApproximateReceiveCount": "3",
+        "SentTimestamp": "1646857528982"
+      },
+      "MessageAttributes": {
+        "exampleKey1": {
+          "StringValue": "exampleValue",
+          "DataType": "String"
+        }
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+With batching on, each execution receives one message tagged with `changeType` `created`, or an array of such items when the batch size is greater than 1. The `data` array is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "MessageId": "00000000-00000000-00000000-00000000",
+    "ReceiptHandle": "Example Receipt Handle",
+    "Body": "My Test Message",
+    "Attributes": {
+      "SentTimestamp": "1646857528982"
+    }
+  }
+}
+```
+
+</details>
+
+#### Limitations
+
+- **Unpredictable return behavior**: Amazon SQS does not guarantee that all available messages are returned, even when using the maximum allowed settings
+- **Confirming empty queues**: An empty response does not mean the queue is fully drained. Messages might still be delayed, invisible, or not returned due to the distributed nature of Amazon SQS
+- **Delayed messages**: Messages sent with `DelaySeconds` remain hidden until the delay expires. A delayed message that becomes visible after a recurrence has moved the position past its `SentTimestamp` is never emitted

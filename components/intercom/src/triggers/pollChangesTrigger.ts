@@ -1,71 +1,67 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { PollResource } from "../constants";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { connectionInput } from "../inputs";
 import {
+  lookBackDate,
   pollResourceType,
   showNewRecords,
   showUpdatedRecords,
 } from "../inputs/triggers";
-import type { IntercomRecord, PollingState } from "../types";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
 import {
-  fetchAllCompanies,
-  filterByUnixTimestamp,
-  searchContactsSince,
+  fetchChangedRecords,
+  resolvePollingRecordChanges,
+  resolvePollWindow,
 } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated contacts or companies on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified Intercom resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     connection: connectionInput,
     resourceType: pollResourceType,
     showNewRecords,
     showUpdatedRecords,
+    lookBackDate,
   },
-  perform: async (
-    context,
-    payload,
-    { connection, resourceType, showNewRecords, showUpdatedRecords },
-  ) => {
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
+  },
+  perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
-    const lastPolledUnix = Math.floor(new Date(lastPolledAt).getTime() / 1000);
-    const client = createClient(connection, context.debug.enabled);
-    let created: IntercomRecord[];
-    let updated: IntercomRecord[];
-    if (resourceType === PollResource.CONTACTS) {
-      const records = await searchContactsSince(client, lastPolledUnix);
-      const filtered = filterByUnixTimestamp(records, lastPolledUnix);
-      created = filtered.created;
-      updated = filtered.updated;
-    } else {
-      const records = await fetchAllCompanies(client);
-      const filtered = filterByUnixTimestamp(records, lastPolledUnix);
-      created = filtered.created;
-      updated = filtered.updated;
-    }
-    const filteredCreated = showNewRecords ? created : [];
-    const filteredUpdated = showUpdatedRecords ? updated : [];
-    const totalChanges = filteredCreated.length + filteredUpdated.length;
+    const window = resolvePollWindow(pollState, params.lookBackDate, now);
+    const client = createClient(params.connection, context.debug.enabled);
+    const data = await fetchChangedRecords(
+      client,
+      params.resourceType,
+      window,
+      {
+        showNew: params.showNewRecords,
+        showUpdated: params.showUpdatedRecords,
+      },
+    );
+    const totalChanges = data.created.length + data.updated.length;
     context.polling.setState({
       lastPolledAt: now,
     } as unknown as Record<string, unknown>);
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled ${resourceType}: ${filteredCreated.length} new, ${filteredUpdated.length} updated`,
+        `Polled ${params.resourceType}: ${data.created.length} new, ${data.updated.length} updated`,
       );
     }
     return {
-      payload: {
-        ...payload,
-        body: {
-          data: { created: filteredCreated, updated: filteredUpdated },
-        },
-      },
+      payload: { ...payload, body: { data } },
       polledNoChanges: totalChanges === 0,
     };
   },
