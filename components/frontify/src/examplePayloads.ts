@@ -224,7 +224,9 @@ export const getAssetsByIdsExamplePayload = {
     ],
   },
 };
-export const listAssetCommentsExamplePayload = {
+export const listAssetCommentsExamplePayload: {
+  data: import("./actions/types/listAssetComments").default;
+} = {
   data: {
     asset: {
       id: "eyJpZGV...",

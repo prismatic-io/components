@@ -76,9 +76,9 @@ export const listWorkspaceProjectFolders = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedFolders = responses.reduce((combined, response) => {
-        return combined.concat(response.workspaceProject.browse.folders.items);
-      }, []);
+      const combinedFolders = responses.flatMap(
+        (response) => response.workspaceProject.browse.folders.items,
+      );
       const formattedResponse: {
         data: ListWorkspaceProjectFoldersResponse;
       } = {

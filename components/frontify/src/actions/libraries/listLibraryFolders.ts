@@ -69,9 +69,9 @@ export const listLibraryFolders = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedFolders = responses.reduce((combined, response) => {
-        return combined.concat(response.library.browse.folders.items);
-      }, []);
+      const combinedFolders = responses.flatMap(
+        (response) => response.library.browse.folders.items,
+      );
       const formattedResponse: {
         data: ListLibraryFoldersResponse;
       } = {

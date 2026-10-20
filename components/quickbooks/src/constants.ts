@@ -52,6 +52,10 @@ export const BATCH_REQUEST_BODY_EXAMPLE = [
   },
 ];
 export const MAX_RESULTS = 1000;
+export const QUICKBOOKS_BASE_URLS = {
+  sandbox: "https://sandbox-quickbooks.api.intuit.com/",
+  production: "https://quickbooks.api.intuit.com/",
+};
 export const POLL_RESOURCE_CONFIG: Record<
   string,
   {
@@ -184,3 +188,5 @@ export const LEGACY_EXAMPLE_PAYLOAD: LegacyWebhook = {
     },
   ],
 };
+export const DEFAULT_BATCH_SIZE = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

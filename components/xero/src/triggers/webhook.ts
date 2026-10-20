@@ -1,10 +1,10 @@
 import { type HttpResponse, trigger, util } from "@prismatic-io/spectral";
-import crypto, { type BinaryLike } from "crypto";
+import crypto from "crypto";
 import { webhookInputs } from "../inputs";
 import { webhookExamplePayload } from "../examplePayloads";
 const validateSignature = (
   signature: string,
-  payload: BinaryLike,
+  payload: string | Buffer,
   webhookKey: unknown,
 ): boolean => {
   const hash = crypto
@@ -30,7 +30,7 @@ export const webhook = trigger({
       });
     }
     const incomingSignature = payload.headers["x-xero-signature"];
-    const incomingPayload = payload.rawBody.data as BinaryLike;
+    const incomingPayload = payload.rawBody.data as string | Buffer;
     const response: HttpResponse = {
       statusCode: 200,
       contentType: "text/plain; charset=utf-8",

@@ -2,7 +2,9 @@ import { trigger, util } from "@prismatic-io/spectral";
 import crypto from "crypto";
 import { bamboohrTriggerExamplePayload } from "../examplePayloads";
 const validateHmac = (
-  rawBody,
+  rawBody: {
+    data: unknown;
+  },
   timestamp: string,
   signature: string,
   secrets: string[],

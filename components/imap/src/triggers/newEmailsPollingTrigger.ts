@@ -1,20 +1,29 @@
 import { pollingTrigger, util } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { newEmailsPollingTriggerInputs } from "../inputs/triggers";
-import { simpleParser } from "mailparser";
 import type { FetchMessageObject } from "imapflow";
+import { simpleParser } from "mailparser";
 import type { ImapPollingState, ImapStatusResult } from "../types";
+import type { ImapRecordChange } from "../util/polling";
+import { resolveImapRecordChanges } from "../util/polling";
 export const newEmailsPollingTrigger = pollingTrigger({
   display: {
     label: "New Emails",
     description:
-      "Fetches new emails from a specified mailbox on a recurring schedule.",
+      "Retrieves existing and new emails for a specified IMAP mailbox. Load history once, check for changes on a schedule, or both.",
   },
   inputs: newEmailsPollingTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): ImapRecordChange[] =>
+      resolveImapRecordChanges(payload.body.data as unknown[]),
+  },
   perform: async (
     context,
     payload,
-    { connection, fetchContent, mailbox, markAsRead },
+    { connection, fetchContent, mailbox, markAsRead, lookBackDate },
   ) => {
     const now = new Date().toISOString();
     const client = createClient(connection, context.debug.enabled);
@@ -35,7 +44,9 @@ export const newEmailsPollingTrigger = pollingTrigger({
           ? util.types.toString(status.uidValidity)
           : util.types.toString(status.uidValidity ?? "");
       const state = context.polling.getState() as ImapPollingState;
-      if (!state.lastUidNext || state.uidValidity !== currentUidValidity) {
+      const isFirstPoll =
+        !state.lastUidNext || state.uidValidity !== currentUidValidity;
+      if (isFirstPoll && !lookBackDate) {
         context.polling.setState({
           lastUidNext: currentUidNext,
           uidValidity: currentUidValidity,
@@ -46,7 +57,10 @@ export const newEmailsPollingTrigger = pollingTrigger({
           polledNoChanges: true,
         };
       }
-      if (currentUidNext <= state.lastUidNext) {
+      if (
+        state.lastUidNext !== undefined &&
+        currentUidNext <= state.lastUidNext
+      ) {
         context.polling.setState({
           ...state,
           lastPolledAt: now,
@@ -59,7 +73,28 @@ export const newEmailsPollingTrigger = pollingTrigger({
       await client.getMailboxLock(mailboxName);
       const shouldFetchContent = fetchContent;
       const shouldMarkAsRead = markAsRead;
-      const uidRange = `${state.lastUidNext}:*`;
+      let uidRange: string;
+      if (isFirstPoll && lookBackDate) {
+        const searchDate = new Date(lookBackDate);
+        const uids = (await client.search(
+          { since: searchDate },
+          { uid: true },
+        )) as number[];
+        if (!uids || uids.length === 0) {
+          context.polling.setState({
+            lastUidNext: currentUidNext,
+            uidValidity: currentUidValidity,
+            lastPolledAt: now,
+          });
+          return {
+            payload: { ...payload, body: { data: [] } },
+            polledNoChanges: true,
+          };
+        }
+        uidRange = `${Math.min(...uids)}:*`;
+      } else {
+        uidRange = `${state.lastUidNext}:*`;
+      }
       const rawMessages: FetchMessageObject[] = [];
       for await (const message of client.fetch(
         uidRange,
@@ -83,7 +118,7 @@ export const newEmailsPollingTrigger = pollingTrigger({
           const email: Record<string, unknown> = {
             uid: message.uid,
             envelope: message.envelope,
-            flags: [...message.flags],
+            flags: [...(message.flags ?? [])],
             internalDate: message.internalDate,
             size: message.size,
           };
@@ -92,7 +127,15 @@ export const newEmailsPollingTrigger = pollingTrigger({
             email.text = parsed.text;
             email.html = parsed.html;
             email.attachments = parsed.attachments.map(
-              ({ filename, size, contentType }) => ({
+              ({
+                filename,
+                size,
+                contentType,
+              }: {
+                filename: string;
+                size: number;
+                contentType: string;
+              }) => ({
                 filename,
                 size,
                 contentType,

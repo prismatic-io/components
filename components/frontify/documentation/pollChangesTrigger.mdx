@@ -1,46 +1,67 @@
-This trigger polls a [Frontify](https://www.frontify.com/) library on a configured schedule and emits assets that were created or modified since the previous run. It is a convenient alternative to webhooks when a scheduled pull is preferred over an event push.
+This trigger retrieves existing and ongoing Assets from Frontify. Load history once, check for changes on a schedule, or both.
 
 #### How It Works
 
-Frontify's GraphQL asset query does not support filtering by date, so on each scheduled run the trigger fetches the selected library's assets and classifies them against the previous poll time:
+On each scheduled recurrence, the trigger fetches all assets from the selected Frontify library via the GraphQL API. Each asset is classified by comparing its `createdAt` timestamp to the last poll time: assets created after the cutoff land in the `created` array, and all other modified assets land in the `updated` array. The trigger then stores the current time as the cursor for the next recurrence.
 
-- **Created**: assets whose `createdAt` is after the previous poll.
-- **Updated**: assets whose `modifiedAt` is after the previous poll (and that are not newly created).
+The Frontify GraphQL API does not expose a server-side date filter for library assets, so all assets are fetched and timestamps are compared client-side.
 
-The current run time is stored as the cursor for the next run.
+**Initial sync**
 
-- **First run**: the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical assets on deploy.
-- **Subsequent runs**: only assets created or modified since the last run are returned.
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every asset modified on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
 
-The **Show New Records** and **Show Updated Records** inputs (both enabled by default) control whether created assets, updated assets, or both are emitted.
+The window has no fixed upper bound, so an asset modified mid-drain is swept into the sync. The trigger fetches the full window in a single recurrence regardless of whether batching is enabled. Once all matching assets have been emitted, the trigger stores the current time as its position and the first incremental recurrence resumes from exactly there. Without batching, all changes are returned in one payload. With batching, the resolver dispatches each record (or batch of records) as a separate execution within the same recurrence. Nothing in the payload marks the handoff.
+
+**Library ID** still applies throughout. The trigger has no page-size input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Frontify.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data.created` and `results.body.data.updated`. With batching on, those fields do not exist. Each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
-The trigger returns the matching assets grouped under `created` and `updated`. Fields shown are representative. The full response object includes additional properties.
+The trigger returns an object with two arrays: `created` for new assets and `updated` for modified assets. Fields shown are representative. The full response object includes additional properties.
 
 <details>
-<summary>Example Payload</summary>
+<summary>Example Response</summary>
 
 ```json
 {
-  "data": {
-    "created": [
-      {
-        "id": "eyJpZGV...",
-        "title": "example_title_1",
-        "status": "FINISHED",
-        "createdAt": "2024-09-05T19:49:25.000+00:00",
-        "modifiedAt": "2024-09-05T19:49:27.000+00:00"
-      }
-    ],
-    "updated": []
-  }
+  "created": [
+    {
+      "id": "eyJpZGV...",
+      "title": "example_title_1",
+      "status": "FINISHED",
+      "createdAt": "2024-09-05T19:49:25.000+00:00",
+      "modifiedAt": "2024-09-05T19:49:27.000+00:00"
+    }
+  ],
+  "updated": []
 }
 ```
 
 </details>
 
-#### Notes
+<details>
+<summary>Batched Item Shape</summary>
 
-- The trigger watches a single library (set by **Library ID**). Add one flow per library to monitor.
-- Because the GraphQL API has no server-side date filter, each run fetches the library's assets and filters them in memory; for very large libraries this lists all assets each run.
+When batching is enabled, each execution receives a single item:
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "eyJpZGV...",
+    "title": "example_title_1",
+    "status": "FINISHED",
+    "createdAt": "2024-09-05T19:49:25.000+00:00",
+    "modifiedAt": "2024-09-05T19:49:27.000+00:00"
+  }
+}
+```
+
+</details>

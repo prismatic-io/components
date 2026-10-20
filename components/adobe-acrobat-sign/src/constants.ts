@@ -135,3 +135,5 @@ export const STATUS_TYPES = [
   "ACCEPT_BEFORE_NOTARIZATION",
   "OTHER",
 ] as const;
+export const DEFAULT_BATCH_SIZE = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

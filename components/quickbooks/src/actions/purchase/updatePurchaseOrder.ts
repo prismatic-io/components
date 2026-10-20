@@ -40,6 +40,7 @@ export const updatePurchaseOrder = action({
     const client = createHttpClient(params.connection, context.debug.enabled);
     const base =
       typeof params.baseRecord === "object" &&
+      params.baseRecord !== null &&
       Object.keys(params.baseRecord).length > 0
         ? params.baseRecord
         : {};

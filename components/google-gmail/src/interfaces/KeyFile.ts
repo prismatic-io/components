@@ -2,7 +2,7 @@ export interface GoogleKeyFile {
   type?: string;
   project_id?: string;
   private_key_id?: string;
-  private_key?: string;
+  private_key: string;
   client_email?: string;
   auth_uri?: string;
   token_uri?: string;

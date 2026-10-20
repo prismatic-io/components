@@ -19,10 +19,9 @@ export const pushNotificationWebhook = trigger({
         message,
       };
     } catch (error) {
-      throw new Error(
-        "Error parsing data. Was this message sent from Gmail?",
-        error,
-      );
+      throw new Error("Error parsing data. Was this message sent from Gmail?", {
+        cause: error,
+      });
     }
     return Promise.resolve({
       payload,

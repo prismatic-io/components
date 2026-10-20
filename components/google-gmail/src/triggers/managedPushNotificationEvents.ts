@@ -50,7 +50,9 @@ export const managedPushNotificationEvents = trigger({
       context.logger.info(
         `Watch created successfully for user ${userId} and topic ${topicName}`,
       );
-      const expirationDate = parseWatchExpiration(watchResponse.expiration);
+      const expirationDate = parseWatchExpiration(
+        watchResponse.expiration ?? "",
+      );
       const hoursExtended = Math.round(
         (expirationDate.getTime() - Date.now()) / (1000 * 60 * 60),
       );
@@ -96,11 +98,11 @@ export const managedPushNotificationEvents = trigger({
       true,
     );
     const messages = [];
-    if (data.history.length > 0) {
-      for (const history of data.history) {
+    if ((data.history ?? []).length > 0) {
+      for (const history of data.history ?? []) {
         const detailedMessages = await getMessagesDetails(
           client,
-          history.messages,
+          history.messages ?? [],
           userId,
           context.debug.enabled,
           context.logger,

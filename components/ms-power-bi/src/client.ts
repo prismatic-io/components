@@ -10,7 +10,7 @@ export const createClient = (
   return createHttpClient({
     baseUrl: "https://api.powerbi.com/v1.0/myorg/",
     headers: {
-      Authorization: `Bearer ${connection.token.access_token}`,
+      Authorization: `Bearer ${connection.token?.access_token}`,
       "Content-Type": "application/json",
     },
     debug,

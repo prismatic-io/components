@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-10-20
+
+Updated the **New and Updated Agreements** polling trigger with batching and initial sync support:
+
+- Added opt-in batching to the **New and Updated Agreements** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of records. The initial sync begins on the first recurrence and backfills every record modified on or after the specified date, seeding each once and ignoring the visibility filters; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-08-05
 
 Removed the deprecated `webhookNotificationApplicableUsers` field from the webhook trigger's example payload, aligning the documentation with Adobe Acrobat Sign's July 2025 webhook payload change

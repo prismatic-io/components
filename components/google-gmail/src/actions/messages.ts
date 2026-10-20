@@ -95,16 +95,18 @@ const getMessageById = action({
       id: params.messageId,
       format: "raw",
     });
-    const parsed = await simpleParser(Buffer.from(raw, "base64"), {
+    const parsed = await simpleParser(Buffer.from(raw ?? "", "base64"), {
       writableObjectMode: true,
       autoDestroy: true,
     });
     const message = {
       headers: Object.fromEntries(parsed.headers),
-      attachments: parsed.attachments.map((attachment) => ({
-        contentType: attachment.contentType,
-        data: attachment.content,
-      })),
+      attachments: parsed.attachments.map(
+        (attachment: { contentType: string; content: Buffer }) => ({
+          contentType: attachment.contentType,
+          data: attachment.content,
+        }),
+      ),
       text: parsed.text,
       html: parsed.html,
     };

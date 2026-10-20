@@ -17,7 +17,7 @@ export const listWebhooks = action({
     if (params.showOnlyInstanceWebhooks) {
       const instanceWebhookUrls = Object.values(context.webhookUrls);
       return {
-        data: (webhooks || []).filter((webhook) =>
+        data: (webhooks || []).filter((webhook: { url: string }) =>
           instanceWebhookUrls.includes(webhook.url),
         ),
       };

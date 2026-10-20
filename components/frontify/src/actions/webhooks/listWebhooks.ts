@@ -70,9 +70,9 @@ export const listWebhooks = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedWebhooks = responses.reduce((combined, response) => {
-        return combined.concat(response.webhooks.items);
-      }, []);
+      const combinedWebhooks = responses.flatMap(
+        (response) => response.webhooks.items,
+      );
       const formattedResponse: {
         data: ListWebhooksResponse;
       } = {

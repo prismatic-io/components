@@ -10,3 +10,11 @@ export interface PollResourceConfig {
   idField: string;
   paginated: boolean;
 }
+export interface XeroChangesObject {
+  created: unknown[];
+  updated: unknown[];
+}
+export interface XeroRecordChange {
+  changeType: "created" | "updated";
+  record: unknown;
+}

@@ -22,7 +22,7 @@ export const rawRequest = action({
     },
   },
   perform: async (context, { connection, ...rawRequestInputs }) => {
-    const accessToken = connection.token.access_token;
+    const accessToken = connection.token?.access_token;
     const realmId = getRealmId(connection);
     const rootUrl = getBaseURL(connection);
     const { url } = rawRequestInputs;

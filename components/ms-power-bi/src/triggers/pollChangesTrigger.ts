@@ -1,25 +1,42 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connection } from "../inputs";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
+import {
+  connection,
+  lookBackDate,
+  pollResourceType,
+  showNewRecords,
+} from "../inputs";
+import type {
+  PollingState,
+  PowerBIChangesObject,
+  PowerBIRecord,
+  PowerBIRecordChange,
+} from "../types";
+import { resolvePollingRecordChanges } from "../util/polling";
 import { paginateResults } from "../utils";
-import { pollResourceType, showNewRecords } from "../inputs";
-import { POLL_RESOURCE_CONFIG } from "../constants";
-import type { PollingState, PowerBIRecord } from "../types";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Records",
     description:
-      "Checks for new records in a selected Power BI resource type on a configured schedule.",
+      "Retrieves existing and ongoing records for a selected Power BI resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: {
     connection,
     resourceType: pollResourceType,
     showNewRecords,
+    lookBackDate,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PowerBIRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PowerBIChangesObject),
   },
   perform: async (
     context,
     payload,
-    { connection, resourceType, showNewRecords },
+    { connection, resourceType, showNewRecords, lookBackDate },
   ) => {
     const now = new Date().toISOString();
     const lastState = context.polling.getState() as PollingState;
@@ -34,7 +51,13 @@ export const pollChangesTrigger = pollingTrigger({
       true,
     );
     const hasTimestamps = config.createdAtField !== null;
-    const lastPolledAt = lastState?.lastPolledAt ?? now;
+    const lastPolledAt =
+      lastState?.lastPolledAt ??
+      (hasTimestamps && lookBackDate
+        ? new Date(lookBackDate).toISOString()
+        : now);
+    const isBackfill =
+      hasTimestamps && !lastState?.lastPolledAt && Boolean(lookBackDate);
     let created: PowerBIRecord[];
     if (hasTimestamps) {
       const lastPolledDate = new Date(lastPolledAt);
@@ -60,7 +83,7 @@ export const pollChangesTrigger = pollingTrigger({
       const knownSet = new Set(lastState.knownIds);
       created = records.filter((r) => !knownSet.has(r.id));
     }
-    const filteredCreated = showNewRecords ? created : [];
+    const filteredCreated = isBackfill || showNewRecords ? created : [];
     const newState: PollingState = { lastPolledAt: now };
     if (!hasTimestamps) {
       newState.knownIds = records.map((r) => r.id);

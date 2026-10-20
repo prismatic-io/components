@@ -1,5 +1,6 @@
 import { util, input } from "@prismatic-io/spectral";
 import { pollResourceModel } from "./constants";
+import { lookBackDateClean } from "./util/polling";
 export const connection = input({
   label: "Connection",
   type: "connection",
@@ -145,4 +146,14 @@ export const showNewRecords = input({
   default: "true",
   comments: "Include newly created records in trigger results.",
   clean: util.types.toBool,
+});
+export const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record created on or after this date once, for resource types that record a creation date, ignoring the visibility filters.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
 });

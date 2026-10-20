@@ -1,8 +1,8 @@
-import { dataSource, Element } from "@prismatic-io/spectral";
+import { dataSource, type Element } from "@prismatic-io/spectral";
 import { connection } from "../inputs";
 import { createClient } from "../client";
 import { TResponse } from "../interfaces/TResponse";
-import { Group } from "../interfaces/Group";
+import type { Group } from "../interfaces/Group";
 import { paginateResults } from "../utils";
 export const selectWorkspace = dataSource({
   display: {

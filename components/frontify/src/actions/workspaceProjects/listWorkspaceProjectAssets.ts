@@ -169,9 +169,9 @@ export const listWorkspaceProjectAssets = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedAssets = responses.reduce((combined, response) => {
-        return combined.concat(response.workspaceProject.assets.items);
-      }, []);
+      const combinedAssets = responses.flatMap(
+        (response) => response.workspaceProject.assets.items,
+      );
       const formattedResponse: {
         data: ListWorkspaceProjectAssetsResponse;
       } = {

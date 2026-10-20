@@ -9,12 +9,12 @@ export const createClient = async (connection: Connection): Promise<Gmail> => {
   let client: OAuth2Client | JWT;
   switch (connection.key) {
     case gmailOauth.key: {
-      const { access_token: token } = connection.token;
+      const token = util.types.toString(connection.token?.access_token);
       if (!token) {
         throw new ConnectionError(connection, "Did not receive a valid token.");
       }
       const oauth2Client = new auth.OAuth2();
-      oauth2Client.setCredentials({ access_token: `${token}` });
+      oauth2Client.setCredentials({ access_token: token });
       client = oauth2Client;
       break;
     }
@@ -97,7 +97,7 @@ export const createPubSubClient = async (connection: Connection) => {
 export const getToken = async (connection: Connection) => {
   switch (connection.key) {
     case gmailOauth.key: {
-      const { access_token: token } = connection.token;
+      const token = util.types.toString(connection.token?.access_token);
       if (!token) {
         throw new ConnectionError(connection, "Did not receive a valid token.");
       }

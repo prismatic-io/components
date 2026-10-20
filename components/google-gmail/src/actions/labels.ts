@@ -39,7 +39,7 @@ const getLabelByName = action({
     const { data } = await client.users.labels.list({
       userId: params.userId,
     });
-    const labels = data.labels.filter(
+    const labels = (data.labels ?? []).filter(
       (label) => label.name === params.labelName,
     );
     if (labels.length > 0) {

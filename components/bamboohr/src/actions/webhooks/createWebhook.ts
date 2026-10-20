@@ -16,7 +16,7 @@ export const createWebhook = action({
         data: { webhooks: allWebhooks },
       } = await client.get("/v1/webhooks");
       const existingWebhooks = allWebhooks.filter(
-        (webhook) => params.url === webhook.url,
+        (webhook: { url: string; id: string }) => params.url === webhook.url,
       );
       if (existingWebhooks.length > 0) {
         context.logger.info(
@@ -34,32 +34,38 @@ export const createWebhook = action({
       data: { fields: clientFields },
     } = await client.get("/v1/webhooks/monitor_fields");
     const aliasClientFields = clientFields
-      .map((field) => field.alias)
-      .filter((data) => data);
+      .map((field: { alias: string }) => field.alias)
+      .filter((data: string) => data);
     const postFields = Object.fromEntries(
       params.postFields
-        .map((field) => {
-          if (aliasClientFields.find((clientField) => clientField === field)) {
-            return [field, field];
+        .map((field: unknown) => {
+          if (
+            aliasClientFields.find(
+              (clientField: string) => clientField === field,
+            )
+          ) {
+            return [field, field] as [string, string];
           }
           context.logger.debug(
             `${field} will not be monitored as it is not enabled in this BambooHR account`,
           );
           return null;
         })
-        .filter((field) => field),
+        .filter((field): field is [string, string] => field !== null),
     );
     const monitorAvailableFields = params.monitorFields
-      .map((field) => {
-        if (aliasClientFields.find((clientField) => clientField === field)) {
-          return field;
+      .map((field: unknown) => {
+        if (
+          aliasClientFields.find((clientField: string) => clientField === field)
+        ) {
+          return field as string;
         }
         context.logger.debug(
           `${field} will not be included in webhook payloads as it is not enabled in this BambooHR account`,
         );
         return null;
       })
-      .filter((field) => field);
+      .filter((field): field is string => field !== null);
     const { data } = await client.post("/v1/webhooks", {
       name: params.name,
       monitorFields: monitorAvailableFields,

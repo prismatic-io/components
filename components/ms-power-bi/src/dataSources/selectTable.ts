@@ -1,8 +1,8 @@
-import { dataSource, Element, util } from "@prismatic-io/spectral";
+import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { connection, datasetId } from "../inputs";
 import { createClient } from "../client";
 import { TResponse } from "../interfaces/TResponse";
-import { Table } from "../interfaces/Table";
+import type { Table } from "../interfaces/Table";
 import { paginateResults } from "../utils";
 export const selectTable = dataSource({
   display: {

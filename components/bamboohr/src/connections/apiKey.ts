@@ -5,7 +5,6 @@ export const apiKey = connection({
     label: "API Key",
     description: "Authenticate requests using an API key.",
   },
-  comments: "Authenticate with BambooHR using an API key",
   inputs: {
     apiKey: {
       label: "API Key",

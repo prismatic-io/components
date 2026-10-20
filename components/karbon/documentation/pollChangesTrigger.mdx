@@ -1,46 +1,73 @@
-This trigger polls [Karbon](https://karbonhq.com/) on a configured schedule and emits records that were modified since the previous run. It is a convenient alternative to webhooks when a scheduled pull is preferred over an event push.
-
-It supports the resource types whose list responses expose a modification timestamp:
-
-- **Contacts**: compared on `LastModifiedDateTime`.
-- **Invoices**: compared on `UpdatedAt`.
-
-(Work Items are intentionally not supported: their list response exposes no modification timestamp, and Karbon offers no server-side modified-date filter for them.)
+This trigger retrieves existing and ongoing updated records from Karbon. Load history once, check for changes on a schedule, or both.
 
 #### How It Works
 
-Karbon's list endpoints do not support filtering by a modification date, so on each scheduled run the trigger fetches all records of the selected resource and keeps only those whose timestamp is after the previous poll time. The current run time is stored as the cursor for the next run.
+On each scheduled recurrence, the trigger fetches all records of the selected resource type from the Karbon API and filters them client-side for records whose modification timestamp is after the last poll time. All matching records land in the `updated` array — the Karbon API does not expose a creation timestamp, so no created/updated split is performed.
 
-- **First run**: the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical records on deploy.
-- **Subsequent runs**: only records modified since the last run are returned.
+The Karbon REST API does not expose a server-side modification-date filter on list endpoints, so all records are fetched and timestamps are compared in the trigger after retrieval.
 
-Karbon exposes only a modification timestamp and no creation timestamp. A newly created record carries a recent modification timestamp just like a record that was edited, so newly created and edited records cannot be distinguished. Both are surfaced together under `updated`.
+**Initial sync**
+
+An initial sync seeds a complete starting state rather than a change feed. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record modified on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync. The trigger fetches the full window in a single recurrence regardless of whether batching is enabled. Once all matching records have been emitted, the trigger stores the current time as its position and the first incremental recurrence resumes from exactly there. Without batching, all changes are returned in one payload. With batching, the resolver dispatches each record (or batch of records) as a separate execution within the same recurrence. Nothing in the payload marks the handoff.
+
+**Resource Type** still applies throughout. The trigger has no input that narrows the change feed, so the sync ignores no inputs.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Karbon.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data.updated`. With batching on, that field does not exist. Each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
-The trigger returns the matching records under `data.updated`. Fields shown are representative. The full response object includes additional properties.
+The trigger returns an object with an `updated` array containing records modified since the last poll. Fields shown are representative. The full response object includes additional properties.
 
 <details>
-<summary>Example Payload</summary>
+<summary>Example Response</summary>
 
 ```json
 {
-  "data": {
-    "updated": [
-      {
-        "ContactKey": "29YXnqWcqCf3",
-        "FullName": "William John Connor",
-        "EmailAddress": "william.connor@samplecompany.com",
-        "LastModifiedDateTime": "2021-12-29T07:01:53Z"
-      }
-    ]
-  }
+  "updated": [
+    {
+      "@odata.type": "#KarbonService.ContactSummaryDTO",
+      "ContactKey": "29YXnqWcqCf3",
+      "FullName": "William John Connor",
+      "PreferredName": "Bill",
+      "Salutation": "Mr",
+      "ClientOwner": "rodney.muller@example.com",
+      "ClientManager": "jessica.tse@example.com",
+      "Address": "42 Galaxy Way, London",
+      "EmailAddress": "william.connor@example.com",
+      "PhoneNumber": "0987888686",
+      "RoleOrTitle": "COO",
+      "UserDefinedIdentifier": "73YEnqFcqCf3",
+      "LastModifiedDateTime": "2021-12-29T07:01:53Z"
+    }
+  ]
 }
 ```
 
 </details>
 
-#### Notes
+<details>
+<summary>Batched Item Shape</summary>
 
-- Detection is based on the resource's modification timestamp. Because the list responses do not expose a creation timestamp, newly created and edited records cannot be separated, and all modified records arrive together under `data.updated`.
-- Because there is no server-side date filter, each run lists all records of the resource and filters them in memory.
+When batching is enabled, each execution receives a single item:
+
+```json
+{
+  "changeType": "updated",
+  "record": {
+    "@odata.type": "#KarbonService.ContactSummaryDTO",
+    "ContactKey": "29YXnqWcqCf3",
+    "FullName": "William John Connor",
+    "LastModifiedDateTime": "2021-12-29T07:01:53Z"
+  }
+}
+```
+
+</details>

@@ -46,9 +46,9 @@ export const listUsers = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedUsers = responses.reduce((combined, response) => {
-        return combined.concat(response.account.users.items);
-      }, []);
+      const combinedUsers = responses.flatMap(
+        (response) => response.account.users.items,
+      );
       const formattedResponse: {
         data: ListUsersResponse;
       } = {

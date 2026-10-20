@@ -1,0 +1,85 @@
+This trigger retrieves existing and ongoing records for a selected QuickBooks entity type. Load history once, check for changes on a schedule, or both.
+
+#### How It Works
+
+On each scheduled recurrence, the trigger queries the QuickBooks Online Query API for entity records whose `Metadata.LastUpdatedTime` is after the last poll time. Each returned record is classified as **created** when its `Metadata.CreateTime` is after the last poll time, and otherwise as **updated**.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record modified on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The sync has no end date, so it can take several recurrences to finish: with batching off, each recurrence reads up to 100 pages and the next continues where it stopped; with batching on, the platform runs one page per round until the sync completes. When it finishes, the trigger saves the time the sync started as its position, so the next recurrence delivers anything modified during the sync, including records the sync already sent. Nothing in the payload marks the handoff.
+
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to QuickBooks.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data.created` and `results.body.data.updated`. With batching on, those fields do not exist. Each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
+
+#### Returned Data
+
+The trigger returns an object with two arrays: `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "created": [
+    {
+      "Id": "61",
+      "SyncToken": "0",
+      "DisplayName": "Acme Corporation",
+      "CompanyName": "Acme Corporation",
+      "PrimaryEmailAddr": { "Address": "billing@acme.example.com" },
+      "Active": true,
+      "Balance": 0,
+      "MetaData": {
+        "CreateTime": "2026-05-25T14:30:00-07:00",
+        "LastUpdatedTime": "2026-05-25T14:30:00-07:00"
+      }
+    }
+  ],
+  "updated": [
+    {
+      "Id": "55",
+      "SyncToken": "3",
+      "DisplayName": "Fabrikam, Inc.",
+      "CompanyName": "Fabrikam, Inc.",
+      "Active": true,
+      "Balance": 1250.50,
+      "MetaData": {
+        "CreateTime": "2026-01-10T09:00:00-07:00",
+        "LastUpdatedTime": "2026-05-25T15:45:00-07:00"
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+<summary>Batched Item Shape</summary>
+
+When batching is enabled, each execution receives a single item:
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "Id": "61",
+    "DisplayName": "Acme Corporation",
+    "MetaData": {
+      "CreateTime": "2026-05-25T14:30:00-07:00",
+      "LastUpdatedTime": "2026-05-25T14:30:00-07:00"
+    }
+  }
+}
+```
+
+</details>

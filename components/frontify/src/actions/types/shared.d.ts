@@ -9,7 +9,7 @@ interface User {
   id: string;
   email: string;
   name: string;
-  avatar?: string;
+  avatar?: string | null;
 }
 export interface CustomMetadataProperty {
   id: string;
@@ -47,7 +47,7 @@ export interface AssetResponse {
   };
   modifiedAt: string;
   title: string;
-  description: string;
+  description: string | null;
   attachments: {
     id: string;
     creator: {
@@ -60,17 +60,17 @@ export interface AssetResponse {
       id: string;
       name: string;
       email: string;
-    };
-    modifiedAt: string;
+    } | null;
+    modifiedAt: string | null;
     name: string;
     filename: string;
     type: string;
-    externalId: string;
+    externalId: string | null;
     extension: string;
     size: number;
     downloadUrl: string;
   }[];
-  externalId: string;
+  externalId: string | null;
   tags: {
     value: string;
     source: string;
@@ -79,7 +79,7 @@ export interface AssetResponse {
     status: string;
     notice: string;
   };
-  expiresAt: string;
+  expiresAt: string | null;
   licenses: {
     id: string;
     title: string;
@@ -103,15 +103,15 @@ export interface AssetResponse {
     library: {
       id: string;
       name: string;
-    };
+    } | null;
     workspaceProject: {
       id: string;
       name: string;
-    };
+    } | null;
     folder: {
       id: string;
       name: string;
-    };
+    } | null;
   };
 }
 export interface CommentResponse {
@@ -126,8 +126,8 @@ export interface CommentResponse {
     id: string;
     email: string;
     name: string;
-  };
-  modifiedAt: string;
+  } | null;
+  modifiedAt: string | null;
   content: string;
   mentionedUsers: {
     id: string;
@@ -176,7 +176,7 @@ export interface CommentResponse {
       start: number;
       end: number;
     };
-  };
+  } | null;
 }
 export interface BrowseResponse {
   folders: {
@@ -197,8 +197,8 @@ export interface BrowseResponse {
         id: string;
         name: string;
         email: string;
-      };
-      modifiedAt: string;
+      } | null;
+      modifiedAt: string | null;
       breadcrumbs: {
         id: string;
         name: string;

@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-10-20
+
+Updated the **New and Updated Records** polling trigger with batching and initial sync support:
+
+- Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added initial sync to the **New and Updated Records** polling trigger via the **Look-back Date** input; the backfill begins on the first recurrence, seeds each record modified on or after the chosen date once, and ignores the trigger's filters
+
 ### 2026-05-28
 
 Added **New and Updated Records** polling trigger that monitors QuickBooks Online entities (Customers, Vendors, Items, Invoices, Bills, Payments, Purchase Orders, Estimates, Journal Entries, Accounts) for changes and partitions results into `created` and `updated` buckets

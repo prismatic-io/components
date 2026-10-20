@@ -167,9 +167,9 @@ export const listLibraryAssets = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedAssets = responses.reduce((combined, response) => {
-        return combined.concat(response.library.assets.items);
-      }, []);
+      const combinedAssets = responses.flatMap(
+        (response) => response.library.assets.items,
+      );
       const formattedResponse: {
         data: ListLibraryAssetsResponse;
       } = {

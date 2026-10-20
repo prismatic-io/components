@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-10-20
+
+Added opt-in batching and an initial sync to the **New Emails** polling trigger:
+
+- Added opt-in batching to the **New Emails** trigger, dispatching each new email individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input to the **New Emails** trigger for performing an initial sync of emails. The initial sync begins on the first recurrence and backfills every email received on or after the specified date, seeding each once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-04-30
 
 Updated spectral version

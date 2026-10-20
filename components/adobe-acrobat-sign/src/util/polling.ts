@@ -1,5 +1,7 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { util } from "@prismatic-io/spectral";
 import {
+  LOOK_BACK_DATE_PATTERN,
   MAX_POLL_PAGES,
   POLL_OWNERSHIP_SCOPE,
   POLL_PAGE_SIZE,
@@ -10,15 +12,26 @@ import type {
   PartitionedRecords,
   SearchResponse,
 } from "../types";
+export const MAX_BATCHED_POLL_PAGES = 1;
 export async function fetchAgreementsModifiedSince(
   client: HttpClient,
   lastPolledAt: string,
-): Promise<FetchAgreementsResult> {
+  options?: {
+    maxPages?: number;
+    resumeStartIndex?: number;
+  },
+): Promise<
+  FetchAgreementsResult & {
+    nextStartIndex: number;
+  }
+> {
   const records: AdobeSignAgreementRecord[] = [];
-  let startIndex = 0;
+  const maxPages = options?.maxPages ?? MAX_POLL_PAGES;
+  let startIndex = options?.resumeStartIndex ?? 0;
   let pages = 0;
   let truncated = false;
-  while (pages < MAX_POLL_PAGES) {
+  let exhausted = false;
+  while (pages < maxPages) {
     if (startIndex + POLL_PAGE_SIZE >= 10000) {
       truncated = true;
       break;
@@ -47,11 +60,12 @@ export async function fetchAgreementsModifiedSince(
     records.push(...pageItems);
     pages += 1;
     if (pageItems.length < POLL_PAGE_SIZE) {
+      exhausted = true;
       break;
     }
     startIndex += POLL_PAGE_SIZE;
   }
-  if (pages >= MAX_POLL_PAGES && !truncated) {
+  if (!exhausted && !truncated) {
     truncated = true;
   }
   const latestModifiedDate = records.reduce<string | undefined>(
@@ -63,7 +77,7 @@ export async function fetchAgreementsModifiedSince(
     },
     undefined,
   );
-  return { records, truncated, latestModifiedDate };
+  return { records, truncated, latestModifiedDate, nextStartIndex: startIndex };
 }
 export function partitionAgreementsByTimestamp(
   records: AdobeSignAgreementRecord[],
@@ -91,3 +105,47 @@ export function partitionAgreementsByTimestamp(
   }
   return { created, updated };
 }
+export interface AdobeSignChangesObject {
+  created: unknown[];
+  updated: unknown[];
+}
+export interface AdobeSignRecordChange {
+  changeType: "created" | "updated";
+  record: unknown;
+}
+export const lookBackDateClean = (value: unknown): string => {
+  const str = util.types.toString(value).trim();
+  if (!str) return "";
+  if (!LOOK_BACK_DATE_PATTERN.test(str)) {
+    throw new Error("Look-back Date must be in YYYY-MM-DD format.");
+  }
+  const parts = str.split("-");
+  const year = util.types.toNumber(parts[0]);
+  const month = util.types.toNumber(parts[1]);
+  const day = util.types.toNumber(parts[2]);
+  const parsed = new Date(year, month - 1, day);
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
+  }
+  if (parsed > new Date()) {
+    throw new Error("Look-back Date cannot be a future date.");
+  }
+  return str;
+};
+export const resolvePollingRecordChanges = (
+  data: AdobeSignChangesObject | undefined,
+): AdobeSignRecordChange[] => {
+  if (!data) return [];
+  const changes: AdobeSignRecordChange[] = [];
+  for (const record of data.created ?? []) {
+    changes.push({ changeType: "created", record });
+  }
+  for (const record of data.updated ?? []) {
+    changes.push({ changeType: "updated", record });
+  }
+  return changes;
+};

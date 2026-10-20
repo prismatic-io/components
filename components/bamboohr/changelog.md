@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-10-20
+
+Added large data sync support to the **Changed Employees** trigger:
+
+- Added opt-in batching to the **Changed Employees** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input for performing an initial sync of employees. The initial sync begins on the first recurrence and backfills every employee changed on or after the specified date, seeding each once and ignoring the trigger's filters; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-07-27
 
 Enhanced multiple actions to return more informative API responses:

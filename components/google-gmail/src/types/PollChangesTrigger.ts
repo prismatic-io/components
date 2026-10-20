@@ -4,6 +4,7 @@ export type PollChangesTriggerParams = {
   userId: string;
   labelId: string | undefined;
   getMessageDetails: boolean;
+  lookBackDate: string;
 };
 export type PollChangesTriggerState = {
   historyId: string | undefined;

@@ -8,9 +8,11 @@ export const gmailOauth = oauth2Connection({
   display: {
     label: "OAuth 2.0",
     description: "OAuth2 Connection",
+    icons: {
+      oauth2ConnectionIconPath: "oauth-button.png",
+    },
   },
   oauth2Type: OAuth2Type.AuthorizationCode,
-  iconPath: "oauth-button.png",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

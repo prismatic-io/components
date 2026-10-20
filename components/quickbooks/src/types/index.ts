@@ -1,6 +1,15 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
+  resumePosition?: number;
+  isBackfilling?: boolean;
+  windowStart?: string;
+}
+export interface PollingCursor {
+  resumePosition: number;
+  isBackfilling?: boolean;
+  windowStart?: string;
+  [key: string]: unknown;
 }
 export interface QuickBooksRecord extends Record<string, unknown> {
   Id?: string;
@@ -10,8 +19,8 @@ export interface QuickBooksRecord extends Record<string, unknown> {
   };
 }
 export interface PaginatedDataParams {
-  startPosition: string;
-  maxResults: string;
+  startPosition?: string;
+  maxResults?: string;
 }
 export interface PaginatedDataRequest {
   client: HttpClient;

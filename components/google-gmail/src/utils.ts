@@ -71,8 +71,8 @@ export const listAllMessages = async (
   }
   do {
     const { data } = await client.users.messages.list(params);
-    nextPageToken = data.nextPageToken;
-    resultSizeEstimate = data.resultSizeEstimate;
+    nextPageToken = data.nextPageToken ?? undefined;
+    resultSizeEstimate = data.resultSizeEstimate ?? 0;
     if (data.messages && data.messages.length > 0) {
       allMessages.push(...data.messages);
     }
@@ -82,7 +82,7 @@ export const listAllMessages = async (
     allMessages = await Promise.all(
       allMessages.map(async (message) => {
         const { data } = await client.users.messages.get({
-          id: message.id,
+          id: message.id ?? undefined,
           format: "metadata",
           userId: params.userId,
         });
@@ -99,7 +99,7 @@ export const listAllMessages = async (
 export const cleanStringInput = (value: unknown) =>
   value ? util.types.toString(value) : undefined;
 export function getBase64FromUrl(url: string): string {
-  const lastPathSegmentMatch = url.match(/\/([^\/]+)$/);
+  const lastPathSegmentMatch = url.match(/\/([^/]+)$/);
   return lastPathSegmentMatch ? lastPathSegmentMatch[1] : "";
 }
 export const listAllHistory = async (
@@ -116,8 +116,8 @@ export const listAllHistory = async (
   }
   do {
     const { data } = await client.users.history.list(params);
-    nextPageToken = data.nextPageToken;
-    historyId = data.historyId;
+    nextPageToken = data.nextPageToken ?? undefined;
+    historyId = data.historyId ?? undefined;
     if (data.history && data.history.length > 0) {
       allHistory.push(...data.history);
     }

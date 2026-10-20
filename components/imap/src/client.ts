@@ -22,7 +22,7 @@ export const createClient = (connection: Connection, debug: boolean) => {
       minVersion: util.types.toString(connection.fields.minVersion),
       maxVersion: util.types.toString(connection.fields.maxVersion),
       ciphers: "ALL",
-    },
+    } as Record<string, unknown>,
     logger: debug ? console : false,
   });
   return client;

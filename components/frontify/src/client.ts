@@ -32,5 +32,6 @@ export const createClient = ({
     return client;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };

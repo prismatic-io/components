@@ -1,23 +1,40 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { getXeroClient } from "../client";
-import { pollChangesTriggerInputs } from "../inputs";
-import { POLL_RESOURCE_CONFIG } from "../constants";
-import type { PollingState, XeroRecord } from "../types";
-import { fetchAllRecords } from "../util";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
+import { pollChangesTriggerInputs } from "../inputs";
+import type {
+  PollingState,
+  XeroChangesObject,
+  XeroRecord,
+  XeroRecordChange,
+} from "../types";
+import { fetchAllRecords, resolvePollingRecordChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in Xero on a configured schedule.",
+      "Retrieves existing and ongoing records for a selected Xero resource type. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesTriggerInputs,
   examplePayload: pollChangesTriggerExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): XeroRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as XeroChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState | null;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
     const isFirstPoll = pollState?.knownIds === undefined;
+    const { lookBackDate } = params;
+    const isBackfill = isFirstPoll && Boolean(lookBackDate);
+    const modifiedSince = isFirstPoll
+      ? lookBackDate
+        ? new Date(lookBackDate).toISOString()
+        : now
+      : (pollState?.lastPolledAt ?? now);
     const resource = params.resourceType;
     const config = POLL_RESOURCE_CONFIG[resource];
     if (!config) {
@@ -32,9 +49,9 @@ export const pollChangesTrigger = pollingTrigger({
       config.endpoint,
       config.responseKey,
       config.paginated,
-      lastPolledAt,
+      modifiedSince,
     );
-    if (isFirstPoll) {
+    if (isFirstPoll && !lookBackDate) {
       const initialIds = records.map((r) => r[config.idField] as string);
       context.polling.setState({
         lastPolledAt: now,
@@ -48,7 +65,7 @@ export const pollChangesTrigger = pollingTrigger({
         polledNoChanges: true,
       };
     }
-    const knownIds = new Set(pollState.knownIds);
+    const knownIds = new Set(pollState?.knownIds ?? []);
     const created: XeroRecord[] = [];
     const updated: XeroRecord[] = [];
     for (const record of records) {
@@ -60,8 +77,9 @@ export const pollChangesTrigger = pollingTrigger({
         knownIds.add(id);
       }
     }
-    const filteredCreated = params.showNewRecords ? created : [];
-    const filteredUpdated = params.showUpdatedRecords ? updated : [];
+    const filteredCreated = isBackfill || params.showNewRecords ? created : [];
+    const filteredUpdated =
+      isBackfill || params.showUpdatedRecords ? updated : [];
     const totalChanges = filteredCreated.length + filteredUpdated.length;
     context.polling.setState({
       lastPolledAt: now,

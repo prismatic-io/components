@@ -1,48 +1,72 @@
-The [BambooHR](https://www.bamboohr.com/) **Changed Employees** polling trigger checks for new, updated, and deleted employees on a configured schedule. It calls the `GET /v1/employees/changed` endpoint and partitions the response into newly inserted employees and updated or deleted employees.
-
-For details on the underlying endpoint, refer to the [Get Last Changed Info reference](https://documentation.bamboohr.com/reference/get-changed-employee-ids).
+This trigger retrieves existing and ongoing employee changes from BambooHR. Load history once, check for changes on a schedule, or both.
 
 #### How It Works
 
-On each scheduled execution, this trigger:
+On each scheduled recurrence, the trigger calls the BambooHR `GET /v1/employees/changed` endpoint with a `since` parameter set to the last poll time. The API returns a map of employee IDs to change actions. Each entry is classified as **created** when its action is `Inserted`, and otherwise as **updated** (covering both `Updated` and `Deleted` actions: inspect the `action` field to distinguish them).
 
-1. Reads the `lastPolledAt` timestamp from cross-flow polling state (defaults to the current time on the first run, so the first poll returns no changes).
-2. Calls the BambooHR API for employees changed since `lastPolledAt`.
-3. Partitions the response into `created` (records with `action: "Inserted"`) and `updated` (records with `action: "Updated"` or `"Deleted"`).
-4. Persists the current timestamp as the new `lastPolledAt` for the next run.
-5. Returns the filtered results. When both **Show New Employees** and **Show Updated Employees** are disabled, the API call is skipped entirely.
+**Initial sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps: **Show New Employees** and **Show Updated Employees** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every employee change on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound, so an employee change recorded mid-drain is swept into the sync. The trigger fetches the full window in a single recurrence regardless of whether batching is enabled. Once all matching changes have been emitted, the trigger stores the current time as its position and the first incremental recurrence resumes from exactly there. Without batching, all changes are returned in one payload. With batching, the resolver dispatches each record (or batch of records) as a separate execution within the same recurrence. Nothing in the payload marks the handoff.
+
+The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to BambooHR.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data.created` and `results.body.data.updated`. With batching on, those fields do not exist. Each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
+The trigger returns an object with two arrays: `created` for newly inserted employees and `updated` for updated or deleted employees. Fields shown are representative. The full response object includes additional properties.
+
 <details>
-<summary>Example Payload</summary>
+<summary>Example Response</summary>
 
 ```json
 {
-  "data": {
-    "created": [
-      {
-        "id": "123",
-        "action": "Inserted",
-        "lastChanged": "2025-01-15T12:00:00Z"
-      }
-    ],
-    "updated": [
-      {
-        "id": "456",
-        "action": "Updated",
-        "lastChanged": "2025-01-15T12:30:00Z"
-      },
-      {
-        "id": "789",
-        "action": "Deleted",
-        "lastChanged": "2025-01-15T12:45:00Z"
-      }
-    ]
-  }
+  "created": [
+    {
+      "id": "234",
+      "action": "Inserted",
+      "lastChanged": "2026-05-19T14:20:00+00:00"
+    }
+  ],
+  "updated": [
+    {
+      "id": "5",
+      "action": "Updated",
+      "lastChanged": "2026-05-19T13:45:30+00:00"
+    },
+    {
+      "id": "42",
+      "action": "Deleted",
+      "lastChanged": "2026-05-19T12:30:00+00:00"
+    }
+  ]
 }
 ```
 
 </details>
 
-Fields shown are representative. The full response object includes additional properties.
+<details>
+<summary>Batched Item Shape</summary>
+
+When batching is enabled, each execution receives a single item:
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "234",
+    "action": "Inserted",
+    "lastChanged": "2026-05-19T14:20:00+00:00"
+  }
+}
+```
+
+</details>

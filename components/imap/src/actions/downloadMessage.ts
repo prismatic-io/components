@@ -23,14 +23,34 @@ export const downloadMessage = action({
       });
       const message = {
         headers: Object.fromEntries(parsed.headers),
-        attachments: parsed.attachments.map(({ contentType, content }) => ({
-          file: {
+        attachments: parsed.attachments.map(
+          ({
             contentType,
-            data: content,
-          },
-        })),
+            content,
+          }: {
+            contentType: string;
+            content: Buffer;
+          }) => ({
+            file: {
+              contentType,
+              data: content,
+            },
+          }),
+        ),
         attachmentsMetadata: parsed.attachments.map(
-          ({ filename, size, checksum, headers, related }) => ({
+          ({
+            filename,
+            size,
+            checksum,
+            headers,
+            related,
+          }: {
+            filename: string;
+            size: number;
+            checksum: string;
+            headers: unknown;
+            related: boolean;
+          }) => ({
             filename,
             size,
             checksum,

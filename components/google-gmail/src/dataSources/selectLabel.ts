@@ -12,9 +12,9 @@ export const selectLabel = dataSource({
     const { data } = await client.users.labels.list({
       userId,
     });
-    const result = data.labels.map<Element>((label) => ({
-      label: label.name,
-      key: label.id,
+    const result = (data.labels ?? []).map<Element>((label) => ({
+      label: label.name ?? "",
+      key: label.id ?? "",
     }));
     return { result };
   },

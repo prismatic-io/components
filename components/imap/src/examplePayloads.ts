@@ -115,11 +115,38 @@ export const setFlagsExamplePayload = {
   data: true,
 };
 export const newEmailsPollingTriggerExamplePayload = {
-  data: {
-    newUids: [76791, 76792],
-    mailbox: "INBOX",
-    uidValidity: "596391842",
-    uidNext: 76793,
-    polledAt: "2026-02-10T12:00:00.000Z",
-  },
+  data: [
+    {
+      uid: 1066,
+      envelope: {
+        date: "2026-02-18T23:02:20.000Z",
+        subject: "Weekly Team Update",
+        from: [{ name: "Jane Doe", address: "jane@example.com" }],
+        sender: [{ name: "Jane Doe", address: "jane@example.com" }],
+        replyTo: [{ name: "Jane Doe", address: "jane@example.com" }],
+        to: [{ name: "", address: "inbox@example.com" }],
+        messageId: "<abc123-def456@mail.example.com>",
+      },
+      flags: [],
+      internalDate: "2026-02-18T23:02:20.000Z",
+      size: 33932,
+    },
+    {
+      uid: 1067,
+      envelope: {
+        date: "2026-02-19T16:20:01.000Z",
+        subject: "Your monthly report is ready",
+        from: [{ name: "Acme Reports", address: "reports@acme.example.com" }],
+        sender: [{ name: "Acme Reports", address: "reports@acme.example.com" }],
+        replyTo: [
+          { name: "Acme Reports", address: "reports@acme.example.com" },
+        ],
+        to: [{ name: "", address: "inbox@example.com" }],
+        messageId: "<ghi789-jkl012@mail.acme.example.com>",
+      },
+      flags: ["\\Seen"],
+      internalDate: "2026-02-19T16:20:01.000Z",
+      size: 89372,
+    },
+  ],
 };

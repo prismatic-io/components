@@ -16,7 +16,7 @@ export const getEmployeeFile = action({
     );
     return {
       data,
-      contentType: headers["content-type"],
+      contentType: headers["content-type"] as string | undefined,
       contentDisposition: headers["content-disposition"],
     };
   },

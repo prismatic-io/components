@@ -23,9 +23,9 @@ export const selectMessage = dataSource({
       true,
       true,
     );
-    const result = data.messages.map<Element>((message) => ({
-      label: message.snippet,
-      key: message.id,
+    const result = (data.messages ?? []).map<Element>((message) => ({
+      label: message.snippet ?? "",
+      key: message.id ?? "",
     }));
     return { result };
   },

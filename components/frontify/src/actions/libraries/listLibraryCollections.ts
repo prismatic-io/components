@@ -68,9 +68,9 @@ export const listLibraryCollections = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedCollections = responses.reduce((combined, response) => {
-        return combined.concat(response.library.collections.items);
-      }, []);
+      const combinedCollections = responses.flatMap(
+        (response) => response.library.collections.items,
+      );
       const formattedResponse: {
         data: ListLibraryCollectionsResponse;
       } = {

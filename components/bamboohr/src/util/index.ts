@@ -73,14 +73,14 @@ export const validateEmployeeFields = (
   return validateFields(fieldValues, employeeFields);
 };
 const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-export const validateDate = (val) => {
+export const validateDate = (val: unknown) => {
   const dateString = util.types.toString(val);
   if (dateRegex.test(dateString)) {
     return dateString;
   }
   throw new Error(`Date value "${dateString}" must follow YYYY-MM-DD format.`);
 };
-export const filterFalseyValues = (obj) =>
+export const filterFalseyValues = (obj: Record<string, unknown>) =>
   Object.fromEntries(Object.entries(obj).filter(([, value]) => Boolean(value)));
 export const fetchChangedEmployeesSince = async (
   client: import("@prismatic-io/spectral/dist/clients/http").HttpClient,
@@ -119,3 +119,5 @@ export const partitionChangedEmployees = (
   }
   return { created, updated };
 };
+export { lookBackDateClean, resolvePollingRecordChanges } from "./polling";
+export type { BambooHRChangesObject, BambooHRRecordChange } from "./polling";

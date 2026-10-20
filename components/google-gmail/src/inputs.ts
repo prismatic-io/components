@@ -1,6 +1,7 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanNumberInput, cleanStringInput } from "./utils";
 import { ID_CONSTRAINTS_TEXT } from "./constants";
+import { lookBackDateClean } from "./util/polling";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
@@ -187,8 +188,19 @@ const getMessageDetails = input({
   default: "false",
   clean: util.types.toBool,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each message received on or after this date once.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const pollChangesTriggerInputs = {
   connection: connectionInput,
+  lookBackDate,
   userId: userIdInput,
   labelId,
   getMessageDetails,

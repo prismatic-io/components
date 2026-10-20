@@ -26,7 +26,7 @@ const rawRequest = action({
       "https://api.powerbi.com/v1.0/myorg",
       { ...rawRequestInputs, debugRequest: context.debug.enabled },
       {
-        Authorization: `Bearer ${connection.token.access_token}`,
+        Authorization: `Bearer ${connection.token?.access_token}`,
         "Content-Type": "application/json",
       },
     );

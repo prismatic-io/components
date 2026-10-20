@@ -14,7 +14,7 @@ export const createHttpClient = (
   return createAxiosClient({
     baseUrl: `${rootUrl}v3/company/${realmId}`,
     headers: {
-      Authorization: `Bearer ${connection.token.access_token}`,
+      Authorization: `Bearer ${connection.token?.access_token}`,
     },
     debug,
   });

@@ -1,4 +1,4 @@
-import { listAllHistory } from "../utils";
+import { listAllHistory, listAllMessages } from "../utils";
 import { createClient } from "../client";
 import type {
   ActionContext,
@@ -15,7 +15,13 @@ import { getMessagesDetails } from "./getMessagesDetails";
 export const pollChangesTriggerPerform = async (
   { polling, logger, debug }: ActionContext & PollingContext,
   payload: TriggerPayload,
-  { connection, userId, labelId, getMessageDetails }: PollChangesTriggerParams,
+  {
+    connection,
+    userId,
+    labelId,
+    getMessageDetails,
+    lookBackDate,
+  }: PollChangesTriggerParams,
 ) => {
   const client = await createClient(connection);
   let polledNoChanges = true;
@@ -24,6 +30,47 @@ export const pollChangesTriggerPerform = async (
     "No start history ID found to start polling, is your mailbox empty?";
   const pollState = polling.getState() as PollChangesTriggerState;
   const newLastPolledAt = new Date().toISOString();
+  const isFirstPoll = !pollState.historyId;
+  if (isFirstPoll && lookBackDate) {
+    const epoch = Math.floor(new Date(lookBackDate).getTime() / 1000);
+    const query = labelId
+      ? `after:${epoch} label:${labelId}`
+      : `after:${epoch}`;
+    const listResult = await listAllMessages(
+      client,
+      { userId, q: query },
+      true,
+      getMessageDetails,
+    );
+    const messages = listResult.messages ?? [];
+    const currentHistoryId = await getStartHistoryId(client, userId);
+    polling.setState({
+      historyId: currentHistoryId,
+      lastPolledAt: newLastPolledAt,
+    } as PollChangesTriggerState);
+    if (messages.length === 0) {
+      return {
+        payload: {
+          ...payload,
+          body: { data: { history: [], historyId: currentHistoryId } },
+        },
+        polledNoChanges: true,
+      };
+    }
+    const syntheticHistory = messages.map((message) => ({
+      id: message.id,
+      messages: [message],
+    }));
+    return {
+      payload: {
+        ...payload,
+        body: {
+          data: { history: syntheticHistory, historyId: currentHistoryId },
+        },
+      },
+      polledNoChanges: false,
+    };
+  }
   let startHistoryId = pollState.historyId;
   if (!startHistoryId) {
     startHistoryId = await getStartHistoryId(client, userId);
@@ -87,12 +134,12 @@ export const pollChangesTriggerPerform = async (
     }
   }
   if (getMessageDetails) {
-    if (data.history.length > 0) {
+    if ((data.history ?? []).length > 0) {
       const newHistory = [];
-      for (const history of data.history) {
+      for (const history of data.history ?? []) {
         const detailedMessages = await getMessagesDetails(
           client,
-          history.messages,
+          history.messages ?? [],
           userId,
           debug.enabled,
           logger,
@@ -100,7 +147,7 @@ export const pollChangesTriggerPerform = async (
         const { messages: _, ...historyWithoutMessages } = history;
         newHistory.push({
           ...historyWithoutMessages,
-          messages: history.messages.map((message, index) => ({
+          messages: (history.messages ?? []).map((message, index) => ({
             ...message,
             message: detailedMessages[index],
           })),
@@ -109,7 +156,7 @@ export const pollChangesTriggerPerform = async (
       data = { history: newHistory, historyId: data.historyId };
     }
   }
-  if (data.history.length > 0) {
+  if ((data.history ?? []).length > 0) {
     polledNoChanges = false;
   }
   let lastPolledAt = pollState.lastPolledAt;

@@ -9,7 +9,7 @@ export default interface ListBrandsResponse {
       blue: number;
       alpha: number;
     };
-    avatar: string;
+    avatar: string | null;
     slug: string;
     customMetadataProperties: CustomMetadataProperty[];
   }[];

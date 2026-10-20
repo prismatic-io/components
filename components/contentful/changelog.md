@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-20
+
+Various modernizations and documentation updates
+
 ### 2026-10-07
 
 Added inline action calling, output schemas, trigger initial sync and batching, and webhook request verification, and improved trigger and upload reliability:

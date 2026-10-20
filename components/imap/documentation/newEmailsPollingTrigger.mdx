@@ -1,70 +1,94 @@
-Checks for new emails in a specified mailbox on a configured schedule. This trigger uses IMAP UIDs to track which messages have already been processed, ensuring each email is only returned once.
+This trigger retrieves existing and new emails for a specified IMAP mailbox. Load history once, check for changes on a schedule, or both.
 
 #### How It Works
 
-1. On the first execution, the trigger connects to the IMAP server and records the current UID state of the mailbox. No emails are returned on this initial run.
-2. On subsequent executions, the trigger checks for emails with UIDs greater than the last recorded value.
-3. If the mailbox's `uidValidity` changes (indicating the mailbox was rebuilt or re-created), the trigger resets its state and begins tracking from the new baseline.
-4. New emails are returned as an array in the trigger payload.
+On each scheduled recurrence, the trigger connects to the IMAP server and checks the mailbox status. It uses IMAP UIDs to track which messages have already been processed, ensuring each email is returned only once.
 
-#### Configuration
+On the first recurrence without a **Look-back Date** (or when `uidValidity` changes, indicating the mailbox was rebuilt), the trigger records the current UID state and emits nothing. Subsequent recurrences fetch messages with UIDs above the stored threshold.
 
-- **Connection**: An IMAP connection with the server host, port, credentials, and TLS settings.
-- **Mailbox**: The mailbox to monitor (default: `INBOX`).
-- **Fetch Content**: When enabled, downloads and parses the full message body (plain text and HTML) for each new email. Disabled by default to reduce payload size.
-- **Mark as Read**: When enabled, sets the `\Seen` flag on new emails after polling. Disabled by default.
+When **Fetch Content** is enabled, the full email body and attachment metadata are included in the results. When **Mark as Read** is enabled, fetched messages are flagged as `\Seen` on the server.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state from the mailbox. It begins on the first recurrence when the trigger has no stored UID position and a **Look-back Date** (`YYYY-MM-DD`) is set: an IMAP `SEARCH SINCE` finds the messages whose internal date is on or after that date, and the trigger fetches every message from the lowest matching UID onward, delivering each once. No input is ignored while it runs. A later `uidValidity` change starts a new sync from the same date, so a rebuilt mailbox can deliver messages again. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The sync completes in one recurrence whether or not batching is on. Its fetch has no fixed upper bound, but the position the trigger stores is the mailbox's next UID as read at the start of that recurrence, so a message that arrives while the sync runs can be delivered again by the next recurrence. Later recurrences fetch from that stored UID onward. No field in the payload marks the handoff.
+
+**Mailbox**, **Fetch Content**, and **Mark as Read** still apply. With **Mark as Read** on, every message the sync delivers is flagged `\Seen`, including older unread messages.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each email is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the connection volume to the IMAP server.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data` as an array of email objects. With batching on, each execution receives a single `{ changeType, record }` item representing one email. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
+The trigger returns an array of email objects. Fields shown are representative. The full response object includes additional properties.
+
 <details>
-<summary>Example Payload</summary>
+<summary>Example Response</summary>
 
 ```json
-{
-  "data": [
-    {
-      "uid": 76791,
-      "envelope": {
-        "from": [{ "address": "sender@example.com", "name": "Sender Name" }],
-        "to": [{ "address": "recipient@example.com", "name": "Recipient Name" }],
-        "subject": "Example Subject",
-        "date": "2026-02-18T12:00:00.000Z",
-        "messageId": "<unique-id@example.com>"
-      },
-      "flags": ["\\Recent"],
-      "internalDate": "2026-02-18T12:00:00.000Z",
-      "size": 4523
+[
+  {
+    "uid": 1066,
+    "envelope": {
+      "date": "2026-02-18T23:02:20.000Z",
+      "subject": "Weekly Team Update",
+      "from": [{ "name": "Jane Doe", "address": "jane@example.com" }],
+      "sender": [{ "name": "Jane Doe", "address": "jane@example.com" }],
+      "replyTo": [{ "name": "Jane Doe", "address": "jane@example.com" }],
+      "to": [{ "name": "", "address": "inbox@example.com" }],
+      "messageId": "<abc123-def456@mail.example.com>"
     },
-    {
-      "uid": 76792,
-      "envelope": {
-        "from": [{ "address": "another@example.com", "name": "Another Sender" }],
-        "to": [{ "address": "recipient@example.com", "name": "Recipient Name" }],
-        "subject": "Another Email",
-        "date": "2026-02-18T12:05:00.000Z",
-        "messageId": "<unique-id-2@example.com>"
-      },
-      "flags": [],
-      "internalDate": "2026-02-18T12:05:00.000Z",
-      "size": 8912,
-      "text": "Plain text body (when Fetch Content is enabled)",
-      "html": "<p>HTML body (when Fetch Content is enabled)</p>",
-      "attachments": [
-        {
-          "filename": "report.pdf",
-          "size": 24576,
-          "contentType": "application/pdf"
-        }
-      ]
-    }
-  ]
-}
+    "flags": [],
+    "internalDate": "2026-02-18T23:02:20.000Z",
+    "size": 33932
+  },
+  {
+    "uid": 1067,
+    "envelope": {
+      "date": "2026-02-19T16:20:01.000Z",
+      "subject": "Your monthly report is ready",
+      "from": [{ "name": "Acme Reports", "address": "reports@acme.example.com" }],
+      "sender": [{ "name": "Acme Reports", "address": "reports@acme.example.com" }],
+      "replyTo": [{ "name": "Acme Reports", "address": "reports@acme.example.com" }],
+      "to": [{ "name": "", "address": "inbox@example.com" }],
+      "messageId": "<ghi789-jkl012@mail.acme.example.com>"
+    },
+    "flags": ["\\Seen"],
+    "internalDate": "2026-02-19T16:20:01.000Z",
+    "size": 89372
+  }
+]
 ```
 
 </details>
 
-#### Notes
+<details>
+<summary>Batched Item Shape</summary>
 
-- The trigger returns an empty array when no new emails are found since the last poll.
-- Enabling **Fetch Content** increases the payload size and execution time, especially for emails with large attachments. Only attachment metadata (filename, size, content type) is included — not the actual attachment data.
-- The polling schedule is configured at the integration level, not within the trigger itself.
+When batching is enabled, each execution receives a single item:
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "uid": 1066,
+    "envelope": {
+      "date": "2026-02-18T23:02:20.000Z",
+      "subject": "Weekly Team Update",
+      "from": [{ "name": "Jane Doe", "address": "jane@example.com" }],
+      "to": [{ "name": "", "address": "inbox@example.com" }]
+    },
+    "flags": [],
+    "internalDate": "2026-02-18T23:02:20.000Z",
+    "size": 33932
+  }
+}
+```
+
+</details>

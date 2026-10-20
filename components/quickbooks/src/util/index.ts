@@ -5,8 +5,8 @@ import {
   type TriggerPayload,
   util,
 } from "@prismatic-io/spectral";
-import OAuthClient from "intuit-oauth";
 import { quickbooksConnection } from "../connections";
+import { QUICKBOOKS_BASE_URLS } from "../constants";
 import { MAX_RESULTS } from "../constants";
 import type {
   CloudEventsWebhook,
@@ -21,20 +21,19 @@ export const checkConnectionKey = (connection: Connection): void => {
   }
 };
 export const getRealmId = (connection: Connection): string => {
-  return util.types.toString(connection.context.realmId);
+  return util.types.toString(connection.context?.realmId);
 };
 export const getBaseURL = (connection: Connection): string => {
-  const baseURL = util.types.toBool(connection.fields.useSandbox)
-    ? OAuthClient.environment.sandbox
-    : OAuthClient.environment.production;
-  return baseURL;
+  return util.types.toBool(connection.fields.useSandbox)
+    ? QUICKBOOKS_BASE_URLS.sandbox
+    : QUICKBOOKS_BASE_URLS.production;
 };
 export const cleanStringInput = (value: unknown): string | undefined =>
   value ? util.types.toString(value) : undefined;
 export const addStartPositionAndMaxResults = (
   queryString: string,
-  startPosition: string,
-  maxResults: string,
+  startPosition?: string,
+  maxResults?: string,
 ): string => {
   let result = queryString;
   if (startPosition) {
@@ -70,8 +69,8 @@ export const paginatedData = async (
   }
   queryString = addStartPositionAndMaxResults(
     queryString,
-    params.startPosition,
-    params.maxResults,
+    params?.startPosition,
+    params?.maxResults,
   );
   const { data } = await client.get(`/query?query=${queryString}`);
   const objects = data.QueryResponse?.[objectName] || [];

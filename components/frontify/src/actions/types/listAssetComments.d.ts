@@ -2,7 +2,7 @@ import type { CommentResponse } from "./shared";
 export default interface ListAssetCommentsResponse {
   asset: {
     id: string;
-    externalId: string;
+    externalId: string | null;
     comments: {
       total: number;
       page: number;

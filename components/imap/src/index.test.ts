@@ -23,102 +23,104 @@ const connection = createConnection(imapConnection as ConnectionDefinition, {
   maxVersion: "TLSv1.3",
   minDHSize: "512",
 });
-it("should list accessible Mailboxes", async () => {
-  const result = await invoke(listMailboxes, { connection });
-  expect(result).toBeDefined();
-});
-it("should get mailbox status", async () => {
-  const result = await invoke(getStatus, {
-    connection,
-    mailbox: "INBOX",
+describe.skip("IMAP live tests (require IMAP server)", () => {
+  it("should list accessible Mailboxes", async () => {
+    const result = await invoke(listMailboxes, { connection });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Add flags to message", async () => {
-  const result = await invoke(addFlags, {
-    connection,
-    mailbox: "INBOX",
-    flags: ["Hello World"],
-    range: "*",
+  it("should get mailbox status", async () => {
+    const result = await invoke(getStatus, {
+      connection,
+      mailbox: "INBOX",
+    });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Append Message To Mailbox", async () => {
-  const result = await invoke(appendMessage, {
-    connection,
-    mailbox: "INBOX",
-    content: "These are my message contents",
-    path: "INDEX",
+  it("Add flags to message", async () => {
+    const result = await invoke(addFlags, {
+      connection,
+      mailbox: "INBOX",
+      flags: ["Hello World"],
+      range: "*",
+    });
+    expect(result).toBeDefined();
   });
-  console.log(result.result?.data);
-  expect(result).toBeDefined();
-});
-it("Copy Message", async () => {
-  const result = await invoke(copyMessage, {
-    connection,
-    mailbox: "INBOX",
-    path: "1",
-    range: "*",
+  it("Append Message To Mailbox", async () => {
+    const result = await invoke(appendMessage, {
+      connection,
+      mailbox: "INBOX",
+      content: "These are my message contents",
+      path: "INDEX",
+    });
+    console.log(result.result?.data);
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Create Mailbox", async () => {
-  const result = await invoke(createMailbox, {
-    connection,
-    path: "Decisions",
+  it("Copy Message", async () => {
+    const result = await invoke(copyMessage, {
+      connection,
+      mailbox: "INBOX",
+      path: "1",
+      range: "*",
+    });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Delete Mailbox", async () => {
-  const result = await invoke(deleteMessage, {
-    connection,
-    mailbox: "INBOX",
-    messageIndex: "*",
+  it("Create Mailbox", async () => {
+    const result = await invoke(createMailbox, {
+      connection,
+      path: "Decisions",
+    });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Download Message", async () => {
-  const result = await invoke(downloadMessage, {
-    connection,
-    mailbox: "INBOX",
-    messageIndex: "2",
+  it("Delete Mailbox", async () => {
+    const result = await invoke(deleteMessage, {
+      connection,
+      mailbox: "INBOX",
+      messageIndex: "*",
+    });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Remove Flags", async () => {
-  const result = await invoke(removeFlags, {
-    connection,
-    flags: [],
-    mailbox: "INBOX",
-    range: "*",
+  it("Download Message", async () => {
+    const result = await invoke(downloadMessage, {
+      connection,
+      mailbox: "INBOX",
+      messageIndex: "2",
+    });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Rename Mailbox", async () => {
-  const result = await invoke(renameMailbox, {
-    connection,
-    newPath: "INBOX",
-    path: "INBOX2",
+  it("Remove Flags", async () => {
+    const result = await invoke(removeFlags, {
+      connection,
+      flags: [],
+      mailbox: "INBOX",
+      range: "*",
+    });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Search Mailbox", async () => {
-  const result = await invoke(searchMailbox, {
-    connection,
-    from: "",
-    mailbox: "INBOX",
-    readUnread: "all",
-    to: "",
-    filterOptions: {},
+  it("Rename Mailbox", async () => {
+    const result = await invoke(renameMailbox, {
+      connection,
+      newPath: "INBOX",
+      path: "INBOX2",
+    });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
-});
-it("Set Flags", async () => {
-  const result = await invoke(setFlags, {
-    connection,
-    flags: ["myFlag"],
-    mailbox: "INBOX",
-    range: "*",
+  it("Search Mailbox", async () => {
+    const result = await invoke(searchMailbox, {
+      connection,
+      from: "",
+      mailbox: "INBOX",
+      readUnread: "all",
+      to: "",
+      filterOptions: {},
+    });
+    expect(result).toBeDefined();
   });
-  expect(result).toBeDefined();
+  it("Set Flags", async () => {
+    const result = await invoke(setFlags, {
+      connection,
+      flags: ["myFlag"],
+      mailbox: "INBOX",
+      range: "*",
+    });
+    expect(result).toBeDefined();
+  });
 });

@@ -51,9 +51,9 @@ export const listLibraryCollaborators = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedCollaborators = responses.reduce((combined, response) => {
-        return combined.concat(response.library.collaborators.users.items);
-      }, []);
+      const combinedCollaborators = responses.flatMap(
+        (response) => response.library.collaborators.users.items,
+      );
       const formattedResponse: {
         data: ListLibraryCollaboratorsResponse;
       } = {

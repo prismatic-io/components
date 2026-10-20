@@ -1,4 +1,4 @@
-import { dataSource, type Element } from "@prismatic-io/spectral";
+import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { createHttpClient } from "../client";
 import { selectPurchaseOrderExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
@@ -22,7 +22,7 @@ export const selectPurchaseOrder = dataSource({
     };
     const data = await paginatedData(request);
     const objects = data.map<Element>((purchaseOrder) => ({
-      key: purchaseOrder.Id.toString(),
+      key: util.types.toString(purchaseOrder.Id),
       label: purchaseOrder.DocNumber as string,
     }));
     return { result: objects };

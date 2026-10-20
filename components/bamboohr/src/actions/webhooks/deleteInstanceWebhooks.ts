@@ -16,8 +16,9 @@ export const deleteInstanceWebhooks = action({
       data: { webhooks },
     } = await client.get("/v1/webhooks");
     const instanceWebhookUrls = Object.values(context.webhookUrls);
-    const instanceBambooWebhooks = webhooks.filter((webhook) =>
-      instanceWebhookUrls.includes(webhook.url),
+    const instanceBambooWebhooks = webhooks.filter(
+      (webhook: { url: string; id: string }) =>
+        instanceWebhookUrls.includes(webhook.url),
     );
     for (const webhook of instanceBambooWebhooks) {
       context.logger.info(`Deleting webhook ${webhook.id}...`);

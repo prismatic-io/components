@@ -71,9 +71,9 @@ export const listUserGroups = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedUserGroups = responses.reduce((combined, response) => {
-        return combined.concat(response.account.userGroups.items);
-      }, []);
+      const combinedUserGroups = responses.flatMap(
+        (response) => response.account.userGroups.items,
+      );
       const data: {
         data: ListUserGroupsResponse;
       } = {

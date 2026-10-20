@@ -154,9 +154,9 @@ export const listRelatedAssets = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedRelatedAssets = responses.reduce((combined, response) => {
-        return combined.concat(response.asset.relatedAssets.items);
-      }, []);
+      const combinedRelatedAssets = responses.flatMap(
+        (response) => response.asset.relatedAssets.items,
+      );
       const formattedResponse: {
         data: ListRelatedAssetsResponse;
       } = {

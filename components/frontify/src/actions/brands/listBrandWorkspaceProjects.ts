@@ -49,11 +49,8 @@ export const listBrandWorkspaceProjects = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedWorkspaceProjects = responses.reduce(
-        (combined, response) => {
-          return combined.concat(response.brand.workspaceProjects.items);
-        },
-        [],
+      const combinedWorkspaceProjects = responses.flatMap(
+        (response) => response.brand.workspaceProjects.items,
       );
       const formattedResponse: {
         data: ListBrandWorkspaceProjectsResponse;

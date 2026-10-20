@@ -1,65 +1,75 @@
-This trigger polls the [Xero Accounting API](https://developer.xero.com/documentation/api/accounting/overview) for new and updated records of a selected resource type on a scheduled basis.
+This trigger retrieves existing and ongoing records for a selected Xero resource type. Load history once, check for changes on a schedule, or both.
 
 #### How It Works
 
-1. The trigger runs on the configured schedule
-2. It fetches records modified since the last poll using Xero's `If-Modified-Since` header, limiting results to records that have changed
-3. Each returned record is compared against the set of previously known IDs. Records with unknown IDs are classified as new, and records with known IDs are classified as updated
-4. The trigger updates its internal state after each poll, storing the last poll timestamp and the full set of known record IDs
+On each scheduled recurrence, the trigger fetches records from the selected Xero endpoint using a server-side `If-Modified-Since` filter. Records are classified as **created** when their ID was not seen in a previous poll, and otherwise as **updated**. The trigger persists the set of known IDs between recurrences.
 
-The following resource types are supported:
+On the first recurrence without a Look-back Date, the trigger records the current set of IDs and emits nothing. Subsequent recurrences compare the fetched IDs against the stored set and report additions and modifications.
 
-<details>
-<summary>Supported Resource Types (9)</summary>
+**Initial sync**
 
-| Resource          | Paginated | Tracks New | Tracks Updated |
-| ----------------- | --------- | ---------- | -------------- |
-| Accounts          | No        | Yes        | Yes            |
-| Bank Transactions | Yes       | Yes        | Yes            |
-| Contacts          | Yes       | Yes        | Yes            |
-| Credit Notes      | Yes       | Yes        | Yes            |
-| Invoices          | Yes       | Yes        | Yes            |
-| Items             | No        | Yes        | Yes            |
-| Manual Journals   | Yes       | Yes        | Yes            |
-| Payments          | Yes       | Yes        | Yes            |
-| Purchase Orders   | Yes       | Yes        | Yes            |
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: it ignores **Show New Records** and **Show Updated Records**. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set. The date is passed as the `If-Modified-Since` header, so the API returns only records modified on or after that date. All returned records are classified as "created" (the known-ID set is empty), so each is seeded once. Left empty, there is no sync and the trigger starts from its first recurrence.
 
-</details>
+The sync completes in a single recurrence regardless of whether batching is enabled. Without batching, all changes are returned in one payload. With batching, the resolver dispatches each record (or batch of records) as a separate execution within the same recurrence. The request has no upper bound. The trigger stores the returned IDs and the time that recurrence started as its position, and the next recurrence sends that time as `If-Modified-Since`, so a record modified during the sync is returned again as updated and nothing is lost. No field in the payload marks the handoff.
+
+**Resource Type** still applies: it selects the endpoint the sync reads from. **Show New Records** and **Show Updated Records** apply again from the next recurrence onward.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Xero.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data.created` and `results.body.data.updated`. With batching on, those fields do not exist — each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
-Returns an object with two arrays: `created` for new records and `updated` for modified records.
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
 
 ```json
 {
-  "data": {
-    "created": [
-      {
-        "ContactID": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-        "Name": "Acme Corp",
-        "UpdatedDateUTC": "/Date(1699610400000+0000)/"
-      }
-    ],
-    "updated": [
-      {
-        "ContactID": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-        "Name": "Global Industries",
-        "UpdatedDateUTC": "/Date(1699696800000+0000)/"
-      }
-    ]
-  }
+  "created": [
+    {
+      "ContactID": "a4c2f1e8-3d56-4b91-9f07-2e8a1c6d5b34",
+      "ContactStatus": "ACTIVE",
+      "Name": "Jane Smith",
+      "EmailAddress": "jane.smith@widgetco.com",
+      "UpdatedDateUTC": "/Date(1650000000000+0000)/"
+    }
+  ],
+  "updated": [
+    {
+      "ContactID": "b5d3a2f9-4e67-4c12-8a18-3f9b2d7e6c45",
+      "ContactStatus": "ACTIVE",
+      "Name": "Acme Supplies Ltd",
+      "EmailAddress": "billing@acmesupplies.com",
+      "UpdatedDateUTC": "/Date(1650003600000+0000)/"
+    }
+  ]
 }
 ```
 
 </details>
 
-Fields shown are representative. The full response object includes additional properties.
+<details>
+<summary>Batched Item Shape</summary>
 
-#### Notes
+When batching is enabled, each execution receives a single item:
 
-- Classification as new or updated is based on ID history, not Xero metadata. A record whose ID has not been seen in a prior poll is classified as created, while a record whose ID is already known is classified as updated.
-- The known ID set and the last poll timestamp both persist across executions via polling state.
-- Paginated resource types fetch all pages before classifying records.
+```json
+{
+  "changeType": "created",
+  "record": {
+    "ContactID": "a4c2f1e8-3d56-4b91-9f07-2e8a1c6d5b34",
+    "ContactStatus": "ACTIVE",
+    "Name": "Jane Smith",
+    "EmailAddress": "jane.smith@widgetco.com",
+    "UpdatedDateUTC": "/Date(1650000000000+0000)/"
+  }
+}
+```
+
+</details>

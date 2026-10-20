@@ -1,91 +1,29 @@
-This trigger polls Gmail for mailbox changes on a scheduled basis using the [Gmail History API](https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.history).
+This trigger retrieves existing and ongoing email messages for a specified Gmail mailbox. Load history once, check for changes on a schedule, or both.
 
-For real-time notifications instead of scheduled polling, consider using the [Push Notifications](#push-notifications) trigger with Gmail's push notification service.
-
-
-The trigger checks for:
-- **New messages**: Messages added to the mailbox since the last poll
-- **Deleted messages**: Messages permanently deleted from the mailbox
-- **Label changes**: Labels added to or removed from messages (including read/unread, starred, categories, etc.)
+For real-time notifications instead of scheduled polling, consider using the **Managed Push Notification Events** trigger with Gmail's push notification service.
 
 #### How It Works
 
-1. The trigger runs on the configured schedule (e.g., every 5 minutes)
-2. It queries Gmail's History API for changes since the last poll using a tracked `historyId`
-3. The History API returns records of all mailbox changes in chronological order
-4. The trigger updates its state with the latest `historyId` for the next poll
-5. If the `historyId` becomes invalid (typically after a week), the trigger automatically retrieves a new starting point
+On each scheduled recurrence, the trigger calls the Gmail History API with the stored `historyId` to retrieve mailbox changes since the previous poll. On the first recurrence without a **Look-back Date**, it retrieves the current history ID and emits nothing. Subsequent recurrences detect changes from that point forward.
 
-#### State Management
+If the stored `historyId` is no longer valid (HTTP 404), the trigger automatically re-syncs by obtaining a new starting history ID.
 
-Gmail uses history IDs to efficiently track mailbox changes. Each mailbox has a `historyId` that increments with every change. Instead of scanning all messages, this trigger:
+**Initial sync**
 
-- Stores the last seen `historyId` between executions
-- Queries only for changes after that point
-- Handles expired history IDs automatically (Gmail may invalidate history IDs after ~7 days)
+An initial sync seeds a complete starting state from the mailbox's messages rather than from its change history. It begins on the first recurrence when the trigger has no stored history ID and a **Look-back Date** (`YYYY-MM-DD`) is set, searches for messages received after the start of that date (UTC), and returns each match once. No input is ignored while it runs. Left empty, there is no sync and the trigger starts from its first recurrence.
 
-This approach is more efficient than polling all messages, as it only retrieves actual changes.
+The sync completes in one recurrence whether or not batching is on. Its search has no upper bound, so a message received while it runs is included. Once the search finishes, the trigger stores the history ID of the newest message in the mailbox as its position, and the next recurrence lists history from there; a message received between the end of the search and that read can be missed. No field in the payload marks the handoff. Sync entries carry only `id` (the message ID) and `messages`, without the `messagesAdded` and label fields of a history record.
 
-#### Configuration
+**User ID**, **Label ID**, and **Get Message Details** still apply. With **Get Message Details** on, each synced message carries its metadata (headers and labels) rather than the parsed body and attachments returned on later recurrences.
 
-Configure the following inputs:
+**Batching**
 
-- **Connection**: The Gmail OAuth connection to use
-- **Gmail User ID (optional)**: The user ID or email address to monitor. Defaults to `"me"` (the authenticated user)
-- **Label ID**: Optional filter to receive changes only for messages with a specific label (e.g., `"INBOX"`, `"SENT"`, `"UNREAD"`)
-- **Get Message Details**: When enabled, fetches full message content for each changed message. **This significantly increases response time** as it makes additional API calls for each message.
+Batching is enabled per flow on this trigger: each history record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Gmail.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read the full `results.body.data` object containing `history` and `historyId`. With batching on, each execution receives a single `{ changeType, record }` item representing one history entry. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
-The trigger returns a history response with four types of change records:
-
-<details>
-<summary>View example response</summary>
-
-```json
-{
-  "data": {
-    "history": [
-      {
-        "id": "12345",
-        "messagesAdded": [
-          {
-            "message": {
-              "id": "18abc123def",
-              "threadId": "18abc123xyz"
-            }
-          }
-        ],
-        "messagesDeleted": [
-          {
-            "message": {
-              "id": "18def456ghi"
-            }
-          }
-        ],
-        "labelsAdded": [
-          {
-            "message": {
-              "id": "18ghi789jkl",
-              "labelIds": ["STARRED", "IMPORTANT"]
-            }
-          }
-        ],
-        "labelsRemoved": [
-          {
-            "message": {
-              "id": "18jkl012mno",
-              "labelIds": ["UNREAD"]
-            }
-          }
-        ]
-      }
-    ],
-    "historyId": "67890"
-  }
-}
-```
-
-</details>
-
-By default, message objects only include `id` and `threadId` fields. Enable **Get Message Details** to include full message content (headers, body, attachments) for each changed message, though this increases execution time proportionally to the number of changed messages.
+The trigger returns the Gmail history response containing an array of history records and the latest `historyId`. Fields shown are representative. The full response object includes additional properties.

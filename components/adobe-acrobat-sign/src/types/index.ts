@@ -504,6 +504,13 @@ export interface UpdateGroupPayload {
 }
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
+  resumeStartIndex?: number;
+  isBackfilling?: boolean;
+}
+export interface PollingCursor {
+  resumeStartIndex: number;
+  isBackfilling?: boolean;
+  [key: string]: unknown;
 }
 export interface AdobeSignAgreementRecord {
   id?: string;

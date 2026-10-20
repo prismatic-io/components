@@ -117,9 +117,9 @@ export const listAssetComments = action({
         return { data: responses[0] };
       }
       const baseResponse = responses.slice(-1)[0];
-      const combinedAssetComments = responses.reduce((combined, response) => {
-        return combined.concat(response.asset.comments.items);
-      }, []);
+      const combinedAssetComments = responses.flatMap(
+        (response) => response.asset.comments.items,
+      );
       const formattedResponse: {
         data: ListAssetCommentsResponse;
       } = {

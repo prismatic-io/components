@@ -16,5 +16,5 @@ export const getStartHistoryId = async (
     id: messageId,
     format: "metadata",
   });
-  return msg.data.historyId;
+  return msg.data.historyId ?? undefined;
 };
