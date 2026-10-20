@@ -1,20 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { modifiedEntryResponse } from "../../examplePayloads";
-import { connection, events } from "../../inputs";
+import { modifyTimeEntriesExamplePayload } from "../../examplePayloads";
+import { modifyTimeEntriesInputs } from "../../inputs";
+import { modifyTimeEntriesOutputSchema } from "../../outputSchemas";
 export const modifyTimeEntries = action({
   display: {
     label: "Modify Time Entries",
     description: "Modify time entries event instance",
   },
-  inputs: {
-    events: {
-      ...events,
-      comments:
-        "The new time entries to be added, modified or deleted. Please refer to the API documentation for the structure of the time entries. https://developers.adp.com/build/api-explorer/hcm-offrg-wfn/hcm-offrg-wfn-time-time-cards-v2-time-cards?operation=POST%2Fevents%2Ftime%2Fv2%2Ftime-entries.modify",
-    },
-    connection,
-  },
+  inputs: modifyTimeEntriesInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, events }) => {
     const axiosClient = await createClient(
       context,
@@ -29,7 +24,12 @@ export const modifyTimeEntries = action({
     );
     return { data };
   },
-  examplePayload: {
-    data: modifiedEntryResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => modifyTimeEntriesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: modifyTimeEntriesOutputSchema,
+  }),
+  examplePayload: modifyTimeEntriesExamplePayload,
 });

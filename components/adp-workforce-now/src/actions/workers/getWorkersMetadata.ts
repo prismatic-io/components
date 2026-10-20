@@ -1,16 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { listWorkersMetadataResponse } from "../../examplePayloads";
-import { $filter, connection } from "../../inputs";
+import { getWorkersMetadataExamplePayload } from "../../examplePayloads";
+import { getWorkersMetadataInputs } from "../../inputs";
+import { getWorkersMetadataOutputSchema } from "../../outputSchemas";
 export const getWorkersMetadata = action({
   display: {
     label: "Get Worker Metadata",
     description: "Retrieves a meta on workers",
   },
-  inputs: {
-    $filter,
-    connection,
-  },
+  inputs: getWorkersMetadataInputs,
+  performSafety: "safe",
   perform: async (context, { connection, $filter }) => {
     const axiosClient = await createClient(
       context,
@@ -24,7 +23,9 @@ export const getWorkersMetadata = action({
     });
     return { data };
   },
-  examplePayload: {
-    data: listWorkersMetadataResponse,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getWorkersMetadataOutputSchema,
+  }),
+  examplePayload: getWorkersMetadataExamplePayload,
 });

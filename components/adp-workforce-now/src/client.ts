@@ -4,15 +4,15 @@ import type { ActionContext } from "@prismatic-io/spectral/dist/serverTypes";
 import axios, { type AxiosInstance } from "axios";
 import type { ConsumerApplicationSubscription, PersistedToken } from "./types";
 import {
-  cleanCertificateValue,
   getBaseUrl,
   getTokenEndpoint,
+  normalizeCertificateValue,
   validateConnection,
 } from "./util";
 export const createClient = async (
   context: ActionContext,
   connection: Connection,
-  debug: boolean,
+  debug = false,
 ): Promise<AxiosInstance> => {
   validateConnection(connection);
   const { sslCert, sslKey } = connection.fields;
@@ -77,6 +77,8 @@ export const fetchToken = async (
         subscriberClientSecret,
       );
       const { access_token, expires_in } = apiAccessToken;
+      if (!access_token)
+        throw new Error("ADP token response did not include an access token.");
       accessToken = access_token;
       expiresDate = now + expires_in;
     } else {
@@ -87,6 +89,8 @@ export const fetchToken = async (
         clientSecret,
       );
       const { access_token, expires_in } = apiAccessToken;
+      if (!access_token)
+        throw new Error("ADP token response did not include an access token.");
       accessToken = access_token;
       expiresDate = now + expires_in;
     }
@@ -145,8 +149,8 @@ const createCertClient = (
     headers,
     httpsAgent: new https.Agent({
       rejectUnauthorized: true,
-      cert: cleanCertificateValue(sslCert),
-      key: cleanCertificateValue(sslKey),
+      cert: normalizeCertificateValue(sslCert),
+      key: normalizeCertificateValue(sslKey),
     }),
   });
 };
@@ -198,7 +202,9 @@ const getSubscribersClientIdAndSecret = (
     subscriberClientSecret: clientSecret,
   };
 };
-export const createSimpleClient = async (connection: Connection) => {
+export const createSimpleClient = async (
+  connection: Connection,
+): Promise<AxiosInstance> => {
   validateConnection(connection);
   const { sslCert, sslKey, clientId, clientSecret } = connection.fields;
   const baseUrl = getBaseUrl(connection);
@@ -207,8 +213,8 @@ export const createSimpleClient = async (connection: Connection) => {
     baseURL: baseUrl,
     httpsAgent: new https.Agent({
       rejectUnauthorized: true,
-      cert: cleanCertificateValue(sslCert),
-      key: cleanCertificateValue(sslKey),
+      cert: normalizeCertificateValue(sslCert),
+      key: normalizeCertificateValue(sslKey),
     }),
   });
   const { data: tokenData } = await tokenClient.post(
@@ -225,6 +231,8 @@ export const createSimpleClient = async (connection: Connection) => {
       },
     },
   );
+  if (!tokenData?.access_token)
+    throw new Error("ADP token response did not include an access token.");
   return axios.create({
     baseURL: baseUrl,
     headers: {
@@ -233,8 +241,8 @@ export const createSimpleClient = async (connection: Connection) => {
     },
     httpsAgent: new https.Agent({
       rejectUnauthorized: true,
-      cert: cleanCertificateValue(sslCert),
-      key: cleanCertificateValue(sslKey),
+      cert: normalizeCertificateValue(sslCert),
+      key: normalizeCertificateValue(sslKey),
     }),
   });
 };

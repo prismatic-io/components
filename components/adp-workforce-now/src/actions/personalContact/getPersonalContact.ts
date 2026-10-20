@@ -1,18 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getPersonalContactsResponse } from "../../examplePayloads";
-import { $select, aoid, connection, personalContactId } from "../../inputs";
+import { getPersonalContactExamplePayload } from "../../examplePayloads";
+import { getPersonalContactInputs } from "../../inputs";
+import { getPersonalContactOutputSchema } from "../../outputSchemas";
 export const getPersonalContact = action({
   display: {
     label: "Get Personal Contact",
     description: "Returns a personal contact",
   },
-  inputs: {
-    aoid,
-    personalContactId,
-    $select,
-    connection,
-  },
+  inputs: getPersonalContactInputs,
+  performSafety: "safe",
   perform: async (
     context,
     { connection, $select, aoid, personalContactId },
@@ -34,7 +31,9 @@ export const getPersonalContact = action({
       data,
     };
   },
-  examplePayload: {
-    data: getPersonalContactsResponse,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPersonalContactOutputSchema,
+  }),
+  examplePayload: getPersonalContactExamplePayload,
 });

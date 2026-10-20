@@ -1,17 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../../client";
-import { listWorkersResponse } from "../../../examplePayloads";
-import { $select, aoid, connection } from "../../../inputs";
+import { getWorkerDemographicsExamplePayload } from "../../../examplePayloads";
+import { getWorkerDemographicsInputs } from "../../../inputs";
+import { getWorkerDemographicsOutputSchema } from "../../../outputSchemas";
 export const getWorkerDemographics = action({
   display: {
     label: "Get Worker Demographics",
     description: "Returns a worker demographic by Associate OID",
   },
-  inputs: {
-    aoid,
-    $select,
-    connection,
-  },
+  inputs: getWorkerDemographicsInputs,
+  performSafety: "safe",
   perform: async (context, { connection, $select, aoid }) => {
     const axiosClient = await createClient(
       context,
@@ -30,7 +28,9 @@ export const getWorkerDemographics = action({
       data,
     };
   },
-  examplePayload: {
-    data: listWorkersResponse,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getWorkerDemographicsOutputSchema,
+  }),
+  examplePayload: getWorkerDemographicsExamplePayload,
 });

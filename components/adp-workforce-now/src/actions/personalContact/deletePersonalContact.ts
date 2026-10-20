@@ -1,17 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { deletePersonaContactResponse } from "../../examplePayloads";
-import { aoid, connection, personalContactId } from "../../inputs";
+import { deletePersonalContactExamplePayload } from "../../examplePayloads";
+import { deletePersonalContactInputs } from "../../inputs";
+import { deletePersonalContactOutputSchema } from "../../outputSchemas";
 export const deletePersonalContact = action({
   display: {
     label: "Delete Personal Contact",
     description: "Removes a worker’s personal contact.",
   },
-  inputs: {
-    aoid,
-    personalContactId,
-    connection,
-  },
+  inputs: deletePersonalContactInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, aoid, personalContactId }) => {
     const axiosClient = await createClient(
       context,
@@ -41,7 +39,12 @@ export const deletePersonalContact = action({
       data,
     };
   },
-  examplePayload: {
-    data: deletePersonaContactResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => deletePersonalContactExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deletePersonalContactOutputSchema,
+  }),
+  examplePayload: deletePersonalContactExamplePayload,
 });

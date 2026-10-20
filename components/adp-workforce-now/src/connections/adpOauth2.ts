@@ -3,7 +3,8 @@ export const adpOauth2 = connection({
   key: "adpOauth2",
   display: {
     label: "OAuth 2.0",
-    description: "OAuth 2.0 connection for ADP Workforce Now",
+    description:
+      "Authenticate requests to ADP Workforce Now using OAuth 2.0 client credentials and a client certificate.",
   },
   inputs: {
     endpoint: {
@@ -32,7 +33,8 @@ export const adpOauth2 = connection({
       type: "string",
       required: true,
       shown: true,
-      comments: "The client ID for the project in the ADP Developer Portal",
+      comments:
+        "The client ID for the project in the [ADP Partner Self Service portal](https://partner-self-service.adp.com/).",
     },
     clientSecret: {
       label: "Client Secret",
@@ -40,34 +42,39 @@ export const adpOauth2 = connection({
       type: "password",
       required: true,
       shown: true,
-      comments: "The client secret for the project in the ADP Developer Portal",
+      comments:
+        "The client secret for the project in the [ADP Partner Self Service portal](https://partner-self-service.adp.com/).",
     },
     sslKey: {
       label: "Key File",
       placeholder: "Key File",
-      comments: "The key file generated from the ADP Developer Portal",
       type: "text",
       required: true,
       shown: true,
+      comments: "The key file generated from the ADP Developer Portal",
+      example:
+        "-----BEGIN PRIVATE KEY-----\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n-----END PRIVATE KEY-----",
     },
     sslCert: {
       label: "Certificate File",
       placeholder: "Certificate File",
-      comments:
-        "The certificate file (.pem) generated from the ADP Developer Portal",
       type: "text",
       required: true,
       shown: true,
+      comments:
+        "The certificate file (.pem) generated from the ADP Developer Portal",
+      example:
+        "-----BEGIN CERTIFICATE-----\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n-----END CERTIFICATE-----",
     },
     subscriberOrganizationOID: {
       label: "Subscriber Organization OID",
       placeholder: "Enter Organization OID",
-      comments:
-        "The organization OID (OOID) of the subscribed client. Only specify this if using a client ID and client secret for an organization different from the one being queried.",
-      example: "G3KSYTXAQH20T5ZS",
       type: "string",
       required: false,
       shown: true,
+      comments:
+        "The organization OID (OOID) of the subscribed client. Only specify this if using a client ID and client secret for an organization different from the one being queried.",
+      example: "G3KSYTXAQH20T5ZS",
     },
   },
 });

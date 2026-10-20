@@ -5,13 +5,19 @@ import FormData from "form-data";
 import _ from "lodash";
 import { addInterceptorsToClient, fetchToken } from "../../client";
 import { rawRequestInputs } from "../../inputs";
-import { getBaseUrl, toFormData, validateConnection } from "../../util";
+import {
+  getBaseUrl,
+  normalizeCertificateValue,
+  toFormData,
+  validateConnection,
+} from "../../util";
 export const rawRequest = action({
   display: {
     label: "Raw Request",
     description: "Send raw HTTP request to the ADP Workforce Now API",
   },
   inputs: rawRequestInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -48,8 +54,8 @@ export const rawRequest = action({
       responseType,
       timeout,
       httpsAgent: new https.Agent({
-        cert: util.types.toString(sslCert),
-        key: util.types.toString(sslKey),
+        cert: normalizeCertificateValue(sslCert),
+        key: normalizeCertificateValue(sslKey),
         rejectUnauthorized: true,
       }),
     });

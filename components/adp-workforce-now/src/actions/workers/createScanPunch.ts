@@ -1,18 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { createPunchResponse } from "../../examplePayloads";
-import { badgeID, clockingType, connection } from "../../inputs";
+import { createScanPunchExamplePayload } from "../../examplePayloads";
+import { createScanPunchInputs } from "../../inputs";
+import { createScanPunchOutputSchema } from "../../outputSchemas";
 export const createScanPunch = action({
   display: {
     label: "Create Scan/Punch",
     description:
       "Performs a scan punch operation where the first scan represents an “IN” punch and the next scan represents an “OUT” punch.",
   },
-  inputs: {
-    badgeID,
-    clockingType,
-    connection,
-  },
+  inputs: createScanPunchInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, badgeID, clockingType }) => {
     const axiosClient = await createClient(
       context,
@@ -58,7 +56,12 @@ export const createScanPunch = action({
     );
     return { data };
   },
-  examplePayload: {
-    data: createPunchResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createScanPunchExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createScanPunchOutputSchema,
+  }),
+  examplePayload: createScanPunchExamplePayload,
 });

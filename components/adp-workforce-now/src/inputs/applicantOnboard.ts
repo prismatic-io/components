@@ -1,8 +1,8 @@
 import { input } from "@prismatic-io/spectral";
 import { applicantOnboardingProcessPayload } from "../exampleInputs";
 import { cleanObject, cleanString } from "../util";
-import { connection } from "./common";
-export const contextTemplates = input({
+import { $filter, connection } from "./common";
+const contextTemplates = input({
   label: "Context Templates",
   type: "string",
   model: [
@@ -25,30 +25,30 @@ export const contextTemplates = input({
   placeholder: "Select context template",
   clean: cleanString,
 });
-export const applicantOnboarding = input({
+const applicantOnboarding = input({
   label: "Applicant Onboarding",
   type: "code",
   language: "json",
   required: true,
   comments:
-    "The applicant onboarding data, the example payload has a the structure of a minimal onboarding inprogress payload for a US Client applicant. Please refer to the docs to see examples from other countries and full list of fields",
+    "The applicant onboarding data as JSON. The example is a minimal in-progress onboarding payload for a US client applicant; refer to the ADP API documentation for payloads from other countries and the full list of fields.",
+  placeholder: "Enter applicant onboarding JSON",
   example: JSON.stringify(applicantOnboardingProcessPayload, null, 2),
   clean: cleanObject,
 });
-export const $filterOnboard = input({
-  label: "Filter",
-  type: "string",
-  required: false,
-  comments:
-    "Specifies an expression to filter onboarding metadata results. Use OData filter syntax to match specific template codes or criteria.",
-  placeholder:
-    "meta/applicantOnboarding/onboardingTemplateCode/code eq '{{onboardingTemplateCode}}'",
-  example:
-    "meta/applicantOnboarding/onboardingTemplateCode/code eq '{{onboardingTemplateCode}}'",
-  clean: cleanString,
-});
-export const createApplicantOnboardingInputs = {
-  connection,
+export const getApplicantOnboardMetadataInputs = {
   contextTemplates,
+  $filter: {
+    ...$filter,
+    comments:
+      "Specifies an expression to filter onboarding metadata results. Use OData filter syntax to match specific template codes or criteria.",
+    placeholder: "Enter filter expression",
+    example:
+      "meta/applicantOnboarding/onboardingTemplateCode/code eq '{{onboardingTemplateCode}}'",
+  },
+  connection,
+};
+export const postApplicantOnboardProcessInputs = {
   applicantOnboarding,
+  connection,
 };

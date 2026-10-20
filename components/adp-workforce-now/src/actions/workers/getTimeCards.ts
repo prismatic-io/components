@@ -1,24 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { geteTimeCardsResponse } from "../../examplePayloads";
-import { $expand, $filter, $skip, $top, aoid, connection } from "../../inputs";
+import { getTimeCardsExamplePayload } from "../../examplePayloads";
+import { getTimeCardsInputs } from "../../inputs";
+import { getTimeCardsOutputSchema } from "../../outputSchemas";
 export const getTimeCards = action({
   display: {
     label: "Get Time Cards",
     description:
       "Get a worker's team's timecards. That is all the time cards for the worker's team members. The worker is identified by workers/[aoid]",
   },
-  inputs: {
-    aoid,
-    $skip,
-    $top,
-    $filter,
-    $expand,
-    connection,
-  },
+  inputs: getTimeCardsInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, aoid, $filter, $skip, $top, $expand },
+    { connection, aoid, $filter, pagination, $expand },
   ) => {
     const axiosClient = await createClient(
       context,
@@ -31,14 +26,19 @@ export const getTimeCards = action({
         params: {
           $filter,
           $expand,
-          $skip,
-          $top,
+          $skip: pagination.$skip,
+          $top: pagination.$top,
         },
       },
     );
     return { data };
   },
-  examplePayload: {
-    data: geteTimeCardsResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => getTimeCardsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getTimeCardsOutputSchema,
+  }),
+  examplePayload: getTimeCardsExamplePayload,
 });

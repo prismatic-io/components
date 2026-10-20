@@ -1,16 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { listWorkersResponse } from "../../examplePayloads";
-import {
-  $count,
-  $filter,
-  $select,
-  $skip,
-  $top,
-  connection,
-  fetchAll,
-  queryParams,
-} from "../../inputs";
+import { listWorkersExamplePayload } from "../../examplePayloads";
+import { listWorkersInputs } from "../../inputs";
 import type { Worker } from "../../types";
 import { fetchAllRecords } from "../../util";
 export const listWorkers = action({
@@ -19,28 +10,11 @@ export const listWorkers = action({
     description:
       "Retrieves all available workers that the requester is authorized to view.",
   },
-  inputs: {
-    fetchAll,
-    $skip,
-    $top,
-    $count,
-    $filter,
-    $select,
-    queryParams,
-    connection,
-  },
+  inputs: listWorkersInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
-    {
-      connection,
-      $count,
-      fetchAll,
-      $filter,
-      queryParams,
-      $select,
-      $skip,
-      $top,
-    },
+    { connection, $count, fetchAll, $filter, queryParams, $select, pagination },
   ) => {
     const axiosClient = await createClient(
       context,
@@ -56,8 +30,8 @@ export const listWorkers = action({
         count: $count,
         $filter,
         $select,
-        $skip,
-        $top,
+        $skip: pagination.$skip,
+        $top: pagination.$top,
         ...queryParams,
       },
     );
@@ -69,7 +43,8 @@ export const listWorkers = action({
       },
     };
   },
-  examplePayload: {
-    data: listWorkersResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listWorkersExamplePayload,
+  examplePayload: listWorkersExamplePayload,
 });

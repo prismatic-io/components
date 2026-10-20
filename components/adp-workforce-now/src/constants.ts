@@ -1,4 +1,3 @@
-export const NO_CONTENT = "No Content";
 export const API_ENDPOINT = "https://api.adp.com/";
 export const TOKEN_ENDPOINT = "https://accounts.adp.com/auth/oauth/v2/token";
 export const API_ENDPOINTS = [
@@ -21,7 +20,7 @@ export const TOKEN_ENDPOINTS = [
     value: "https://uat-accounts.adp.com/auth/oauth/v2/token",
   },
 ];
-export const customTypesModel = [
+export const CUSTOM_FIELD_TYPES = [
   {
     label: "Amount",
     value: "amount",

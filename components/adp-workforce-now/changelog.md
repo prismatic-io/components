@@ -1,5 +1,18 @@
 ## Changelog
 
+### 2026-10-20
+
+Fixed **Fetch All** and certificate handling defects and improved action configuration:
+
+- Fixed **List Worker Demographics** with **Fetch All** enabled returning only the first 100 workers on accounts with 100 or more workers, and never finishing on accounts with fewer than 100
+- Fixed **List Workers** with **Fetch All** enabled and a **Filter** returning empty entries alongside the matching workers
+- Fixed the **Select Worker** data source failing with an error when a **Filter** is set
+- Fixed **Raw Request** failing the TLS handshake when the connection's **Key File** or **Certificate File** stores its line breaks as escaped newlines, which the other actions already accepted
+- Updated **List Workers**, **List Worker Demographics**, and **Get Time Cards** to group their **Skip** and **Top** inputs into **Pagination**; **Fetch All** stays a top-level toggle
+- Updated the **Select Worker** and **Select Personal Contact** data sources to no longer take the **Select** input
+- Added inline action calling support to 23 actions for improved example output during configuration
+- Added output schemas to 19 actions for improved field mapping during configuration
+
 ### 2026-05-05
 
 Added **New and Updated Records** polling trigger for detecting new records across supported resources:

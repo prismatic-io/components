@@ -1,23 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { addPersonalContactResponse } from "../../examplePayloads";
-import {
-  aoid,
-  connection,
-  personalContact,
-  personalContactId,
-} from "../../inputs";
+import { updatePersonalContactExamplePayload } from "../../examplePayloads";
+import { updatePersonalContactInputs } from "../../inputs";
+import { updatePersonalContactOutputSchema } from "../../outputSchemas";
 export const updatePersonalContact = action({
   display: {
     label: "Update Personal Contact",
     description: "Updates an existing worker’s personal contact",
   },
-  inputs: {
-    aoid,
-    personalContactId,
-    personalContact,
-    connection,
-  },
+  inputs: updatePersonalContactInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, aoid, personalContact, personalContactId },
@@ -53,7 +45,12 @@ export const updatePersonalContact = action({
       data,
     };
   },
-  examplePayload: {
-    data: addPersonalContactResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updatePersonalContactExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updatePersonalContactOutputSchema,
+  }),
+  examplePayload: updatePersonalContactExamplePayload,
 });

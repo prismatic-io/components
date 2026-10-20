@@ -5,7 +5,7 @@ For detailed information about ADP's OAuth implementation, refer to the [ADP Dev
 #### Prerequisites
 
 - An active ADP Workforce Now account
-- Access to the [Developer Self Service Portal](https://adpapps.adp.com/self-service)
+- Access to the [Developer Self Service Portal](https://partner-self-service.adp.com/)
 - Contact with an ADP client representative to obtain initial credentials
 - Ability to generate SSL certificate signing requests (CSR)
 
@@ -13,7 +13,7 @@ For detailed information about ADP's OAuth implementation, refer to the [ADP Dev
 
 1. Contact the ADP client representative to request access to the **Developer Self Service Portal** if not already available.
 
-2. Log in to the [Developer Self Service Portal](https://adpapps.adp.com/self-service).
+2. Log in to the [Developer Self Service Portal](https://partner-self-service.adp.com/).
 
 3. Create a new project to house the OAuth credentials:
    - Navigate to the projects section
@@ -40,8 +40,8 @@ After obtaining all required credentials and certificates, configure the connect
 
 | Field | Description |
 | ----- | ----------- |
-| **API Endpoint** | The ADP API endpoint URL. Select `api.adp.com` for production or `uat-api.adp.com` for testing/UAT environments. |
-| **Token Endpoint** | The token endpoint URL. Select `accounts.adp.com` for production or `uat-accounts.adp.com` for UAT environments. |
+| **API Endpoint** | The base URL of the ADP API. Defaults to `https://api.adp.com/`. Use `https://uat-api.adp.com/` for testing/UAT environments. |
+| **Token Endpoint** | The OAuth 2.0 token endpoint URL. Defaults to `https://accounts.adp.com/auth/oauth/v2/token`. Use `https://uat-accounts.adp.com/auth/oauth/v2/token` for UAT environments. |
 | **Client ID** | The Client ID from the **Development Credentials** tab in the Developer Portal. |
 | **Client Secret** | The Client Secret from the **Development Credentials** tab in the Developer Portal. |
 | **Key File** | The entire contents of the private key file (.key) generated from the certificate signing request. |

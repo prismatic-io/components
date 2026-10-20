@@ -1,18 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getApplicantOnboardMetadataResponse } from "../../examplePayloads";
-import { $filterOnboard, connection, contextTemplates } from "../../inputs";
+import { getApplicantOnboardMetadataExamplePayload } from "../../examplePayloads";
+import { getApplicantOnboardMetadataInputs } from "../../inputs";
+import { getApplicantOnboardMetadataOutputSchema } from "../../outputSchemas";
 export const getApplicantOnboardMetadata = action({
   display: {
     label: "Get Applicant Onboard Metadata",
     description:
       "Retrieves metadata for the applicant onboarding process, including available fields, templates, and configuration options.",
   },
-  inputs: {
-    contextTemplates,
-    $filter: $filterOnboard,
-    connection,
-  },
+  inputs: getApplicantOnboardMetadataInputs,
+  performSafety: "safe",
   perform: async (context, { connection, contextTemplates, $filter }) => {
     const axiosClient = await createClient(
       context,
@@ -29,7 +27,9 @@ export const getApplicantOnboardMetadata = action({
     });
     return { data };
   },
-  examplePayload: {
-    data: getApplicantOnboardMetadataResponse,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getApplicantOnboardMetadataOutputSchema,
+  }),
+  examplePayload: getApplicantOnboardMetadataExamplePayload,
 });

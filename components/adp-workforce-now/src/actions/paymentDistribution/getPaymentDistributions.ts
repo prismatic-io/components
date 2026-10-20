@@ -1,18 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getPaymentDistributionMetaResponse } from "../../examplePayloads";
-import { $filter, $select, aoid, connection } from "../../inputs";
+import { getPaymentDistributionsExamplePayload } from "../../examplePayloads";
+import { getPaymentDistributionsInputs } from "../../inputs";
+import { getPaymentDistributionsOutputSchema } from "../../outputSchemas";
 export const getPaymentDistributions = action({
   display: {
     label: "Get Worker Payment Distributions",
     description: "Returns a worker's pay distribution records",
   },
-  inputs: {
-    aoid,
-    $select,
-    $filter,
-    connection,
-  },
+  inputs: getPaymentDistributionsInputs,
+  performSafety: "safe",
   perform: async (context, { connection, $select, aoid, $filter }) => {
     const axiosClient = await createClient(
       context,
@@ -32,7 +29,9 @@ export const getPaymentDistributions = action({
       data,
     };
   },
-  examplePayload: {
-    data: getPaymentDistributionMetaResponse,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPaymentDistributionsOutputSchema,
+  }),
+  examplePayload: getPaymentDistributionsExamplePayload,
 });

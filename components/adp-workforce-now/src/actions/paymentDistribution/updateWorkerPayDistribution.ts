@@ -1,24 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getPaymentDistributionMetaResponse } from "../../examplePayloads";
-import {
-  aoid,
-  connection,
-  paymentDistribution,
-  workAssignmentId,
-} from "../../inputs";
+import { updateWorkerPayDistributionExamplePayload } from "../../examplePayloads";
+import { updateWorkerPayDistributionInputs } from "../../inputs";
+import { updateWorkerPayDistributionOutputSchema } from "../../outputSchemas";
 export const updateWorkerPayDistribution = action({
   display: {
     label: "Update Worker Pay Distribution",
     description:
       "Replaces an employee's existing Direct Deposit records with an updated collection",
   },
-  inputs: {
-    aoid,
-    workAssignmentId,
-    paymentDistribution,
-    connection,
-  },
+  inputs: updateWorkerPayDistributionInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, aoid, workAssignmentId, paymentDistribution },
@@ -52,7 +44,12 @@ export const updateWorkerPayDistribution = action({
       data,
     };
   },
-  examplePayload: {
-    data: getPaymentDistributionMetaResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateWorkerPayDistributionExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateWorkerPayDistributionOutputSchema,
+  }),
+  examplePayload: updateWorkerPayDistributionExamplePayload,
 });

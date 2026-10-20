@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanKeyValPair, cleanNumber, cleanString } from "../util";
 export const connection = input({
   label: "Connection",
@@ -6,12 +6,23 @@ export const connection = input({
   required: true,
   comments: "The ADP Workforce Now connection to use.",
 });
+export const aoid = input({
+  label: "Associate OID",
+  type: "string",
+  required: true,
+  comments: "The unique Associate OID identifier of the worker.",
+  placeholder: "Enter Associate OID",
+  example: "G3STHDEHFMJ3BY3N",
+  clean: cleanString,
+  dataSource: "selectWorker",
+});
 export const fetchAll = input({
   label: "Fetch All",
   type: "boolean",
   required: false,
+  default: "false",
   comments:
-    "When true, fetches all records using pagination and ignores parameters like $skip and $top.",
+    "When true, automatically fetches all pages of results using pagination. Ignores $skip and $top.",
   clean: util.types.toBool,
 });
 export const $count = input({
@@ -30,7 +41,7 @@ export const $count = input({
   required: false,
   default: "",
   comments:
-    "The OData $count parameter MUST be used to specify the total number criterion. This parameter can't be used with $top or $skip.",
+    "When true, the response includes the total number of records matching the query. Cannot be combined with $top or $skip.",
   clean: cleanString,
 });
 export const $filter = input({
@@ -39,7 +50,7 @@ export const $filter = input({
   required: false,
   comments:
     "Specifies an expression that an item must match to be included in a response. Various criteria could be combined using and/or operands and () to set the operand precedence. e.g. /mobileUserAccounts/associateOID eq 'G4O73G9Z62SL2NFM'",
-  placeholder: "/mobileUserAccounts/associateOID eq 'G4O73G9Z62SL2NFM'",
+  placeholder: "Enter filter expression",
   example: "/mobileUserAccounts/associateOID eq 'G4O73G9Z62SL2NFM'",
   clean: cleanString,
 });
@@ -72,6 +83,15 @@ export const $top = input({
   example: "10",
   clean: cleanNumber,
 });
+export const pagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Page-size and offset controls for paging through results.",
+  inputs: {
+    $skip,
+    $top,
+  },
+});
 export const $expand = input({
   label: "Expand",
   type: "string",
@@ -89,14 +109,6 @@ export const queryParams = input({
   required: false,
   comments:
     "The query parameters that will be appended to the URL. The parameters should be in key-value pairs.",
+  placeholder: "Enter query parameters",
   clean: cleanKeyValPair,
 });
-export const paginationInputs = { fetchAll };
-export const odataQueryInputs = {
-  $count,
-  $filter,
-  $select,
-  $skip,
-  $top,
-  $expand,
-};

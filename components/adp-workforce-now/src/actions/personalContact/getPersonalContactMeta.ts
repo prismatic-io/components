@@ -1,17 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getPersonalContactMetaResponse } from "../../examplePayloads";
-import { $select, aoid, connection } from "../../inputs";
+import { getPersonalContactMetaExamplePayload } from "../../examplePayloads";
+import { getPersonalContactMetaInputs } from "../../inputs";
+import { getPersonalContactMetaOutputSchema } from "../../outputSchemas";
 export const getPersonalContactMeta = action({
   display: {
     label: "Get Personal Contact Meta",
     description: "Returns a personal contact metadata",
   },
-  inputs: {
-    aoid,
-    $select,
-    connection,
-  },
+  inputs: getPersonalContactMetaInputs,
+  performSafety: "safe",
   perform: async (context, { connection, $select, aoid }) => {
     const axiosClient = await createClient(
       context,
@@ -30,7 +28,9 @@ export const getPersonalContactMeta = action({
       data,
     };
   },
-  examplePayload: {
-    data: getPersonalContactMetaResponse,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getPersonalContactMetaOutputSchema,
+  }),
+  examplePayload: getPersonalContactMetaExamplePayload,
 });

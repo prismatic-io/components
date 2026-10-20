@@ -1,16 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getApplicantOnboardMetadataResponse } from "../../examplePayloads";
-import { applicantOnboarding, connection } from "../../inputs";
+import { postApplicantOnboardProcessExamplePayload } from "../../examplePayloads";
+import { postApplicantOnboardProcessInputs } from "../../inputs";
+import { postApplicantOnboardProcessOutputSchema } from "../../outputSchemas";
 export const postApplicantOnboardProcess = action({
   display: {
     label: "Post Applicant Onboard Process",
     description: "Manage data related to the applicant onboarding request.",
   },
-  inputs: {
-    applicantOnboarding,
-    connection,
-  },
+  inputs: postApplicantOnboardProcessInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, applicantOnboarding }) => {
     const axiosClient = await createClient(
       context,
@@ -22,7 +21,12 @@ export const postApplicantOnboardProcess = action({
     });
     return { data };
   },
-  examplePayload: {
-    data: getApplicantOnboardMetadataResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => postApplicantOnboardProcessExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: postApplicantOnboardProcessOutputSchema,
+  }),
+  examplePayload: postApplicantOnboardProcessExamplePayload,
 });

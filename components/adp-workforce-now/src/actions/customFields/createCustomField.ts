@@ -1,25 +1,14 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { createCustomFieldResponse } from "../../examplePayloads";
-import {
-  aoid,
-  connection,
-  customFieldGroup,
-  customFieldTypes,
-  itemId,
-} from "../../inputs";
+import { createCustomFieldExamplePayload } from "../../examplePayloads";
+import { createCustomFieldInputs } from "../../inputs";
 export const createCustomField = action({
   display: {
     label: "Create Custom Field",
     description: "Create a new custom field type",
   },
-  inputs: {
-    aoid,
-    itemId,
-    customFieldTypes,
-    customFieldGroup,
-    connection,
-  },
+  inputs: createCustomFieldInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, customFieldTypes, aoid, customFieldGroup, itemId },
@@ -65,7 +54,8 @@ export const createCustomField = action({
     );
     return { data };
   },
-  examplePayload: {
-    data: createCustomFieldResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createCustomFieldExamplePayload,
+  examplePayload: createCustomFieldExamplePayload,
 });

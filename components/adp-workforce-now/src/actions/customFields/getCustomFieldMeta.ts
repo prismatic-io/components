@@ -1,17 +1,14 @@
 import { action } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { getCustomFieldMetaResponse } from "../../examplePayloads";
-import { $filter, connection, customFieldTypes } from "../../inputs";
+import { getCustomFieldMetaExamplePayload } from "../../examplePayloads";
+import { getCustomFieldMetaInputs } from "../../inputs";
 export const getCustomFieldMeta = action({
   display: {
     label: "Get Custom Field Meta",
     description: "Retrieve a custom field meta",
   },
-  inputs: {
-    customFieldTypes,
-    $filter,
-    connection,
-  },
+  inputs: getCustomFieldMetaInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, $filter, customFieldTypes }) => {
     const axiosClient = await createClient(
       context,
@@ -28,7 +25,8 @@ export const getCustomFieldMeta = action({
     );
     return { data };
   },
-  examplePayload: {
-    data: getCustomFieldMetaResponse,
-  },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => getCustomFieldMetaExamplePayload,
+  examplePayload: getCustomFieldMetaExamplePayload,
 });
