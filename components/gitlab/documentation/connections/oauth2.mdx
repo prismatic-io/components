@@ -1,0 +1,46 @@
+To connect to GitLab using OAuth 2.0, register an OAuth application in GitLab. Each user then authorizes the integration with their own GitLab account. This works for GitLab.com and for self-managed instances; see [Configure GitLab as an OAuth 2.0 authentication identity provider](https://docs.gitlab.com/integration/oauth_provider/).
+
+#### Prerequisites
+
+- A GitLab account that can create OAuth applications (user-owned, group-owned, or, on self-managed, instance-wide as an administrator)
+
+#### Setup Steps
+
+1. In GitLab, open the application settings:
+   - User-owned application: select the avatar in the upper-right corner, then **Edit profile** > **Access** > **Applications**
+   - Group-owned application: open the group, then **Settings** > **Applications**
+   - Instance-wide application (self-managed, administrator): select **Admin** in the upper-right corner, then **Applications**
+2. Enter a name for the application
+3. Enter <OauthCallbackUrl /> as the **Redirect URI**
+4. Select the **api** scope, or **read_api** for an integration that only reads data
+5. Select **Save application** and copy the **Application ID** and **Secret**
+
+#### Configure the Connection
+
+- Enter the **Application ID** as **Client ID** and the **Secret** as **Client Secret**
+- For **Scopes**, use the same value selected in the application:
+  ```
+  api
+  ```
+- For a self-managed instance, replace `gitlab.com` with the instance's host in **GitLab URL**, **Authorize URL**, and **Token URL**
+- If the instance's certificate is signed by an internal certificate authority, paste that authority's PEM-encoded certificate into **CA Certificate**. This applies to direct and on-prem connections alike
+
+:::warning[Ignore SSL Errors Disables Certificate Validation]
+**Ignore SSL Errors** turns off TLS certificate validation entirely. Use it only when a CA Certificate cannot be supplied, and supply one instead whenever possible.
+:::
+
+GitLab issues a new refresh token on every refresh and invalidates the old one. The connection stores the replacement automatically; see [OAuth 2.0 identity provider API](https://docs.gitlab.com/api/oauth2/).
+
+### On-Prem Connections
+
+To reach a self-managed GitLab instance on a private network, route this connection through the on-prem agent. The agent runs inside the network and makes only outbound connections (ports 22 and 443), so no inbound firewall ports need to be opened and the instance does not need to be exposed to the internet.
+
+1. Install the on-prem agent on a machine with Docker inside the private network that can reach the GitLab instance. Set **APP_HOST** to the instance's hostname or IP address and **APP_PORT** to its HTTPS port (usually `443`). `localhost` and `127.0.0.1` refer to the agent's own container, so for a service on the same machine use `host.docker.internal`
+2. In the integration's config wizard, open this connection and select **Allow On-Prem Connections**
+3. When configuring the instance, turn on **Use On-Prem Connection** and select the on-prem agent's connection
+4. Enter the instance's own URL in **GitLab URL**, such as `https://gitlab.internal.example.com`, not the agent's address. Requests travel through the agent, but the TLS certificate is validated against this URL's hostname
+5. If the instance's certificate is signed by an internal certificate authority, paste that authority's PEM-encoded certificate into **CA Certificate**
+
+Users who authorize the connection must be able to reach the **Authorize URL** from their browser, and **Token URL** must be reachable from the platform, which exchanges the authorization code and refreshes tokens.
+
+**GitLab URL** can use `http` only through the on-prem agent. A direct connection requires `https`.

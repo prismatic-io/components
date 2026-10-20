@@ -1,0 +1,75 @@
+The **Webhook Events** trigger receives events from GitLab projects, and creates and removes the project webhooks itself.
+
+#### How It Works
+
+**On Instance Deploy**, the trigger generates a secret for the instance and, in each selected project, creates a webhook for the flow's URL with the selected **Events** and **Branch Filter**. A webhook that already points at the flow's URL is updated in place rather than duplicated. On a redeploy, webhooks are updated to the new settings, and webhooks in projects that are no longer selected are removed. If creating a webhook fails in one project, the webhooks created during that deploy are removed, so a partial failure leaves no newly created webhook behind.
+
+**On Instance Deletion**, the trigger removes every webhook that points at the flow's URL in the selected projects.
+
+Managing webhooks requires the **Maintainer** or **Owner** role in each project. The trigger uses project webhooks, which are available on every GitLab tier.
+
+Each request is checked against the instance's secret, which GitLab sends in the `X-Gitlab-Token` header, and a request that does not match is rejected. The trigger branches by event type; see **Event Types** below.
+
+**Network Requirement**
+
+GitLab delivers events by calling the flow's public webhook URL, so the GitLab instance must be able to make outbound HTTPS requests to it. For a self-managed instance on a private network, that is outbound traffic from the network; the on-prem agent carries requests into the network, not events out of it. If the instance restricts outgoing webhook requests, an administrator may need to allow the destination ([Webhooks security](https://docs.gitlab.com/security/webhooks/)). Where outbound requests are not permitted, use **New and Updated Records** instead.
+
+GitLab temporarily disables a webhook after 4 consecutive failed deliveries and permanently after 40 ([Webhooks](https://docs.gitlab.com/user/project/integrations/webhooks/)).
+
+#### Event Types
+
+The trigger branches by the `X-Gitlab-Event` header. Events not listed here arrive on the **Other** branch. See [Webhook events](https://docs.gitlab.com/user/project/integrations/webhook_events/) for each event's payload.
+
+<details>
+<summary>Available Events (12)</summary>
+
+| `X-Gitlab-Event` | Branch | Description |
+|---|---|---|
+| `Push Hook` | **Push** | Commits pushed to a branch |
+| `Tag Push Hook` | **Tag Push** | A tag created or deleted |
+| `Issue Hook` | **Issue** | An issue created, updated, closed, or reopened |
+| `Confidential Issue Hook` | **Confidential Issue** | The same as Issue, for a confidential issue |
+| `Note Hook` | **Note** | A comment added to an issue, merge request, commit, or snippet |
+| `Confidential Note Hook` | **Confidential Note** | The same as Note, for a comment on a confidential issue |
+| `Merge Request Hook` | **Merge Request** | A merge request opened, updated, merged, closed, or approved |
+| `Pipeline Hook` | **Pipeline** | A pipeline's status changed |
+| `Job Hook` | **Job** | A CI/CD job's status changed |
+| `Release Hook` | **Release** | A release created, updated, or deleted |
+| `Deployment Hook` | **Deployment** | A deployment started, succeeded, failed, or was canceled |
+| `Milestone Hook` | **Milestone** | A milestone created, closed, reopened, or deleted |
+
+</details>
+
+#### Returned Data
+
+The trigger returns the request GitLab sent, with the event body at `body.data` and the `X-Gitlab-Token` header removed after verification; see [Webhook events](https://docs.gitlab.com/user/project/integrations/webhook_events/) for the body of each event type. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "object_kind": "push",
+  "event_name": "push",
+  "ref": "refs/heads/feature/CU-86b1x2-ach-retry",
+  "checkout_sha": "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
+  "user_username": "jdoe",
+  "project_id": 278964,
+  "project": {
+    "id": 278964,
+    "path_with_namespace": "acme/payments-service",
+    "default_branch": "main"
+  },
+  "commits": [
+    {
+      "id": "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
+      "title": "CU-86b1x2 Add ACH settlement retry",
+      "timestamp": "2026-09-26T11:58:00Z",
+      "author": { "name": "Jane Doe", "email": "jdoe@example.com" }
+    }
+  ],
+  "total_commits_count": 1
+}
+```
+
+</details>

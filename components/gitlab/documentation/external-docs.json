@@ -1,0 +1,10 @@
+[
+  {
+    "label": "API Docs",
+    "href": "https://docs.gitlab.com/api/rest/"
+  },
+  {
+    "label": "API Changelog",
+    "href": "https://docs.gitlab.com/api/rest/deprecations/"
+  }
+]

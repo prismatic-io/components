@@ -1,0 +1,70 @@
+The **Webhook** trigger receives events from a webhook configured manually in GitLab. For webhooks the instance creates and removes automatically, use **Webhook Events** instead.
+
+#### How It Works
+
+1. In GitLab, open the project and select **Settings** > **Webhooks** > **Add new webhook**
+2. Enter the flow's webhook URL as the **URL**
+3. Enter a random string as the **Secret token**, and enter the same value in the trigger's **Secret Token** input
+4. Select the events to send and save the webhook
+
+GitLab sends the secret token as plain text in the `X-Gitlab-Token` header ([Webhooks](https://docs.gitlab.com/user/project/integrations/webhooks/)). Newer GitLab versions also offer an HMAC **Signing token**; this trigger verifies the **Secret token** only, so configure the webhook with a secret token. When **Secret Token** is set, the trigger compares the header to it in constant time and rejects any request that does not match. When it is empty, every request is accepted.
+
+The trigger branches by event type; see **Event Types** below.
+
+#### Event Types
+
+The trigger branches by the `X-Gitlab-Event` header. Events not listed here arrive on the **Other** branch. See [Webhook events](https://docs.gitlab.com/user/project/integrations/webhook_events/) for each event's payload.
+
+<details>
+<summary>Available Events (12)</summary>
+
+| `X-Gitlab-Event` | Branch | Description |
+|---|---|---|
+| `Push Hook` | **Push** | Commits pushed to a branch |
+| `Tag Push Hook` | **Tag Push** | A tag created or deleted |
+| `Issue Hook` | **Issue** | An issue created, updated, closed, or reopened |
+| `Confidential Issue Hook` | **Confidential Issue** | The same as Issue, for a confidential issue |
+| `Note Hook` | **Note** | A comment added to an issue, merge request, commit, or snippet |
+| `Confidential Note Hook` | **Confidential Note** | The same as Note, for a comment on a confidential issue |
+| `Merge Request Hook` | **Merge Request** | A merge request opened, updated, merged, closed, or approved |
+| `Pipeline Hook` | **Pipeline** | A pipeline's status changed |
+| `Job Hook` | **Job** | A CI/CD job's status changed |
+| `Release Hook` | **Release** | A release created, updated, or deleted |
+| `Deployment Hook` | **Deployment** | A deployment started, succeeded, failed, or was canceled |
+| `Milestone Hook` | **Milestone** | A milestone created, closed, reopened, or deleted |
+
+</details>
+
+#### Returned Data
+
+The trigger returns the request GitLab sent, with the event body at `body.data` and the `X-Gitlab-Token` header removed after verification. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "object_kind": "push",
+  "event_name": "push",
+  "ref": "refs/heads/feature/CU-86b1x2-ach-retry",
+  "checkout_sha": "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
+  "user_username": "jdoe",
+  "project_id": 278964,
+  "project": {
+    "id": 278964,
+    "path_with_namespace": "acme/payments-service",
+    "default_branch": "main"
+  },
+  "commits": [
+    {
+      "id": "8d2f5c7a9b1e3f4d6c8a0b2e4f6a8c0d2e4f6a8c",
+      "title": "CU-86b1x2 Add ACH settlement retry",
+      "timestamp": "2026-09-26T11:58:00Z",
+      "author": { "name": "Jane Doe", "email": "jdoe@example.com" }
+    }
+  ],
+  "total_commits_count": 1
+}
+```
+
+</details>

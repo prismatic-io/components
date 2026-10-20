@@ -1,0 +1,86 @@
+import {
+  bool,
+  deletedSchema,
+  list,
+  nullable,
+  nullableBool,
+  nullableNum,
+  nullableStr,
+  num,
+  obj,
+  referencesSchema,
+  str,
+  strArray,
+  strEnum,
+  userSchema,
+} from "./shared";
+export const issueMilestoneSchema = nullable(
+  obj({
+    id: num,
+    iid: num,
+    project_id: num,
+    title: str,
+    description: nullableStr,
+    state: str,
+    due_date: nullableStr,
+    created_at: str,
+    updated_at: str,
+    closed_at: nullableStr,
+  }),
+);
+export const issueSchema = obj({
+  id: num,
+  iid: num,
+  project_id: num,
+  title: str,
+  description: nullableStr,
+  state: strEnum("opened", "closed"),
+  type: str,
+  issue_type: str,
+  severity: str,
+  confidential: bool,
+  discussion_locked: nullableBool,
+  created_at: str,
+  updated_at: str,
+  closed_at: nullableStr,
+  closed_by: nullable(userSchema),
+  due_date: nullableStr,
+  labels: strArray,
+  milestone: issueMilestoneSchema,
+  author: userSchema,
+  assignees: list(userSchema),
+  upvotes: num,
+  downvotes: num,
+  merge_requests_count: num,
+  subscribed: bool,
+  user_notes_count: num,
+  imported: bool,
+  imported_from: nullableStr,
+  web_url: str,
+  references: referencesSchema,
+  time_stats: obj({
+    time_estimate: num,
+    total_time_spent: num,
+    human_time_estimate: nullableStr,
+    human_total_time_spent: nullableStr,
+  }),
+  task_completion_status: obj({ count: num, completed_count: num }),
+  _links: obj({
+    self: str,
+    notes: str,
+    award_emoji: str,
+    project: str,
+    closed_as_duplicate_of: nullableStr,
+  }),
+  weight: nullableNum,
+  epic: nullable(
+    obj({ id: num, iid: num, title: str, url: str, group_id: num }),
+  ),
+  health_status: nullableStr,
+});
+export const issueListSchema = list(issueSchema);
+export const createIssueOutputSchema = issueSchema;
+export const getIssueOutputSchema = issueSchema;
+export const listIssuesOutputSchema = issueListSchema;
+export const updateIssueOutputSchema = issueSchema;
+export const deleteIssueOutputSchema = deletedSchema;

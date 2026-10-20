@@ -1,0 +1,26 @@
+{
+  "name": "@prismatic-io/gitlab",
+  "private": true,
+  "scripts": {
+    "lint": "biome check --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
+    "publish": "npm run build && prism components:publish",
+    "test": "vitest run",
+    "test:live": "vitest run --config vitest.live.config.ts"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.34.1",
+    "axios": "1.20.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26",
+    "nock": "14.0.5",
+    "selfsigned": "5.5.0",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
+  }
+}
