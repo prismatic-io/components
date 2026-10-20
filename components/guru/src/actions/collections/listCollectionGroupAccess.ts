@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { listCollectionGroupAccessInputs } from "../../inputs";
 import { listCollectionGroupAccessPayload } from "../../examplePayloads";
+import { listCollectionGroupAccessInputs } from "../../inputs";
 export const listCollectionGroupAccess = action({
   display: {
     label: "List Collection Group Access",

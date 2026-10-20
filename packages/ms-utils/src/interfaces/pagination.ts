@@ -1,4 +1,4 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { BoundaryHttpClient as HttpClient } from "./boundary";
 export interface ODataResponse<T = unknown> {
   value: T[];
   "@odata.nextLink"?: string;

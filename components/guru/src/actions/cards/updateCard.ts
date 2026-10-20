@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { updateCardInputs } from "../../inputs";
 import { updateCardPayload } from "../../examplePayloads";
+import { updateCardInputs } from "../../inputs";
 export const updateCard = action({
   display: {
     label: "Update Card",

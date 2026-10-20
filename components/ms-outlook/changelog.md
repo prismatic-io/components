@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-20
+
+- Added opt-in batching to the **New and Updated Messages** trigger, dispatching each changed message individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input to the **New and Updated Messages** trigger for performing an initial sync. The initial sync begins on the first recurrence and seeds each message created or updated on or after the specified date once, ignoring the visibility filters. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-07-21
 
 Grouped the **Page Limit** and **Page Skip** inputs into a single **Pagination** structured object on the **List Events**, **List Mail Messages**, **List Calendars**, and **List Mail Folders** actions

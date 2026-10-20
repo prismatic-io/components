@@ -539,8 +539,24 @@ export interface ItemLedgerEntry {
 }
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
+  backfillActive?: boolean;
+  nextLink?: string;
+  streamStartedAt?: string;
+  streamQuery?: string;
+}
+export interface PollingStream {
+  streamStartedAt: string;
+  nextLink?: string;
 }
 export interface BusinessCentralRecord extends Record<string, unknown> {
   id?: string;
   lastModifiedDateTime?: string;
+}
+export interface PollingChangesObject {
+  created?: BusinessCentralRecord[];
+  updated?: BusinessCentralRecord[];
+}
+export interface PollingRecordChange {
+  changeType: "created" | "updated";
+  record: BusinessCentralRecord;
 }

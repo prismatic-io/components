@@ -25,3 +25,11 @@ export interface PagerDutyIncident {
   last_status_change_at?: string;
   [key: string]: unknown;
 }
+export interface PagerDutyChangesObject {
+  created?: PagerDutyIncident[];
+  updated?: PagerDutyIncident[];
+}
+export interface PagerDutyRecordChange {
+  changeType: "created" | "updated";
+  record: PagerDutyIncident;
+}

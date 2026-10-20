@@ -1,4 +1,5 @@
 import type { MapModel } from "./interfaces";
+export const DEFAULT_BATCH_SIZE = 50;
 export const DATA_CENTERS: MapModel[] = [
   {
     label: "United States",

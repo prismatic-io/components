@@ -28,3 +28,11 @@ export interface SmartsheetSheet extends Record<string, unknown> {
   createdAt?: string;
   modifiedAt?: string;
 }
+export interface SmartsheetChangesObject {
+  created?: SmartsheetSheet[];
+  updated?: SmartsheetSheet[];
+}
+export interface SmartsheetRecordChange {
+  changeType: "created" | "updated";
+  record: SmartsheetSheet;
+}

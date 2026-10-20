@@ -2,28 +2,44 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { createProjectsClient } from "../client";
 import {
   CREATED_AT_FIELD,
+  DEFAULT_BATCH_SIZE,
   PROJECTS_ENDPOINT,
   UPDATED_AT_FIELD,
 } from "../constants";
-import { buildPollingFilter } from "../helper";
+import { buildPollingFilter, resolvePollingRecordChanges } from "../helper";
 import { pollChangesInputs } from "../inputs/polling";
 import type {
+  MsProjectChangesObject,
   MsProjectListResponse,
   MsProjectRecord,
+  MsProjectRecordChange,
   PollingState,
 } from "../types";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Projects",
     description:
-      "Checks for new and updated projects in Microsoft Project on a configured schedule.",
+      "Retrieves existing and ongoing projects from Microsoft Project. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): MsProjectRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as MsProjectChangesObject),
+  },
   async perform(context, payload, params) {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
-    const lastPolledAt = state?.lastPolledAt ?? now;
-    if (!params.showNewRecords && !params.showUpdatedRecords) {
+    const isInitialSync = !state?.lastPolledAt && Boolean(params.lookBackDate);
+    const lastPolledAt =
+      state?.lastPolledAt ??
+      (params.lookBackDate ? new Date(params.lookBackDate).toISOString() : now);
+    if (
+      !params.showNewRecords &&
+      !params.showUpdatedRecords &&
+      !isInitialSync
+    ) {
       context.polling.setState({ lastPolledAt: now });
       return {
         payload: { ...payload, body: { data: { created: [], updated: [] } } },
@@ -38,8 +54,8 @@ export const pollChangesTrigger = pollingTrigger({
       CREATED_AT_FIELD,
       UPDATED_AT_FIELD,
       lastPolledAt,
-      params.showNewRecords,
-      params.showUpdatedRecords,
+      isInitialSync || params.showNewRecords,
+      isInitialSync || params.showUpdatedRecords,
     );
     const { data } = await client.get<MsProjectListResponse<MsProjectRecord>>(
       PROJECTS_ENDPOINT,
@@ -62,8 +78,10 @@ export const pollChangesTrigger = pollingTrigger({
       const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
       const isUpdated =
         !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
-      if (isNew && params.showNewRecords) created.push(record);
-      else if (isUpdated && params.showUpdatedRecords) updated.push(record);
+      if (isNew && (isInitialSync || params.showNewRecords))
+        created.push(record);
+      else if (isUpdated && (isInitialSync || params.showUpdatedRecords))
+        updated.push(record);
     }
     const totalMatched = created.length + updated.length;
     context.logger.debug(

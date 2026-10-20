@@ -7,7 +7,7 @@ export const selectIncident = dataSource({
     description: "Retrieve and select an incident.",
   },
   dataSourceType: "picklist",
-  perform: async (context, { connection }) => {
+  perform: async (_context, { connection }) => {
     const client = createClient(connection);
     const {
       data: { incidents },

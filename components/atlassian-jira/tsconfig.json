@@ -7,9 +7,10 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strictNullChecks": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", ".spectral/*"]
 }

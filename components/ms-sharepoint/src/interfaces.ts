@@ -32,6 +32,16 @@ export interface DriveResponse {
 export interface DriveDeltaResponse extends DriveResponse {
   "@odata.deltaLink": string;
 }
+export interface DriveDeltaPage extends DriveResponse {
+  "@odata.deltaLink"?: string;
+}
+export interface DeltaCursor extends Record<string, unknown> {
+  nextLink: string;
+}
+export interface SiteDeltaCursor extends Record<string, unknown> {
+  remaining: string[];
+  nextLink?: string;
+}
 export interface PaginateOptions {
   returnFullData?: boolean;
   useTop?: boolean;
@@ -57,6 +67,10 @@ export interface PollSiteChangesSeparatedChanges {
 }
 export interface PollSiteChangesResult {
   [key: string]: PollSiteChangesSeparatedChanges;
+}
+export interface PollingRecordChange {
+  changeType: "deleted" | "added" | "updated" | "moved";
+  record: DriveItem;
 }
 export interface PollingState {
   [key: string]: string;

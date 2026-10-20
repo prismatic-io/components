@@ -7,6 +7,7 @@ import {
 import type { GraphQLClient } from "graphql-request";
 import connections from "../connections";
 import {
+  LOOK_BACK_DATE_PATTERN,
   MAX_POLL_PAGES,
   POLL_PAGE_SIZE,
   POLL_RESOURCE_CONFIG,
@@ -16,6 +17,10 @@ import type { ComponentNode } from "../types/ComponentNode";
 import type { DuroRecord } from "../types/DuroRecord";
 import type { ListComponentsResponse } from "../types/ListComponentsResponse";
 import type { PollConnection } from "../types/PollConnection";
+import type { PollingChangesObject } from "../types/PollingChangesObject";
+import type { PollingRecordChange } from "../types/PollingRecordChange";
+import type { PollingState } from "../types/PollingState";
+import type { PollingStream } from "../types/PollingStream";
 export const validateConnection = (connection: Connection): void => {
   const connectionKeys = connections.map((c) => c.key);
   if (!connectionKeys.includes(connection.key)) {
@@ -111,12 +116,14 @@ export const fetchAllSince = async (
   resourceType: string,
   lastPolledAt: string,
   options: {
+    after?: string;
     debug?: boolean;
     logger?: ActionLogger;
   } = {},
 ): Promise<{
   records: DuroRecord[];
   truncated: boolean;
+  endCursor?: string;
 }> => {
   const config = POLL_RESOURCE_CONFIG[resourceType];
   if (!config) {
@@ -125,7 +132,7 @@ export const fetchAllSince = async (
   const { debug, logger } = options;
   const lastPolledAtDate = new Date(lastPolledAt);
   const records: DuroRecord[] = [];
-  let after: string | undefined;
+  let after: string | undefined = options.after;
   let page = 0;
   while (page < MAX_POLL_PAGES) {
     page += 1;
@@ -156,8 +163,138 @@ export const fetchAllSince = async (
   }
   if (debug && logger) {
     logger.warn(
-      `Reached MAX_POLL_PAGES (${MAX_POLL_PAGES}) while polling ${resourceType}; results truncated. Holding the polling cursor so the remaining older records are fetched on the next poll.`,
+      `Reached MAX_POLL_PAGES (${MAX_POLL_PAGES}) while polling ${resourceType}; results truncated. The next poll resumes from the held cursor.`,
     );
   }
-  return { records, truncated: true };
+  return { records, truncated: true, endCursor: after };
+};
+export const resolvePollingStart = (
+  state: PollingState | undefined,
+  lookBackDate: string | undefined,
+  now: string,
+): {
+  since: string;
+  isBackfill: boolean;
+} => ({
+  since: state?.lastPolledAt ?? (lookBackDate || now),
+  isBackfill:
+    state?.backfillActive === true ||
+    (!state?.lastPolledAt && Boolean(lookBackDate)),
+});
+export const resolvePollingStream = (
+  state: PollingState | undefined,
+  resourceType: string,
+  now: string,
+): PollingStream => {
+  const resumable =
+    Boolean(state?.endCursor) &&
+    Boolean(state?.streamStartedAt) &&
+    state?.pollResourceType === resourceType;
+  return resumable
+    ? {
+        streamStartedAt: state?.streamStartedAt as string,
+        endCursor: state?.endCursor,
+      }
+    : { streamStartedAt: now };
+};
+export const nextPollingState = (
+  round: {
+    lastPolledAt: string;
+    stream: PollingStream;
+    resourceType: string;
+    isBackfill: boolean;
+  },
+  endCursor: string | undefined,
+): PollingState =>
+  endCursor
+    ? {
+        lastPolledAt: round.lastPolledAt,
+        endCursor,
+        streamStartedAt: round.stream.streamStartedAt,
+        pollResourceType: round.resourceType,
+        ...(round.isBackfill ? { backfillActive: true } : {}),
+      }
+    : { lastPolledAt: round.stream.streamStartedAt };
+export const lookBackDateClean = (value: unknown): string => {
+  if (
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim() === "")
+  ) {
+    return "";
+  }
+  const raw = typeof value === "string" ? value.trim() : String(value);
+  const match =
+    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  if (!match) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  const [, yearStr, monthStr, dayStr] = match;
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  if (parsed.getTime() > Date.now()) {
+    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  }
+  return parsed.toISOString();
+};
+export const classifyRecords = (
+  records: DuroRecord[],
+  lastPolledAt: string,
+  options: {
+    showNewRecords?: boolean;
+    showUpdatedRecords?: boolean;
+    isBackfill: boolean;
+  },
+): Required<PollingChangesObject> => {
+  const lastPolledAtDate = new Date(lastPolledAt);
+  const created: DuroRecord[] = [];
+  const updated: DuroRecord[] = [];
+  for (const record of records) {
+    const createdDate =
+      typeof record.created === "string" ? new Date(record.created) : null;
+    const lastModifiedDate =
+      typeof record.lastModified === "string"
+        ? new Date(record.lastModified)
+        : null;
+    const isNew = createdDate !== null && createdDate > lastPolledAtDate;
+    const isUpdated =
+      !isNew &&
+      lastModifiedDate !== null &&
+      lastModifiedDate > lastPolledAtDate;
+    if (isNew && (options.isBackfill || options.showNewRecords)) {
+      created.push(record);
+    } else if (
+      isUpdated &&
+      (options.isBackfill || options.showUpdatedRecords)
+    ) {
+      updated.push(record);
+    }
+  }
+  return { created, updated };
+};
+export const resolveRecordChanges = (
+  data: PollingChangesObject | undefined,
+): PollingRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

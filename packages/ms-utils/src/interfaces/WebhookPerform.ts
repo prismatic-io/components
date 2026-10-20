@@ -1,10 +1,10 @@
+import type { Connection } from "@prismatic-io/spectral";
 import type {
-  Connection,
-  HttpResponse,
-  TriggerPayload,
-} from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { ActionContext } from "@prismatic-io/spectral/dist/serverTypes";
+  BoundaryActionContext as ActionContext,
+  BoundaryTriggerPayload,
+  BoundaryHttpClient as HttpClient,
+  BoundaryHttpResponse as HttpResponse,
+} from "./boundary";
 export interface SubscriptionNotification {
   subscriptionId: string;
   subscriptionExpirationDateTime: string;
@@ -40,8 +40,10 @@ export interface CreateMsWebhookPerformOptions {
   renewalExpirationMinutes: number;
   fetchResourceData?: ResourceFetchCallback;
 }
-export interface WebhookPerformResult {
-  payload: TriggerPayload;
+export interface WebhookPerformResult<
+  TPayload extends BoundaryTriggerPayload = BoundaryTriggerPayload,
+> {
+  payload: TPayload;
   response: HttpResponse;
   branch: string;
   crossFlowState?: Record<string, unknown>;

@@ -1,5 +1,11 @@
 ## Changelog
 
+### 2026-10-20
+
+- Added opt-in batching to the **New and Updated CRM Contacts** and **New and Updated CRM Leads** triggers, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added opt-in batching to the **New and Updated Books Contacts** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input to the **New and Updated CRM Contacts**, **New and Updated CRM Leads**, and **New and Updated Books Contacts** triggers for performing an initial sync of records. The initial sync begins on the first recurrence and backfills every record modified on or after the specified date, seeding each once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+
 ### 2026-08-21
 
 Updated the **New and Updated CRM Leads**, **New and Updated CRM Contacts**, and **New and Updated Books Contacts** polling triggers to filter records server-side by their last modified time, so each poll returns only records changed since the previous poll instead of the entire dataset, reducing API-credit consumption

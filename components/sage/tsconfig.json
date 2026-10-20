@@ -2,19 +2,12 @@
   "compilerOptions": {
     "target": "es6",
     "lib": ["esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": false,
-    "strictNullChecks": true,
-    "noImplicitAny": true
+    "moduleResolution": "bundler",
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src"],
-  "exclude": ["src/**/*.test.ts"]
+  "include": ["src", ".spectral/*"]
 }

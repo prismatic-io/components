@@ -107,3 +107,43 @@ export interface BooksGetRecordsPerformInput {
   fetchAll?: boolean;
   ifModifiedSince?: string;
 }
+export interface CRMChangesObject {
+  created?: CRMRecord[];
+  updated?: CRMRecord[];
+}
+export interface CRMRecordChange {
+  changeType: "created" | "updated";
+  record: CRMRecord;
+}
+export interface BooksChangesObject {
+  created?: BookRecord[];
+  updated?: BookRecord[];
+}
+export interface BooksRecordChange {
+  changeType: "created" | "updated";
+  record: BookRecord;
+}
+export interface PollingState extends Record<string, unknown> {
+  lastPolledAt?: string;
+  lastUpdated?: string;
+  backfillActive?: boolean;
+}
+export interface CRMPollingState extends PollingState {
+  pageToken?: string;
+  streamStartedAt?: string;
+  restartedStream?: boolean;
+}
+export interface CRMPollingCursor extends Record<string, unknown> {
+  pageToken: string;
+  streamStartedAt: string;
+  restartedStream?: boolean;
+}
+export interface CRMWindowParams {
+  connection: Connection;
+  recordType: string;
+  fields: string[];
+  sinceDate: Date;
+  restartedStream: boolean;
+  maxPages: number;
+  pageToken?: string;
+}

@@ -1,11 +1,10 @@
-import {
-  type Connection,
-  type HttpResponse,
-  type TriggerPayload,
-  util,
-} from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { ActionContext } from "@prismatic-io/spectral/dist/serverTypes";
+import { type Connection, util } from "@prismatic-io/spectral";
+import type {
+  BoundaryActionContext as ActionContext,
+  BoundaryTriggerPayload,
+  BoundaryHttpClient as HttpClient,
+  BoundaryHttpResponse as HttpResponse,
+} from "../interfaces/boundary";
 import type {
   CreateSubscriptionTriggerData,
   GraphSubscription,
@@ -71,9 +70,9 @@ export const deleteSubscriptionTrigger = async (
     `Deleted ${deletedSubscriptions.length} Graph subscription(s) for flow ${flowName} (${flowId})`,
   );
 };
-export const triggerPerformFN = async (
+export const triggerPerformFN = async <TPayload extends BoundaryTriggerPayload>(
   _context: ActionContext,
-  payload: TriggerPayload,
+  payload: TPayload,
   _params: Record<string, unknown>,
 ) => {
   const rawValidationToken = payload.queryParameters?.validationToken;
@@ -93,11 +92,11 @@ export const createMsWebhookPerformFN = (
   options: CreateMsWebhookPerformOptions,
 ) => {
   const { createClient, renewalExpirationMinutes, fetchResourceData } = options;
-  return async (
+  return async <TPayload extends BoundaryTriggerPayload>(
     context: ActionContext,
-    payload: TriggerPayload,
+    payload: TPayload,
     params: Record<string, unknown>,
-  ): Promise<WebhookPerformResult> => {
+  ): Promise<WebhookPerformResult<TPayload>> => {
     const rawValidationToken = payload.queryParameters?.validationToken;
     const validationToken = util.types.toString(rawValidationToken);
     const headers = util.types.lowerCaseHeaders(payload.headers);

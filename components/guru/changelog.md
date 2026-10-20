@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-20
+
+- Added batching to the **New and Updated Cards** trigger; enabling it changes the shape a downstream step receives
+- Added a **Look-back Date** input to the **New and Updated Cards** trigger; the backfill begins on the first recurrence, seeds each record once, and ignores the trigger's filters
+
 ### 2026-06-05
 
 Added the **New and Updated Cards** polling trigger that returns cards created or updated since the last run

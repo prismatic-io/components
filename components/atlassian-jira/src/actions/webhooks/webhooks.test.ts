@@ -10,7 +10,7 @@ const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
 describeIntegrationTest("webhooks", () => {
   const harness = createHarness(component);
   const connection = createConnection(oauth, {});
-  xit("should create a webhook", async () => {
+  it.skip("should create a webhook", async () => {
     const result = await harness.action("createWebhook", {
       jiraConnection: connection,
       webhookUrl: "https://webhook.site/9097fbed-dcb0-4434-b661-dc27234f0fab",
@@ -23,7 +23,7 @@ describeIntegrationTest("webhooks", () => {
     });
     expect(result).toBeDefined();
   });
-  xit("should delete a webhook", async () => {
+  it.skip("should delete a webhook", async () => {
     const result = await harness.action("deleteWebhook", {
       jiraConnection: connection,
       webhookId: 1,

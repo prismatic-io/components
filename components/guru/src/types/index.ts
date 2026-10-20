@@ -60,3 +60,11 @@ export interface Organization {
   name: string;
   id: string;
 }
+export interface GuruChangesObject {
+  created?: GuruCard[];
+  updated?: GuruCard[];
+}
+export interface GuruRecordChange {
+  changeType: "created" | "updated";
+  record: GuruCard;
+}

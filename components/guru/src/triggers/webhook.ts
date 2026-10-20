@@ -1,9 +1,9 @@
 import { trigger } from "@prismatic-io/spectral";
-import { webhookInputs } from "../inputs";
-import { listWebhookSubscriptions } from "../actions/webhooks/listWebhookSubscriptions";
-import { updateWebhookSubscription } from "../actions/webhooks/updateWebhookSubscription";
 import { createWebhookSubscription } from "../actions/webhooks/createWebhookSubscription";
 import { deleteWebhookSubscription } from "../actions/webhooks/deleteWebhookSubscription";
+import { listWebhookSubscriptions } from "../actions/webhooks/listWebhookSubscriptions";
+import { updateWebhookSubscription } from "../actions/webhooks/updateWebhookSubscription";
+import { webhookInputs } from "../inputs";
 export const webhook = trigger({
   display: {
     label: "Webhook Events",

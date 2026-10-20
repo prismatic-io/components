@@ -6,7 +6,10 @@ const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
   : describe.skip;
 describeIntegrationTest("calendars", () => {
   const harness = testing.createHarness(component);
-  const connection = harness.connectionValue(oauth);
+  let connection: ReturnType<typeof harness.connectionValue>;
+  beforeAll(() => {
+    connection = harness.connectionValue(oauth);
+  });
   it("should create a calendar", async () => {
     const result = await harness.action("createCalendar", {
       connection,

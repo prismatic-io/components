@@ -2,9 +2,13 @@ This trigger checks for new and updated records in a selected [Tableau](https://
 
 On each poll, the trigger queries the selected resource collection for records whose `updatedAt` timestamp is at or after the previous poll time. Each matching record is then sorted into one of two branches: records that were also created during the window go to the `created` branch, and records that existed earlier but were modified go to the `updated` branch. Both branches are configurable and enabled by default.
 
+#### Initial Sync
+
+The **Look-back Date** input controls how far back the first poll reaches. Set it to a `YYYY-MM-DD` date and the first execution fetches every record updated on or after that date, giving you a one-time historical backfill. Leave it empty to start from the current time with no backfill. After the first poll, the trigger uses its stored cursor and the Look-back Date is ignored.
+
 #### How It Works
 
-1. The trigger runs on the configured schedule and reads the stored timestamp of the previous poll. On the first run, the current time is used, so the initial poll establishes a baseline and returns no records.
+1. The trigger runs on the configured schedule and reads the stored timestamp of the previous poll. On the first run it uses the Look-back Date (if set) or the current time.
 2. It queries the selected Tableau resource collection (workbooks, views, or data sources) for records whose `updatedAt` is at or after the previous poll time, sorted oldest to newest.
 3. Each returned record is classified by comparing its `createdAt` to the previous poll time:
    - **created**: the `createdAt` is after the previous poll time, so the record was born during this window. Emitted on the `created` branch when **Show New Records** is enabled.
@@ -13,6 +17,12 @@ On each poll, the trigger queries the selected resource collection for records w
 
 State is maintained automatically between executions. The stored cursor is the only state the trigger keeps, and it advances forward each poll so that records are not processed twice under normal conditions.
 
+#### Batching
+
+This trigger supports batching. When batching is enabled on the flow, each record is delivered as an individual execution (or grouped by the configured batch size) rather than all records arriving in a single execution. This is useful when integrations process records one at a time or need to stay within downstream rate limits.
+
+When batching is **disabled** (the default), the trigger returns the full `{ created, updated }` object in `body.data`. When batching is **enabled**, each execution receives a single `{ changeType, record }` object (or an array of them, depending on batch size) representing one change.
+
 #### Returned Data
 
 Fields shown are representative. The full response object includes additional properties.
@@ -20,7 +30,7 @@ Fields shown are representative. The full response object includes additional pr
 The trigger returns a `body.data` object containing two arrays, `created` and `updated`. Each holds the matching Tableau records for that branch, and either array may be empty depending on what changed and which branches are enabled.
 
 <details>
-<summary>Example Payload</summary>
+<summary>Unbatched Payload</summary>
 
 ```json
 {
@@ -59,10 +69,33 @@ The trigger returns a `body.data` object containing two arrays, `created` and `u
 
 </details>
 
+<details>
+<summary>Batched Payload (single item)</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Q2 Sales Dashboard",
+    "contentUrl": "Q2SalesDashboard",
+    "createdAt": "2026-05-26T14:30:00Z",
+    "updatedAt": "2026-05-26T14:30:00Z",
+    "project": {
+      "id": "1f2f3e4e-5d6d-7c8c-9b0b-1a2a3f4f5e6e",
+      "name": "Marketing Analytics"
+    },
+    "owner": { "id": "abc12e4e-5d6d-7c8c-9b0b-1a2a3f4f5e90" }
+  }
+}
+```
+
+</details>
+
 Refer to the [Tableau Workbooks and Views Methods](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_workbooks_and_views.htm) documentation for the full set of fields available on each record.
 
 #### Notes
 
-- The first poll returns no records. It only sets the baseline cursor that later polls compare against.
+- When a Look-back Date is set, the first poll may return a large number of records. Enable batching to process them incrementally and avoid timeout or memory pressure.
 - When a single poll returns more records than the page cap allows, the result is truncated and the cursor advances to the newest fetched `updatedAt`. The remaining records are picked up on the next poll, so no changes are lost.
 - Tableau REST API rate limits apply. Very frequent schedules may exhaust available API capacity.

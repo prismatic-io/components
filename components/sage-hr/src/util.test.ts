@@ -1,12 +1,13 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import { type Mock, vi } from "vitest";
 import { fetchAllRecords } from "./util";
-const createMockClient = (getMock: jest.Mock): Pick<HttpClient, "get"> => ({
+const createMockClient = (getMock: Mock): Pick<HttpClient, "get"> => ({
   get: getMock,
 });
 describe("fetchAllRecords", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   it("single page: returns records when meta.next_page is null", async () => {
     const records = [
@@ -19,7 +20,9 @@ describe("fetchAllRecords", () => {
         meta: { current_page: 1, next_page: null, total_pages: 1 },
       },
     });
-    const client = createMockClient(getMock) as unknown as ReturnType<any>;
+    const client = createMockClient(getMock) as unknown as Parameters<
+      typeof fetchAllRecords
+    >[0];
     const result = await fetchAllRecords(client, "/employees");
     expect(getMock).toHaveBeenCalledTimes(1);
     expect(getMock).toHaveBeenCalledWith("/employees", { params: { page: 1 } });
@@ -45,7 +48,9 @@ describe("fetchAllRecords", () => {
           meta: { current_page: 3, next_page: null, total_pages: 3 },
         },
       });
-    const client = createMockClient(getMock) as unknown as ReturnType<any>;
+    const client = createMockClient(getMock) as unknown as Parameters<
+      typeof fetchAllRecords
+    >[0];
     const result = await fetchAllRecords(client, "/positions");
     expect(getMock).toHaveBeenCalledTimes(3);
     expect(result).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
@@ -60,7 +65,9 @@ describe("fetchAllRecords", () => {
         meta: { current_page: 1, next_page: null, total_pages: 1 },
       },
     });
-    const client = createMockClient(getMock) as unknown as ReturnType<any>;
+    const client = createMockClient(getMock) as unknown as Parameters<
+      typeof fetchAllRecords
+    >[0];
     const result = await fetchAllRecords(client, "/teams");
     expect(getMock).toHaveBeenCalledTimes(1);
     expect(result).toEqual([]);
@@ -72,7 +79,9 @@ describe("fetchAllRecords", () => {
         meta: { current_page: 1, next_page: null },
       },
     });
-    const client = createMockClient(getMock) as unknown as ReturnType<any>;
+    const client = createMockClient(getMock) as unknown as Parameters<
+      typeof fetchAllRecords
+    >[0];
     await fetchAllRecords(client, "/employees", { status: "active" });
     expect(getMock.mock.calls[0][1].params).toEqual({
       status: "active",

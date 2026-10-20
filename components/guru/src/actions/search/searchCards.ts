@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
+import { searchCardsPayload } from "../../examplePayloads";
 import { searchCardsInputs } from "../../inputs";
 import { fetchGuruResults } from "../../util";
-import { searchCardsPayload } from "../../examplePayloads";
 export const searchCards = action({
   display: {
     label: "Search Cards",

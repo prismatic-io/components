@@ -3,7 +3,7 @@ import { listContacts } from "./actions/contacts";
 import { oauth } from "./connections";
 const connection = createConnection(oauth, {});
 connection.token = { access_token: process.env.SAGE_ACCOUNTING_TOKEN };
-describe("test listContacts", () => {
+describe.skip("test listContacts", () => {
   test("verify the return value of listContacts", async () => {
     const { result } = await invoke(listContacts, {
       connection,

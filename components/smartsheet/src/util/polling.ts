@@ -1,5 +1,9 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { SmartsheetSheet } from "../types";
+import type {
+  SmartsheetChangesObject,
+  SmartsheetRecordChange,
+  SmartsheetSheet,
+} from "../types";
 import { paginateByPage } from "./pagination";
 export const formatSmartsheetTimestamp = (date: Date): string =>
   date.toISOString().replace(/\.\d{3}Z$/, "Z");
@@ -31,4 +35,17 @@ export const partitionSheetsByTimestamp = (
     }
   }
   return { created, updated };
+};
+export const resolvePollingRecordChanges = (
+  data: SmartsheetChangesObject | undefined,
+): SmartsheetRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): SmartsheetRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): SmartsheetRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

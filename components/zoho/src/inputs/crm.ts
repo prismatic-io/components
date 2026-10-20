@@ -3,6 +3,7 @@ import { toOptionalString } from "../util/general";
 import {
   connectionInput,
   fetchAll,
+  lookBackDate,
   page,
   page_token,
   per_page,
@@ -117,5 +118,6 @@ export const selectCrmRecordInputs = {
 };
 export const crmPollingTriggerInputs = {
   connection: connectionInput,
+  lookBackDate,
   fields: crmPollingAdditionalFields,
 };

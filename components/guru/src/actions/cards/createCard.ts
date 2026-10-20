@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { createCardInputs } from "../../inputs";
 import { createCardPayload } from "../../examplePayloads";
+import { createCardInputs } from "../../inputs";
 export const createCard = action({
   display: {
     label: "Create Card",

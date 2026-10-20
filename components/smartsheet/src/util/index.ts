@@ -4,6 +4,7 @@ import {
   smartsheetOAuth2,
   smartsheetTemplatedOAuth,
 } from "../connections";
+export * from "./clean";
 export * from "./polling";
 export const validateConnection = (
   connection: Connection,

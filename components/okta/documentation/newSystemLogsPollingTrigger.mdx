@@ -1,0 +1,85 @@
+The **New System Logs** polling trigger checks Okta on a configured schedule for new System Log events. It can also load existing events once through an initial sync.
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads the stored `next` link from the polling state. A stored link is resumed only for the **Filter** it was issued for. After the **Filter** changes, the stored link is discarded and the trigger restarts from the current time.
+2. Without a usable stored link, sends Okta's documented polling request to `GET /logs` with `since` set to the **Look-back Date** on the first recurrence and the current time otherwise, `sortOrder` set to `ASCENDING`, no `until`, and the **Filter** when one is set. Otherwise it requests the stored link.
+3. Follows the `next` link Okta returns with each page, reading pages of up to 1,000 events with batching off or 50 events with batching on. It reads up to 20 pages per recurrence with batching off, or one page per round with batching on, and stops earlier when a page returns no events. With batching off the remaining pages arrive on later recurrences. With batching on the platform re-invokes the trigger from the link until the events end, within the same recurrence.
+4. Stores the latest `next` link as the position on every round, so the next round or recurrence resumes from exactly where this one stopped.
+
+When a recurrence returns no events, it is reported as a recurrence with no changes. Okta returns System Log data only for the last 90 days, as described in the [System Log query documentation](https://developer.okta.com/docs/reference/system-log-query/).
+
+**Initial sync**
+
+An initial sync seeds a complete starting state, so inputs that narrow the change feed would leave gaps in it and are ignored for its duration, while inputs that shape how events are fetched still apply. Set a **Look-back Date** (`YYYY-MM-DD`, not in the future) to start one: it begins on the first recurrence and seeds each event published on or after the start of that date (UTC) exactly once. Because Okta retains events for 90 days, an earlier date returns only the retained events. The **Filter** scopes the event stream itself rather than which changes are reported, so the sync ignores no input; the **Connection** and **Filter** apply throughout.
+
+The window has no fixed upper bound, so an event published while the sync is still draining is swept into the sync. The trigger's position is the `next` link, which advances page by page, so there is no separate handoff: the sync continues into the incremental recurrences from exactly where it stopped, and no field in the payload marks the transition. With batching off the sync drains up to 20 pages per scheduled recurrence, so a large backlog spans several of them. With batching on the platform drives the rounds and the sync drains inside one recurrence. Later recurrences ignore the **Look-back Date**.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Okta.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+A batched flow drains the backlog within one recurrence, while an unbatched flow drains it one window of up to 20 pages per recurrence.
+
+With batching off, a downstream step reads the array at `body.data`. With batching on that field does not exist: each execution receives one event, or an array of them at a batch size above one, as `{ "changeType": "created", "record": { ... } }`. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow and leaves other flows using this trigger untouched.
+
+#### Returned Data
+
+With batching off, `body.data` is an array of System Log events from Okta.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": [
+    {
+      "uuid": "2f6c1d0e-9b1a-4b7e-8a52-0c3f5d6e7a81",
+      "published": "2026-05-21T10:30:00.000Z",
+      "eventType": "user.session.start",
+      "severity": "INFO",
+      "displayMessage": "User login to Okta",
+      "actor": {
+        "id": "00u1abcd2EFGHIJKL3m4",
+        "type": "User",
+        "alternateId": "ada.lovelace@example.com"
+      },
+      "outcome": { "result": "SUCCESS" }
+    }
+  ]
+}
+```
+
+</details>
+
+With batching on, each execution receives one tagged item instead, or an array of them when the batch size is above one.
+
+<details>
+<summary>Example Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "uuid": "2f6c1d0e-9b1a-4b7e-8a52-0c3f5d6e7a81",
+    "published": "2026-05-21T10:30:00.000Z",
+    "eventType": "user.session.start",
+    "severity": "INFO",
+    "displayMessage": "User login to Okta",
+    "actor": {
+      "id": "00u1abcd2EFGHIJKL3m4",
+      "type": "User",
+      "alternateId": "ada.lovelace@example.com"
+    },
+    "outcome": { "result": "SUCCESS" }
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

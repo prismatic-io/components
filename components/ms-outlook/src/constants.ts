@@ -22,3 +22,8 @@ export const POLLING_ENDPOINTS = {
     `/me/mailFolders/${folderId}/messages`,
 };
 export const MESSAGES_DEFAULT_ORDERBY = "lastModifiedDateTime";
+export const TRIGGER_BATCH_SIZE = 50;
+export const POLL_PAGE_SIZE = 100;
+export const POLL_UNBATCHED_MAX_PAGES = 10;
+export const WATERMARK_SKEW_MARGIN_MS = 60000;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

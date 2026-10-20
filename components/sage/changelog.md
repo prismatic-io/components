@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-20
+
+- Added batching to the **New and Updated Records** trigger; enabling it changes the shape a downstream step receives
+- Added a **Look-back Date** input to the **New and Updated Records** trigger; the backfill begins on the first recurrence, seeds each record once, and ignores the trigger's filters
+
 ### 2026-05-20
 
 Applied automated security patches and code formatting updates

@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { deleteCardInputs } from "../../inputs";
 import { deleteCardPayload } from "../../examplePayloads";
+import { deleteCardInputs } from "../../inputs";
 export const deleteCard = action({
   display: {
     label: "Delete Card",

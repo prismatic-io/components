@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-20
+
+Added batching to the **New and Updated Records** trigger; enabling it changes the shape a downstream step receives
+
 ### 2026-08-31
 
 - Added output schemas to 61 actions for improved field mapping during configuration

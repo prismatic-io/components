@@ -1,28 +1,35 @@
-The **New and Updated Records** trigger polls the [Qlik API](https://qlik.dev/apis/rest/) for new and updated records on a scheduled basis.
+This trigger retrieves existing and ongoing records from Qlik. Load history once, check for changes on a schedule, or both.
 
 #### How It Works
 
-1. The trigger runs on the configured schedule
-2. On the first execution, the trigger records the current time and emits no records — historical data is not replayed on bootstrap
-3. On each subsequent run, the trigger fetches all records of the selected resource type and compares each record's created and updated timestamps against the last poll time
-4. Records are categorized as **created** when their created timestamp is later than the last poll time, or **updated** when only their updated timestamp is later
-5. The trigger persists the new poll time after each execution so the next run picks up where the previous run left off
+On each scheduled recurrence, the trigger fetches all records of the selected resource type from the Qlik REST API and compares each record's created and updated timestamps against the last poll time. Records are categorized as **created** when their created timestamp is later than the last poll time, or **updated** when only their updated timestamp is later. The trigger then stores the current time as the cursor for the next recurrence.
 
-#### Configuration
+The Qlik REST API does not expose server-side date filtering on these list endpoints, so all records are paginated client-side and timestamps are compared in the trigger after retrieval. `Spaces`, `Users`, and `DataFiles` use cursor pagination via `links.next.href`; `DataStores` uses offset pagination with `page` and `limit` parameters.
 
-Configure the following inputs:
+**Initial sync**
 
-- **Connection**: The Qlik connection used to authenticate API requests
-- **Resource Type**: The type of Qlik resource to monitor — `Spaces`, `Users`, `DataFiles`, or `DataStores`
-- **Show New Records**: When enabled, includes newly created records in the trigger output. Defaults to `true`
-- **Show Updated Records**: When enabled, includes records modified since the last poll in the trigger output. Defaults to `true`
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record created or modified on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
+
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync. Once all matching records have been emitted, the trigger stores the current time as its position and the first incremental recurrence resumes from exactly there. Without batching the full window is fetched in a single recurrence; with batching the resolver drains the window over batched executions within the same recurrence.
+
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Qlik.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data.created` and `results.body.data.updated`. With batching on, those fields do not exist — each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new records and `updated` for modified records since the previous poll.
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
+
+**Without batching:**
 
 <details>
-<summary>Example Response</summary>
+<summary>Example Payload</summary>
 
 ```json
 {
@@ -57,9 +64,29 @@ The trigger returns an object with two arrays — `created` for new records and 
 
 </details>
 
+**With batching (each execution):**
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69",
+    "name": "Finance (dev)",
+    "type": "shared",
+    "ownerId": "TiQ8GPVr8qI714Lp5ChAAFFaU24MJy69",
+    "tenantId": "xqGQ0k66vSR8f9G7J-vYtHZQkiYrCpct",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z",
+    "description": "Development space for Finance team applications"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
 - All four resource types — `Spaces`, `Users`, `DataFiles`, and `DataStores` — support both new and updated record detection
-- The Qlik REST API does not expose server-side date filtering on these list endpoints, so all records are paginated client-side and timestamps are compared in the trigger after retrieval
-- `Spaces`, `Users`, and `DataFiles` use cursor pagination via `links.next.href`; `DataStores` uses offset pagination with `page` and `limit` parameters
-- Refer to the [Qlik API documentation](https://qlik.dev/apis/rest/) for rate limit details and available fields per resource type

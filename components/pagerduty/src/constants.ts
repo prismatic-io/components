@@ -1,3 +1,5 @@
+export const DEFAULT_BATCH_SIZE = 50;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const BASE_URL = "https://api.pagerduty.com";
 export const EVENTS_URL = "https://events.pagerduty.com/v2";
 export const PAGINATION_MAX_PAGE_SIZE = 100;

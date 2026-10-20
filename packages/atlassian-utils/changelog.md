@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-09
+
+The shared webhook helpers and `createAtlassianClient` now accept HTTP clients and trigger contexts from any spectral version, so Atlassian components can upgrade spectral independently of this package.
+
 ### 2026-04-23
 
 Added shared authentication and connection factories so Atlassian components no longer duplicate auth plumbing:

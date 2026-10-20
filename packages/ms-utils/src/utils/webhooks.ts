@@ -1,6 +1,8 @@
 import { util } from "@prismatic-io/spectral";
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { ActionContext } from "@prismatic-io/spectral/dist/serverTypes";
+import type {
+  BoundaryActionContext as ActionContext,
+  BoundaryHttpClient as HttpClient,
+} from "../interfaces/boundary";
 import type {
   CreateSubscriptionData,
   GraphSubscription,

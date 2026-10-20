@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
+import { getTeamAnalyticsPayload } from "../../examplePayloads";
 import { getTeamAnalyticsInputs } from "../../inputs";
 import { fetchGuruResults } from "../../util";
-import { getTeamAnalyticsPayload } from "../../examplePayloads";
 export const getTeamAnalytics = action({
   display: {
     label: "Get Team Analytics",

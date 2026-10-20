@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
+import { listFoldersPayload } from "../../examplePayloads";
 import { listFoldersInputs } from "../../inputs";
 import { fetchGuruResults } from "../../util";
-import { listFoldersPayload } from "../../examplePayloads";
 export const listFolders = action({
   display: {
     label: "List Folders",

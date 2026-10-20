@@ -1,6 +1,7 @@
 import { util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { ENDPOINTS } from "../constants";
+export { lookBackDateClean, resolvePollingRecordChanges } from "./polling";
 export const toOptionalNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
 export const toOptionalBoolean = (value: unknown): boolean | undefined =>

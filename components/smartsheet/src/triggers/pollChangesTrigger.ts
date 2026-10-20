@@ -1,31 +1,44 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { PollingState } from "../types";
+import type {
+  PollingState,
+  SmartsheetChangesObject,
+  SmartsheetRecordChange,
+} from "../types";
 import {
   fetchSheetsSince,
   formatSmartsheetTimestamp,
   partitionSheetsByTimestamp,
+  resolvePollingRecordChanges,
 } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Sheets",
     description:
-      "Polls Smartsheet for sheets created or modified since the last execution, separated into new and updated buckets.",
+      "Retrieves existing and ongoing Sheets from Smartsheet. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
   examplePayload: pollChangesExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): SmartsheetRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as SmartsheetChangesObject),
+  },
   perform: async (
     context,
     payload,
-    { connection, showNewRecords, showUpdatedRecords },
+    { connection, showNewRecords, showUpdatedRecords, lookBackDate },
   ) => {
+    const pollState = context.polling.getState() as PollingState;
     const now = new Date();
-    const lastState = context.polling.getState() as PollingState | undefined;
-    const sinceDate = lastState?.lastPolledAt
-      ? new Date(lastState.lastPolledAt)
-      : now;
+    const isInitialSync = !pollState?.lastPolledAt && Boolean(lookBackDate);
+    const lastPolledAt =
+      pollState?.lastPolledAt ?? (lookBackDate || now.toISOString());
+    const sinceDate = new Date(lastPolledAt);
     const client = createClient(connection, context.debug.enabled);
     const sheets = await fetchSheetsSince(
       client,
@@ -36,8 +49,8 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt: now.toISOString(),
     } as Record<string, unknown>);
     const result = {
-      created: showNewRecords ? created : [],
-      updated: showUpdatedRecords ? updated : [],
+      created: isInitialSync || showNewRecords ? created : [],
+      updated: isInitialSync || showUpdatedRecords ? updated : [],
     };
     if (context.debug.enabled) {
       context.logger.debug(

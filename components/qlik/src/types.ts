@@ -22,3 +22,11 @@ export interface QlikPollResourceConfig {
   paginationStyle: QlikPaginationStyle;
 }
 export type QlikClient = ReturnType<typeof createClient>;
+export interface QlikChangesObject {
+  created?: QlikRecord[];
+  updated?: QlikRecord[];
+}
+export interface QlikRecordChange {
+  changeType: "created" | "updated";
+  record: QlikRecord;
+}

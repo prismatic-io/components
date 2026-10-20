@@ -1,22 +1,43 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { getMsBusinessCentralClient } from "../client";
-import { POLL_RESOURCE_CONFIG } from "../constants";
+import { POLL_RESOURCE_CONFIG, TRIGGER_BATCH_SIZE } from "../constants";
 import { pollChangesExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs/polling";
-import type { BusinessCentralRecord, PollingState } from "../interfaces";
-import { fetchAllPagedSince } from "../utils";
+import type {
+  BusinessCentralRecord,
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../interfaces";
+import {
+  fetchAllPagedSince,
+  nextPollingState,
+  resolvePollingStart,
+  resolvePollingStream,
+  resolveRecordChanges,
+} from "../utils";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records of a Microsoft Dynamics 365 Business Central entity on a configured schedule.",
+      "Retrieves existing and ongoing records of a Microsoft Dynamics 365 Business Central entity. Load history once, check for changes on a schedule, or both.",
   },
   examplePayload: pollChangesExamplePayload,
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolveRecordChanges(payload.body.data as PollingChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const { since: lastPolledAt, isBackfill } = resolvePollingStart(
+      pollState,
+      params.lookBackDate,
+      now,
+    );
     const config = POLL_RESOURCE_CONFIG[params.pollResourceType];
     if (!config) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
@@ -30,27 +51,40 @@ export const pollChangesTrigger = pollingTrigger({
       context,
       context.debug.enabled,
     );
-    const { records, truncated } = await fetchAllPagedSince(
-      client,
-      `/companies(${params.companyId})/${config.endpoint}`,
-      { $filter },
-    );
+    const path = `/companies(${params.companyId})/${config.endpoint}`;
+    const query = `${path}?$filter=${$filter}`;
+    let stream = resolvePollingStream(pollState, query, now);
+    let fetched: Awaited<ReturnType<typeof fetchAllPagedSince>>;
+    try {
+      fetched = await fetchAllPagedSince(
+        client,
+        path,
+        { $filter },
+        stream.nextLink,
+      );
+    } catch (error) {
+      if (!stream.nextLink) throw error;
+      context.logger.warn(
+        `The held page link for ${params.pollResourceType} was rejected; restarting from ${lastPolledAt}.`,
+      );
+      stream = { streamStartedAt: now };
+      fetched = await fetchAllPagedSince(client, path, { $filter });
+    }
+    const { records, truncated, nextLink } = fetched;
     const created: BusinessCentralRecord[] = [];
     const updated: BusinessCentralRecord[] =
-      params.showUpdatedRecords !== false ? records : [];
-    let nextCursor = now;
+      isBackfill || params.showUpdatedRecords !== false ? records : [];
+    context.polling.setState(
+      nextPollingState(
+        { lastPolledAt, stream, query, isBackfill },
+        truncated ? nextLink : undefined,
+      ) satisfies PollingState,
+    );
     if (truncated) {
-      const latestFetched = records
-        .map((r) => r.lastModifiedDateTime)
-        .filter((d): d is string => typeof d === "string")
-        .sort()
-        .pop();
-      nextCursor = latestFetched ?? lastPolledAt;
       context.logger.warn(
-        `Polling truncated at the page cap for ${params.pollResourceType} on company ${params.companyId}. Advancing cursor to ${nextCursor}; next poll will resume from there.`,
+        `Polling truncated at the page cap for ${params.pollResourceType} on company ${params.companyId}. Holding cursor at ${lastPolledAt}; the next poll resumes from the stored page link.`,
       );
     }
-    context.polling.setState({ lastPolledAt: nextCursor });
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled ${params.pollResourceType} on company ${params.companyId}: ${records.length} fetched, truncated=${truncated}`,

@@ -7,7 +7,7 @@ export const selectUser = dataSource({
     description: "Retrieve and select a user.",
   },
   dataSourceType: "picklist",
-  perform: async (context, { connection }) => {
+  perform: async (_context, { connection }) => {
     const client = createClient(connection);
     const {
       data: { users },

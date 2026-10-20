@@ -1,52 +1,110 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createV3Client } from "../connections/auth";
+import { TRIGGER_BATCH_SIZE } from "../constants";
 import { pollChangesExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { JiraIssue, PollingState } from "../types";
-import { fetchUpdatedIssuesSince, partitionIssuesByTimestamp } from "../util";
+import type {
+  JiraIssueChange,
+  JiraIssueChangesObject,
+  PollingCursor,
+  PollingState,
+} from "../types";
+import {
+  buildPollingCursor,
+  buildPollingState,
+  fetchStreamWindow,
+  partitionIssuesByTimestamp,
+  resolveJiraIssueChanges,
+  resolvePollingStart,
+  resolvePollingStream,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Issues",
     description:
-      "Checks for new and updated issues in Jira on a configured schedule, separated into new and updated buckets using JQL on /search/jql.",
+      "Retrieves existing and ongoing issues from Jira. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
   allowsBranching: false,
   examplePayload: pollChangesExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): JiraIssueChange[] =>
+      resolveJiraIssueChanges(payload.body.data as JiraIssueChangesObject),
+    getNextPaginationState: (_context, { payload }): PollingCursor | null =>
+      (payload.paginationState as PollingCursor | undefined) ?? null,
+  },
   perform: async (
     context,
     payload,
-    { jiraConnection, pollJqlFilter, showNewIssues, showUpdatedIssues },
+    {
+      jiraConnection,
+      lookBackDate,
+      pollJqlFilter,
+      showNewIssues,
+      showUpdatedIssues,
+    },
   ) => {
     const now = new Date();
-    const pollState = context.polling.getState() as PollingState | undefined;
-    const sinceISO = pollState?.lastPolledAt ?? now.toISOString();
-    const sinceDate = new Date(sinceISO);
-    const skipFetch = !showNewIssues && !showUpdatedIssues;
-    const issues: JiraIssue[] = skipFetch
-      ? []
-      : await fetchUpdatedIssuesSince(
-          await createV3Client(jiraConnection, context.debug.enabled),
-          sinceISO,
-          pollJqlFilter,
-        );
-    const { created, updated } = partitionIssuesByTimestamp(issues, sinceDate);
-    context.polling.setState({
-      lastPolledAt: now.toISOString(),
-    } as Record<string, unknown>);
-    const result = {
-      created: showNewIssues ? created : [],
-      updated: showUpdatedIssues ? updated : [],
+    const state = (context.polling.getState() ?? {}) as PollingState;
+    const incoming = payload.paginationState as PollingCursor | undefined;
+    const {
+      nextPageToken,
+      streamStartedAt,
+      timeZone: heldTimeZone,
+    } = resolvePollingStream(state, incoming, pollJqlFilter, now);
+    const { sinceDate, isBackfill } = resolvePollingStart(
+      state,
+      lookBackDate,
+      now,
+    );
+    const skipFetch = !isBackfill && !showNewIssues && !showUpdatedIssues;
+    const { timeZone, ...window } = await fetchStreamWindow(
+      () => createV3Client(jiraConnection, context.debug.enabled),
+      {
+        skipFetch,
+        heldTimeZone,
+        nextPageToken,
+        sinceISO: sinceDate.toISOString(),
+        additionalJql: pollJqlFilter,
+        batching: context.batch?.enabled === true,
+        logger: context.logger,
+      },
+    );
+    const { created, updated } = partitionIssuesByTimestamp(
+      window.issues,
+      sinceDate,
+    );
+    const result: JiraIssueChangesObject = {
+      created: isBackfill || showNewIssues ? created : [],
+      updated: isBackfill || showUpdatedIssues ? updated : [],
     };
+    const next = buildPollingCursor(
+      window.nextPageToken,
+      streamStartedAt,
+      timeZone,
+      pollJqlFilter,
+    );
+    context.polling.setState(
+      buildPollingState(next, streamStartedAt, sinceDate, isBackfill),
+    );
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled Jira issues since ${sinceISO}: ${issues.length} total → ${created.length} new, ${updated.length} updated`,
+        `Polled Jira issues since ${sinceDate.toISOString()}: ${window.issues.length} read → ${created.length} new, ${updated.length} updated, ${next === null ? "stream drained" : "more pending"}`,
       );
     }
     return {
-      payload: { ...payload, body: { data: result } },
+      payload: {
+        ...payload,
+        paginationState: next ?? undefined,
+        body: { data: result },
+      },
       polledNoChanges:
-        result.created.length === 0 && result.updated.length === 0,
+        result.created.length === 0 &&
+        result.updated.length === 0 &&
+        next === null &&
+        !incoming,
     };
   },
 });

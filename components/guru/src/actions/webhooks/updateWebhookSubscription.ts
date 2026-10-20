@@ -1,9 +1,9 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { updateWebhookSubscriptionInputs } from "../../inputs";
-import { arrayToCommaString, getStatusValue } from "../../util";
-import type { GuruWebhookSubscription } from "../../types";
 import { updateWebhookSubscriptionPayload } from "../../examplePayloads";
+import { updateWebhookSubscriptionInputs } from "../../inputs";
+import type { GuruWebhookSubscription } from "../../types";
+import { arrayToCommaString, getStatusValue } from "../../util";
 export const updateWebhookSubscription = action({
   display: {
     label: "Update Webhook Subscription",

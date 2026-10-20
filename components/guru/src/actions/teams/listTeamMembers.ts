@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
+import { listTeamMembersPayload } from "../../examplePayloads";
 import { listTeamMembersInputs } from "../../inputs";
 import { fetchGuruResults } from "../../util";
-import { listTeamMembersPayload } from "../../examplePayloads";
 export const listTeamMembers = action({
   display: {
     label: "List Team Members",

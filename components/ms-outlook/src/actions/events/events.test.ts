@@ -6,7 +6,10 @@ const describeIntegrationTest = process.env.PRISMATIC_CONNECTION_VALUE
   : describe.skip;
 describeIntegrationTest("events", () => {
   const harness = testing.createHarness(component);
-  const connection = harness.connectionValue(oauth);
+  let connection: ReturnType<typeof harness.connectionValue>;
+  beforeAll(() => {
+    connection = harness.connectionValue(oauth);
+  });
   it("should list events", async () => {
     const result = await harness.action("listEvents", {
       connection,
@@ -33,7 +36,7 @@ describeIntegrationTest("events", () => {
     });
     expect(result).toBeDefined();
   });
-  xit("should delete an event", async () => {
+  it.skip("should delete an event", async () => {
     const result = await harness.action("deleteEvent", {
       connection,
       eventId:

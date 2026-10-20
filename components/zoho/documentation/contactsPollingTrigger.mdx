@@ -8,15 +8,34 @@ Zoho CRM provides two polling triggers to monitor changes to CRM records. Both c
 
 Both triggers operate the same way:
 1. Run on the configured schedule (e.g., every 5 minutes)
-2. Fetch records from Zoho CRM sorted by `Modified_Time`
-3. Categorize records as "created" or "updated" based on `Created_Time` vs `Modified_Time` timestamps
-4. Maintain state to track the last poll time automatically
+2. Fetch records from Zoho CRM sorted by `Modified_Time`, sending the stored position as the `If-Modified-Since` header. The position is held fixed for the whole read. Zoho returns 200 records per page, and the trigger continues from page to page with Zoho's `page_token`
+3. Categorize records as "created" or "updated" against the stored position. A record is "created" when its `Created_Time` is at or after the position, and otherwise "updated" when its `Modified_Time` is at or after it. A record that satisfies neither test is dropped
+4. With batching off, read up to 5 pages (1,000 records) per recurrence. The `page_token` is stored, and the next recurrence continues from it until the read finishes. With batching on, read one page per round, and a batched flow drains the whole read within one recurrence
+5. Commit the position only when the read finishes. The position is the instant the read's first recurrence began, so records changed while a multi-recurrence read is under way are picked up by the next read, and may be delivered again as "updated"
 
-For more details, see the [CRM Modules API documentation](https://www.zoho.com/crm/developer/docs/api/v8/modules-api.html).
+A `page_token` held from an earlier recurrence can be rejected by Zoho as expired or mismatched (Zoho documents page tokens as valid for 24 hours). The trigger then restarts the read from the stored position and logs a warning, so records may repeat, and the position committed when that read finishes is the instant of the restart. An expired token always restarts the read. A mismatch on a read that was already restarted, or a rejection of a token issued during the same recurrence, fails the execution with Zoho's error code.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record created or modified on or after that date exactly once. These triggers have no inputs that narrow which changes are reported, so the sync ignores none. Left empty, there is no sync: the first recurrence starts tracking from that moment, and later recurrences ignore **Look-back Date**.
+
+The sync is not a snapshot of a fixed window. When it finishes, the trigger stores the instant it began as its position, and the first incremental recurrence resumes from exactly there, so records changed mid-sync are picked up then, possibly delivered again as "updated". Nothing in the payload marks the handoff. With batching on, the sync finishes within one recurrence. With batching off it takes one recurrence per 5 pages (1,000 records).
+
+**Connection** and **Additional Fields** still apply throughout. The page size is fixed at 200 records and is not an input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on these triggers: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Zoho.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+For more details, see the [CRM Modules API documentation](https://www.zoho.com/crm/developer/docs/api/v8/modules-api.html) and the [Get Records API documentation](https://www.zoho.com/crm/developer/docs/api/v8/get-records.html).
 
 #### Returned Data
 
-Both triggers return the same structure with separate arrays for created and updated records:
+With batching off, both triggers return the same structure with separate arrays for created and updated records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>View example response</summary>
@@ -51,6 +70,27 @@ Both triggers return the same structure with separate arrays for created and upd
 </details>
 
 Lead records include additional fields like `Company`, `Lead_Status`, and `Lead_Source`.
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "5394166000000379001",
+    "Email": "john.doe@example.com",
+    "First_Name": "John",
+    "Last_Name": "Doe",
+    "Created_Time": "2025-11-24T10:30:00-08:00",
+    "Modified_Time": "2025-11-24T10:30:00-08:00"
+  }
+}
+```
+
+</details>
 
 #### Best Practices
 

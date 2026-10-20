@@ -1,6 +1,10 @@
 import { input, util } from "@prismatic-io/spectral";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PER_PAGE } from "../constants";
-import { cleanKeyValList, toOptionalString } from "../util/general";
+import {
+  cleanKeyValList,
+  lookBackDateClean,
+  toOptionalString,
+} from "../util/general";
 export const connectionInput = input({
   label: "Connection",
   type: "connection",
@@ -77,6 +81,17 @@ export const fieldValues = input({
   ),
   clean: cleanKeyValList,
 });
+export const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const leadsPollingTriggerInputs = {
   connection: connectionInput,
+  lookBackDate,
 };

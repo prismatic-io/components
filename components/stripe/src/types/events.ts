@@ -10,3 +10,11 @@ export interface StripeEvent extends Record<string, unknown> {
     object?: unknown;
   };
 }
+export interface StripeChangesObject {
+  created?: StripeEvent[];
+  updated?: StripeEvent[];
+}
+export interface StripeRecordChange {
+  changeType: "created" | "updated";
+  record: StripeEvent;
+}

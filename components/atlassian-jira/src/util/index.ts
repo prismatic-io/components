@@ -12,15 +12,24 @@ import {
   EMPTY_ARRAY_ERROR_MESSAGE,
   EMPTY_INPUT_ERROR_MESSAGE,
   ENDPOINTS,
-  MAX_POLLING_PAGES,
+  LOOK_BACK_DATE_PATTERN,
+  POLL_PAGE_SIZE,
+  POLL_UNBATCHED_MAX_PAGES,
   POLLING_DEFAULT_FIELDS,
 } from "../constants";
 import type {
   Attachment,
   AttachmentResponse,
   Issue,
+  IssuesWindowParams,
   JiraIssue,
+  JiraIssueChange,
+  JiraIssueChangesObject,
   PaginatedResponse,
+  PollingCursor,
+  PollingState,
+  PollingStream,
+  StreamWindowParams,
 } from "../types";
 export const isBasicAuth = (connection: Connection): boolean =>
   isAtlassianBasicAuth(connection, CONNECTION_KEYS);
@@ -268,36 +277,226 @@ export const toOptionalObject = (value: unknown) =>
   value ? util.types.toObject(value) : undefined;
 export const toOptionalNumber = (value: unknown): number | undefined =>
   value ? util.types.toNumber(value) : undefined;
-const pad = (n: number): string => util.types.toString(n).padStart(2, "0");
-export const toJqlDate = (iso: string): string => {
-  const d = new Date(iso);
-  return `${d.getUTCFullYear()}/${pad(d.getUTCMonth() + 1)}/${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+export const toJqlDate = (iso: string, timeZone: string): string => {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).formatToParts(new Date(iso));
+  const part = (type: string): string =>
+    parts.find((p) => p.type === type)?.value ?? "";
+  return `${part("year")}/${part("month")}/${part("day")} ${part("hour")}:${part("minute")}`;
 };
-export const fetchUpdatedIssuesSince = async (
+const FALLBACK_TIME_ZONE = "UTC";
+const isValidTimeZone = (zone: unknown): zone is string => {
+  if (typeof zone !== "string" || zone.trim() === "") return false;
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: zone });
+    return true;
+  } catch {
+    return false;
+  }
+};
+const resolveAccountTimeZone = async (
   client: HttpClient,
-  sinceISO: string,
-  additionalJql?: string,
-): Promise<JiraIssue[]> => {
-  const updatedClause = `updated >= "${toJqlDate(sinceISO)}"`;
+  logger: {
+    warn: (message: string) => void;
+  },
+): Promise<string> => {
+  const { data } = await client.get("/myself");
+  const zone = data?.timeZone;
+  if (isValidTimeZone(zone)) return zone.trim();
+  logger.warn(
+    `The Jira account time zone could not be read from /myself; using ${FALLBACK_TIME_ZONE} for the JQL date filter.`,
+  );
+  return FALLBACK_TIME_ZONE;
+};
+const fetchIssuesWindow = async (
+  client: HttpClient,
+  {
+    sinceISO,
+    pageSize,
+    maxPages,
+    nextPageToken,
+    additionalJql,
+    timeZone,
+  }: IssuesWindowParams,
+): Promise<{
+  issues: JiraIssue[];
+  nextPageToken: string | undefined;
+}> => {
+  const updatedClause = `updated >= "${toJqlDate(sinceISO, timeZone)}"`;
   const jql = additionalJql
     ? `(${additionalJql}) AND ${updatedClause}`
     : updatedClause;
-  const collected: JiraIssue[] = [];
-  let nextPageToken: string | undefined;
-  let pageCount = 0;
-  do {
+  const issues: JiraIssue[] = [];
+  let token = nextPageToken;
+  for (let page = 0; page < maxPages; page++) {
     const params: Record<string, unknown> = {
       jql,
       fields: POLLING_DEFAULT_FIELDS,
+      maxResults: pageSize,
     };
-    if (nextPageToken) params.nextPageToken = nextPageToken;
+    if (token) params.nextPageToken = token;
     const { data } = await client.get(ENDPOINTS.SEARCH_JQL, { params });
-    const issues = (data?.issues ?? []) as JiraIssue[];
-    collected.push(...issues);
-    nextPageToken = data?.nextPageToken;
-    pageCount += 1;
-  } while (nextPageToken && pageCount < MAX_POLLING_PAGES);
-  return collected;
+    issues.push(...((data?.issues ?? []) as JiraIssue[]));
+    token = data?.nextPageToken || undefined;
+    if (!token) break;
+  }
+  return { issues, nextPageToken: token };
+};
+export const fetchStreamWindow = async (
+  createClient: () => Promise<HttpClient>,
+  {
+    skipFetch,
+    heldTimeZone,
+    nextPageToken,
+    sinceISO,
+    additionalJql,
+    batching,
+    logger,
+  }: StreamWindowParams,
+): Promise<{
+  issues: JiraIssue[];
+  nextPageToken: string | undefined;
+  timeZone: string;
+}> => {
+  let timeZone = heldTimeZone ?? FALLBACK_TIME_ZONE;
+  if (skipFetch) return { issues: [], nextPageToken: undefined, timeZone };
+  const client = await createClient();
+  if (!nextPageToken) timeZone = await resolveAccountTimeZone(client, logger);
+  const window = await fetchIssuesWindow(client, {
+    sinceISO,
+    additionalJql,
+    nextPageToken,
+    timeZone,
+    ...pollWindowBounds(batching),
+  });
+  return { ...window, timeZone };
+};
+export const buildPollingCursor = (
+  nextPageToken: string | undefined,
+  streamStartedAt: Date,
+  timeZone: string,
+  jqlFilter: string | undefined,
+): PollingCursor | null =>
+  nextPageToken
+    ? {
+        nextPageToken,
+        streamStartedAt: streamStartedAt.toISOString(),
+        timeZone,
+        jqlFilter,
+      }
+    : null;
+export const buildPollingState = (
+  next: PollingCursor | null,
+  streamStartedAt: Date,
+  sinceDate: Date,
+  isBackfill: boolean,
+): PollingState => ({
+  ...(next
+    ? {
+        nextPageToken: next.nextPageToken,
+        streamStartedAt: next.streamStartedAt,
+        timeZone: next.timeZone,
+        ...(next.jqlFilter ? { jqlFilter: next.jqlFilter } : {}),
+      }
+    : {}),
+  lastPolledAt: (next ? sinceDate : streamStartedAt).toISOString(),
+  ...(isBackfill && next ? { backfillActive: true } : {}),
+});
+const pollWindowBounds = (
+  batching: boolean,
+): {
+  pageSize: number;
+  maxPages: number;
+} => ({
+  pageSize: POLL_PAGE_SIZE,
+  maxPages: batching ? 1 : POLL_UNBATCHED_MAX_PAGES,
+});
+export const resolvePollingStart = (
+  state: PollingState,
+  lookBackDate: string | undefined,
+  now: Date,
+): {
+  sinceDate: Date;
+  isBackfill: boolean;
+} => {
+  const seedSince = lookBackDate ? new Date(lookBackDate) : now;
+  return {
+    sinceDate: state.lastPolledAt ? new Date(state.lastPolledAt) : seedSince,
+    isBackfill:
+      state.backfillActive === true ||
+      (!state.lastPolledAt && Boolean(lookBackDate)),
+  };
+};
+export const resolvePollingStream = (
+  state: PollingState,
+  incoming: PollingCursor | undefined,
+  jqlFilter: string | undefined,
+  now: Date,
+): PollingStream => {
+  const held = incoming ?? state;
+  const resumable =
+    Boolean(held.nextPageToken) && (held.jqlFilter ?? undefined) === jqlFilter;
+  return {
+    nextPageToken: resumable ? held.nextPageToken : undefined,
+    streamStartedAt:
+      resumable && held.streamStartedAt ? new Date(held.streamStartedAt) : now,
+    timeZone: resumable ? (held.timeZone ?? FALLBACK_TIME_ZONE) : undefined,
+  };
+};
+export const lookBackDateClean = (value: unknown): string => {
+  if (
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim() === "")
+  ) {
+    return "";
+  }
+  const raw = typeof value === "string" ? value.trim() : String(value);
+  const match =
+    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  if (!match) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  const [, yearStr, monthStr, dayStr] = match;
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  if (parsed.getTime() > Date.now()) {
+    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  }
+  return parsed.toISOString();
+};
+export const resolveJiraIssueChanges = (
+  data: JiraIssueChangesObject | undefined,
+): JiraIssueChange[] => {
+  const changesObject = data ?? { created: [], updated: [] };
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): JiraIssueChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): JiraIssueChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };
 export const partitionIssuesByTimestamp = (
   issues: JiraIssue[],

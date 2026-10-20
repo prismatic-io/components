@@ -7,27 +7,22 @@ This trigger polls the [ManageEngine ServiceDesk Plus API](https://www.manageeng
 3. Records whose IDs were not present in the previous poll are classified as **created**
 4. The trigger updates its internal state after each poll
 
-#### Configuration
+**Batching**
 
-Configure the following inputs:
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance.
 
-- **Connection**: The ServiceDesk Plus connection used to authenticate API requests
-- **Resource Type**: The type of ServiceDesk Plus record to monitor
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
 
-  | Resource | Tracks New | Tracks Updated |
-  | -------- | ---------- | -------------- |
-  | Requests | Yes        | No             |
-  | Problems | Yes        | No             |
-  | Assets   | Yes        | No             |
-
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
+With batching off, downstream steps receive `results.body.data.created` and `results.body.data.updated` arrays. With batching on, those fields do not exist — each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
 Returns an object with two arrays — `created` for new records and `updated` for modified records.
 
+**Without batching:**
+
 <details>
-<summary>Example Response</summary>
+<summary>Example Payload</summary>
 
 ```json
 {
@@ -45,6 +40,29 @@ Returns an object with two arrays — `created` for new records and `updated` fo
       }
     ],
     "updated": []
+  }
+}
+```
+
+</details>
+
+**With batching (each execution):**
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "301",
+    "subject": "Unable to access email",
+    "status": {
+      "name": "Open"
+    },
+    "created_time": {
+      "value": "1705398600000"
+    }
   }
 }
 ```

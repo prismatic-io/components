@@ -1,8 +1,14 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { connectionInput, pollResourceType, showNewRecords } from "../inputs";
-import type { PollingState, SDPRecord } from "../types";
-import { paginateData } from "../util";
+import type {
+  PollingState,
+  SDPChangesObject,
+  SDPRecord,
+  SDPRecordChange,
+} from "../types";
+import { paginateData, resolvePollingRecordChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Records",
@@ -13,6 +19,12 @@ export const pollChangesTrigger = pollingTrigger({
     connectionInput,
     pollResourceType,
     showNewRecords,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): SDPRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as SDPChangesObject),
   },
   perform: async (context, payload, params) => {
     const resourceType = params.pollResourceType;

@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { getCardFoldersInputs } from "../../inputs";
 import { getCardFoldersPayload } from "../../examplePayloads";
+import { getCardFoldersInputs } from "../../inputs";
 export const getCardFolders = action({
   display: {
     label: "Get Card Folders",

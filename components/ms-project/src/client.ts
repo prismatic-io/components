@@ -3,7 +3,7 @@ import {
   createClient,
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
-import { URL } from "url";
+import { URL } from "node:url";
 import { oauth } from "./connections";
 import type { CreateClientProps } from "./types";
 Array.isArray([]);

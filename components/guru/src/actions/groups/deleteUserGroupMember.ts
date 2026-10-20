@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { deleteUserGroupMemberInputs } from "../../inputs";
 import { deleteUserGroupMemberPayload } from "../../examplePayloads";
+import { deleteUserGroupMemberInputs } from "../../inputs";
 export const deleteUserGroupMember = action({
   display: {
     label: "Delete User Group Member",

@@ -2,19 +2,14 @@
   "compilerOptions": {
     "target": "es2018",
     "lib": ["es2018"],
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node"
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "include": ["src", ".spectral/*"]
 }

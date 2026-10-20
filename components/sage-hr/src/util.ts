@@ -1,6 +1,6 @@
 import FormData from "form-data";
 import type { createClient } from "./client";
-import type { SageHRRecord } from "./types";
+import type { ChangesObject, RecordChange, SageHRRecord } from "./types";
 export const fetchAllRecords = async (
   client: ReturnType<typeof createClient>,
   endpoint: string,
@@ -67,6 +67,19 @@ const validateDataType = (value: unknown) => {
     default:
       return false;
   }
+};
+export const resolvePollingRecordChanges = (
+  data: ChangesObject | undefined,
+): RecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): RecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): RecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };
 export const generateForm = (data: Record<string, unknown>) => {
   const formData = new FormData();

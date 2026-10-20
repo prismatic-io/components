@@ -11,6 +11,7 @@ import {
   UNSUPPORTED_CONNECTION_TYPE,
 } from "./constants";
 import type { MapModel, ObjectType, SearchCriteria } from "./interfaces";
+import type { SDPChangesObject, SDPRecordChange } from "./types";
 export const mapModel = (array: MapModel[], includeEmpty = false) => {
   if (!Array.isArray(array)) throw new Error("Expected an array");
   const modelArray = array.map(({ label, value }) => ({
@@ -192,6 +193,19 @@ const sendRequest = async (
     params,
   });
   return data;
+};
+export const resolvePollingRecordChanges = (
+  data: SDPChangesObject | undefined,
+): SDPRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): SDPRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): SDPRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };
 export const buildCriteriaObject = (
   conditionsCriteria: KeyValuePair<unknown>[],

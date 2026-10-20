@@ -1,8 +1,8 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getGuruClient } from "../client";
 import { selectCardInputs } from "../inputs";
-import { fetchGuruResults } from "../util";
 import type { GuruCard } from "../types";
+import { fetchGuruResults } from "../util";
 export const selectCard = dataSource({
   dataSourceType: "picklist",
   display: {

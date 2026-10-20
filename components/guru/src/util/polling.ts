@@ -1,4 +1,4 @@
-import type { GuruCard } from "../types";
+import type { GuruCard, GuruChangesObject, GuruRecordChange } from "../types";
 export const toGuruDateFilter = (iso: string): string =>
   iso.replace(/Z$/, "+00:00");
 export const classifyCardsByPollDate = (
@@ -22,4 +22,17 @@ export const classifyCardsByPollDate = (
     }
   }
   return { created, updated };
+};
+export const resolvePollingRecordChanges = (
+  data: GuruChangesObject | undefined,
+): GuruRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): GuruRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): GuruRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

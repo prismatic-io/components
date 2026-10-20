@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { whoAmIInputs } from "../../inputs";
 import { whoAmIPayload } from "../../examplePayloads";
+import { whoAmIInputs } from "../../inputs";
 export const whoAmI = action({
   display: {
     label: "Who Am I",

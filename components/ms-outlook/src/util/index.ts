@@ -1,15 +1,30 @@
 import type { Connection, KeyValuePair } from "@prismatic-io/spectral";
 import { ConnectionError, util } from "@prismatic-io/spectral";
 import isEmpty from "lodash.isempty";
-import type { PaginatedResponse } from "../types";
+import type { Message } from "@microsoft/microsoft-graph-types";
+import type {
+  MessageChange,
+  MessageChangesObject,
+  MessagesWindow,
+  MessagesWindowParams,
+  PaginatedResponse,
+  PollingCursor,
+  PollingState,
+  PollingStream,
+  PollingWindowRequest,
+} from "../types";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import connections, { oauthClientCredentials } from "../connections";
 import { createClient } from "../client";
 import { createMsWebhookPerformFN } from "ms-utils";
 import {
+  LOOK_BACK_DATE_PATTERN,
   MESSAGES_DEFAULT_ORDERBY,
+  POLL_PAGE_SIZE,
+  POLL_UNBATCHED_MAX_PAGES,
   POLLING_ENDPOINTS,
   RENEWAL_EXPIRATION_MINUTES,
+  WATERMARK_SKEW_MARGIN_MS,
   WEBHOOK_RESOURCE_CONFIG,
 } from "../constants";
 export const filterFalsyValuesFromArray = (array: unknown[]) => {
@@ -130,25 +145,205 @@ export const computeEndpointBasedOnConnection = (
   }
   return endpoint.replace("/me", `/users/${connection.fields.userId}`);
 };
-export const fetchUpdatedMessagesSince = async (
+const toWholeSecond = (value: string | number | Date): string => {
+  const date = new Date(value);
+  date.setUTCMilliseconds(0);
+  return date.toISOString();
+};
+const modifiedStamp = (message: Message): string | undefined => {
+  const parsed = message.lastModifiedDateTime
+    ? Date.parse(message.lastModifiedDateTime)
+    : Number.NaN;
+  return Number.isNaN(parsed) ? undefined : toWholeSecond(parsed);
+};
+const safeHorizon = (now: Date): string =>
+  toWholeSecond(now.getTime() - WATERMARK_SKEW_MARGIN_MS);
+const fetchMessagesWindow = async (
   client: HttpClient,
   connection: Connection,
-  sinceISO: string,
-  folderId?: string,
-): Promise<import("@microsoft/microsoft-graph-types").Message[]> => {
+  { position, horizonISO, folderId, pageSize, maxPages }: MessagesWindowParams,
+): Promise<MessagesWindow> => {
   const endpoint = computeEndpointBasedOnConnection(
     connection,
     folderId
       ? POLLING_ENDPOINTS.MAIL_FOLDER_MESSAGES(folderId)
       : POLLING_ENDPOINTS.MESSAGES,
   );
-  const data = await fetchAllData<
-    import("@microsoft/microsoft-graph-types").Message
-  >(client, endpoint, true, {
-    $filter: `lastModifiedDateTime gt ${sinceISO}`,
-    $orderby: MESSAGES_DEFAULT_ORDERBY,
+  const messages: Message[] = [];
+  let { watermark } = position;
+  let boundaryIds = [...position.boundaryIds];
+  const take = (rows: Message[]) => {
+    for (const row of rows) {
+      const stamp = modifiedStamp(row);
+      if (stamp === undefined) {
+        messages.push(row);
+        continue;
+      }
+      if (stamp < watermark) continue;
+      const id = row.id ?? "";
+      if (stamp === watermark) {
+        if (boundaryIds.includes(id)) continue;
+        boundaryIds.push(id);
+      } else {
+        watermark = stamp;
+        boundaryIds = [id];
+      }
+      messages.push(row);
+    }
+  };
+  let drained = false;
+  for (let page = 0; page < maxPages && !drained; page++) {
+    const startWatermark = watermark;
+    const startCount = boundaryIds.length;
+    let { data } = await client.get<PaginatedResponse<Message>>(endpoint, {
+      params: {
+        $filter: `lastModifiedDateTime ge ${watermark} and lastModifiedDateTime le ${horizonISO}`,
+        $orderby: MESSAGES_DEFAULT_ORDERBY,
+        $top: pageSize,
+      },
+    });
+    take(data.value ?? []);
+    const noProgress =
+      watermark === startWatermark && boundaryIds.length === startCount;
+    if (
+      data["@odata.nextLink"] &&
+      (noProgress || boundaryIds.length >= pageSize)
+    ) {
+      const stalledAt = watermark;
+      while (data["@odata.nextLink"] && watermark === stalledAt) {
+        ({ data } = await client.get<PaginatedResponse<Message>>(
+          data["@odata.nextLink"],
+        ));
+        take(data.value ?? []);
+      }
+    }
+    drained = !data["@odata.nextLink"];
+  }
+  return { messages, position: { watermark, boundaryIds }, drained };
+};
+const pollWindowBounds = (
+  batching: boolean,
+): {
+  pageSize: number;
+  maxPages: number;
+} => ({
+  pageSize: POLL_PAGE_SIZE,
+  maxPages: batching ? 1 : POLL_UNBATCHED_MAX_PAGES,
+});
+export const readPollingWindow = async (
+  connection: Connection,
+  { position, folderId, skipFetch, batching, debug, now }: PollingWindowRequest,
+): Promise<MessagesWindow> => {
+  const horizonISO = safeHorizon(now);
+  if (skipFetch) {
+    return {
+      messages: [],
+      position:
+        horizonISO > position.watermark
+          ? { watermark: horizonISO, boundaryIds: [] }
+          : position,
+      drained: true,
+    };
+  }
+  return fetchMessagesWindow(createClient(connection, debug), connection, {
+    position,
+    horizonISO,
+    folderId,
+    ...pollWindowBounds(batching),
   });
-  return data.value ?? [];
+};
+export const resolvePollingStart = (
+  state: PollingState,
+  lookBackDate: string | undefined,
+  now: Date,
+): {
+  sinceDate: Date;
+  isBackfill: boolean;
+} => {
+  const seedSince = lookBackDate ? new Date(lookBackDate) : now;
+  return {
+    sinceDate: state.lastPolledAt ? new Date(state.lastPolledAt) : seedSince,
+    isBackfill:
+      state.backfillActive === true ||
+      (!state.lastPolledAt && Boolean(lookBackDate)),
+  };
+};
+export const resolvePollingStream = (
+  state: PollingState,
+  incoming: Partial<PollingCursor> | undefined,
+  folderId: string | undefined,
+  sinceDate: Date,
+): PollingStream => {
+  const resumable = (held: Partial<PollingCursor> | PollingState): boolean =>
+    typeof held.watermark === "string" &&
+    (held.folderId ?? undefined) === folderId;
+  const held =
+    incoming && resumable(incoming)
+      ? incoming
+      : resumable(state)
+        ? state
+        : undefined;
+  if (held?.watermark) {
+    return {
+      position: {
+        watermark: toWholeSecond(held.watermark),
+        boundaryIds: Array.isArray(held.boundaryIds) ? held.boundaryIds : [],
+      },
+      classifySince: held.classifySince ?? state.lastPolledAt ?? held.watermark,
+    };
+  }
+  return {
+    position: { watermark: toWholeSecond(sinceDate), boundaryIds: [] },
+    classifySince: sinceDate.toISOString(),
+  };
+};
+export const lookBackDateClean = (value: unknown): string => {
+  if (
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim() === "")
+  ) {
+    return "";
+  }
+  const raw = typeof value === "string" ? value.trim() : String(value);
+  const match =
+    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  if (!match) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  const [, yearStr, monthStr, dayStr] = match;
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  if (parsed.getTime() > Date.now()) {
+    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  }
+  return parsed.toISOString();
+};
+export const resolveMessageChanges = (
+  data: MessageChangesObject | undefined,
+): MessageChange[] => {
+  const changesObject = data ?? { created: [], updated: [] };
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): MessageChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): MessageChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };
 export const partitionMessagesByTimestamp = (
   messages: import("@microsoft/microsoft-graph-types").Message[],

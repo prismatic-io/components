@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import { cleanStringInput, lookBackDateClean } from "../util";
 import {
   allowDuplicatesInput,
   changeTypesInput,
@@ -23,6 +23,16 @@ export const createMailFolderWebhookInputs = {
   expirationDateTime: expirationDateTimeInput,
   allowDuplicates: allowDuplicatesInput,
 };
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each message created or updated on or after this date once, ignoring the visibility filters.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 const pollFolderId = input({
   label: "Mail Folder ID",
   type: "string",
@@ -56,6 +66,7 @@ const showUpdatedMessages = input({
 });
 export const pollChangesInputs = {
   connection: connectionInput,
+  lookBackDate,
   pollFolderId,
   showNewMessages,
   showUpdatedMessages,

@@ -85,8 +85,6 @@ export const oktaClientCredentialsOrg = connection({
     description:
       "Authenticate using OAuth 2.0 Client Credentials with private_key_jwt method",
   },
-  comments:
-    "Authenticate using OAuth 2.0 Client Credentials with private_key_jwt method to access Okta's APIs. This is the ONLY supported authentication method for Okta service apps accessing Okta scopes.",
   inputs: {
     oktaDomainUrl: {
       label: "Okta Domain",
@@ -135,7 +133,6 @@ export const oktaApiTokenConnection = connection({
     label: "API Token",
     description: "Authenticate using an API token",
   },
-  comments: "Authenticate using an API token from your Okta Admin Console",
   inputs: {
     oktaDomainUrl: {
       label: "Okta Domain",

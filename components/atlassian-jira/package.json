@@ -3,31 +3,27 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "build": "npm run format && npm run lint && webpack",
-    "test": "jest --maxWorkers=4",
+    "test": "vitest run",
     "publish": "npm run build && prism components:publish"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.17.1",
+    "@prismatic-io/spectral": "10.32.0",
     "atlassian-utils": "file:../../packages/atlassian-utils",
     "form-data": "4.0.0",
     "jira-client": "8.2.2",
     "lodash": "4.17.21"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.8",
-    "@types/jest": "30.0.0",
+    "@biomejs/biome": "2.5.1",
     "@types/jira-client": "7.1.4",
-    "@types/lodash": "4.14.191",
-    "@types/node": "18.19.120",
-    "copy-webpack-plugin": "13.0.0",
-    "jest": "30.0.5",
-    "ts-jest": "29.4.0",
-    "ts-loader": "9.5.2",
-    "typescript": "5.9.3",
-    "webpack": "5.103.0",
-    "webpack-cli": "6.0.1"
+    "@types/lodash": "4.17.26",
+    "@types/node": "^26.6.5",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

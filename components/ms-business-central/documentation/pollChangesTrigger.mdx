@@ -1,0 +1,87 @@
+The **New and Updated Records** polling trigger checks [Microsoft Dynamics 365 Business Central](https://www.microsoft.com/en-us/dynamics-365/products/business-central) on a configured schedule for records of a selected entity (Items, Customers, Vendors, Sales Orders, and others) that were modified since the last recurrence. It can also load existing records once through an initial sync.
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads `lastPolledAt` from the polling state, and the page link held from a recurrence that reached the page limit. With no stored position and no **Look-back Date**, it starts from the current time.
+2. Queries the selected entity of the selected **Company ID** with an OData `$filter` of `lastModifiedDateTime gt <last position>`. When an **Additional Filter** is set, it is combined with that condition using `and`. Records modified exactly at the stored position are not returned, only records modified after it.
+3. Follows `@odata.nextLink` for up to 100 pages per recurrence, starting from the held page link when one was issued for the same query, and stops earlier if the results end. When the service rejects a held link, the trigger restarts from the stored position, so records already delivered can repeat but none are skipped.
+4. Places every returned record in the `updated` array. Business Central list responses expose no creation timestamp, so the trigger cannot tell new records from updated ones and the `created` array is always empty. **Show Updated Records** controls whether the records are emitted.
+5. Stores the new position. When the results ended, the position is the time the first recurrence of the walk started. When the 100-page limit was reached while more pages remained, the position is held, the next page link is stored so the following recurrence continues from it, and a warning is written to the execution logs.
+
+When a recurrence returns no records, it is reported as a recurrence with no changes.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state, so inputs that narrow the change feed would leave gaps in it and are ignored for its duration, while inputs that shape how records are fetched still apply. Set a **Look-back Date** (`YYYY-MM-DD`, not in the future) to start one: it begins on the first recurrence, seeds each record modified after that date exactly once, and ignores **Show Updated Records**. The **Connection**, **Company ID**, **Resource Type**, and **Additional Filter** apply throughout.
+
+The window has no fixed upper bound, so a record modified while the sync is still draining can be swept into the sync. A sync that reaches the 100-page limit continues from the stored page link on the next recurrence, and **Show Updated Records** keeps being ignored until a recurrence reaches the end of the results. At that point the position is set to the time the sync's first recurrence started, so a record modified during the sync that it did not return is picked up by the next recurrence, and every later recurrence resumes from there. Later recurrences ignore the **Look-back Date**, and no field in the payload marks the handoff. The 100-page limit applies per recurrence whether batching is on or off, so a large entity can span several recurrences either way.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Business Central.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Batching splits the records of one recurrence into separate executions. It does not change what the trigger fetches, so the 100-page limit and the position handling described above are the same with batching on or off.
+
+With batching off, a downstream step reads the array at `body.data.updated`. With batching on that field does not exist: each execution receives one record, or an array of them at a batch size above one, as `{ "changeType": "updated", "record": { ... } }`. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow and leaves other flows using this trigger untouched.
+
+#### Returned Data
+
+With batching off, the trigger emits a payload with two arrays (`created` and `updated`). `created` is always empty, and `updated` contains the changed records from Business Central.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [],
+    "updated": [
+      {
+        "id": "5247fc6c-2f35-ef11-840b-002248241214",
+        "number": "TESTO-001",
+        "displayName": "TEST",
+        "type": "Inventory",
+        "blocked": false,
+        "inventory": 0,
+        "unitPrice": 0,
+        "baseUnitOfMeasureCode": "PCS",
+        "lastModifiedDateTime": "2026-05-23T10:30:00Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one tagged item instead, or an array of them when the batch size is above one.
+
+<details>
+<summary>Example Batched Item</summary>
+
+```json
+{
+  "changeType": "updated",
+  "record": {
+    "id": "5247fc6c-2f35-ef11-840b-002248241214",
+    "number": "TESTO-001",
+    "displayName": "TEST",
+    "type": "Inventory",
+    "blocked": false,
+    "inventory": 0,
+    "unitPrice": 0,
+    "baseUnitOfMeasureCode": "PCS",
+    "lastModifiedDateTime": "2026-05-23T10:30:00Z"
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+Refer to the [Business Central API reference](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/api-reference/v2.0/) for the complete schema of each entity.

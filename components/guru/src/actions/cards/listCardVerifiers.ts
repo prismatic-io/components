@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { listCardVerifiersInputs } from "../../inputs";
 import { listCardVerifiersPayload } from "../../examplePayloads";
+import { listCardVerifiersInputs } from "../../inputs";
 export const listCardVerifiers = action({
   display: {
     label: "List Card Verifiers",

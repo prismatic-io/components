@@ -1,0 +1,99 @@
+This trigger polls for new and updated Stripe events on a schedule.
+
+#### How It Works
+
+On each scheduled recurrence, the trigger fetches events from the Stripe Events API using the `created[gte]` parameter to retrieve only events created since the last poll time. Events are partitioned by their `type` field: events ending in `.created` land in the `created` array, and all others land in the `updated` array. The trigger then stores the current time as the cursor for the next recurrence.
+
+When the result set exceeds the page cap, the poll is truncated. On truncation the cursor stays where it is and the next recurrence re-queries the same window, delivering at-least-once semantics — events already emitted may be re-emitted, so downstream flows must be idempotent on the Stripe event `id`. The trigger logs a warning when this occurs; shortening the polling interval or narrowing the **Event Types** filter clears the backlog.
+
+Stripe retains events for up to 30 days, so this trigger cannot backfill beyond that window. There is no Look-back Date input; the trigger starts from its first recurrence.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Stripe.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data.created` and `results.body.data.updated`. With batching on, those fields do not exist — each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
+
+#### Returned Data
+
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
+
+**Without batching:**
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "evt_1abc2DEF3ghi",
+        "object": "event",
+        "type": "customer.created",
+        "created": 1705312200,
+        "data": {
+          "object": {
+            "id": "cus_1abc2DEF",
+            "object": "customer",
+            "name": "Jane Smith",
+            "email": "jane@example.com"
+          }
+        }
+      }
+    ],
+    "updated": [
+      {
+        "id": "evt_4jkl5MNO6pqr",
+        "object": "event",
+        "type": "invoice.paid",
+        "created": 1705312300,
+        "data": {
+          "object": {
+            "id": "in_1abc2DEF",
+            "object": "invoice",
+            "amount_paid": 5000,
+            "currency": "usd"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+**With batching (each execution):**
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "evt_1abc2DEF3ghi",
+    "object": "event",
+    "type": "customer.created",
+    "created": 1705312200,
+    "data": {
+      "object": {
+        "id": "cus_1abc2DEF",
+        "object": "customer",
+        "name": "Jane Smith",
+        "email": "jane@example.com"
+      }
+    }
+  }
+}
+```
+
+</details>
+
+#### Notes
+
+- Events are partitioned by the `.created` suffix on the event `type` field. Everything that is not `.created` — including `.paid`, `.deleted`, `.succeeded` — lands in the `updated` array
+- On truncation the trigger holds its cursor and re-queries the same window on the next recurrence. This is at-least-once delivery; downstream flows should be idempotent on the Stripe event `id`

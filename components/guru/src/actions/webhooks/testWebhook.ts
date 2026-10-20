@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { testWebhookInputs } from "../../inputs";
 import { testWebhookPayload } from "../../examplePayloads";
+import { testWebhookInputs } from "../../inputs";
 export const testWebhook = action({
   display: {
     label: "Test Webhook",

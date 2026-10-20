@@ -1,5 +1,5 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { REFRESH_THRESHOLD_DAYS } from "../constants";
+import type { BoundaryHttpClient as HttpClient } from "../interfaces/boundary";
 import type {
   AtlassianWebhook,
   AtlassianWebhookBasicConfig,

@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { pollResourceModel } from "../util";
+import { lookBackDateClean, pollResourceModel } from "../util";
 import { apiVersion, connectionInput, timeout } from "./common";
 import { events } from "./webhooks";
 export const tableauTriggerInputs = {
@@ -48,9 +48,20 @@ const showUpdatedRecords = input({
     "When true, records whose `updatedAt` falls after the last poll but were created earlier are emitted on the `updated` branch.",
   clean: util.types.toBool,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once, ignoring the field and visibility filters.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const pollChangesInputs = {
   tableauConnection: connectionInput,
   pollResourceType,
+  lookBackDate,
   showNewRecords,
   showUpdatedRecords,
 };

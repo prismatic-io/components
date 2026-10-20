@@ -45,3 +45,6 @@ export const NOTIFICATION_CONDITION_EXAMPLE = [
     },
   },
 ];
+export const TRIGGER_BATCH_SIZE = 50;
+export const POLL_UNBATCHED_MAX_PAGES = 5;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;

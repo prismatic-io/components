@@ -1,21 +1,43 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { PagerDutyIncident, PollingState } from "../types";
+import type {
+  PagerDutyChangesObject,
+  PagerDutyIncident,
+  PollingState,
+} from "../types";
 import { fetchAllIncidentsSince } from "../util/fetchAllIncidentsSince";
+import { resolvePollingRecordChanges } from "../util/polling";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Incidents",
     description:
-      "Fetches incidents created since the last execution on a recurring schedule.",
+      "Retrieves existing and ongoing incidents from PagerDuty. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
   examplePayload: pollChangesTriggerExamplePayload,
-  perform: async (context, payload, { connection, showNewIncidents }) => {
+  triggerResolverSupport: "valid",
+  batchConfig: {
+    batchSize: DEFAULT_BATCH_SIZE,
+  },
+  triggerResolver: {
+    resolveItems: (_context, { payload }) => {
+      const data = payload?.body?.data as PagerDutyChangesObject | undefined;
+      return resolvePollingRecordChanges(data);
+    },
+  },
+  perform: async (
+    context,
+    payload,
+    { connection, showNewIncidents, lookBackDate },
+  ) => {
     const now = new Date().toISOString();
-    const pollState = context.polling.getState() as PollingState | undefined;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const state = context.polling.getState() as PollingState | undefined;
+    const lastPolledAt =
+      state?.lastPolledAt ??
+      (lookBackDate ? new Date(lookBackDate).toISOString() : now);
     const client = createClient(connection, context.debug.enabled);
     const incidents: PagerDutyIncident[] = showNewIncidents
       ? await fetchAllIncidentsSince(client, lastPolledAt)

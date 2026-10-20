@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanObject, cleanString } from "../util/clean";
+import { cleanObject, cleanString, lookBackDateClean } from "../util/clean";
 import { EVENT_LIST_MODEL } from "../util/constants";
 import { cleanStringArray } from "../util/util";
 import { connection, filter } from "./general";
@@ -136,13 +136,26 @@ export const triggerEventHookInputs = {
   eventHookFilter,
   connection,
 };
+const lookBackDateInput = (seeds: string) =>
+  input({
+    label: "Look-back Date",
+    placeholder: "Enter look-back date (YYYY-MM-DD)",
+    type: "string",
+    required: false,
+    comments: `The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each ${seeds} once.`,
+    example: "2026-01-01",
+    clean: lookBackDateClean,
+  });
 export const newUsersPollingTriggerInputs = {
   connection,
+  lookBackDate: lookBackDateInput("user created on or after this date"),
 };
 export const updatedUsersPollingTriggerInputs = {
   connection,
+  lookBackDate: lookBackDateInput("user updated on or after this date"),
 };
 export const newSystemLogsPollingTriggerInputs = {
-  filter,
   connection,
+  lookBackDate: lookBackDateInput("event published on or after this date"),
+  filter,
 };

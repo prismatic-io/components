@@ -1,11 +1,20 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { connection, siteId } from "../inputs";
 import { createClient } from "../client";
-import { addCreated, addDeleted, addUpdated, paginateResults } from "../utils";
+import {
+  fetchSiteDeltaRound,
+  paginateResults,
+  resolveDeltaUrl,
+  resolveSitePollingRecordChanges,
+  separateDriveChanges,
+} from "../utils";
 import type {
+  Drive,
   DriveDeltaResponse,
   PollingState,
-  PollSiteChangesSeparatedChanges,
+  PollingRecordChange,
+  PollSiteChangesResult,
+  SiteDeltaCursor,
 } from "../interfaces";
 export const pollSiteChanges = pollingTrigger({
   display: {
@@ -17,25 +26,52 @@ export const pollSiteChanges = pollingTrigger({
     connection,
     siteId,
   },
-  perform: async (
-    { logger, polling, debug },
-    payload,
-    { connection, siteId },
-  ) => {
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolveSitePollingRecordChanges(
+        payload.body.data as PollSiteChangesResult,
+      ),
+    getNextPaginationState: (_context, { payload }): SiteDeltaCursor | null =>
+      (payload.paginationState as SiteDeltaCursor | undefined) ?? null,
+  },
+  perform: async (context, payload, { connection, siteId }) => {
+    const { logger, polling, debug } = context;
     const client = await createClient(connection, debug.enabled);
+    const state = polling.getState() as PollingState;
+    const rootDeltaFor = (driveId: string) =>
+      `/sites/${siteId}/drives/${driveId}/root/delta`;
     const drivesEndpoint = `/sites/${siteId}/drives?$select=id,name`;
+    const allDrives = (await paginateResults(
+      client,
+      drivesEndpoint,
+    )) as Drive[];
+    if (context.batch?.enabled === true) {
+      const incoming = payload.paginationState as SiteDeltaCursor | undefined;
+      const { changes, next, newPollingState } = await fetchSiteDeltaRound(
+        client,
+        state,
+        rootDeltaFor,
+        allDrives,
+        incoming,
+      );
+      polling.setState(newPollingState);
+      return {
+        payload: {
+          ...payload,
+          paginationState: next ?? undefined,
+          body: { data: changes },
+        },
+        polledNoChanges:
+          Object.keys(changes).length === 0 && next === null && !incoming,
+      };
+    }
     let polledNoChanges = true;
-    const allDrives = (await paginateResults(client, drivesEndpoint)) as {
-      id: string;
-      name: string;
-    }[];
     const allChanges: Record<string, unknown> = {};
     for (const drive of allDrives) {
-      const deltaLink = polling.getState()[drive.id];
-      const endpoint = deltaLink
-        ? deltaLink
-        : `/sites/${siteId}/drives/${drive.id}/root/delta`;
-      allChanges[drive.name] = paginateResults(client, endpoint as string, {
+      const endpoint = resolveDeltaUrl(state, drive.id, rootDeltaFor(drive.id));
+      allChanges[drive.name] = paginateResults(client, endpoint, {
         returnFullData: true,
         useTop: false,
         excludeParents: true,
@@ -47,18 +83,7 @@ export const pollSiteChanges = pollingTrigger({
     const newPollingState: PollingState = {};
     allChangesResults.forEach((result, index) => {
       if (result.value.length > 0) {
-        const separatedChanges: PollSiteChangesSeparatedChanges = {};
-        for (const change of result.value) {
-          const isDeleted = Object.keys(change).includes("deleted");
-          const isRoot = Object.keys(change).includes("root");
-          if (isRoot) {
-            continue;
-          }
-          addDeleted({ isDeleted, separatedChanges, change });
-          addUpdated({ isDeleted, separatedChanges, change });
-          addCreated({ isDeleted, separatedChanges, change });
-        }
-        allChanges[allDrives[index].name] = separatedChanges;
+        allChanges[allDrives[index].name] = separateDriveChanges(result.value);
         if (polledNoChanges === true) {
           polledNoChanges = false;
         }

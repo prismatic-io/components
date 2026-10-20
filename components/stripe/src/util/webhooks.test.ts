@@ -1,7 +1,8 @@
+import { vi } from "vitest";
 import { createStripeClient } from "../client";
 import type { CreatedWebhook } from "../types";
 import { onInstanceDelete, onInstanceDeploy } from "./webhooks";
-jest.mock("../client");
+vi.mock("../client");
 const FLOW = "Stripe Events";
 const FLOW_URL = "https://hooks.example.com/instance-abc/stripe-events";
 const OTHER_FLOW_URL = "https://hooks.example.com/instance-xyz/other-flow";
@@ -17,26 +18,24 @@ const makeStripe = (initial: FakeEndpoint[] = []) => {
   return {
     store,
     webhookEndpoints: {
-      list: jest.fn(async () => ({
+      list: vi.fn(async () => ({
         object: "list",
         url: "/v1/webhook_endpoints",
         has_more: false,
         data: store.map((endpoint) => ({ ...endpoint })),
       })),
-      create: jest.fn(
-        async ({ url, enabled_events }: Record<string, never>) => {
-          const created: FakeEndpoint = {
-            id: `we_${nextId}`,
-            url: url as unknown as string,
-            enabled_events: [...(enabled_events as unknown as string[])],
-            secret: `whsec_${nextId}`,
-          };
-          nextId += 1;
-          store.push(created);
-          return { ...created };
-        },
-      ),
-      update: jest.fn(
+      create: vi.fn(async ({ url, enabled_events }: Record<string, never>) => {
+        const created: FakeEndpoint = {
+          id: `we_${nextId}`,
+          url: url as unknown as string,
+          enabled_events: [...(enabled_events as unknown as string[])],
+          secret: `whsec_${nextId}`,
+        };
+        nextId += 1;
+        store.push(created);
+        return { ...created };
+      }),
+      update: vi.fn(
         async (id: string, { enabled_events }: Record<string, never>) => {
           const found = store.find((endpoint) => endpoint.id === id);
           if (!found) throw new Error(`no such endpoint: ${id}`);
@@ -45,7 +44,7 @@ const makeStripe = (initial: FakeEndpoint[] = []) => {
           return { ...withoutSecret };
         },
       ),
-      del: jest.fn(async (id: string) => {
+      del: vi.fn(async (id: string) => {
         const index = store.findIndex((endpoint) => endpoint.id === id);
         if (index === -1) throw new Error(`no such endpoint: ${id}`);
         store.splice(index, 1);
@@ -69,10 +68,10 @@ const teardown = (context: Context, webhookEvents: string[]) => {
 const storedWebhook = (context: Context) =>
   (context.crossFlowState[FLOW] as CreatedWebhook | undefined)?.webhook;
 const useStripe = (stripe: ReturnType<typeof makeStripe>) => {
-  (createStripeClient as jest.Mock).mockReturnValue(stripe);
+  (createStripeClient as ReturnType<typeof vi.fn>).mockReturnValue(stripe);
 };
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 describe("onInstanceDeploy", () => {
   it("does not create a second endpoint when the event set changes", async () => {

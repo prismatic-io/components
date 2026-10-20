@@ -2,26 +2,43 @@ This trigger polls [Duro](https://durolabs.co/) for new and updated components o
 
 The trigger detects two kinds of changes, each of which can be toggled independently:
 
-- **New records**: records created after the last successful poll. Included when **Show New Records** is enabled.
-- **Updated records**: records modified after the last successful poll. Included when **Show Updated Records** is enabled.
+- **New records**: records created after the last recurrence. Included when **Show New Records** is enabled.
+- **Updated records**: records modified after the last recurrence. Included when **Show Updated Records** is enabled.
 
 A record that is both newly created and modified within the same window is reported as a new record, since creation takes precedence over update.
 
 #### How It Works
 
-1. The trigger runs on the configured schedule and reads the timestamp of the last successful poll from its stored state. On the first run, the current time is used as the baseline.
-2. It fetches the selected resource type (components or change orders) from Duro, paging through results until the available records are retrieved or a safety page cap is reached.
-3. Each record is classified as new or updated by comparing its `created` and `lastModified` timestamps against the last poll time. New records take precedence over updated records.
-4. Records are filtered according to the **Show New Records** and **Show Updated Records** settings before being returned.
-5. The stored state is advanced to the current poll time so the next run only reports changes that occur afterward.
+On each scheduled execution, the trigger:
 
-State management uses an at-least-once delivery model. When a poll retrieves every available record, the cursor advances to the current time. When the page cap is reached and older records have not yet been retrieved, the cursor is held at the previous poll time so the remaining records are delivered on the next run rather than being skipped. As a result, a record may occasionally be delivered more than once, so downstream steps must tolerate repeats.
+1. Reads `lastPolledAt` from the polling state. With no stored position and no **Look-back Date**, it starts from the current time.
+2. Fetches the selected **Resource Type** (components or change orders) from Duro, newest first by last-modified time, in pages of 100. It reads until it reaches a record modified at or before the stored position, or until the results end. A record modified exactly at the stored position is not reported.
+3. Reads up to 50 pages per recurrence. When that limit is reached with pages remaining, the trigger stores Duro's continuation cursor, and the next recurrence continues from it, with a warning written to the execution logs.
+4. Classifies each record as new or updated by comparing its `created` and `lastModified` timestamps against the stored position. A timestamp strictly after the position counts, and new takes precedence over updated.
+5. Returns the records allowed by **Show New Records** and **Show Updated Records**. When none remain, the recurrence is reported as a recurrence with no changes.
+6. Stores the new position only when the read finishes. The position is the time the first recurrence of that read began, not the last, so a record changed while a multi-recurrence read was in progress is picked up by the next read, possibly repeated as an updated record. Downstream steps must tolerate repeats.
+
+Changing the **Resource Type** while a read is unfinished discards the stored continuation cursor and restarts the read from the newest record.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state, so inputs that narrow the change feed would leave gaps in it and are ignored for its duration, while inputs that shape how records are fetched still apply. Set a **Look-back Date** (`YYYY-MM-DD`, not in the future) to start one: it begins on the first recurrence, seeds each record modified after that date exactly once, and ignores **Show New Records** and **Show Updated Records**. The **Connection** and **Resource Type** apply throughout.
+
+The window has no fixed upper bound, so a record modified while the sync is still draining is swept into the sync. A sync that reaches the 50-page limit continues from the stored cursor on the next recurrence, and **Show New Records** and **Show Updated Records** keep being ignored until the read finishes. At that point the position is set to the time the first recurrence of the sync began, and every later recurrence resumes from there. Later recurrences ignore the **Look-back Date**, and no field in the payload marks the handoff. The 50-page limit applies per recurrence whether batching is on or off, so a large workspace can span several recurrences either way.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Duro.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Batching splits the records of one recurrence into separate executions. It does not change what the trigger fetches, so the 50-page limit and the position handling described above are the same with batching on or off.
+
+With batching off, a downstream step reads the arrays at `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one record, or an array of them at a batch size above one, as `{ "changeType": "created" | "updated", "record": { ... } }`. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow and leaves other flows using this trigger untouched.
 
 #### Returned Data
 
-The trigger returns an object whose `body.data` contains two arrays: `created` for new records and `updated` for modified records. Each record includes its identifier, name, and creation and modification timestamps.
-
-Fields shown are representative. The full response object includes additional properties.
+With batching off, the trigger returns an object whose `body.data` contains two arrays: `created` for new records and `updated` for modified records. Each record includes its identifier, name, and creation and modification timestamps.
 
 <details>
 <summary>Example Response (Polling)</summary>
@@ -51,8 +68,29 @@ Fields shown are representative. The full response object includes additional pr
 
 </details>
 
+With batching on, each execution receives one tagged item instead, or an array of them when the batch size is above one.
+
+<details>
+<summary>Example Batched Item</summary>
+
+```json
+{
+  "changeType": "updated",
+  "record": {
+    "id": "666c5a9528e821000815990e",
+    "name": "Precision Resistor 10k",
+    "created": "2024-06-10T09:12:04.118Z",
+    "lastModified": "2024-06-14T14:58:18.069Z"
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
 #### Notes
 
 - The resource type, **Show New Records**, and **Show Updated Records** settings are presented in the integration configuration UI and do not require manual setup here.
-- Duro serves results newest-first without a server-side time filter, so the trigger filters by timestamp after fetching. Very frequent schedules on high-volume workspaces may approach the per-poll page cap, in which case remaining records are delivered on subsequent runs.
+- Duro serves results newest-first without a server-side time filter, so the trigger filters by timestamp after fetching. A workspace with more changes than fit in the 50-page limit of one recurrence is read across several recurrences.
 - When both record types are disabled, the trigger fetches records but returns empty arrays.

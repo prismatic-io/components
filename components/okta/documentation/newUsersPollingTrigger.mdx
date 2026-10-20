@@ -1,0 +1,86 @@
+The **New Users** polling trigger checks Okta on a configured schedule for users created since the last recurrence. It can also load existing users once through an initial sync.
+
+#### How It Works
+
+On each scheduled execution, the trigger:
+
+1. Reads the stored position from the polling state. With no stored position and no **Look-back Date**, nothing is fetched and tracking starts from this recurrence.
+2. Records the time the recurrence started, before reading anything.
+3. Requests `GET /users` with the filter `lastUpdated gt "<stored position>"` and follows every page of results.
+4. Keeps only the users whose `created` timestamp is at or after the stored position, so users that were merely updated are dropped.
+5. Stores the recorded start time as the new position. A user changed while the read was running can therefore be returned again by the next recurrence, but is never skipped.
+
+When a recurrence returns no users, it is reported as a recurrence with no changes.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state, so inputs that narrow the change feed would leave gaps in it and are ignored for its duration, while inputs that shape how users are fetched still apply. Set a **Look-back Date** (`YYYY-MM-DD`, not in the future) to start one: it begins on the first recurrence and seeds each user created after the start of that date (UTC) exactly once. This trigger has no inputs that narrow the feed, so none are ignored. The **Connection** applies throughout.
+
+The window has no fixed upper bound, so a user created while the sync is still reading is swept into the sync. Every page is read within the first recurrence, and the position is then set to the time that recurrence started, so every later recurrence resumes from exactly there. Later recurrences ignore the **Look-back Date**, and no field in the payload marks the handoff.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Okta.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Batching splits the users of one recurrence into separate executions. It does not change what the trigger fetches, so the filter and the position handling described above are the same with batching on or off.
+
+With batching off, a downstream step reads the array at `body.data`. With batching on that field does not exist: each execution receives one user, or an array of them at a batch size above one, as `{ "changeType": "created", "record": { ... } }`. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow and leaves other flows using this trigger untouched.
+
+#### Returned Data
+
+With batching off, `body.data` is an array of the new user records from Okta.
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": [
+    {
+      "id": "00u1abcd2EFGHIJKL3m4",
+      "status": "ACTIVE",
+      "created": "2026-05-21T10:30:00.000Z",
+      "activated": "2026-05-21T10:30:00.000Z",
+      "lastUpdated": "2026-05-21T10:30:00.000Z",
+      "profile": {
+        "firstName": "Ada",
+        "lastName": "Lovelace",
+        "email": "ada.lovelace@example.com",
+        "login": "ada.lovelace@example.com"
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+With batching on, each execution receives one tagged item instead, or an array of them when the batch size is above one.
+
+<details>
+<summary>Example Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "00u1abcd2EFGHIJKL3m4",
+    "status": "ACTIVE",
+    "created": "2026-05-21T10:30:00.000Z",
+    "activated": "2026-05-21T10:30:00.000Z",
+    "lastUpdated": "2026-05-21T10:30:00.000Z",
+    "profile": {
+      "firstName": "Ada",
+      "lastName": "Lovelace",
+      "email": "ada.lovelace@example.com",
+      "login": "ada.lovelace@example.com"
+    }
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

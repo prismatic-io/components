@@ -27,7 +27,7 @@ describeIntegrationTest("subscriptions", () => {
     });
     expect(result).toBeDefined();
   });
-  xit("should update subscription", async () => {
+  it.skip("should update subscription", async () => {
     const result = await harness.action(
       "updateSiteListSubscriptionExpiration",
       {
@@ -37,14 +37,14 @@ describeIntegrationTest("subscriptions", () => {
     );
     expect(result).toBeDefined();
   });
-  xit("should delete subscriptions", async () => {
+  it.skip("should delete subscriptions", async () => {
     const result = await harness.action("deleteSubscription", {
       connection,
       subscriptionId: "a5afc8d3-91c8-4b30-8cc9-47562f9ca66d",
     });
     expect(result).toBeDefined();
   });
-  xit("should delete all instance subscriptions", async () => {
+  it.skip("should delete all instance subscriptions", async () => {
     const result = await harness.action(
       "deleteAllInstanceSubscriptions",
       {

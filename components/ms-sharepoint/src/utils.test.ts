@@ -1,7 +1,8 @@
+import { type Mock, vi } from "vitest";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import type { DriveItem } from "./interfaces";
 import { getFilesFromDriveFN, paginateResults } from "./utils";
-const createMockClient = (getMock: jest.Mock) =>
+const createMockClient = (getMock: Mock) =>
   ({ get: getMock }) as unknown as HttpClient;
 const driveItem = (id: string, isFolder = false): DriveItem =>
   ({
@@ -10,9 +11,9 @@ const driveItem = (id: string, isFolder = false): DriveItem =>
     ...(isFolder ? { folder: { childCount: 1 } } : {}),
   }) as DriveItem;
 describe("paginateResults", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   describe("default options", () => {
     it("returns a bare array so internal callers keep working", async () => {
@@ -189,9 +190,9 @@ describe("paginateResults", () => {
   });
 });
 describe("getFilesFromDriveFN", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   it("returns the enveloped shape with the drive root's context", async () => {
     getMock.mockResolvedValueOnce({

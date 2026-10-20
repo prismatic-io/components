@@ -4,17 +4,31 @@ The **New and Updated Issues** polling trigger checks Jira on a configured sched
 
 On each scheduled execution, the trigger:
 
-1. Reads the last poll timestamp (`lastPolledAt`) from the polling state, or uses the current time on the first run
-2. Queries Jira's `/rest/api/3/search/jql` endpoint for issues matching `updated >= <lastPolledAt>`, optionally narrowed by an additional JQL clause
+1. Reads `lastPolledAt` and `nextPageToken` from the polling state. With no stored position and no **Look-back Date**, it starts from the current time. A stored `nextPageToken` is resumed only for the **Additional JQL Filter** it was issued for; after the filter changes, the trigger restarts from the stored last-poll timestamp.
+2. Queries Jira's `/rest/api/3/search/jql` endpoint for issues matching `updated >= <lastPolledAt>`, optionally narrowed by the **Additional JQL Filter**. It reads up to ten pages of 100 issues per recurrence with batching off, or one page per round with batching enabled, and stops earlier if the results end. Stopping at the limit is not an error: the `nextPageToken` it stops on is a complete resume point. With batching off the remaining pages arrive on later recurrences; with batching on the platform re-invokes the trigger from that token until the results end, within the same recurrence.
 3. Partitions the returned issues into **created** and **updated** buckets by comparing the issue's `created` timestamp against the last poll timestamp
-4. Persists the current execution time as the new `lastPolledAt` for the next run
+4. Persists the `nextPageToken` on every recurrence. It advances the last-poll timestamp only once the results end, because that value is the cutoff step 3 compares against, and moving it while pages are still outstanding would place it ahead of issues that have not been delivered yet. It then sets it to the time the first recurrence of that drain started, not the last: Jira cursor paging is not a snapshot, so a later time could skip issues updated while the drain was in progress. An issue updated during a multi-recurrence drain is therefore picked up again by the next drain, possibly as a duplicate **updated** issue.
 5. Emits the partitioned results in the trigger payload, filtered by the **Show New Issues** and **Show Updated Issues** toggles
 
-If both **Show New Issues** and **Show Updated Issues** are disabled, the trigger skips the API call entirely.
+If both **Show New Issues** and **Show Updated Issues** are disabled, the trigger skips the API call entirely, unless an initial sync is running.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state, so inputs that narrow the change feed would leave gaps in it and are ignored for its duration, while inputs that shape how issues are fetched still apply. Set a **Look-back Date** to start one: it begins on the first recurrence, seeds each issue created or updated on or after that date exactly once, and ignores **Show New Issues** and **Show Updated Issues**. The **Connection** and **Additional JQL Filter** apply throughout.
+
+The window has no fixed upper bound, so an issue updated while the sync is still draining is swept into the sync rather than left for the incremental recurrences. The trigger's position is the `nextPageToken` Jira issues and advances page by page; when the results end, the trigger commits the time the sync began as its last-poll timestamp, and every later recurrence resumes from exactly there. No field in the payload marks the handoff. With batching off the sync drains up to ten pages per scheduled recurrence and a large project therefore spans several of them; with batching on the platform drives the rounds and the sync drains inside one recurrence.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Jira.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads the arrays at `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one issue, or an array of them at a batch size above one, as `{ "changeType": "created" | "updated", "record": { ... } }`. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow and leaves other flows using this trigger untouched.
 
 #### Returned Data
 
-The trigger emits a payload with two arrays — `created` and `updated` — each containing issue resources from the Jira REST API.
+With batching off, the trigger emits a payload with two arrays (`created` and `updated`), each containing issue resources from the Jira REST API.
 
 <details>
 <summary>Example Payload</summary>
@@ -48,6 +62,29 @@ The trigger emits a payload with two arrays — `created` and `updated` — each
         }
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one tagged item instead, or an array of them when the batch size is above one.
+
+<details>
+<summary>Example Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "10001",
+    "key": "PROJ-123",
+    "fields": {
+      "summary": "New issue summary",
+      "status": { "name": "To Do", "id": "10000" },
+      "created": "2026-05-21T10:30:00.000+0000",
+      "updated": "2026-05-21T10:30:00.000+0000"
+    }
   }
 }
 ```

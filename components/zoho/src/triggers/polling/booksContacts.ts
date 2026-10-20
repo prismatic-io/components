@@ -1,32 +1,37 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import booksGetRecords from "../../actions/booksGetRecords";
-import { DEFAULT_PER_PAGE } from "../../constants";
+import { DEFAULT_PER_PAGE, TRIGGER_BATCH_SIZE } from "../../constants";
 import { leadsPollingTriggerInputs } from "../../inputs";
-import type { BookContactsRecords } from "../../types";
-import { toZohoTimestamp } from "../../util/general";
+import type {
+  BookContactsRecords,
+  BooksChangesObject,
+  BooksRecordChange,
+  PollingState,
+} from "../../types";
 import {
   getBooksModifiedOrCreatedRecords,
   polledChanges,
-} from "../../util/triggers";
+  resolveBooksRecordChanges,
+  resolvePollingStart,
+} from "../../util";
+import { toZohoTimestamp } from "../../util/general";
 export const bookContactsPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated Books Contacts",
     description:
-      "Checks for new and updated contacts in Zoho Books on a configured schedule.",
+      "Retrieves existing and ongoing contacts from Zoho Books. Load history once, check for changes on a schedule, or both.",
   },
   inputs: leadsPollingTriggerInputs,
-  perform: async (context, payload, { connection }) => {
-    const now = new Date().toISOString();
-    const lastState = context.polling.getState() as {
-      lastUpdated?: string;
-    };
-    const lastUpdated = lastState?.lastUpdated;
-    if (context.debug.enabled) {
-      context.logger.debug(
-        `Polling contacts from ${lastUpdated ?? "(first poll)"} to ${now}`,
-      );
-      context.logger.debug(`Polling state: ${JSON.stringify(lastState)}`);
-    }
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): BooksRecordChange[] =>
+      resolveBooksRecordChanges(payload.body.data as BooksChangesObject),
+  },
+  perform: async (context, payload, { connection, lookBackDate }) => {
+    const now = new Date();
+    const state = (context.polling.getState() ?? {}) as PollingState;
+    const { sinceDate } = resolvePollingStart(state, lookBackDate, now);
     const { data: records } = await booksGetRecords.perform(context, {
       connection,
       recordType: "contacts",
@@ -38,17 +43,16 @@ export const bookContactsPollingTrigger = pollingTrigger({
       searchFields: {
         sort_column: "last_modified_time",
       },
-      ...(lastUpdated ? { ifModifiedSince: toZohoTimestamp(lastUpdated) } : {}),
+      ...{ ifModifiedSince: toZohoTimestamp(sinceDate.toISOString()) },
     });
     const filteredRecords = getBooksModifiedOrCreatedRecords(
       (records as unknown as BookContactsRecords).contacts,
-      lastUpdated ?? now,
+      sinceDate.toISOString(),
     );
-    const polledNoChanges = polledChanges(filteredRecords);
-    context.polling.setState({ lastUpdated: now });
+    context.polling.setState({ lastPolledAt: now.toISOString() });
     return Promise.resolve({
       payload: { ...payload, body: { data: filteredRecords } },
-      polledNoChanges,
+      polledNoChanges: polledChanges(filteredRecords),
     });
   },
 });

@@ -30,7 +30,12 @@ export const rowsAddToSheet = action({
       },
     );
     const columnDataObject = Object.fromEntries(
-      columnData.data.map(({ title, id, type }) => [title, { id, type }]),
+      columnData.data.map(
+        ({ title, id, type }: { title: string; id: string; type: string }) => [
+          title,
+          { id, type },
+        ],
+      ),
     );
     const source = dynamicColumns?.length
       ? dynamicColumns

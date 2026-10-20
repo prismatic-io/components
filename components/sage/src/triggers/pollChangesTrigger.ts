@@ -1,53 +1,60 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { getSageClient } from "../client";
-import { connection } from "../inputs";
-import {
-  pollResourceType,
-  showNewRecords,
-  showUpdatedRecords,
-} from "../inputs";
-import { POLL_RESOURCE_CONFIG } from "../constants";
-import type { PollingState, SageRecord } from "../types";
-import { fetchAllSince } from "../util";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
+import { pollChangesInputs } from "../inputs";
+import type { PollingState, SageChangesObject, SageRecord } from "../types";
+import { fetchAllSince, resolvePollingRecordChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in Sage Accounting on a configured schedule.",
+      "Retrieves existing and ongoing records for a specified Sage Accounting resource. Load history once, check for changes on a schedule, or both.",
   },
-  inputs: {
-    connection,
-    resourceType: pollResourceType,
-    showNewRecords,
-    showUpdatedRecords,
+  inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }) =>
+      resolvePollingRecordChanges(
+        payload.body.data as SageChangesObject | undefined,
+      ),
   },
   perform: async (
     context,
     payload,
-    { connection, resourceType, showNewRecords, showUpdatedRecords },
+    {
+      connection,
+      resourceType,
+      lookBackDate,
+      showNewRecords,
+      showUpdatedRecords,
+    },
   ) => {
     const now = new Date().toISOString();
-    const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const state = context.polling.getState() as PollingState | undefined;
+    const isInitialSync = !state?.lastPolledAt && Boolean(lookBackDate);
+    const lastPolledAt =
+      state?.lastPolledAt ??
+      (lookBackDate ? new Date(lookBackDate).toISOString() : now);
     const config = POLL_RESOURCE_CONFIG[resourceType];
     if (!config) {
       throw new Error(`Unsupported resource type: ${resourceType}`);
     }
+    const sinceDate = new Date(lastPolledAt);
     const client = getSageClient(connection, context.debug.enabled);
     const records = await fetchAllSince(client, config.endpoint, lastPolledAt);
-    const lastPolledDate = new Date(lastPolledAt);
     const created: SageRecord[] = [];
     const updated: SageRecord[] = [];
     for (const record of records) {
       const createdAt = record.created_at as string;
-      if (createdAt && new Date(createdAt) > lastPolledDate) {
+      if (createdAt && new Date(createdAt) > sinceDate) {
         created.push(record);
       } else {
         updated.push(record);
       }
     }
-    const filteredCreated = showNewRecords ? created : [];
-    const filteredUpdated = showUpdatedRecords ? updated : [];
+    const filteredCreated = isInitialSync || showNewRecords ? created : [];
+    const filteredUpdated = isInitialSync || showUpdatedRecords ? updated : [];
     const totalChanges = filteredCreated.length + filteredUpdated.length;
     context.polling.setState({ lastPolledAt: now } as unknown as Record<
       string,

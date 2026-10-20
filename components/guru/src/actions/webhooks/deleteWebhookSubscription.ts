@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { deleteWebhookSubscriptionInputs } from "../../inputs";
 import { deleteWebhookSubscriptionPayload } from "../../examplePayloads";
+import { deleteWebhookSubscriptionInputs } from "../../inputs";
 export const deleteWebhookSubscription = action({
   display: {
     label: "Delete Webhook Subscription",

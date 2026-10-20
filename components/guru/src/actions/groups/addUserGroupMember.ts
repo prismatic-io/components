@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { addUserGroupMemberInputs } from "../../inputs";
 import { addUserGroupMemberPayload } from "../../examplePayloads";
+import { addUserGroupMemberInputs } from "../../inputs";
 export const addUserGroupMember = action({
   display: {
     label: "Add User Group Member",

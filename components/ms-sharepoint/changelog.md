@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-20
+
+- Added opt-in batching to the **New and Updated Drive Items**, **New and Updated Folder Items**, and **New and Updated Site Items** triggers, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+
 ### 2026-09-14
 
 Removed the **List Files in Drive (Deprecated)** and **List Folder Files in Drive (Deprecated)** actions that are no longer in use; use **List Files in Drive** and **List Folder Files in Drive** instead

@@ -1,27 +1,33 @@
-This trigger polls the [Sage Accounting API](https://developer.sage.com/api/accounting/) for new and updated records on a scheduled basis.
+This trigger retrieves existing and ongoing records for a specified Sage Accounting resource. Load history once, check for changes on a schedule, or both.
 
 #### How It Works
 
-1. The trigger runs on the configured schedule
-2. It fetches records from Sage Accounting using the `updated_from` filter parameter, passing the last poll time to retrieve only records modified since the previous execution
-3. Records are categorized as **created** or **updated** based on their `created_at` timestamp relative to the last poll time — records whose `created_at` exceeds the last poll time are classified as created; all other records returned by the query are classified as updated
-4. The trigger updates its internal state after each poll
+On each scheduled recurrence, the trigger fetches records from the Sage Accounting API using the `updated_or_created_since` filter parameter, passing the last poll time so only records modified since the previous execution are returned. Records are categorized as **created** or **updated** based on their `created_at` timestamp relative to the last poll time — records whose `created_at` exceeds the last poll time are classified as created; all other records returned by the query are classified as updated. The trigger then stores the current time as the cursor for the next recurrence.
 
-#### Configuration
+**Initial sync**
 
-Configure the following inputs:
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps: **Show New Records** and **Show Updated Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record created or modified on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence.
 
-- **Connection**: The Sage Accounting connection used to authenticate API requests
-- **Resource Type**: The type of records to monitor — Contacts, Sales Invoices, Purchase Invoices, or Ledger Accounts
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-- **Show Updated Records**: When enabled, includes modified records in the results. Defaults to `true`
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync. Once all matching records have been emitted, the trigger stores the current time as its position and the first incremental recurrence resumes from exactly there. Without batching the full window is fetched in a single recurrence; with batching the resolver drains the window over batched executions within the same recurrence.
+
+**Resource Type** still applies throughout. The trigger has no page-size or field-selection input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Sage Accounting.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps read `results.body.data.created` and `results.body.data.updated`. With batching on, those fields do not exist — each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
-The trigger returns an object with two arrays — `created` for new records and `updated` for modified records.
+The trigger returns an object with two arrays — `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
+
+**Without batching:**
 
 <details>
-<summary>Example Response</summary>
+<summary>Example Payload</summary>
 
 ```json
 {
@@ -50,8 +56,27 @@ The trigger returns an object with two arrays — `created` for new records and 
 
 </details>
 
+**With batching (each execution):**
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "b04c86fb-4a82-4ba3-ab0d-93bf5b2b5abc",
+    "displayed_as": "Acme Corporation",
+    "name": "Acme Corporation",
+    "created_at": "2024-01-16T10:30:00Z",
+    "updated_at": "2024-01-16T10:30:00Z"
+  }
+}
+```
+
+</details>
+
 #### Notes
 
-- The `updated_from` filter is applied server-side, so only records modified since the last poll are returned — this minimizes data transfer on each execution
-- All four resource types support both new and updated record detection
-- Refer to the [Sage Accounting API documentation](https://developer.sage.com/api/accounting/) for rate limit details and available fields per resource type
+- The `updated_or_created_since` filter is applied server-side, so only records modified since the last poll are returned
+- All four resource types — Contacts, Sales Invoices, Purchase Invoices, and Ledger Accounts — support both new and updated record detection

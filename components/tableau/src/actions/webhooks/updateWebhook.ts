@@ -28,7 +28,7 @@ export const updateWebhook = action({
       debug: context.debug.enabled,
       apiVersion,
     });
-    const body = {
+    const body: Record<string, Record<string, unknown>> = {
       webhook: {
         name: webhookName || undefined,
         isEnabled: webhookEnabled || undefined,

@@ -4,10 +4,18 @@ import {
   businessCentralConnection,
   businessClientCredentials,
 } from "./connections";
-import { MAX_EXPIRATION_DAYS, POLL_RESOURCE_CONFIG } from "./constants";
+import {
+  LOOK_BACK_DATE_PATTERN,
+  MAX_EXPIRATION_DAYS,
+  POLL_RESOURCE_CONFIG,
+} from "./constants";
 import type {
   BusinessCentralRecord,
   MultipleItemsResponse,
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+  PollingStream,
   Subscription,
 } from "./interfaces";
 const MAX_POLL_PAGES = 100;
@@ -121,14 +129,23 @@ export const fetchAllPagedSince = async (
   client: HttpClient,
   initialPath: string,
   initialParams: Record<string, unknown>,
+  resumeLink?: string,
 ): Promise<{
   records: BusinessCentralRecord[];
   truncated: boolean;
+  nextLink?: string;
 }> => {
   const records: BusinessCentralRecord[] = [];
-  const { data: firstPage } = await client.get<
-    MultipleItemsResponse<BusinessCentralRecord[]>
-  >(initialPath, { params: initialParams });
+  const { data: firstPage } = resumeLink
+    ? await client.get<MultipleItemsResponse<BusinessCentralRecord[]>>(
+        resumeLink,
+      )
+    : await client.get<MultipleItemsResponse<BusinessCentralRecord[]>>(
+        initialPath,
+        {
+          params: initialParams,
+        },
+      );
   records.push(...(firstPage.value ?? []));
   let nextLink = firstPage["@odata.nextLink"];
   let pages = 1;
@@ -141,5 +158,92 @@ export const fetchAllPagedSince = async (
     nextLink = page["@odata.nextLink"];
     pages++;
   }
-  return { records, truncated: Boolean(nextLink) };
+  return { records, truncated: Boolean(nextLink), nextLink };
+};
+export const resolvePollingStart = (
+  state: PollingState | undefined,
+  lookBackDate: string | undefined,
+  now: string,
+): {
+  since: string;
+  isBackfill: boolean;
+} => ({
+  since: state?.lastPolledAt ?? (lookBackDate || now),
+  isBackfill:
+    state?.backfillActive === true ||
+    (!state?.lastPolledAt && Boolean(lookBackDate)),
+});
+export const resolvePollingStream = (
+  state: PollingState | undefined,
+  query: string,
+  now: string,
+): PollingStream =>
+  state?.nextLink && state.streamStartedAt && state.streamQuery === query
+    ? { streamStartedAt: state.streamStartedAt, nextLink: state.nextLink }
+    : { streamStartedAt: now };
+export const nextPollingState = (
+  round: {
+    lastPolledAt: string;
+    stream: PollingStream;
+    query: string;
+    isBackfill: boolean;
+  },
+  nextLink: string | undefined,
+): PollingState =>
+  nextLink
+    ? {
+        lastPolledAt: round.lastPolledAt,
+        nextLink,
+        streamStartedAt: round.stream.streamStartedAt,
+        streamQuery: round.query,
+        ...(round.isBackfill ? { backfillActive: true } : {}),
+      }
+    : { lastPolledAt: round.stream.streamStartedAt };
+export const lookBackDateClean = (value: unknown): string => {
+  if (
+    value === undefined ||
+    value === null ||
+    (typeof value === "string" && value.trim() === "")
+  ) {
+    return "";
+  }
+  const raw = typeof value === "string" ? value.trim() : String(value);
+  const match =
+    typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
+  if (!match) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  const [, yearStr, monthStr, dayStr] = match;
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new Error(
+      `Look-back Date must be a date in YYYY-MM-DD format. Received: ${raw}`,
+    );
+  }
+  if (parsed.getTime() > Date.now()) {
+    throw new Error(`Look-back Date cannot be a future date. Received: ${raw}`);
+  }
+  return parsed.toISOString();
+};
+export const resolveRecordChanges = (
+  data: PollingChangesObject | undefined,
+): PollingRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

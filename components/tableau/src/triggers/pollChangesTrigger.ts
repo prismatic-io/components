@@ -1,27 +1,53 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
+import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs";
-import type { PollingState, TableauRecord } from "../types";
-import { fetchTableauRecordsSince, getTableauClient } from "../util";
+import type { ChangesObject, PollingState, TableauRecord } from "../types";
+import {
+  fetchTableauRecordsSince,
+  getTableauClient,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in a selected Tableau resource type on a configured schedule.",
+      "Retrieves existing and ongoing records for a selected Tableau resource type. Load history once, check for changes on a schedule, or both.",
   },
   examplePayload: pollChangesTriggerExamplePayload,
   inputs: pollChangesInputs,
-  perform: async (context, payload, params) => {
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }) =>
+      resolvePollingRecordChanges(
+        payload.body.data as ChangesObject | undefined,
+      ),
+  },
+  perform: async (
+    context,
+    payload,
+    {
+      tableauConnection,
+      pollResourceType,
+      lookBackDate,
+      showNewRecords,
+      showUpdatedRecords,
+    },
+  ) => {
     const now = new Date().toISOString();
-    const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const state = context.polling.getState() as PollingState;
+    const isInitialSync = !state?.lastPolledAt && Boolean(lookBackDate);
+    const lastPolledAt =
+      state?.lastPolledAt ??
+      (lookBackDate ? new Date(lookBackDate).toISOString() : now);
     const client = await getTableauClient({
-      tableauConnection: params.tableauConnection,
+      tableauConnection,
       debug: context.debug.enabled,
     });
     const { records, truncated } = await fetchTableauRecordsSince(
       client,
-      params.pollResourceType,
+      pollResourceType,
       lastPolledAt,
     );
     const lastPolledAtDate = new Date(lastPolledAt);
@@ -32,8 +58,9 @@ export const pollChangesTrigger = pollingTrigger({
       const createdAtDate =
         typeof createdValue === "string" ? new Date(createdValue) : null;
       const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
-      if (isNew && params.showNewRecords !== false) created.push(record);
-      else if (!isNew && params.showUpdatedRecords !== false)
+      if (isNew && (isInitialSync || showNewRecords !== false))
+        created.push(record);
+      else if (!isNew && (isInitialSync || showUpdatedRecords !== false))
         updated.push(record);
     }
     let nextCursor = now;
@@ -42,13 +69,13 @@ export const pollChangesTrigger = pollingTrigger({
       nextCursor =
         typeof latestUpdatedAt === "string" ? latestUpdatedAt : lastPolledAt;
       context.logger.warn(
-        `Polling truncated at the page cap for Tableau ${params.pollResourceType}. Advancing cursor to ${nextCursor}; next poll will resume from there.`,
+        `Polling truncated at the page cap for Tableau ${pollResourceType}. Advancing cursor to ${nextCursor}; next poll will resume from there.`,
       );
     }
     context.polling.setState({ lastPolledAt: nextCursor });
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled Tableau ${params.pollResourceType}: ${records.length} fetched, ${created.length} created, ${updated.length} updated, truncated=${truncated}`,
+        `Polled Tableau ${pollResourceType}: ${records.length} fetched, ${created.length} created, ${updated.length} updated, truncated=${truncated}`,
       );
     }
     const totalMatched = created.length + updated.length;

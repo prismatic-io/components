@@ -1,18 +1,24 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { POLL_RESOURCE_CONFIG } from "../constants";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
 import { connectionInput, pollResourceType, showNewRecords } from "../inputs";
-import type { PollingState, SageHRRecord } from "../types";
-import { fetchAllRecords } from "../util";
+import type { ChangesObject, PollingState, RecordChange } from "../types";
+import { fetchAllRecords, resolvePollingRecordChanges } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
-    label: "Poll Changes",
+    label: "New Records",
     description: "Checks for new records in Sage HR on a configured schedule.",
   },
   inputs: {
     connectionInput,
     pollResourceType,
     showNewRecords,
+  },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): RecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as ChangesObject),
   },
   perform: async (context, payload, params) => {
     const { connectionInput: connection, pollResourceType: resourceType } =

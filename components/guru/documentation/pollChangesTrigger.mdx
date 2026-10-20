@@ -1,22 +1,37 @@
-This trigger polls [Guru](https://www.getguru.com/) on a configured schedule and emits cards that were created or updated since the previous run. It is a convenient alternative to webhooks when a scheduled pull is preferred over an event push.
+This trigger retrieves existing and ongoing Cards from [Guru](https://www.getguru.com/). Load history once, check for changes on a schedule, or both.
 
 It relies on [Guru Query Language](https://developer.getguru.com/docs/guru-query-language) to filter cards server-side by their `lastModified` timestamp.
 
 #### How It Works
 
-On each scheduled run, the trigger searches cards using the query `lastModified > <last poll timestamp>`, then splits the results into two groups:
+On each scheduled recurrence, the trigger searches cards using the query `lastModified > <last poll timestamp>`, then splits the results into two groups:
 
 - **Created**: cards whose `dateCreated` is after the previous poll.
 - **Updated**: cards the filter returned that were not newly created.
 
-The trigger stores the current run time as the cursor for the next run.
+The trigger stores the current run time as the cursor for the next recurrence.
 
-- **First run**: the very first execution records the cursor and emits nothing, so an instance does not receive a backlog of historical cards on deploy.
-- **Subsequent runs**: only cards created or updated since the last run are returned.
+**Initial sync**
+
+An initial sync seeds a complete starting state. Because the goal is a full snapshot from the look-back date, inputs that narrow a change feed would leave gaps: **Show New Records** and **Show Updated Records** are not suppressed during the sync — all matching cards are returned regardless of those settings.
+
+When **Look-back Date** is set, the first recurrence begins fetching all cards modified on or after that date. The window has no fixed upper bound, so a card modified mid-drain is swept into the sync. Once all matching cards have been emitted, the trigger stores the current time as its position and the next recurrence resumes from there as a normal incremental poll — nothing is lost. Without batching enabled, the full window is fetched in a single recurrence; with batching enabled, the resolver drains the window over batched executions within the same recurrence.
+
+When **Look-back Date** is not set, the first recurrence records the current time as the cursor and emits nothing, so a flow does not receive a backlog of historical cards on deploy.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Guru.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, downstream steps receive `results.body.data.created` and `results.body.data.updated` arrays. With batching on, those fields do not exist — each execution receives a single `{ changeType, record }` object. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow.
 
 #### Returned Data
 
 The trigger returns the matching cards grouped under `created` and `updated`. Fields shown are representative. The full response object includes additional properties.
+
+**Without batching:**
 
 <details>
 <summary>Example Payload</summary>
@@ -33,6 +48,25 @@ The trigger returns the matching cards grouped under `created` and `updated`. Fi
         "lastModified": "2025-08-22T19:33:25.487+0000"
       }
     ]
+  }
+}
+```
+
+</details>
+
+**With batching (each execution):**
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "changeType": "updated",
+  "record": {
+    "id": "13131313-1313-1313-1313-131313131313",
+    "preferredPhrase": "Updated Title",
+    "dateCreated": "2025-08-22T19:33:23.876+0000",
+    "lastModified": "2025-08-22T19:33:25.487+0000"
   }
 }
 ```

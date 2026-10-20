@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-20
+
+- Added batching to the **New Records** trigger; enabling it changes the shape a downstream step receives
+- Updated the **Poll Changes** trigger label to **New Records**
+
 ### 2026-05-21
 
 Added **Fetch All** toggle input to all list actions (List Employees, List Terminated Employees, List Positions, List Teams, List Documents, List Projects, List Time Off Requests) to automatically paginate through and return every record in a single execution

@@ -1,7 +1,7 @@
 import { action } from "@prismatic-io/spectral";
 import { getGuruClient } from "../../client";
-import { getCollectionInputs } from "../../inputs";
 import { getCollectionPayload } from "../../examplePayloads";
+import { getCollectionInputs } from "../../inputs";
 export const getCollection = action({
   display: {
     label: "Get Collection",

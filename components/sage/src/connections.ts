@@ -5,7 +5,6 @@ export const oauth = oauth2Connection({
     description: "OAuth 2.0 Connection for Sage",
     label: "OAuth 2.0",
   },
-  comments: "OAuth 2.0 flow",
   oauth2Type: OAuth2Type.AuthorizationCode,
   inputs: {
     authorizeUrl: {

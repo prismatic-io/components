@@ -1,8 +1,8 @@
-import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { action } from "@prismatic-io/spectral";
-import { rawRequestInputs } from "../../inputs";
-import { BASE_URL } from "../../constants";
+import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { getAuthorizationHeaderValue } from "../../client";
+import { BASE_URL } from "../../constants";
+import { rawRequestInputs } from "../../inputs";
 import { validateConnection } from "../../util";
 export const rawRequest = action({
   display: {

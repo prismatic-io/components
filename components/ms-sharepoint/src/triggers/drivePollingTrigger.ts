@@ -1,10 +1,18 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { connection, driveId, siteId } from "../inputs";
 import { createClient } from "../client";
-import { addCreated, addDeleted, addUpdated, paginateResults } from "../utils";
+import {
+  fetchDeltaRound,
+  paginateResults,
+  resolveDeltaUrl,
+  resolvePollingRecordChanges,
+  separateDriveChanges,
+} from "../utils";
 import type {
+  DeltaCursor,
   DriveDeltaResponse,
   PollingState,
+  PollingRecordChange,
   PollSiteChangesSeparatedChanges,
 } from "../interfaces";
 export const drivePollingTrigger = pollingTrigger({
@@ -18,38 +26,48 @@ export const drivePollingTrigger = pollingTrigger({
     siteId: { ...siteId, required: false },
     driveId,
   },
-  perform: async (
-    { logger, polling, debug },
-    payload,
-    { connection, driveId },
-  ) => {
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(
+        payload.body.data as PollSiteChangesSeparatedChanges,
+      ),
+    getNextPaginationState: (_context, { payload }): DeltaCursor | null =>
+      (payload.paginationState as DeltaCursor | undefined) ?? null,
+  },
+  perform: async (context, payload, { connection, driveId }) => {
+    const { logger, polling, debug } = context;
     const client = await createClient(connection, debug.enabled);
+    const state = polling.getState() as PollingState;
+    const rootDelta = `/drives/${driveId}/root/delta`;
+    if (context.batch?.enabled === true) {
+      const { page, next, cursorState } = await fetchDeltaRound(
+        client,
+        state,
+        driveId,
+        rootDelta,
+        payload.paginationState as DeltaCursor | undefined,
+      );
+      polling.setState(cursorState);
+      return {
+        payload: {
+          ...payload,
+          paginationState: next ?? undefined,
+          body: { data: separateDriveChanges(page.value) },
+        },
+      };
+    }
     let allChanges: PollSiteChangesSeparatedChanges = {};
-    const deltaLink = polling.getState()[driveId];
-    const endpoint = deltaLink ? deltaLink : `/drives/${driveId}/root/delta`;
-    const data = (await paginateResults<DriveDeltaResponse>(
-      client,
-      endpoint as string,
-      {
-        returnFullData: true,
-        useTop: false,
-        excludeParents: true,
-      },
-    )) as DriveDeltaResponse;
+    const endpoint = resolveDeltaUrl(state, driveId, rootDelta);
+    const data = (await paginateResults<DriveDeltaResponse>(client, endpoint, {
+      returnFullData: true,
+      useTop: false,
+      excludeParents: true,
+    })) as DriveDeltaResponse;
     const newPollingState: PollingState = {};
     if (data.value.length > 0) {
-      const separatedChanges: PollSiteChangesSeparatedChanges = {};
-      for (const change of data.value) {
-        const isDeleted = Object.keys(change).includes("deleted");
-        const isRoot = Object.keys(change).includes("root");
-        if (isRoot) {
-          continue;
-        }
-        addDeleted({ isDeleted, separatedChanges, change });
-        addUpdated({ isDeleted, separatedChanges, change });
-        addCreated({ isDeleted, separatedChanges, change });
-      }
-      allChanges = separatedChanges;
+      allChanges = separateDriveChanges(data.value);
     }
     newPollingState[driveId] = data["@odata.deltaLink"];
     polling.setState(newPollingState);

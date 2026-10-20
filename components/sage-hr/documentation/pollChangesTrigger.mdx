@@ -7,14 +7,6 @@ This trigger polls the [Sage HR API](https://sagehr.docs.apiary.io/) for new rec
 3. New records are identified by comparing returned IDs against the set of known IDs from previous polls
 4. The trigger updates its internal state after each poll
 
-#### Configuration
-
-Configure the following inputs:
-
-- **Connection**: The Sage HR connection used to authenticate API requests
-- **Resource Type**: The type of records to monitor — Employees, Time-off Requests, Teams, or Positions
-- **Show New Records**: When enabled, includes newly created records in the results. Defaults to `true`
-
 #### Returned Data
 
 The trigger returns an object with a `created` array containing new records detected since the last poll. No `updated` array is returned — this trigger detects additions only.
@@ -36,6 +28,32 @@ The trigger returns an object with a `created` array containing new records dete
         "position_id": 7
       }
     ]
+  }
+}
+```
+
+</details>
+
+#### Batching
+
+This trigger supports batching for large data sets. When batching is enabled in the flow configuration, each poll result is decomposed into individual record changes and delivered in configurable batch sizes (default: 50 records per batch).
+
+Each batched item includes a `changeType` field (`"created"`) and the full `record` object:
+
+<details>
+<summary>Batched Payload Shape</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": 48271,
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane.smith@example.com",
+    "employment_start_date": "2024-01-15",
+    "team_id": 12,
+    "position_id": 7
   }
 }
 ```

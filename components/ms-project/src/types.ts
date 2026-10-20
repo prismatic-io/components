@@ -23,3 +23,11 @@ export interface GetQueryString {
   queryString: string;
   url: string;
 }
+export interface MsProjectChangesObject {
+  created?: MsProjectRecord[];
+  updated?: MsProjectRecord[];
+}
+export interface MsProjectRecordChange {
+  changeType: "created" | "updated";
+  record: MsProjectRecord;
+}

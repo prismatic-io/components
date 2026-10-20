@@ -1,3 +1,4 @@
+export const DEFAULT_BATCH_SIZE = 50;
 export const POLL_RESOURCE_CONFIG: Record<
   string,
   {

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-20
+
+Added batching to the **New Records** trigger; enabling it changes the shape a downstream step receives
+
 ### 2026-07-20
 
 Restructured action inputs into structured objects for an improved user experience.

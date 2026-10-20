@@ -2,31 +2,27 @@
   "name": "ms-outlook",
   "private": true,
   "scripts": {
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "lint": "biome lint --write .",
     "format": "biome format --write .",
-    "build": "npm run format && npm run lint && webpack",
-    "test": "echo 'no tests'",
+    "test": "vitest run",
     "publish": "npm run build && prism components:publish"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.19.0",
+    "@prismatic-io/spectral": "10.32.0",
     "lodash.isempty": "^4.4.0",
     "mailparser": "3.6.4",
     "ms-utils": "file:../../packages/ms-utils"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.0",
+    "@biomejs/biome": "2.5.1",
     "@microsoft/microsoft-graph-types": "2.26.0",
-    "@types/jest": "30.0.0",
     "@types/lodash.isempty": "^4.4.9",
     "@types/mailparser": "3.4.0",
-    "@types/node": "18.19.120",
-    "copy-webpack-plugin": "14.0.0",
-    "jest": "30.0.5",
-    "ts-jest": "29.4.0",
-    "ts-loader": "9.5.2",
-    "typescript": "5.8.3",
-    "webpack": "5.100.2",
-    "webpack-cli": "6.0.1"
+    "@types/node": "^26.6.5",
+    "typescript": "6.0.3",
+    "tsdown": "0.22.3",
+    "vitest": "4.1.9"
   }
 }

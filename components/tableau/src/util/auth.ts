@@ -1,6 +1,6 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
-import { signIn } from "./signIn";
 import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { signIn } from "./signIn";
 interface GetTableauClientProps {
   tableauConnection: Connection;
   timeout?: number;

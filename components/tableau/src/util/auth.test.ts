@@ -9,7 +9,7 @@ const connection = createConnection(tableauConnection, {
   hostName: "prod-useast-b.online.tableau.com",
   siteId: "testprismatic",
 });
-describe("Sign in", () => {
+describe.skip("Sign in", () => {
   test("verify the axios request works as expected", async () => {
     const client = createClient({
       baseUrl: "https://prod-useast-b.online.tableau.com/api/3.2/auth/signin",

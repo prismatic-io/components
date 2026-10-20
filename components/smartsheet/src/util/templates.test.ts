@@ -9,7 +9,7 @@ const makeMockClientByUrl = (
 ): HttpClient => {
   const callCounts: Record<string, number> = {};
   return {
-    get: jest.fn(async (url: string) => {
+    get: vi.fn(async (url: string) => {
       const queue = urlMap[url] ?? [];
       const idx = callCounts[url] ?? 0;
       callCounts[url] = idx + 1;
@@ -20,14 +20,14 @@ const makeMockClientByUrl = (
 };
 const makeConstantClient = (body: Record<string, unknown>): HttpClient =>
   ({
-    get: jest.fn(async () => ({ data: body })),
+    get: vi.fn(async () => ({ data: body })),
   }) as unknown as HttpClient;
 describe("aggregateTemplatesAcrossWorkspaces", () => {
   it("returns empty array when workspace list is empty", async () => {
     const client = makeConstantClient({ data: [] });
     const result = await aggregateTemplatesAcrossWorkspaces(client);
     expect(result).toEqual([]);
-    expect((client.get as jest.Mock).mock.calls).toHaveLength(1);
+    expect((client.get as ReturnType<typeof vi.fn>).mock.calls).toHaveLength(1);
   });
   it("filters /children results to items with type === 'template'", async () => {
     const client = makeMockClientByUrl({
@@ -67,7 +67,7 @@ describe("aggregateTemplatesAcrossWorkspaces", () => {
     const callOrder: number[] = [];
     const resolutionOrder: number[] = [];
     const client: HttpClient = {
-      get: jest.fn(async (url: string) => {
+      get: vi.fn(async (url: string) => {
         if (url === "/workspaces") {
           return { data: { data: workspaces } };
         }
@@ -98,7 +98,7 @@ describe("aggregateTemplatesAcrossWorkspaces", () => {
   it("rejects immediately when a per-workspace /children call fails", async () => {
     const workspaces = [{ id: 1 }, { id: 2 }, { id: 3 }];
     const client: HttpClient = {
-      get: jest.fn(async (url: string) => {
+      get: vi.fn(async (url: string) => {
         if (url === "/workspaces") {
           return { data: { data: workspaces } };
         }
@@ -162,7 +162,7 @@ describe("aggregateTemplatesAcrossWorkspaces", () => {
     });
     const result = await aggregateTemplatesAcrossWorkspaces(client);
     expect(result).toHaveLength(totalWorkspaces);
-    expect((client.get as jest.Mock).mock.calls).toHaveLength(
+    expect((client.get as ReturnType<typeof vi.fn>).mock.calls).toHaveLength(
       totalWorkspaces + 1,
     );
   });

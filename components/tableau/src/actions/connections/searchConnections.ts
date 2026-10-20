@@ -15,10 +15,10 @@ export const searchConnections = action({
       tableauConnection: params.tableauConnection,
       workbookId: params.workbookId,
       pagination: params.pagination,
-      timeout: params.timeout || undefined,
+      timeout: params.timeout || 0,
     });
     const filteredResponse = projectsResult.data.connections.connection.filter(
-      (connection: Record<string, unknown>) => {
+      (connection: Record<string, Record<string, unknown>>) => {
         return (
           connection.datasource?.[field] &&
           connection.datasource[field] === search

@@ -21,7 +21,9 @@ export const selectRow = dataSource({
     const result: Element[] = rows.map((row, index) => {
       let label = `Row ${row.rowNumber || index + 1}`;
       if (row.cells && row.cells.length > 0) {
-        const firstCell = row.cells.find((cell) => cell.value);
+        const firstCell = row.cells.find(
+          (cell: { value?: unknown }) => cell.value,
+        );
         if (firstCell?.value) {
           label = `${firstCell.value} (Row ${row.rowNumber})`;
         }

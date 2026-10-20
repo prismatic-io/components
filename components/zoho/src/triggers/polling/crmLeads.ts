@@ -1,58 +1,79 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
-import crmGetRecords from "../../actions/crmGetRecords";
-import {
-  DEFAULT_PER_PAGE,
-  DEFAULT_POLLING_SORT_FIELD,
-  DEFAULT_POLLING_SORT_ORDER,
-} from "../../constants";
+import { POLL_UNBATCHED_MAX_PAGES, TRIGGER_BATCH_SIZE } from "../../constants";
 import { crmPollingTriggerInputs } from "../../inputs";
-import type { CRMRecords } from "../../types";
-import { toZohoTimestamp } from "../../util/general";
+import type {
+  CRMChangesObject,
+  CRMPollingCursor,
+  CRMPollingState,
+  CRMRecordChange,
+} from "../../types";
 import {
+  buildCRMPollingCursor,
+  buildCRMPollingState,
+  fetchCRMStreamWindow,
   getCRMModifiedOrCreatedRecords,
   mergeCRMPollingFields,
-  polledChanges,
-} from "../../util/triggers";
+  resolveCRMRecordChanges,
+  resolveCRMStream,
+  resolvePollingStart,
+} from "../../util";
 export const leadsPollingTrigger = pollingTrigger({
   display: {
     label: "New and Updated CRM Leads",
     description:
-      "Checks for new and updated leads in Zoho CRM on a configured schedule.",
+      "Retrieves existing and ongoing leads from Zoho CRM. Load history once, check for changes on a schedule, or both.",
   },
   inputs: crmPollingTriggerInputs,
-  perform: async (context, payload, { connection, fields }) => {
-    const now = new Date().toISOString();
-    const lastState = context.polling.getState() as {
-      lastUpdated?: string;
-    };
-    const lastUpdated = lastState?.lastUpdated;
-    if (context.debug.enabled) {
-      context.logger.debug(
-        `Polling leads from ${lastUpdated ?? "(first poll)"} to ${now}`,
-      );
-      context.logger.debug(`Polling state: ${JSON.stringify(lastState)}`);
-    }
-    const { data: records } = await crmGetRecords.perform(context, {
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): CRMRecordChange[] =>
+      resolveCRMRecordChanges(payload.body.data as CRMChangesObject),
+    getNextPaginationState: (_context, { payload }): CRMPollingCursor | null =>
+      (payload.paginationState as CRMPollingCursor | undefined) ?? null,
+  },
+  perform: async (context, payload, { connection, fields, lookBackDate }) => {
+    const now = new Date();
+    const state = (context.polling.getState() ?? {}) as CRMPollingState;
+    const incoming = payload.paginationState as CRMPollingCursor | undefined;
+    const { sinceDate, isBackfill } = resolvePollingStart(
+      state,
+      lookBackDate,
+      now,
+    );
+    const stream = resolveCRMStream(state, incoming, now);
+    const window = await fetchCRMStreamWindow(context, {
       connection,
       recordType: "Leads",
       fields: mergeCRMPollingFields(fields),
-      sort_by: DEFAULT_POLLING_SORT_FIELD,
-      sort_order: DEFAULT_POLLING_SORT_ORDER,
-      per_page: DEFAULT_PER_PAGE,
-      fetchAll: true,
-      page_token: "",
-      page: 1,
-      ...(lastUpdated ? { ifModifiedSince: toZohoTimestamp(lastUpdated) } : {}),
+      sinceDate,
+      pageToken: stream.pageToken,
+      restartedStream: stream.restartedStream,
+      maxPages: context.batch?.enabled === true ? 1 : POLL_UNBATCHED_MAX_PAGES,
     });
-    const filteredRecords = getCRMModifiedOrCreatedRecords(
-      (records as unknown as CRMRecords).data,
-      lastUpdated ?? now,
+    const streamStartedAt = window.restarted ? now : stream.streamStartedAt;
+    const changes = getCRMModifiedOrCreatedRecords(
+      window.records,
+      sinceDate.toISOString(),
     );
-    const polledNoChanges = polledChanges(filteredRecords);
-    context.polling.setState({ lastUpdated: now });
-    return Promise.resolve({
-      payload: { ...payload, body: { data: filteredRecords } },
-      polledNoChanges,
-    });
+    const next = buildCRMPollingCursor(
+      window.nextPageToken,
+      streamStartedAt,
+      window.restarted || stream.restartedStream,
+    );
+    context.polling.setState(
+      buildCRMPollingState(next, streamStartedAt, sinceDate, isBackfill),
+    );
+    return {
+      payload: {
+        ...payload,
+        paginationState: next ?? undefined,
+        body: { data: changes },
+      },
+      polledNoChanges:
+        changes.created.length + changes.updated.length === 0 &&
+        !next &&
+        !incoming,
+    };
   },
 });

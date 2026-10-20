@@ -6,20 +6,30 @@ This trigger monitors a single drive for file and folder changes using Microsoft
 
 1. Run on the configured schedule (e.g., every 5 minutes)
 2. Query the Microsoft Graph delta endpoint for the specified drive
-3. Categorize items as "created", "updated", or "deleted" based on their properties and timestamps
+3. Categorize items as "added", "updated", or "deleted" based on their properties and timestamps
 4. Maintain delta tracking state automatically to efficiently track changes between polls
 
 The trigger uses Microsoft Graph's [delta query](https://learn.microsoft.com/en-us/graph/delta-query-overview) functionality to track changes efficiently without scanning all items on each poll.
 
-#### Configuration
+On the first recurrence there is no stored delta link, so Microsoft Graph returns the full current state and the trigger emits every existing item once. There is no history to seed, so the trigger has no look-back input. Later recurrences emit only changes since the previous one.
 
-**Inputs:**
-- **Connection**: Microsoft SharePoint connection for authentication
-- **Drive**: The unique identifier of the SharePoint drive to monitor
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Microsoft Graph.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching on, the trigger reads one page of the drive's delta feed per round and is called again until the walk is complete, so a large first recurrence is delivered over several rounds instead of in one payload. The new delta link is stored only once the last page has been read, and the position reached is saved after every round, so a recurrence that stops partway resumes where the walk stopped. Microsoft Graph can return the same item on more than one page, so with batching on an item can occasionally arrive in two executions, the later one carrying its newer state. With batching on, if Microsoft Graph can no longer serve a stored delta link or page (HTTP 410 Gone), the trigger restarts the walk from the beginning, which emits every existing item again, as on the first recurrence. With batching off, each recurrence still reads every page in one execution.
+
+With batching off, a downstream step reads `body.data.deleted`, `body.data.added` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": "deleted" | "added" | "updated", "record": <drive item> }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns changes with separate arrays for created, updated, and deleted items:
+With batching off, the trigger returns changes with separate arrays for added, updated, and deleted items. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -27,7 +37,7 @@ The trigger returns changes with separate arrays for created, updated, and delet
 ```json
 {
   "data": {
-    "created": [
+    "added": [
       {
         "id": "01BYE5RZ6QN3ZWBTUFOFD3GSPGOHDJD36K",
         "name": "NewReport.xlsx",

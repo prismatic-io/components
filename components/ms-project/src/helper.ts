@@ -1,5 +1,11 @@
 import { util } from "@prismatic-io/spectral";
-import type { GetQueryString, MsProjectRecord } from "./types";
+import { LOOK_BACK_DATE_PATTERN } from "./constants";
+import type {
+  GetQueryString,
+  MsProjectChangesObject,
+  MsProjectRecord,
+  MsProjectRecordChange,
+} from "./types";
 export const getQueryString = ({
   queryString,
   url,
@@ -41,4 +47,40 @@ export const buildPollingFilter = (
   if (includeUpdated) clauses.push(`${updatedAtField} gt ${literal}`);
   if (clauses.length === 0) return undefined;
   return clauses.join(" or ");
+};
+export const resolvePollingRecordChanges = (
+  data: MsProjectChangesObject | undefined,
+): MsProjectRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): MsProjectRecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): MsProjectRecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
+};
+export const lookBackDateClean = (value: unknown): string => {
+  const str = util.types.toString(value).trim();
+  if (!str) return "";
+  if (!LOOK_BACK_DATE_PATTERN.test(str)) {
+    throw new Error("Look-back Date must be in YYYY-MM-DD format.");
+  }
+  const parts = str.split("-");
+  const year = util.types.toNumber(parts[0]);
+  const month = util.types.toNumber(parts[1]);
+  const day = util.types.toNumber(parts[2]);
+  const parsed = new Date(year, month - 1, day);
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    throw new Error(`Look-back Date "${str}" is not a valid calendar date.`);
+  }
+  if (parsed > new Date()) {
+    throw new Error("Look-back Date cannot be a future date.");
+  }
+  return str;
 };

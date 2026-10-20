@@ -26,7 +26,7 @@ export const createWebhookSubscription = async (
   client: HttpClient,
   endpoint: string,
   event: string,
-  name: string,
+  name: string | undefined,
   isEnabled = true,
 ) => {
   const webhookName = name

@@ -7,7 +7,7 @@ export const selectTemplate = dataSource({
     description: "Retrieve and select a template.",
   },
   dataSourceType: "picklist",
-  perform: async (context, { connection }) => {
+  perform: async (_context, { connection }) => {
     const client = createClient(connection);
     const {
       data: { templates },

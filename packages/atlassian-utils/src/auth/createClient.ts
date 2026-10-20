@@ -12,10 +12,10 @@ export interface CreateAtlassianClientOptions {
   apiPath: string;
   debug?: boolean;
 }
-export const createAtlassianClient = async (
+export const createAtlassianClient = async <TClient = HttpClient>(
   connection: Connection,
   options: CreateAtlassianClientOptions,
-): Promise<HttpClient> => {
+): Promise<TClient> => {
   validateAtlassianConnection(connection, options.keys);
   const host = await resolveAtlassianHost(connection, options.keys);
   return createHttpClient({
@@ -26,5 +26,5 @@ export const createAtlassianClient = async (
       Accept: "application/json",
     },
     responseType: "json",
-  });
+  }) as unknown as TClient;
 };

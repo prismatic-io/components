@@ -6,8 +6,6 @@ export const guruUserToken = connection({
     description:
       "Authenticate with Guru using a user token for read/write access",
   },
-  comments:
-    "A user token provides read/write access to Guru. Authenticate using username and user token.",
   inputs: {
     username: {
       label: "Username",

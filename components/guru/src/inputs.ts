@@ -8,7 +8,12 @@ import {
   VERIFICATION_STATUS,
   WEBHOOK_EVENT_TYPES,
 } from "./constants";
-import { asStringArray, toOptionalNumber, toOptionalString } from "./util";
+import {
+  asStringArray,
+  lookBackDateClean,
+  toOptionalNumber,
+  toOptionalString,
+} from "./util";
 const connectionInput = input({
   label: "Connection",
   type: "connection",
@@ -344,8 +349,19 @@ const showUpdatedRecords = input({
     "When true, cards updated since the last poll are included in the trigger output.",
   clean: util.types.toBool,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once, ignoring the field and visibility filters.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const pollCardsInputs = {
   connection: connectionInput,
+  lookBackDate,
   showNewRecords,
   showUpdatedRecords,
 };

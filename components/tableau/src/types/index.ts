@@ -32,3 +32,11 @@ export interface TableauRecord extends Record<string, unknown> {
   createdAt?: string;
   updatedAt?: string;
 }
+export interface ChangesObject {
+  created?: TableauRecord[];
+  updated?: TableauRecord[];
+}
+export interface RecordChange {
+  changeType: "created" | "updated";
+  record: TableauRecord;
+}

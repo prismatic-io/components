@@ -1,16 +1,30 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { POLL_RESOURCE_CONFIG } from "../constants";
+import { DEFAULT_BATCH_SIZE, POLL_RESOURCE_CONFIG } from "../constants";
 import { pollChangesInputs } from "../inputs";
-import type { PollingState } from "../types";
-import { fetchAllSince, filterByTimestamp } from "../util";
+import type {
+  QlikChangesObject,
+  QlikRecordChange,
+  PollingState,
+} from "../types";
+import {
+  fetchAllSince,
+  filterByTimestamp,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated records in Qlik on a configured schedule.",
+      "Retrieves existing and ongoing records from Qlik. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: DEFAULT_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): QlikRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as QlikChangesObject),
+  },
   async perform(context, payload, params) {
     const config = POLL_RESOURCE_CONFIG[params.pollResourceType];
     if (!config) {
@@ -18,7 +32,8 @@ export const pollChangesTrigger = pollingTrigger({
     }
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
-    const lastPolledAt = state?.lastPolledAt ?? now;
+    const isInitialSync = !state?.lastPolledAt && Boolean(params.lookBackDate);
+    const lastPolledAt = state?.lastPolledAt ?? (params.lookBackDate || now);
     const client = createClient(params.connection, context.debug.enabled);
     const allRecords = await fetchAllSince(
       client,
@@ -30,8 +45,10 @@ export const pollChangesTrigger = pollingTrigger({
       config,
       lastPolledAt,
     );
-    const filteredCreated = params.showNewRecords ? created : [];
-    const filteredUpdated = params.showUpdatedRecords ? updated : [];
+    const filteredCreated =
+      isInitialSync || params.showNewRecords ? created : [];
+    const filteredUpdated =
+      isInitialSync || params.showUpdatedRecords ? updated : [];
     const totalMatched = filteredCreated.length + filteredUpdated.length;
     if (context.debug.enabled) {
       context.logger.debug(

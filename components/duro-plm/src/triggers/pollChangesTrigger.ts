@@ -1,58 +1,81 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createDuroClient } from "../client";
-import { POLL_RESOURCE_CONFIG } from "../constants";
+import { POLL_RESOURCE_CONFIG, TRIGGER_BATCH_SIZE } from "../constants";
 import { pollChangesExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs/polling";
-import type { DuroRecord, PollingState } from "../types";
-import { fetchAllSince } from "../util";
+import type {
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../types";
+import {
+  classifyRecords,
+  fetchAllSince,
+  nextPollingState,
+  resolvePollingStart,
+  resolvePollingStream,
+  resolveRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for new and updated components or change orders in Duro on a configured schedule.",
+      "Retrieves existing and ongoing components or change orders in Duro. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollChangesInputs,
   examplePayload: pollChangesExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: TRIGGER_BATCH_SIZE },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolveRecordChanges(payload.body.data as PollingChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const { since: lastPolledAt, isBackfill } = resolvePollingStart(
+      pollState,
+      params.lookBackDate,
+      now,
+    );
+    const stream = resolvePollingStream(
+      pollState,
+      params.pollResourceType,
+      now,
+    );
     if (!POLL_RESOURCE_CONFIG[params.pollResourceType]) {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
     const client = createDuroClient(params.connection, context.debug.enabled);
-    const { records, truncated } = await fetchAllSince(
+    const { records, truncated, endCursor } = await fetchAllSince(
       client,
       params.pollResourceType,
       lastPolledAt,
       {
+        after: stream.endCursor,
         debug: context.debug.enabled,
         logger: context.logger,
       },
     );
-    const lastPolledAtDate = new Date(lastPolledAt);
-    const created: DuroRecord[] = [];
-    const updated: DuroRecord[] = [];
-    for (const record of records) {
-      const createdDate =
-        typeof record.created === "string" ? new Date(record.created) : null;
-      const lastModifiedDate =
-        typeof record.lastModified === "string"
-          ? new Date(record.lastModified)
-          : null;
-      const isNew = createdDate !== null && createdDate > lastPolledAtDate;
-      const isUpdated =
-        !isNew &&
-        lastModifiedDate !== null &&
-        lastModifiedDate > lastPolledAtDate;
-      if (isNew && params.showNewRecords) created.push(record);
-      else if (isUpdated && params.showUpdatedRecords) updated.push(record);
-    }
+    const { created, updated } = classifyRecords(records, lastPolledAt, {
+      ...params,
+      isBackfill,
+    });
     const totalMatched = created.length + updated.length;
-    context.polling.setState({ lastPolledAt: truncated ? lastPolledAt : now });
+    context.polling.setState(
+      nextPollingState(
+        {
+          lastPolledAt,
+          stream,
+          resourceType: params.pollResourceType,
+          isBackfill,
+        },
+        truncated ? endCursor : undefined,
+      ),
+    );
     if (truncated) {
       context.logger.warn(
-        `Polling truncated at the page cap for ${params.pollResourceType}. Holding cursor at ${lastPolledAt}; the remaining records will be delivered on the next poll.`,
+        `Polling truncated at the page cap for ${params.pollResourceType}. Holding cursor at ${lastPolledAt}; the next poll resumes from the stored cursor.`,
       );
     }
     if (context.debug.enabled) {

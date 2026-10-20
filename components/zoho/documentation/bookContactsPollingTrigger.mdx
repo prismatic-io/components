@@ -5,11 +5,31 @@ For more details, see the [Zoho Books Contacts API documentation](https://www.zo
 #### How It Works
 
 1. Run on the configured schedule (e.g., every 5 minutes)
-2. Fetch contacts from Zoho Books sorted by `last_modified_time`
-3. Categorize records as "created" or "updated" based on `created_time` vs `last_modified_time` timestamps
-4. Maintain state to track the last poll time automatically
+2. Fetch contacts from Zoho Books sorted by `last_modified_time`, sending the stored position as the `last_modified_time` query parameter and reading all pages in the recurrence
+3. Categorize records as "created" or "updated" against the stored position. A record is "created" when its `created_time` is at or after the position, and otherwise "updated" when its `last_modified_time` is at or after it. A record that satisfies neither test is dropped. The trigger decides this split itself, so it does not depend on how Zoho Books applies the query parameter
+4. Store the instant the recurrence began as the new position
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every contact created or modified on or after that date exactly once. This trigger has no inputs that narrow which changes are reported, so the sync ignores none. Left empty, there is no sync: the first recurrence starts from the current time, and later recurrences ignore **Look-back Date**.
+
+The request sends only a lower bound, with no upper bound. The sync reads every page within one recurrence whether batching is on or off, so it never spans several recurrences. The stored position is the instant the recurrence began, not the newest record received, and the first incremental recurrence resumes from exactly there. A contact changed while the sync was reading may therefore be delivered again. Nothing in the payload marks the handoff.
+
+**Connection** still applies throughout. The page size is fixed and is not an input, so nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Zoho.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+Batching splits the records of one recurrence into separate executions. It does not change what is fetched.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
+
+With batching off, the trigger returns an object with `created` and `updated` arrays. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>View example response</summary>
@@ -44,6 +64,27 @@ For more details, see the [Zoho Books Contacts API documentation](https://www.zo
 </details>
 
 Contacts include `billing_address`, `shipping_address`, `phone`, `mobile`, `website`, and other standard fields.
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "contact_id": "982000000567023",
+    "contact_name": "ABC Corporation",
+    "contact_type": "customer",
+    "email": "contact@abccorp.com",
+    "created_time": "2025-11-24T10:30:00-0800",
+    "last_modified_time": "2025-11-24T10:30:00-0800"
+  }
+}
+```
+
+</details>
 
 #### Best Practices
 

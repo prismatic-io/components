@@ -1,5 +1,14 @@
 ## Changelog
 
+### 2026-10-20
+
+- Added opt-in batching to the **New System Logs** trigger, dispatching each event individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added opt-in batching to the **New Users** and **Updated Users** triggers, dispatching each user individually or in configured batches; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input to the **New Users**, **Updated Users**, and **New System Logs** triggers for performing an initial sync of records. The initial sync backfills every record on or after the specified date, beginning on the first recurrence and seeding each once; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Fixed the **Updated Users** trigger returning the entire directory on its first recurrence; it now starts tracking from the first recurrence unless a **Look-back Date** is set
+- Fixed users created or changed while the **New Users** and **Updated Users** triggers were reading being skipped on the next recurrence
+- Updated the **New System Logs** trigger to resume from where the previous recurrence ended, following Okta's recommended polling pattern, rather than re-querying by time, which could skip or duplicate events
+
 ### 2026-07-16
 
 Restructured action inputs into structured objects for an improved user experience

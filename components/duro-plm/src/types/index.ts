@@ -3,5 +3,8 @@ export type { ComponentNode } from "./ComponentNode";
 export type { DuroRecord } from "./DuroRecord";
 export type { ListComponentsResponse } from "./ListComponentsResponse";
 export type { PollConnection } from "./PollConnection";
+export type { PollingChangesObject } from "./PollingChangesObject";
+export type { PollingRecordChange } from "./PollingRecordChange";
 export type { PollingState } from "./PollingState";
+export type { PollingStream } from "./PollingStream";
 export type { PollResourceConfig } from "./PollResourceConfig";

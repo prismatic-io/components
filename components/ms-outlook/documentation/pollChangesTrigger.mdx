@@ -4,17 +4,31 @@ The **New and Updated Messages** polling trigger checks Microsoft Outlook on a c
 
 On each scheduled execution, the trigger:
 
-1. Reads the last poll timestamp from the polling state (or uses the current time on the first run)
-2. Queries Microsoft Graph for messages where `lastModifiedDateTime` is greater than the last poll timestamp, optionally scoped to a single mail folder
+1. Reads its position from the polling state: a `watermark` (the newest `lastModifiedDateTime` already delivered) and `boundaryIds` (the messages already delivered at exactly that timestamp). With no stored position and no **Look-back Date**, it starts from the current time. A stored position is resumed only for the **Mail Folder ID** it was built for; after the folder changes, the trigger restarts from the stored last-poll timestamp.
+2. Queries Microsoft Graph for messages where `lastModifiedDateTime` is at or after the watermark and at or before one minute ago, ordered by `lastModifiedDateTime` ascending and optionally scoped to a single mail folder, and skips the messages in `boundaryIds`. Each page is a fresh query from the watermark rather than the `@odata.nextLink` Microsoft Graph issues: that link pages by offset, so a message modified while a sync is draining would shift later messages past it. The one-minute margin keeps the watermark on timestamps that are safely in the past. It reads up to ten pages of 100 messages per recurrence with batching off, or one page per round with batching enabled, and stops earlier if the results end. When 100 or more messages share a single timestamp, a fresh query cannot move past them, so the trigger follows the `@odata.nextLink` within the same execution until the timestamp changes. With batching off the remaining pages arrive on later recurrences; with batching on the platform re-invokes the trigger from the new position until the results end, within the same recurrence.
 3. Partitions the returned messages into **created** and **updated** buckets by comparing `createdDateTime` against the last poll timestamp
-4. Persists the current execution time as the new last-poll timestamp for the next run
+4. Persists the new position on every recurrence. It advances the last-poll timestamp only once the results end, because that value is the cutoff step 3 compares against, and moving it while pages are still outstanding would place it ahead of messages that have not been delivered yet. It then sets it to the newest `lastModifiedDateTime` delivered, not the current time.
 5. Emits the partitioned results in the trigger payload, filtered by the **Show New Messages** and **Show Updated Messages** toggles
 
-If both **Show New Messages** and **Show Updated Messages** are disabled, the trigger skips the API call entirely.
+If both **Show New Messages** and **Show Updated Messages** are disabled, the trigger skips the API call entirely, unless an initial sync is running.
+
+**Initial sync**
+
+An initial sync seeds a complete starting state, so inputs that narrow the change feed would leave gaps in it and are ignored for its duration, while inputs that shape how messages are fetched still apply. Set a **Look-back Date** to start one: it begins on the first recurrence, seeds each message created or modified on or after that date exactly once, and ignores **Show New Messages** and **Show Updated Messages**. The **Connection** and **Mail Folder ID** apply throughout.
+
+The window's upper bound moves forward with every round, so a message modified while the sync is still draining is swept into the sync rather than left for the incremental recurrences. The trigger's position is its watermark and advances page by page; when the results end, the trigger commits its created/updated cutoff, and every later recurrence classifies against that cutoff. No field in the payload marks the handoff. With batching off the sync drains up to ten pages per scheduled recurrence and a large mailbox therefore spans several of them; with batching on the platform drives the rounds and the sync drains inside one recurrence.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Microsoft Graph.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads the arrays at `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one message, or an array of them at a batch size above one, as `{ "changeType": "created" | "updated", "record": { ... } }`. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow and leaves other flows using this trigger untouched.
 
 #### Returned Data
 
-The trigger emits a payload with two arrays — `created` and `updated` — each containing message resources from Microsoft Graph.
+With batching off, the trigger emits a payload with two arrays (`created` and `updated`), each containing message resources from Microsoft Graph.
 
 <details>
 <summary>Example Payload</summary>
@@ -47,6 +61,27 @@ The trigger emits a payload with two arrays — `created` and `updated` — each
         "createdDateTime": "2024-10-30T09:12:04Z"
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one tagged item instead, or an array of them when the batch size is above one.
+
+<details>
+<summary>Example Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "AAMkAGI2TGuLAAA=",
+    "subject": "Welcome to the team",
+    "receivedDateTime": "2024-11-01T15:32:10Z",
+    "createdDateTime": "2024-11-01T15:32:10Z",
+    "lastModifiedDateTime": "2024-11-01T15:32:10Z",
+    "isRead": false
   }
 }
 ```

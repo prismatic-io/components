@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2026-10-20
+
+- Added opt-in batching to the **New and Updated Issues** trigger, dispatching each changed issue individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
+- Added an optional **Look-back Date** input to the **New and Updated Issues** trigger for performing an initial sync of issues. The initial sync begins on the first recurrence and backfills every issue modified on or after the specified date, seeding each once and ignoring the visibility filters; later recurrences are unaffected. Leave it empty to start from the first recurrence with no backfill
+- Fixed the **New and Updated Issues** trigger never delivering the issues beyond the page limit when more issues changed between recurrences than one recurrence could read; the remainder is now delivered on later recurrences
+- Fixed the **New and Updated Issues** trigger returning few or no issues for Jira accounts in a time zone west of UTC and repeatedly returning the same issues for accounts in a time zone east of UTC; it now filters by date in the account's time zone
+
 ### 2026-05-26
 
 Added the **New and Updated Issues** polling trigger that monitors Jira on a configured schedule using the `/search/jql` endpoint with a JQL `updated` filter. Results are partitioned into created and updated buckets based on each issue's `created` timestamp

@@ -4,7 +4,7 @@ import {
   POLL_PAGE_SIZE,
   POLL_RESOURCE_CONFIG,
 } from "../constants";
-import type { TableauRecord } from "../types";
+import type { ChangesObject, RecordChange, TableauRecord } from "../types";
 export const pollResourceModel = Object.keys(POLL_RESOURCE_CONFIG).map(
   (value) => ({
     value,
@@ -36,4 +36,17 @@ export const fetchTableauRecordsSince = async (
     }
   }
   return { records, truncated: true };
+};
+export const resolvePollingRecordChanges = (
+  data: ChangesObject | undefined,
+): RecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): RecordChange => ({ changeType: "created", record }),
+    ),
+    ...(changesObject.updated ?? []).map(
+      (record): RecordChange => ({ changeType: "updated", record }),
+    ),
+  ];
 };

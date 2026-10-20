@@ -1,5 +1,6 @@
 import {
   type ActionContext,
+  type Connection,
   type TriggerPayload,
   trigger,
 } from "@prismatic-io/spectral";
@@ -16,7 +17,15 @@ import {
 const performFunction = async (
   context: ActionContext,
   payload: TriggerPayload,
-  { connectionInput, apiVersion, timeout },
+  {
+    connectionInput,
+    apiVersion,
+    timeout,
+  }: {
+    connectionInput: Connection;
+    apiVersion: string | undefined;
+    timeout: number | undefined;
+  },
 ): Promise<{
   payload: TriggerPayload;
 }> => {

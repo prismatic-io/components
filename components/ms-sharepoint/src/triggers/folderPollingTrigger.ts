@@ -1,10 +1,20 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { folderPollingTriggerInputs } from "../inputs";
 import { createClient } from "../client";
-import { addCreated, addDeleted, addUpdated, paginateResults } from "../utils";
+import {
+  fetchDeltaRound,
+  folderMatcher,
+  folderPathFrom,
+  paginateResults,
+  resolveDeltaUrl,
+  resolvePollingRecordChanges,
+  separateDriveChanges,
+} from "../utils";
 import type {
+  DeltaCursor,
   DriveDeltaResponse,
   PollingState,
+  PollingRecordChange,
   PollSiteChangesSeparatedChanges,
 } from "../interfaces";
 export const folderPollingTrigger = pollingTrigger({
@@ -14,56 +24,68 @@ export const folderPollingTrigger = pollingTrigger({
       "Checks for new and updated items in a specified folder within a SharePoint drive on a configured schedule.",
   },
   inputs: folderPollingTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(
+        payload.body.data as PollSiteChangesSeparatedChanges,
+      ),
+    getNextPaginationState: (_context, { payload }): DeltaCursor | null =>
+      (payload.paginationState as DeltaCursor | undefined) ?? null,
+  },
   perform: async (
-    { logger, polling, debug },
+    context,
     payload,
     { connection, driveId, folderId, includeSubfolders },
   ) => {
+    const { logger, polling, debug } = context;
     const client = await createClient(connection, debug.enabled);
-    let allChanges: PollSiteChangesSeparatedChanges = {};
     const stateKey = `${driveId}:${folderId}`;
     const pathKey = `${stateKey}:path`;
-    const state = polling.getState();
-    const deltaLink = state[stateKey];
+    const state = polling.getState() as PollingState;
+    const rootDelta = `/drives/${driveId}/root/delta`;
     let folderPath = state[pathKey] as string | undefined;
-    const endpoint = deltaLink ? deltaLink : `/drives/${driveId}/root/delta`;
-    const data = (await paginateResults(client, endpoint as string, {
+    if (context.batch?.enabled === true) {
+      const { page, next, cursorState } = await fetchDeltaRound(
+        client,
+        state,
+        stateKey,
+        rootDelta,
+        payload.paginationState as DeltaCursor | undefined,
+      );
+      folderPath = folderPathFrom(page.value, folderId, folderPath);
+      polling.setState({
+        ...cursorState,
+        ...(folderPath ? { [pathKey]: folderPath } : {}),
+      });
+      return {
+        payload: {
+          ...payload,
+          paginationState: next ?? undefined,
+          body: {
+            data: separateDriveChanges(
+              page.value,
+              folderMatcher(folderId, includeSubfolders, folderPath),
+            ),
+          },
+        },
+      };
+    }
+    let allChanges: PollSiteChangesSeparatedChanges = {};
+    const endpoint = resolveDeltaUrl(state, stateKey, rootDelta);
+    const data = (await paginateResults(client, endpoint, {
       returnFullData: true,
       useTop: false,
       excludeParents: true,
     })) as unknown as DriveDeltaResponse;
     const newPollingState: PollingState = {};
     if (data.value.length > 0) {
-      const separatedChanges: PollSiteChangesSeparatedChanges = {};
-      const targetFolder = data.value.find((item) => item.id === folderId);
-      if (targetFolder) {
-        folderPath = targetFolder.parentReference?.path
-          ? `${targetFolder.parentReference.path}/${targetFolder.name}`
-          : `/root:/${targetFolder.name}`;
-      }
-      for (const change of data.value) {
-        const isDeleted = Object.keys(change).includes("deleted");
-        const isRoot = Object.keys(change).includes("root");
-        if (isRoot) {
-          continue;
-        }
-        const isFolderItself = change.id === folderId;
-        const isDirectChild = change.parentReference?.id === folderId;
-        let isMatch = false;
-        if (includeSubfolders && folderPath) {
-          const isWithinFolder =
-            change.parentReference.path.includes(folderPath);
-          isMatch = isFolderItself || isWithinFolder;
-        } else {
-          isMatch = isFolderItself || isDirectChild;
-        }
-        if (isMatch) {
-          addDeleted({ isDeleted, separatedChanges, change });
-          addUpdated({ isDeleted, separatedChanges, change });
-          addCreated({ isDeleted, separatedChanges, change });
-        }
-      }
-      allChanges = separatedChanges;
+      folderPath = folderPathFrom(data.value, folderId, folderPath);
+      allChanges = separateDriveChanges(
+        data.value,
+        folderMatcher(folderId, includeSubfolders, folderPath),
+      );
     }
     if (folderPath) {
       newPollingState[pathKey] = folderPath;
