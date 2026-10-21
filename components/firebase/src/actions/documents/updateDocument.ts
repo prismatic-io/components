@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { createClient } from "../../client";
+import { withFirestore } from "../../client";
 import { updateDocumentExamplePayload } from "../../examplePayloads";
 import { updateDocumentInputs } from "../../inputs";
 export const updateDocument = action({
@@ -7,23 +7,21 @@ export const updateDocument = action({
     label: "Update Document",
     description: "Update a document in a Cloud Firestore collection",
   },
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { collection, document, data, firebaseConnection },
   ) => {
-    const client = createClient({
-      firebaseConnection: firebaseConnection,
-    });
-    const result = await client
-      .firestore()
-      .collection(collection)
-      .doc(document)
-      .update(data);
-    await client.delete();
+    const result = await withFirestore({ firebaseConnection }, (db) =>
+      db.collection(collection).doc(document).update(data),
+    );
     return {
       data: result,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateDocumentExamplePayload,
   inputs: updateDocumentInputs,
   examplePayload: updateDocumentExamplePayload,
 });

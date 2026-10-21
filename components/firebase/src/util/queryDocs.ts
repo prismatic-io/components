@@ -2,23 +2,29 @@ import type {
   DocumentData,
   Query,
   QueryDocumentSnapshot,
-  WhereFilterOp,
-} from "@google-cloud/firestore";
+} from "firebase-admin/firestore";
 import type { QueryCondition, QueryDocsParams } from "../types";
 export const queryDocs = async ({
-  client,
+  db,
   collection,
   queryOperatorCode,
   orderBy,
-}: QueryDocsParams) => {
-  let query: Query = client.firestore().collection(collection);
+}: QueryDocsParams): Promise<QueryDocumentSnapshot<DocumentData>[]> => {
+  let query: Query = db.collection(collection);
   if (queryOperatorCode) {
     try {
       const jsonArrayQuery = JSON.parse(queryOperatorCode);
       jsonArrayQuery.forEach((condition: QueryCondition) => {
+        if (
+          condition.value === null &&
+          !["==", "=", "!="].includes(condition.operator)
+        )
+          throw new Error(
+            "Invalid query. You can only perform '==' and '!=' comparisons on Null.",
+          );
         query = query.where(
           condition.field.trim(),
-          condition.operator as WhereFilterOp,
+          condition.operator,
           condition.value,
         );
       });

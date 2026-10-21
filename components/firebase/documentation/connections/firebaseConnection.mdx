@@ -1,5 +1,19 @@
-The Firebase Admin SDK is a set of server libraries that lets you interact with Firebase from privileged environments.
-To authenticate through the Firebase Admin SDK, follow the instructions to generate a private key located on the Firebase [docs](https://firebase.google.com/docs/admin/setup#set-up-project-and-service-account)
-This will involve you creating a service account in the Google Cloud Platform and generating credentials for that user.
-You will receive a JSON file containing many fields including a private key, and client email which you will use to make a new connection.
-In the new connection, enter the value of the client email, private key, and your GCP project Id.
+The Firebase Admin SDK is a set of server libraries that lets applications interact with Firebase from privileged environments.
+This connection authenticates with a service account private key generated for the Firebase project.
+
+#### Prerequisites
+
+- A Firebase project with Cloud Firestore enabled
+- Permission to manage service accounts for that project
+
+#### Setup Steps
+
+1. Follow the [Firebase Admin SDK setup guide](https://firebase.google.com/docs/admin/setup#set-up-project-and-service-account) to open the service account settings for the Firebase project
+2. Generate a new private key for the service account
+3. Download the JSON file that contains the generated credentials
+
+#### Configure the Connection
+
+- Enter the **Project Id** from the `project_id` value in the JSON file
+- Enter the **Private Key** from the `private_key` value in the JSON file
+- Enter the **Email** from the `client_email` value in the JSON file

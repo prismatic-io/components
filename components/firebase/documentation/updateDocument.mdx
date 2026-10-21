@@ -1,4 +1,4 @@
-When updating a document, you can specify any number of optional fields to be changed.
-However, if you would like to unset a value but keep the field, you must pass an unbound input (null, undefined) by using something like the code component or a previous step result.
+When updating a document, any number of optional fields can be specified.
+However, to unset a value but keep the field, an unbound input (null, undefined) must be passed, such as from the code component or a previous step result.
 This will result in the field's value becoming null or unset in the document.
-If you wanted to completely remove this field from the document, you must use the removeField action.
+To completely remove the field from the document, use the [Remove Field](#removefield) action.

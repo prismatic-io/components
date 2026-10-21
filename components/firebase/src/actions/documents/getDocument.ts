@@ -1,5 +1,5 @@
 import { action } from "@prismatic-io/spectral";
-import { createClient } from "../../client";
+import { withFirestore } from "../../client";
 import { getDocumentExamplePayload } from "../../examplePayloads";
 import { getDocumentInputs } from "../../inputs";
 export const getDocument = action({
@@ -8,25 +8,24 @@ export const getDocument = action({
     description:
       "Get the contents of a document in a Cloud Firestore collection",
   },
+  performSafety: "safe",
   perform: async (_context, params) => {
-    const client = createClient({
-      firebaseConnection: params.firebaseConnection,
-    });
-    const result = await client
-      .firestore()
-      .collection(params.collection)
-      .doc(params.document)
-      .get();
-    await client.delete();
-    return {
-      data: {
+    const data = await withFirestore(params, async (db) => {
+      const result = await db
+        .collection(params.collection)
+        .doc(params.document)
+        .get();
+      return {
         data: result.data(),
         id: result.id,
         createTime: result.createTime?.toDate(),
         updateTime: result.updateTime?.toDate(),
         exists: result.exists,
         readTime: result.readTime?.toDate(),
-      },
+      };
+    });
+    return {
+      data,
     };
   },
   inputs: getDocumentInputs,

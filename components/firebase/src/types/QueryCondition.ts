@@ -1,5 +1,6 @@
-export type QueryCondition = {
+import type { WhereFilterOp } from "firebase-admin/firestore";
+export interface QueryCondition {
   field: string;
-  operator: string;
-  value: string;
-};
+  operator: WhereFilterOp;
+  value: unknown;
+}

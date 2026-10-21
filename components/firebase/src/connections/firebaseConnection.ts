@@ -15,6 +15,7 @@ export const firebaseConnection = connection({
       shown: true,
       comments:
         "Provide the unique identifier of the project from the Google Cloud Platform.",
+      example: "my-project-id",
     },
     privateKey: {
       label: "Private Key",
@@ -22,9 +23,10 @@ export const firebaseConnection = connection({
       type: "password",
       required: true,
       shown: true,
-      comments: "Provide the private key from the Google Cloud Platform.",
+      comments:
+        "Provide the `private_key` value from the service account JSON key file. See the [Firebase Admin SDK setup guide](https://firebase.google.com/docs/admin/setup#set-up-project-and-service-account).",
       example:
-        "example-\nMIIEvdegIBADANBgkqhkiG9w0BAVtkOIcMjQXRzx+2VLoPkAs\nl1vRkI4wWtbNn6taw01eserX1/vkyxHcByEtkAlaDFrqSlSclRmgRd/ddGWD6xGss9fGIjjJcez4jh\n8z6EUeZBAgMBAAECggEAE8vqqRrYdZFNSTOzZN+R/eDzW2nZMiBTqHTl/KvPmp0m\nfiXX94pJxcRKMEm44n7MFUSdMG3MJoMUeAIs+thYibqkFpXWBCzzq8EzfTuTjR8+ycF+GXWN",
+        "-----BEGIN PRIVATE KEY-----\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n-----END PRIVATE KEY-----\n",
     },
     clientEmail: {
       label: "Email",
@@ -32,8 +34,9 @@ export const firebaseConnection = connection({
       type: "string",
       required: true,
       shown: true,
-      comments: "Provide the client email for the GCP account.",
-      example: "someone@example.com",
+      comments:
+        "Provide the `client_email` value from the service account JSON key file.",
+      example: "firebase-adminsdk-xxxxx@my-project-id.iam.gserviceaccount.com",
     },
   },
 });

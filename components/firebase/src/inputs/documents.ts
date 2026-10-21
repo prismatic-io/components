@@ -3,27 +3,37 @@ import { keyValuePairsToObject, validateJSON } from "../util";
 import {
   collection,
   connectionInput,
-  document,
   orderBy,
   queryOperatorCode,
 } from "./common";
+const document = input({
+  label: "Document",
+  placeholder: "Enter document ID",
+  type: "string",
+  required: true,
+  comments: "Provide a string value for the unique identifier of the document.",
+  dataSource: "selectDocument",
+  example: "4hJk2mX9pQrT7vWn3LsY",
+  clean: util.types.toString,
+});
 const data = input({
   label: "Data",
   placeholder: "Data",
   type: "data",
   required: true,
   collection: "keyvaluelist",
-  comments: "Provide a key value pair that represents your data.",
+  comments:
+    "The fields to write to the document, as key-value pairs. Each key is a field name and each value is the value to store in that field.",
   clean: keyValuePairsToObject,
 });
 const fieldToRemove = input({
   label: "Field To Remove",
-  placeholder: "firstName",
+  placeholder: "Enter field name",
   example: "firstName",
   type: "string",
   required: true,
   comments:
-    "Provide a string value for the name of the field you would like to remove from the document.",
+    "The name of the field to delete from the document. Use dot notation, such as address.city, to remove a nested field.",
   clean: util.types.toString,
 });
 const documents = input({
@@ -31,6 +41,7 @@ const documents = input({
   label: "Documents",
   language: "json",
   comments: "An array of documents to be created in the collection.",
+  placeholder: "Enter a JSON array of documents",
   required: true,
   default: JSON.stringify(
     [

@@ -19,7 +19,12 @@ export const createDocumentExamplePayload = {
   },
 };
 export const removeFieldExamplePayload = {
-  data: null as unknown,
+  data: {
+    _writeTime: {
+      _seconds: 1741607109,
+      _nanoseconds: 789000000,
+    },
+  } as unknown,
 };
 export const listDocumentsExamplePayload = {
   data: [
@@ -42,11 +47,33 @@ export const listCollectionsExamplePayload = {
   ],
 };
 export const updateDocumentExamplePayload = {
-  data: null as unknown,
+  data: {
+    _writeTime: {
+      _seconds: 1741607109,
+      _nanoseconds: 789000000,
+    },
+  } as unknown,
 };
 export const bulkCreateDocumentsExamplePayload = {
   data: "Documents created successfully.",
 };
 export const deleteDocumentExamplePayload = {
-  data: null as unknown,
+  data: {
+    _writeTime: {
+      _seconds: 1741607109,
+      _nanoseconds: 789000000,
+    },
+  } as unknown,
+};
+export const selectCollectionExamplePayload = {
+  result: [
+    { key: "users", label: "users" },
+    { key: "orders", label: "orders" },
+  ],
+};
+export const selectDocumentExamplePayload = {
+  result: [
+    { key: "aBcDeFgHiJkLmNoPqRsT", label: "users/aBcDeFgHiJkLmNoPqRsT" },
+    { key: "zYxWvUtSrQpOnMlKjIhG", label: "users/zYxWvUtSrQpOnMlKjIhG" },
+  ],
 };

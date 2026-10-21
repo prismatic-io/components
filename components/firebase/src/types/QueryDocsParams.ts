@@ -1,7 +1,7 @@
-import type { app } from "firebase-admin";
+import type { Firestore } from "firebase-admin/firestore";
 export interface QueryDocsParams {
-  client: app.App;
+  db: Firestore;
   collection: string;
   queryOperatorCode: string;
-  orderBy: string;
+  orderBy?: string;
 }

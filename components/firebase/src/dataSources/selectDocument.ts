@@ -1,35 +1,37 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { queryDocs } from "../util";
-import { createClient } from "../client";
+import { withFirestore } from "../client";
+import { selectDocumentExamplePayload } from "../examplePayloads";
 import { selectDocumentInputs } from "../inputs";
 export const selectDocument = dataSource({
   dataSourceType: "picklist",
   display: {
     label: "Select Document",
     description:
-      "Select a document from your Firebase Cloud Firestore collection",
+      "Select a document from a Firebase Cloud Firestore collection.",
   },
   perform: async (
     _context,
     { collection, firebaseConnection, queryOperatorCode, orderBy },
   ) => {
-    const client = createClient({
-      firebaseConnection: firebaseConnection,
-    });
-    const docs = await queryDocs({
-      client,
-      collection: collection,
-      queryOperatorCode: queryOperatorCode,
-      orderBy: orderBy,
-    });
-    return {
-      result: docs.map(
+    const result = await withFirestore({ firebaseConnection }, async (db) => {
+      const docs = await queryDocs({
+        db,
+        collection: collection,
+        queryOperatorCode: queryOperatorCode,
+        orderBy: orderBy,
+      });
+      return docs.map(
         (item): Element => ({
           key: item.id,
           label: item.ref.path,
         }),
-      ),
+      );
+    });
+    return {
+      result,
     };
   },
   inputs: selectDocumentInputs,
+  examplePayload: selectDocumentExamplePayload,
 });

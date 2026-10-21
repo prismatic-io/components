@@ -1,26 +1,28 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
-import { createClient } from "../client";
+import { withFirestore } from "../client";
+import { selectCollectionExamplePayload } from "../examplePayloads";
 import { selectCollectionInputs } from "../inputs";
 export const selectCollection = dataSource({
   dataSourceType: "picklist",
   display: {
     label: "Select Collection",
     description:
-      "Select a collection from your Firebase Cloud Firestore database",
+      "Select a collection from the Firebase Cloud Firestore database.",
   },
   perform: async (_context, { firebaseConnection }) => {
-    const client = createClient({
-      firebaseConnection: firebaseConnection,
-    });
-    const collections = await client.firestore().listCollections();
-    return {
-      result: collections.map(
+    const result = await withFirestore({ firebaseConnection }, async (db) => {
+      const collections = await db.listCollections();
+      return collections.map(
         (item): Element => ({
           key: item.id,
           label: item.path,
         }),
-      ),
+      );
+    });
+    return {
+      result,
     };
   },
   inputs: selectCollectionInputs,
+  examplePayload: selectCollectionExamplePayload,
 });
