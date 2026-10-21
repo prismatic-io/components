@@ -1,4 +1,7 @@
+import type { HttpResponse, TriggerPayload } from "@prismatic-io/spectral";
 import type { FileProperties } from "jsforce/lib/api/metadata";
+import { WEBHOOK_SFDC_RESPONSE } from "./constants";
+import type { CleanSObject, SalesforceChangesObject } from "./types";
 export const genericCreateUpdateExamplePayload = {
   data: {
     id: "06Q606ExampleId",
@@ -283,32 +286,28 @@ export const getCustomerExamplePayload = {
   },
 };
 export const listCustomersExamplePayload = {
-  data: {
-    records: [
-      {
-        attributes: {
-          type: "Customer",
-          url: "/services/data/v53.0/sobjects/Customer/0o79c690000wk3qBCD",
-        },
-        Id: "0o79c690000wk3qBCD",
-        OwnerId: "0064c00859AJGN6KPA",
-        IsDeleted: false,
-        Name: "New Name For Customer",
-        CreatedDate: "2023-12-14T20:54:50.000+0000",
-        CreatedById: "0064c00859AJGN6KPA",
-        LastModifiedDate: "2023-12-14T20:54:50.000+0000",
-        LastModifiedById: "0064c00859AJGN6KPA",
-        SystemModstamp: "2023-12-14T20:54:50.000+0000",
-        LastViewedDate: "2023-12-14T20:54:50.000+0000",
-        LastReferencedDate: "2023-12-14T20:54:50.000+0000",
-        PartyId: "0PK8c000963oLkUGAU",
-        TotalLifeTimeValue: null,
-        CustomerStatusType: "Active",
+  data: [
+    {
+      attributes: {
+        type: "Customer",
+        url: "/services/data/v53.0/sobjects/Customer/0o79c690000wk3qBCD",
       },
-    ],
-    done: true,
-    totalSize: 2,
-  },
+      Id: "0o79c690000wk3qBCD",
+      OwnerId: "0064c00859AJGN6KPA",
+      IsDeleted: false,
+      Name: "New Name For Customer",
+      CreatedDate: "2023-12-14T20:54:50.000+0000",
+      CreatedById: "0064c00859AJGN6KPA",
+      LastModifiedDate: "2023-12-14T20:54:50.000+0000",
+      LastModifiedById: "0064c00859AJGN6KPA",
+      SystemModstamp: "2023-12-14T20:54:50.000+0000",
+      LastViewedDate: "2023-12-14T20:54:50.000+0000",
+      LastReferencedDate: "2023-12-14T20:54:50.000+0000",
+      PartyId: "0PK8c000963oLkUGAU",
+      TotalLifeTimeValue: null,
+      CustomerStatusType: "Active",
+    },
+  ],
 };
 export const getCurrentUserExamplePayload = {
   data: {
@@ -396,7 +395,45 @@ const getObjectMetadataData = {
   type: "CustomObject",
 };
 export const getObjectMetadataExamplePayload = {
-  data: getObjectMetadataData,
+  data: [
+    {
+      fullName: "Invoice__c",
+      label: "Invoice",
+      pluralLabel: "Invoices",
+      nameField: {
+        label: "Invoice Number",
+        type: "AutoNumber",
+        displayFormat: "INV-{0000}",
+      },
+      deploymentStatus: "Deployed",
+      sharingModel: "ReadWrite",
+      enableActivities: "true",
+      enableReports: "true",
+      enableSearch: "true",
+      fields: [
+        {
+          fullName: "Amount__c",
+          label: "Amount",
+          type: "Currency",
+          precision: "18",
+          scale: "2",
+          required: "false",
+        },
+        {
+          fullName: "Due_Date__c",
+          label: "Due Date",
+          type: "Date",
+          required: "false",
+        },
+        {
+          fullName: "Status__c",
+          label: "Status",
+          type: "Picklist",
+          required: "false",
+        },
+      ],
+    },
+  ],
 };
 export const listObjectMetadataExamplePayload = {
   data: [
@@ -468,7 +505,9 @@ const getWorkflowOutboundMessageData = {
 export const getWorkflowOutboundMessageExamplePayload = {
   data: getWorkflowOutboundMessageData,
 };
-export const listWorkflowOutboundMessagesExamplePayload = {
+export const listWorkflowOutboundMessagesExamplePayload: {
+  data: FileProperties[];
+} = {
   data: [
     getWorkflowOutboundMessageData,
     {
@@ -573,12 +612,11 @@ export const getAllQueryJobInformationExamplePayload = {
       },
     ],
     nextRecordsUrl:
-      "/services/data/v60.0/jobs/ingest?queryLocator=01gR0000000opRTIAY-2000",
+      "/services/data/v60.0/jobs/query?queryLocator=01gR0000000opRTIAY-2000",
   },
 };
 export const getQueryJobResultsExamplePayload = {
-  data: `
-  "Id","Name"
+  data: `"Id","Name"
 "005R0000000UyrWIAS","Jane Dunn"
 "005R0000000GiwjIAC","George Wright"
 "005R0000000GiwoIAC","Pat Wilson"
@@ -621,11 +659,42 @@ const getBulkJobData = {
 export const getBulkJobExamplePayload = {
   data: getBulkJobData,
 };
+export const createBulkJobExamplePayload = {
+  data: {
+    id: "7506g00000DhRA2AAN",
+    operation: "insert",
+    object: "Account",
+    createdById: "0056g000005HQPyAAO",
+    createdDate: "2024-03-12T15:42:08.000+0000",
+    systemModstamp: "2024-03-12T15:42:08.000+0000",
+    state: "Open",
+    concurrencyMode: "Parallel",
+    contentType: "CSV",
+    apiVersion: 63.0,
+    contentUrl: "services/data/v63.0/jobs/ingest/7506g00000DhRA2AAN/batches",
+    lineEnding: "LF",
+    columnDelimiter: "COMMA",
+    jobType: "V2Ingest",
+  },
+};
+export const uploadJobDataExamplePayload = {
+  data: "",
+};
+export const getJobFailedRecordResultsExamplePayload = {
+  data: `"sf__Id","sf__Error","Name","Phone"
+"","REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name --","","(415) 555-0123"
+`,
+};
+export const getJobSuccessfulRecordResultsExamplePayload = {
+  data: `"sf__Id","sf__Created","Name","Phone"
+"0016g00000Kxyz1AAB","true","Acme Corporation","(415) 555-0100"
+"0016g00000Kxyz2AAB","true","Globex Industries","(212) 555-0199"
+`,
+};
 export const listBulkQueryJobsExamplePayload = {
   data: {
     done: true,
-    nextRecordsUrl:
-      "/services/data/v60.0/jobs/ingest?queryLocator=01gR0000000opRTIAY-2000",
+    nextRecordsUrl: null,
     records: [getBulkJobData, getBulkJobData],
   },
 };
@@ -812,10 +881,8 @@ export const createFlowExamplePayload = {
 };
 export const subscribeToRecordChangesExamplePayload = {
   data: {
-    outboundMessageFullName: "My_Flow",
-    flowFullName: "My_Flow",
-    success: true,
-    errors: [],
+    outboundMessageFullName: "Account.Account_Change_Outbound_Message",
+    flowFullName: "Account_Change_Subscription_Flow",
   },
 };
 export const updateFlowExamplePayload = {
@@ -951,38 +1018,28 @@ export const findRecordsExamplePayload = {
 };
 export const compositeRequestExamplePayload = {
   data: {
-    hasErrors: false,
-    results: [
+    compositeResponse: [
       {
-        statusCode: 204,
-        result: null,
-      },
-      {
-        statusCode: 200,
-        result: {
-          attributes: {
-            type: "Account",
-            url: "/services/data/v60.0/sobjects/Account/001D000000K0fXOIAZ",
-          },
-          Name: "NewName",
-          BillingPostalCode: "94105",
-          Id: "001D000000K0fXOIAZ",
+        body: {
+          id: "001D000000K0fXOIAZ",
+          success: true,
+          errors: [],
         },
+        httpHeaders: {
+          Location: "/services/data/v63.0/sobjects/Account/001D000000K0fXOIAZ",
+        },
+        httpStatusCode: 201,
+        referenceId: "NewAccount",
       },
     ],
   },
 };
 export const listCompositeResourcesExamplePayload = {
   data: {
-    hasErrors: false,
-    results: [
-      {
-        tree: "/services/data/v54.0/composite/tree",
-        batch: "/services/data/v54.0/composite/batch",
-        sobjects: "/services/data/v54.0/composite/sobjects",
-        graph: "/services/data/v54.0/composite/graph",
-      },
-    ],
+    tree: "/services/data/v63.0/composite/tree",
+    batch: "/services/data/v63.0/composite/batch",
+    sobjects: "/services/data/v63.0/composite/sobjects",
+    graph: "/services/data/v63.0/composite/graph",
   },
 };
 export const addAttachmentExamplePayload = {
@@ -1004,8 +1061,9 @@ export const bulkInsertRecordsExamplePayload = {
   data: [
     {
       id: "015D0000000N3ZZIA0",
-      errors: [],
       success: true,
+      created: true,
+      errors: [],
     },
   ] as unknown,
 };
@@ -1013,20 +1071,374 @@ export const bulkUpsertRecordsExamplePayload = {
   data: [
     {
       id: "015D0000000N3ZZIA0",
-      errors: [],
       success: true,
+      created: false,
+      errors: [],
     },
   ] as unknown,
 };
 export const deleteBulkJobExamplePayload = {
-  data: {},
+  data: "",
 };
 export const deleteBulkQueryJobExamplePayload = {
-  data: {},
+  data: "",
 };
 export const updateMetadataExamplePayload = {
-  data: null,
+  data: {
+    fullName: "Invoice__c",
+    success: true,
+  },
 };
 export const deleteMetadataExamplePayload = {
-  data: null,
+  data: {
+    fullName: "Invoice__c",
+    success: true,
+  },
+};
+export const deleteAccountExamplePayload = {
+  data: {
+    id: "0016g00000Kxyz1AAB",
+    success: true,
+    errors: [],
+  },
+};
+export const deleteCustomerExamplePayload = {
+  data: {
+    id: "0o68c000000wk3lAAA",
+    success: true,
+    errors: [],
+  },
+};
+export const describeObjectExamplePayload = {
+  data: {
+    ...describeCustomerSObjectData,
+    fields: [
+      {
+        name: "Id",
+        label: "Customer ID",
+        type: "id",
+        length: 18,
+        nillable: false,
+        createable: false,
+        updateable: false,
+        custom: false,
+        filterable: true,
+        sortable: true,
+        unique: false,
+        referenceTo: [],
+        picklistValues: [],
+      },
+      {
+        name: "Name",
+        label: "Customer Name",
+        type: "string",
+        length: 255,
+        nillable: false,
+        createable: true,
+        updateable: true,
+        custom: false,
+        filterable: true,
+        sortable: true,
+        unique: false,
+        referenceTo: [],
+        picklistValues: [],
+      },
+      {
+        name: "PartyId",
+        label: "Party ID",
+        type: "reference",
+        length: 18,
+        nillable: false,
+        createable: true,
+        updateable: true,
+        custom: false,
+        filterable: true,
+        sortable: true,
+        unique: false,
+        referenceTo: ["Account", "Individual"],
+        relationshipName: "Party",
+        picklistValues: [],
+      },
+    ],
+  },
+};
+export const describePermissionsExamplePayload = {
+  data: [
+    {
+      name: "PermissionsApiEnabled",
+      label: "API Enabled",
+      type: "boolean",
+      length: 0,
+      nillable: false,
+      defaultedOnCreate: true,
+      createable: true,
+      updateable: true,
+      custom: false,
+      filterable: true,
+      sortable: true,
+      unique: false,
+      referenceTo: [],
+      picklistValues: [],
+    },
+    {
+      name: "PermissionsModifyAllData",
+      label: "Modify All Data",
+      type: "boolean",
+      length: 0,
+      nillable: false,
+      defaultedOnCreate: true,
+      createable: true,
+      updateable: true,
+      custom: false,
+      filterable: true,
+      sortable: true,
+      unique: false,
+      referenceTo: [],
+      picklistValues: [],
+    },
+  ],
+};
+export const queryExamplePayload = {
+  data: {
+    totalSize: 2,
+    done: true,
+    records: [
+      {
+        attributes: {
+          type: "Account",
+          url: "/services/data/v63.0/sobjects/Account/0016g00000Kxyz1AAB",
+        },
+        Id: "0016g00000Kxyz1AAB",
+        Name: "Acme Corporation",
+      },
+      {
+        attributes: {
+          type: "Account",
+          url: "/services/data/v63.0/sobjects/Account/0016g00000Kxyz2AAB",
+        },
+        Id: "0016g00000Kxyz2AAB",
+        Name: "Globex Industries",
+      },
+    ],
+  },
+};
+export const validateConnectionExamplePayload = {
+  data: true,
+};
+const outboundMessageExampleData = {
+  "soapenv:Envelope": {
+    "soapenv:Body": {
+      notifications: {
+        OrganizationId: "00D5e000000KQ2eEAG",
+        ActionId: "04k5e000000CaRkAAK",
+        SessionId: {
+          "@_xsi:nil": "true",
+        },
+        Notification: {
+          Id: "04l5e00000Gx7QzAAJ",
+          sObject: {
+            "sf:Id": "0015e00000ZkM3hAAF",
+            "sf:Industry": "Manufacturing",
+            "sf:Name": "Acme Corporation",
+            "sf:Phone": "(415) 555-0142",
+            "@_xsi:type": "sf:Account",
+          },
+        },
+      },
+    },
+  },
+};
+export const webhookExamplePayload: {
+  payload: TriggerPayload;
+  response?: HttpResponse;
+} = {
+  payload: {
+    headers: { "Content-Type": "text/xml; charset=utf-8" },
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: outboundMessageExampleData,
+      contentType: undefined,
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+    customer: {
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
+    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
+    user: {
+      id: "testUserId",
+      email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
+    },
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
+  response: WEBHOOK_SFDC_RESPONSE,
+};
+export const workflowTriggerExamplePayload: {
+  payload: TriggerPayload;
+  response?: HttpResponse;
+} = {
+  payload: {
+    headers: { "Content-Type": "text/xml; charset=utf-8" },
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: outboundMessageExampleData,
+      contentType: undefined,
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+    customer: {
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
+    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
+    user: {
+      id: "testUserId",
+      email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
+    },
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
+  response: WEBHOOK_SFDC_RESPONSE,
+};
+export const flowOutboundMessageTriggerExamplePayload: {
+  payload: TriggerPayload;
+  response?: HttpResponse;
+} = {
+  payload: {
+    headers: { "Content-Type": "text/xml; charset=utf-8" },
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: [
+        {
+          type: "Account",
+          Id: "0015e00000ZkM3hAAF",
+          Industry: "Manufacturing",
+          Name: "Acme Corporation",
+          Phone: "(415) 555-0142",
+        },
+      ] satisfies CleanSObject[],
+      contentType: "application/json; charset=utf-8",
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+    customer: {
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
+    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
+    user: {
+      id: "testUserId",
+      email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
+    },
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
+  response: WEBHOOK_SFDC_RESPONSE,
+};
+export const pollChangesTriggerExamplePayload: {
+  payload: TriggerPayload;
+  polledNoChanges?: boolean;
+} = {
+  payload: {
+    headers: {},
+    queryParameters: {},
+    rawBody: { data: null },
+    body: {
+      data: {
+        createdRecords: [
+          {
+            Id: "0017000000hOMChAAO",
+            CreatedDate: "2025-01-15T10:30:00.000+0000",
+            LastModifiedDate: "2025-01-15T10:30:00.000+0000",
+            Name: "New Account",
+          },
+        ],
+        updatedRecords: [
+          {
+            Id: "0017000000hOMCiAAO",
+            CreatedDate: "2024-06-01T08:00:00.000+0000",
+            LastModifiedDate: "2025-01-15T10:45:00.000+0000",
+            Name: "Updated Account",
+          },
+        ],
+        deletedRecords: [
+          {
+            id: "0017000000hOMCjAAO",
+            deletedDate: "2025-01-15T11:00:00.000+0000",
+            IsDeleted: true,
+          },
+        ],
+      } satisfies SalesforceChangesObject,
+    },
+    pathFragment: "",
+    webhookUrls: {},
+    webhookApiKeys: {},
+    invokeUrl: "",
+    executionId: "RXhhbXBsZUV4ZWN1dGlvblJlc3VsdElk",
+    customer: {
+      id: "testCustomerId",
+      name: "Test Customer",
+      externalId: "testExternalId",
+    },
+    instance: { id: "testInstanceId", name: "Test Instance" },
+    user: {
+      id: "testUserId",
+      email: "user@example.com",
+      name: "Test User",
+      externalId: "testUserExternalId",
+    },
+    integration: {
+      id: "testIntegrationId",
+      name: "Test Integration",
+      versionSequenceId: "1",
+      externalVersion: "",
+    },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
+    startedAt: "2024-01-15T00:00:00.000Z",
+    globalDebug: false,
+  },
 };

@@ -31,7 +31,7 @@ const address = structuredObjectInput({
   label: "Address",
   required: false,
   comments: "Street, city, state, postal code, and country for the address.",
-  inputs: { street, state, city, postalCode, country },
+  inputs: { street, city, state, postalCode, country },
 });
 const nameAndContact = structuredObjectInput({
   label: "Name & Contact Information",
@@ -54,10 +54,10 @@ const additionalFields = structuredObjectInput({
   },
 });
 export const createLeadInputs = {
-  version,
   company,
   leadStatus,
   email,
+  version,
   dynamicValues,
   fieldValues,
   nameAndContact,

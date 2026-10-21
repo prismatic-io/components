@@ -8,6 +8,7 @@ export const listLeads = action({
     label: "List Leads",
     description: "List all lead records.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -52,6 +53,9 @@ export const listLeads = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listLeadsExamplePayload,
   inputs: listLeadsInputs,
   examplePayload: listLeadsExamplePayload as unknown,
 });

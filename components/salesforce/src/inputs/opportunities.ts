@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput, toOptionalInt } from "../util";
 import {
   connectionInput,
@@ -31,7 +31,7 @@ const stage = input({
     { label: "Qualification", value: "Qualification" },
     { label: "Needs Analysis", value: "Needs Analysis" },
     { label: "Value Proposition", value: "Value Proposition" },
-    { label: "id. Decision Makers", value: "id. Decision Makers" },
+    { label: "Id. Decision Makers", value: "id. Decision Makers" },
     { label: "Perception Analysis", value: "Perception Analysis" },
     { label: "Proposal/Price Quote", value: "Proposal/Price Quote" },
     { label: "Negotiation/Review", value: "Negotiation/Review" },
@@ -94,20 +94,29 @@ const opportunityType = input({
     "The category of the opportunity, indicating whether it is for a new or existing customer.",
   clean: util.types.toString,
 });
+const additionalFields = structuredObjectInput({
+  label: "Additional Fields",
+  required: false,
+  comments:
+    "Additional optional fields: includes Amount, Next Step, Lead Source, Probability, and Description.",
+  inputs: {
+    amount,
+    nextStep,
+    leadSource,
+    probability,
+    description,
+  },
+});
 export const createOpportunityInputs = {
-  version,
   stage,
   opportunityType,
   closeDate,
   name,
-  nextStep,
+  version,
   dynamicValues,
   fieldValues,
-  amount,
   accountId,
-  leadSource,
-  probability,
-  description,
+  additionalFields,
   connection: connectionInput,
 };
 export const updateOpportunityInputs = {
@@ -120,14 +129,10 @@ export const updateOpportunityInputs = {
   opportunityType,
   closeDate,
   name,
-  nextStep,
   dynamicValues,
   fieldValues,
-  amount,
   accountId,
-  leadSource,
-  probability,
-  description,
+  additionalFields,
   connection: connectionInput,
 };
 export const deleteOpportunityInputs = {

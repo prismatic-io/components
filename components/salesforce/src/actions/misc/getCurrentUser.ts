@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getCurrentUserOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { getCurrentUserInputs } from "../../inputs";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
@@ -9,6 +10,7 @@ export const getCurrentUser = action({
     description: "Retrieve information about the currently authenticated user.",
   },
   inputs: getCurrentUserInputs,
+  performSafety: "safe",
   perform: async (context, { version, connection }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     const command = salesforceClient.identity();
@@ -17,5 +19,9 @@ export const getCurrentUser = action({
       data: response,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getCurrentUserOutputSchema,
+  }),
   examplePayload: getCurrentUserExamplePayload as unknown,
 });

@@ -31,7 +31,7 @@ const shippingAddress = structuredObjectInput({
   required: false,
   comments:
     "Street, city, state, postal code, and country for the shipping address.",
-  inputs: { street, state, city, postalCode, country },
+  inputs: { street, city, state, postalCode, country },
 });
 const billingAddress = structuredObjectInput({
   label: "Billing Address",
@@ -40,8 +40,8 @@ const billingAddress = structuredObjectInput({
     "Street, city, state, postal code, and country for the billing address.",
   inputs: {
     billingStreet,
-    billingState,
     billingCity,
+    billingState,
     billingPostalCode,
     billingCountry,
   },
@@ -60,10 +60,10 @@ const additionalFields = structuredObjectInput({
   },
 });
 export const createAccountInputs = {
-  version,
   name,
   type,
   industry,
+  version,
   dynamicValues,
   fieldValues,
   shippingAddress,
@@ -72,17 +72,17 @@ export const createAccountInputs = {
   connection: connectionInput,
 };
 export const deleteAccountInputs = {
-  version,
   recordId,
+  version,
   fieldValues,
   connection: connectionInput,
 };
 export const updateAccountInputs = {
-  version,
   recordId,
   name,
   type,
   industry,
+  version,
   dynamicValues,
   fieldValues,
   shippingAddress,

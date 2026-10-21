@@ -1,11 +1,11 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, util, outputSchema } from "@prismatic-io/spectral";
+import { subscribeToRecordChangeOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { subscribeToRecordChangeInputs } from "../../inputs";
 import {
   createWorkflowOutboundMessageFunction,
   createWorkflowRuleFunction,
   getIntegrationUser,
-  processFilterCriteria,
   processOutboundMessageActions,
   processOutboundMessageFields,
   toFullNameIdentifier,
@@ -18,6 +18,7 @@ export const subscribeToRecordChange = action({
       "Create a Workflow Rule to subscribe to record changes in Salesforce. Workflow Rules are deprecated by Salesforce; migrate to Flow-based actions.",
   },
   inputs: subscribeToRecordChangeInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -72,7 +73,7 @@ export const subscribeToRecordChange = action({
       active: true,
       description,
       triggerType,
-      criteriaItems: processFilterCriteria(filterCriteria),
+      criteriaItems: filterCriteria,
       actions: processOutboundMessageActions([outboundResult.fullName]),
       formula: formulaInput,
     });
@@ -83,5 +84,12 @@ export const subscribeToRecordChange = action({
       },
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => subscribeRecordChangeExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: subscribeToRecordChangeOutputSchema,
+  }),
   examplePayload: subscribeRecordChangeExamplePayload,
 });

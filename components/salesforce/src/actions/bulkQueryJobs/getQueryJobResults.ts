@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getQueryJobResultsOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { getQueryJobResultsInputs } from "../../inputs";
 import { getQueryJobResultsExamplePayload } from "../../examplePayloads";
@@ -8,10 +9,8 @@ export const getQueryJobResults = action({
     description: "Retrieve the results for a completed bulk query job.",
   },
   inputs: getQueryJobResultsInputs,
-  perform: async (
-    context,
-    { version, connection, queryJobId, locator, maxRecords },
-  ) => {
+  performSafety: "notAllowed",
+  perform: async (context, { version, connection, queryJobId, pagination }) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,
       connection,
@@ -20,9 +19,10 @@ export const getQueryJobResults = action({
     const { data } = await salesforceClient.get(
       `/jobs/query/${queryJobId}/results`,
       {
+        headers: { Accept: "text/csv" },
         params: {
-          locator,
-          maxRecords: maxRecords || undefined,
+          locator: pagination.locator,
+          maxRecords: pagination.maxRecords || undefined,
         },
       },
     );
@@ -30,5 +30,12 @@ export const getQueryJobResults = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => getQueryJobResultsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getQueryJobResultsOutputSchema,
+  }),
   examplePayload: getQueryJobResultsExamplePayload,
 });

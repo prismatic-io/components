@@ -1,4 +1,4 @@
-import { input, util } from "@prismatic-io/spectral";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { cleanStringInput } from "../util";
 import { connectionInput, version } from "./common";
 const query = input({
@@ -85,6 +85,12 @@ const maxRecords = input({
   example: "100",
   clean: (value: unknown) => util.types.toInt(value, 100),
 });
+const queryJobResultsPagination = structuredObjectInput({
+  label: "Pagination",
+  required: false,
+  comments: "Cursor and page-size controls for paging through results.",
+  inputs: { locator, maxRecords },
+});
 export const isPkChunkingEnabled = input({
   label: "Is PK Chunking Enabled",
   type: "boolean",
@@ -124,32 +130,32 @@ const concurrencyMode = input({
 });
 export const createBulkQueryJobInputs = {
   connection: connectionInput,
-  version,
   operation,
   query,
   lineEnding,
+  version,
   columnDelimiter,
 };
 export const abortBulkQueryJobInputs = {
   connection: connectionInput,
-  version,
   queryJobId: {
     ...queryJobId,
     comments: "The ID of the query job to abort",
   },
+  version,
 };
 export const deleteBulkQueryJobInputs = {
   connection: connectionInput,
-  version,
   queryJobId: {
     ...queryJobId,
     comments: "The ID of the query job to delete",
   },
+  version,
 };
 export const getQueryJobInformationInputs = {
   connection: connectionInput,
-  version,
   queryJobId,
+  version,
 };
 export const getAllQueryJobInformationInputs = {
   connection: connectionInput,
@@ -161,8 +167,7 @@ export const getAllQueryJobInformationInputs = {
 };
 export const getQueryJobResultsInputs = {
   connection: connectionInput,
-  version,
   queryJobId,
-  locator,
-  maxRecords,
+  version,
+  pagination: queryJobResultsPagination,
 };

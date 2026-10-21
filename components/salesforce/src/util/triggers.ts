@@ -3,20 +3,16 @@ import {
   type TriggerPayload,
   util,
 } from "@prismatic-io/spectral";
-import { parse } from "fast-xml-parser";
 import { WEBHOOK_SFDC_RESPONSE } from "../constants";
 import type { SalesforceOutboundEnvelope } from "../types";
 import { getNotificationsArray } from "./cleanFunctions";
+import { parseXml } from "./xml";
 export const performTriggerFunction = async (_context, payload) => {
   const response: HttpResponse = WEBHOOK_SFDC_RESPONSE;
   const finalPayload: TriggerPayload = { ...payload };
-  const parseOptions = {
-    ignoreAttributes: false,
-    ignoreNameSpace: false,
-    textNodeName: "_text",
-  };
-  finalPayload.body.data =
-    parse(util.types.toString(finalPayload.body.data), parseOptions) || {};
+  finalPayload.body.data = parseXml(
+    util.types.toString(finalPayload.body.data),
+  );
   finalPayload.body.contentType = undefined;
   return Promise.resolve({
     payload: finalPayload,
@@ -29,15 +25,9 @@ export const performFlowOutboundMessageTriggerFunction = async (
 ) => {
   const response: HttpResponse = WEBHOOK_SFDC_RESPONSE;
   const finalPayload: TriggerPayload = { ...payload };
-  const parseOptions = {
-    ignoreAttributes: false,
-    ignoreNameSpace: false,
-    textNodeName: "_text",
-  };
-  const parsedBody = (parse(
+  const parsedBody = parseXml(
     util.types.toString(finalPayload.body.data),
-    parseOptions,
-  ) || {}) as SalesforceOutboundEnvelope;
+  ) as SalesforceOutboundEnvelope;
   const notificationsArray = getNotificationsArray(parsedBody);
   finalPayload.body = {
     data: notificationsArray,

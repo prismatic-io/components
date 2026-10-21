@@ -8,6 +8,7 @@ export const listContacts = action({
     label: "List Contacts",
     description: "List all contact records.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -52,6 +53,9 @@ export const listContacts = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listContactsExamplePayload,
   inputs: listContactsInputs,
   examplePayload: listContactsExamplePayload as unknown,
 });

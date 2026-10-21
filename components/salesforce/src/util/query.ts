@@ -39,10 +39,7 @@ export const getFindQuery = ({
 }: SFQueryParams) => {
   let query = salesforceClient.sobject(recordType).find({
     ...dynamicValues,
-    ...coerceObjectValues(
-      fieldValues,
-      util.types.keyValPairListToObject(fieldValueTypes),
-    ),
+    ...coerceObjectValues(fieldValues, fieldValueTypes),
   });
   query = addPaginationToQuery({
     fetchAll,

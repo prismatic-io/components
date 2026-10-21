@@ -10,11 +10,15 @@ export const getFlow = action({
     description: "Get details of a specific Flow by name.",
   },
   inputs: getFlowInputs,
+  performSafety: "notAllowed",
   perform: async (_context, { version, flowName, connection }) => {
     const client = await createSalesforceClient(connection, version);
     const fullName = generateApiName(flowName);
     const result = await getFlowFunction(client, fullName);
     return { data: result as unknown };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => getFlowExamplePayload,
   examplePayload: getFlowExamplePayload,
 });

@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import { cleanPicklistNone, cleanStringInput } from "../util";
 export const firstName = input({
   label: "First Name",
   placeholder: "Enter first name",
@@ -32,7 +32,7 @@ export const mobile = input({
   type: "string",
   required: false,
   placeholder: "Enter mobile phone number",
-  comments: "The mobile phone number for the object.",
+  comments: "The mobile phone number, used for calls and text messages.",
   example: "18005555555",
   clean: cleanStringInput,
 });
@@ -60,7 +60,8 @@ export const street = input({
   type: "string",
   required: false,
   placeholder: "Enter street address",
-  comments: "The street address of the object.",
+  comments:
+    "Street address line, including the building number and street name.",
   example: "4 Privet Drive",
   clean: cleanStringInput,
 });
@@ -69,7 +70,7 @@ export const state = input({
   type: "string",
   required: false,
   placeholder: "Enter state",
-  comments: "The state of the object's address.",
+  comments: "Two-letter state or province code, or full name.",
   example: "CA",
   clean: cleanStringInput,
 });
@@ -78,7 +79,7 @@ export const country = input({
   type: "string",
   required: false,
   placeholder: "Enter country",
-  comments: "The country of the object's address.",
+  comments: "The country name or two-letter ISO country code.",
   example: "United States",
   clean: cleanStringInput,
 });
@@ -87,7 +88,7 @@ export const city = input({
   type: "string",
   required: false,
   placeholder: "Enter city",
-  comments: "The city of the object's address.",
+  comments: "The city, town, or locality name.",
   example: "Cupertino",
   clean: cleanStringInput,
 });
@@ -96,7 +97,7 @@ export const postalCode = input({
   type: "string",
   required: false,
   placeholder: "Enter postal code",
-  comments: "The zip code of the object's address.",
+  comments: "The ZIP or postal code.",
   example: "94024",
   clean: cleanStringInput,
 });
@@ -125,7 +126,8 @@ export const fax = input({
   type: "string",
   required: false,
   placeholder: "Enter fax number",
-  comments: "The fax number associated with the record.",
+  comments:
+    "The fax number for sending documents to the record, including the country or area code.",
   example: "18008999372",
   clean: cleanStringInput,
 });
@@ -134,52 +136,53 @@ export const website = input({
   type: "string",
   required: false,
   placeholder: "Enter website URL",
-  comments: "The website URL associated with the record.",
+  comments: "The record's website, such as a company or personal homepage.",
   example: "website-example.com",
   clean: cleanStringInput,
 });
 export const billingStreet = input({
-  label: "Billing Street Address",
+  label: "Street Address",
   type: "string",
   required: false,
   placeholder: "Enter billing street address",
-  comments: "The street address of the billing object.",
+  comments:
+    "Street address line, including the building number and street name.",
   example: "4 Privet Drive",
   clean: cleanStringInput,
 });
 export const billingState = input({
-  label: "Billing State",
+  label: "State",
   type: "string",
   required: false,
   placeholder: "Enter billing state",
-  comments: "The state of the object's billing address.",
+  comments: "Two-letter state or province code, or full name.",
   example: "CA",
   clean: cleanStringInput,
 });
 export const billingCity = input({
-  label: "Billing City",
+  label: "City",
   type: "string",
   required: false,
   placeholder: "Enter billing city",
-  comments: "The city of the object's billing address.",
+  comments: "The city, town, or locality name.",
   example: "Cupertino",
   clean: cleanStringInput,
 });
 export const billingPostalCode = input({
-  label: "Billing Postal Code",
+  label: "Postal Code",
   type: "string",
   required: false,
   placeholder: "Enter billing postal code",
-  comments: "The zip code of the object's billing address.",
+  comments: "The ZIP or postal code.",
   example: "94024",
   clean: cleanStringInput,
 });
 export const billingCountry = input({
-  label: "Billing Country",
+  label: "Country",
   type: "string",
   required: false,
   placeholder: "Enter billing country",
-  comments: "The country of the object's billing address.",
+  comments: "The country name or two-letter ISO country code.",
   example: "CA",
   clean: cleanStringInput,
 });
@@ -188,7 +191,8 @@ export const employeeCount = input({
   type: "string",
   required: false,
   placeholder: "Enter number of employees",
-  comments: "The number of employees associated with the object.",
+  comments:
+    "The total number of people the account employs, as a whole number.",
   example: "30",
   clean: cleanStringInput,
 });
@@ -240,8 +244,8 @@ export const rating = input({
     },
   ],
   required: false,
-  comments: "The rating for the lead.",
-  clean: cleanStringInput,
+  comments: "The sales priority of the lead: Hot, Warm, or Cold.",
+  clean: cleanPicklistNone,
 });
 export const birthdate = input({
   label: "Birthdate",
@@ -292,7 +296,8 @@ export const industry = input({
     { label: "Transportation", value: "Transportation" },
     { label: "Utilities", value: "Utilities" },
   ],
-  comments: "The industry of the account record.",
+  comments:
+    "The primary industry the account operates in, used for segmentation and reporting.",
   clean: util.types.toString,
 });
 export const type = input({
@@ -313,6 +318,7 @@ export const type = input({
     { label: "Reseller", value: "Reseller" },
     { label: "Other", value: "Other" },
   ],
-  comments: "The type of account record.",
+  comments:
+    "The account's relationship to the organization, such as Customer, Partner, or Competitor.",
   clean: util.types.toString,
 });

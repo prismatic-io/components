@@ -20,17 +20,17 @@ export const salesforceClientCredentials = oauth2Connection({
         required: true,
         shown: true,
         comments:
-          "The Salesforce My Domain URL (e.g., https://your-company.my.salesforce.com). For sandbox, use https://your-company--sandbox.sandbox.my.salesforce.com.",
+          "The Salesforce My Domain URL (e.g., `https://your-company.my.salesforce.com`). For sandbox, use `https://your-company--sandbox.sandbox.my.salesforce.com`.",
         example: "https://acme-corp.my.salesforce.com",
       },
       clientId: {
         label: "Consumer Key",
         placeholder: "Enter consumer key",
-        example: "3MVG9ZL1aBcDeFGHjklMNOpQRsTUVwXyZ1234567890abcdefg",
         type: "string",
         required: true,
         shown: true,
         comments: "The Consumer Key from the Salesforce Connected App.",
+        example: "3MVG9ZL1aBcDeFGHjklMNOpQRsTUVwXyZ1234567890abcdefg",
       },
       clientSecret: {
         label: "Consumer Secret",
@@ -57,6 +57,7 @@ export const salesforceClientCredentials = oauth2Connection({
         type: "template",
         required: true,
         templateValue: "{{#instanceUrl}}/services/oauth2/token",
+        comments: "The OAuth 2.0 Token URL, built from the Instance URL.",
       },
     },
     OAuth2Type.ClientCredentials,

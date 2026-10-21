@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { deleteRecordInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
@@ -9,6 +10,7 @@ export const deleteRecord = action({
     description: "Delete an existing Salesforce record.",
   },
   inputs: deleteRecordInputs,
+  performSafety: "notAllowed",
   perform: async (context, { version, recordType, recordId, connection }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     const command = salesforceClient.sobject(recordType).delete(recordId);
@@ -17,5 +19,12 @@ export const deleteRecord = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

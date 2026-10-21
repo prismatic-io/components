@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { bulkLoadRecordsOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { bulkInsertRecordsInputs } from "../../inputs";
 import { bulkInsertRecordsExamplePayload } from "../../examplePayloads";
@@ -10,6 +11,7 @@ export const bulkInsertRecords = action({
     description: "Create new Salesforce records in bulk.",
   },
   inputs: bulkInsertRecordsInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { version, recordType, externalIdFieldName, connection, file },
@@ -35,5 +37,12 @@ export const bulkInsertRecords = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => bulkInsertRecordsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: bulkLoadRecordsOutputSchema,
+  }),
   examplePayload: bulkInsertRecordsExamplePayload,
 });

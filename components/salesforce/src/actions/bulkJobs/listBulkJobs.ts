@@ -8,6 +8,7 @@ export const listBulkJobs = action({
     description: "List all bulk ingest jobs in the org.",
   },
   inputs: listBulkJobsInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { version, connection, isPkChunkingEnabled, jobType, queryLocator },
@@ -28,5 +29,8 @@ export const listBulkJobs = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listBulkQueryJobsExamplePayload,
   examplePayload: listBulkQueryJobsExamplePayload,
 });

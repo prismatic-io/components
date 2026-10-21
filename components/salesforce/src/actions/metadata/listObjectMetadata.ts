@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listMetadataOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { listObjectMetadataInputs } from "../../inputs";
 import { listObjectMetadataExamplePayload } from "../../examplePayloads";
@@ -9,6 +10,7 @@ export const listObjectMetadata = action({
     description: "List all metadata components in Salesforce.",
   },
   inputs: listObjectMetadataInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, version, metadataType }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     const command = salesforceClient.metadata.list([
@@ -17,5 +19,12 @@ export const listObjectMetadata = action({
     const result = await executeSFAction(context, command);
     return { data: result };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listObjectMetadataExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listMetadataOutputSchema,
+  }),
   examplePayload: listObjectMetadataExamplePayload as unknown,
 });

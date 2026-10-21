@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteMetadataOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { deleteMetadataInputs } from "../../inputs";
 import { deleteMetadataExamplePayload } from "../../examplePayloads";
@@ -9,6 +10,7 @@ export const deleteMetadata = action({
     description: "Delete one or more metadata components.",
   },
   inputs: deleteMetadataInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, version, fullNames, metadataType },
@@ -18,13 +20,17 @@ export const deleteMetadata = action({
       context.logger.debug("Payload", {
         fullNames,
       });
-      const command = await salesforceClient.metadata.delete(
-        metadataType,
-        fullNames,
-      );
-      const result = await executeSFAction(context, command);
-      return { data: result };
     }
+    const command = salesforceClient.metadata.delete(metadataType, fullNames);
+    const result = await executeSFAction(context, command);
+    return { data: result };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => deleteMetadataExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteMetadataOutputSchema,
+  }),
   examplePayload: deleteMetadataExamplePayload,
 });

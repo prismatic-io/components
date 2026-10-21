@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { saveMetadataOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { createObjectsFromMetadataInputs } from "../../inputs";
 import { genericCreateUpdateFullNameExamplePayload } from "../../examplePayloads";
@@ -9,6 +10,7 @@ export const createObjectsFromMetadata = action({
     description: "Create new metadata components.",
   },
   inputs: createObjectsFromMetadataInputs,
+  performSafety: "notAllowed",
   perform: async (context, { metadata, version, connection, metadataType }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     if (context.debug.enabled) {
@@ -25,5 +27,12 @@ export const createObjectsFromMetadata = action({
     const result = await executeSFAction(context, command);
     return { data: result };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateFullNameExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: saveMetadataOutputSchema,
+  }),
   examplePayload: genericCreateUpdateFullNameExamplePayload as unknown,
 });

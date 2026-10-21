@@ -1,4 +1,5 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, util, outputSchema } from "@prismatic-io/spectral";
+import { createWorkflowComponentOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { createWorkflowOutboundMessageInputs } from "../../inputs";
 import {
@@ -14,6 +15,7 @@ export const createWorkflowOutboundMessage = action({
     description: "Create an Outbound Message in Salesforce.",
   },
   inputs: createWorkflowOutboundMessageInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -56,5 +58,12 @@ export const createWorkflowOutboundMessage = action({
     });
     return { data: result };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateFullNameExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createWorkflowComponentOutputSchema,
+  }),
   examplePayload: genericCreateUpdateFullNameExamplePayload,
 });

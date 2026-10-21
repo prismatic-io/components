@@ -1,4 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
+import { toRequiredTrimmedString } from "../util";
 import { connectionInput, version } from "./common";
 export const file = input({
   label: "File",
@@ -27,15 +28,6 @@ const contentDocumentId = input({
   example: "0697000000K2g5AAAR",
   placeholder: "Enter content version ID",
 });
-export const attachmentId = input({
-  label: "Attachment ID",
-  type: "string",
-  required: true,
-  placeholder: "Enter attachment ID",
-  comments: "The ID of the attachment to retrieve.",
-  clean: util.types.toString,
-  example: "0697000000K2g5AAAR",
-});
 export const fileName = input({
   label: "File Name",
   comments: "The name of the file to upload, including the file extension.",
@@ -61,22 +53,16 @@ export const fileId = input({
   type: "string",
   example: "0697000000K2g5AAAR",
   required: true,
-  clean: (value: unknown): string => {
-    const fileId = util.types.toString(value).trim();
-    if (fileId === "") {
-      throw new Error("Must specify a valid Record Type");
-    }
-    return fileId;
-  },
+  clean: toRequiredTrimmedString("File ID"),
 });
 export const uploadFileInputs = {
-  version,
   connection: connectionInput,
   file,
   pathOnClient,
+  version,
 };
 export const getFileInputs = {
-  version,
   contentDocumentId,
+  version,
   connection: connectionInput,
 };

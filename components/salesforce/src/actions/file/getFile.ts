@@ -9,6 +9,7 @@ export const getFile = action({
     description: "Retrieve a file from Salesforce ContentVersion.",
   },
   inputs: getFileInputs,
+  performSafety: "safe",
   perform: async (context, { version, connection, contentDocumentId }) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,

@@ -8,6 +8,7 @@ export const listUsers = action({
     label: "List Users",
     description: "List all user records.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -52,6 +53,9 @@ export const listUsers = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listUsersExamplePayload,
   inputs: listUsersInputs,
   examplePayload: listUsersExamplePayload as unknown,
 });

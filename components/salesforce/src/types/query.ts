@@ -1,11 +1,10 @@
 import type { Connection, Query, Schema, SObjectFieldType } from "jsforce";
-import type { KeyValuePair } from "@prismatic-io/spectral";
 export interface SFQueryParams {
   salesforceClient: Connection<Schema>;
   dynamicValues?: Record<string, unknown>;
   recordType: string;
   fieldValues?: Record<string, unknown>;
-  fieldValueTypes?: KeyValuePair<unknown>[];
+  fieldValueTypes?: Record<string, unknown>;
   fetchAll: boolean;
   maxRecordsToFetch?: number;
   pageNumber?: number;

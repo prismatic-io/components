@@ -1,4 +1,5 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, util, outputSchema } from "@prismatic-io/spectral";
+import { updateRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { updateLeadInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
@@ -8,6 +9,7 @@ export const updateLead = action({
     label: "Update Lead",
     description: "Update a Salesforce lead record.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -59,6 +61,13 @@ export const updateLead = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
   inputs: updateLeadInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

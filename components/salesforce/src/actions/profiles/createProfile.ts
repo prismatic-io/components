@@ -1,6 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
-import { createProfileInputs, validatePermissions } from "../../inputs";
+import { createProfileInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
 export const createProfile = action({
@@ -9,6 +10,7 @@ export const createProfile = action({
     description: "Create a Salesforce profile.",
   },
   inputs: createProfileInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { version, name, description, permissions, userLicense, connection },
@@ -29,7 +31,7 @@ export const createProfile = action({
       throw new Error(`Unable to find UserLicense matching "${userLicense}"`);
     }
     const payload = {
-      ...validatePermissions(permissions),
+      ...permissions,
       Name: name,
       Description: description,
       UserLicenseId: userLicenseResult.Id,
@@ -38,5 +40,12 @@ export const createProfile = action({
     const response = await executeSFAction(context, command);
     return { data: response };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

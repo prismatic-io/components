@@ -7,6 +7,7 @@ export const getCustomer = action({
     label: "Get Customer",
     description: "Retrieve a customer record by ID.",
   },
+  performSafety: "safe",
   perform: async (_context, { version, recordId, connection }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     const response = await salesforceClient

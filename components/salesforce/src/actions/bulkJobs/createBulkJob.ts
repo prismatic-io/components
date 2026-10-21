@@ -1,7 +1,8 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createBulkJobOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { createBulkJobInputs } from "../../inputs";
-import { getQueryJobInformationExamplePayload } from "../../examplePayloads";
+import { createBulkJobExamplePayload } from "../../examplePayloads";
 export const createBulkJob = action({
   display: {
     label: "Create Bulk Job",
@@ -9,6 +10,7 @@ export const createBulkJob = action({
       "Create a bulk ingest job representing an operation and its associated data for asynchronous processing in Salesforce.",
   },
   inputs: createBulkJobInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -40,5 +42,12 @@ export const createBulkJob = action({
       data,
     };
   },
-  examplePayload: getQueryJobInformationExamplePayload,
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createBulkJobExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createBulkJobOutputSchema,
+  }),
+  examplePayload: createBulkJobExamplePayload,
 });

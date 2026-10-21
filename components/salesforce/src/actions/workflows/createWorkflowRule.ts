@@ -1,9 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createWorkflowComponentOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { createWorkflowRuleInputs } from "../../inputs";
 import {
   createWorkflowRuleFunction,
-  processFilterCriteria,
   processMetadataResult,
   processOutboundMessageActions,
   toFullNameIdentifier,
@@ -16,6 +16,7 @@ export const createWorkflowRule = action({
       "Create a Workflow Rule. Workflow Rules are deprecated by Salesforce; migrate to Flow-based actions.",
   },
   inputs: createWorkflowRuleInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -49,11 +50,18 @@ export const createWorkflowRule = action({
       active,
       description,
       triggerType,
-      criteriaItems: processFilterCriteria(filterCriteria),
+      criteriaItems: filterCriteria,
       actions: processOutboundMessageActions(outboundMessageActions),
       formula: formulaInput,
     });
     return { data: processMetadataResult(result) };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateFullNameExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createWorkflowComponentOutputSchema,
+  }),
   examplePayload: genericCreateUpdateFullNameExamplePayload,
 });

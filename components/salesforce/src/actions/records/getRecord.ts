@@ -9,6 +9,7 @@ export const getRecord = action({
     description: "Get a single Salesforce record by ID.",
   },
   inputs: getRecordInputs,
+  performSafety: "safe",
   perform: async (context, { version, recordType, recordId, connection }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     const command = salesforceClient.sobject(recordType).retrieve(recordId);

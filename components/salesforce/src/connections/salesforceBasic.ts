@@ -6,23 +6,6 @@ export const salesforceBasic = connection({
     description: "Authenticate requests using Basic Authentication.",
   },
   inputs: {
-    username: {
-      label: "Username",
-      placeholder: "Enter username",
-      example: "myUser",
-      type: "string",
-      required: true,
-      shown: true,
-      comments: "The username of the Salesforce account",
-    },
-    password: {
-      label: "Password",
-      placeholder: "Enter password",
-      type: "password",
-      required: true,
-      shown: true,
-      comments: "The password of the Salesforce account",
-    },
     loginUrl: {
       label: "Login URL",
       placeholder: "Enter login URL",
@@ -30,8 +13,27 @@ export const salesforceBasic = connection({
       required: true,
       shown: true,
       comments:
-        "The Salesforce Login URL for Basic Authentication (e.g., https://login.salesforce.com or a custom My Domain URL).",
+        "The Salesforce Login URL for Basic Authentication (e.g., `https://login.salesforce.com` or a custom My Domain URL).",
       example: "https://my-company.my.salesforce.com/",
+      default: "https://login.salesforce.com",
+    },
+    username: {
+      label: "Username",
+      placeholder: "Enter username",
+      type: "string",
+      required: true,
+      shown: true,
+      comments: "The username of the Salesforce account",
+      example: "myUser",
+    },
+    password: {
+      label: "Password",
+      placeholder: "Enter password",
+      type: "password",
+      required: true,
+      shown: true,
+      comments:
+        "The Salesforce password, or the password with the security token appended if security tokens are enabled. Reset the security token from **My Settings** > **Personal** > **Reset My Security Token**.",
     },
   },
 });

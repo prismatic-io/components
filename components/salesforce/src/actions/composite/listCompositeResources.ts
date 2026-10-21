@@ -8,6 +8,7 @@ export const listCompositeResources = action({
     description: "Retrieve a list of URIs for available composite resources.",
   },
   inputs: listCompositeResourcesInputs,
+  performSafety: "safe",
   perform: async (context, { version, connection }) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,

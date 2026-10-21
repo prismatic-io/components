@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { createRecordInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
@@ -9,6 +10,7 @@ export const createRecord = action({
     description: "Create a Salesforce record.",
   },
   inputs: createRecordInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { version, recordType, dynamicValues, fieldValues, connection },
@@ -29,5 +31,12 @@ export const createRecord = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

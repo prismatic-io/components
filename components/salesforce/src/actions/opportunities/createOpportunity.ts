@@ -1,4 +1,5 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { createOpportunityInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
@@ -9,38 +10,35 @@ export const createOpportunity = action({
     description:
       "Create a Salesforce opportunity record representing a sale or pending deal.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
-      nextStep,
       version,
       dynamicValues,
       fieldValues,
-      amount,
       stage,
       accountId,
       opportunityType,
       closeDate,
-      leadSource,
-      probability,
-      description,
       name,
+      additionalFields,
       connection,
     },
   ) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     const payload = {
       Name: name,
-      description: description,
+      description: additionalFields.description,
       stageName: stage,
       closeDate: closeDate,
       StageName: stage,
-      Amount: amount,
+      Amount: additionalFields.amount,
       Type: opportunityType,
-      NextStep: nextStep,
-      LeadSource: leadSource,
+      NextStep: additionalFields.nextStep,
+      LeadSource: additionalFields.leadSource,
       AccountId: accountId,
-      probability: probability,
+      probability: additionalFields.probability,
       ...dynamicValues,
       ...fieldValues,
     };
@@ -55,6 +53,13 @@ export const createOpportunity = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
   inputs: createOpportunityInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

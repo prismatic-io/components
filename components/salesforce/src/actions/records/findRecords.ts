@@ -9,6 +9,7 @@ export const findRecords = action({
     description: "Find and fetch Salesforce records.",
   },
   inputs: findRecordsInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -58,5 +59,8 @@ export const findRecords = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => findRecordsExamplePayload,
   examplePayload: findRecordsExamplePayload,
 });

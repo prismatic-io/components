@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteMetadataComponentOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { deleteWorkflowOutboundMessageInputs } from "../../inputs";
 import { deleteWorkflowOutboundMessageFunction } from "../../util";
@@ -9,6 +10,7 @@ export const deleteWorkflowOutboundMessage = action({
     description: "Delete a Workflow Outbound Message.",
   },
   inputs: deleteWorkflowOutboundMessageInputs,
+  performSafety: "notAllowed",
   perform: async (_context, { version, fullName, connection }) => {
     const client = await createSalesforceClient(connection, version);
     const result = await deleteWorkflowOutboundMessageFunction(
@@ -17,5 +19,12 @@ export const deleteWorkflowOutboundMessage = action({
     );
     return { data: result };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateFullNameExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteMetadataComponentOutputSchema,
+  }),
   examplePayload: genericCreateUpdateFullNameExamplePayload,
 });

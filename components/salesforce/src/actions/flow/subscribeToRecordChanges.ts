@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { subscribeToRecordChangesOutputSchema } from "../../outputSchemas";
 import { subscribeToRecordChangesInputs } from "../../inputs";
 import { subscribeToRecordChangesExamplePayload } from "../../examplePayloads";
 import { createFlowRecordSubscription } from "../../helpers";
@@ -11,6 +12,7 @@ export const subscribeToRecordChanges = action({
       "Subscribe to Record Changes in Salesforce using an outbound message action.",
   },
   inputs: subscribeToRecordChangesInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -46,5 +48,12 @@ export const subscribeToRecordChanges = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => subscribeToRecordChangesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: subscribeToRecordChangesOutputSchema,
+  }),
   examplePayload: subscribeToRecordChangesExamplePayload,
 });

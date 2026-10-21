@@ -2,13 +2,19 @@ import {
   defaultTriggerPayload,
   invokeTrigger,
 } from "@prismatic-io/spectral/dist/testing";
+import { WEBHOOK_SFDC_RESPONSE } from "../constants";
 import type {
   DeletedRecord,
   PollingCursor,
   PollingTriggerObject,
 } from "../types";
 import { getPollingChanges, resolvePollingRecordChanges } from "../util";
-import { pollChangesTrigger, webhook } from ".";
+import {
+  flowOutboundMessageTrigger,
+  pollChangesTrigger,
+  webhook,
+  workflowTrigger,
+} from ".";
 describe("test salesforce webhook trigger", () => {
   test("verify the return value of salesforce webhook trigger", async () => {
     const payload = defaultTriggerPayload();
@@ -36,6 +42,192 @@ describe("test salesforce webhook trigger", () => {
     } = await invokeTrigger(webhook, {}, payload);
     expect(data).toStrictEqual(expectedData);
     expect(response).toStrictEqual(expectedResponse);
+  });
+});
+const outboundEnvelope = (
+  notifications: string,
+) => `<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <soapenv:Body>
+  <notifications xmlns="http://soap.sforce.com/2005/09/outbound">
+   <OrganizationId>00D5g000004XyZaEAK</OrganizationId>
+   <ActionId>04k5g000000AbCdAAK</ActionId>
+   <SessionId xsi:nil="true"/>
+   <EnterpriseUrl>https://example.my.salesforce.com/services/Soap/c/63.0/00D5g000004XyZa</EnterpriseUrl>
+   <PartnerUrl>https://example.my.salesforce.com/services/Soap/u/63.0/00D5g000004XyZa</PartnerUrl>${notifications}
+  </notifications>
+ </soapenv:Body>
+</soapenv:Envelope>`;
+const accountNotification = (id: string, name: string) => `
+   <Notification>
+    <Id>04l5g00000${id}</Id>
+    <sObject xsi:type="sf:Account" xmlns:sf="urn:sobject.enterprise.soap.sforce.com">
+     <sf:Id>0015g00000${id}</sf:Id>
+     <sf:AccountNumber>00123</sf:AccountNumber>
+     <sf:AnnualRevenue>2500000.0</sf:AnnualRevenue>
+     <sf:BillingPostalCode>02110</sf:BillingPostalCode>
+     <sf:Description>Line one &amp; &lt;two&gt; &quot;quoted&quot; &#169;</sf:Description>
+     <sf:Fax>0x1F</sf:Fax>
+     <sf:IsDeleted>false</sf:IsDeleted>
+     <sf:Name>${name}</sf:Name>
+     <sf:NumberOfEmployees>250</sf:NumberOfEmployees>
+     <sf:Phone>+1 (555) 010-0199</sf:Phone>
+     <sf:Rating>1e5</sf:Rating>
+     <sf:Sic>-0042</sf:Sic>
+     <sf:Site></sf:Site>
+     <sf:TickerSymbol>  ACME  </sf:TickerSymbol>
+     <sf:Website><![CDATA[https://acme.example.com/?a=1&b=2]]></sf:Website>
+     <sf:LastModifiedDate>2026-10-14T15:04:05.000Z</sf:LastModifiedDate>
+    </sObject>
+   </Notification>`;
+const accountFields = {
+  AccountNumber: 123,
+  AnnualRevenue: 2500000,
+  BillingPostalCode: 2110,
+  Description: "Line one &amp; &lt;two&gt; &quot;quoted&quot; &#169;",
+  Fax: 31,
+  IsDeleted: false,
+  NumberOfEmployees: 250,
+  Phone: "+1 (555) 010-0199",
+  Rating: 1,
+  Sic: -42,
+  Site: "",
+  TickerSymbol: "ACME",
+  Website: "https://acme.example.com/?a=1&b=2",
+  LastModifiedDate: "2026-10-14T15:04:05.000Z",
+};
+const invokeWithXmlResult = async (xmlTrigger, xml: string) => {
+  const payload = defaultTriggerPayload();
+  payload.body.data = xml;
+  payload.body.contentType = "text/xml; charset=utf-8";
+  const { result } = await invokeTrigger(xmlTrigger, {}, payload);
+  return result;
+};
+const invokeWithXml = async (xmlTrigger, xml: string) =>
+  (await invokeWithXmlResult(xmlTrigger, xml))?.payload.body;
+describe("XML webhook triggers keep the fast-xml-parser 3.x payload shape", () => {
+  test("workflowTrigger parses an outbound message into the full envelope", async () => {
+    const body = await invokeWithXml(
+      workflowTrigger,
+      outboundEnvelope(accountNotification("AbCdEAA", "Acme")),
+    );
+    const sObject = Object.fromEntries(
+      Object.entries({ ...accountFields, Name: "Acme" }).map(([key, value]) => [
+        `sf:${key}`,
+        value,
+      ]),
+    );
+    expect(body?.contentType).toBeUndefined();
+    expect(body?.data).toStrictEqual({
+      "soapenv:Envelope": {
+        "@_xmlns:soapenv": "http://schemas.xmlsoap.org/soap/envelope/",
+        "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "soapenv:Body": {
+          notifications: {
+            "@_xmlns": "http://soap.sforce.com/2005/09/outbound",
+            OrganizationId: "00D5g000004XyZaEAK",
+            ActionId: "04k5g000000AbCdAAK",
+            SessionId: { "@_xsi:nil": "true" },
+            EnterpriseUrl:
+              "https://example.my.salesforce.com/services/Soap/c/63.0/00D5g000004XyZa",
+            PartnerUrl:
+              "https://example.my.salesforce.com/services/Soap/u/63.0/00D5g000004XyZa",
+            Notification: {
+              Id: "04l5g00000AbCdEAA",
+              sObject: {
+                "@_xsi:type": "sf:Account",
+                "@_xmlns:sf": "urn:sobject.enterprise.soap.sforce.com",
+                "sf:Id": "0015g00000AbCdEAA",
+                ...sObject,
+              },
+            },
+          },
+        },
+      },
+    });
+  });
+  test("flowOutboundMessageTrigger flattens multiple notifications", async () => {
+    const body = await invokeWithXml(
+      flowOutboundMessageTrigger,
+      outboundEnvelope(
+        accountNotification("AbCdEAA", "Acme") +
+          accountNotification("FgHiJAA", "Globex"),
+      ),
+    );
+    expect(body).toStrictEqual({
+      contentType: "application/json; charset=utf-8",
+      data: [
+        {
+          type: "Account",
+          Id: "0015g00000AbCdEAA",
+          ...accountFields,
+          Name: "Acme",
+        },
+        {
+          type: "Account",
+          Id: "0015g00000FgHiJAA",
+          ...accountFields,
+          Name: "Globex",
+        },
+      ],
+    });
+  });
+  test("flowOutboundMessageTrigger wraps a single notification in an array", async () => {
+    const body = await invokeWithXml(
+      flowOutboundMessageTrigger,
+      outboundEnvelope(accountNotification("AbCdEAA", "Acme")),
+    );
+    expect(body?.data).toStrictEqual([
+      {
+        type: "Account",
+        Id: "0015g00000AbCdEAA",
+        ...accountFields,
+        Name: "Acme",
+      },
+    ]);
+  });
+  test("webhook keeps attributes as strings and groups repeated tags", async () => {
+    const body = await invokeWithXml(
+      webhook,
+      `<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:ns="urn:example" version="2">
+ <ns:item id="7" active="true">first</ns:item>
+ <ns:item id="08">second</ns:item>
+ <count>3</count>
+ <empty/>
+</root>`,
+    );
+    expect(body?.data).toStrictEqual({
+      root: {
+        "@_xmlns:ns": "urn:example",
+        "@_version": "2",
+        "ns:item": [
+          { _text: "first", "@_id": "7", "@_active": "true" },
+          { _text: "second", "@_id": "08" },
+        ],
+        count: 3,
+        empty: "",
+      },
+    });
+  });
+  test("webhook rejects a __proto__ tag without polluting Object.prototype", async () => {
+    await expect(
+      invokeWithXml(webhook, "<__proto__><polluted>x</polluted></__proto__>"),
+    ).rejects.toThrow(/prototype pollution/);
+    expect(({} as Record<string, unknown>).polluted).toBeUndefined();
+  });
+});
+describe("XML webhook triggers acknowledge Salesforce with the SOAP response", () => {
+  test.each([
+    ["workflowTrigger", workflowTrigger],
+    ["flowOutboundMessageTrigger", flowOutboundMessageTrigger],
+  ])("%s returns WEBHOOK_SFDC_RESPONSE", async (_name, xmlTrigger) => {
+    const result = await invokeWithXmlResult(
+      xmlTrigger,
+      outboundEnvelope(accountNotification("AbCdEAA", "Acme")),
+    );
+    expect(result?.response).toStrictEqual(WEBHOOK_SFDC_RESPONSE);
   });
 });
 describe("test salesforce pollChangesTrigger batching", () => {

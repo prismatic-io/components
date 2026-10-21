@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listMetadataOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { listWorkflowRulesInputs } from "../../inputs";
 import { listWorkflowRulesFunction } from "../../util";
@@ -10,10 +11,18 @@ export const listWorkflowRules = action({
       "List all Workflow Rules. Workflow Rules are deprecated by Salesforce; migrate to Flow-based actions.",
   },
   inputs: listWorkflowRulesInputs,
+  performSafety: "notAllowed",
   perform: async (_context, { version, connection }) => {
     const client = await createSalesforceClient(connection, version);
     const result = await listWorkflowRulesFunction(client);
     return { data: result };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listWorkflowRulesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listMetadataOutputSchema,
+  }),
   examplePayload: listWorkflowRulesExamplePayload as unknown,
 });

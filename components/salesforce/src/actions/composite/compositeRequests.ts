@@ -1,13 +1,14 @@
 import { action } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
-import { compositeRequestInputs } from "../../inputs";
+import { compositeRequestsInputs } from "../../inputs";
 import { compositeRequestExamplePayload } from "../../examplePayloads";
 export const compositeRequests = action({
   display: {
     label: "Send Composite Request",
     description: "Send multiple requests in a single HTTP call.",
   },
-  inputs: compositeRequestInputs,
+  inputs: compositeRequestsInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { version, connection, allOrNone, collateSubrequests, compositeRequest },

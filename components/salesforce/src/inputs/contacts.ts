@@ -61,7 +61,7 @@ const mailingAddress = structuredObjectInput({
   required: false,
   comments:
     "Street, city, state, postal code, and country for the mailing address.",
-  inputs: { street, state, city, postalCode, country },
+  inputs: { street, city, state, postalCode, country },
 });
 const billingAddress = structuredObjectInput({
   label: "Other Address",
@@ -70,8 +70,8 @@ const billingAddress = structuredObjectInput({
     "Street, city, state, postal code, and country for the secondary address.",
   inputs: {
     billingStreet,
-    billingState,
     billingCity,
+    billingState,
     billingPostalCode,
     billingCountry,
   },
@@ -81,7 +81,7 @@ const nameAndContact = structuredObjectInput({
   required: false,
   comments:
     "First and last name, phone, fax, and mobile contact channels, and birthdate.",
-  inputs: { firstName, lastName, phone, fax, mobile, birthdate },
+  inputs: { firstName, lastName, phone, mobile, fax, birthdate },
 });
 const additionalFields = structuredObjectInput({
   label: "Additional Fields",
@@ -97,8 +97,8 @@ const additionalFields = structuredObjectInput({
   },
 });
 export const createContactInputs = {
-  version,
   email,
+  version,
   dynamicValues,
   fieldValues,
   nameAndContact,

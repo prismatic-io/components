@@ -1,4 +1,4 @@
-import { pollingTrigger, util } from "@prismatic-io/spectral";
+import { pollingTrigger } from "@prismatic-io/spectral";
 import { pollChangesTriggerInputs } from "../inputs";
 import {
   DEFAULT_MAX_RECORDS,
@@ -25,6 +25,7 @@ import {
   resolvePollingRecordChanges,
 } from "../util";
 import { createSalesforceClient } from "../client";
+import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -68,10 +69,7 @@ export const pollChangesTrigger = pollingTrigger({
       ? {}
       : {
           ...params.dynamicValues,
-          ...coerceObjectValues(
-            params.fieldValues,
-            util.types.keyValPairListToObject(params.fieldValueTypes),
-          ),
+          ...coerceObjectValues(params.fieldValues, params.fieldValueTypes),
         };
     const windowIsEmpty =
       formatSOQLDateTime(cursor.watermark) >=
@@ -133,4 +131,5 @@ export const pollChangesTrigger = pollingTrigger({
         changes === 0 && nextCursor === null && !isPlatformDrivenRound,
     };
   },
+  examplePayload: pollChangesTriggerExamplePayload,
 });

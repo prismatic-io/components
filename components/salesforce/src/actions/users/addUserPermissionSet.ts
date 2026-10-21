@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { addUserPermissionSetInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
@@ -7,6 +8,7 @@ export const addUserPermissionSet = action({
     label: "Add User Permission Set",
     description: "Add a permission set to the specified user.",
   },
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { version, userName, permissionName, connection },
@@ -38,6 +40,13 @@ export const addUserPermissionSet = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
   inputs: addUserPermissionSetInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

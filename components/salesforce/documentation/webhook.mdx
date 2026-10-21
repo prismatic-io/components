@@ -6,7 +6,7 @@ Since Salesforce always sends XML payloads, the XML is deserialized automaticall
 
 #### Returned Data
 
-The trigger automatically deserializes the XML payload from Salesforce into a JSON object. The structure depends on which Salesforce object and fields are configured in the outbound message.
+The trigger automatically deserializes the XML payload from Salesforce into a JSON object. The structure depends on which Salesforce object and fields are configured in the outbound message. Element values are plain strings, XML attributes appear as keys prefixed with `@_`, and an element that has both attributes and text holds the text under `_text`. Namespace declarations also appear as `@_xmlns` attribute keys; they are omitted from the example below.
 
 <details>
 <summary>Example Payload</summary>
@@ -16,13 +16,19 @@ The trigger automatically deserializes the XML payload from Salesforce into a JS
   "soapenv:Envelope": {
     "soapenv:Body": {
       "notifications": {
-        "OrganizationId": { "_text": "00D7F000004xkKaUAI" },
-        "ActionId": { "_text": "04k7F0000008OKaQAM" },
+        "OrganizationId": "00D5e000000KQ2eEAG",
+        "ActionId": "04k5e000000CaRkAAK",
+        "SessionId": {
+          "@_xsi:nil": "true"
+        },
         "Notification": {
-          "Id": { "_text": "04l7F0000008OKQQA2" },
+          "Id": "04l5e00000Gx7QzAAJ",
           "sObject": {
-            "sf:Id": { "_text": "0017000000hOMChAAO" },
-            "sf:Name": { "_text": "Acme Corp" }
+            "sf:Id": "0015e00000ZkM3hAAF",
+            "sf:Industry": "Manufacturing",
+            "sf:Name": "Acme Corporation",
+            "sf:Phone": "(415) 555-0142",
+            "@_xsi:type": "sf:Account"
           }
         }
       }

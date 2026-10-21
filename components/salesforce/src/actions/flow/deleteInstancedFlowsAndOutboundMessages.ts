@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteInstancedFlowsAndOutboundMessagesOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { deleteInstancedFlowsAndOutboundMessagesInputs } from "../../inputs";
 import { deleteInstancedFlowsAndOutboundMessagesExamplePayload } from "../../examplePayloads";
@@ -10,6 +11,7 @@ export const deleteInstancedFlowsAndOutboundMessages = action({
       "Delete all instanced flows and outbound messages for a given endpoint URL.",
   },
   inputs: deleteInstancedFlowsAndOutboundMessagesInputs,
+  performSafety: "notAllowed",
   perform: async (context, { connection, version, endpointUrl }) => {
     const client = await createSalesforceClient(connection, version);
     const { deletedFlows, deletedOutboundMessages } =
@@ -20,5 +22,12 @@ export const deleteInstancedFlowsAndOutboundMessages = action({
       );
     return { data: { deletedFlows, deletedOutboundMessages } };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => deleteInstancedFlowsAndOutboundMessagesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteInstancedFlowsAndOutboundMessagesOutputSchema,
+  }),
   examplePayload: deleteInstancedFlowsAndOutboundMessagesExamplePayload,
 });

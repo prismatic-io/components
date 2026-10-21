@@ -1,13 +1,14 @@
 import { action } from "@prismatic-io/spectral";
 import { createSalesforceHttpClient } from "../../client";
 import { uploadJobDataInputs } from "../../inputs";
-import { getQueryJobInformationExamplePayload } from "../../examplePayloads";
+import { uploadJobDataExamplePayload } from "../../examplePayloads";
 export const uploadJobData = action({
   display: {
     label: "Upload Bulk Job Data",
     description: "Upload CSV data for a bulk ingest job.",
   },
   inputs: uploadJobDataInputs,
+  performSafety: "notAllowed",
   perform: async (context, { version, connection, bulkJobId, file }) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,
@@ -26,5 +27,8 @@ export const uploadJobData = action({
       data,
     };
   },
-  examplePayload: getQueryJobInformationExamplePayload,
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => uploadJobDataExamplePayload,
+  examplePayload: uploadJobDataExamplePayload,
 });

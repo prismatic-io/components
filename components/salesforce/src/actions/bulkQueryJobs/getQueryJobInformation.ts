@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getQueryJobInformationOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { getQueryJobInformationInputs } from "../../inputs";
 import { getQueryJobInformationExamplePayload } from "../../examplePayloads";
@@ -8,6 +9,7 @@ export const getQueryJobInformation = action({
     description: "Get information about a single bulk query job.",
   },
   inputs: getQueryJobInformationInputs,
+  performSafety: "safe",
   perform: async (context, { version, connection, queryJobId }) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,
@@ -19,5 +21,9 @@ export const getQueryJobInformation = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getQueryJobInformationOutputSchema,
+  }),
   examplePayload: getQueryJobInformationExamplePayload,
 });

@@ -5,9 +5,9 @@ import { createSalesforceClient } from "../client";
 import type {
   CreateWorkflowOutboundMessage,
   CreateWorkflowRule,
-  FilterItem,
   WorkflowAction,
 } from "../types";
+import { processFilterCriteria } from "./cleanFunctions";
 import {
   parseFullNameIdentifier,
   processMetadataResult,
@@ -21,20 +21,6 @@ const addPropertiesToObject = (params) => {
     }
   }
   return object;
-};
-export const processFilterCriteria = (criteriaValue: unknown): FilterItem[] => {
-  if (typeof criteriaValue === "undefined" || criteriaValue === "") {
-    return [];
-  }
-  const criteria = util.types.toString(criteriaValue);
-  if (!util.types.isJSON(criteria)) {
-    throw new Error("Filter Criteria must be specified as JSON.");
-  }
-  const data = JSON.parse(criteria);
-  if (!Array.isArray(data)) {
-    throw new Error("Filter Criteria must be a list of objects.");
-  }
-  return data as FilterItem[];
 };
 export const processOutboundMessageActions = (
   outboundMessages: unknown[],

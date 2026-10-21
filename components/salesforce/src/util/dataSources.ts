@@ -13,7 +13,7 @@ export const getRecordsForDatasource = async ({
     dynamicValues: {},
     fetchAll: true,
     fieldValues: {},
-    fieldValueTypes: [],
+    fieldValueTypes: {},
     maxRecordsToFetch: 20000,
     pageNumber: undefined,
     pageSize: undefined,

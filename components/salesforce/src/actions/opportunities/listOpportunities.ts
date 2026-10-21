@@ -8,6 +8,7 @@ export const listOpportunities = action({
     label: "List Opportunities",
     description: "List all opportunity records.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -52,6 +53,9 @@ export const listOpportunities = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => listOpportunitiesExamplePayload,
   inputs: listOpportunitiesInputs,
   examplePayload: listOpportunitiesExamplePayload as unknown,
 });

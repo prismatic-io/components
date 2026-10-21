@@ -1,5 +1,22 @@
 ## Changelog
 
+### 2026-10-21
+
+Fixed several action and input defects and improved configuration-time support:
+
+- Fixed **Delete Customer** returning the customer record without deleting it
+- Fixed **Delete Metadata** and **Update Metadata** making no change in Salesforce unless step debug was enabled
+- Fixed **Remove User Permission Set** possibly removing another user's assignment of the permission set instead of the specified user's
+- Fixed selecting **--None--** for **Rating** on **Create Lead** and **Update Lead** sending `none` to Salesforce; the rating is now left unset
+- Fixed **Include Only Top Level Record Types** on the **Select Record Type** data source treating a blank value as true despite defaulting to false
+- Fixed the **File ID** error on **Get Attachment** naming Record Type when the value was missing
+- Fixed the **Fields** input silently ignoring a malformed value on **Create Outbound Message**, **Subscribe to Record Change**, **Subscribe to Record Changes**, **Flow Outbound Message Webhook**, and **Workflow Outbound Message Webhook (Deprecated)**; it now returns an error
+- Updated **Get Bulk Query Job Results** to request its results as CSV
+- Updated **Create Opportunity** and **Update Opportunity** to group their optional Amount, Next Step, Lead Source, Probability, and Description inputs into **Additional Fields**
+- Updated **Get Bulk Query Job Results** to group its Locator and Max Records inputs into **Pagination**
+- Added inline action calling support to 87 actions for improved example output during configuration
+- Added output schemas to 66 actions for improved field mapping during configuration
+
 ### 2026-08-19
 
 Updated the **New and Updated Records** polling trigger:

@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { createRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { uploadFileInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
@@ -8,6 +9,7 @@ export const uploadFile = action({
     description: "Upload a file to Salesforce ContentVersion.",
   },
   inputs: uploadFileInputs,
+  performSafety: "notAllowed",
   perform: async (context, { version, connection, file, pathOnClient }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     if (context.debug.enabled) {
@@ -25,5 +27,12 @@ export const uploadFile = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

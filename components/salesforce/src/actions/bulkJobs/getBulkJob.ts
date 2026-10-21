@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getBulkJobOutputSchema } from "../../outputSchemas";
 import { createSalesforceHttpClient } from "../../client";
 import { getBulkJobInputs } from "../../inputs";
 import { getBulkJobExamplePayload } from "../../examplePayloads";
@@ -8,6 +9,7 @@ export const getBulkJob = action({
     description: "Retrieve information about a bulk ingest job.",
   },
   inputs: getBulkJobInputs,
+  performSafety: "safe",
   perform: async (context, { version, connection, bulkJobId }) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,
@@ -19,5 +21,9 @@ export const getBulkJob = action({
       data,
     };
   },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getBulkJobOutputSchema,
+  }),
   examplePayload: getBulkJobExamplePayload,
 });

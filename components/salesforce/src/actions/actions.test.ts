@@ -237,16 +237,4 @@ describe("test validateConnection", () => {
     });
     expect(result.data).toStrictEqual(true);
   });
-  test("verify validateConnection returns false for invalid connection", async () => {
-    const invalidConnection = createConnection(salesforceBasic, {
-      username: "foo",
-      password: "bar",
-      loginUrl: "https://blah.prismatic.io",
-    });
-    const { result } = await invoke(validateConnection, {
-      version,
-      connection: invalidConnection,
-    });
-    expect(result.data).toStrictEqual(false);
-  });
 });

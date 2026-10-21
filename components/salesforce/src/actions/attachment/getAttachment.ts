@@ -9,6 +9,7 @@ export const getAttachment = action({
       "Get a file attachment from an account, opportunity, or contact.",
   },
   inputs: getAttachmentInputs,
+  performSafety: "safe",
   perform: async (context, { connection, version, fileId }) => {
     const httpClient = await createSalesforceHttpClient(
       version,

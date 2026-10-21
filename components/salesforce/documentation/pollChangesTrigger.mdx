@@ -30,9 +30,9 @@ A sync covers records by creation date, so every record it seeds is reported as 
 
 **Batching**
 
-Batching is enabled per flow on this trigger. Once enabled, each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and the number of batches dispatched concurrently can both be overridden per instance. Raising concurrency increases the request volume sent to Salesforce.
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Salesforce.
 
-To enable, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** to use the size this trigger ships with, or choose **Custom batch size** to set a specific size. **Batch Concurrency** is optional; leave it blank to use the limit this trigger ships with, which dispatches one batch at a time.
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank to use the limit this trigger ships with, which dispatches one batch at a time.
 
 Enabling batching changes the payload a downstream step receives. With batching off a step reads `data.createdRecords`, `data.updatedRecords`, and `data.deletedRecords`; with batching on those arrays do not exist and `data` is a single `changeType`/`record` item, or an array of them (see **Returned Data**). Any step reading the older shape must be updated before batching is turned on. Because batching is per flow, this affects only that flow, not the component or other flows using the same trigger.
 

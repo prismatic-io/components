@@ -1,6 +1,7 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
-import { updateProfileInputs, validatePermissions } from "../../inputs";
+import { updateProfileInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
 import { executeSFAction } from "../../util";
 export const updateProfile = action({
@@ -9,6 +10,7 @@ export const updateProfile = action({
     description: "Update a Salesforce profile.",
   },
   inputs: updateProfileInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { version, recordId, name, description, permissions, connection },
@@ -23,7 +25,7 @@ export const updateProfile = action({
       });
     }
     const command = client.sobject("Profile").update({
-      ...validatePermissions(permissions),
+      ...permissions,
       Id: recordId,
       Name: name,
       Description: description,
@@ -31,5 +33,12 @@ export const updateProfile = action({
     const response = await executeSFAction(context, command);
     return { data: response };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

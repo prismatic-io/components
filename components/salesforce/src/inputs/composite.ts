@@ -4,6 +4,7 @@ import { connectionInput, version } from "./common";
 import { allOrNone, collateSubrequests } from "./bulkJobs";
 const compositeRequest = input({
   label: "Composite Request",
+  placeholder: "Enter subrequests as JSON array",
   type: "code",
   language: "json",
   required: true,
@@ -49,10 +50,10 @@ const compositeRequest = input({
   ),
   clean: recordsInputClean,
 });
-export const compositeRequestInputs = {
+export const compositeRequestsInputs = {
   connection: connectionInput,
-  version,
   compositeRequest,
+  version,
   allOrNone,
   collateSubrequests,
 };

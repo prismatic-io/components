@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { removeUserPermissionSetInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
@@ -7,6 +8,7 @@ export const removeUserPermissionSet = action({
     label: "Remove User Permission Set",
     description: "Remove a permission set from the specified user.",
   },
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { version, userName, permissionName, connection },
@@ -28,7 +30,10 @@ export const removeUserPermissionSet = action({
     }
     const permissionSetAssignmentResponse = await salesforceClient
       .sobject("PermissionSetAssignment")
-      .findOne({ "PermissionSet.Name": permissionName });
+      .findOne({
+        AssigneeId: userResponse.Id,
+        "PermissionSet.Name": permissionName,
+      });
     if (!permissionSetAssignmentResponse?.Id) {
       throw new Error(`User does not have "${permissionName}" assigned.`);
     }
@@ -39,6 +44,13 @@ export const removeUserPermissionSet = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
   inputs: removeUserPermissionSetInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

@@ -1,6 +1,7 @@
 import type { HttpResponse } from "@prismatic-io/spectral/dist/types";
 export const DEFAULT_SF_VERSION = "63.0";
 export const DEFAULT_MAX_RECORDS = 20000;
+export const DEFAULT_SORT_CRITERIA = "-CreatedDate Name";
 export const MAX_BATCHED_PAGE_SIZE = 1000;
 export const REQUIRED_POLL_FIELDS = ["Id", "CreatedDate", "LastModifiedDate"];
 export const LONG_TEXT_CLAMP_THRESHOLD = 2;

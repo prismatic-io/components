@@ -9,6 +9,7 @@ export const getObjectMetadataByName = action({
     description: "Get the metadata of an object by full name.",
   },
   inputs: getObjectMetadataByNameInputs,
+  performSafety: "safe",
   perform: async (context, { connection, version, fullName, metadataType }) => {
     const salesforceClient = await createSalesforceClient(connection, version);
     const command = salesforceClient.metadata.read(

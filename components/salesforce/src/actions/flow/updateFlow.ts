@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { saveFlowOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { updateFlowInputs } from "../../inputs";
 import type { FlowMetadata } from "../../types";
@@ -15,6 +16,7 @@ export const updateFlow = action({
     description: "Update an existing Flow in Salesforce by name.",
   },
   inputs: updateFlowInputs,
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { version, flowName, description, status, flowMetadata, connection },
@@ -34,5 +36,12 @@ export const updateFlow = action({
     const result = await updateFlowFunction(client, flowData as FlowMetadata);
     return { data: processMetadataResult(result) };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => updateFlowExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: saveFlowOutputSchema,
+  }),
   examplePayload: updateFlowExamplePayload,
 });

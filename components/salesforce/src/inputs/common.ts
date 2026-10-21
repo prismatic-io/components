@@ -4,12 +4,16 @@ import {
   structuredObjectInput,
   util,
 } from "@prismatic-io/spectral";
+import { inputs as httpClientInputs } from "@prismatic-io/spectral/dist/clients/http";
 import { DEFAULT_SF_VERSION } from "../constants";
 import {
+  cleanKeyValueListToObject,
   cleanNumberInput,
+  cleanSortCriteria,
   cleanStringInput,
   cleanVersionInput,
   dynamicFieldsClean,
+  toRequiredTrimmedString,
 } from "../util";
 export const connectionInput = input({
   label: "Connection",
@@ -44,13 +48,7 @@ export const recordType = input({
   comments:
     "The Salesforce object API name to act on (e.g., Account, Contact, Opportunity).",
   example: "Account",
-  clean: (value: unknown): string => {
-    const rt = util.types.toString(value).trim();
-    if (!rt) {
-      throw new Error("Must specify a valid Record Type");
-    }
-    return rt;
-  },
+  clean: toRequiredTrimmedString("Record Type"),
   dataSource: "selectRecordType",
 });
 export const workflowRecordType = input({
@@ -93,6 +91,7 @@ export const fieldValueTypes = input({
   comments:
     "For each item, provide the key and the type corresponding to the field value entered above. Valid types are Boolean, Number, or String.",
   example: "Name:string,Phone:string",
+  clean: cleanKeyValueListToObject,
 });
 export const externalIdFieldName = input({
   label: "External ID Field Name",
@@ -111,13 +110,7 @@ export const dynamicRecordType = input({
   comments:
     "The Salesforce object API name to act on (e.g., Account, Contact, Opportunity).",
   example: "Account",
-  clean: (value: unknown): string => {
-    const rt = util.types.toString(value).trim();
-    if (!rt) {
-      throw new Error("Must specify a valid Record Type");
-    }
-    return rt;
-  },
+  clean: toRequiredTrimmedString("Record Type"),
 });
 export const dynamicValues = input({
   label: "Dynamic Fields",
@@ -148,13 +141,7 @@ export const sortInput = input({
   type: "string",
   example: "-CreatedDate Name",
   required: false,
-  clean: (value: unknown): string => {
-    const sort = util.types.toString(value).trim();
-    if (sort === "") {
-      return "-CreatedDate Name";
-    }
-    return sort;
-  },
+  clean: cleanSortCriteria,
 });
 export const pageSize = input({
   label: "Page Size",
@@ -199,7 +186,7 @@ export const fetchAll = input({
   required: false,
   default: "false",
   comments:
-    "When true, automatically fetches all pages of results instead of a single page.",
+    "When true, automatically fetches all pages of results using pagination.",
   clean: util.types.toBool,
 });
 export const queryString = input({
@@ -241,6 +228,18 @@ export const listInputs = {
   connection: connectionInput,
 };
 export const getCurrentUserInputs = { version, connection: connectionInput };
+const { debugRequest: _debugRequest, ...httpRequestInputs } = httpClientInputs;
+export const rawRequestInputs = {
+  connection: connectionInput,
+  ...httpRequestInputs,
+  url: {
+    ...httpRequestInputs.url,
+    comments:
+      "The path only, for example /chatter/feeds/record/. The base URL (the connection's instance URL followed by /services/data/v and the Version input) is already included. For example, to call https://instance_name/services/data/v58.0/chatter/feeds/record/, enter only /chatter/feeds/record/.",
+    example: "/chatter/feeds/record/",
+  },
+  version,
+};
 export const validateConnectionInputs = {
   version,
   connection: connectionInput,

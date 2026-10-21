@@ -1,4 +1,4 @@
-import { compositeRequests } from "./compositeRequest";
+import { compositeRequests } from "./compositeRequests";
 import { listCompositeResources } from "./listCompositeResources";
 export default {
   compositeRequests,

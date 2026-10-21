@@ -1,4 +1,5 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { saveFlowOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { createFlowInputs } from "../../inputs";
 import type { FlowMetadata } from "../../types";
@@ -14,6 +15,7 @@ export const createFlow = action({
     description: "Create a draft Flow in Salesforce.",
   },
   inputs: createFlowInputs,
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { version, flowName, description, runInMode, flowMetadata, connection },
@@ -39,5 +41,12 @@ export const createFlow = action({
     const result = await createFlowFunction(client, metadata);
     return { data: processMetadataResult(result) };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => createFlowExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: saveFlowOutputSchema,
+  }),
   examplePayload: createFlowExamplePayload,
 });

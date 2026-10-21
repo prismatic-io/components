@@ -4,7 +4,9 @@ import {
   trigger,
   util,
 } from "@prismatic-io/spectral";
-import { parse } from "fast-xml-parser";
+import { webhookExamplePayload } from "../examplePayloads";
+import { webhookInputs } from "../inputs";
+import { parseXml } from "../util/xml";
 export const webhook = trigger({
   display: {
     label: "Webhook",
@@ -24,20 +26,17 @@ export const webhook = trigger({
       </soapenv:Envelope>`,
     };
     const finalPayload: TriggerPayload = { ...payload };
-    const parseOptions = {
-      ignoreAttributes: false,
-      ignoreNameSpace: false,
-      textNodeName: "_text",
-    };
-    finalPayload.body.data =
-      parse(util.types.toString(finalPayload.body.data), parseOptions) || {};
+    finalPayload.body.data = parseXml(
+      util.types.toString(finalPayload.body.data),
+    );
     finalPayload.body.contentType = undefined;
     return Promise.resolve({
       payload: finalPayload,
       response,
     });
   },
-  inputs: {},
+  inputs: webhookInputs,
   synchronousResponseSupport: "invalid",
   scheduleSupport: "invalid",
+  examplePayload: webhookExamplePayload,
 });

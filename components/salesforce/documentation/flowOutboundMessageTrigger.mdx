@@ -9,43 +9,37 @@ The Flow Outbound Message trigger can manage [Salesforce Flow based webhook inte
 
 - **Prefix**: A prefix applied to the Flow Name and Outbound Messages created. Must start with a letter, can contain letters, numbers, and underscores, and be at most 15 characters.
 - **Trigger Record Type**: The Salesforce object API name (e.g., Account, Contact) whose record changes will trigger this flow.
-- **Trigger On**: When to trigger the flow — on record creation, update, or both.
+- **Trigger On**: When to trigger the flow: on record creation, update, or both.
 - **Fields**: Fields to include in the Outbound Message payload.
 - **Filter Formula**: An optional formula to filter which records trigger the flow.
 - **Flow Metadata**: Additional Flow metadata in JSON format, merged with other inputs.
 - **Version**: The Salesforce API version to use.
 
+#### Event Types
+
 The trigger supports different Flow trigger conditions:
+
 - **Create**: Triggers when new records are created
 - **Update**: Triggers when existing records are updated
 - **Create or Update**: Triggers on both record creation and updates
 
 #### Returned Data
 
-The trigger receives deserialized XML payloads from Salesforce outbound messages, automatically converted to JSON. The structure includes the Salesforce object fields configured in the outbound message.
+The trigger deserializes the XML payload from Salesforce outbound messages and returns an array with one object per notification. Each object holds the record's `Id`, a `type` field with the Salesforce object name, and the fields configured in the outbound message, with the `sf:` prefix removed.
 
 <details>
 <summary>Example Payload</summary>
 
 ```json
-{
-  "soapenv:Envelope": {
-    "soapenv:Body": {
-      "notifications": {
-        "OrganizationId": { "_text": "00D7F000004xkKaUAI" },
-        "ActionId": { "_text": "04k7F0000008OKaQAM" },
-        "Notification": {
-          "Id": { "_text": "04l7F0000008OKQQA2" },
-          "sObject": {
-            "sf:Id": { "_text": "0017000000hOMChAAO" },
-            "sf:Name": { "_text": "Acme Corp" },
-            "sf:Email": { "_text": "contact@acme.com" }
-          }
-        }
-      }
-    }
+[
+  {
+    "type": "Account",
+    "Id": "0015e00000ZkM3hAAF",
+    "Industry": "Manufacturing",
+    "Name": "Acme Corporation",
+    "Phone": "(415) 555-0142"
   }
-}
+]
 ```
 
 </details>

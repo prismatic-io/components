@@ -66,7 +66,7 @@ const flowMetadataInput = input({
 });
 const triggerObjectInput = input({
   label: "Trigger Record Type",
-  placeholder: "Select or enter a record type",
+  placeholder: "Enter or select a record type",
   type: "string",
   required: true,
   comments:
@@ -113,8 +113,8 @@ export const activateFlowInputs = {
   connection: connectionInput,
 };
 export const createFlowInputs = {
-  version,
   flowName: { ...flowNameInput, dataSource: undefined },
+  version,
   description,
   runInMode: flowRunInModeInput,
   flowMetadata: flowMetadataInput,
@@ -179,11 +179,11 @@ export const subscribeToRecordChangesInputs = {
   connection: connectionInput,
 };
 export const deleteInstancedFlowsAndOutboundMessagesInputs = {
-  version,
   endpointUrl: {
     ...endpointUrlInput,
     comments:
       "The endpoint URL to delete the instanced flows and outbound messages for.",
   },
+  version,
   connection: connectionInput,
 };

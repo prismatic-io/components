@@ -1,4 +1,5 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { updateRecordOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { updateOpportunityInputs } from "../../inputs";
 import { genericCreateUpdateExamplePayload } from "../../examplePayloads";
@@ -8,23 +9,20 @@ export const updateOpportunity = action({
     label: "Update Opportunity",
     description: "Update an existing opportunity record.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       recordId,
-      nextStep,
       version,
       dynamicValues,
       fieldValues,
-      amount,
       stage,
       accountId,
       opportunityType,
       closeDate,
-      leadSource,
-      probability,
-      description,
       name,
+      additionalFields,
       connection,
     },
   ) => {
@@ -32,15 +30,15 @@ export const updateOpportunity = action({
     const command = salesforceClient.sobject("Opportunity").update({
       Id: recordId,
       Name: name,
-      description: description,
+      description: additionalFields.description,
       stageName: stage,
       closeDate: closeDate,
-      Amount: amount,
+      Amount: additionalFields.amount,
       AccountId: accountId,
-      probability: probability,
-      NextStep: nextStep,
+      probability: additionalFields.probability,
+      NextStep: additionalFields.nextStep,
       Type: opportunityType,
-      LeadSource: leadSource,
+      LeadSource: additionalFields.leadSource,
       ...dynamicValues,
       ...fieldValues,
     });
@@ -49,6 +47,13 @@ export const updateOpportunity = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
   inputs: updateOpportunityInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateRecordOutputSchema,
+  }),
   examplePayload: genericCreateUpdateExamplePayload,
 });

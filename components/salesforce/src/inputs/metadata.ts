@@ -1,8 +1,13 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import {
+  cleanSingleItemList,
+  cleanStringArray,
+  cleanStringInput,
+} from "../util";
 import { connectionInput, version } from "./common";
 const metadataInput = input({
   label: "Metadata",
+  placeholder: "Enter metadata as JSON array",
   type: "code",
   language: "json",
   required: true,
@@ -44,17 +49,18 @@ const objectFullName = input({
   required: true,
   comments:
     "The full API name of the Salesforce custom object (e.g., Widget__c).",
-  clean: (value) => [util.types.toString(value)],
+  clean: cleanSingleItemList,
 });
 const objectFullNames = input({
   label: "Object Full Names",
+  placeholder: "Enter object full names as JSON array",
   type: "code",
   language: "json",
   required: true,
   comments:
     "The full API names of the Salesforce metadata objects to act on (e.g., TestObject1__c).",
   example: JSON.stringify(["TestObject1__c", "TestObject2__c"], null, 2),
-  clean: (value) => util.types.toObject(value) as string[],
+  clean: cleanStringArray,
 });
 const metadataType = input({
   label: "Metadata Type",
@@ -75,8 +81,8 @@ export const listObjectMetadataInputs = {
 };
 export const getObjectMetadataByNameInputs = {
   connection: connectionInput,
-  version,
   fullName: objectFullName,
+  version,
   metadataType: {
     ...metadataType,
     default: "CustomObject",
@@ -84,8 +90,8 @@ export const getObjectMetadataByNameInputs = {
 };
 export const createObjectsFromMetadataInputs = {
   connection: connectionInput,
-  version,
   metadata: metadataInput,
+  version,
   metadataType: {
     ...metadataType,
     default: "CustomObject",
@@ -93,7 +99,6 @@ export const createObjectsFromMetadataInputs = {
 };
 export const createFieldsFromMetadataInputs = {
   connection: connectionInput,
-  version,
   metadata: {
     ...metadataInput,
     default: JSON.stringify(
@@ -110,6 +115,7 @@ export const createFieldsFromMetadataInputs = {
       2,
     ),
   },
+  version,
   metadataType: {
     ...metadataType,
     default: "CustomField",
@@ -117,7 +123,6 @@ export const createFieldsFromMetadataInputs = {
 };
 export const updateMetadataInputs = {
   connection: connectionInput,
-  version,
   metadata: {
     ...metadataInput,
     default: undefined,
@@ -135,6 +140,7 @@ export const updateMetadataInputs = {
       2,
     ),
   },
+  version,
   metadataType: {
     ...metadataType,
     default: "CustomField",
@@ -142,8 +148,8 @@ export const updateMetadataInputs = {
 };
 export const deleteMetadataInputs = {
   connection: connectionInput,
-  version,
   fullNames: objectFullNames,
+  version,
   metadataType: {
     ...metadataType,
     default: "CustomObject",

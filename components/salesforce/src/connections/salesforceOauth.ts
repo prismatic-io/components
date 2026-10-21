@@ -39,24 +39,14 @@ export const salesforceOAuth = oauth2Connection({
       comments: "The OAuth 2.0 Revocation URL for Salesforce",
       default: "https://login.salesforce.com/services/oauth2/revoke",
     },
-    scopes: {
-      label: "Scopes",
-      placeholder: "Enter OAuth scopes",
-      type: "string",
-      required: false,
-      shown: false,
-      default: "",
-      comments:
-        "A space-delimited set of one or more OAuth scopes to request access to.",
-    },
     clientId: {
       label: "Consumer Key",
       placeholder: "Enter consumer key",
-      example: "3MVG9ZL1aBcDeFGHjklMNOpQRsTUVwXyZ1234567890abcdefg",
       type: "string",
       required: true,
       shown: true,
       comments: "The Consumer Key from the Salesforce Connected App.",
+      example: "3MVG9ZL1aBcDeFGHjklMNOpQRsTUVwXyZ1234567890abcdefg",
     },
     clientSecret: {
       label: "Consumer Secret",
@@ -65,6 +55,16 @@ export const salesforceOAuth = oauth2Connection({
       required: true,
       shown: true,
       comments: "The Consumer Secret from the Salesforce Connected App.",
+    },
+    scopes: {
+      label: "Scopes",
+      placeholder: "Enter OAuth scopes",
+      type: "string",
+      required: false,
+      shown: false,
+      comments:
+        "A space-delimited set of one or more OAuth scopes to request access to.",
+      default: "",
     },
   },
 });

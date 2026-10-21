@@ -67,7 +67,7 @@ export const upsertRecordInputs = {
   connection: connectionInput,
 };
 export const queryInputs = {
-  version,
   queryString,
+  version,
   connection: connectionInput,
 };

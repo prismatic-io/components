@@ -8,6 +8,7 @@ export const deleteBulkQueryJob = action({
     description: "Delete a bulk query job.",
   },
   inputs: deleteBulkQueryJobInputs,
+  performSafety: "notAllowed",
   perform: async (context, { version, connection, queryJobId }) => {
     const salesforceClient = await createSalesforceHttpClient(
       version,
@@ -19,5 +20,8 @@ export const deleteBulkQueryJob = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => deleteBulkQueryJobExamplePayload,
   examplePayload: deleteBulkQueryJobExamplePayload,
 });

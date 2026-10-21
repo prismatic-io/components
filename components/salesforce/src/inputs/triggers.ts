@@ -66,10 +66,10 @@ const lookBackDate = input({
   clean: lookBackDateClean,
 });
 export const pollChangesTriggerInputs = {
-  lookBackDate,
-  connection: connectionInput,
   version,
+  connection: connectionInput,
   recordType,
+  lookBackDate,
   showNewRecords,
   showUpdatedRecords,
   showDeletedRecords,
@@ -107,3 +107,4 @@ export const workflowTriggerInputs = {
   description,
   fields: fieldsInput,
 };
+export const webhookInputs = {};

@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@prismatic-io/spectral": "10.26.1",
-    "fast-xml-parser": "3.17.4",
+    "fast-xml-parser": "5.11.2",
     "jsforce": "^3.10.16",
     "mime-types": "2.1.35",
     "timezone-support": "2.0.2"

@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput } from "../util";
+import { cleanPositiveInt, cleanStringInput } from "../util";
 import { connectionInput, listInputs, name, recordId, version } from "./common";
 const customerStatusType = input({
   label: "Customer Status Type",
@@ -64,23 +64,17 @@ const totalLifeTimeValue = input({
   required: false,
   placeholder: "Enter total lifetime value",
   comments: "The total revenue amount gained from this customer.",
-  clean: (value: unknown) => {
-    const totalLifeTimeValue = util.types.toInt(value);
-    if (Number.isNaN(totalLifeTimeValue) || totalLifeTimeValue <= 0) {
-      return undefined;
-    }
-    return totalLifeTimeValue;
-  },
+  clean: cleanPositiveInt,
   example: "1000",
 });
 export const createCustomerInputs = {
-  version,
   name: {
     ...name,
     comments: "Name of this customer.",
     required: true,
   },
   partyId,
+  version,
   customerStatusType,
   lastReferenceDate,
   lastViewedDate,

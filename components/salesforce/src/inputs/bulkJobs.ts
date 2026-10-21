@@ -99,9 +99,12 @@ const assignmentRuleId = input({
 });
 export const createBulkJobInputs = {
   connection: connectionInput,
-  version,
   operation: jobOperation,
-  lineEnding,
+  lineEnding: {
+    ...lineEnding,
+    comments: "The line ending used in the uploaded CSV job data.",
+  },
+  version,
   object,
   externalIdFieldName: {
     ...externalIdFieldName,

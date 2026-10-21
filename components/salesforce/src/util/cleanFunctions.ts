@@ -1,6 +1,15 @@
-import { util } from "@prismatic-io/spectral";
-import type { CleanSObject, SalesforceOutboundEnvelope } from "../types";
-import { DEFAULT_SF_VERSION } from "../constants";
+import {
+  type KeyValuePair,
+  type ObjectFieldMap,
+  type ObjectSelection,
+  util,
+} from "@prismatic-io/spectral";
+import type {
+  CleanSObject,
+  FilterItem,
+  SalesforceOutboundEnvelope,
+} from "../types";
+import { DEFAULT_SF_VERSION, DEFAULT_SORT_CRITERIA } from "../constants";
 export const cleanSObject = (raw: Record<string, unknown>): CleanSObject => {
   if (!raw || !raw.sObject) {
     throw new Error("Invalid input, missing sObject");
@@ -67,20 +76,14 @@ export const coerceObjectValues = (
   });
   return Object.fromEntries(coerced);
 };
-export const fieldsInputClean = (value: unknown) => {
-  if (value) {
-    if (Array.isArray(value)) {
-      return value;
-    }
-    if (typeof value === "string") {
-      const array = JSON.parse(value);
-      if (Array.isArray(array)) {
-        return array;
-      }
-    }
-    console.error("Fields must be an array of strings");
+export const fieldsInputClean = (value: unknown): string[] | undefined => {
+  if (!value) return undefined;
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string" && util.types.isJSON(value)) {
+    const parsed = util.types.toObject(value);
+    if (Array.isArray(parsed)) return parsed;
   }
-  return undefined;
+  throw new Error("Fields must be an array of strings.");
 };
 export const recordsInputClean = (value: unknown) => {
   const ARRAY_ERROR_MESSAGE = "Records must be an array of objects";
@@ -141,6 +144,105 @@ export const cleanValueList = (value: unknown): string[] => {
     return value.map((v) => util.types.toString(v)).filter(Boolean);
   return [];
 };
+export const cleanOptionalValueList = (
+  value: unknown,
+): string[] | undefined => {
+  const list = cleanValueList(value);
+  return list.length ? list : undefined;
+};
+export const cleanOptionalStringList = (
+  value: unknown,
+): string[] | undefined =>
+  Array.isArray(value) ? value.map((v) => util.types.toString(v)) : undefined;
+export const cleanPicklistNone = (value: unknown): string | undefined => {
+  const text = util.types.toString(value).trim();
+  return text && text.toLowerCase() !== "none" ? text : undefined;
+};
+export const toRequiredTrimmedString =
+  (label: string): ((value: unknown) => string) =>
+  (value: unknown): string => {
+    const trimmed = util.types.toString(value).trim();
+    if (!trimmed) {
+      throw new Error(`Must specify a valid ${label}`);
+    }
+    return trimmed;
+  };
+export const cleanSortCriteria = (value: unknown): string =>
+  util.types.toString(value).trim() || DEFAULT_SORT_CRITERIA;
+export const cleanPositiveInt = (value: unknown): number | undefined => {
+  const parsed = util.types.toInt(value);
+  return Number.isNaN(parsed) || parsed <= 0 ? undefined : parsed;
+};
+export const cleanBoundedCount =
+  (fallback: number, max: number): ((value: unknown) => number) =>
+  (value: unknown): number =>
+    util.types.isNumber(value) && util.types.toNumber(value) <= max
+      ? util.types.toNumber(value)
+      : fallback;
+export const cleanPicklistValues = (value: unknown): string[] =>
+  util.types.isPicklist(value) ? (value as string[]) : [];
+export const cleanPicklistValuesLowercase = (value: unknown): string[] =>
+  cleanPicklistValues(value).map((name) => name.trim().toLowerCase());
+export const cleanObjectFieldMap = (value: unknown): ObjectFieldMap => {
+  try {
+    return util.types.toObjectFieldMap(value);
+  } catch {
+    throw new Error("Must specify valid value for Mapping Fields");
+  }
+};
+export const cleanObjectSelection = (value: unknown): ObjectSelection => {
+  try {
+    return util.types.toObjectSelection(value);
+  } catch {
+    throw new Error("Must specify valid value for Selected Record Types");
+  }
+};
+export const cleanSingleItemList = (value: unknown): string[] => [
+  util.types.toString(value),
+];
+export const cleanStringArray = (value: unknown): string[] =>
+  util.types.toObject(value) as string[];
+export const cleanKeyValueListToObject = (
+  value: unknown,
+): Record<string, unknown> =>
+  util.types.keyValPairListToObject((value || []) as KeyValuePair[]);
+export const processFilterCriteria = (criteriaValue: unknown): FilterItem[] => {
+  if (typeof criteriaValue === "undefined" || criteriaValue === "") {
+    return [];
+  }
+  const criteria = util.types.toString(criteriaValue);
+  if (!util.types.isJSON(criteria)) {
+    throw new Error("Filter Criteria must be specified as JSON.");
+  }
+  const data = JSON.parse(criteria);
+  if (!Array.isArray(data)) {
+    throw new Error("Filter Criteria must be a list of objects.");
+  }
+  return data as FilterItem[];
+};
+export const validatePermissions = (
+  value: unknown,
+): Record<string, boolean> | undefined => {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+  if (typeof value !== "object") {
+    throw new Error("Invalid permissions value provided.");
+  }
+  const hasInvalidKeyTypes = Object.keys(value).some(
+    (k) => typeof k !== "string",
+  );
+  if (hasInvalidKeyTypes) {
+    throw new Error("All permission keys must be strings.");
+  }
+  const hasInvalidValueTypes = Object.values(value).some(
+    (v) => typeof v !== "boolean",
+  );
+  if (hasInvalidValueTypes) {
+    throw new Error("All permission values must be booleans.");
+  }
+  return value as Record<string, boolean>;
+};
 const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const lookBackDateClean = (value: unknown): string => {
   if (
@@ -150,7 +252,8 @@ export const lookBackDateClean = (value: unknown): string => {
   ) {
     return "";
   }
-  const raw = typeof value === "string" ? value.trim() : String(value);
+  const raw =
+    typeof value === "string" ? value.trim() : util.types.toString(value);
   const match =
     typeof value === "string" ? raw.match(LOOK_BACK_DATE_PATTERN) : null;
   if (!match) {
@@ -159,9 +262,9 @@ export const lookBackDateClean = (value: unknown): string => {
     );
   }
   const [, yearStr, monthStr, dayStr] = match;
-  const year = Number(yearStr);
-  const month = Number(monthStr);
-  const day = Number(dayStr);
+  const year = util.types.toInt(yearStr);
+  const month = util.types.toInt(monthStr);
+  const day = util.types.toInt(dayStr);
   const parsed = new Date(Date.UTC(year, month - 1, day));
   if (
     parsed.getUTCFullYear() !== year ||

@@ -9,6 +9,7 @@ export const sendTransactionalEmail = action({
       "Send a transactional email message to a single recipient via Salesforce.",
   },
   inputs: sendTransactionalEmailInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -44,5 +45,8 @@ export const sendTransactionalEmail = action({
       data: response.data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => genericCreateUpdateExamplePayload,
   examplePayload: genericCreateUpdateExamplePayload,
 });

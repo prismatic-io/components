@@ -8,6 +8,7 @@ export const getAllQueryJobInformation = action({
     description: "Retrieve information about all bulk query jobs in the org.",
   },
   inputs: getAllQueryJobInformationInputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -36,5 +37,8 @@ export const getAllQueryJobInformation = action({
       data,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => getAllQueryJobInformationExamplePayload,
   examplePayload: getAllQueryJobInformationExamplePayload,
 });

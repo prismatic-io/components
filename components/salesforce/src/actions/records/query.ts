@@ -1,13 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { queryOutputSchema } from "../../outputSchemas";
 import { createSalesforceClient } from "../../client";
 import { queryInputs } from "../../inputs";
 import { executeSFAction } from "../../util";
+import { queryExamplePayload } from "../../examplePayloads";
 export const query = action({
   display: {
     label: "Query",
     description: "Run an SOQL query against Salesforce.",
   },
   inputs: queryInputs,
+  performSafety: "notAllowed",
   perform: async (context, { version, queryString, connection }) => {
     if (context.debug.enabled) {
       context.logger.debug("Payload", {
@@ -21,4 +24,12 @@ export const query = action({
       data: response,
     };
   },
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => queryExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: queryOutputSchema,
+  }),
+  examplePayload: queryExamplePayload,
 });

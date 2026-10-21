@@ -1,5 +1,11 @@
 import { input, util } from "@prismatic-io/spectral";
-import { cleanStringInput, fieldsInputClean } from "../util";
+import {
+  cleanOptionalStringList,
+  cleanOptionalValueList,
+  cleanStringInput,
+  fieldsInputClean,
+  processFilterCriteria,
+} from "../util";
 import {
   connectionInput,
   description,
@@ -43,13 +49,16 @@ const activeInput = input({
 });
 const outboundMessageActionsInput = input({
   label: "Outbound Message Actions",
+  placeholder: "Enter outbound message action name",
   type: "string",
   required: false,
   collection: "valuelist",
   comments: "Full Names of the Outbound Message Actions for this Rule to fire.",
+  clean: cleanOptionalValueList,
 });
 const filterCriteriaInput = input({
   label: "Rule Criteria Filter",
+  placeholder: "Enter filter criteria as JSON",
   type: "code",
   language: "json",
   required: false,
@@ -62,9 +71,11 @@ const filterCriteriaInput = input({
       value: "01/01/2022",
     },
   ]),
+  clean: processFilterCriteria,
 });
 export const endpointUrlInput = input({
   label: "Endpoint URL",
+  placeholder: "Enter endpoint URL",
   type: "string",
   required: true,
   comments: "The endpoint URL to send the outbound message / webhook to",
@@ -73,6 +84,7 @@ export const endpointUrlInput = input({
 });
 const integrationUserEmailInput = input({
   label: "Integration User Email",
+  placeholder: "Enter integration user email",
   type: "string",
   required: false,
   comments:
@@ -116,12 +128,13 @@ export const dynamicFieldsInput = input({
   required: false,
   comments:
     "Dynamic Fields, provided by value collection config variable, to include in the Outbound Message",
+  clean: cleanOptionalStringList,
 });
 const formulaInput = input({
   label: "Formula",
   type: "string",
   required: false,
-  comments: "Formula to evaluate. Use this input or Filter Criteria",
+  comments: "Formula to evaluate. Use this input or Rule Criteria Filter",
   example: "OwnerId <> LastModifiedById",
   placeholder: "Enter formula expression",
   clean: cleanStringInput,
@@ -163,8 +176,8 @@ export const listWorkflowRulesInputs = {
   connection: connectionInput,
 };
 export const deleteWorkflowRuleInputs = {
-  version,
   fullName: fullNameInput,
+  version,
   connection: connectionInput,
 };
 export const createWorkflowOutboundMessageInputs = {
@@ -183,8 +196,8 @@ export const listWorkflowOutboundMessagesInputs = {
   connection: connectionInput,
 };
 export const deleteWorkflowOutboundMessageInputs = {
-  version,
   fullName: fullNameInput,
+  version,
   connection: connectionInput,
 };
 export const subscribeToRecordChangeInputs = {
