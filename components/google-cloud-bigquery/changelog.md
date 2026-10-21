@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-21
+
+- Added batching support to the **New Jobs** polling trigger; enabling it changes the shape a downstream step receives
+- Added initial sync to the **New Jobs** polling trigger with a **Look-back Date** input that seeds every job created on or after that date once, beginning on the first recurrence
+
 ### 2026-09-14
 
 Removed the **List Table Data (Deprecated)** action that is no longer in use

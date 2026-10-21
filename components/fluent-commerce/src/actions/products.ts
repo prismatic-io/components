@@ -1,8 +1,8 @@
 import { action, input, util } from "@prismatic-io/spectral";
+import { gql } from "graphql-request";
 import { createFluentClient } from "../client";
 import { createProductExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
-import { gql } from "graphql-request";
 const createProduct = action({
   display: {
     label: "Create Product",

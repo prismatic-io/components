@@ -8,7 +8,7 @@ export const webhook = trigger({
     description:
       "Receive and validate webhook requests from Twilio for manually configured webhook subscriptions.",
   },
-  perform: async (context, payload) => {
+  perform: async (_context, payload) => {
     if (!Buffer.isBuffer(payload.body.data))
       return Promise.resolve({ payload });
     const bufferData: Buffer = payload.body.data;

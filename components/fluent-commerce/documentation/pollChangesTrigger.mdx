@@ -1,0 +1,103 @@
+The **New and Updated Records** trigger checks Fluent Commerce for new and updated orders on a configured schedule. It queries the [GraphQL `orders` connection](https://docs.fluentcommerce.com/essential-knowledge/graphql-queries) with an `updatedOn` range, then partitions the returned orders into `created` and `updated` buckets based on each order's `createdOn` versus the trigger's `lastPolledAt` cursor.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule (for example, every five minutes).
+2. It queries orders whose `updatedOn` is on or after `lastPolledAt`, following the connection's `after` cursor page by page. When a **Retailer ID** is supplied, the query is scoped to that retailer.
+3. Orders are partitioned into two buckets:
+   - **`created`**: orders whose `createdOn` is strictly after `lastPolledAt`.
+   - **`updated`**: orders that existed before `lastPolledAt` but were modified since.
+4. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. Turning either off empties that array, and both keys remain present in the payload.
+5. `lastPolledAt` advances to the current time only once the result stream is exhausted. Until then the trigger keeps its place with the connection's `after` cursor, so a large window drains across rounds without skipping orders.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow
+which changes are reported would leave gaps in it: **Show New Records** and **Show Updated
+Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first
+recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set,
+and seeds every order modified on or after that date exactly once. Left empty, there is no sync and
+the trigger starts from its first recurrence.
+
+The window has no fixed upper bound. Once the stream is exhausted the position advances to the wall
+clock, and the first incremental recurrence resumes from exactly there; nothing in the payload
+marks the handoff. With batching off the trigger fetches up to 20 pages per recurrence, so a large
+window drains over several recurrences; with batching on it fetches one page per round and the
+platform calls it again within the same recurrence until the stream is exhausted.
+
+**Retailer ID** still applies throughout. The trigger has no page-size or field-selection input, so
+nothing else is suppressed.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Fluent Commerce.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks
+the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to
+the flow rather than to the component or to other flows using the same trigger.
+
+#### Returned Data
+
+With batching off, the trigger returns an object with two arrays: `created` for new orders and `updated` for modified orders. Fields shown are representative. The full response object includes additional properties.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "id": "ORD-1042",
+        "ref": "WEB-000142",
+        "type": "STANDARD",
+        "status": "CREATED",
+        "createdOn": "2026-05-26T14:30:00.000Z",
+        "updatedOn": "2026-05-26T14:30:00.000Z"
+      }
+    ],
+    "updated": [
+      {
+        "id": "ORD-980",
+        "ref": "WEB-000087",
+        "type": "STANDARD",
+        "status": "FULFILLED",
+        "createdOn": "2026-04-12T09:00:00.000Z",
+        "updatedOn": "2026-05-26T15:45:00.000Z"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one order tagged with how it changed:
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "ORD-1042",
+    "ref": "WEB-000142",
+    "type": "STANDARD",
+    "status": "CREATED",
+    "createdOn": "2026-05-26T14:30:00.000Z",
+    "updatedOn": "2026-05-26T14:30:00.000Z"
+  }
+}
+```
+
+</details>

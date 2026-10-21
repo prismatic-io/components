@@ -1,51 +1,68 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import { pollChangesTriggerInputs } from "../inputs";
-import type { PollingState, TwilioMessage } from "../types";
-import { fetchMessagesSince } from "../util";
+import type {
+  PollingState,
+  TwilioChangesObject,
+  TwilioMessage,
+  TwilioRecordChange,
+} from "../types";
+import {
+  fetchMessagesSince,
+  nextPollingState,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
     description:
-      "Checks for newly sent Twilio messages on a configured schedule. Returned messages appear in the created bucket; the updated bucket is preserved for shape parity but is always empty because Twilio polling does not detect status changes to already-sent messages.",
+      "Retrieves existing and ongoing messages from Twilio. Load history once, check for new messages on a schedule, or both.",
   },
   examplePayload: pollChangesTriggerExamplePayload,
   inputs: pollChangesTriggerInputs,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): TwilioRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as TwilioChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
-    const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
-    const dateSentAfter = new Date(lastPolledAt);
-    const { messages, truncated } = await fetchMessagesSince(
+    const pollState = (context.polling.getState() ?? {}) as PollingState;
+    const lookBack = params.lookBackDate;
+    const isBackfill =
+      pollState.backfillActive === true ||
+      (!pollState.lastPolledAt && Boolean(lookBack));
+    const lastPolledAt = pollState.lastPolledAt ?? (lookBack || now);
+    const drainUntil = pollState.drainUntil;
+    const { messages: fetched, truncated } = await fetchMessagesSince(
       params.connection,
-      dateSentAfter,
+      new Date(lastPolledAt),
       context.debug.enabled,
       params.from,
       params.to,
+      drainUntil ? new Date(drainUntil) : undefined,
     );
+    const delivered = new Set(pollState.boundarySids ?? []);
+    const messages = fetched.filter((m) => !delivered.has(m.sid));
     const created: TwilioMessage[] =
-      params.showNewRecords !== false ? messages : [];
+      isBackfill || params.showNewRecords !== false ? messages : [];
     const updated: TwilioMessage[] = [];
-    let nextCursor = now;
-    if (truncated) {
-      const oldestSent = messages
-        .map((m) => m.dateSent)
-        .filter((d): d is Date => d instanceof Date)
-        .reduce<Date | null>(
-          (min, d) => (min === null || d < min ? d : min),
-          null,
-        );
-      if (oldestSent !== null) {
-        nextCursor = oldestSent.toISOString();
-      }
-      context.logger.warn(
-        `Polling truncated at the message limit for Twilio. Advancing cursor to ${nextCursor}; next poll will resume from there.`,
-      );
-    }
-    context.polling.setState({ lastPolledAt: nextCursor });
+    const { state, warnings } = nextPollingState(
+      fetched,
+      truncated,
+      pollState,
+      {
+        lastPolledAt,
+        now,
+        isBackfill,
+      },
+    );
+    for (const warning of warnings) context.logger.warn(warning);
+    context.polling.setState(state);
     if (context.debug.enabled) {
       context.logger.debug(
-        `Polled Twilio messages: ${messages.length} fetched, ${created.length} created, truncated=${truncated}`,
+        `Polled Twilio messages: ${fetched.length} fetched, ${created.length} created, truncated=${truncated}`,
       );
     }
     const totalMatched = created.length + updated.length;

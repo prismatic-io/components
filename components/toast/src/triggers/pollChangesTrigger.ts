@@ -3,24 +3,45 @@ import { createToastClient } from "../client";
 import { TIME_ENTRY_MAX_POLL_WINDOW_MS } from "../constants";
 import { pollChangesTriggerExamplePayload as examplePayload } from "../examplePayloads";
 import { pollChangesInputs as inputs } from "../inputs/triggers";
-import type { PollingState, ToastTimeEntryRecord } from "../interfaces";
-import { fetchTimeEntriesModified } from "../utils";
+import type {
+  PollingState,
+  ToastChangesObject,
+  ToastRecordChange,
+  ToastTimeEntryRecord,
+} from "../interfaces";
+import {
+  fetchTimeEntriesModified,
+  resolvePollingRecordChanges,
+} from "../utils";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Time Entries",
     description:
-      "Checks for new and updated time entries in Toast on a configured schedule.",
+      "Retrieves existing and ongoing time entries for a specified Toast restaurant. Load history once, check for changes on a schedule, or both.",
   },
   inputs,
   examplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): ToastRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as ToastChangesObject),
+  },
   perform: async (
     context,
     payload,
-    { connection, restaurantExternalId, showNewRecords, showUpdatedRecords },
+    {
+      connection,
+      restaurantExternalId,
+      showNewRecords,
+      showUpdatedRecords,
+      lookBackDate,
+    },
   ) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
-    const lastPolledAt = pollState?.lastPolledAt ?? now;
+    const isBackfill = !pollState?.lastPolledAt && Boolean(lookBackDate);
+    const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const minStartMs = Date.now() - TIME_ENTRY_MAX_POLL_WINDOW_MS;
     const modifiedStartDate = new Date(
       Math.max(new Date(lastPolledAt).getTime(), minStartMs),
@@ -51,8 +72,9 @@ export const pollChangesTrigger = pollingTrigger({
       const isNew = createdDate !== null && createdDate > lastPolledDate;
       const isUpdated =
         !isNew && modifiedDate !== null && modifiedDate > lastPolledDate;
-      if (isNew && showNewRecords) created.push(record);
-      else if (isUpdated && showUpdatedRecords) updated.push(record);
+      if (isNew && (isBackfill || showNewRecords)) created.push(record);
+      else if (isUpdated && (isBackfill || showUpdatedRecords))
+        updated.push(record);
     }
     context.polling.setState({ lastPolledAt: now } as PollingState);
     if (context.debug.enabled) {

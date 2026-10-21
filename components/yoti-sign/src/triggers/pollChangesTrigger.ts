@@ -1,29 +1,46 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
-import { connectionInput } from "../inputs";
-import type { Envelope, PollingState } from "../interfaces";
+import { connectionInput, lookBackDate } from "../inputs";
+import type {
+  Envelope,
+  PollingChangesObject,
+  PollingRecordChange,
+  PollingState,
+} from "../interfaces";
 import {
   fetchAllRecords,
   filterEnvelopesCreatedAfter,
+  resolvePollingRecordChanges,
   toYotiDate,
 } from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Envelopes",
-    description: "Fetches Yoti Sign Envelopes created on a recurring schedule.",
+    description:
+      "Retrieves existing and ongoing envelopes from Yoti Sign. Load history once, check for new envelopes on a schedule, or both.",
   },
-  inputs: { connection: connectionInput },
+  inputs: { connection: connectionInput, lookBackDate },
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): PollingRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as PollingChangesObject),
+  },
   perform: async (context, payload, params) => {
     const pollState = context.polling.getState() as PollingState;
     const now = new Date().toISOString();
     if (!pollState?.lastPolledAt) {
-      context.polling.setState({ lastPolledAt: now });
-      return {
-        payload: { ...payload, body: { data: { created: [] } } },
-        polledNoChanges: true,
-      };
+      if (!params.lookBackDate) {
+        context.polling.setState({ lastPolledAt: now });
+        return {
+          payload: { ...payload, body: { data: { created: [] } } },
+          polledNoChanges: true,
+        };
+      }
     }
-    const { lastPolledAt } = pollState;
+    const lastPolledAt =
+      pollState?.lastPolledAt ??
+      new Date(`${params.lookBackDate}T00:00:00.000Z`).toISOString();
     const client = createClient(params.connection, context.debug.enabled);
     const { data: fetched } = await fetchAllRecords<Envelope>(
       client,

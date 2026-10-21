@@ -1,4 +1,4 @@
-The **New and Updated Records** trigger checks an Airtable table for new and updated records on a configured schedule. It uses Airtable's built-in [`LAST_MODIFIED_TIME()`](https://support.airtable.com/docs/formula-field-reference#last_modified_time) formula function as the server-side filter, then partitions the returned records into `created` and `updated` buckets based on each record's `createdTime` versus the trigger's `lastPolledAt` cursor.
+The **New and Updated Records** trigger checks an [Airtable](https://www.airtable.com/) table for new and updated records on a configured schedule. It uses Airtable's built-in [`LAST_MODIFIED_TIME()`](https://support.airtable.com/articles/7330071120-airtable-formula-field-functions-reference) formula function as the server-side filter, then partitions the returned records into `created` and `updated` buckets based on each record's `createdTime` versus the trigger's `lastPolledAt` cursor.
 
 For information on Airtable's formula functions and the record fields used by this trigger, see the [Airtable Web API documentation](https://airtable.com/developers/web/api/introduction).
 
@@ -6,84 +6,101 @@ For information on Airtable's formula functions and the record fields used by th
 
 1. The trigger runs on the configured schedule (for example, every five minutes).
 2. It queries the configured table with a `filterByFormula` of `IS_AFTER(LAST_MODIFIED_TIME(), DATETIME_PARSE("<lastPolledAt>"))`. When an **Additional Filter Formula** is supplied, it is combined with the modification-time filter using `AND(...)`.
-3. The Airtable response is paginated via the `offset` cursor; the trigger follows up to 100 pages of 100 records (10,000 records per poll).
-4. Records are partitioned into two buckets:
+3. Records are partitioned into two buckets:
    - **`created`**: records whose `createdTime` is strictly after `lastPolledAt`.
    - **`updated`**: records that existed before `lastPolledAt` but were modified since.
-5. The trigger advances `lastPolledAt` and returns the partitioned records.
+4. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. Turning either off empties that array, and both keys remain present in the payload.
+5. The trigger advances `lastPolledAt` and returns the partitioned records. When the result is empty and the stream is exhausted, the trigger returns `polledNoChanges: true` to suppress empty invocations.
 
-##### Cursor Advancement and Truncation Semantics
+**Initial Sync**
 
-Airtable's `offset` pagination does not guarantee a stable record ordering across pages. To preserve at-least-once delivery semantics:
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow
+which changes are reported would leave gaps in it: **Show New Records** and **Show Updated
+Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first
+recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set,
+and seeds every record modified on or after that date exactly once. Left empty, there is
+no sync and the trigger starts from its first recurrence.
 
-- **Non-truncated polls**: the cursor advances to the poll start time (`now`). All records modified after the previous `lastPolledAt` were fetched in this run.
-- **Truncated polls** (the page cap was hit and an `offset` was still present): the cursor advances to the **latest `createdTime` observed in the fetched page set**, never beyond it. Because `LAST_MODIFIED_TIME() >= createdTime` for every record, this never overshoots the true modification cursor. Older un-fetched records will be re-detected on the next poll, and a warning is logged with the new cursor value.
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync rather
+than deferred to the schedule. Once the stream is exhausted the position advances to the wall
+clock, and the first incremental recurrence resumes from exactly there; nothing in the payload
+marks the handoff. With batching off the trigger fetches up to 100 pages per recurrence; with
+batching on it fetches one page per round and the platform calls it again within the same
+recurrence until the stream is exhausted.
 
-##### Partitioning Rule
+**View**, **Additional Filter Formula**, and the partitioning inputs still apply throughout. The
+trigger has no page-size or field-selection input, so nothing else is suppressed.
 
-For each record in the response, given `lastPolledAtDate = new Date(lastPolledAt)`:
+**Batching**
 
-- If `record.createdTime` is a valid string and `new Date(record.createdTime) > lastPolledAtDate` and **Show New Records** is enabled, the record is appended to `created`.
-- Otherwise, if **Show Updated Records** is enabled, the record is appended to `updated`.
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Airtable, which
+limits requests to 5 per second per base.
 
-A record cannot appear in both buckets within a single poll.
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
 
-##### State Management
-
-The trigger persists a single state value, `lastPolledAt`, via `context.polling.setState()`. On the first poll, `lastPolledAt` defaults to the current time, so only records created or modified after deployment are returned.
-
-When the partitioned result is empty, the trigger returns `polledNoChanges: true`, which the platform uses to suppress empty invocations.
-
-#### Configuration
-
-Configure the following inputs:
-
-- **Airtable Connection**: An OAuth 2.0 or personal access token connection used to authenticate Airtable API requests.
-- **Base ID**: The ID of the base containing the table to poll (for example, `appLkNDICXNqxSDhG`).
-- **Table Name**: The name or ID of the Airtable table to poll.
-- **View** *(optional)*: A view name or ID. When set, only records in that view are considered for the poll.
-- **Additional Filter Formula** *(optional)*: An Airtable formula combined (via `AND`) with the modification-time filter. For example, `{Status} = 'Active'`.
-- **Show New Records** *(default: true)*: When enabled, records whose `createdTime` is after `lastPolledAt` are included in the `created` bucket.
-- **Show Updated Records** *(default: true)*: When enabled, records modified after `lastPolledAt` (but created earlier) are included in the `updated` bucket.
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks
+the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to
+the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with `created` and `updated` arrays under `body.data`. Each record contains its Airtable `id`, the original `createdTime`, and the requested `fields`.
+With batching off, the trigger returns an object with two arrays: `created` for new records and `updated` for modified records. Fields shown are representative. The full response object includes additional properties.
 
 <details>
-<summary>Example Payload</summary>
+<summary>Example Response</summary>
 
 ```json
 {
-  "payload": {
-    "body": {
-      "data": {
-        "created": [
-          {
-            "id": "recABCDEFGHIJ1234",
-            "createdTime": "2026-05-25T14:30:00.000Z",
-            "fields": {
-              "Name": "Acme Spring Launch",
-              "Status": "Active",
-              "Notes": "Newly created campaign record."
-            }
-          }
-        ],
-        "updated": [
-          {
-            "id": "recXYZWVUTSR5678",
-            "createdTime": "2026-04-10T09:15:00.000Z",
-            "fields": {
-              "Name": "Q1 Holiday Campaign",
-              "Status": "Completed",
-              "Notes": "Existing record, modified after last poll."
-            }
-          }
-        ]
+  "data": {
+    "created": [
+      {
+        "id": "recABCDEFGHIJ1234",
+        "createdTime": "2026-05-25T14:30:00.000Z",
+        "fields": {
+          "Name": "Acme Spring Launch",
+          "Status": "Active"
+        }
       }
+    ],
+    "updated": [
+      {
+        "id": "recXYZWVUTSR5678",
+        "createdTime": "2026-04-10T09:15:00.000Z",
+        "fields": {
+          "Name": "Q1 Holiday Campaign",
+          "Status": "Completed"
+        }
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "recABCDEFGHIJ1234",
+    "createdTime": "2026-05-25T14:30:00.000Z",
+    "fields": {
+      "Name": "Acme Spring Launch",
+      "Status": "Active"
     }
-  },
-  "polledNoChanges": false
+  }
 }
 ```
 
@@ -91,18 +108,7 @@ The trigger returns an object with `created` and `updated` arrays under `body.da
 
 #### Notes
 
-- **Page cap**: The trigger fetches a maximum of 10,000 records per poll (100 pages of 100 records). If this cap is hit, the cursor advances to the latest observed `createdTime` and a warning is logged. Older un-fetched records are re-detected on the next poll. For tables with very high write volume, prefer a shorter polling interval over a single large catch-up.
 - **Polling cadence**: Avoid polling intervals shorter than one minute to stay within Airtable's [API rate limits](https://airtable.com/developers/web/api/rate-limits) (5 requests per second per base).
-- **First poll**: On the first poll, the cursor defaults to the deployment time. Pre-existing records are not returned.
-- **Field changes only**: Airtable's `LAST_MODIFIED_TIME()` reflects field modifications. Schema changes, comment additions, and other metadata changes are not detected by this trigger. Use the **Base Change Notifications** trigger for schema and metadata events.
+- **Field changes only**: Airtable's `LAST_MODIFIED_TIME()` reflects field modifications. Schema changes, comment additions, and other metadata changes are not detected by this trigger. Use the [Base Change Notifications](#basechanges) trigger for schema and metadata events.
 - **View scoping**: Setting **View** restricts the polled records to those visible in that view. Filters defined on the view are applied server-side by Airtable in addition to the trigger's modification-time filter.
-
-#### Comparison with Webhook Triggers
-
-The Airtable component includes three triggers for detecting changes:
-
-- **New and Updated Records** (this trigger): Schedule-driven polling with `created` versus `updated` partitioning. No webhook lifecycle to manage.
-- **Base Change Notifications**: Automatic webhook subscription with lifecycle handlers, cursor-based payload retrieval, and auto-refresh. Detects record, schema, and metadata changes.
-- **Webhook**: Receives manually configured Airtable webhooks without lifecycle management.
-
-Use **New and Updated Records** when polling is acceptable and a simple `created` versus `updated` split is sufficient. Use **Base Change Notifications** for near-real-time delivery with full change payloads (including deleted records and schema changes).
+- The Airtable component also includes a [Webhook](#webhook) trigger for receiving manually configured webhooks without lifecycle management.

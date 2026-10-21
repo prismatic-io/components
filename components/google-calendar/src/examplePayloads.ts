@@ -7,6 +7,13 @@ export const pollEventsTriggerPayload = {
       data: null,
       contentType: null,
     },
+    paginationState: undefined as
+      | {
+          syncToken?: string;
+          pageToken: string;
+          drainStartedAt: string;
+        }
+      | undefined,
     body: {
       data: {
         changes: {
@@ -56,6 +63,7 @@ export const pollEventsTriggerPayload = {
     flow: {
       id: "SW50ZWdyYXRpb25GbG93OmM4Y2IzY2UwLTFjYTUtNDVhZC04Yjc1LWNmNDc4YWE1Y2RlYQ==",
       name: "Poll Events",
+      stableId: "test-flow-stable-id",
     },
     startedAt: "2026-01-07 14:22:38.313677+00",
     globalDebug: false,
@@ -173,6 +181,7 @@ export const calendarChangeEventsPayload = {
     flow: {
       id: "SW50ZWdyYXRpb25GbG93OmM4Y2IzY2UwLTFjYTUtNDVhZC04Yjc1LWNmNDc4YWE1Y2RlYQ==",
       name: "Calendar Change Events",
+      stableId: "test-flow-stable-id",
     },
     startedAt: "2026-01-07 14:22:38.313677+00",
     globalDebug: false,

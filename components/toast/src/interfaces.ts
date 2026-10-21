@@ -12,6 +12,14 @@ export interface ToastTimeEntryRecord {
   modifiedDate?: string;
   [key: string]: unknown;
 }
+export interface ToastRecordChange {
+  changeType: "created" | "updated";
+  record: ToastTimeEntryRecord;
+}
+export interface ToastChangesObject {
+  created?: ToastTimeEntryRecord[];
+  updated?: ToastTimeEntryRecord[];
+}
 export interface PaginateOptions {
   client: HttpClient;
   endpoint: string;

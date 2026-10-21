@@ -8,21 +8,46 @@ The trigger fires when new messages are detected since the previous poll. The `u
 2. On each run, it queries the Twilio Messages API for messages with `DateSent` greater than the last polled timestamp, applying optional **From** and **To** filters
 3. Matching messages are placed in the `created` bucket; the `updated` bucket is always returned as an empty array
 4. The trigger persists the last poll timestamp in its state to track which messages have already been processed
-5. When the API result reaches the internal page limit (10,000 messages), the result is marked as truncated and the cursor is advanced to the oldest fetched message's `dateSent` instead of the current time. This preserves at-least-once semantics, and the next poll resumes from the gap.
+5. Twilio returns the newest messages first, so when a window holds more than the internal limit of 10,000 messages, a recurrence receives only the newest 10,000. The trigger then keeps its lower bound and caps the next recurrence at the oldest message it received, walking backward through the window until it is empty. Each message is delivered once.
 
-#### Configuration
+**Initial Sync**
 
-Configure the following inputs:
+When a **Look-back Date** (`YYYY-MM-DD`) is set and the trigger has no stored position (the first
+recurrence), the trigger seeds every message sent on or after that date. Left empty, there is no
+sync and the trigger starts from its first recurrence. A toggle that narrows the change feed would
+leave gaps in the seeded state, so **Show New Records** and **Show Updated Records** are ignored
+during an initial sync: every seeded message is delivered even when **Show New Records** is off.
 
-- **Connection**: The Twilio connection to use (API Key or Basic Authentication)
-- **From Filter**: Optional sender phone number in E.164 format (for example, `+15555551234`). Leave blank to include all senders.
-- **To Filter**: Optional recipient phone number in E.164 format (for example, `+15551234567`). Leave blank to include all recipients.
-- **Show New Records**: When enabled (default), newly sent messages are included in the trigger output
-- **Show Updated Records**: Reserved for shape consistency with other polling triggers. Twilio polling does not detect status changes to already-sent messages, so the `updated` bucket is always empty regardless of this setting.
+A sync of up to 10,000 messages finishes in one recurrence with no fixed upper bound, so a message
+sent mid-drain is swept into it. A larger window is drained backward over several recurrences,
+10,000 messages at a time, batching on or off: the upper bound is fixed to the wall clock when the
+drain begins, so a message sent mid-drain is delivered by the first incremental recurrence instead.
+Either way the position then advances to that wall clock, and the first incremental recurrence
+resumes from exactly there; nothing in the payload marks the handoff.
+
+**From Filter** and **To Filter** still apply during an initial sync, so it seeds only messages
+matching them.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Twilio.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With
+batching on those fields do not exist: each execution receives one
+`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
+than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks
+the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to
+the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object with two arrays under `data`:
+With batching off, the trigger returns an object with two arrays: `created` for new messages and `updated` (always empty). Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -68,10 +93,35 @@ The trigger returns an object with two arrays under `data`:
 
 </details>
 
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "sid": "SM1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+    "accountSid": "ACa1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+    "from": "+15558675309",
+    "to": "+15551234567",
+    "body": "Your appointment is confirmed for tomorrow at 2:00 PM.",
+    "status": "queued",
+    "direction": "outbound-api",
+    "dateCreated": "2026-03-15T14:32:10.000Z",
+    "dateUpdated": "2026-03-15T14:32:10.000Z",
+    "dateSent": null
+  }
+}
+```
+
+</details>
+
 Field names follow the Twilio Node SDK's `toJSON()` output (camelCase), which differs from the snake_case used in raw API responses. Refer to the [Twilio Message resource documentation](https://www.twilio.com/docs/messaging/api/message-resource) for the complete field reference.
 
 #### Notes
 
 - **Polling frequency**: A polling interval of 5 minutes or more is recommended to stay well within Twilio API rate limits.
-- **Truncation**: When the message volume exceeds the 10,000-message internal limit within a single poll window, the cursor is advanced to the oldest fetched message's `dateSent` and a warning is logged. Subsequent polls will pick up the remaining messages.
+- **Truncation**: When a window holds more than the 10,000-message internal limit, a warning is logged and the remaining older messages are delivered over the following recurrences, 10,000 at a time. If more than 10,000 messages share a single second, the ones beyond the limit in that second are skipped and a warning is logged.
 - **Status changes are not detected**: Only newly sent messages are emitted. For delivery status callbacks (`delivered`, `failed`, `undelivered`), configure a Twilio status callback URL pointing to the [Webhook](#webhook) trigger.

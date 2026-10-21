@@ -8,8 +8,8 @@ describe("verifyPayload", () => {
     };
     const actualPayload = createPayload(params);
     const expectedPayload = {
-      to: "+16055551212",
-      from: "+16055551212",
+      to: "+1 605-555-1212",
+      from: "+1 605-555-1212",
       body: "Test message",
     };
     expect(actualPayload).toStrictEqual(expectedPayload);

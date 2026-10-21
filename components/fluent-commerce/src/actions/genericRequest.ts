@@ -1,5 +1,5 @@
-import merge from "lodash.merge";
 import { action, input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import merge from "lodash.merge";
 import { createFluentClient } from "../client";
 import { genericRequestExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";

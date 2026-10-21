@@ -2,20 +2,39 @@ import { pollingTrigger } from "@prismatic-io/spectral";
 import { createClient } from "../client";
 import { pollChangesExamplePayload } from "../examplePayloads";
 import { pollChangesInputs } from "../inputs/polling";
-import type { PollingState } from "../types";
-import { fetchJobsSince, getJobCreationMs } from "../utils/polling";
+import type {
+  BigQueryChangesObject,
+  BigQueryRecordChange,
+  PollingState,
+} from "../types";
+import {
+  fetchJobsSince,
+  getJobCreationMs,
+  resolvePollingRecordChanges,
+} from "../utils/polling";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New Jobs",
     description:
-      "Checks for newly created jobs in BigQuery on a recurring schedule. Jobs expose only a creation time, so this detects new jobs since the last run, not changes to existing ones.",
+      "Retrieves existing and ongoing jobs in a specified BigQuery project. Load history once, check for new jobs on a schedule, or both.",
   },
   inputs: pollChangesInputs,
   examplePayload: pollChangesExamplePayload,
+  triggerResolverSupport: "valid",
+  batchConfig: { batchSize: 50 },
+  triggerResolver: {
+    resolveItems: (_context, { payload }): BigQueryRecordChange[] =>
+      resolvePollingRecordChanges(payload.body.data as BigQueryChangesObject),
+  },
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
-    const lastPolledAt = state?.lastPolledAt ?? now;
+    const lookBackIso = params.lookBackDate as string | undefined;
+    const seedTime =
+      lookBackIso && lookBackIso !== ""
+        ? new Date(lookBackIso).toISOString()
+        : now;
+    const lastPolledAt = state?.lastPolledAt ?? seedTime;
     const client = createClient(params.connectionInput);
     const { jobs, truncated } = await fetchJobsSince(
       client,

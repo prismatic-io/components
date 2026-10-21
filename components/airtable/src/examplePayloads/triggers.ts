@@ -60,6 +60,7 @@ export const webhookTriggerExamplePayload = {
     flow: {
       name: "Airtable Webhook Flow",
       id: "Rmxvdzp3ZWJob29rLWZsb3c=",
+      stableId: "d2ViaG9vay1mbG93LXN0YWJsZQ==",
     },
     startedAt: "2023-01-01T00:00:00.000Z",
     globalDebug: false,
@@ -80,8 +81,30 @@ export const baseChangesTriggerExamplePayload = {
     },
     body: {
       data: {
-        expirationTime: "2023-02-15T10:30:00.000Z",
-        message: "Webhook notification received",
+        notification: {
+          base: { id: "appABCDEFGHIJKLMN" },
+          webhook: { id: "achABCDEFGHIJKLMN" },
+          timestamp: "2023-01-15T10:30:00.000Z",
+        },
+        payloads: [
+          {
+            actionMetadata: {
+              source: "client",
+              sourceMetadata: {
+                user: {
+                  email: "user@example.com",
+                  id: "usrABCDEFGHIJKLMN",
+                  permissionLevel: "create",
+                },
+              },
+            },
+            baseTransactionNumber: 42,
+            payloadFormat: "v0",
+            timestamp: "2023-01-15T10:30:00.000Z",
+          },
+        ],
+        payloadCount: 1,
+        cursor: 43,
       },
     },
     pathFragment: "",
@@ -118,6 +141,7 @@ export const baseChangesTriggerExamplePayload = {
     flow: {
       name: "Monitor Base Changes",
       id: "RmxvdzpiYXNlLWNoYW5nZXM=",
+      stableId: "YmFzZS1jaGFuZ2VzLXN0YWJsZQ==",
     },
     startedAt: "2023-01-15T10:30:00.000Z",
     globalDebug: false,
@@ -180,7 +204,7 @@ export const pollChangesTriggerExamplePayload: {
       versionSequenceId: "1",
       externalVersion: "",
     },
-    flow: { id: "testFlowId", name: "Test Flow" },
+    flow: { id: "testFlowId", name: "Test Flow", stableId: "testFlowStableId" },
     startedAt: "2024-01-15T00:00:00.000Z",
     globalDebug: false,
   },

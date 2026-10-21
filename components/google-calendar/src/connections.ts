@@ -6,7 +6,6 @@ export const googleConnection = oauth2Connection({
     label: "OAuth 2.0",
     description: "OAuth 2.0 connection for Google Calendar",
   },
-  iconPath: "oauth-button.png",
   inputs: {
     authorizeUrl: {
       label: "Authorize URL",

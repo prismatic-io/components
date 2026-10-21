@@ -1,27 +1,23 @@
 {
   "name": "toast",
   "private": true,
-  "license": "Apache-2.0",
-  "version": "0.0.1",
   "scripts": {
-    "build": "npm run format && npm run lint && webpack",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "lint": "biome check --write .",
     "format": "biome format --write .",
     "publish": "npm run build && prism components:publish",
-    "test": "jest"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.19.0"
+    "@prismatic-io/spectral": "10.32.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.4",
-    "@types/jest": "29.5.14",
-    "copy-webpack-plugin": "13.0.1",
-    "jest": "29.7.0",
-    "ts-jest": "29.3.4",
-    "ts-loader": "9.5.4",
-    "typescript": "5.9.3",
-    "webpack": "5.105.2",
-    "webpack-cli": "6.0.1"
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26.6.5",
+    "nock": "^15.0.1",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }

@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2026-10-21
+
+- Added batching support to the **New and Updated Time Entries** polling trigger; enabling it changes the shape a downstream step receives
+- Added an initial sync to the **New and Updated Time Entries** polling trigger via the **Look-back Date** input; the backfill begins on the first recurrence and seeds each record once, ignoring the trigger's filters
+
 ### 2026-07-21
 
 Grouped related inputs into structured objects across restaurant, employee, shift, and time entry actions:

@@ -1,8 +1,8 @@
 import { component } from "@prismatic-io/spectral";
+import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 import actions from "./actions";
 import connections from "./connections";
 import triggers from "./triggers";
-import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
 export default component({
   key: "fluent-commerce",
   documentationUrl: "https://prismatic.io/docs/components/fluent-commerce/",

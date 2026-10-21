@@ -16,7 +16,7 @@ describe("paginateResults", () => {
         datasets: [makeDataset("ds1"), makeDataset("ds2")],
         nextPageToken: "token-abc",
       };
-      const listFn = jest.fn().mockResolvedValue({ data: responseData });
+      const listFn = vi.fn().mockResolvedValue({ data: responseData });
       const params = {
         projectId: "my-project",
         maxResults: 10,
@@ -30,7 +30,7 @@ describe("paginateResults", () => {
   });
   describe("fetchAll=true", () => {
     it("returns items from a single page when no nextPageToken is present", async () => {
-      const listFn = jest.fn().mockResolvedValue({
+      const listFn = vi.fn().mockResolvedValue({
         data: { datasets: [makeDataset("ds1"), makeDataset("ds2")] },
       });
       const result = await paginateResults(
@@ -45,7 +45,7 @@ describe("paginateResults", () => {
       });
     });
     it("aggregates results across 2 pages using nextPageToken", async () => {
-      const listFn = jest
+      const listFn = vi
         .fn()
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds1")], nextPageToken: "page2" },
@@ -65,7 +65,7 @@ describe("paginateResults", () => {
       });
     });
     it("aggregates results across 3 pages when last page has empty array", async () => {
-      const listFn = jest
+      const listFn = vi
         .fn()
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds1")], nextPageToken: "page2" },
@@ -88,7 +88,7 @@ describe("paginateResults", () => {
       });
     });
     it("returns empty array when first page has no dataField key", async () => {
-      const listFn = jest.fn().mockResolvedValue({ data: {} });
+      const listFn = vi.fn().mockResolvedValue({ data: {} });
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
@@ -99,7 +99,7 @@ describe("paginateResults", () => {
       expect(result).toEqual({ data: { datasets: [] } });
     });
     it("passes nextPageToken as pageToken param in subsequent requests", async () => {
-      const listFn = jest
+      const listFn = vi
         .fn()
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds1")], nextPageToken: "token-abc" },
@@ -124,7 +124,7 @@ describe("paginateResults", () => {
       });
     });
     it("uses pageToken from response as fallback when nextPageToken is absent", async () => {
-      const listFn = jest
+      const listFn = vi
         .fn()
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds1")], pageToken: "fallback-token" },
@@ -148,7 +148,7 @@ describe("paginateResults", () => {
       });
     });
     it("returns empty array when response is missing the dataField key entirely", async () => {
-      const listFn = jest.fn().mockResolvedValue({ data: { totalItems: 0 } });
+      const listFn = vi.fn().mockResolvedValue({ data: { totalItems: 0 } });
       const result = await paginateResults(
         listFn,
         { projectId: "my-project" },
@@ -158,7 +158,7 @@ describe("paginateResults", () => {
       expect(result).toEqual({ data: { tables: [] } });
     });
     it("strips user-supplied pageToken when fetchAll=true", async () => {
-      const listFn = jest.fn().mockResolvedValue({
+      const listFn = vi.fn().mockResolvedValue({
         data: { datasets: [makeDataset("ds1")] },
       });
       await paginateResults(
@@ -175,7 +175,7 @@ describe("paginateResults", () => {
       { dataField: "tables", maker: makeTable, id: "tbl1" },
       { dataField: "jobs", maker: makeJob, id: "job1" },
     ])("works with dataField=$dataField", async ({ dataField, maker, id }) => {
-      const listFn = jest.fn().mockResolvedValue({
+      const listFn = vi.fn().mockResolvedValue({
         data: { [dataField]: [maker(id)] },
       });
       const result = await paginateResults(
@@ -187,7 +187,7 @@ describe("paginateResults", () => {
       expect(result).toEqual({ data: { [dataField]: [maker(id)] } });
     });
     it("preserves other params like projectId and maxResults across pages", async () => {
-      const listFn = jest
+      const listFn = vi
         .fn()
         .mockResolvedValueOnce({
           data: { datasets: [makeDataset("ds1")], nextPageToken: "p2" },
@@ -213,7 +213,7 @@ describe("paginateResults", () => {
       });
     });
     it("stops after MAX_PAGES (100) calls to prevent infinite loops", async () => {
-      const listFn = jest.fn().mockImplementation(() =>
+      const listFn = vi.fn().mockImplementation(() =>
         Promise.resolve({
           data: {
             datasets: [makeDataset("ds-x")],
@@ -228,7 +228,9 @@ describe("paginateResults", () => {
         "datasets",
       );
       expect(listFn).toHaveBeenCalledTimes(100);
-      expect((result.data as any).datasets).toHaveLength(100);
+      expect((result.data as Record<string, unknown>).datasets).toHaveLength(
+        100,
+      );
     });
   });
 });

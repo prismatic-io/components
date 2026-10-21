@@ -20,3 +20,10 @@ export interface BigQueryJobRecord extends Record<string, unknown> {
   };
   user_email?: string;
 }
+export interface BigQueryChangesObject {
+  created: BigQueryJobRecord[];
+}
+export interface BigQueryRecordChange {
+  changeType: "created";
+  record: BigQueryJobRecord;
+}

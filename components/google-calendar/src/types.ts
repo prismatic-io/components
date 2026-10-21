@@ -25,6 +25,7 @@ export type CalendarChangeEventsInputs = {
 export type PollEventsTriggerParams = {
   connection: Connection;
   calendarId: string;
+  lookBackDate: string;
 };
 export type PollEventsTriggerState = {
   syncToken: string | undefined;
@@ -65,3 +66,19 @@ export type CategorizedEventChanges = {
   deletedEvents: ProcessedEvent[];
   allChanges: ProcessedEvent[];
 };
+export interface EventChangesObject {
+  createdEvents: ProcessedEvent[];
+  updatedEvents: ProcessedEvent[];
+  deletedEvents: ProcessedEvent[];
+  allChanges: ProcessedEvent[];
+}
+export interface EventRecordChange {
+  changeType: "created" | "updated" | "deleted" | "unknown";
+  record: ProcessedEvent;
+}
+export interface PollEventsPage extends Record<string, unknown> {
+  pageToken: string;
+  drainStartedAt: string;
+  syncToken?: string;
+}
+export type PollEventsCursor = PollEventsPage | null;

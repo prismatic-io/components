@@ -1,13 +1,15 @@
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { DEFAULT_PAGE_SIZE } from "../constants";
 import { paginateResults } from "./pagination";
-const createMockClient = (getMock: jest.Mock): Pick<HttpClient, "get"> => ({
-  get: getMock,
+const createMockClient = (
+  getMock: ReturnType<typeof vi.fn>,
+): Pick<HttpClient, "get"> => ({
+  get: getMock as any,
 });
 describe("paginateResults", () => {
-  let getMock: jest.Mock;
+  let getMock: ReturnType<typeof vi.fn>;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   it("fetchAll=false: makes a single call and returns full response", async () => {
     const response = {

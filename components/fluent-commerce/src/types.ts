@@ -1,5 +1,10 @@
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
+  after?: string | null;
+  backfillActive?: boolean;
+}
+export interface PollingCursor extends Record<string, unknown> {
+  after: string;
 }
 export interface FluentOrder extends Record<string, unknown> {
   id?: string;
@@ -8,6 +13,14 @@ export interface FluentOrder extends Record<string, unknown> {
   status?: string;
   createdOn?: string;
   updatedOn?: string;
+}
+export interface FluentCommerceChangesObject {
+  created?: FluentOrder[];
+  updated?: FluentOrder[];
+}
+export interface FluentCommerceRecordChange {
+  changeType: "created" | "updated";
+  record: FluentOrder;
 }
 export interface RelayPageInfo {
   hasNextPage: boolean;

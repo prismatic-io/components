@@ -1,6 +1,8 @@
 import { gql } from "graphql-request";
 export const POLL_PAGE_SIZE = 50;
 export const MAX_POLL_PAGES = 20;
+export const BATCHED_MAX_PAGES = 1;
+export const LOOK_BACK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const POLL_ORDERS_QUERY = gql`
   query PollOrders($from: String!, $first: Int!, $after: String, $retailerId: ID) {
     orders(updatedOn: { from: $from }, first: $first, after: $after, retailerId: $retailerId) {

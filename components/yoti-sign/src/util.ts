@@ -1,6 +1,10 @@
 import { type DataPayload, util } from "@prismatic-io/spectral";
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-import type { Envelope } from "./interfaces";
+import type {
+  Envelope,
+  PollingChangesObject,
+  PollingRecordChange,
+} from "./interfaces";
 export const cleanArrayListFileInput = (input: unknown): DataPayload[] => {
   if (Array.isArray(input)) {
     return input.map((file) => {
@@ -64,7 +68,7 @@ export async function fetchAllRecords<T>(
   let records: T[] = [];
   let hasMore = false;
   let offset = 0;
-  const limit = 500;
+  const limit = 100;
   do {
     const {
       data,
@@ -103,4 +107,36 @@ export const filterEnvelopesCreatedAfter = (
       : Number.NaN;
     return !Number.isNaN(createdMs) && createdMs > lastPolledAtMs;
   });
+};
+export const resolvePollingRecordChanges = (
+  data: PollingChangesObject | undefined,
+): PollingRecordChange[] => {
+  const changesObject = data ?? {};
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): PollingRecordChange => ({ changeType: "created", record }),
+    ),
+  ];
+};
+export const lookBackDateClean = (value: unknown): string => {
+  const raw = util.types.toString(value).trim();
+  if (!raw) return "";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    throw new Error("Look-back Date must be in YYYY-MM-DD format.");
+  }
+  const [year, month, day] = raw.split("-").map(Number);
+  const parsed = new Date(year, month - 1, day);
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    throw new Error("Look-back Date is not a valid calendar date.");
+  }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (parsed > today) {
+    throw new Error("Look-back Date cannot be a future date.");
+  }
+  return raw;
 };

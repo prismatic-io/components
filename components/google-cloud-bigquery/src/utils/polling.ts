@@ -1,5 +1,10 @@
 import { MAX_POLL_PAGES } from "../constants";
-import type { BigQueryClient, BigQueryJobRecord } from "../types";
+import type {
+  BigQueryChangesObject,
+  BigQueryClient,
+  BigQueryJobRecord,
+  BigQueryRecordChange,
+} from "../types";
 export const fetchJobsSince = async (
   client: BigQueryClient,
   projectId: string,
@@ -34,4 +39,14 @@ export const getJobCreationMs = (job: BigQueryJobRecord): number | null => {
   if (typeof raw !== "string") return null;
   const ms = Number(raw);
   return Number.isFinite(ms) ? ms : null;
+};
+export const resolvePollingRecordChanges = (
+  data: BigQueryChangesObject | undefined,
+): BigQueryRecordChange[] => {
+  const changesObject = data ?? { created: [] };
+  return [
+    ...(changesObject.created ?? []).map(
+      (record): BigQueryRecordChange => ({ changeType: "created", record }),
+    ),
+  ];
 };

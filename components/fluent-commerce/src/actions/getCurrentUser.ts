@@ -1,8 +1,8 @@
 import { action } from "@prismatic-io/spectral";
+import { gql } from "graphql-request";
 import { createFluentClient } from "../client";
 import { getCurrentUserExamplePayload } from "../examplePayloads";
 import { connectionInput } from "../inputs";
-import { gql } from "graphql-request";
 const getCurrentUser = action({
   display: {
     label: "Get Current User",

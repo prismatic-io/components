@@ -2,22 +2,44 @@ The **New and Updated Sites** trigger polls the System Surveyor API for newly cr
 
 #### How It Works
 
-1. On the first execution, the trigger initializes a timestamp cursor and returns no results
-2. On subsequent executions, the trigger retrieves all sites modified after the stored cursor timestamp
+1. The trigger runs on the configured schedule (for example, every 5 minutes)
+2. On each run, it queries the System Surveyor API for sites modified after the stored cursor timestamp
 3. If new or modified sites are found, the trigger returns them and updates the cursor to the current time
 4. If no changes are detected, the trigger reports no changes and updates the cursor
 
-#### Configuration
+**Initial Sync**
 
-| Field | Description |
-| --- | --- |
-| **Connection** | A configured System Surveyor connection. |
+An initial sync seeds a complete starting state. It begins on the first recurrence when the
+trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every site
+modified on or after that date exactly once. Left empty, the first recurrence initializes the
+cursor and returns no results; polling begins on the second recurrence. The trigger has no filter
+inputs, so nothing is suppressed during a sync.
 
-The polling schedule is configured at the integration level and determines how frequently the trigger checks for changes.
+The window has no fixed upper bound, so a site modified mid-drain is swept into the sync. The
+position advances to the wall clock captured when the recurrence began, and the first incremental
+recurrence resumes from exactly there; nothing in the payload marks the handoff. The trigger fetches
+every page before it returns, so the sync finishes in one recurrence whether or not batching is
+on.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to System Surveyor.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data` (an array of site records). With batching on
+that field does not exist: each execution receives one `{ "changeType": "modified", "record": ... }`
+item, or an array of them when the batch size is greater than 1. Any step reading the older shape
+must be updated before batching is enabled. Because batching is enabled per flow, that change is
+scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
-The trigger returns an object containing an array of site records that have been created or modified since the last poll:
+The trigger returns an object containing an array of site records that have been created or modified since the previous recurrence. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Payload</summary>
@@ -31,6 +53,24 @@ The trigger returns an object containing an array of site records that have been
       "modified_at": 1700000000
     }
   ]
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed:
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "modified",
+  "record": {
+    "id": 123,
+    "name": "Site Name",
+    "modified_at": 1700000000
+  }
 }
 ```
 

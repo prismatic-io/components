@@ -1,5 +1,5 @@
 import { input, util } from "@prismatic-io/spectral";
-import { toOptionalString, toStringList } from "../util";
+import { lookBackDateClean, toOptionalString, toStringList } from "../util";
 import { baseIdInput, connectionInput, tableName } from "./common";
 const dataTypes = input({
   label: "Data Types",
@@ -45,6 +45,16 @@ const additionalFilter = input({
     "Optional Airtable formula combined (AND) with the modification-time filter applied by the trigger.",
   clean: toOptionalString,
 });
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once, ignoring the visibility filters.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 const showNewRecords = input({
   label: "Show New Records",
   type: "boolean",
@@ -82,6 +92,7 @@ export const pollChangesInputs = {
     comments: "The ID of the base containing the table to poll.",
   },
   tableName,
+  lookBackDate,
   pollView,
   additionalFilter,
   showNewRecords,

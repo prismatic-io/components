@@ -7,3 +7,10 @@ export interface Envelope {
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
 }
+export interface PollingRecordChange {
+  changeType: "created";
+  record: Envelope;
+}
+export interface PollingChangesObject {
+  created?: Envelope[];
+}

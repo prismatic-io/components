@@ -7,9 +7,25 @@ This trigger polls the [Toast Labor API](https://doc.toasttab.com/openapi/) for 
 3. Records are categorized as **created** or **updated** by comparing each entry's timestamps to the last poll time. Entries whose `createdDate` is after the last poll time are classified as created, and the remaining entries whose `modifiedDate` is after the last poll time are classified as updated
 4. The trigger updates its internal state after each poll
 
+**Initial Sync**
+
+An initial sync seeds a complete starting state. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record modified on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence. A toggle that narrows the change feed would leave gaps in that starting state, so **Show New Time Entries** and **Show Updated Time Entries** are ignored during an initial sync: every seeded record is delivered, classified as created or updated, whichever toggles are off.
+
+The window's upper bound is fixed to the wall clock when the sync begins, so a record modified mid-drain is not picked up by the sync itself. The trigger stores that bound as its position once the window is exhausted, and the first incremental recurrence resumes from exactly there. Nothing in the payload marks the handoff. The trigger fetches the whole window in one request, so the sync finishes in one recurrence whether or not batching is on.
+
+**Restaurant External ID** still applies, so the sync covers only that restaurant. No page-size or field-selection input exists, so nothing else is affected.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Toast.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created` and `body.data.updated`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
 #### Returned Data
 
-The trigger returns an object with two arrays: `created` for new time entries and `updated` for modified time entries. Fields shown are representative. The full response object includes additional properties.
+With batching off, the trigger returns an object with two arrays: `created` for new time entries and `updated` for modified time entries. Fields shown are representative. The full response object includes additional properties.
 
 <details>
 <summary>Example Response</summary>
@@ -33,6 +49,25 @@ The trigger returns an object with two arrays: `created` for new time entries an
         "modifiedDate": "2026-05-27T14:22:00.000Z"
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "guid": "b04c86fb-4a82-4ba3-ab0d-93bf5b2b5abc",
+    "entityType": "TimeEntry",
+    "createdDate": "2026-05-27T10:30:00.000Z",
+    "modifiedDate": "2026-05-27T10:30:00.000Z"
   }
 }
 ```

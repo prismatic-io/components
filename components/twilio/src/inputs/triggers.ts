@@ -1,5 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { cleanString, connectionInput } from "./common";
+import { lookBackDateClean } from "../util";
 const fromFilter = input({
   label: "From Filter",
   placeholder: "Enter sender phone number",
@@ -39,8 +40,19 @@ const showUpdatedRecords = input({
   clean: util.types.toBool,
 });
 export const webhookInputs = {};
+const lookBackDate = input({
+  label: "Look-back Date",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
+  type: "string",
+  required: false,
+  comments:
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record sent on or after this date once, ignoring the visibility filters. A window of more than 10,000 messages is delivered over several recurrences, 10,000 at a time.",
+  example: "2026-01-01",
+  clean: lookBackDateClean,
+});
 export const pollChangesTriggerInputs = {
   connection: connectionInput,
+  lookBackDate,
   from: fromFilter,
   to: toFilter,
   showNewRecords,

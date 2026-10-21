@@ -1,11 +1,11 @@
 import { action, input, type KeyValuePair, util } from "@prismatic-io/spectral";
+import { gql, type Variables } from "graphql-request";
 import { createFluentClient } from "../client";
 import {
   createCustomerExamplePayload,
   getCustomerByEmailAddressExamplePayload,
 } from "../examplePayloads";
 import { connectionInput } from "../inputs";
-import { gql, type Variables } from "graphql-request";
 const createCustomer = action({
   display: {
     label: "Create Customer",

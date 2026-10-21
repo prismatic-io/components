@@ -9,16 +9,51 @@ This trigger polls [Google BigQuery](https://cloud.google.com/bigquery/) for job
 
 When a single poll returns more jobs than the page cap allows, the response is treated as truncated. Because BigQuery serves jobs newest-first with no modification timestamp, the trigger walks backward through the backlog on the following runs (draining older jobs first) instead of advancing the lower time bound. This prevents the older, not-yet-fetched portion of the backlog from being dropped. Once the backlog is fully drained, the trigger advances its state to the point captured when draining began, and jobs created during the drain are picked up by the next regular poll.
 
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed. Because this trigger
+has no show-new or show-updated toggles, no inputs are suppressed during a sync. It begins on the
+first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`)
+is set, and seeds every job created on or after that date exactly once. Left empty, there is no
+sync and the trigger starts from its first recurrence.
+
+A sync that fits within the page cap finishes in one recurrence with no fixed upper bound, so a
+job created mid-drain is swept into it. A larger window is drained backward over several
+recurrences, batching on or off: the upper bound is fixed to the wall clock when the drain begins,
+so a job created mid-drain is delivered by the first incremental recurrence instead. Either way the
+position then advances to that wall clock, not to the newest record received, and the first
+incremental recurrence resumes from exactly there; nothing in the payload marks the handoff.
+
+**Project ID** still applies throughout. The trigger has no page-size or field-selection input, so
+nothing else is affected.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Google BigQuery.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.created`. With batching on that field does
+not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array
+of them when the batch size is greater than 1. Any step reading the older shape must be updated
+before batching is enabled, or it breaks the moment the switch is flipped. Because batching is
+enabled per flow, that change is scoped to the flow rather than to the component or to other flows
+using the same trigger.
+
 #### Returned Data
 
-The trigger returns an object with one array under `data`:
+With batching off, the trigger returns an object with one array under `data`:
 
 - `data.created` holds the BigQuery job records created since the last poll.
 
 Fields shown are representative. The full response object includes additional properties.
 
 <details>
-<summary>Example Response (Polling)</summary>
+<summary>Example Response</summary>
 
 ```json
 {
@@ -43,6 +78,37 @@ Fields shown are representative. The full response object includes additional pr
         "user_email": "user@example.com"
       }
     ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` array is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "kind": "bigquery#job",
+    "id": "my-project:US.job_abc123def456",
+    "jobReference": {
+      "projectId": "my-project",
+      "jobId": "job_abc123def456",
+      "location": "US"
+    },
+    "status": {
+      "state": "DONE"
+    },
+    "statistics": {
+      "creationTime": "1640995200000",
+      "startTime": "1640995205000",
+      "endTime": "1640995210000"
+    },
+    "user_email": "user@example.com"
   }
 }
 ```

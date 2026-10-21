@@ -6,15 +6,35 @@ For information on Google Calendar's synchronization mechanism, see the [Google 
 
 This polling trigger uses a stateful synchronization approach:
 
-1. **Initial Poll**: On the first execution, establishes a sync token representing the current calendar state
-2. **Subsequent Polls**: Uses the sync token to fetch only events that changed since the last poll
-3. **Change Detection**: Automatically categorizes events as created, updated, or deleted based on timestamps and status
-4. **State Persistence**: Stores the sync token between polls to maintain continuity
+1. **Initial recurrence**: Establishes a sync token representing the current calendar state
+2. **Subsequent recurrences**: Uses the sync token to fetch only events that changed since the last recurrence
+3. **Change detection**: Automatically categorizes events as created, updated, or deleted based on timestamps and status
+4. **State persistence**: Stores the sync token between recurrences to maintain continuity
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state rather than a change feed. It begins on the first recurrence when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every event modified on or after that date exactly once. Left empty, there is no sync and the trigger starts from its first recurrence. The trigger has no filter inputs to suppress, so **Calendar ID** remains in effect throughout.
+
+Because Google Calendar uses a sync-token model rather than a timestamp window, there is no fixed upper bound: a record modified mid-drain is swept into the sync. Once the sync token is obtained the first incremental recurrence resumes from exactly there, and nothing in the payload marks the handoff. With batching off the trigger fetches every page before it returns; with batching on it fetches one page per call and the platform calls it again within the same recurrence, so the sync finishes in one recurrence either way.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Google Calendar.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.changes.createdEvents`, `body.data.changes.updatedEvents`, and `body.data.changes.deletedEvents`. With batching on those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
+With batching off, the trigger returns an object with categorized arrays for created, updated, and deleted events. Fields shown are representative. The full response object includes additional properties.
+
 <details>
-<summary>Example payload with multiple changes</summary>
+<summary>Example Response</summary>
 
 ```json
 {
@@ -84,6 +104,36 @@ This polling trigger uses a stateful synchronization approach:
   },
   "calendarId": "primary",
   "syncToken": "newSyncTokenForNextPoll"
+}
+```
+
+</details>
+
+With batching on, each execution receives one record tagged with how it changed, or an array of such items when the batch size is greater than 1. The `createdEvents`, `updatedEvents`, and `deletedEvents` arrays are not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "created",
+  "record": {
+    "id": "abc123event",
+    "summary": "New Team Meeting",
+    "status": "confirmed",
+    "start": {
+      "dateTime": "2026-01-30T14:00:00-06:00",
+      "timeZone": "America/Chicago"
+    },
+    "end": {
+      "dateTime": "2026-01-30T15:00:00-06:00",
+      "timeZone": "America/Chicago"
+    },
+    "created": "2026-01-28T10:30:00.000Z",
+    "updated": "2026-01-28T10:30:00.000Z",
+    "organizer": "user@example.com",
+    "htmlLink": "https://www.google.com/calendar/event?eid=..."
+  }
 }
 ```
 
