@@ -2,23 +2,28 @@ The Webhook trigger receives alert notifications from [Datadog monitors](https:/
 
 #### How It Works
 
-1. **On Instance Deploy**: The trigger automatically creates a webhook integration in Datadog pointing to the instance's webhook URL.
+1. **On Instance Deploy**: The trigger creates a webhook integration in Datadog pointing to the flow's webhook URL. If a webhook with the same name already points to that URL, the trigger updates it instead. If the **Webhook Name** changed since the last deploy, the trigger removes the webhook registered under the old name.
 2. **Monitor Configuration**: Configure Datadog monitors to notify `@webhook-<name>` where `<name>` matches the Webhook Name configured in the trigger.
 3. **On Alert**: When a monitor triggers, Datadog sends the alert payload to the webhook URL.
 4. **On Instance Deletion**: The trigger removes the webhook integration from Datadog.
 
+The same create and remove steps run when entering and leaving Listening Mode in the integration designer, using a temporary webhook URL.
+
 #### Event Types
 
 <details>
-<summary>Alert Transitions (5)</summary>
+<summary>Alert Transitions (8)</summary>
 
 | Alert Transition | Description |
 | --- | --- |
 | **Triggered** | Monitor threshold exceeded, alert fires |
+| **Re-Triggered** | Repeated **Triggered** notification |
 | **Recovered** | Monitor returned to normal state |
-| **Re-Notified** | Ongoing alert re-notification |
+| **Renotify** | Ongoing alert re-notification |
 | **No Data** | Monitor reports no data received |
+| **Re-No Data** | Repeated **No Data** notification |
 | **Warn** | Monitor entered warning state |
+| **Re-Warn** | Repeated **Warn** notification |
 
 </details>
 
@@ -51,6 +56,7 @@ Refer to [Datadog's monitor notification documentation](https://docs.datadoghq.c
 
 #### Notes
 
-- The **Webhook Name** must be unique within the Datadog organization.
+- The **Webhook Name** must be unique within the Datadog organization. Datadog identifies webhooks by name, so the trigger only updates or removes a webhook that points to the flow's webhook URL. Deploying with a name already used by a webhook that points elsewhere fails with an error asking for a unique **Webhook Name**, and that webhook is left unchanged.
 - After deploying, add `@webhook-<name>` to the monitor's notification message in Datadog.
 - Custom payloads can use Datadog template variables like `$ALERT_TITLE`, `$HOSTNAME`, `$TAGS`, etc.
+- Datadog does not document any request signing for webhooks, so the trigger cannot verify that a request came from Datadog. Treat the webhook URL as a secret. The trigger does not check any header or credential on incoming requests: headers set in **Custom Headers**, and OAuth 2.0 authentication from Datadog's [Webhooks integration](https://docs.datadoghq.com/integrations/webhooks/), are sent by Datadog but do not stop other callers from using the URL unless a later step in the flow validates them.

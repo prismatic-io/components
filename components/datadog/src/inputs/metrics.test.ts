@@ -17,7 +17,21 @@ import {
 describe("metricValue.clean", () => {
   test("coerces a numeric string to a number", () => {
     expect(metricValue.clean("0.7")).toBe(0.7);
-    expect(metricValue.clean("")).toBe(0);
+  });
+  test("accepts a genuine zero", () => {
+    expect(metricValue.clean("0")).toBe(0);
+    expect(metricValue.clean(0)).toBe(0);
+  });
+  test("rejects a blank value instead of submitting a 0 data point", () => {
+    expect(() => metricValue.clean("")).toThrow(
+      "Value is required and must be a number.",
+    );
+    expect(() => metricValue.clean("   ")).toThrow(
+      "Value is required and must be a number.",
+    );
+    expect(() => metricValue.clean(undefined)).toThrow(
+      "Value is required and must be a number.",
+    );
   });
   test("throws on a non-numeric string", () => {
     expect(() => metricValue.clean("abc")).toThrow();
@@ -29,6 +43,11 @@ describe("metricsFrom.clean", () => {
   });
   test("throws on a non-numeric string", () => {
     expect(() => metricsFrom.clean("abc")).toThrow();
+  });
+  test("rejects a blank value instead of listing from the epoch", () => {
+    expect(() => metricsFrom.clean("")).toThrow(
+      "From is required and must be a number.",
+    );
   });
 });
 describe("metricTimestamp.clean", () => {
@@ -79,8 +98,20 @@ describe("metricSeries.clean", () => {
     const series = [{ metric: "system.load.1", points: [] }];
     expect(metricSeries.clean(series)).toEqual(series);
   });
-  test("returns a malformed JSON string unchanged", () => {
-    expect(metricSeries.clean('[{"metric": ')).toBe('[{"metric": ');
+  test("rejects malformed JSON with an input error", () => {
+    expect(() => metricSeries.clean('[{"metric": ')).toThrow(
+      "Metric Series must be a JSON array of metric series.",
+    );
+  });
+  test("rejects a JSON object that is not an array", () => {
+    expect(() =>
+      metricSeries.clean('{"series": [{"metric": "system.load.1"}]}'),
+    ).toThrow("Metric Series must be a JSON array of metric series.");
+  });
+  test("rejects a null value", () => {
+    expect(() => metricSeries.clean(null)).toThrow(
+      "Metric Series must be a JSON array of metric series.",
+    );
   });
 });
 describe("metricTags.clean", () => {

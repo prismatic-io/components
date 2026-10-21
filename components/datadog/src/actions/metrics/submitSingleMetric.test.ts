@@ -2,7 +2,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { apiKeyConnection } from "../../connections";
 import { DEFAULT_DATADOG_SITE } from "../../constants";
-import { submitMetricsExample } from "../../examplePayloads";
+import { submitSingleMetricExamplePayload } from "../../examplePayloads";
 import { submitSingleMetric } from "./submitSingleMetric";
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
@@ -35,7 +35,7 @@ describe("submitSingleMetric", () => {
           },
         ],
       })
-      .reply(202, submitMetricsExample.data);
+      .reply(202, submitSingleMetricExamplePayload.data);
     const { result } = await invoke(submitSingleMetric, {
       connection: testConnection,
       metricName: "system.load.1",
@@ -50,10 +50,10 @@ describe("submitSingleMetric", () => {
         resourceType: "host",
       },
     });
-    expect(result.data).toEqual(submitMetricsExample.data);
+    expect(result.data).toEqual(submitSingleMetricExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
-  test("still sends an empty resource entry when no optional fields are set", async () => {
+  test("omits resources when neither resource field is set", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .post("/api/v2/series", {
         series: [
@@ -61,11 +61,10 @@ describe("submitSingleMetric", () => {
             metric: "system.load.1",
             points: [{ value: 0.7 }],
             tags: [],
-            resources: [{}],
           },
         ],
       })
-      .reply(202, submitMetricsExample.data);
+      .reply(202, submitSingleMetricExamplePayload.data);
     const { result } = await invoke(submitSingleMetric, {
       connection: testConnection,
       metricName: "system.load.1",
@@ -74,7 +73,30 @@ describe("submitSingleMetric", () => {
       metricTags: [],
       metricFields: emptyMetricFields,
     });
-    expect(result.data).toEqual(submitMetricsExample.data);
+    expect(result.data).toEqual(submitSingleMetricExamplePayload.data);
+    expect(scope.isDone()).toBe(true);
+  });
+  test("sends a resource when only the resource name is set", async () => {
+    const scope = nock(DEFAULT_DATADOG_SITE)
+      .post("/api/v2/series", {
+        series: [
+          {
+            metric: "system.load.1",
+            points: [{ value: 0.7 }],
+            tags: [],
+            resources: [{ name: "my-host" }],
+          },
+        ],
+      })
+      .reply(202, submitSingleMetricExamplePayload.data);
+    await invoke(submitSingleMetric, {
+      connection: testConnection,
+      metricName: "system.load.1",
+      metricValue: 0.7,
+      metricTimestamp: undefined,
+      metricTags: [],
+      metricFields: { ...emptyMetricFields, resourceName: "my-host" },
+    });
     expect(scope.isDone()).toBe(true);
   });
   test("surfaces an API error", async () => {

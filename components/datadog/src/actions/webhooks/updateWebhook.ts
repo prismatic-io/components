@@ -1,6 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { webhookExample } from "../../examplePayloads";
+import {
+  DEFAULT_WEBHOOK_ENCODE_AS,
+  WEBHOOKS_CONFIGURATION_PATH,
+} from "../../constants";
+import { updateWebhookExamplePayload } from "../../examplePayloads";
 import { updateWebhookInputs } from "../../inputs";
 import { updateWebhookOutputSchema } from "../../outputSchemas";
 import type { WebhooksIntegration } from "../../types";
@@ -27,9 +31,9 @@ export const updateWebhook = action({
       webhookPayload,
     },
   ) => {
-    const client = createClient(connection, context.debug.enabled);
+    const client = createClient(connection);
     const response = await client.put<WebhooksIntegration>(
-      `/api/v1/integration/webhooks/configuration/webhooks/${encodeURIComponent(webhookName)}`,
+      `${WEBHOOKS_CONFIGURATION_PATH}/${encodeURIComponent(webhookName)}`,
       {
         url: webhookUrl,
         custom_headers: webhookCustomHeaders,
@@ -52,13 +56,13 @@ export const updateWebhook = action({
     data: unknown;
   }> => ({
     data: {
-      ...webhookExample.data,
+      ...updateWebhookExamplePayload.data,
       name: webhookName,
-      url: webhookUrl || webhookExample.data.url,
+      url: webhookUrl || updateWebhookExamplePayload.data.url,
       custom_headers: webhookCustomHeaders ?? null,
-      encode_as: webhookEncodeAs ?? "json",
+      encode_as: webhookEncodeAs ?? DEFAULT_WEBHOOK_ENCODE_AS,
       payload: webhookPayload ?? null,
     },
   }),
-  examplePayload: webhookExample,
+  examplePayload: updateWebhookExamplePayload,
 });

@@ -1,6 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { submitMetricsExample } from "../../examplePayloads";
+import { SUBMIT_METRICS_PATH } from "../../constants";
+import { submitSingleMetricExamplePayload } from "../../examplePayloads";
 import { submitSingleMetricInputs } from "../../inputs";
 import { submitMetricsOutputSchema } from "../../outputSchemas";
 import type { MetricSeries, SubmitMetricsResponse } from "../../types";
@@ -27,7 +28,7 @@ export const submitSingleMetric = action({
       metricFields,
     },
   ) => {
-    const client = createClient(connection, context.debug.enabled);
+    const client = createClient(connection);
     const series: MetricSeries = {
       metric: metricName,
       points: [{ timestamp: metricTimestamp, value: metricValue }],
@@ -35,15 +36,19 @@ export const submitSingleMetric = action({
       tags: metricTags,
       unit: metricFields.metricUnit,
       interval: metricFields.metricInterval,
-      resources: [
-        {
-          name: metricFields.resourceName,
-          type: metricFields.resourceType,
-        },
-      ],
+      ...(metricFields.resourceName || metricFields.resourceType
+        ? {
+            resources: [
+              {
+                name: metricFields.resourceName,
+                type: metricFields.resourceType,
+              },
+            ],
+          }
+        : {}),
     };
     const response = await client.post<SubmitMetricsResponse>(
-      "/api/v2/series",
+      SUBMIT_METRICS_PATH,
       { series: [series] },
     );
     return { data: response.data };
@@ -51,7 +56,7 @@ export const submitSingleMetric = action({
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({
-    ...submitMetricsExample,
+    ...submitSingleMetricExamplePayload,
   }),
-  examplePayload: submitMetricsExample,
+  examplePayload: submitSingleMetricExamplePayload,
 });

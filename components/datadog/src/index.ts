@@ -11,7 +11,7 @@ export default component({
   display: {
     label: "Datadog",
     description:
-      "Interact with the Datadog API to submit metrics, manage webhooks, and monitor your infrastructure and application performance.",
+      "Interact with the Datadog API to submit metrics, manage webhooks, and monitor infrastructure and application performance.",
     iconPath: "icon.png",
     category: "Data Platforms",
   },

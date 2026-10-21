@@ -5,7 +5,7 @@ import {
 import nock from "nock";
 import { apiKeyConnection } from "../connections";
 import { DEFAULT_DATADOG_SITE } from "../constants";
-import { searchMetricsExample } from "../examplePayloads";
+import { searchMetricsExamplePayload } from "../examplePayloads";
 import { selectMetric } from "./selectMetric";
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
@@ -19,7 +19,7 @@ describe("selectMetric", () => {
   afterEach(() => nock.cleanAll());
   afterAll(() => nock.enableNetConnect());
   test("returns alphabetically sorted label/key elements", async () => {
-    const metrics = [...searchMetricsExample.data.results.metrics];
+    const metrics = [...searchMetricsExamplePayload.data.results.metrics];
     searchInterceptor().reply(200, {
       results: { metrics: [...metrics].reverse() },
     });

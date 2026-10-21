@@ -12,3 +12,4 @@ const webhooksIntegrationSchema = {
 export const createWebhookOutputSchema = webhooksIntegrationSchema;
 export const getWebhookOutputSchema = webhooksIntegrationSchema;
 export const updateWebhookOutputSchema = webhooksIntegrationSchema;
+export const deleteWebhookOutputSchema = { type: "null" as const };

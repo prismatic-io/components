@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { listMetricsExample } from "../../examplePayloads";
+import { listMetricsExamplePayload } from "../../examplePayloads";
 import { listMetricsInputs } from "../../inputs";
 import { listMetricsOutputSchema } from "../../outputSchemas";
 import type { ListMetricsResponse } from "../../types";
@@ -20,7 +20,7 @@ export const listMetrics = action({
     context,
     { connection, metricsFrom, metricsHost, metricsTagFilter },
   ) => {
-    const client = createClient(connection, context.debug.enabled);
+    const client = createClient(connection);
     const params: Record<string, unknown> = {
       from: metricsFrom,
       ...(metricsHost && { host: metricsHost }),
@@ -38,9 +38,9 @@ export const listMetrics = action({
     data: unknown;
   }> => ({
     data: {
-      ...listMetricsExample.data,
+      ...listMetricsExamplePayload.data,
       from: String(metricsFrom),
     },
   }),
-  examplePayload: listMetricsExample,
+  examplePayload: listMetricsExamplePayload,
 });

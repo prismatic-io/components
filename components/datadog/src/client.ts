@@ -26,19 +26,17 @@ export const getAuthHeaders = (
     Authorization: `Bearer ${token}`,
   };
 };
-export const createClient = (
-  connection: Connection,
-  debug = false,
-): HttpClient => {
+export const createClient = (connection: Connection): HttpClient => {
   validateConnection(connection);
   const baseUrl = getBaseUrl(connection);
   return createHttpClient({
     baseUrl,
+    responseType: "json",
     headers: {
       ...getAuthHeaders(connection),
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    debug,
+    debug: false,
   });
 };

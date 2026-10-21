@@ -2,7 +2,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { apiKeyConnection } from "../../connections";
 import { DEFAULT_DATADOG_SITE } from "../../constants";
-import { submitMetricsExample } from "../../examplePayloads";
+import { submitMetricsExamplePayload } from "../../examplePayloads";
 import { submitMetrics } from "./submitMetrics";
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
@@ -25,12 +25,12 @@ describe("submitMetrics", () => {
   test("wraps the cleaned series array in a series body", async () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .post("/api/v2/series", { series })
-      .reply(202, submitMetricsExample.data);
+      .reply(202, submitMetricsExamplePayload.data);
     const { result } = await invoke(submitMetrics, {
       connection: testConnection,
       metricSeries: series,
     });
-    expect(result.data).toEqual(submitMetricsExample.data);
+    expect(result.data).toEqual(submitMetricsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
   test("surfaces an API error", async () => {

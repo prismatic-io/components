@@ -2,7 +2,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { apiKeyConnection } from "../../connections";
 import { DEFAULT_DATADOG_SITE } from "../../constants";
-import { searchMetricsExample } from "../../examplePayloads";
+import { searchMetricsExamplePayload } from "../../examplePayloads";
 import { searchMetrics } from "./searchMetrics";
 const testConnection = createConnection(apiKeyConnection, {
   datadogSite: DEFAULT_DATADOG_SITE,
@@ -17,12 +17,12 @@ describe("searchMetrics", () => {
     const scope = nock(DEFAULT_DATADOG_SITE)
       .get("/api/v1/search")
       .query({ q: "metrics:system.cpu" })
-      .reply(200, searchMetricsExample.data);
+      .reply(200, searchMetricsExamplePayload.data);
     const { result } = await invoke(searchMetrics, {
       connection: testConnection,
       metricsQuery: "system.cpu",
     });
-    expect(result.data).toEqual(searchMetricsExample.data);
+    expect(result.data).toEqual(searchMetricsExamplePayload.data);
     expect(scope.isDone()).toBe(true);
   });
   test("surfaces an API error", async () => {

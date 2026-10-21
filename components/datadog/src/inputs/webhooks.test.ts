@@ -1,4 +1,5 @@
 import {
+  updateWebhookInputs,
   webhookCustomHeaders,
   webhookEncodeAs,
   webhookName,
@@ -24,6 +25,17 @@ describe("webhookUrl.clean", () => {
   });
   test("returns an empty string when unset", () => {
     expect(webhookUrl.clean(undefined)).toBe("");
+  });
+});
+describe("updateWebhookInputs.webhookUrl.clean", () => {
+  test("coerces a supplied value to a string", () => {
+    expect(
+      updateWebhookInputs.webhookUrl.clean("https://hooks.example.com/datadog"),
+    ).toBe("https://hooks.example.com/datadog");
+  });
+  test("returns undefined when unset", () => {
+    expect(updateWebhookInputs.webhookUrl.clean(undefined)).toBeUndefined();
+    expect(updateWebhookInputs.webhookUrl.clean("")).toBeUndefined();
   });
 });
 describe.each([

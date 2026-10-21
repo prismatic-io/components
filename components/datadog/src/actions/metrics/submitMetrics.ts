@@ -1,6 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { submitMetricsExample } from "../../examplePayloads";
+import { SUBMIT_METRICS_PATH } from "../../constants";
+import { submitMetricsExamplePayload } from "../../examplePayloads";
 import { submitMetricsInputs } from "../../inputs";
 import { submitMetricsOutputSchema } from "../../outputSchemas";
 import type { SubmitMetricsResponse } from "../../types";
@@ -16,10 +17,10 @@ export const submitMetrics = action({
     schema: submitMetricsOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (context, { connection, metricSeries }) => {
-    const client = createClient(connection, context.debug.enabled);
+  perform: async (_context, { connection, metricSeries }) => {
+    const client = createClient(connection);
     const response = await client.post<SubmitMetricsResponse>(
-      "/api/v2/series",
+      SUBMIT_METRICS_PATH,
       { series: metricSeries },
     );
     return { data: response.data };
@@ -27,7 +28,7 @@ export const submitMetrics = action({
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({
-    ...submitMetricsExample,
+    ...submitMetricsExamplePayload,
   }),
-  examplePayload: submitMetricsExample,
+  examplePayload: submitMetricsExamplePayload,
 });

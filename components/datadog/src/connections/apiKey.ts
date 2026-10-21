@@ -5,7 +5,7 @@ export const apiKeyConnection = connection({
   display: {
     label: "API Key + Application Key",
     description:
-      "Authenticate using a Datadog API Key and Application Key. The API Key authenticates your organization, and the Application Key authorizes management operations.",
+      "Authenticate using a Datadog API Key and Application Key. The API Key authenticates the organization, and the Application Key authorizes management operations.",
   },
   inputs: {
     datadogSite: {
@@ -13,10 +13,10 @@ export const apiKeyConnection = connection({
       type: "string",
       required: true,
       shown: true,
-      model: DATADOG_SITES,
-      default: DEFAULT_DATADOG_SITE,
       comments:
-        "Select the Datadog site that matches your organization. This determines the API base URL.",
+        "Select the Datadog site that matches the organization. This determines the API base URL.",
+      default: DEFAULT_DATADOG_SITE,
+      model: DATADOG_SITES,
     },
     apiKey: {
       label: "API Key",

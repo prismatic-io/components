@@ -1,6 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { searchMetricsExample } from "../../examplePayloads";
+import { METRICS_QUERY_PREFIX, SEARCH_METRICS_PATH } from "../../constants";
+import { searchMetricsExamplePayload } from "../../examplePayloads";
 import { searchMetricsInputs } from "../../inputs";
 import { searchMetricsOutputSchema } from "../../outputSchemas";
 import type { SearchMetricsResponse } from "../../types";
@@ -16,19 +17,22 @@ export const searchMetrics = action({
     schema: searchMetricsOutputSchema,
   }),
   performSafety: "notAllowed",
-  perform: async (context, { connection, metricsQuery }) => {
-    const client = createClient(connection, context.debug.enabled);
-    const response = await client.get<SearchMetricsResponse>("/api/v1/search", {
-      params: {
-        q: `metrics:${metricsQuery}`,
+  perform: async (_context, { connection, metricsQuery }) => {
+    const client = createClient(connection);
+    const response = await client.get<SearchMetricsResponse>(
+      SEARCH_METRICS_PATH,
+      {
+        params: {
+          q: `${METRICS_QUERY_PREFIX}${metricsQuery}`,
+        },
       },
-    });
+    );
     return { data: response.data };
   },
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({
-    ...searchMetricsExample,
+    ...searchMetricsExamplePayload,
   }),
-  examplePayload: searchMetricsExample,
+  examplePayload: searchMetricsExamplePayload,
 });

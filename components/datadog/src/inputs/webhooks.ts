@@ -26,6 +26,7 @@ export const webhookCustomHeaders = input({
   type: "code",
   required: false,
   language: "json",
+  placeholder: "Enter custom headers as JSON",
   comments:
     "Custom headers to attach to webhook requests as a JSON string. Useful for authentication headers.",
   example: '{"Authorization": "Bearer my-token"}',
@@ -44,8 +45,10 @@ export const webhookPayload = input({
   type: "code",
   required: false,
   language: "json",
+  placeholder: "Enter custom JSON payload",
   comments:
     "Custom JSON payload for the webhook. If not provided, uses the default Datadog payload with standard variables like $ALERT_TITLE, $ALERT_STATUS, etc.",
+  example: '{"title": "$ALERT_TITLE", "status": "$ALERT_STATUS"}',
   clean: toOptionalString,
 });
 export const createWebhookInputs = {
@@ -59,7 +62,7 @@ export const createWebhookInputs = {
 export const updateWebhookInputs = {
   connection,
   webhookName,
-  webhookUrl: { ...webhookUrl, required: false },
+  webhookUrl: { ...webhookUrl, required: false, clean: toOptionalString },
   webhookCustomHeaders,
   webhookEncodeAs,
   webhookPayload,

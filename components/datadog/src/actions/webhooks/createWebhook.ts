@@ -1,6 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { webhookExample } from "../../examplePayloads";
+import {
+  DEFAULT_WEBHOOK_ENCODE_AS,
+  WEBHOOKS_CONFIGURATION_PATH,
+} from "../../constants";
+import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { createWebhookOutputSchema } from "../../outputSchemas";
 import type { WebhooksIntegration } from "../../types";
@@ -27,9 +31,9 @@ export const createWebhook = action({
       webhookPayload,
     },
   ) => {
-    const client = createClient(connection, context.debug.enabled);
+    const client = createClient(connection);
     const response = await client.post<WebhooksIntegration>(
-      "/api/v1/integration/webhooks/configuration/webhooks",
+      WEBHOOKS_CONFIGURATION_PATH,
       {
         name: webhookName,
         url: webhookUrl,
@@ -53,13 +57,13 @@ export const createWebhook = action({
     data: unknown;
   }> => ({
     data: {
-      ...webhookExample.data,
+      ...createWebhookExamplePayload.data,
       name: webhookName,
       url: webhookUrl,
       custom_headers: webhookCustomHeaders ?? null,
-      encode_as: webhookEncodeAs ?? "json",
+      encode_as: webhookEncodeAs ?? DEFAULT_WEBHOOK_ENCODE_AS,
       payload: webhookPayload ?? null,
     },
   }),
-  examplePayload: webhookExample,
+  examplePayload: createWebhookExamplePayload,
 });

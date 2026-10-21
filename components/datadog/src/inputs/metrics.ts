@@ -1,7 +1,13 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
 import { METRIC_TYPE_OPTIONS } from "../constants";
-import type { MetricIntakeType } from "../types";
-import { toOptionalNumber, toOptionalString } from "../utils";
+import {
+  toMetricSeries,
+  toOptionalMetricIntakeType,
+  toOptionalNumber,
+  toOptionalString,
+  toRequiredNumber,
+  toStringList,
+} from "../utils";
 import { connection } from "./common";
 export const metricName = input({
   label: "Metric Name",
@@ -19,6 +25,7 @@ export const metricSeries = input({
   type: "code",
   required: true,
   language: "json",
+  placeholder: "Enter metric series as a JSON array",
   comments:
     'JSON array of metric series to submit. Each series must include "metric" (name) and "points" (array of {timestamp, value}). Optional fields: type, interval, unit, tags, resources.',
   example: JSON.stringify(
@@ -34,17 +41,16 @@ export const metricSeries = input({
     null,
     2,
   ),
-  clean: util.types.toObject,
+  clean: toMetricSeries,
 });
 export const metricType = input({
-  label: "Metric Type",
+  label: "Type",
   type: "string",
   required: false,
   model: METRIC_TYPE_OPTIONS,
   comments:
     "The type of metric. Gauge is the default if unspecified. Count and Rate types require an interval.",
-  clean: (value: unknown): MetricIntakeType | undefined =>
-    value ? (util.types.toNumber(value) as MetricIntakeType) : undefined,
+  clean: toOptionalMetricIntakeType,
 });
 export const metricValue = input({
   label: "Value",
@@ -53,7 +59,7 @@ export const metricValue = input({
   placeholder: "Enter metric value",
   comments: "The numeric value for the metric data point (64-bit float).",
   example: "0.7",
-  clean: util.types.toNumber,
+  clean: toRequiredNumber("Value"),
 });
 export const metricTimestamp = input({
   label: "Timestamp",
@@ -70,10 +76,11 @@ export const metricTags = input({
   type: "string",
   required: false,
   collection: "valuelist",
+  placeholder: "Enter tag",
   comments:
     'Tags associated with the metric. Each tag is a string in "key:value" format.',
   example: "environment:production",
-  clean: (value: unknown) => value as string[],
+  clean: toStringList,
 });
 export const metricUnit = input({
   label: "Unit",
@@ -121,7 +128,7 @@ export const metricsFrom = input({
   comments:
     "Unix timestamp (seconds) from which to list active metrics. Metrics reported after this time are returned.",
   example: "1636629071",
-  clean: util.types.toNumber,
+  clean: toRequiredNumber("From"),
 });
 export const metricsHost = input({
   label: "Host",

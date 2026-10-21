@@ -1,7 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { createClient } from "../../client";
-import { deleteWebhookExample } from "../../examplePayloads";
+import { WEBHOOKS_CONFIGURATION_PATH } from "../../constants";
+import { deleteWebhookExamplePayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
+import { deleteWebhookOutputSchema } from "../../outputSchemas";
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
@@ -9,18 +11,22 @@ export const deleteWebhook = action({
       "Delete a Datadog webhook integration by name. This action cannot be undone.",
   },
   inputs: deleteWebhookInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteWebhookOutputSchema,
+  }),
   performSafety: "notAllowed",
-  perform: async (context, { connection, webhookName }) => {
-    const client = createClient(connection, context.debug.enabled);
+  perform: async (_context, { connection, webhookName }) => {
+    const client = createClient(connection);
     await client.delete(
-      `/api/v1/integration/webhooks/configuration/webhooks/${encodeURIComponent(webhookName)}`,
+      `${WEBHOOKS_CONFIGURATION_PATH}/${encodeURIComponent(webhookName)}`,
     );
     return { data: null };
   },
   examplePerform: async (): Promise<{
     data: unknown;
   }> => ({
-    ...deleteWebhookExample,
+    ...deleteWebhookExamplePayload,
   }),
-  examplePayload: deleteWebhookExample,
+  examplePayload: deleteWebhookExamplePayload,
 });
