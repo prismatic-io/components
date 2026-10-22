@@ -1,10 +1,8 @@
 import customerActions from "./customers";
-import genericRequestActions from "./genericRequest";
-import getCurrentUserActions from "./getCurrentUser";
+import miscActions from "./misc";
 import productActions from "./products";
 export default {
   ...customerActions,
-  ...genericRequestActions,
-  ...getCurrentUserActions,
+  ...miscActions,
   ...productActions,
 };

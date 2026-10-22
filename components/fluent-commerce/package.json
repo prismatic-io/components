@@ -1,6 +1,7 @@
 {
   "name": "@prismatic-io/fluent-commerce",
   "private": true,
+  "license": "Apache-2.0",
   "scripts": {
     "lint": "biome check --write .",
     "format": "biome format --write .",
@@ -12,18 +13,18 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.32.0",
-    "graphql": "15.8.0",
-    "graphql-request": "4.2.0",
+    "@prismatic-io/spectral": "10.35.0",
+    "graphql": "16.14.2",
+    "graphql-request": "7.4.0",
     "lodash.merge": "4.6.2",
     "url-join": "4.0.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/lodash.merge": "4.6.7",
-    "@types/node": "^26",
-    "@types/qs": "6.9.7",
+    "@types/node": "^26.6.5",
     "@types/url-join": "4.0.0",
+    "nock": "14.0.17",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
     "vitest": "^5.0.4"

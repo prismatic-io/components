@@ -131,7 +131,7 @@ export const genericRequestExamplePayload = {
     },
   },
 };
-export const pollChangesExamplePayload: {
+export const pollChangesTriggerExamplePayload: {
   payload: TriggerPayload;
 } = {
   payload: {

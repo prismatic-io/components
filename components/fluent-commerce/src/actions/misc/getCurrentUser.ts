@@ -1,18 +1,25 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { gql } from "graphql-request";
-import { createFluentClient } from "../client";
-import { getCurrentUserExamplePayload } from "../examplePayloads";
-import { connectionInput } from "../inputs";
-const getCurrentUser = action({
+import { createFluentClient } from "../../client";
+import { getCurrentUserExamplePayload } from "../../examplePayloads";
+import { getCurrentUserInputs } from "../../inputs";
+import { getCurrentUserOutputSchema } from "../../outputSchemas";
+export const getCurrentUser = action({
   display: {
     label: "Get Current User",
     description: "Get information about the currently authenticated user",
   },
-  inputs: { connection: connectionInput },
+  inputs: getCurrentUserInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getCurrentUserOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, params) => {
     const client = await createFluentClient(
       params.connection,
       context.debug.enabled,
+      context.logger,
     );
     const query = gql`
       {
@@ -75,6 +82,3 @@ const getCurrentUser = action({
   },
   examplePayload: getCurrentUserExamplePayload,
 });
-export default {
-  getCurrentUser,
-};

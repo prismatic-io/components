@@ -1,49 +1,32 @@
-The **New and Updated Records** trigger checks Fluent Commerce for new and updated orders on a configured schedule. It queries the [GraphQL `orders` connection](https://docs.fluentcommerce.com/essential-knowledge/graphql-queries) with an `updatedOn` range, then partitions the returned orders into `created` and `updated` buckets based on each order's `createdOn` versus the trigger's `lastPolledAt` cursor.
+This trigger polls [Fluent Commerce](https://docs.fluentcommerce.com/essential-knowledge/graphql-api) for new and updated orders on a scheduled basis.
 
 #### How It Works
 
-1. The trigger runs on the configured schedule (for example, every five minutes).
-2. It queries orders whose `updatedOn` is on or after `lastPolledAt`, following the connection's `after` cursor page by page. When a **Retailer ID** is supplied, the query is scoped to that retailer.
-3. Orders are partitioned into two buckets:
-   - **`created`**: orders whose `createdOn` is strictly after `lastPolledAt`.
-   - **`updated`**: orders that existed before `lastPolledAt` but were modified since.
-4. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two result arrays. Turning either off empties that array, and both keys remain present in the payload.
-5. `lastPolledAt` advances to the current time only once the result stream is exhausted. Until then the trigger keeps its place with the connection's `after` cursor, so a large window drains across rounds without skipping orders.
+1. The trigger runs on the configured schedule.
+2. It queries Fluent for orders whose `updatedOn` falls between the last recurrence and the current time. When **Retailer ID** is set, only that retailer's orders are returned. Otherwise the connection's default tenant scope applies.
+3. Each returned order is classified as **created** when its `createdOn` is after the last recurrence, and otherwise as **updated**.
+4. Outside an initial sync, **Show New Records** and **Show Updated Records** each gate one of the two arrays. Turning either off leaves that array empty.
+5. Once the whole window has been read, the trigger stores the window's upper bound as its position for the next recurrence.
+
+Both bounds of the window are inclusive, so an order updated exactly on a boundary can be returned by two consecutive recurrences.
 
 **Initial Sync**
 
-An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow
-which changes are reported would leave gaps in it: **Show New Records** and **Show Updated
-Records** are ignored while it runs, and are the only inputs it ignores. It begins on the first
-recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set,
-and seeds every order modified on or after that date exactly once. Left empty, there is no sync and
-the trigger starts from its first recurrence.
+An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it: **Show New Records** and **Show Updated Records** are ignored while it runs. It begins on the first recurrence when a **Look-back Date** (`YYYY-MM-DD`, not a future date) is set, and returns every order updated on or after that date. Left empty, there is no initial sync and the first recurrence starts from the time it runs.
 
-The window has no fixed upper bound. Once the stream is exhausted the position advances to the wall
-clock, and the first incremental recurrence resumes from exactly there; nothing in the payload
-marks the handoff. With batching off the trigger fetches up to 20 pages per recurrence, so a large
-window drains over several recurrences; with batching on it fetches one page per round and the
-platform calls it again within the same recurrence until the stream is exhausted.
+The upper bound of the sync window is fixed when the sync begins, so orders updated mid-drain are picked up by the first scheduled recurrence after the sync completes. The trigger stores that bound as its position once the window is fully read, and the first incremental recurrence resumes from exactly there. Nothing in the payload marks the handoff. With batching off, the sync reads up to 20 pages of 50 orders per recurrence and resumes the same window on the next recurrence until it is drained. With batching on, the sync is drained within one recurrence.
 
-**Retailer ID** still applies throughout. The trigger has no page-size or field-selection input, so
-nothing else is suppressed.
+**Retailer ID** still applies throughout the sync.
 
 **Batching**
 
-Batching is enabled per flow on this trigger: each changed record is dispatched as its own
-execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
-overridden per instance. Raising concurrency increases the request volume sent to Fluent Commerce.
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Fluent Commerce.
 
-To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
-Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
-**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
 
-With batching off a downstream step reads `body.data.created` and `body.data.updated`. With
-batching on those fields do not exist: each execution receives one
-`{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater
-than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks
-the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to
-the flow rather than to the component or to other flows using the same trigger.
+With batching on, the trigger reads one page of 50 orders per round and the platform continues from the returned cursor, so a window larger than one page is drained within the same recurrence. With batching off, a window larger than 20 pages is resumed one recurrence at a time.
+
+With batching off, a downstream step reads `body.data.created` and `body.data.updated`. With batching on, those fields do not exist: each execution receives one `{ "changeType": ..., "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
 
 #### Returned Data
 
@@ -81,7 +64,7 @@ With batching off, the trigger returns an object with two arrays: `created` for 
 
 </details>
 
-With batching on, each execution receives one order tagged with how it changed:
+With batching on, each execution receives one order tagged with how it changed, or an array of such items when the batch size is greater than 1. The `created` and `updated` arrays are not part of this shape.
 
 <details>
 <summary>Batched Item</summary>

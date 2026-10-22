@@ -1,5 +1,16 @@
 ## Changelog
 
+### 2026-10-22
+
+- Fixed the **New and Updated Records** trigger skipping previously created orders that were modified since the last recurrence
+- Fixed Debug Mode printing the connection's password, client secret and access token to the execution logs while authenticating with Fluent Commerce
+- Fixed the **Attributes** input on the **Create Customer** action so configured attributes are sent to Fluent Commerce instead of being silently dropped
+- Updated **Create Customer** to omit **Last Name**, **Phone Number**, **Country**, and **Time Zone** when left empty instead of sending them to Fluent Commerce as empty text
+- Updated the **Fluent Commerce OAuth 2.0 Password Grant** connection to report a clear error when Fluent Commerce returns no access token
+- Updated Debug Mode to log each GraphQL request's query and variables for the actions
+- Added inline action calling support to the **Get Current User**, **Get Customer by Email**, **Create Customer**, and **Create Product** actions for improved example output during configuration
+- Added output schemas to the **Get Current User**, **Get Customer by Email**, **Create Customer**, and **Create Product** actions for improved field mapping during configuration
+
 ### 2026-10-21
 
 - Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches so large backlogs drain in one recurrence; enabling it changes the shape a downstream step receives
