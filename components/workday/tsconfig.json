@@ -2,11 +2,16 @@
   "compilerOptions": {
     "target": "es6",
     "lib": ["esnext"],
+    "skipLibCheck": true,
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", ".spectral/*"]
 }

@@ -1,8 +1,8 @@
-export * from "./shared";
+export * from "./common";
 export * from "./absenceManagement";
 export * from "./accountsPayable";
 export * from "./businessProcess";
-export * from "./common";
+export * from "./commonApi";
 export * from "./connect";
 export * from "./customerAccounts";
 export * from "./person";
@@ -10,3 +10,6 @@ export * from "./prismAnalytics";
 export * from "./staffing";
 export * from "./timeTracking";
 export * from "./misc";
+export * from "./reports";
+export * from "./dataSources";
+export * from "./triggers";

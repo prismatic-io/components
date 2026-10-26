@@ -1,15 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import FormData from "form-data";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { postFilesByContainerIdExamplePayload } from "../../examplePayloads";
 import { postFilesByContainerIdInputs } from "../../inputs";
+import { postFilesByContainerIdOutputSchema } from "../../outputSchemas";
 export const postFilesByContainerId = action({
   display: {
     label: "Upload Files by Container ID",
     description:
       "Loads a file into the specified file container. Creates a temporary location to store the file and saves file metadata such as size and checksum.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, tenant, fileContainerId, file }) => {
     const client = getClient(connection, context.debug.enabled);
     const formData = new FormData();
@@ -26,6 +28,11 @@ export const postFilesByContainerId = action({
     );
     return { data };
   },
+  examplePerform: async () => postFilesByContainerIdExamplePayload,
   inputs: postFilesByContainerIdInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: postFilesByContainerIdOutputSchema,
+  }),
   examplePayload: postFilesByContainerIdExamplePayload,
 });

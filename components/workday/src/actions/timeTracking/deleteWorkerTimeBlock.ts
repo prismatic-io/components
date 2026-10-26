@@ -9,6 +9,7 @@ export const deleteWorkerTimeBlock = action({
     description:
       "Deletes a worker time block with the specified ID for the specified worker.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, workerId, workerTimeBlockId }) => {
     const client = getClient(connection, context.debug.enabled);
     const { data } = await client.delete(
@@ -18,6 +19,7 @@ export const deleteWorkerTimeBlock = action({
       data,
     };
   },
+  examplePerform: async () => deleteWorkerTimeBlockExamplePayload,
   inputs: deleteWorkerTimeBlockInputs,
   examplePayload: deleteWorkerTimeBlockExamplePayload,
 });

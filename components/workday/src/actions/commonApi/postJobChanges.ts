@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { postJobChangesExamplePayload } from "../../examplePayloads";
 import { postJobChangesInputs } from "../../inputs";
-import { getIdObject } from "../../util";
+import { compactRows, getIdObject } from "../../util";
+import { postJobChangesOutputSchema } from "../../outputSchemas";
 export const postJobChanges = action({
   display: {
     label: "Create Job Change",
     description: "Creates a job change instance with the specified data.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -30,7 +32,7 @@ export const postJobChanges = action({
       jobChangeReason: getIdObject(jobChangeReasonId),
       moveManagersTeam,
       effective,
-      proposedOrganizations,
+      proposedOrganizations: compactRows(proposedOrganizations),
       id: instanceId,
       href: instanceHref,
       descriptor: instanceDescriptor,
@@ -43,6 +45,11 @@ export const postJobChanges = action({
       data,
     };
   },
+  examplePerform: async () => postJobChangesExamplePayload,
   inputs: postJobChangesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: postJobChangesOutputSchema,
+  }),
   examplePayload: postJobChangesExamplePayload,
 });

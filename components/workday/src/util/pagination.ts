@@ -1,18 +1,5 @@
-import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
-const MAX_PAGES = 100;
-const DEFAULT_LIMIT = 100;
-interface WorkdayListResponse {
-  data: unknown[];
-  total: number;
-}
-export interface PaginateOptions {
-  client: HttpClient;
-  endpoint: string;
-  params?: Record<string, unknown>;
-  fetchAll: boolean;
-  limit?: number;
-  offset?: number;
-}
+import { PAGINATION_DEFAULT_LIMIT, PAGINATION_MAX_PAGES } from "../constants";
+import type { PaginateOptions, WorkdayListResponse } from "../types";
 export const paginateResults = async ({
   client,
   endpoint,
@@ -20,21 +7,28 @@ export const paginateResults = async ({
   fetchAll,
   limit,
   offset,
-}: PaginateOptions) => {
+}: PaginateOptions): Promise<{
+  data: unknown;
+}> => {
   if (fetchAll) {
     const allResults: unknown[] = [];
-    const pageLimit = limit || DEFAULT_LIMIT;
+    const pageLimit = limit || PAGINATION_DEFAULT_LIMIT;
     let offset = 0;
     let pages = 0;
     do {
       const { data } = await client.get<WorkdayListResponse>(endpoint, {
         params: { ...params, limit: pageLimit, offset },
       });
-      allResults.push(...(data.data || []));
-      if (!data.data || data.data.length < pageLimit) break;
-      offset += pageLimit;
+      const page = data.data ?? [];
+      allResults.push(...page);
+      const reachedTotal =
+        typeof data.total === "number"
+          ? allResults.length >= data.total
+          : page.length < pageLimit;
+      if (page.length === 0 || reachedTotal) break;
+      offset += page.length;
       pages++;
-    } while (pages < MAX_PAGES);
+    } while (pages < PAGINATION_MAX_PAGES);
     return { data: allResults };
   }
   const { data } = await client.get(endpoint, {

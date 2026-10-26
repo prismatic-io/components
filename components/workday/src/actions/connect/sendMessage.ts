@@ -1,21 +1,23 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { sendMessageExamplePayload } from "../../examplePayloads";
 import { sendMessageInputs } from "../../inputs";
-import { getIdObject } from "../../util";
+import { compactObject, getIdObject } from "../../util";
+import { sendMessageOutputSchema } from "../../outputSchemas";
 export const sendMessage = action({
   display: {
     label: "Send Message",
     description: "Sends a message.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       senderOverrideId,
       commId,
-      messageDetails,
+      messageDetails = {},
       messageTemplateId,
       notificationTypeId,
     },
@@ -24,17 +26,31 @@ export const sendMessage = action({
     const body = {
       senderOverride: getIdObject(senderOverrideId),
       commID: getIdObject(commId),
-      emailDetail: messageDetails.emailDetail,
+      emailDetail: compactObject({
+        name: messageDetails.emailDetailName,
+        subject: messageDetails.emailDetailSubject,
+        body: messageDetails.emailDetailBody,
+        replyTo: messageDetails.emailDetailReplyTo,
+      }),
       recipients: messageDetails.contacts,
       messageTemplate: getIdObject(messageTemplateId),
       notificationType: getIdObject(notificationTypeId),
-      pushDetail: messageDetails.pushDetail,
+      pushDetail: compactObject({
+        message: messageDetails.pushDetailMessage,
+        redirectURL: messageDetails.pushDetailRedirectURL,
+        id: messageDetails.pushDetailId,
+      }),
     };
     const { data } = await client.post(`${SERVICES.connect}/sendMessage`, body);
     return {
       data,
     };
   },
+  examplePerform: async () => sendMessageExamplePayload,
   inputs: sendMessageInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: sendMessageOutputSchema,
+  }),
   examplePayload: sendMessageExamplePayload,
 });

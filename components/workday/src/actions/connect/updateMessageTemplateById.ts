@@ -1,41 +1,45 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { updateMessageTemplateByIdExamplePayload } from "../../examplePayloads";
 import { updateMessageTemplateByIdInputs } from "../../inputs";
-import { getIdObject } from "../../util";
+import { compactObject, getIdObject } from "../../util";
+import { updateMessageTemplateByIdOutputSchema } from "../../outputSchemas";
 export const updateMessageTemplateById = action({
   display: {
     label: "Update Message Template by ID",
     description: "Updates a message template by ID.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       messageTemplateId,
       createdById,
-      emailDetail,
-      pushDetail,
+      emailDetail = {},
+      pushDetail = {},
       messageTemplateName,
+      notificationTypeId,
       referenceId,
       templateInactive,
-      temaplateDescriptor,
+      templateDescriptor,
       templateId,
-      additionalFields,
+      extraBody,
     },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
       createdBy: getIdObject(createdById),
-      emailDetail,
-      pushDetail,
+      emailDetail: compactObject(emailDetail),
+      pushDetail: compactObject(pushDetail),
       name: messageTemplateName,
+      notificationType: getIdObject(notificationTypeId),
       referenceID: referenceId,
       inactive: templateInactive,
-      descriptor: temaplateDescriptor,
+      descriptor: templateDescriptor,
       id: templateId,
-      ...(additionalFields || {}),
+      ...(extraBody || {}),
     };
     const { data } = await client.put(
       `${SERVICES.connect}/messageTemplates/${messageTemplateId}`,
@@ -45,6 +49,11 @@ export const updateMessageTemplateById = action({
       data,
     };
   },
+  examplePerform: async () => updateMessageTemplateByIdExamplePayload,
   inputs: updateMessageTemplateByIdInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateMessageTemplateByIdOutputSchema,
+  }),
   examplePayload: updateMessageTemplateByIdExamplePayload,
 });

@@ -8,13 +8,16 @@ export const getInvoicePdf = action({
     label: "Get Invoice PDF",
     description: "Retrieves printed customer invoice PDF documents.",
   },
+  performSafety: "safe",
   perform: async (context, { connection, invoicePdfId }) => {
     const client = getClient(connection, context.debug.enabled);
-    const { data } = await client.get(
+    const { data } = await client.get<ArrayBuffer>(
       `${SERVICES.customerAccounts}/invoicePDFs/${invoicePdfId}`,
+      { responseType: "arraybuffer", headers: { Accept: "*/*" } },
     );
     return {
-      data,
+      data: Buffer.from(data),
+      contentType: "application/pdf",
     };
   },
   inputs: getInvoicePdfInputs,

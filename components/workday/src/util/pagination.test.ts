@@ -1,18 +1,19 @@
+import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
+import type { Mock } from "vitest";
 import { paginateResults } from "./pagination";
-const createMockClient = (getMock: jest.Mock) => ({
-  get: getMock,
-});
+const createMockClient = (getMock: Mock): HttpClient =>
+  ({ get: getMock }) as unknown as HttpClient;
 describe("paginateResults", () => {
-  let getMock: jest.Mock;
+  let getMock: Mock;
   beforeEach(() => {
-    getMock = jest.fn();
+    getMock = vi.fn();
   });
   describe("fetchAll=false", () => {
     it("makes a single call and returns full response", async () => {
       const response = { data: [{ id: "1" }], total: 1 };
       getMock.mockResolvedValueOnce({ data: response });
       const result = await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/person/v4/people",
         params: { search: "John" },
         fetchAll: false,
@@ -24,7 +25,7 @@ describe("paginateResults", () => {
     it("forwards limit and offset to the API call", async () => {
       getMock.mockResolvedValueOnce({ data: { data: [], total: 0 } });
       await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/staffing/v6/workers",
         fetchAll: false,
         limit: 25,
@@ -37,7 +38,7 @@ describe("paginateResults", () => {
     it("forwards extra params alongside limit and offset", async () => {
       getMock.mockResolvedValueOnce({ data: { data: [], total: 0 } });
       await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/person/v4/people",
         params: { search: "engineer" },
         fetchAll: false,
@@ -51,7 +52,7 @@ describe("paginateResults", () => {
     it("passes undefined offset when not provided", async () => {
       getMock.mockResolvedValueOnce({ data: { data: [], total: 0 } });
       await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/staffing/v6/workers",
         fetchAll: false,
         limit: 50,
@@ -73,7 +74,7 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({ data: { data: page2, total: 201 } })
         .mockResolvedValueOnce({ data: { data: page3, total: 201 } });
       const result = await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/person/v4/people",
         fetchAll: true,
       });
@@ -97,7 +98,7 @@ describe("paginateResults", () => {
         data: { data: [{ id: "1" }], total: 1 },
       });
       const result = await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/staffing/v6/workers",
         fetchAll: true,
       });
@@ -109,7 +110,7 @@ describe("paginateResults", () => {
         data: { data: [], total: 0 },
       });
       const result = await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/person/v4/people",
         fetchAll: true,
       });
@@ -123,7 +124,7 @@ describe("paginateResults", () => {
         .mockResolvedValueOnce({ data: { data: page1, total: 101 } })
         .mockResolvedValueOnce({ data: { data: page2, total: 101 } });
       await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/staffing/v6/workers",
         params: { search: "engineer" },
         fetchAll: true,
@@ -143,19 +144,39 @@ describe("paginateResults", () => {
       const fullPage = Array.from({ length: 100 }, (_, i) => ({ id: `p${i}` }));
       getMock.mockResolvedValue({ data: { data: fullPage, total: 999999 } });
       const result = await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/person/v4/people",
         fetchAll: true,
       });
       expect(getMock).toHaveBeenCalledTimes(100);
       expect((result.data as unknown[]).length).toBe(10000);
     });
+    it("keeps reading when Workday caps the page below the requested limit", async () => {
+      const cappedPage = (start: number) =>
+        Array.from({ length: 100 }, (_, i) => ({ id: `p${start + i}` }));
+      getMock
+        .mockResolvedValueOnce({ data: { data: cappedPage(0), total: 150 } })
+        .mockResolvedValueOnce({
+          data: { data: cappedPage(100).slice(0, 50), total: 150 },
+        });
+      const result = await paginateResults({
+        client: createMockClient(getMock),
+        endpoint: "/person/v4/people",
+        fetchAll: true,
+        limit: 1000,
+      });
+      expect(getMock).toHaveBeenCalledTimes(2);
+      expect(getMock).toHaveBeenLastCalledWith("/person/v4/people", {
+        params: { limit: 1000, offset: 100 },
+      });
+      expect((result.data as unknown[]).length).toBe(150);
+    });
     it("handles null data gracefully", async () => {
       getMock.mockResolvedValueOnce({
         data: { data: null, total: 0 },
       });
       const result = await paginateResults({
-        client: createMockClient(getMock) as any,
+        client: createMockClient(getMock),
         endpoint: "/person/v4/people",
         fetchAll: true,
       });

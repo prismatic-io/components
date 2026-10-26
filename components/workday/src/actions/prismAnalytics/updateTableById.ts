@@ -1,22 +1,26 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { updateTableByIdExamplePayload } from "../../examplePayloads";
 import { updateTableByIdInputs } from "../../inputs";
+import { updateTableByIdOutputSchema } from "../../outputSchemas";
+import { compactRows } from "../../util";
 export const updateTableById = action({
   display: {
     label: "Update Table by ID",
     description: "Updates an existing table with the specified name.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       tenant,
       displayName,
-      additionalFields,
+      additionalFields = {},
       name,
       fields,
+      tags,
       tableId,
     },
   ) => {
@@ -27,7 +31,7 @@ export const updateTableById = action({
       documentation: additionalFields.documentation,
       enableForAnalysis: additionalFields.enableForAnalysis,
       name,
-      tags: additionalFields.tags,
+      tags: compactRows(tags),
       fields,
     };
     const { data } = await client.put(
@@ -38,6 +42,11 @@ export const updateTableById = action({
       data,
     };
   },
+  examplePerform: async () => updateTableByIdExamplePayload,
   inputs: updateTableByIdInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateTableByIdOutputSchema,
+  }),
   examplePayload: updateTableByIdExamplePayload,
 });

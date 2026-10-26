@@ -1,0 +1,75 @@
+The **Changed RaaS Report Rows** trigger runs a Workday custom report exposed as a web service (RaaS) on a schedule and emits the `Report_Entry` rows that are new or changed since the previous recurrence.
+
+The trigger does not know which rows changed on its own. The report must have a date or date-time prompt, named in **Watermark Prompt**, that keeps only rows entered or changed on or after the value the trigger sends. **Change detection is only as accurate as that filter**: a report that ignores the prompt, or filters on a date that does not move when a row changes, misses changes or repeats rows.
+
+#### How It Works
+
+1. The trigger runs on the configured schedule and records the time each recurrence starts.
+2. It requests the **Report URL** with `format=json`, the static **Prompts**, and the **Watermark Prompt** set to the window start: 5 minutes before the previous recurrence started. **Watermark Format** sends the value as a UTC date-time (`2026-10-15T12:00:00Z`) or a UTC date (`2026-10-15`). The report URL must be on the connection's Workday host.
+3. Each returned row is fingerprinted from its **Record Key Field** value and its full contents. Rows whose fingerprint was already returned by the previous recurrence are skipped, so the 5-minute overlap is not delivered twice, while a changed row at the same key is delivered again.
+4. The trigger stores the recurrence start time and the fingerprints of the rows it saw, and returns the remaining rows. A fingerprint is a 16-character hash, never row contents, and up to 10,000 are kept. When a window returns more than 10,000 distinct rows, the recurrence logs a warning with the window size and the limit, and keeps the fingerprints of the last 10,000 rows in the order the report returns them; sort the report ascending by the watermark field so those are the most recent. A row whose fingerprint was dropped is delivered again if the next window returns it unchanged; with the Date watermark format the next window rereads the whole day, so on a day with more than 10,000 rows the dropped rows are delivered on every recurrence. A report column whose value changes on every run also delivers its row every time.
+
+A row missing the **Record Key Field** column fails the recurrence with an error that lists the row's columns. With a **Watermark Format** of Date, every recurrence re-reads the whole day and relies on the fingerprints to skip rows already delivered.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state, but this trigger has no input that narrows which changes are reported, so no input is ignored while it runs. It begins on the first recurrence, when the trigger has no stored state and a **Look-back Date** (`YYYY-MM-DD`) is set: the Watermark Prompt receives the start of that day (UTC) and every returned row is delivered exactly once. Left empty, there is no sync: the first recurrence reads the last 5 minutes, records what it saw, and delivers nothing.
+
+The window has no fixed upper bound, so a row changed mid-sync is swept into the sync. The sync reads the whole report in a single recurrence, whether or not batching is on. The trigger then stores the time that recurrence started, and the first incremental recurrence resumes 5 minutes before it, skipping rows already delivered; nothing in the payload marks the handoff.
+
+**Report URL**, **Prompts**, **Watermark Format**, and **Record Key Field** all still apply during the sync.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Workday.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.changed`. With batching on that field does not exist: each execution receives one `{ "changeType": "changed", "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+#### Returned Data
+
+With batching off, the trigger returns an object under `body.data` with one array, `changed`, holding the report's `Report_Entry` rows. Column names are the report's XML aliases.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "changed": [
+      {
+        "Employee_ID": "21001",
+        "Worker": "Logan McNeil",
+        "Business_Title": "Vice President, Human Resources",
+        "Supervisory_Organization": "Human Resources (Logan McNeil)",
+        "Last_Updated": "2026-10-15T11:58:42.000-07:00"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one row tagged with how it changed, or an array of such items when the batch size is greater than 1. The `changed` array is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "changed",
+  "record": {
+    "Employee_ID": "21001",
+    "Worker": "Logan McNeil",
+    "Business_Title": "Vice President, Human Resources",
+    "Supervisory_Organization": "Human Resources (Logan McNeil)",
+    "Last_Updated": "2026-10-15T11:58:42.000-07:00"
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

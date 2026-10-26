@@ -8,6 +8,7 @@ export const deleteTimeClockEventsById = action({
     label: "Delete Time Clock Event by ID",
     description: "Deletes a time clock event with the specified ID.",
   },
+  performSafety: "notAllowed",
   perform: async (context, { connection, timeClockEventId }) => {
     const client = getClient(connection, context.debug.enabled);
     const { data } = await client.delete(
@@ -17,6 +18,7 @@ export const deleteTimeClockEventsById = action({
       data,
     };
   },
+  examplePerform: async () => deleteTimeClockEventsByIdExamplePayload,
   inputs: deleteTimeClockEventsByIdInputs,
   examplePayload: deleteTimeClockEventsByIdExamplePayload,
 });

@@ -1,16 +1,27 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { postTableExamplePayload } from "../../examplePayloads";
 import { postTableInputs } from "../../inputs";
+import { postTableOutputSchema } from "../../outputSchemas";
+import { compactRows } from "../../util";
 export const postTable = action({
   display: {
     label: "Create Table",
     description: "Creates a new table with the specified name.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, tenant, displayName, additionalFields, name, fields },
+    {
+      connection,
+      tenant,
+      displayName,
+      additionalFields = {},
+      name,
+      fields,
+      tags,
+    },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     const body = {
@@ -19,7 +30,7 @@ export const postTable = action({
       documentation: additionalFields.documentation,
       enableForAnalysis: additionalFields.enableForAnalysis,
       name,
-      tags: additionalFields.tags,
+      tags: compactRows(tags),
       fields,
     };
     const { data } = await client.post(
@@ -30,6 +41,11 @@ export const postTable = action({
       data,
     };
   },
+  examplePerform: async () => postTableExamplePayload,
   inputs: postTableInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: postTableOutputSchema,
+  }),
   examplePayload: postTableExamplePayload,
 });

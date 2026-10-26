@@ -20,7 +20,7 @@ export const listMessageTemplatesExamplePayload = {
           message: "Please review the attached document.",
           id: "0e44c92412d34b01ace61e80a47aaf6d",
         },
-        usageCount: "12",
+        usageCount: 12,
         createdOn: "2024-06-08T07:00:00.000Z",
         notificationType: {
           id: "cc67c47133894e099a5f1c0aa88efc47",
@@ -62,7 +62,7 @@ export const postMessageTemplatesExamplePayload = {
       message: "Please review the attached document.",
       id: "a1b2c3d4e5f60718293a4b5c6d7e8f90",
     },
-    usageCount: "12",
+    usageCount: 12,
     createdOn: "2024-06-08T07:00:00.000Z",
     notificationType: {
       id: "7c6b5a4938271605f4e3d2c1b0a99887",
@@ -103,7 +103,7 @@ export const getMessageTemplateByIdExamplePayload = {
       message: "Please review the attached document.",
       id: "b921a1e37b18f6f051c4a636bcbc4331",
     },
-    usageCount: "12",
+    usageCount: 12,
     createdOn: "2024-06-08T07:00:00.000Z",
     notificationType: {
       id: "9feb5c6d7bb3d0e49541750bc8964e52",

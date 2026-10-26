@@ -17,7 +17,7 @@ export const getTimeOffDetailsExamplePayload = {
           descriptor: "Personal",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/reasons/cc67c47133894e099a5f1c0aa88efc47",
         },
-        quantity: "8",
+        quantity: 8,
         status: {
           id: "51c4a636bcbc4331b921a1e37b18f6f0",
           descriptor: "Approved",
@@ -78,7 +78,7 @@ export const postTimeOffRequestExamplePayload = {
             descriptor: "PDF",
             href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/contentTypes/8a7b6c5d4e3f20110f9e8d7c6b5a4938",
           },
-          fileLength: "20480",
+          fileLength: 20480,
           uploadDate: "2024-06-08T07:00:00.000Z",
           fileName: "invoice-2024-06.pdf",
           uploadedBy: {
@@ -116,7 +116,7 @@ export const postTimeOffRequestExamplePayload = {
           descriptor: "Personal",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/reasons/c9b8a7d6e5f40312233445566778899a",
         },
-        dailyQuantity: "8",
+        dailyQuantity: 8,
         comment: "Monthly office supplies",
         timeOffType: {
           id: "d4c3b2a1908f7e6d5c4b3a2918070605",
@@ -139,7 +139,7 @@ export const getTimeOffBalanceByIdExamplePayload = {
       id: "a0b1c2d3e4f5687990a1b2c3d4e5f607",
       descriptor: "Senior Sales Representative",
     },
-    quantity: "40",
+    quantity: 40,
     absencePlan: {
       timeoffs: "Vacation",
       descriptor: "Vacation Plan",

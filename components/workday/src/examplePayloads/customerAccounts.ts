@@ -4,7 +4,7 @@ export const listInvoicesExamplePayload = {
       {
         invoiceDate: "2024-06-08T07:00:00.000Z",
         transactionType: "Invoice",
-        withholdingAmount: "0.00",
+        withholdingAmount: { value: 0, currency: "USD" },
         company: {
           id: "3aa5550b7fe348b98d7b5741afc65534",
           descriptor: "Global Modern Services, Inc. (USA)",
@@ -14,9 +14,9 @@ export const listInvoicesExamplePayload = {
           descriptor: "Acme Corporation",
         },
         inCollection: true,
-        netAmount: "1250.00",
-        disputeAmount: "0.00",
-        dueAmount: "1250.00",
+        netAmount: { value: 1250, currency: "USD" },
+        disputeAmount: { value: 0, currency: "USD" },
+        dueAmount: { value: 1250, currency: "USD" },
         invoiceType: {
           descriptor: "Invoice",
         },
@@ -28,7 +28,7 @@ export const listInvoicesExamplePayload = {
             descriptor: "Invoice Adjustment",
           },
         ],
-        taxAmount: "112.50",
+        taxAmount: { value: 112.5, currency: "USD" },
         adjustmentReason: {
           descriptor: "Personal",
         },
@@ -77,8 +77,8 @@ export const listInvoicesExamplePayload = {
           descriptor: "Approved",
           id: "a1b2c3d4e5f60718293a4b5c6d7e8f90",
         },
-        retentionAmount: "0.00",
-        totalAmount: "1362.50",
+        retentionAmount: { value: 0, currency: "USD" },
+        totalAmount: { value: 1362.5, currency: "USD" },
         invoiceNumber: "INV-0001234",
         descriptor: "Customer Invoice INV-0001234",
         id: "7c6b5a4938271605f4e3d2c1b0a99887",
@@ -92,7 +92,7 @@ export const getInvoiceByIdExamplePayload = {
   data: {
     invoiceDate: "2024-06-08T07:00:00.000Z",
     transactionType: "Invoice",
-    withholdingAmount: "0.00",
+    withholdingAmount: { value: 0, currency: "USD" },
     company: {
       id: "3aa5550b7fe348b98d7b5741afc65599",
       descriptor: "Global Modern Services, Inc. (USA)",
@@ -102,9 +102,9 @@ export const getInvoiceByIdExamplePayload = {
       descriptor: "Acme Corporation",
     },
     inCollection: true,
-    netAmount: "1250.00",
-    disputeAmount: "0.00",
-    dueAmount: "1250.00",
+    netAmount: { value: 1250, currency: "USD" },
+    disputeAmount: { value: 0, currency: "USD" },
+    dueAmount: { value: 1250, currency: "USD" },
     invoiceType: {
       descriptor: "Invoice",
     },
@@ -116,7 +116,7 @@ export const getInvoiceByIdExamplePayload = {
         descriptor: "Invoice Adjustment",
       },
     ],
-    taxAmount: "112.50",
+    taxAmount: { value: 112.5, currency: "USD" },
     adjustmentReason: {
       descriptor: "Personal",
     },
@@ -165,15 +165,18 @@ export const getInvoiceByIdExamplePayload = {
       descriptor: "Approved",
       id: "a1b2c3d4e5f60718293a4b5c6d7e8f91",
     },
-    retentionAmount: "0.00",
-    totalAmount: "1362.50",
+    retentionAmount: { value: 0, currency: "USD" },
+    totalAmount: { value: 1362.5, currency: "USD" },
     invoiceNumber: "INV-0001234",
     descriptor: "Customer Invoice INV-0001234",
     id: "7c6b5a4938271605f4e3d2c1b0a99888",
     href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/invoices/7c6b5a4938271605f4e3d2c1b0a99888",
   },
 };
-export const getInvoicePdfExamplePayload = { data: "PDF DATA" };
+export const getInvoicePdfExamplePayload = {
+  data: Buffer.from("%PDF-1.7\n%example invoice PDF bytes"),
+  contentType: "application/pdf",
+};
 export const postPaymentExamplePayload = {
   data: {
     memo: "Monthly office supplies",
@@ -185,7 +188,7 @@ export const postPaymentExamplePayload = {
     readyToAutoApply: true,
     transactionNumber: "REF-0001",
     reference: "REF-0001",
-    amount: "1250.00",
+    amount: { value: 1250, currency: "USD" },
     type: {
       id: "c3d4e5f6a708192a3b4c5d6e7f809112",
       descriptor: "Payment",

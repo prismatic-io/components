@@ -232,20 +232,15 @@ export const postWorkerTimeBlockExamplePayload = {
     },
     calculatedTimeDetails: [
       {
-        overrideRate: "3.3",
+        overrideRate: 3.3,
         shiftDate: "2019-11-11T08:00:00.000Z",
-        calculatedQuantity: "20",
+        calculatedQuantity: 20,
         currency: {
           id: "5b68a7ab7d476717b63d49caa1c58ab3",
           descriptor: "USD",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/currencies/5b68a7ab7d476717b63d49caa1c58ab3",
         },
         calculatedDate: "2019-11-05T08:00:00.000Z",
-        calculatedInTimeZone: {
-          id: "2035d6998f6328e09c8e6de1e2357ebe",
-          descriptor: "GMT-08:00 Pacific Time",
-          href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/calculatedInTimeZones/2035d6998f6328e09c8e6de1e2357ebe",
-        },
         calculationTags: [
           {
             descriptor: "Overtime",
@@ -253,11 +248,6 @@ export const postWorkerTimeBlockExamplePayload = {
           },
         ],
         calendarDate: "2019-11-12T17:00:00.000Z",
-        calculatedOutTimeZone: {
-          id: "d029954953341a7eeec0810999c13019",
-          descriptor: "GMT-08:00 Pacific Time",
-          href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/calculatedOutTimeZones/d029954953341a7eeec0810999c13019",
-        },
         id: "c4820d049e29ef83506f64753ba22aeb",
       },
     ],
@@ -366,7 +356,7 @@ export const postWorkerTimeBlockExamplePayload = {
       descriptor: "General Fund",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/funds/eac1bda3750c5468d6947ddb851bb93d",
     },
-    reportedQuantity: "8",
+    reportedQuantity: 8,
     gift: {
       id: "8f49d2c8606124ee86fa34943e597c4c",
       descriptor: "Endowment Gift",
@@ -399,29 +389,17 @@ export const postWorkerTimeBlockExamplePayload = {
       descriptor: "Consultant",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/projectRoles/4644c07de9f17e6836b14832e934e333",
     },
-    overrideRate: "3",
+    overrideRate: 3,
     projectPlanPhase: {
       id: "2bd8b9cb1b1df67ed69e8a91b6d5831c",
       descriptor: "Execution",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/projectPlanPhases/2bd8b9cb1b1df67ed69e8a91b6d5831c",
     },
-    inTimeZone: {
-      id: "cc0014812d1420dfabb3720afde83c64",
-      descriptor: "GMT-08:00 Pacific Time",
-      href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/inTimeZones/cc0014812d1420dfabb3720afde83c64",
-    },
-    outTimeZone: {
-      id: "3f79c4000aa7d37362c8e155a6e4c3ad",
-      descriptor: "GMT-08:00 Pacific Time",
-      href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/outTimeZones/3f79c4000aa7d37362c8e155a6e4c3ad",
-    },
-    inTime: "2024-06-01T07:00:00.000Z",
     outReason: {
       id: "02c125e676bc9e90f17aeb0d08e23bde",
       descriptor: "End of Shift",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/outReasons/02c125e676bc9e90f17aeb0d08e23bde",
     },
-    outTime: "2024-06-01T07:00:00.000Z",
     project: {
       id: "1424c44b35eb445c4246b256e14d1fda",
       descriptor: "Website Redesign",
@@ -449,18 +427,12 @@ export const getTimeClockEventsExamplePayload = {
   data: {
     data: [
       {
-        dateTime: "2024-06-08T07:00:00.000Z",
-        timeZone: {
-          id: "fddd97ec3bc2ae530d9991d16869f5a7",
-          descriptor: "GMT-08:00 Pacific Time",
-          href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/timeZones/fddd97ec3bc2ae530d9991d16869f5a7",
-        },
         fund: {
           id: "5df16bedf34ef324a897a597436bf84d",
           descriptor: "General Fund",
           href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/funds/5df16bedf34ef324a897a597436bf84d",
         },
-        overrideRate: "45.00",
+        overrideRate: 45,
         position: {
           id: "8fe37bc5c6ea741f0e35209422d1e45d",
           descriptor: "Sales Representative",
@@ -683,18 +655,12 @@ export const getTimeClockEventsExamplePayload = {
 };
 export const getTimeClockEventsByIdExamplePayload = {
   data: {
-    dateTime: "2024-06-08T07:00:00.000Z",
-    timeZone: {
-      id: "a859c675f95de35f79367a2e5b0c2e26",
-      descriptor: "GMT-08:00 Pacific Time",
-      href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/timeZones/a859c675f95de35f79367a2e5b0c2e26",
-    },
     fund: {
       id: "56eb2e197236af43ac2a6f5655bb478b",
       descriptor: "General Fund",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/funds/56eb2e197236af43ac2a6f5655bb478b",
     },
-    overrideRate: "45.00",
+    overrideRate: 45,
     position: {
       id: "4ed04d99fa64b599028797f7fbc2d15f",
       descriptor: "Sales Representative",
@@ -914,18 +880,12 @@ export const getTimeClockEventsByIdExamplePayload = {
 };
 export const updateTimeClockEventsByIdExamplePayload = {
   data: {
-    dateTime: "2024-06-08T07:00:00.000Z",
-    timeZone: {
-      id: "5b68a7ab7d476717b63d49caa1c58ab3",
-      descriptor: "GMT-08:00 Pacific Time",
-      href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/timeZones/5b68a7ab7d476717b63d49caa1c58ab3",
-    },
     fund: {
       id: "2035d6998f6328e09c8e6de1e2357ebe",
       descriptor: "General Fund",
       href: "https://wd2-impl-services1.workday.com/ccx/api/v1/gms/funds/2035d6998f6328e09c8e6de1e2357ebe",
     },
-    overrideRate: "45.00",
+    overrideRate: 45,
     position: {
       id: "fc7cc0d49e9520c33692eed4fb2fc34f",
       descriptor: "Sales Representative",

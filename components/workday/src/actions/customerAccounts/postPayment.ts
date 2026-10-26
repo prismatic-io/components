@@ -1,21 +1,23 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { postPaymentExamplePayload } from "../../examplePayloads";
 import { postPaymentInputs } from "../../inputs";
 import { getIdObject } from "../../util";
+import { postPaymentOutputSchema } from "../../outputSchemas";
 export const postPayment = action({
   display: {
     label: "Create Payment",
     description:
       "Creates a single customer invoice payment header instance with the specified data.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
       connection,
       remitFromCustomerId,
-      additionalFields,
+      additionalFields = {},
       amount,
       typeId,
       date,
@@ -45,6 +47,11 @@ export const postPayment = action({
       data,
     };
   },
+  examplePerform: async () => postPaymentExamplePayload,
   inputs: postPaymentInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: postPaymentOutputSchema,
+  }),
   examplePayload: postPaymentExamplePayload,
 });

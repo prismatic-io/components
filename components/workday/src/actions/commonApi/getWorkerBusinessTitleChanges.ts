@@ -1,15 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { getWorkerBusinessTitleChangesExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util/pagination";
 import { getWorkerBusinessTitleChangesInputs } from "../../inputs";
+import { getWorkerBusinessTitleChangesOutputSchema } from "../../outputSchemas";
 export const getWorkerBusinessTitleChanges = action({
   display: {
     label: "Get Worker Business Title Changes",
     description:
       "Retrieves a collection of business title changes for the specified worker.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, workerId, fetchAll, pagination = {} },
@@ -23,6 +25,11 @@ export const getWorkerBusinessTitleChanges = action({
       offset: pagination.offset,
     });
   },
+  examplePerform: async () => getWorkerBusinessTitleChangesExamplePayload,
   inputs: getWorkerBusinessTitleChangesInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getWorkerBusinessTitleChangesOutputSchema,
+  }),
   examplePayload: getWorkerBusinessTitleChangesExamplePayload,
 });

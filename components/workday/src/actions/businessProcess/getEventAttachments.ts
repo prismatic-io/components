@@ -1,15 +1,17 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { getEventAttachmentsExamplePayload } from "../../examplePayloads";
 import { paginateResults } from "../../util/pagination";
 import { getEventAttachmentsInputs } from "../../inputs";
+import { getEventAttachmentsOutputSchema } from "../../outputSchemas";
 export const getEventAttachments = action({
   display: {
     label: "Get Event Attachments",
     description:
       "Retrieves attachments on the specified business process event that the processing user has permission to view.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, eventId, fetchAll, pagination = {} },
@@ -23,6 +25,11 @@ export const getEventAttachments = action({
       offset: pagination.offset,
     });
   },
+  examplePerform: async () => getEventAttachmentsExamplePayload,
   inputs: getEventAttachmentsInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getEventAttachmentsOutputSchema,
+  }),
   examplePayload: getEventAttachmentsExamplePayload,
 });

@@ -1,0 +1,90 @@
+The **Changed WQL Query Rows** trigger runs a Workday Query Language (WQL) query on a schedule and emits the rows that are new or changed since the previous recurrence.
+
+The Workday setup that WQL requires (API client scope, security domain and data access) is listed in the prerequisites of the [OAuth 2.0](#workdayoauth2connection) and [Refresh Token](#workdayrefreshtokenconnection) connections.
+
+The query must contain the `{{lastPolledAt}}` placeholder; a recurrence fails with an error, before calling Workday, when it is missing. The trigger replaces it with the window start as a quoted UTC date-time literal, such as `'2026-10-15 11:55:00Z'`, the format the [WQL WHERE reference](https://doc.workday.com/admin-guide/en-us/reporting-and-analytics/custom-reports-and-analytics/workday-query-language-wql-/wql-reference/fsf1611267464081.html) documents for date comparisons. Compare it against a date-time field that moves when a row is entered or changed, and enter that field's name in **Date Field**. The query must select it, and it must be the field the `WHERE` clause compares to `{{lastPolledAt}}` with `>=`. Each row's value of it is what moves the trigger forward.
+
+<details>
+<summary>Example Query Pattern</summary>
+
+```sql
+SELECT workdayID, <dateTimeField> FROM <dataSource> WHERE <dateTimeField> >= {{lastPolledAt}}
+```
+
+</details>
+
+Which date or date-time fields exist depends on the data source. `entryMoment` is a [`FROM` clause argument](https://doc.workday.com/admin-guide/en-us/reporting-and-analytics/custom-reports-and-analytics/workday-query-language-wql-/wql-reference/kba1611189724822.html) in WQL (`FROM allWorkers (entryMoment="2019-01-01 12:30:25Z")`), not a field, so it cannot be compared in `WHERE`. Replace `<dataSource>` with a data source and `<dateTimeField>` with one of its date-time fields; field names and types depend on the data source, so confirm a field's type before filtering on it. **Change detection is only as accurate as the field the query filters on.**
+
+#### How It Works
+
+1. The trigger runs on the configured schedule and reads the **Date Field** from each row the query returns.
+2. It replaces `{{lastPolledAt}}` with the window start, the newest **Date Field** value seen so far, and reads every page of the query by limit and offset. The comparison is inclusive (`>=`), so the rows at that value come back and are not delivered twice. With **Overlap Minutes** set, the window starts that many minutes earlier. The first recurrence has no such value yet and starts 5 minutes before it runs (or at the **Look-back Date**). **Tenant** falls back to the tenant in the connection's REST API Endpoint.
+3. Each row is fingerprinted from its **Record Key Field** value and its full contents. WQL rows contain only the selected fields, so the key field must be in the `SELECT` list; a row without it fails the recurrence with an error. Rows at the window start that an earlier recurrence already returned are skipped, while a changed row at the same key is delivered again.
+4. The trigger stores the newest **Date Field** value and the fingerprints of the rows at it, and returns the remaining rows. The window start never moves back (the overlap only widens the query, never the stored value), and it never moves to the clock: a recurrence that returns no rows leaves it where it was, and a row whose **Date Field** is missing or is not a date does not move it. A recurrence that returns rows but none with a usable **Date Field** fails with an error. A fingerprint is a 16-character hash, never row contents. Up to 10,000 are kept, the same number of rows Workday caches for a query. Delivery is at least once: a selected field whose value changes on every run delivers its row every time.
+
+Workday caches at most 10,000 rows of a query for paging. A window matching more fails with an error instead of delivering part of it. On the first recurrence with a **Look-back Date**, choose a later date or narrow the query. Once the trigger has stored state, the Look-back Date no longer applies, so narrow the query's `WHERE` clause or run the trigger more often.
+
+**Overlap Minutes**
+
+A row saved late with a **Date Field** value older than the newest one already seen, such as a backdated transaction, is not returned by a later window. To catch those, set **Overlap Minutes**: each recurrence then starts that many minutes before the newest **Date Field** value seen, and a late row is delivered once if its date falls inside that margin. A row older than the margin is still missed, so choose a margin at least as long as the longest backdating you expect. Leave it empty when the **Date Field** is a value Workday sets when the row is saved or changed, since nothing can then arrive with an older value.
+
+The trade-off is volume: a larger margin re-reads more rows on every recurrence, but none are delivered twice. The trigger keeps the fingerprint of every row inside the margin, and the 10,000-row limit applies to the whole window, margin included, so a margin that makes the window match more rows fails the recurrence with the error described above. A row inside the margin whose content changed is delivered again. The overlap applies from the recurrence after the first one that stores a position; the first window, whether from a **Look-back Date**, the 5-minute baseline, or a trigger resumed from earlier state, starts where it always did.
+
+A query longer than 2,047 characters is sent to Workday in a request that cannot be paged. If it matches more rows than one response holds, the recurrence fails with an error; shorten the query or narrow its `WHERE` clause.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state, but this trigger has no input that narrows which changes are reported, so no input is ignored while it runs. It begins on the first recurrence, when the trigger has no stored state and a **Look-back Date** (`YYYY-MM-DD`) is set: `{{lastPolledAt}}` becomes the start of that day (UTC) and every returned row is delivered exactly once. Left empty, there is no sync: the first recurrence reads the last 5 minutes, records what it saw, and delivers nothing.
+
+The window has no fixed upper bound, so a row changed mid-sync is swept into the sync. The sync reads the whole window in a single recurrence, whether or not batching is on. The trigger then stores the newest **Date Field** value the sync returned, and the first incremental recurrence resumes from it, skipping rows already delivered; nothing in the payload marks the handoff.
+
+**Query**, **Record Key Field**, **Date Field**, **Overlap Minutes**, and **Tenant** all still apply during the sync, and the 10,000-row limit applies to the sync window too.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own execution, or grouped by the configured batch size. Batch size and batch concurrency can both be overridden per instance. Raising concurrency increases the request volume sent to Workday.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**. **Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off a downstream step reads `body.data.changed`. With batching on that field does not exist: each execution receives one `{ "changeType": "changed", "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled, or it breaks the moment the switch is flipped. Because batching is enabled per flow, that change is scoped to the flow rather than to the component or to other flows using the same trigger.
+
+#### Returned Data
+
+With batching off, the trigger returns an object under `body.data` with one array, `changed`, holding query rows keyed by the selected fields. Reference fields carry `descriptor` and `id`.
+
+<details>
+<summary>Example Response</summary>
+
+```json
+{
+  "data": {
+    "changed": [
+      {
+        "workdayID": "c4f78be1a8f14da0ab49ce1162348a5e",
+        "approvalDate": "2026-10-15"
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+With batching on, each execution receives one row tagged with how it changed, or an array of such items when the batch size is greater than 1. The `changed` array is not part of this shape.
+
+<details>
+<summary>Batched Item</summary>
+
+```json
+{
+  "changeType": "changed",
+  "record": {
+    "workdayID": "c4f78be1a8f14da0ab49ce1162348a5e",
+    "approvalDate": "2026-10-15"
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.

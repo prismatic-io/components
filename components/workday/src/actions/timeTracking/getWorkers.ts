@@ -1,29 +1,36 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { getWorkersExamplePayload } from "../../examplePayloads";
-import { paginateResults } from "../../util/pagination";
 import { getWorkersInputs } from "../../inputs";
+import { getWorkersOutputSchema } from "../../outputSchemas";
+import { paginateResults } from "../../util/pagination";
 export const getWorkers = action({
   display: {
     label: "List Workers",
     description:
       "Retrieves a collection of workers and current staffing information.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
-    { connection, params, fetchAll, pagination = {} },
+    { connection, extraParameters, fetchAll, pagination = {} },
   ) => {
     const client = getClient(connection, context.debug.enabled);
     return await paginateResults({
       client,
       endpoint: `${SERVICES.timeTracking}/workers`,
-      params,
+      params: extraParameters,
       fetchAll,
       limit: pagination.limit,
       offset: pagination.offset,
     });
   },
+  examplePerform: async () => getWorkersExamplePayload,
   inputs: getWorkersInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getWorkersOutputSchema,
+  }),
   examplePayload: getWorkersExamplePayload,
 });

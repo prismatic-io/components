@@ -5,10 +5,11 @@ Before configuring the connection, the following are required:
 - A Workday tenant ID.
 - Administrator access to the Workday tenant to register an API client.
 - The Workday domain used by the tenant (for building the API base URL).
+- For **Run WQL Query** and the **Changed WQL Query Rows** trigger: the **System** scope on the API client, and, for the Workday account that authorizes the connection, access to the **Workday Query Language** security domain and security access to the data sources and fields the query reads. See Workday's [WQL overview](https://doc.workday.com/admin-guide/en-us/reporting-and-analytics/custom-reports-and-analytics/workday-query-language-wql-/aht1611188422513.html).
 
 #### Setup Steps
 
-The API client is registered in the Workday portal based on the category. This process also surfaces the information required to set up the Workday REST Access Token account.
+The API client is registered in the Workday portal. Registration also displays the values required to configure the connection.
 
 1. **Log into the Workday Portal**
 
@@ -23,10 +24,10 @@ The API client is registered in the Workday portal based on the category. This p
 
    - **Client Name**: Specify a name for the API Client.
    - **Client Grant Type**: Select `Authorization Code Grant`.
-   - **Enforce 60 Minutes Access Token Expiry**: Ensure this is selected so the auto-refresh token works correctly in the Workday REST OAuth2 Account.
+   - **Enforce 60 Minutes Access Token Expiry**: Ensure this is selected.
    - **Access Token Type**: Select `Bearer`.
    - **Redirect URL**: Enter the redirect URL: <OauthCallbackUrl />
-   - **Scope**: Select the required services from the dropdown list.
+   - **Scope**: Select the required services from the dropdown list. Include **System** to run WQL queries.
 
 4. **Complete Registration**
 
@@ -38,9 +39,9 @@ After the API client is registered in the Workday portal, note the **Client ID**
 
 Create a connection of type **OAuth 2.0** and provide the following inputs:
 
-- **Authorize URL** (required): The OAuth 2.0 Authorization URL for Workday. Replace `<tenant_id>` with the Workday tenant ID.
-- **Token URL** (required): The OAuth 2.0 Token URL for Workday. Replace `<tenant_id>` with the Workday tenant ID.
-- **Scopes** (optional): Space-separated list of OAuth 2.0 scopes, if any are required.
-- **Client ID** (required): The OAuth 2.0 client ID issued by Workday for the registered API client.
-- **Client Secret** (required): The OAuth 2.0 client secret paired with the Workday client ID.
-- **API URL** (required): The base URL for the Workday API. Replace `<domain>` with the Workday domain.
+- **API URL** (required): The host of the **Workday REST API Endpoint** shown in **View API Clients**, followed by `/ccx`, such as `https://wd2-impl-services1.workday.com/ccx`.
+- **Authorize URL** (required): The **Authorization Endpoint** shown in **View API Clients**, in the form `https://{host}/{tenant}/authorize`.
+- **Token URL** (required): The **Token Endpoint** shown in **View API Clients**, in the form `https://{host}/ccx/oauth2/{tenant}/token`.
+- **Client ID** (required): The client ID shown after registering the API client.
+- **Client Secret** (required): The client secret paired with the client ID, shown once at registration.
+- **Scopes** (optional): Space-separated OAuth 2.0 scopes. Leave blank to use the functional areas selected when the API client was registered.

@@ -7,57 +7,65 @@ export const workdayOAuth2Connection = oauth2Connection({
     description: "Authenticate using OAuth 2.0.",
   },
   inputs: {
-    authorizeUrl: {
-      label: "Authorize URL",
+    apiUrl: {
+      label: "API URL",
+      placeholder: "Enter API URL",
       type: "string",
       required: true,
       shown: true,
       comments:
-        "The OAuth 2.0 Authorization URL for Workday. Replace <tenant_id> with the tenant ID.",
-      default: "https://impl.workday.com/<tenant_id>/authorize",
+        "The Workday API base URL: the host of the Workday REST API Endpoint shown in View API Clients, followed by /ccx, in the form https://{host}/ccx.",
+      example: "https://wd2-impl-services1.workday.com/ccx",
+    },
+    authorizeUrl: {
+      label: "Authorize URL",
+      placeholder: "Enter authorize URL",
+      type: "string",
+      required: true,
+      shown: true,
+      comments:
+        "The Authorization Endpoint shown for the API client in View API Clients, in the form https://{host}/{tenant}/authorize.",
+      example: "https://impl.workday.com/acme/authorize",
     },
     tokenUrl: {
       label: "Token URL",
+      placeholder: "Enter token URL",
       type: "string",
       required: true,
       shown: true,
       comments:
-        "The OAuth 2.0 Token URL for Workday. Replace <tenant_id> with the tenant ID.",
-      default:
-        "https://wd2-impl-services1.workday.com/ccx/oauth2/<tenant_id>/token",
-    },
-    scopes: {
-      label: "Scopes",
-      type: "string",
-      required: false,
-      shown: true,
-      comments:
-        "Space-separated list of OAuth 2.0 scopes, if any are required.",
+        "The Token Endpoint shown for the API client in View API Clients, in the form https://{host}/ccx/oauth2/{tenant}/token.",
+      example: "https://wd2-impl-services1.workday.com/ccx/oauth2/acme/token",
     },
     clientId: {
       label: "Client ID",
+      placeholder: "Enter client ID",
       type: "string",
       required: true,
       shown: true,
       comments:
-        "The OAuth 2.0 client ID issued by Workday for the registered API client.",
+        "The client ID shown after registering the API client with the Register API Client task in Workday.",
+      example: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     },
     clientSecret: {
       label: "Client Secret",
+      placeholder: "Enter client secret",
       type: "password",
       required: true,
       shown: true,
       comments:
-        "The OAuth 2.0 client secret paired with the Workday client ID.",
+        "The client secret paired with the client ID, shown once when the API client is registered.",
+      example: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     },
-    apiUrl: {
-      label: "API URL",
-      default: "https://<domain>/ccx",
+    scopes: {
+      label: "Scopes",
+      placeholder: "Enter scopes",
       type: "string",
-      required: true,
+      required: false,
       shown: true,
       comments:
-        "The base URL for the Workday API. Replace <domain> with the Workday domain.",
+        "Space-separated OAuth 2.0 scopes to request. Leave blank to use the functional areas selected when the API client was registered.",
+      example: "",
     },
   },
 });

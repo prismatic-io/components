@@ -1,14 +1,16 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { getClient } from "../../client";
 import { SERVICES } from "../../constants";
 import { updateWorkerTimeBlockExamplePayload } from "../../examplePayloads";
 import { updateWorkerTimeBlockInputs } from "../../inputs";
+import { updateWorkerTimeBlockOutputSchema } from "../../outputSchemas";
 export const updateWorkerTimeBlock = action({
   display: {
     label: "Update Worker Time Block",
     description:
       "Updates the worker time block for the specified worker with the specified data in the request body.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -17,7 +19,7 @@ export const updateWorkerTimeBlock = action({
       workerTimeBlockId,
       doNotBill,
       comment,
-      additionalFields,
+      extraBody,
       instanceId,
       instanceDescriptor,
     },
@@ -28,7 +30,7 @@ export const updateWorkerTimeBlock = action({
       comment,
       id: instanceId,
       descriptor: instanceDescriptor,
-      ...(additionalFields || {}),
+      ...(extraBody || {}),
     };
     const { data } = await client.patch(
       `${SERVICES.timeTracking}/workers/${workerId}/workerTimeBlock/${workerTimeBlockId}`,
@@ -38,6 +40,11 @@ export const updateWorkerTimeBlock = action({
       data,
     };
   },
+  examplePerform: async () => updateWorkerTimeBlockExamplePayload,
   inputs: updateWorkerTimeBlockInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: updateWorkerTimeBlockOutputSchema,
+  }),
   examplePayload: updateWorkerTimeBlockExamplePayload,
 });

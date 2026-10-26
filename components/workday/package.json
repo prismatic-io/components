@@ -1,25 +1,23 @@
 {
-  "name": "workday",
+  "name": "@prismatic-io/workday",
   "private": true,
   "scripts": {
     "publish": "npm run build && prism components:publish",
-    "build": "npm run format && npm run lint && webpack",
+    "build": "npm run format && npm run lint && tsdown",
     "format": "biome format --write .",
     "lint": "biome lint --write .",
-    "test": "echo 'no tests'"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.19.0"
+    "@prismatic-io/spectral": "10.35.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.0",
-    "@types/jest": "30.0.0",
-    "copy-webpack-plugin": "14.0.0",
-    "jest": "30.3.0",
-    "ts-jest": "29.4.9",
-    "ts-loader": "9.5.7",
-    "typescript": "5.9.3",
-    "webpack": "5.106.2",
-    "webpack-cli": "6.0.1"
+    "@biomejs/biome": "2.5.1",
+    "@types/node": "^26",
+    "nock": "14.0.17",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   }
 }
