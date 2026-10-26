@@ -95,7 +95,7 @@ export const city = input({
   required: false,
   example: "San Jose",
   placeholder: "Enter city",
-  comments: "The city name.",
+  comments: "The city for the customer's mailing address.",
   clean: cleanStringInput,
 });
 export const province = input({
@@ -113,7 +113,8 @@ export const zip = input({
   required: false,
   example: "45260",
   placeholder: "Enter zipcode",
-  comments: "The postal or zip code.",
+  comments:
+    "The postal or zip code used for shipping rate calculation and tax determination.",
   clean: cleanStringInput,
 });
 export const country = input({
@@ -122,7 +123,8 @@ export const country = input({
   required: false,
   example: "United States",
   placeholder: "Enter country",
-  comments: "The country name.",
+  comments:
+    "The full country name for the customer's address (e.g. United States, Canada).",
   clean: cleanStringInput,
 });
 export const notes = input({
@@ -145,7 +147,8 @@ export const currency = input({
   label: "Currency Format",
   type: "string",
   required: false,
-  comments: "The currency format code.",
+  comments:
+    "The three-letter ISO 4217 currency code (e.g. USD, EUR) for the customer's transactions.",
   placeholder: "Enter currency code",
   example: "USD",
   clean: util.types.toString,

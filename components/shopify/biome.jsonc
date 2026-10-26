@@ -10,7 +10,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "preset": "recommended"
     }
   },
   "formatter": {
@@ -19,6 +19,22 @@
     "indentWidth": 2,
     "lineWidth": 100
   },
+  "overrides": [
+    {
+      // Shopify Liquid currency format strings use ${{amount}} — not JS template syntax
+      "includes": [
+        "src/examplePayloads/rest.ts",
+        "src/examplePayloads/graphql.ts"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noTemplateCurlyInString": "off"
+          }
+        }
+      }
+    }
+  ],
   "files": {
     "includes": ["**", "!**/dist"]
   }

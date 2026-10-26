@@ -1,18 +1,16 @@
 {
   "name": "@prismatic-io/shopify",
   "private": true,
-  "license": "Apache-2.0",
-  "version": "1.0.0",
-  "description": "Shopify integration component for e-commerce store management, orders, products, and customer workflows",
   "scripts": {
     "publish": "npm run build && prism components:publish",
-    "build": "npm run format && npm run lint && webpack",
-    "test": "jest --maxWorkers=4",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
     "lint": "biome check --write .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.25.0",
+    "@prismatic-io/spectral": "10.36.0",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
@@ -20,16 +18,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
-    "@types/jest": "30.0.0",
-    "@types/node": "^26.0.1",
+    "@rollup/plugin-graphql": "3.0.0",
+    "@types/node": "^26",
     "@types/parse-link-header": "^2.0.3",
-    "copy-webpack-plugin": "14.0.0",
-    "jest": "30.4.2",
     "nock": "^14.0.17",
-    "ts-jest": "29.4.11",
-    "ts-loader": "9.6.2",
+    "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "webpack": "5.108.1",
-    "webpack-cli": "7.1.0"
+    "vitest": "4.1.9"
   }
 }

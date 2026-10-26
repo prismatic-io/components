@@ -1,5 +1,5 @@
+import type { FulfillmentOrder } from "../../../types";
 import { getNumericId } from "../../../util";
-import type { FulfillmentOrder } from "../../interfaces/FulfillmentOrder";
 export const fulfillmentOrderMapper = (fulfillmentOrder: FulfillmentOrder) => {
   const fulfillmentOrderId = fulfillmentOrder.id
     ? getNumericId(fulfillmentOrder.id)

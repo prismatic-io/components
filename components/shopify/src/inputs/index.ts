@@ -9,6 +9,7 @@ export * from "./inventoryItems";
 export * from "./inventoryLevels";
 export * from "./locations";
 export * from "./metafields";
+export * from "./misc";
 export * from "./orders";
 export * from "./productImages";
 export * from "./products";

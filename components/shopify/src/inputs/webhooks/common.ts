@@ -19,7 +19,8 @@ export const webhookFormat = input({
   ],
   default: "json",
   placeholder: "Select webhook format",
-  comments: "The format for the webhook response.",
+  comments:
+    "Specifies whether the webhook payload is delivered as JSON or XML.",
   clean: util.types.toString,
 });
 export const webhookId = input({

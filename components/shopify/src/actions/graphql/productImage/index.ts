@@ -1,7 +1,7 @@
-import { countProductImagesGql } from "./countProductImages";
-import { createProductImageGql } from "./createProductImage";
-import { deleteProductImageGql } from "./deleteProductImage";
-import { getProductImageGql } from "./getProductImage";
+import { countProductImagesGql } from "./countProductImagesGql";
+import { createProductImageGql } from "./createProductImageGql";
+import { deleteProductImageGql } from "./deleteProductImageGql";
+import { getProductImageGql } from "./getProductImageGql";
 export default {
   countProductImagesGql,
   createProductImageGql,

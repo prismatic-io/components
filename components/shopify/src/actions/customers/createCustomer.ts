@@ -1,15 +1,20 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
+import {
+  createCustomerPayload,
+  customerExamplePayload,
+} from "../../examplePayloads";
 import { createCustomerInputs } from "../../inputs";
-import { customerExamplePayload } from "../../payloadExamples";
+import { createCustomerOutputSchema } from "../../outputSchemas";
+import type { RestAddress } from "../../types";
 import { cleanArrayCodeInput, cleanValueListInput } from "../../util";
-import { createCustomerGql } from "../graphql/customers/createCustomer";
+import { createCustomerGql } from "../graphql/customers/createCustomerGql";
 import { addressMapper } from "../graphql/mappers/addressMapper";
-import type { RestAddress } from "../interfaces/RestAddress";
 export const createCustomer = action({
   display: {
     label: "Create Customer",
     description: "Creates a new customer.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -43,5 +48,14 @@ export const createCustomer = action({
     return { data };
   },
   inputs: createCustomerInputs,
-  examplePayload: { data: customerExamplePayload },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: createCustomerOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: customerExamplePayload,
+  }),
+  examplePayload: createCustomerPayload,
 });

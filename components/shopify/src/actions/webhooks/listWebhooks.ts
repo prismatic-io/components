@@ -1,14 +1,23 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { MAX_LIMIT } from "../../constants";
+import {
+  listWebhooksPayload,
+  restListWebhooksExamplePayload,
+} from "../../examplePayloads";
 import { listWebhooksInputs } from "../../inputs";
-import { listWebhooksExamplePayload } from "../../payloadExamples";
-import { listWebhooksGql } from "../graphql/webhooks/listWebhooks";
+import { listWebhooksOutputSchema } from "../../outputSchemas";
+import { listWebhooksGql } from "../graphql/webhooks/listWebhooksGql";
 export const listWebhooks = action({
   display: {
     label: "List Webhooks",
     description: "Lists all webhooks or webhooks for the current instance.",
   },
   inputs: listWebhooksInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listWebhooksOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await listWebhooksGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
@@ -22,5 +31,8 @@ export const listWebhooks = action({
     });
     return { data };
   },
-  examplePayload: { data: listWebhooksExamplePayload },
+  examplePerform: async () => ({
+    data: restListWebhooksExamplePayload,
+  }),
+  examplePayload: listWebhooksPayload,
 });

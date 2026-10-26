@@ -1,5 +1,5 @@
+import type { Customer } from "../../../types";
 import { getNumericId } from "../../../util";
-import type { Customer } from "../../interfaces/Customer";
 export const customerMapper = (customer: Customer) => {
   const customerId = customer.id ? getNumericId(customer.id) : null;
   return {

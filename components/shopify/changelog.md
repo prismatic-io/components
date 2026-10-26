@@ -1,5 +1,13 @@
 ## Changelog
 
+### 2026-10-26
+
+Added API version guidance and configuration-time improvements:
+
+- Added a warning in the execution logs when the connection's **API Version** is older than the default Shopify Admin API version, 2026-07. Connections created while the default was 2026-01 keep that version, which cannot see Shopify's new collections model and which Shopify stops supporting on January 16, 2027. Set **API Version** to 2026-07 or later, or clear it to use the default
+- Added inline action calling support to 69 actions for improved example output during configuration
+- Added output schemas across all actions for improved field mapping during configuration
+
 ### 2026-09-14
 
 Removed the **List Orders (Deprecated)** action and the **Event Topic Webhook (Deprecated)** trigger that are no longer in use; use **List Orders** and **Event Topic Subscription** instead

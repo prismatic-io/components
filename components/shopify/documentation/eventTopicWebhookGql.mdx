@@ -1,3 +1,5 @@
+#### How It Works
+
 The Event Topic Webhook trigger manages [Shopify webhook subscriptions](https://shopify.dev/docs/api/admin-graphql/latest/mutations/webhookSubscriptionCreate) for an instance. Unlike manual webhook configuration, this trigger handles the entire webhook lifecycle automatically using the Shopify GraphQL API.
 
 When the trigger is used in a flow:
@@ -21,6 +23,9 @@ The trigger includes built-in HMAC-SHA256 signature verification to ensure webho
 
 The signature is computed over the raw request body, base64-encoded:
 
+<details>
+<summary>Signature computation example</summary>
+
 ```javascript
 const crypto = require("node:crypto");
 
@@ -30,11 +35,13 @@ const signature = crypto
   .digest("base64");                 // Shopify sends base64, not hex
 ```
 
+</details>
+
 The computed value is compared against the header using a constant-time comparison, so a mismatch takes the same time to detect regardless of where the two values first differ.
 
 The trigger automatically returns a 200 OK response with the parsed JSON body for verified webhooks.
 
-#### Event Topics Configuration
+#### Event Types
 
 Select which Shopify events should trigger the flow.
 
@@ -91,7 +98,7 @@ Select which Shopify events should trigger the flow.
 
 A complete list of webhook topics and their payloads is available in the [Shopify Webhook Topics documentation](https://shopify.dev/docs/api/webhooks/latest).
 
-#### Webhook Payload Example
+#### Returned Data
 
 When a webhook is received, the trigger provides the parsed JSON body.
 

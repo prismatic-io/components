@@ -1,6 +1,6 @@
-import { getInventoryItemsGql } from "./getInventoryItems";
-import { listInventoryItemsGql } from "./listInventoryItems";
-import { updateInventoryItemsGql } from "./updateInventoryItems";
+import { getInventoryItemsGql } from "./getInventoryItemsGql";
+import { listInventoryItemsGql } from "./listInventoryItemsGql";
+import { updateInventoryItemsGql } from "./updateInventoryItemsGql";
 export default {
   getInventoryItemsGql,
   listInventoryItemsGql,

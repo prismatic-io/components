@@ -1,6 +1,6 @@
 import { WEBHOOK_TOPICS_MAP } from "../../../constants";
+import type { WebhookSubscription } from "../../../types";
 import { findKeyByValue, getNumericId } from "../../../util";
-import type { WebhookSubscription } from "../../interfaces/Webhook";
 export const webhookMapper = (webhookSubscription: WebhookSubscription) => {
   return {
     id: getNumericId(webhookSubscription.id),

@@ -1,7 +1,7 @@
-import { connectInventoryLevelGql } from "./connectInventoryLevel";
-import { deleteInventoryLevelsGql } from "./deleteInventoryLevels";
-import { getInventoryLevelsGql } from "./getInventoryLevels";
-import { listInventoryLevelsGql } from "./listInventoryLevels";
+import { connectInventoryLevelGql } from "./connectInventoryLevelGql";
+import { deleteInventoryLevelsGql } from "./deleteInventoryLevelsGql";
+import { getInventoryLevelsGql } from "./getInventoryLevelsGql";
+import { listInventoryLevelsGql } from "./listInventoryLevelsGql";
 export default {
   connectInventoryLevelGql,
   deleteInventoryLevelsGql,

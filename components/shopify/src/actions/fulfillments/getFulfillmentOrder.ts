@@ -1,13 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getFulfillmentOrderExamplePayload } from "../../examplePayloads";
 import { getFulfillmentOrderInputs } from "../../inputs";
-import { getFulfillmentOrderExamplePayload } from "../../payloadExamples";
-import { getFulfillmentOrderGql } from "../graphql/fulfillments/getFulfillmentOrder";
+import { getFulfillmentOrderOutputSchema } from "../../outputSchemas";
+import { getFulfillmentOrderGql } from "../graphql/fulfillments/getFulfillmentOrderGql";
 export const getFulfillmentOrder = action({
   display: {
     label: "Get Fulfillment Order",
     description: "Retrieves a specific fulfillment order by ID.",
   },
   inputs: getFulfillmentOrderInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getFulfillmentOrderOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, params) => {
     const { data } = await getFulfillmentOrderGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
@@ -15,5 +21,5 @@ export const getFulfillmentOrder = action({
     });
     return { data };
   },
-  examplePayload: { data: getFulfillmentOrderExamplePayload },
+  examplePayload: getFulfillmentOrderExamplePayload.restMap,
 });

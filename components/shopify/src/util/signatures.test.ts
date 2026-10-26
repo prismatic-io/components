@@ -1,10 +1,12 @@
 import * as crypto from "node:crypto";
+import type { Mock } from "vitest";
 import { signaturesMatch } from ".";
-jest.mock("node:crypto", () => {
-  const actual = jest.requireActual("node:crypto");
-  return { ...actual, timingSafeEqual: jest.fn(actual.timingSafeEqual) };
+vi.mock("node:crypto", async () => {
+  const actual =
+    await vi.importActual<typeof import("node:crypto")>("node:crypto");
+  return { ...actual, timingSafeEqual: vi.fn(actual.timingSafeEqual) };
 });
-const timingSafeEqualMock = crypto.timingSafeEqual as unknown as jest.Mock;
+const timingSafeEqualMock = crypto.timingSafeEqual as unknown as Mock;
 const SIGNATURE = "cU2s5TgLZkTVpZTJgOWJhOWY0YmQ0ZmM2ZDgwZjFhZjA=";
 beforeEach(() => {
   timingSafeEqualMock.mockClear();

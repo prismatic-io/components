@@ -1,8 +1,8 @@
-import { createFulfillmentServiceGql } from "./createFulfillmentService";
-import { deleteFulfillmentServiceGql } from "./deleteFulfillmentService";
-import { getFulfillmentServiceGql } from "./getFulfillmentService";
-import { listFulfillmentServicesGql } from "./listFulfillmentServices";
-import { updateFulfillmentServiceGql } from "./updateFulfillmentService";
+import { createFulfillmentServiceGql } from "./createFulfillmentServiceGql";
+import { deleteFulfillmentServiceGql } from "./deleteFulfillmentServiceGql";
+import { getFulfillmentServiceGql } from "./getFulfillmentServiceGql";
+import { listFulfillmentServicesGql } from "./listFulfillmentServicesGql";
+import { updateFulfillmentServiceGql } from "./updateFulfillmentServiceGql";
 export default {
   createFulfillmentServiceGql,
   deleteFulfillmentServiceGql,

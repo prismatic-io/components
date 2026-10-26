@@ -1,29 +1,8 @@
 import { component } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
-import {
-  createCustomer,
-  getCustomer,
-  listCustomers,
-} from "./actions/customers";
-import { listDraftOrders } from "./actions/draftOrders";
-import {
-  getFulfillmentOrder,
-  listFulfillmentOrders,
-  listFulfillments,
-} from "./actions/fulfillments";
-import graphqlActions from "./actions/graphql";
-import { getShopConfig, graphQlRawRequest, rawRequest } from "./actions/misc";
-import { getOrder } from "./actions/orders";
-import { listProductImages } from "./actions/productImages";
-import { countProducts, getProduct, listProducts } from "./actions/products";
-import {
-  createWebhook,
-  deleteInstanceWebhooks,
-  deleteWebhook,
-  listWebhooks,
-} from "./actions/webhooks";
+import actions from "./actions";
 import connections from "./connections";
-import * as dataSources from "./dataSources";
+import dataSources from "./dataSources";
 import triggers from "./triggers";
 export default component({
   key: "shopify",
@@ -35,30 +14,9 @@ export default component({
     iconPath: "icon.png",
     category: "Application Connectors",
   },
-  actions: {
-    createWebhook,
-    deleteInstanceWebhooks,
-    deleteWebhook,
-    listWebhooks,
-    listCustomers,
-    createCustomer,
-    getCustomer,
-    listProducts,
-    getProduct,
-    getOrder,
-    rawRequest,
-    listFulfillments,
-    getFulfillmentOrder,
-    listFulfillmentOrders,
-    countProducts,
-    listDraftOrders,
-    getShopConfig,
-    listProductImages,
-    graphQlRawRequest,
-    ...graphqlActions,
-  },
-  triggers: { ...triggers },
-  dataSources: { ...dataSources },
+  actions,
+  triggers,
+  dataSources,
   connections,
   hooks: { error: handleErrors },
 });

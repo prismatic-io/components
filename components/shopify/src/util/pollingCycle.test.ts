@@ -6,12 +6,8 @@ import type {
 import { defaultTriggerPayload } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import pollOrdersQuery from "../actions/graphql/queries/orders/PollOrders.gql";
-import type {
-  PollingCursor,
-  PollingState,
-} from "../actions/interfaces/PollingState";
 import { DEFAULT_SHOPIFY_GRAPHQL_API_VERSION } from "../constants";
-import type { PollingResource } from "../triggers/pollingTypes";
+import type { PollingCursor, PollingResource, PollingState } from "../types";
 import { runPollingCycle } from "./index";
 const HOST = "test-store.myshopify.com";
 const PATH = `/admin/api/${DEFAULT_SHOPIFY_GRAPHQL_API_VERSION}/graphql.json`;
@@ -36,15 +32,15 @@ const newOrder: TestOrder = {
   createdAt: "2026-08-25T00:00:00.000Z",
 };
 const createContext = (state: PollingState) => {
-  const setState = jest.fn();
+  const setState = vi.fn();
   const context = {
-    polling: { getState: () => state, setState, invokeAction: jest.fn() },
+    polling: { getState: () => state, setState, invokeAction: vi.fn() },
     logger: {
-      debug: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      error: jest.fn(),
-      metric: jest.fn(),
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      metric: vi.fn(),
     },
     debug: { enabled: false },
   } as unknown as PollingContext;

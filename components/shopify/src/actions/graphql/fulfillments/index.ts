@@ -1,4 +1,4 @@
-import { getFulfillmentGql } from "./getFulfillment";
+import { getFulfillmentGql } from "./getFulfillmentGql";
 export default {
   getFulfillmentGql,
 };

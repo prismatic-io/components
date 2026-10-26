@@ -1,6 +1,6 @@
-import { countLocationsGql } from "./countLocations";
-import { getLocationsGql } from "./getLocations";
-import { listLocationsGql } from "./listLocations";
+import { countLocationsGql } from "./countLocationsGql";
+import { getLocationsGql } from "./getLocationsGql";
+import { listLocationsGql } from "./listLocationsGql";
 export default {
   countLocationsGql,
   getLocationsGql,

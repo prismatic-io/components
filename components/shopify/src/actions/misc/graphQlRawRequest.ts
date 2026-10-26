@@ -7,6 +7,7 @@ export const graphQlRawRequest = action({
     description: "Sends a raw GraphQL request to Shopify.",
   },
   inputs,
+  performSafety: "notAllowed",
   perform: async (
     context,
     { connection, apiVersion, query, variables, variablesObject },
@@ -15,6 +16,7 @@ export const graphQlRawRequest = action({
       connection,
       apiVersion,
       context.debug.enabled,
+      context.logger,
     );
     const data = await client.request(query, {
       ...variables,

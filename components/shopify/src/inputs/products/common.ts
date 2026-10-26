@@ -5,7 +5,7 @@ export const title = input({
   required: true,
   example: "Classic T-shirt",
   placeholder: "Enter product title",
-  comments: "The title of the product.",
+  comments: "The name displayed to customers in the storefront listing.",
   clean: util.types.toString,
 });
 export const body = input({
@@ -24,7 +24,8 @@ export const vendor = input({
   required: true,
   example: "Burton inc.",
   placeholder: "Enter vendor name",
-  comments: "The vendor of the product.",
+  comments:
+    "The name of the manufacturer or supplier displayed on the product page.",
   clean: util.types.toString,
 });
 export const productType = input({
@@ -33,7 +34,8 @@ export const productType = input({
   required: true,
   example: "T-shirt",
   placeholder: "Enter product type",
-  comments: "The type of product.",
+  comments:
+    "A product classification used for filtering, such as T-shirt, Shoes, or Accessories.",
   clean: util.types.toString,
 });
 export const productStatus = input({
@@ -44,7 +46,8 @@ export const productStatus = input({
     { label: "Draft", value: "draft" },
     { label: "Active", value: "active" },
   ],
-  comments: "The status of the product.",
+  comments:
+    "Whether the product is active and visible in the storefront, or a draft.",
   placeholder: "Select product status",
   clean: util.types.toString,
 });
@@ -54,6 +57,6 @@ export const imageUrl = input({
   required: false,
   example: "https://example.com/images/product.jpg",
   placeholder: "Enter image URL",
-  comments: "URL of the product image.",
+  comments: "The source URL for the product image to upload to Shopify.",
   clean: util.types.toString,
 });

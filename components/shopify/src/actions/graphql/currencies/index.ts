@@ -1,4 +1,4 @@
-import { listCurrenciesGql } from "./listCurrencies";
+import { listCurrenciesGql } from "./listCurrenciesGql";
 export default {
   listCurrenciesGql,
 };

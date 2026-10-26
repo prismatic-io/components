@@ -1,7 +1,4 @@
-import type {
-  PollingCursor,
-  PollingState,
-} from "../actions/interfaces/PollingState";
+import type { PollingCursor, PollingState } from "../types";
 import {
   buildPollingWindowQuery,
   lookBackDateClean,

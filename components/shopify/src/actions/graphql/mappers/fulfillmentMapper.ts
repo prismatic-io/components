@@ -1,5 +1,5 @@
+import type { Fulfillment } from "../../../types";
 import { getNumericId } from "../../../util";
-import type { Fulfillment } from "../../interfaces/Fulfillment";
 export const fulfillmentMapper = (fulfillment: Fulfillment) => ({
   id: fulfillment.id ? getNumericId(fulfillment.id) : null,
   order_id: fulfillment.order?.id ? getNumericId(fulfillment.order.id) : null,

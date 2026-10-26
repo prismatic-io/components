@@ -1,9 +1,9 @@
-import { countVariantsGql } from "./countVariants";
-import { createVariantGql } from "./createVariant";
-import { deleteVariantGql } from "./deleteVariant";
-import { getVariantGql } from "./getVariant";
-import { listVariantsGql } from "./listVariants";
-import { updateVariantGql } from "./updateVariant";
+import { countVariantsGql } from "./countVariantsGql";
+import { createVariantGql } from "./createVariantGql";
+import { deleteVariantGql } from "./deleteVariantGql";
+import { getVariantGql } from "./getVariantGql";
+import { listVariantsGql } from "./listVariantsGql";
+import { updateVariantGql } from "./updateVariantGql";
 export default {
   countVariantsGql,
   createVariantGql,

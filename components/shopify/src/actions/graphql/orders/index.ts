@@ -1,10 +1,10 @@
-import { cancelOrderGql } from "./cancelOrder";
-import { closeOrderGql } from "./closeOrder";
-import { countOrdersGql } from "./countOrders";
-import { createOrderGql } from "./createOrder";
-import { deleteOrderGql } from "./deleteOrder";
-import { getOrderGql } from "./getOrder";
-import { listOrdersGql } from "./listOrders";
+import { cancelOrderGql } from "./cancelOrderGql";
+import { closeOrderGql } from "./closeOrderGql";
+import { countOrdersGql } from "./countOrdersGql";
+import { createOrderGql } from "./createOrderGql";
+import { deleteOrderGql } from "./deleteOrderGql";
+import { getOrderGql } from "./getOrderGql";
+import { listOrdersGql } from "./listOrdersGql";
 export default {
   cancelOrderGql,
   closeOrderGql,

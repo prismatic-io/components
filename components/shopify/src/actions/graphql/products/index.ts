@@ -1,6 +1,6 @@
-import { createProductGql } from "./createProduct";
-import { deleteProductGql } from "./deleteProduct";
-import { updateProductGql } from "./updateProduct";
+import { createProductGql } from "./createProductGql";
+import { deleteProductGql } from "./deleteProductGql";
+import { updateProductGql } from "./updateProductGql";
 export default {
   createProductGql,
   deleteProductGql,

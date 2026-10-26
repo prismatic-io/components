@@ -1,12 +1,19 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { deleteWebhookPayload } from "../../examplePayloads";
 import { deleteWebhookInputs } from "../../inputs";
-import { deleteWebhookGql } from "../graphql/webhooks/deleteWebhook";
+import { deleteWebhookOutputSchema } from "../../outputSchemas";
+import { deleteWebhookGql } from "../graphql/webhooks/deleteWebhookGql";
 export const deleteWebhook = action({
   display: {
     label: "Delete Webhook",
     description: "Deletes a webhook by ID.",
   },
   inputs: deleteWebhookInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: deleteWebhookOutputSchema,
+  }),
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await deleteWebhookGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
@@ -14,5 +21,8 @@ export const deleteWebhook = action({
     });
     return { data };
   },
-  examplePayload: { data: {} },
+  examplePerform: async () => ({
+    data: {},
+  }),
+  examplePayload: deleteWebhookPayload,
 });

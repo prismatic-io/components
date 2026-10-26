@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { getProductExamplePayload } from "../../examplePayloads";
 import { getProductInputs } from "../../inputs";
-import { getProductExamplePayload } from "../../payloadExamples";
-import { getProductGql } from "../graphql/products/getProduct";
+import { getProductOutputSchema } from "../../outputSchemas";
+import { getProductGql } from "../graphql/products/getProductGql";
 export const getProduct = action({
   display: {
     label: "Get Product",
     description: "Retrieves a product by ID.",
   },
+  performSafety: "safe",
   perform: async (context, { productId, shopifyConnection }) => {
     const { data } = await getProductGql.perform(context, {
       productId: `gid://shopify/Product/${productId}`,
@@ -17,7 +19,9 @@ export const getProduct = action({
     };
   },
   inputs: getProductInputs,
-  examplePayload: {
-    data: getProductExamplePayload,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: getProductOutputSchema,
+  }),
+  examplePayload: getProductExamplePayload.restMap,
 });

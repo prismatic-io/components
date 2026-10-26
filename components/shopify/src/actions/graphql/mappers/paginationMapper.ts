@@ -1,4 +1,4 @@
-import type { PageInfo } from "../../interfaces/PageInfo";
+import type { PageInfo } from "../../../types";
 export const paginationMapper = (pageInfo: PageInfo) => {
   return {
     pagination: pageInfo.hasNextPage

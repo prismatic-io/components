@@ -1,5 +1,5 @@
+import type { Shop } from "../../../types";
 import { createTimezoneString, getNumericId } from "../../../util";
-import type { Shop } from "../../interfaces/Shop";
 export const shopMapper = (shop: Shop) => {
   return {
     id: shop ? getNumericId(shop.id) : null,

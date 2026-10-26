@@ -1,8 +1,8 @@
-import { completeDraftOrderGql } from "./completeDraftOrder";
-import { countDraftOrdersGql } from "./countDraftOrders";
-import { createDraftOrderGql } from "./createDraftOrder";
-import { deleteDraftOrderGql } from "./deleteDraftOrder";
-import { getDraftOrderGql } from "./getDraftOrder";
+import { completeDraftOrderGql } from "./completeDraftOrderGql";
+import { countDraftOrdersGql } from "./countDraftOrdersGql";
+import { createDraftOrderGql } from "./createDraftOrderGql";
+import { deleteDraftOrderGql } from "./deleteDraftOrderGql";
+import { getDraftOrderGql } from "./getDraftOrderGql";
 export default {
   completeDraftOrderGql,
   countDraftOrdersGql,

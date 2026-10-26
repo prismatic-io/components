@@ -1,5 +1,5 @@
+import type { Product } from "../../../types";
 import { getNumericId } from "../../../util";
-import type { Product } from "../../interfaces/Product";
 export const productMapper = (product: Product) => {
   const productId = product.id ? getNumericId(product.id) : null;
   const firstImage = product.media.nodes[0] || null;

@@ -1,7 +1,7 @@
+import type { PollingChangesObject } from "../types";
 import { resolvePollingRecordChanges } from "../util";
 import { customersPollingTrigger } from "./customersPollingTrigger";
 import { ordersPollingTrigger } from "./ordersPollingTrigger";
-import type { PollingChangesObject } from "./pollingTypes";
 import { productsPollingTrigger } from "./productsPollingTrigger";
 interface BatchableTrigger {
   triggerResolverSupport?: string;

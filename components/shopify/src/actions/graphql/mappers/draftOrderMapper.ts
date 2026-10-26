@@ -1,5 +1,5 @@
+import type { DraftOrder } from "../../../types";
 import { getNumericId } from "../../../util";
-import type { DraftOrder } from "../../interfaces/DraftOrder";
 export const draftOrderMapper = (draftOrder: DraftOrder) => {
   return {
     id: draftOrder.id ? getNumericId(draftOrder.id) : null,

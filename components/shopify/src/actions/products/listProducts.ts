@@ -1,12 +1,17 @@
-import { action, util } from "@prismatic-io/spectral";
+import { action, outputSchema, util } from "@prismatic-io/spectral";
+import {
+  listProductsPayload,
+  restListProductsExamplePayload,
+} from "../../examplePayloads";
 import { listProductsInputs } from "../../inputs";
-import { listProductsExamplePayload } from "../../payloadExamples";
-import { listProductsGql } from "../graphql/products/listProducts";
+import { listProductsOutputSchema } from "../../outputSchemas";
+import { listProductsGql } from "../graphql/products/listProductsGql";
 export const listProducts = action({
   display: {
     label: "List Products",
     description: "Lists all products.",
   },
+  performSafety: "notAllowed",
   perform: async (context, params) => {
     const { data } = await listProductsGql.perform(context, {
       shopifyConnection: params.shopifyConnection,
@@ -23,7 +28,14 @@ export const listProducts = action({
     };
   },
   inputs: listProductsInputs,
-  examplePayload: {
-    data: listProductsExamplePayload,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listProductsOutputSchema,
+  }),
+  examplePerform: async (): Promise<{
+    data: unknown;
+  }> => ({
+    data: restListProductsExamplePayload,
+  }),
+  examplePayload: listProductsPayload,
 });

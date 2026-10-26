@@ -1,14 +1,15 @@
 import { pollingTrigger } from "@prismatic-io/spectral";
 import pollProductsQuery from "../actions/graphql/queries/products/PollProducts.gql";
-import type { PollingCursor } from "../actions/interfaces/PollingState";
-import type { Product } from "../actions/interfaces/Product";
+import { productsPollingTriggerExamplePayload } from "../examplePayloads";
 import { pollingTriggerInputs } from "../inputsGql";
-import { resolvePollingRecordChanges, runPollingCycle } from "../util";
 import type {
   PollingChangesObject,
+  PollingCursor,
   PollingRecordChange,
   PollingResource,
-} from "./pollingTypes";
+  Product,
+} from "../types";
+import { resolvePollingRecordChanges, runPollingCycle } from "../util";
 const productsResource: PollingResource = {
   listKey: "products",
   query: pollProductsQuery,
@@ -20,6 +21,7 @@ export const productsPollingTrigger = pollingTrigger({
       "Retrieves existing and ongoing product changes from Shopify. Load history once, check for changes on a schedule, or both.",
   },
   inputs: pollingTriggerInputs,
+  examplePayload: productsPollingTriggerExamplePayload,
   triggerResolverSupport: "valid",
   batchConfig: { batchSize: 50, concurrentBatchLimit: 1 },
   triggerResolver: {

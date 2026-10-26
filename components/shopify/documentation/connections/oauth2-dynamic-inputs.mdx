@@ -10,7 +10,7 @@ Shopify uses OAuth 2.0 for app authentication. This connection type simplifies c
 As of January 1, 2026, merchants can no longer create new legacy custom apps. Existing apps are not affected. Partners can still create new custom apps and transfer stores to merchants, but once transferred, new custom app creation is disabled on the store. Use the Partner Dashboard or Shopify CLI to create apps going forward.
 :::
 
-#### Creating a Shopify App
+#### Setup Steps
 
 Choose one of the following methods to create a Shopify app.
 
@@ -80,9 +80,6 @@ Create a connection of type **OAuth 2.0** and configure the following fields:
 
 Save the integration to connect and authenticate to Shopify.
 
-:::info[Shop Name Format]
-The **Shop Name** should be the subdomain portion of the Shopify store URL. For example, if the store URL is `example-store.myshopify.com`, enter `example-store` as the Shop Name.
-:::
 
 #### App Distribution
 
@@ -94,8 +91,5 @@ Shopify app distribution determines which merchants can install the app and is a
 
 **Public apps** are created through the Shopify Partners program and can be distributed to multiple merchants. Public apps must be submitted for review and listed in the [Shopify App Store](https://apps.shopify.com/) before other merchants can install them.
 
-:::note[No Unlisted Distribution]
-Shopify offers no option to distribute an app to many merchants without an App Store listing. For multi-merchant distribution, create a public app and submit it for App Store review.
-:::
 
 For information on the App Store review process, refer to [Shopify's app distribution documentation](https://shopify.dev/docs/apps/launch/distribution).

@@ -1,14 +1,20 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
 import { MAX_LIMIT } from "../../constants";
 import { listFulfillmentOrdersExamplePayload } from "../../examplePayloads";
 import { listFulfillmentOrdersInputs } from "../../inputs";
-import { listFulfillmentOrdersGql } from "../graphql/fulfillments/listFulfillmentOrders";
+import { listFulfillmentOrdersOutputSchema } from "../../outputSchemas";
+import { listFulfillmentOrdersGql } from "../graphql/fulfillments/listFulfillmentOrdersGql";
 export const listFulfillmentOrders = action({
   display: {
     label: "List Fulfillment Orders",
     description: "Lists all fulfillment orders for a specific order.",
   },
   inputs: listFulfillmentOrdersInputs,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listFulfillmentOrdersOutputSchema,
+  }),
+  performSafety: "safe",
   perform: async (context, params) => {
     const { data } = await listFulfillmentOrdersGql.perform(context, {
       shopifyConnection: params.shopifyConnection,

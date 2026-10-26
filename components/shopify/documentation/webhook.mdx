@@ -13,6 +13,9 @@ When a webhook request is received, the trigger performs HMAC-SHA256 signature v
 
 The signature is computed over the raw request body, base64-encoded:
 
+<details>
+<summary>Signature computation example</summary>
+
 ```javascript
 const crypto = require("node:crypto");
 
@@ -21,6 +24,8 @@ const signature = crypto
   .update(rawRequestBody, "utf8")    // the raw body, before JSON parsing
   .digest("base64");                 // Shopify sends base64, not hex
 ```
+
+</details>
 
 The computed value is compared against the header using a constant-time comparison, so a mismatch takes the same time to detect regardless of where the two values first differ.
 
@@ -31,3 +36,28 @@ The computed value is compared against the header using a constant-time comparis
 #### Event Types
 
 A full list of configurable webhook topics is available in the [Shopify Webhook Topics documentation](https://shopify.dev/docs/api/webhooks/latest).
+
+#### Returned Data
+
+When a webhook is received and verified, the trigger returns the parsed JSON body from the request. The shape depends on the webhook topic configured in Shopify.
+
+<details>
+<summary>Example: orders/create event</summary>
+
+```json
+{
+  "id": 5940139491234,
+  "email": "john.doe@example.com",
+  "created_at": "2024-11-10T10:30:00-05:00",
+  "updated_at": "2024-11-10T10:30:00-05:00",
+  "name": "#1001",
+  "total_price": "59.99",
+  "currency": "USD",
+  "financial_status": "paid",
+  "fulfillment_status": null,
+  "line_items": [],
+  "admin_graphql_api_id": "gid://shopify/Order/5940139491234"
+}
+```
+
+</details>

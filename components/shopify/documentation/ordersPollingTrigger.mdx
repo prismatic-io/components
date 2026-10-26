@@ -16,7 +16,7 @@ If more orders changed than one page holds, the trigger continues from where the
 - **Look-back Date empty**: the trigger records the current time and reports nothing. Incremental polling begins on the next recurrence.
 - **Look-back Date set**: the trigger begins a one-time initial sync covering every order updated on or after that date, then hands off to incremental polling. An instance that already carries a committed position is never sent back through an initial sync, so setting the date on a running instance does not replay its history.
 
-The initial sync seeds each order exactly once. The window it covers is half-open, so a order whose `updated_at` falls on the window's upper bound belongs to the next window rather than this one, and no order is reported twice across the handoff. That upper bound is fixed at the moment the sync begins and does not move as the sync progresses, so a sync spanning several recurrences covers the range it started with rather than growing to follow the clock.
+The initial sync seeds each order exactly once. The window it covers is half-open, so an order whose `updated_at` falls on the window's upper bound belongs to the next window rather than this one, and no order is reported twice across the handoff. That upper bound is fixed at the moment the sync begins and does not move as the sync progresses, so a sync spanning several recurrences covers the range it started with rather than growing to follow the clock.
 
 No field in the payload marks the handoff from the initial sync to incremental polling. A downstream step cannot distinguish a backfilled order from one picked up by ordinary polling, and does not need to: the shape is identical in both phases.
 

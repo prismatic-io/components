@@ -1,12 +1,14 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { countProductsPayload } from "../../examplePayloads";
 import { countProductsInputs } from "../../inputs";
-import { countProductsExamplePayload } from "../../payloadExamples";
-import { countProductsGql } from "../graphql/products/countProducts";
+import { countProductsOutputSchema } from "../../outputSchemas";
+import { countProductsGql } from "../graphql/products/countProductsGql";
 export const countProducts = action({
   display: {
     label: "Count Products",
     description: "Returns a count of all products.",
   },
+  performSafety: "safe",
   perform: async (context, params) => {
     const { data } = await countProductsGql.perform(context, params);
     return {
@@ -14,7 +16,9 @@ export const countProducts = action({
     };
   },
   inputs: countProductsInputs,
-  examplePayload: {
-    data: countProductsExamplePayload,
-  },
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: countProductsOutputSchema,
+  }),
+  examplePayload: countProductsPayload,
 });

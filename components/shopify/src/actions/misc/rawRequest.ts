@@ -1,28 +1,15 @@
 import { action, util } from "@prismatic-io/spectral";
-import {
-  inputs as httpClientInputs,
-  sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { sendRawRequest } from "@prismatic-io/spectral/dist/clients/http";
 import { getShopifyHostname } from "../../client";
-import { apiVersion, connectionInput, returnHeaders } from "../../inputs";
+import { rawRequestInputs as inputs } from "../../inputs";
 export const rawRequest = action({
   display: {
     label: "Raw Request (Deprecated)",
     description:
-      "Send raw HTTP request to Shopify. This version of the action uses REST and is being deprecated. Please replace action with the Raw Request utilizing GraphQL.",
+      "Sends a raw HTTP request to Shopify. This version of the action uses REST and is being deprecated. Please replace action with the Raw Request utilizing GraphQL.",
   },
-  inputs: {
-    connection: connectionInput,
-    ...httpClientInputs,
-    url: {
-      ...httpClientInputs.url,
-      comments:
-        "Input the path only (/users/current.json), The base URL is already included (https://YOUR-DOMAIN.myshopify.com/admin/api/API-VERSION). For example, to connect to https://YOUR-DOMAIN.myshopify.com/admin/api/API-VERSION/users/current.json, only /users/current.json is entered in this field.",
-      example: "/users/current.json",
-    },
-    apiVersion,
-    returnHeaders,
-  },
+  inputs,
+  performSafety: "notAllowed",
   perform: async (
     _context,
     { connection, apiVersion, returnHeaders, ...httpClientInputs },

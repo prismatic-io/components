@@ -1,7 +1,7 @@
-import { countCustomersGql } from "./countCustomers";
-import { createAccountActivationURLGql } from "./createAccountActivationURL";
-import { deleteCustomerGql } from "./deleteCustomer";
-import { updateCustomerGql } from "./updateCustomer";
+import { countCustomersGql } from "./countCustomersGql";
+import { createAccountActivationURLGql } from "./createAccountActivationURLGql";
+import { deleteCustomerGql } from "./deleteCustomerGql";
+import { updateCustomerGql } from "./updateCustomerGql";
 export default {
   countCustomersGql,
   createAccountActivationURLGql,
