@@ -4,6 +4,7 @@ import {
   type HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import { oauth2 } from "./connections";
+import { GITHUB_API_VERSION } from "./constants";
 export const baseUrl = "https://api.github.com";
 const toAuthorizationHeaders = (
   connection: Connection,
@@ -43,6 +44,7 @@ export const createClient = (
     headers: {
       ...toAuthorizationHeaders(connection),
       Accept: "application/json",
+      "X-GitHub-Api-Version": GITHUB_API_VERSION,
     },
     responseType: "json",
     debug,

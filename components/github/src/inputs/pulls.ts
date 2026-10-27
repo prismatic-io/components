@@ -1,7 +1,6 @@
 import { input } from "@prismatic-io/spectral";
 import { cleanString, toOptionalBool } from "../utils";
 import { connectionInput, owner, pagination, repo } from "./common";
-import { issueNumber } from "./issues";
 export const head = input({
   label: "Head",
   type: "string",
@@ -24,8 +23,7 @@ const pullRequestTitle = input({
   placeholder: "Enter pull request title",
   example: "Fix bug in authentication flow",
   clean: cleanString,
-  comments:
-    "The title of the pull request. Required unless using the issue parameter.",
+  comments: "The title of the pull request.",
 });
 const pullRequestHead = input({
   label: "Head",
@@ -84,7 +82,6 @@ export const pullsCreateInputs = {
   body: pullRequestBody,
   maintainerCanModify,
   draft,
-  issueNumber,
 };
 const pullRequestStateFilter = input({
   label: "State",

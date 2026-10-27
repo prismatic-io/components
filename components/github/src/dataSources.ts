@@ -7,6 +7,13 @@ import {
 } from "@prismatic-io/spectral";
 import { createClient } from "./client";
 import {
+  listReposForAuthenticatedUserExamplePayload,
+  selectIssueForAuthenticatedUserExamplePayload,
+  selectOrganizationsForAuthenticatedUserExamplePayload,
+  selectPullRequestFromRepoExamplePayload,
+  selectUserFromOrganizationExamplePayload,
+} from "./examplePayloads";
+import {
   assignee,
   base,
   connectionInput,
@@ -23,7 +30,7 @@ import {
 import type { Issue } from "./interfaces/Issue";
 import type { Organization } from "./interfaces/Organization";
 import type { PullRequest } from "./interfaces/PullRequest";
-import type { Repository } from "./interfaces/Respository";
+import type { Repository } from "./interfaces/Repository";
 import type { User } from "./interfaces/User";
 import { paginateResults, sortBy } from "./utils";
 const listReposForAuthenticatedUser = dataSource({
@@ -48,15 +55,7 @@ const listReposForAuthenticatedUser = dataSource({
     connection: connectionInput,
   },
   dataSourceType: "picklist",
-  examplePayload: {
-    result: [
-      { key: "exampleuser/examplerepo", label: "exampleuser/examplerepo" },
-      {
-        key: "exampleorg/special-project",
-        label: "exampleorg/special-project",
-      },
-    ],
-  },
+  examplePayload: listReposForAuthenticatedUserExamplePayload,
 });
 const selectOrganizationsForAuthenticatedUser = dataSource({
   display: {
@@ -80,6 +79,7 @@ const selectOrganizationsForAuthenticatedUser = dataSource({
   inputs: {
     connection: connectionInput,
   },
+  examplePayload: selectOrganizationsForAuthenticatedUserExamplePayload,
   dataSourceType: "picklist",
 });
 const selectIssueForAuthenticatedUser = dataSource({
@@ -110,8 +110,8 @@ const selectIssueForAuthenticatedUser = dataSource({
     );
     const result = issues
       .sort(sortBy("title"))
-      .map<Element>(({ id, title }) => ({
-        key: util.types.toString(id),
+      .map<Element>(({ number, title }) => ({
+        key: util.types.toString(number),
         label: title,
       }));
     return { result };
@@ -140,6 +140,7 @@ const selectIssueForAuthenticatedUser = dataSource({
     direction,
     since,
   },
+  examplePayload: selectIssueForAuthenticatedUserExamplePayload,
   dataSourceType: "picklist",
 });
 export const selectPullRequestFromRepo = dataSource({
@@ -191,6 +192,7 @@ export const selectPullRequestFromRepo = dataSource({
     ),
     direction,
   },
+  examplePayload: selectPullRequestFromRepoExamplePayload,
   dataSourceType: "picklist",
 });
 export const selectUserFromOrganization = dataSource({
@@ -218,6 +220,7 @@ export const selectUserFromOrganization = dataSource({
     connection: connectionInput,
     organization,
   },
+  examplePayload: selectUserFromOrganizationExamplePayload,
   dataSourceType: "picklist",
 });
 export default {

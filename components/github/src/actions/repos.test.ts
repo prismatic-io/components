@@ -2,6 +2,7 @@ import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { oauth2 } from "../connections";
 import {
+  actionsCreateWorkflowDispatchExamplePayload,
   gitCreateBlobExamplePayload,
   gitCreateRefExamplePayload,
   gitCreateTreeExamplePayload,
@@ -29,10 +30,10 @@ const {
 } = actions;
 afterEach(() => nock.cleanAll());
 describe("actionsCreateWorkflowDispatch", () => {
-  test("happy path returns the (empty) response body", async () => {
+  test("happy path returns the workflow run details", async () => {
     nock(BASE)
       .post("/repos/octocat/Hello-World/actions/workflows/main.yml/dispatches")
-      .reply(204);
+      .reply(200, actionsCreateWorkflowDispatchExamplePayload.data);
     const { result } = await invoke(actionsCreateWorkflowDispatch, {
       connection: conn,
       owner: "octocat",
@@ -41,7 +42,9 @@ describe("actionsCreateWorkflowDispatch", () => {
       ref: "main",
       inputs: undefined,
     });
-    expect(result.data).toBe("");
+    expect(result.data).toEqual(
+      actionsCreateWorkflowDispatchExamplePayload.data,
+    );
   });
   test("error path surfaces the failure", async () => {
     nock(BASE)
@@ -91,7 +94,10 @@ describe("gitCreateBlob", () => {
 describe("gitCreateRef", () => {
   test("happy path returns the created ref", async () => {
     nock(BASE)
-      .post("/repos/octocat/Hello-World/git/refs")
+      .post("/repos/octocat/Hello-World/git/refs", {
+        ref: "refs/heads/feature-branch",
+        sha: "aa218f56b14c9653891f9e74264a383fa43fefbd",
+      })
       .reply(201, gitCreateRefExamplePayload.data);
     const { result } = await invoke(gitCreateRef, {
       connection: conn,
@@ -99,7 +105,6 @@ describe("gitCreateRef", () => {
       repo: "Hello-World",
       ref: "refs/heads/feature-branch",
       sha: "aa218f56b14c9653891f9e74264a383fa43fefbd",
-      key: undefined,
     });
     expect(result.data).toEqual(gitCreateRefExamplePayload.data);
   });
@@ -114,7 +119,6 @@ describe("gitCreateRef", () => {
         repo: "Hello-World",
         ref: "refs/heads/feature-branch",
         sha: "aa218f56b14c9653891f9e74264a383fa43fefbd",
-        key: undefined,
       }),
     ).rejects.toThrow();
   });
@@ -328,7 +332,12 @@ describe("pullsList", () => {
 describe("pullsCreate", () => {
   test("happy path returns the created pull request", async () => {
     nock(BASE)
-      .post("/repos/octocat/Hello-World/pulls")
+      .post("/repos/octocat/Hello-World/pulls", {
+        title: "Amazing new feature",
+        head: "feature-branch",
+        base: "main",
+        body: "Please pull these changes",
+      })
       .reply(201, pullsCreateExamplePayload.data);
     const { result } = await invoke(pullsCreate, {
       connection: conn,
@@ -340,7 +349,6 @@ describe("pullsCreate", () => {
       body: "Please pull these changes",
       maintainerCanModify: undefined,
       draft: undefined,
-      issueNumber: 1347,
     });
     expect(result.data).toEqual(pullsCreateExamplePayload.data);
   });
@@ -359,7 +367,6 @@ describe("pullsCreate", () => {
         body: "Please pull these changes",
         maintainerCanModify: undefined,
         draft: undefined,
-        issueNumber: 1347,
       }),
     ).rejects.toThrow();
   });

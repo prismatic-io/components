@@ -38,20 +38,12 @@ const gitSha = input({
   clean: cleanString,
   comments: "The SHA1 value for this reference",
 });
-const gitRefKey = input({
-  label: "Key",
-  type: "string",
-  required: false,
-  example: '"refs/heads/newbranch"',
-  clean: cleanString,
-});
 export const gitCreateRefInputs = {
   connection: connectionInput,
   owner,
   repo,
   ref: gitRef,
   sha: gitSha,
-  key: gitRefKey,
 };
 const gitRefName = input({
   label: "Ref",

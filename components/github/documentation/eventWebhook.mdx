@@ -35,62 +35,66 @@ For organization owned repositories, the authenticated user or GitHub App must h
 
 #### Event Types
 
-The **Events** input offers a fixed list of 51 GitHub webhook event types, and the webhook is registered for the selected ones. For the payload structure of each event, see the [GitHub webhook events and payloads documentation](https://docs.github.com/en/webhooks/webhook-events-and-payloads).
+The **Events** input offers a fixed list of 55 GitHub webhook event types, and the webhook is registered for the selected ones. For the payload structure of each event, see the [GitHub webhook events and payloads documentation](https://docs.github.com/en/webhooks/webhook-events-and-payloads).
 
 <details>
-<summary>Available Events (51)</summary>
+<summary>Available Events (55)</summary>
 
 | Event | Description |
 |-------|-------------|
+| `branch_protection_configuration` | Branch protections are enabled or disabled for the repository. |
+| `branch_protection_rule` | Activity on a branch protection rule. |
+| `check_run` | Activity on a check run. |
+| `check_suite` | Activity on a check suite. |
+| `code_scanning_alert` | Activity on a code scanning alert. |
 | `commit_comment` | Activity on a commit comment. |
 | `create` | A Git branch or tag is created. |
+| `custom_property_values` | The repository's custom property values are updated. |
 | `delete` | A Git branch or tag is deleted. |
+| `dependabot_alert` | Activity on a Dependabot alert. |
 | `deploy_key` | Activity on a deploy key. |
 | `deployment` | Activity on a deployment. |
 | `deployment_status` | Activity on a deployment status. |
 | `discussion` | Activity on a discussion. |
 | `discussion_comment` | Activity on a comment in a discussion. |
 | `fork` | Someone forks the repository. |
-| `github_app_authorization` | A user revokes their authorization of a GitHub App. |
 | `gollum` | Someone creates or updates a wiki page. |
-| `installation` | Activity on a GitHub App installation. |
-| `installation_repositories` | A change to which repositories a GitHub App installation can access. |
 | `issue_comment` | Activity on a comment on an issue or pull request. |
+| `issue_dependencies` | Activity on an issue's blocked-by relationships. |
+| `issue_relates_to` | Activity on related-issue links. |
 | `issues` | Activity on an issue. |
 | `label` | Activity on a label. |
-| `marketplace_purchase` | Activity on a GitHub Marketplace purchase. |
 | `member` | Activity on a repository collaborator. |
-| `membership` | Activity on team membership. |
 | `meta` | Activity on the webhook itself, such as its deletion. |
 | `milestone` | Activity on a milestone. |
-| `organization` | Activity on an organization and its members. |
-| `org_block` | An organization owner or moderator blocks or unblocks a non-member. |
 | `package` | Activity on a GitHub Packages package. |
 | `page_build` | An attempted build of a GitHub Pages site, whether or not it succeeds. |
 | `ping` | Sent once when the webhook is created. |
 | `project` | Activity on a project (classic). |
 | `project_card` | Activity on a card in a project (classic). |
 | `project_column` | Activity on a column in a project (classic). |
-| `projects_v2_item` | Activity on an item in an organization-level project. |
 | `public` | Repository visibility changes from private to public. |
 | `pull_request` | Activity on a pull request. |
 | `pull_request_review` | Activity on a pull request review. |
 | `pull_request_review_comment` | Activity on a comment in a pull request review. |
 | `pull_request_review_thread` | Activity on a comment thread in a pull request. |
 | `push` | A push to a repository branch. |
+| `registry_package` | Activity on a package in a registry. |
 | `release` | Activity on a release. |
-| `repository_dispatch` | A GitHub App sends a POST request to the repository's dispatches endpoint. |
 | `repository` | Activity on the repository itself. |
+| `repository_advisory` | Activity on a repository security advisory. |
 | `repository_import` | A repository is imported to GitHub. |
+| `repository_ruleset` | Activity on a repository ruleset. |
 | `repository_vulnerability_alert` | Activity on a repository security vulnerability alert. GitHub is closing this event down. |
-| `security_advisory` | Activity on a global security advisory reviewed by GitHub. |
-| `sponsorship` | Activity on a sponsorship listing. |
+| `secret_scanning_alert` | Activity on a secret scanning alert. |
+| `secret_scanning_alert_location` | A new location is found for a previously detected secret. |
+| `secret_scanning_scan` | A secret scanning scan completes. |
+| `security_and_analysis` | Code security features are enabled or disabled for the repository. |
 | `star` | Activity on repository stars. |
 | `status` | The status of a Git commit changes. |
-| `team` | Activity on a team in an organization. |
+| `sub_issues` | Activity on sub-issues. |
 | `team_add` | A team is added to the repository. |
 | `watch` | Activity on watching, or subscribing to, the repository. |
-| `workflow_dispatch` | A GitHub Actions workflow is manually triggered. |
 | `workflow_job` | Activity on a job in a GitHub Actions workflow run. |
 | `workflow_run` | Activity on a run of a GitHub Actions workflow. |
 

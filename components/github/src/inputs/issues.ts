@@ -63,7 +63,10 @@ export const since = input({
   type: "string",
   required: false,
   clean: cleanString,
-  comments: "Only show notifications updated after the given time",
+  comments:
+    "Filter results last updated after this UTC datetime in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ).",
+  example: "2024-01-15T10:30:00Z",
+  placeholder: "Enter start datetime (ISO 8601)",
 });
 export const milestone = input({
   label: "Milestone",

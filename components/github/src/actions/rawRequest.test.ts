@@ -11,6 +11,7 @@ describe("rawRequest", () => {
   test("forwards the GET to the given path and returns the response untouched", async () => {
     const scope = nock(BASE, {
       reqheaders: { authorization: "Bearer test-token" },
+      badheaders: ["x-github-api-version"],
     })
       .get("/octocat")
       .reply(200, rawRequestExamplePayload.data);

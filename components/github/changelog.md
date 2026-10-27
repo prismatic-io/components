@@ -1,5 +1,17 @@
 ## Changelog
 
+### 2026-10-27
+
+Updated to GitHub REST API version 2026-03-10 and refined action labels, inputs, and webhook events:
+
+- Updated every action, trigger, and data source except **Raw Request** to call the new API version, so **Create Workflow Dispatch Event** now returns the dispatched run's ID and URLs instead of an empty result; **Raw Request** still sends no version header
+- Updated the labels of 18 actions to verb-resource order, such as **Create Pull Request** (previously **Pulls Create**); action keys are unchanged, so existing steps keep working
+- Updated the **Events** list on the **Create Repository Webhook** action and the **Event Webhook** trigger to the events GitHub delivers to repository webhooks, adding 17 such as `check_run`, `dependabot_alert`, and `secret_scanning_alert` and removing 13 that never fired
+- Updated the **Create Pull Request** action to remove the **Issue Number** input, which was never sent to GitHub, and the **Create Reference** action to remove the **Key** input, which GitHub does not document
+- Fixed the **Select Issue** data source so an issue picked on **List Issue Comments** returns that issue's comments instead of a not-found error or another issue's comments
+
+Reconfiguration notice: issues and pull requests returned by **List Repository Issues**, **Create Pull Request**, **List Pull Requests**, and the **New and Updated Records** trigger no longer include `assignee` (read `assignees` instead) or `merge_commit_sha`, and repository objects, such as those from **List Organization Repositories**, no longer include `has_downloads`, `use_squash_pr_title_as_default`, or `master_branch`. Check any step that reads those fields.
+
 ### 2026-09-29
 
 - Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches, with each recurrence returning at most 500 records (oldest first) so large backlogs drain over later recurrences; enabling it changes the shape a downstream step receives

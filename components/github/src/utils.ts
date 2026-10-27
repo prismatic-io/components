@@ -9,6 +9,10 @@ import {
   MAX_BATCHED_RECORDS,
 } from "./constants";
 import type {
+  FetchWebhooksInput,
+  GitHubWebhook,
+} from "./interfaces/GitHubWebhook";
+import type {
   GithubIssueRecord,
   PollingChangesObject,
   PollingRecordChange,
@@ -167,6 +171,34 @@ export const paginateResults = async <T>(
     (maxRecords === undefined || results.length < maxRecords)
   );
   return maxRecords === undefined ? results : results.slice(0, maxRecords);
+};
+export const fetchWebhooks = async ({
+  client,
+  owner,
+  repo,
+  showOnlyInstanceWebhooks,
+  instanceWebhookUrls,
+}: FetchWebhooksInput) => {
+  let webhooks: GitHubWebhook[] = [];
+  const per_page = DEFAULT_PAGE_SIZE;
+  let page = 1;
+  let link = "";
+  do {
+    const response = await client.get(`/repos/${owner}/${repo}/hooks`, {
+      params: { per_page, page },
+    });
+    webhooks = [
+      ...webhooks,
+      ...(showOnlyInstanceWebhooks
+        ? response.data.filter((webhook: GitHubWebhook) =>
+            instanceWebhookUrls.includes(webhook.config.url),
+          )
+        : response.data),
+    ];
+    page += 1;
+    link = response.headers["link"];
+  } while (link && link.includes(LINK_HEADER_NEXT));
+  return webhooks;
 };
 export const fetchIssuesSince = async (
   client: HttpClient,

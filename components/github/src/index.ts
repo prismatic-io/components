@@ -1,33 +1,9 @@
 import { component } from "@prismatic-io/spectral";
 import { handleErrors } from "@prismatic-io/spectral/dist/clients/http";
-import allActions from "./actions";
+import actions from "./actions";
 import connections from "./connections";
 import dataSources from "./dataSources";
 import triggers from "./triggers";
-const usedActions = [
-  "actionsCreateWorkflowDispatch",
-  "gitCreateBlob",
-  "gitCreateRef",
-  "gitCreateTree",
-  "gitGetRef",
-  "issuesCreateComment",
-  "issuesListComments",
-  "pullsCreate",
-  "rawRequest",
-  "reposCreateWebhook",
-  "reposDeleteInstanceWebhooks",
-  "reposDeleteWebhook",
-  "reposListForOrg",
-  "reposListWebhooks",
-  "usersGetByUsername",
-  "orgsListForAuthenticatedUser",
-  "issuesListForRepo",
-  "pullsList",
-  "usersGetAuthenticated",
-];
-const actions = Object.fromEntries(
-  Object.entries(allActions).filter(([key]) => usedActions.includes(key)),
-);
 export default component({
   key: "github",
   public: true,

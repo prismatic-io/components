@@ -1,6 +1,7 @@
 export * from "./common";
 export * from "./git";
 export * from "./issues";
+export * from "./misc";
 export * from "./orgs";
 export * from "./pulls";
 export * from "./reposWebhooks";

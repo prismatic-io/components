@@ -1,4 +1,5 @@
 export const DEFAULT_PAGE_SIZE = 100;
+export const GITHUB_API_VERSION = "2026-03-10";
 export const WEBHOOK_SECRET_BYTES = 32;
 export const LINK_HEADER_NEXT = 'rel="next"';
 export const WEBHOOK_DEFAULTS = {

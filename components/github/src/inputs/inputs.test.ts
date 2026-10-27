@@ -1,11 +1,11 @@
 import {
   fetchAll,
-  hookIdInput,
   organization,
   owner,
   page,
   perPage,
   repo,
+  reposDeleteWebhookInputs,
 } from ".";
 describe("inputs SDK-passthrough cleans", () => {
   test("owner.clean coerces to a string (util.types.toString)", () => {
@@ -18,8 +18,8 @@ describe("inputs SDK-passthrough cleans", () => {
   test("organization.clean coerces to a string (util.types.toString)", () => {
     expect(organization.clean?.("octocat")).toBe("octocat");
   });
-  test("hookIdInput.clean coerces to a number (util.types.toNumber)", () => {
-    expect(hookIdInput.clean?.("12345678")).toBe(12345678);
+  test("hookId.clean coerces to a number (util.types.toNumber)", () => {
+    expect(reposDeleteWebhookInputs.hookId.clean?.("12345678")).toBe(12345678);
   });
   test("perPage.clean coerces to a number and blanks to undefined (toOptionalNumber)", () => {
     expect(perPage.clean?.("30")).toBe(30);

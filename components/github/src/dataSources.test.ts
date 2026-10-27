@@ -10,9 +10,15 @@ import {
   listReposForAuthenticatedUserExamplePayload,
   orgsListForAuthenticatedUserExamplePayload,
   pullsListExamplePayload,
+  reposListForOrgExamplePayload,
+  selectIssueForAuthenticatedUserExamplePayload,
+  selectOrganizationsForAuthenticatedUserExamplePayload,
+  selectPullRequestFromRepoExamplePayload,
   selectUserFromOrganizationExamplePayload,
 } from "./examplePayloads";
 const BASE = "https://api.github.com";
+const exampleRepository = reposListForOrgExamplePayload.data[0];
+const exampleUser = exampleRepository.owner;
 const conn = createConnection(oauth2, {}, { access_token: "test-token" });
 const {
   listReposForAuthenticatedUser,
@@ -32,11 +38,11 @@ const assertElements = (result: unknown) => {
 describe("listReposForAuthenticatedUser", () => {
   const repos = [
     {
-      ...listReposForAuthenticatedUserExamplePayload.data[0],
+      ...exampleRepository,
       name: "zeta-repo",
     },
     {
-      ...listReposForAuthenticatedUserExamplePayload.data[0],
+      ...exampleRepository,
       name: "alpha-repo",
     },
   ];
@@ -156,9 +162,9 @@ describe("selectPullRequestFromRepo", () => {
 });
 describe("selectUserFromOrganization", () => {
   const members = [
-    selectUserFromOrganizationExamplePayload.data[0],
+    exampleUser,
     {
-      ...selectUserFromOrganizationExamplePayload.data[0],
+      ...exampleUser,
       login: "hubot",
       id: 2,
     },
@@ -182,5 +188,82 @@ describe("selectUserFromOrganization", () => {
       organization: "octocat-org",
     });
     expect(result).toEqual([]);
+  });
+});
+describe("examplePayload matches perform output", () => {
+  const repoInputs = { owner: "octocat", repo: "Hello-World" };
+  test.each([
+    {
+      name: "listReposForAuthenticatedUser",
+      path: "/user/repos",
+      reply: [exampleRepository],
+      examplePayload: listReposForAuthenticatedUser.examplePayload,
+      run: () =>
+        invokeDataSource(listReposForAuthenticatedUser, { connection: conn }),
+      expected: listReposForAuthenticatedUserExamplePayload,
+    },
+    {
+      name: "selectOrganizationsForAuthenticatedUser",
+      path: "/user/orgs",
+      reply: orgsListForAuthenticatedUserExamplePayload.data,
+      examplePayload: selectOrganizationsForAuthenticatedUser.examplePayload,
+      run: () =>
+        invokeDataSource(selectOrganizationsForAuthenticatedUser, {
+          connection: conn,
+        }),
+      expected: selectOrganizationsForAuthenticatedUserExamplePayload,
+    },
+    {
+      name: "selectIssueForAuthenticatedUser",
+      path: "/repos/octocat/Hello-World/issues",
+      reply: issuesListForRepoExamplePayload.data,
+      examplePayload: selectIssueForAuthenticatedUser.examplePayload,
+      run: () =>
+        invokeDataSource(selectIssueForAuthenticatedUser, {
+          connection: conn,
+          ...repoInputs,
+          state: "open",
+          assignee: undefined,
+          labels: undefined,
+          sort: "created",
+          direction: "asc",
+          since: undefined,
+        }),
+      expected: selectIssueForAuthenticatedUserExamplePayload,
+    },
+    {
+      name: "selectPullRequestFromRepo",
+      path: "/repos/octocat/Hello-World/pulls",
+      reply: pullsListExamplePayload.data,
+      examplePayload: selectPullRequestFromRepo.examplePayload,
+      run: () =>
+        invokeDataSource(selectPullRequestFromRepo, {
+          connection: conn,
+          ...repoInputs,
+          state: "open",
+          head: undefined,
+          base: undefined,
+          sort: "created",
+          direction: "asc",
+        }),
+      expected: selectPullRequestFromRepoExamplePayload,
+    },
+    {
+      name: "selectUserFromOrganization",
+      path: "/orgs/octocat-org/members",
+      reply: [exampleUser],
+      examplePayload: selectUserFromOrganization.examplePayload,
+      run: () =>
+        invokeDataSource(selectUserFromOrganization, {
+          connection: conn,
+          organization: "octocat-org",
+        }),
+      expected: selectUserFromOrganizationExamplePayload,
+    },
+  ])("$name", async ({ path, reply, examplePayload, run, expected }) => {
+    nock(BASE).get(path).query(true).reply(200, reply);
+    const { result } = await run();
+    expect(result).toEqual(expected.result);
+    expect(examplePayload).toBe(expected);
   });
 });

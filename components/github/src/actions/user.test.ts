@@ -1,6 +1,7 @@
 import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
 import { oauth2 } from "../connections";
+import { GITHUB_API_VERSION } from "../constants";
 import {
   orgsListForAuthenticatedUserExamplePayload,
   usersGetAuthenticatedExamplePayload,
@@ -19,6 +20,15 @@ describe("usersGetAuthenticated", () => {
       connection: conn,
     });
     expect(result.data).toEqual(usersGetAuthenticatedExamplePayload.data);
+  });
+  test("pins the GitHub REST API version on every client request", async () => {
+    const scope = nock(BASE, {
+      reqheaders: { "x-github-api-version": GITHUB_API_VERSION },
+    })
+      .get("/user")
+      .reply(200, usersGetAuthenticatedExamplePayload.data);
+    await invoke(usersGetAuthenticated, { connection: conn });
+    expect(scope.isDone()).toBe(true);
   });
   test("error path surfaces the failure", async () => {
     nock(BASE).get("/user").reply(401, { message: "Bad credentials" });

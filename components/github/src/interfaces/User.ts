@@ -1,8 +1,8 @@
 export interface User {
   id: number;
   login: string;
-  name: string;
-  email: string;
+  name: string | null;
+  email: string | null;
   avatar_url: string;
   html_url: string;
   followers_url: string;

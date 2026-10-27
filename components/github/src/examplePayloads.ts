@@ -101,7 +101,6 @@ const exampleRepository = {
   language: "JavaScript",
   has_issues: true,
   has_projects: true,
-  has_downloads: true,
   has_wiki: true,
   has_pages: false,
   has_discussions: false,
@@ -126,16 +125,38 @@ const exampleRepository = {
   open_issues: 0,
   watchers: 80,
   default_branch: "main",
+  permissions: { admin: false, push: false, pull: true },
+  temp_clone_token: null,
+  delete_branch_on_merge: false,
+};
+const exampleSecurityAndAnalysis = {
+  advanced_security: { status: "enabled" },
+  secret_scanning: { status: "enabled" },
+  secret_scanning_push_protection: { status: "disabled" },
+  secret_scanning_non_provider_patterns: { status: "disabled" },
+  secret_scanning_delegated_alert_dismissal: { status: "disabled" },
+};
+const examplePullRequestRepository = {
+  ...exampleRepository,
+  license: {
+    ...exampleRepository.license,
+    html_url: "https://github.com/licenses/mit",
+  },
+  allow_rebase_merge: true,
+  allow_squash_merge: true,
+  allow_merge_commit: true,
+  allow_auto_merge: false,
 };
 export const reposListForOrgExamplePayload = {
   data: [
-    exampleRepository,
+    { ...exampleRepository, security_and_analysis: exampleSecurityAndAnalysis },
     {
+      ...exampleRepository,
+      security_and_analysis: exampleSecurityAndAnalysis,
       id: 1296270,
       node_id: "MDEwOlJlcG9zaXRvcnkxMjk2Mjcw",
       name: "Hello-World-2",
       full_name: "octocat/Hello-World-2",
-      owner: exampleUser,
       private: true,
       html_url: "https://github.com/octocat/Hello-World-2",
       description: "A private repository for testing",
@@ -150,7 +171,6 @@ export const reposListForOrgExamplePayload = {
       language: "TypeScript",
       has_issues: true,
       has_projects: true,
-      has_downloads: true,
       has_wiki: false,
       has_pages: false,
       forks_count: 0,
@@ -162,6 +182,76 @@ export const reposListForOrgExamplePayload = {
       open_issues: 3,
       watchers: 5,
       default_branch: "main",
+      archive_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/{archive_format}{/ref}",
+      assignees_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/assignees{/user}",
+      blobs_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/git/blobs{/sha}",
+      branches_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/branches{/branch}",
+      collaborators_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/collaborators{/collaborator}",
+      comments_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/comments{/number}",
+      commits_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/commits{/sha}",
+      compare_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/compare/{base}...{head}",
+      contents_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/contents/{+path}",
+      contributors_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/contributors",
+      deployments_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/deployments",
+      downloads_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/downloads",
+      events_url: "https://api.github.com/repos/octocat/Hello-World-2/events",
+      forks_url: "https://api.github.com/repos/octocat/Hello-World-2/forks",
+      git_commits_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/git/commits{/sha}",
+      git_refs_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/git/refs{/sha}",
+      git_tags_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/git/tags{/sha}",
+      hooks_url: "https://api.github.com/repos/octocat/Hello-World-2/hooks",
+      issue_comment_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/issues/comments{/number}",
+      issue_events_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/issues/events{/number}",
+      issues_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/issues{/number}",
+      keys_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/keys{/key_id}",
+      labels_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/labels{/name}",
+      languages_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/languages",
+      merges_url: "https://api.github.com/repos/octocat/Hello-World-2/merges",
+      milestones_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/milestones{/number}",
+      notifications_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/notifications{?since,all,participating}",
+      pulls_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/pulls{/number}",
+      releases_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/releases{/id}",
+      stargazers_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/stargazers",
+      statuses_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/statuses/{sha}",
+      subscribers_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/subscribers",
+      subscription_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/subscription",
+      tags_url: "https://api.github.com/repos/octocat/Hello-World-2/tags",
+      teams_url: "https://api.github.com/repos/octocat/Hello-World-2/teams",
+      trees_url:
+        "https://api.github.com/repos/octocat/Hello-World-2/git/trees{/sha}",
+      git_url: "git://github.com/octocat/Hello-World-2.git",
+      ssh_url: "git@github.com:octocat/Hello-World-2.git",
+      clone_url: "https://github.com/octocat/Hello-World-2.git",
+      svn_url: "https://github.com/octocat/Hello-World-2",
     },
   ],
 };
@@ -264,13 +354,15 @@ export const issuesListForRepoExamplePayload = {
           default: true,
         },
       ],
-      assignee: null,
       assignees: [],
       milestone: null,
       locked: false,
       active_lock_reason: null,
       comments: 0,
       closed_at: null,
+      closed_by: null,
+      state_reason: null,
+      pinned_comment: null,
       created_at: "2024-01-15T10:30:00Z",
       updated_at: "2024-01-15T10:30:00Z",
       author_association: "COLLABORATOR",
@@ -303,13 +395,15 @@ export const issuesListForRepoExamplePayload = {
           default: true,
         },
       ],
-      assignee: exampleUser,
       assignees: [exampleUser],
       milestone: null,
       locked: false,
       active_lock_reason: null,
       comments: 5,
       closed_at: "2024-01-14T16:00:00Z",
+      closed_by: exampleUser,
+      state_reason: "completed",
+      pinned_comment: null,
       created_at: "2024-01-10T09:00:00Z",
       updated_at: "2024-01-14T16:00:00Z",
       author_association: "CONTRIBUTOR",
@@ -327,7 +421,10 @@ export const issuesCreateCommentExamplePayload = {
     user: exampleUser,
     created_at: "2024-01-15T11:00:00Z",
     updated_at: "2024-01-15T11:00:00Z",
+    issue_url: "https://api.github.com/repos/octocat/Hello-World/issues/1347",
     author_association: "COLLABORATOR",
+    pin: null,
+    minimized: null,
   },
 };
 export const issuesListCommentsExamplePayload = {
@@ -343,7 +440,10 @@ export const issuesListCommentsExamplePayload = {
       user: exampleUser,
       created_at: "2024-01-15T12:30:00Z",
       updated_at: "2024-01-15T12:30:00Z",
+      issue_url: "https://api.github.com/repos/octocat/Hello-World/issues/1347",
       author_association: "OWNER",
+      pin: null,
+      minimized: null,
     },
   ],
 };
@@ -379,8 +479,6 @@ export const pullsCreateExamplePayload = {
     updated_at: "2024-01-15T10:30:00Z",
     closed_at: null,
     merged_at: null,
-    merge_commit_sha: null,
-    assignee: null,
     assignees: [],
     requested_reviewers: [],
     requested_teams: [],
@@ -389,14 +487,14 @@ export const pullsCreateExamplePayload = {
       ref: "new-feature",
       sha: "6dcb09b5b57875f334f61aebed695e2e4193db5e",
       user: exampleUser,
-      repo: exampleRepository,
+      repo: examplePullRequestRepository,
     },
     base: {
       label: "octocat:main",
       ref: "main",
       sha: "6dcb09b5b57875f334f61aebed695e2e4193db5f",
       user: exampleUser,
-      repo: exampleRepository,
+      repo: examplePullRequestRepository,
     },
     _links: {
       self: {
@@ -441,43 +539,78 @@ export const pullsCreateExamplePayload = {
     changed_files: 5,
   },
 };
+const {
+  merged,
+  mergeable,
+  rebaseable,
+  mergeable_state,
+  merged_by,
+  comments,
+  review_comments,
+  maintainer_can_modify,
+  commits,
+  additions,
+  deletions,
+  changed_files,
+  ...examplePullRequestSimple
+} = pullsCreateExamplePayload.data;
 export const pullsListExamplePayload = {
   data: [
-    pullsCreateExamplePayload.data,
+    examplePullRequestSimple,
     {
+      ...examplePullRequestSimple,
       id: 2,
       node_id: "MDExOlB1bGxSZXF1ZXN0Mg==",
       url: "https://api.github.com/repos/octocat/Hello-World/pulls/1348",
       html_url: "https://github.com/octocat/Hello-World/pull/1348",
+      diff_url: "https://github.com/octocat/Hello-World/pull/1348.diff",
+      patch_url: "https://github.com/octocat/Hello-World/pull/1348.patch",
+      issue_url: "https://api.github.com/repos/octocat/Hello-World/issues/1348",
+      commits_url:
+        "https://api.github.com/repos/octocat/Hello-World/pulls/1348/commits",
+      review_comments_url:
+        "https://api.github.com/repos/octocat/Hello-World/pulls/1348/comments",
+      comments_url:
+        "https://api.github.com/repos/octocat/Hello-World/issues/1348/comments",
+      statuses_url:
+        "https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5g",
       number: 1348,
       state: "closed",
-      locked: false,
       title: "Fix bug in authentication",
-      user: exampleUser,
       body: "This fixes the authentication issue reported in #1347",
       created_at: "2024-01-10T09:00:00Z",
       updated_at: "2024-01-14T15:30:00Z",
       closed_at: "2024-01-14T15:30:00Z",
       merged_at: "2024-01-14T15:30:00Z",
+      draft: false,
       head: {
+        ...examplePullRequestSimple.head,
         label: "octocat:fix-auth",
         ref: "fix-auth",
         sha: "6dcb09b5b57875f334f61aebed695e2e4193db5g",
       },
-      base: {
-        label: "octocat:main",
-        ref: "main",
-        sha: "6dcb09b5b57875f334f61aebed695e2e4193db5f",
+      _links: {
+        ...examplePullRequestSimple._links,
+        self: {
+          href: "https://api.github.com/repos/octocat/Hello-World/pulls/1348",
+        },
+        html: { href: "https://github.com/octocat/Hello-World/pull/1348" },
+        issue: {
+          href: "https://api.github.com/repos/octocat/Hello-World/issues/1348",
+        },
+        comments: {
+          href: "https://api.github.com/repos/octocat/Hello-World/issues/1348/comments",
+        },
+        review_comments: {
+          href: "https://api.github.com/repos/octocat/Hello-World/pulls/1348/comments",
+        },
+        commits: {
+          href: "https://api.github.com/repos/octocat/Hello-World/pulls/1348/commits",
+        },
+        statuses: {
+          href: "https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5g",
+        },
       },
-      draft: false,
-      merged: true,
-      mergeable: null,
-      mergeable_state: "unknown",
-      comments: 3,
-      commits: 2,
-      additions: 45,
-      deletions: 12,
-      changed_files: 3,
     },
   ],
 };
@@ -617,7 +750,12 @@ export const gitCreateTreeExamplePayload = {
   },
 };
 export const actionsCreateWorkflowDispatchExamplePayload = {
-  data: {},
+  data: {
+    workflow_run_id: 30433642,
+    run_url:
+      "https://api.github.com/repos/octocat/Hello-World/actions/runs/30433642",
+    html_url: "https://github.com/octocat/Hello-World/actions/runs/30433642",
+  },
 };
 export const rawRequestExamplePayload = {
   data: {
@@ -625,10 +763,28 @@ export const rawRequestExamplePayload = {
   },
 };
 export const listReposForAuthenticatedUserExamplePayload = {
-  data: [exampleRepository],
+  result: [{ key: "Hello-World", label: "Hello-World" }],
+};
+export const selectOrganizationsForAuthenticatedUserExamplePayload = {
+  result: [
+    { key: "1", label: "https://api.github.com/orgs/github" },
+    { key: "2", label: "https://api.github.com/orgs/octocat-org" },
+  ],
+};
+export const selectIssueForAuthenticatedUserExamplePayload = {
+  result: [
+    { key: "1348", label: "Feature request: add dark mode" },
+    { key: "1347", label: "Found a bug" },
+  ],
+};
+export const selectPullRequestFromRepoExamplePayload = {
+  result: [
+    { key: "1", label: "Amazing new feature" },
+    { key: "2", label: "Fix bug in authentication" },
+  ],
 };
 export const selectUserFromOrganizationExamplePayload = {
-  data: [exampleUser],
+  result: [{ key: "octocat", label: "octocat" }],
 };
 export const pollChangesTriggerExamplePayload: {
   payload: TriggerPayload;

@@ -6,7 +6,7 @@ import {
   repo,
   webhookSecretInput,
 } from "./common";
-export const hookIdInput = input({
+const hookIdInput = input({
   label: "Hook ID",
   type: "string",
   required: true,
