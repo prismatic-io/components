@@ -1,0 +1,54 @@
+# Publishes the npm packages of npm-ready components. Versions are recorded in
+# npm-api/manifest.json; .github/scripts/npm-publish.ts publishes whatever the
+# manifest lists that npm does not have yet. Every version change rewrites the
+# manifest, hence the paths filter.
+#
+# A package's first version is published by hand by a developer (from this
+# repo, at the manifest's version); this workflow skips packages npm has never
+# seen, with a warning. That first publish creates the package so its trusted
+# publisher on npmjs.com can point at this workflow, which publishes the rest.
+#
+# Run it by hand with dry_run to see what would publish. To pause publishing,
+# disable the workflow from the Actions tab.
+name: Publish npm packages
+
+on:
+  push:
+    branches: [main]
+    paths: [npm-api/manifest.json]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Pack and report without publishing
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write # npm trusted publishing and provenance
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Node builds and publishes the components; Bun runs the publish script.
+      # Versions match mise.toml.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.0
+          registry-url: https://registry.npmjs.org
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.6
+      # Trusted publishing (OIDC, no npm token) needs npm 11.5.1 or later.
+      - run: npm install -g npm@11
+      - run: bun install --frozen-lockfile
+        working-directory: .github/scripts
+      - run: bun test
+        working-directory: .github/scripts
+      - run: bun .github/scripts/npm-publish.ts ${{ inputs.dry_run && '--dry-run' || '' }}
