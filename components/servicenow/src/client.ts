@@ -1,14 +1,20 @@
 import { type Connection, ConnectionError, util } from "@prismatic-io/spectral";
 import { createClient as createAxiosClient } from "@prismatic-io/spectral/dist/clients/http";
-import { authorizationCode, basic, clientCredentials } from "./connections";
+import {
+  apiKey,
+  authorizationCode,
+  basic,
+  clientCredentials,
+} from "./connections";
 export const getAuthHeaders = (
   connection: Connection,
-):
-  | {
-      Authorization: string;
-    }
-  | Record<string, never> => {
+): Record<string, string> => {
   if (!connection) return {};
+  if (connection.key === apiKey.key) {
+    return {
+      "x-sn-apikey": util.types.toString(connection.fields.apiKey),
+    };
+  }
   if (connection.key === basic.key) {
     const username = util.types.toString(connection.fields.username);
     const password = util.types.toString(connection.fields.password);

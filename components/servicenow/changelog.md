@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-22
+
+Added **API Key** connection type for authenticating with a ServiceNow API key
+
 ### 2026-09-17
 
 Expanded the **New and Updated Records** polling trigger and restructured action inputs into structured objects:
