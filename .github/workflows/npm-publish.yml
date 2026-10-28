@@ -3,10 +3,11 @@
 # manifest lists that npm does not have yet. Every version change rewrites the
 # manifest, hence the paths filter.
 #
-# A package's first version is published by hand by a developer (from this
-# repo, at the manifest's version); this workflow skips packages npm has never
-# seen, with a warning. That first publish creates the package so its trusted
-# publisher on npmjs.com can point at this workflow, which publishes the rest.
+# A developer creates each package on npm, from main, with
+# `mise run publish-first <component>`: it publishes 0.0.1, makes this
+# workflow the package's trusted publisher, and starts this workflow, which
+# publishes the manifest's version. This workflow skips packages npm has
+# never seen, with a warning.
 #
 # Run it by hand with dry_run to see what would publish. To pause publishing,
 # disable the workflow from the Actions tab.
@@ -40,7 +41,7 @@ jobs:
       # Versions match mise.toml.
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.22.0
+          node-version: 22.23.4
           registry-url: https://registry.npmjs.org
       - uses: oven-sh/setup-bun@v2
         with:

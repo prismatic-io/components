@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import {
+  BOOTSTRAP_VERSION,
   fetchPublished,
   type Manifest,
   type ManifestEntry,
@@ -7,8 +8,10 @@ import {
   PackageJsonSchema,
   type Published,
   parseAs,
+  planFirstPublish,
   planPublish,
   sharedPackagesOf,
+  trustConfigsIn,
 } from "./publish-plan.ts";
 
 const entry = (version: string): ManifestEntry => ({
@@ -162,5 +165,97 @@ describe("parseAs", () => {
     expect(() =>
       parseAs(PackageJsonSchema, { dependencies: ["axios"] }, "components/slack/package.json"),
     ).toThrow("components/slack/package.json is malformed: dependencies:");
+  });
+});
+
+describe("planFirstPublish", () => {
+  test("bootstraps a package npm has never seen", () => {
+    expect(planFirstPublish("slack", entry("0.1.0"), "0.1.0", null)).toEqual({
+      action: "bootstrap",
+      entry: entry("0.1.0"),
+    });
+  });
+
+  test("only sets the trusted publisher when npm has just the bootstrap version", () => {
+    expect(planFirstPublish("slack", entry("0.1.0"), "0.1.0", onNpm([BOOTSTRAP_VERSION]))).toEqual({
+      action: "trust",
+      entry: entry("0.1.0"),
+    });
+  });
+
+  test("leaves a package npm already has the manifest version of", () => {
+    expect(
+      planFirstPublish("slack", entry("0.1.0"), "0.1.0", onNpm([BOOTSTRAP_VERSION, "0.1.0"])),
+    ).toEqual({ action: "skip", entry: entry("0.1.0"), reason: "npm already has 0.1.0" });
+  });
+
+  test("leaves a package with other versions on npm to the workflow", () => {
+    const step = planFirstPublish("slack", entry("0.3.0"), "0.3.0", onNpm(["0.1.0", "0.2.0"]));
+    expect(step).toMatchObject({ action: "skip", reason: expect.stringContaining("npm already has 0.2.0") });
+  });
+
+  test("refuses a manifest version the workflow could not publish after the bootstrap", () => {
+    expect(planFirstPublish("slack", entry(BOOTSTRAP_VERSION), BOOTSTRAP_VERSION, null)).toEqual({
+      action: "error",
+      reason: "0.0.1 is not above 0.0.1, so the workflow would have nothing to publish",
+    });
+  });
+
+  test("refuses a component the manifest does not list", () => {
+    const step = planFirstPublish("slack", undefined, "0.0.1", null);
+    expect(step).toEqual({ action: "error", reason: expect.stringContaining("slack is not in npm-api/manifest.json") });
+  });
+
+  test("refuses a manifest version that disagrees with package.json", () => {
+    expect(planFirstPublish("slack", entry("0.1.0"), "0.0.1", null)).toEqual({
+      action: "error",
+      reason: "package.json has 0.0.1, the manifest 0.1.0",
+    });
+  });
+
+  test("refuses an invalid version", () => {
+    expect(planFirstPublish("slack", entry("one"), "one", null)).toEqual({
+      action: "error",
+      reason: "one is not a valid version",
+    });
+  });
+});
+
+
+describe("trustConfigsIn", () => {
+  test("reads nothing from empty output", () => {
+    expect(trustConfigsIn("")).toEqual([]);
+    expect(trustConfigsIn("\n")).toEqual([]);
+  });
+
+  test("reads one configuration", () => {
+    const output = `{
+  "id": "a1",
+  "type": "github",
+  "file": "npm-publish.yml",
+  "repository": "prismatic-io/components",
+  "permissions": [
+    "createPackage"
+  ]
+}
+`;
+    expect(trustConfigsIn(output)).toEqual([
+      {
+        id: "a1",
+        type: "github",
+        file: "npm-publish.yml",
+        repository: "prismatic-io/components",
+        permissions: ["createPackage"],
+      },
+    ]);
+  });
+
+  test("reads configurations printed back to back", () => {
+    const output = '\n{\n  "id": "a1",\n  "type": "github"\n}\n\n{\n  "id": "b2",\n  "type": "circleci"\n}\n';
+    expect(trustConfigsIn(output).map((config) => config.id)).toEqual(["a1", "b2"]);
+  });
+
+  test("rejects a configuration without an id", () => {
+    expect(() => trustConfigsIn('{ "type": "github" }')).toThrow("npm trust list --json");
   });
 });

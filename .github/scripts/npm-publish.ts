@@ -5,9 +5,10 @@
  * manifest lists and npm does not have yet, so reruns and commits that bump
  * nothing are no-ops.
  *
- * A package npm has never seen is not published here. Its first version is
- * published by hand by a developer, which creates the package on npm so its
- * trusted publisher can point at this workflow; every later version is ours.
+ * A package npm has never seen is not published here. A developer creates it
+ * with `mise run publish-first <component>`, which publishes 0.0.1, points the
+ * package's trusted publisher at this workflow, and starts it to publish the
+ * manifest's version; every version after 0.0.1 is ours.
  *
  * Usage: bun .github/scripts/npm-publish.ts [--dry-run]
  */
@@ -20,6 +21,7 @@ import {
   fetchPublished,
   MANIFEST_FILE,
   ManifestSchema,
+  NPM_CI_ARGS,
   PackageJsonSchema,
   type PackageJson,
   parseAs,
@@ -34,13 +36,7 @@ const run = async (cwd: string, args: string[]): Promise<boolean> => {
   return exitCode === 0;
 };
 
-/**
- * Installs without running any install script, the package's own `prepare`
- * included. Builds come only from `npm run build` and `npm publish`, and no
- * dependency's script runs in a job that can publish. Every tsdown component's
- * build output was checked to be identical with and without install scripts.
- */
-const NPM_CI = ["npm", "ci", "--ignore-scripts", "--no-audit", "--no-fund"];
+const NPM_CI = ["npm", ...NPM_CI_ARGS];
 
 const readJson = (path: string): unknown => JSON.parse(readFileSync(path, "utf8"));
 
