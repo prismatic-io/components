@@ -1,5 +1,7 @@
 import { dataSource } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
+import { hubspotPaths } from "../constants";
+import { getObjectSelectionExamplePayload } from "../examplePayloads";
 import { getObjectSelectionInputs } from "../inputs";
 export const getObjectSelection = dataSource({
   display: {
@@ -17,7 +19,7 @@ export const getObjectSelection = dataSource({
     if (includeCustomObjects) {
       const {
         data: { results },
-      } = await client.get("/crm/v3/schemas");
+      } = await client.get(hubspotPaths.schemas());
       customObjects = results.map((hsObject) => {
         return {
           object: {
@@ -35,7 +37,7 @@ export const getObjectSelection = dataSource({
       const apiKey = hsObject.replace(" ", "_").trim().toLowerCase();
       const {
         data: { results },
-      } = await client.get(`/crm/v3/properties/${apiKey}`);
+      } = await client.get(hubspotPaths.properties(apiKey));
       return {
         object: { key: apiKey, label: hsObject },
         fields: results?.map((field) => ({
@@ -48,5 +50,6 @@ export const getObjectSelection = dataSource({
       result: [...customObjects, ...(await Promise.all(mappedObjects))],
     };
   },
+  examplePayload: getObjectSelectionExamplePayload,
   dataSourceType: "objectSelection",
 });

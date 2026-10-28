@@ -7,8 +7,8 @@ export const rawRequestInputSet = {
   url: {
     ...rawRequestInputs.url,
     comments:
-      "Input the path only (/crm/v3/objects/deals). The base URL is already included (`https://api.hubapi.com`). For example, to connect to `https://api.hubapi.com/crm/v3/objects/deals`, only `/crm/v3/objects/deals` is entered in this field.",
-    example: "/crm/v3/objects/deals",
+      "Input the path only (/crm/objects/2026-09/deals). The base URL is already included (`https://api.hubapi.com`). For example, to connect to `https://api.hubapi.com/crm/objects/2026-09/deals`, only `/crm/objects/2026-09/deals` is entered in this field.",
+    example: "/crm/objects/2026-09/deals",
   },
 };
 export const getCurrentUserInputs = {

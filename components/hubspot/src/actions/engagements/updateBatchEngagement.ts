@@ -3,6 +3,7 @@ import { batchResponseSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { updateBatchEngagementExamplePayload } from "../../examplePayloads";
 import { updateBatchEngagementInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const updateBatchEngagement = action({
   display: {
     label: "Update Batch Engagement",
@@ -26,7 +27,7 @@ export const updateBatchEngagement = action({
       inputs: batchInputs,
     };
     const { data } = await client.post(
-      `/crm/v3/objects/${engagementObject}/batch/update`,
+      hubspotPaths.objects(engagementObject, "/batch/update"),
       payload,
     );
     return {
@@ -34,9 +35,7 @@ export const updateBatchEngagement = action({
     };
   },
   inputs: updateBatchEngagementInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: updateBatchEngagementExamplePayload.data,
   }),
   examplePayload: updateBatchEngagementExamplePayload,

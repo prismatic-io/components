@@ -2,8 +2,10 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import {
   CUSTOM_OBJECT_CREATED_PROPERTY,
   CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY,
-  HUBSPOT_DATE_PROPERTIES,
+  CUSTOM_OBJECT_PLACEHOLDER,
   CUSTOM_OBJECT_SEARCH_ENDPOINT,
+  HUBSPOT_DATE_PROPERTIES,
+  hubspotPaths,
   MAX_FILTER_GROUPS,
   MAX_FILTERS_PER_GROUP,
   MAX_FILTERS_TOTAL,
@@ -13,18 +15,22 @@ import {
   RATE_LIMIT_MAX_ATTEMPTS,
 } from "../constants";
 import type {
-  PollingChangesObject,
-  PollingTriggerObject,
   CursorLogger,
   FetchPollingWindowParams,
   HttpErrorish,
+  PollingChangesObject,
   PollingCursor,
+  PollingTriggerObject,
   PollingWindow,
   ResolveCursorParams,
   SearchFilter,
   SearchFilterGroup,
   SearchResponse,
 } from "../types";
+import {
+  searchEndpointObjectType,
+  toCurrentSearchEndpoint,
+} from "./searchEndpoint";
 const assertValidDateString = (value: unknown, field: string): string => {
   if (typeof value !== "string" || Number.isNaN(new Date(value).getTime())) {
     throw new Error(
@@ -226,13 +232,25 @@ export const resolveEndpoint = (
   if (!endpoint) {
     throw new Error("Search Endpoint input is required");
   }
-  if (endpoint === CUSTOM_OBJECT_SEARCH_ENDPOINT) {
+  if (searchEndpointObjectType(endpoint) === CUSTOM_OBJECT_PLACEHOLDER) {
     if (!objectType) {
       throw new Error("Object Type input is required");
     }
-    return endpoint.replace("{objectType}", objectType);
+    return hubspotPaths.objects(objectType, "/search");
   }
-  return endpoint;
+  return toCurrentSearchEndpoint(endpoint);
+};
+const datePropertiesFor = (
+  searchEndpoint: string | undefined,
+): Record<string, string> | undefined => {
+  const objectType = searchEndpoint
+    ? searchEndpointObjectType(searchEndpoint)
+    : undefined;
+  const table = HUBSPOT_DATE_PROPERTIES as Record<
+    string,
+    Record<string, string> | undefined
+  >;
+  return objectType ? table[objectType] : undefined;
 };
 export const resolveLastModifiedProperty = (
   searchEndpoint: string | undefined,
@@ -241,13 +259,7 @@ export const resolveLastModifiedProperty = (
   if (onlyCustomObjects) {
     return CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY;
   }
-  const table = HUBSPOT_DATE_PROPERTIES as Record<
-    string,
-    Record<string, string> | undefined
-  >;
-  const properties = searchEndpoint
-    ? table[searchEndpoint.toLowerCase()]
-    : undefined;
+  const properties = datePropertiesFor(searchEndpoint);
   const lastModified = properties
     ? Object.values(properties).find((name) => name.includes("lastmodified"))
     : undefined;
@@ -265,13 +277,7 @@ export const resolveCreatedProperty = (
   if (onlyCustomObjects) {
     return CUSTOM_OBJECT_CREATED_PROPERTY;
   }
-  const table = HUBSPOT_DATE_PROPERTIES as Record<
-    string,
-    Record<string, string> | undefined
-  >;
-  const properties = searchEndpoint
-    ? table[searchEndpoint.toLowerCase()]
-    : undefined;
+  const properties = datePropertiesFor(searchEndpoint);
   const created = properties
     ? Object.values(properties).find((name) => name.includes("create"))
     : undefined;

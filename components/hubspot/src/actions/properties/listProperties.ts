@@ -1,7 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listPropertiesOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { listPropertiesExamplePayload } from "../../examplePayloads";
 import { listPropertiesInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const listProperties = action({
   display: {
     label: "List Properties",
@@ -15,10 +17,14 @@ export const listProperties = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.get(`/crm/v3/properties/${objectType}`);
+    const { data } = await client.get(hubspotPaths.properties(objectType));
     return { data };
   },
   inputs: listPropertiesInputs,
   examplePayload: listPropertiesExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listPropertiesOutputSchema,
+  }),
 });
 export default listProperties;

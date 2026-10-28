@@ -1,3 +1,4 @@
+import { batchErrorSchema } from "./shared";
 export const listAssociationTypesOutputSchema = {
   type: "object" as const,
   properties: {
@@ -6,14 +7,21 @@ export const listAssociationTypesOutputSchema = {
       items: {
         type: "object" as const,
         properties: {
+          id: { type: "string" },
+          name: { type: "string" },
           category: {
             type: "string",
-            enum: ["HUBSPOT_DEFINED", "USER_DEFINED"],
+            enum: [
+              "HUBSPOT_DEFINED",
+              "INTEGRATOR_DEFINED",
+              "USER_DEFINED",
+              "WORK",
+            ],
           },
           typeId: { type: "integer" },
           label: { type: ["string", "null"] as string[] },
         },
-        required: ["category", "typeId", "label"],
+        required: ["id", "name", "category", "typeId", "label"],
       },
     },
   },
@@ -43,27 +51,22 @@ export const createAssociationsOutputSchema = {
             properties: { id: { type: "string" } },
             required: ["id"],
           },
-          associationSpec: {
-            type: "object" as const,
-            properties: {
-              associationCategory: {
-                type: "string",
-                enum: [
-                  "HUBSPOT_DEFINED",
-                  "INTEGRATOR_DEFINED",
-                  "USER_DEFINED",
-                  "WORK",
-                ],
-              },
-              associationTypeId: { type: "integer" },
-            },
-          },
+          type: { type: "string" },
+          fromObjectId: { type: "string" },
+          fromObjectTypeId: { type: "string" },
+          toObjectId: { type: "string" },
+          toObjectTypeId: { type: "string" },
+          labels: { type: "array" as const, items: { type: "string" } },
         },
+        required: ["from", "to", "type"],
       },
     },
     numErrors: { type: ["integer", "null"] as string[] },
-    errors: { type: ["array", "null"] as string[] },
-    links: { type: ["object", "null"] as string[] },
+    errors: { type: ["array", "null"] as string[], items: batchErrorSchema },
+    links: {
+      type: ["object", "null"] as string[],
+      additionalProperties: { type: "string" },
+    },
     requestedAt: { type: ["string", "null"] as string[], format: "date-time" },
   },
   required: ["completedAt", "startedAt", "status", "results"],
@@ -92,6 +95,8 @@ export const readAssociationsOutputSchema = {
             items: {
               type: "object" as const,
               properties: {
+                id: { type: "string" },
+                type: { type: "string" },
                 toObjectId: { type: "string" },
                 associationTypes: {
                   type: "array" as const,
@@ -114,7 +119,7 @@ export const readAssociationsOutputSchema = {
                   },
                 },
               },
-              required: ["toObjectId", "associationTypes"],
+              required: ["id", "toObjectId", "associationTypes"],
             },
           },
           paging: {
@@ -128,14 +133,25 @@ export const readAssociationsOutputSchema = {
                 },
                 required: ["after"],
               },
+              prev: {
+                type: "object" as const,
+                properties: {
+                  before: { type: "string" },
+                  link: { type: ["string", "null"] as string[] },
+                },
+                required: ["before"],
+              },
             },
           },
         },
       },
     },
     numErrors: { type: ["integer", "null"] as string[] },
-    errors: { type: ["array", "null"] as string[] },
-    links: { type: ["object", "null"] as string[] },
+    errors: { type: ["array", "null"] as string[], items: batchErrorSchema },
+    links: {
+      type: ["object", "null"] as string[],
+      additionalProperties: { type: "string" },
+    },
     requestedAt: { type: ["string", "null"] as string[], format: "date-time" },
   },
   required: ["completedAt", "startedAt", "status", "results"],
@@ -151,8 +167,11 @@ export const archiveAssociationsOutputSchema = {
     },
     results: { type: "array" as const, items: { type: "object" as const } },
     numErrors: { type: ["integer", "null"] as string[] },
-    errors: { type: ["array", "null"] as string[] },
-    links: { type: ["object", "null"] as string[] },
+    errors: { type: ["array", "null"] as string[], items: batchErrorSchema },
+    links: {
+      type: ["object", "null"] as string[],
+      additionalProperties: { type: "string" },
+    },
     requestedAt: { type: ["string", "null"] as string[], format: "date-time" },
   },
   required: ["completedAt", "startedAt", "status", "results"],

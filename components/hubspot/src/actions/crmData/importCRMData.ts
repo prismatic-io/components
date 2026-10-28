@@ -1,8 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { importSchema } from "../../outputSchemas";
 import FormData from "form-data";
 import { getHubspotClient } from "../../client";
 import { importCRMDataExamplePayload } from "../../examplePayloads";
 import { importCRMDataInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const importCRMData = action({
   display: {
     label: "Import CRM Data",
@@ -16,10 +18,8 @@ export const importCRMData = action({
       hubspotConnection,
       timeout,
       name,
-      importOperations,
       dateFormat,
-      marketableContactImport,
-      createContactListFromImport,
+      importOptions,
       files,
       dataFiles,
     },
@@ -33,12 +33,12 @@ export const importCRMData = action({
     const formData = new FormData();
     const importRequest = {
       name,
-      ...(importOperations && {
-        importOperations,
+      ...(importOptions.importOperations && {
+        importOperations: importOptions.importOperations,
       }),
       dateFormat,
-      marketableContactImport,
-      createContactListFromImport,
+      marketableContactImport: importOptions.marketableContactImport,
+      createContactListFromImport: importOptions.createContactListFromImport,
       files,
     };
     formData.append("importRequest", JSON.stringify(importRequest));
@@ -54,16 +54,15 @@ export const importCRMData = action({
         filename: fileName,
       });
     }
-    const { data } = await client.post("/crm/v3/imports", formData, {
+    const { data } = await client.post(hubspotPaths.imports(), formData, {
       headers: { ...formData.getHeaders() },
     });
     return { data };
   },
   inputs: importCRMDataInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: importCRMDataExamplePayload.data,
   }),
   examplePayload: importCRMDataExamplePayload,
+  outputSchema: outputSchema({ type: "actionOutput", schema: importSchema }),
 });

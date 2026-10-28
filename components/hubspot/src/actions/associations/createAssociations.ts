@@ -3,6 +3,8 @@ import { createAssociationsOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createAssociationsExamplePayload } from "../../examplePayloads";
 import { createAssociationsInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
+import { mapCreatedAssociations, resolveAssociationSpec } from "../../util";
 export const createAssociations = action({
   display: {
     label: "Create Association",
@@ -28,8 +30,14 @@ export const createAssociations = action({
       timeout,
       debugRequest,
     });
+    const spec = await resolveAssociationSpec(
+      client,
+      fromObjectType,
+      toObjectType,
+      associateType,
+    );
     const { data } = await client.post(
-      `/crm/v3/associations/${fromObjectType}/${toObjectType}/batch/create`,
+      hubspotPaths.associations(fromObjectType, toObjectType, "/batch/create"),
       {
         inputs: [
           {
@@ -39,16 +47,14 @@ export const createAssociations = action({
             to: {
               id: toId,
             },
-            type: associateType,
+            types: [spec],
           },
         ],
       },
     );
-    return { data };
+    return { data: mapCreatedAssociations(data, associateType) };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createAssociationsExamplePayload.data,
   }),
   inputs: createAssociationsInputs,

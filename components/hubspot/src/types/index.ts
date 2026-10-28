@@ -1,5 +1,7 @@
+export * from "./association";
 export * from "./company";
 export * from "./contact";
+export * from "./customObject";
 export * from "./deal";
 export * from "./engagement";
 export * from "./getSubscriptionPayload";

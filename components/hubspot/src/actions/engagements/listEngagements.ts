@@ -8,6 +8,7 @@ import {
   addUrlSearchParamsFromStringArray,
   getAllPaginatedData,
 } from "../../util";
+import { hubspotPaths } from "../../constants";
 export const listEngagements = action({
   display: {
     label: "List Engagements",
@@ -27,7 +28,7 @@ export const listEngagements = action({
     });
     const engagementsList = await getAllPaginatedData(
       client,
-      `/crm/v3/objects/${engagementObject}`,
+      hubspotPaths.objects(engagementObject),
       true,
       true,
       {
@@ -45,9 +46,7 @@ export const listEngagements = action({
     };
   },
   inputs: listEngagementsInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: listEngagementsExamplePayload.data,
   }),
   examplePayload: listEngagementsExamplePayload,

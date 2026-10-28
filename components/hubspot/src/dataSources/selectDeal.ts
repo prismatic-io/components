@@ -1,5 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
+import { hubspotPaths } from "../constants";
+import { selectDealExamplePayload } from "../examplePayloads";
 import { selectDealInputs } from "../inputs";
 import type { Deal } from "../types";
 import { getAllPaginatedData } from "../util";
@@ -16,7 +18,7 @@ export const selectDeal = dataSource({
     });
     const deals = (await getAllPaginatedData<Deal>(
       client,
-      "/crm/v3/objects/deals",
+      hubspotPaths.objects("deals"),
       true,
       true,
     )) as Deal[];
@@ -26,5 +28,6 @@ export const selectDeal = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectDealExamplePayload,
   dataSourceType: "picklist",
 });

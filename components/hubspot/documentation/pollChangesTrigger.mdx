@@ -46,7 +46,7 @@ The initial sync's upper bound is fixed when it begins, so records changed while
 
 `filters` and `filterGroups` in **Search Properties** are combined with the trigger's own date window using AND, so they narrow the results the trigger would otherwise return. A filter on `dealstage`, for example, only ever returns deals in that stage. They apply to the initial sync exactly as they do to every later recurrence.
 
-`sorts` in **Search Properties** is ignored by these triggers. They always sort by the object's last-modified property in ascending order, which is what lets them resume from their last position on the next recurrence.
+`sorts` in **Search Properties** is ignored by these triggers. They sort in ascending order by the object's last-modified property (by its creation property during the initial sync), which is what lets them resume from their last position on the next recurrence.
 
 #### Returned Data
 

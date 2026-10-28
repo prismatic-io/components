@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../../client";
-import { DEAL_SEARCH_PROPS } from "../../constants";
+import { DEAL_SEARCH_PROPS, hubspotPaths } from "../../constants";
 import { searchDealsExamplePayload } from "../../examplePayloads";
 import { searchDealsInputs } from "../../inputs";
 import { searchResponseSchema } from "../../outputSchemas";
@@ -17,28 +17,29 @@ export const searchDeals = action({
       timeout: params.timeout,
       debugRequest,
     });
-    const { data } = await client.post("/crm/v3/objects/deals/search", {
-      filterGroups: [
-        {
-          filters: [
-            {
-              propertyName: params.propertyName,
-              operator: params.operator,
-              value: params.value,
-            },
-          ],
-        },
-      ],
-      properties: DEAL_SEARCH_PROPS,
-      limit: params.pagination.limit,
-      after: params.pagination.after,
-    });
+    const { data } = await client.post(
+      hubspotPaths.objects("deals", "/search"),
+      {
+        filterGroups: [
+          {
+            filters: [
+              {
+                propertyName: params.propertyName,
+                operator: params.operator,
+                value: params.value,
+              },
+            ],
+          },
+        ],
+        properties: DEAL_SEARCH_PROPS,
+        limit: params.pagination.limit,
+        after: params.pagination.after,
+      },
+    );
     return { data };
   },
   inputs: searchDealsInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: searchDealsExamplePayload.data,
   }),
   examplePayload: searchDealsExamplePayload,

@@ -1,8 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { webhookSubscriptionSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createWebhookExamplePayload } from "../../examplePayloads";
 import { createWebhookInputs } from "../../inputs";
 import { checkDeveloperApiKeyAndAppId } from "../../util";
+import { hubspotPaths } from "../../constants";
 export const createWebhook = action({
   display: {
     label: "Create Webhook",
@@ -26,7 +28,7 @@ export const createWebhook = action({
     const { developerApiKey, appId } =
       checkDeveloperApiKeyAndAppId(hubspotConnection);
     const { data } = await client.post(
-      `/webhooks/v3/${appId}/subscriptions`,
+      hubspotPaths.appWebhooks(appId, "/subscriptions"),
       {
         eventType,
         ...(propertyWebhookName && { propertyName: propertyWebhookName }),
@@ -38,11 +40,13 @@ export const createWebhook = action({
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createWebhookExamplePayload.data,
   }),
   inputs: createWebhookInputs,
   examplePayload: createWebhookExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: webhookSubscriptionSchema,
+  }),
 });

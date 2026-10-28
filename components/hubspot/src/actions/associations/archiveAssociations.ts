@@ -3,10 +3,13 @@ import { archiveAssociationsOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { archiveAssociationsExamplePayload } from "../../examplePayloads";
 import { archiveAssociationsInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
+import { resolveAssociationSpec } from "../../util";
 export const archiveAssociations = action({
   display: {
     label: "Archive Association",
-    description: "Remove the associations between two provided objects.",
+    description:
+      "Remove the associations between two provided objects. Deleting an unlabeled association also deletes all labeled associations between those two objects.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -27,8 +30,18 @@ export const archiveAssociations = action({
       timeout,
       debugRequest,
     });
+    const spec = await resolveAssociationSpec(
+      client,
+      fromObjectType,
+      toObjectType,
+      associateType,
+    );
     const { data } = await client.post(
-      `/crm/v3/associations/${fromObjectType}/${toObjectType}/batch/archive`,
+      hubspotPaths.associations(
+        fromObjectType,
+        toObjectType,
+        "/batch/labels/archive",
+      ),
       {
         inputs: [
           {
@@ -38,16 +51,14 @@ export const archiveAssociations = action({
             to: {
               id: toId,
             },
-            type: associateType,
+            types: [spec],
           },
         ],
       },
     );
     return { data };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: archiveAssociationsExamplePayload.data,
   }),
   inputs: archiveAssociationsInputs,

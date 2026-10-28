@@ -1,5 +1,7 @@
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
+import { hubspotPaths } from "../constants";
+import { selectLineItemExamplePayload } from "../examplePayloads";
 import { selectLineItemInputs } from "../inputs";
 import type { LineItem } from "../types";
 import { getAllPaginatedData } from "../util";
@@ -16,7 +18,7 @@ export const selectLineItem = dataSource({
     });
     const lineItems = (await getAllPaginatedData<LineItem>(
       client,
-      "/crm/v3/objects/line_items",
+      hubspotPaths.objects("line_items"),
       true,
       true,
       {
@@ -32,5 +34,6 @@ export const selectLineItem = dataSource({
     }));
     return { result };
   },
+  examplePayload: selectLineItemExamplePayload,
   dataSourceType: "picklist",
 });

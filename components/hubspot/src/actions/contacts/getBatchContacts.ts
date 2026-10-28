@@ -4,6 +4,7 @@ import { getHubspotClient } from "../../client";
 import { getBatchContactsExamplePayload } from "../../examplePayloads";
 import { getBatchContactsInputs } from "../../inputs";
 import { getArrayOfObjectsWithKey } from "../../util";
+import { hubspotPaths } from "../../constants";
 export const getBatchContacts = action({
   display: {
     label: "Get Batch Contacts",
@@ -39,7 +40,7 @@ export const getBatchContacts = action({
       properties: properties || [],
     };
     const { data } = await client.post(
-      "/crm/v3/objects/contacts/batch/read",
+      hubspotPaths.objects("contacts", "/batch/read"),
       payload,
       {
         params: { archived },

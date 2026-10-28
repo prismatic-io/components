@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { updateLineItemExamplePayload } from "../../examplePayloads";
 import { updateLineItemInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const updateLineItem = action({
   display: {
     label: "Update Line Item",
@@ -32,7 +33,7 @@ export const updateLineItem = action({
       debugRequest: context.debug.enabled,
     });
     const { data } = await client.patch(
-      `/crm/v3/objects/line_items/${lineItemId}`,
+      hubspotPaths.objects("line_items", `/${lineItemId}`),
       {
         properties: {
           name: updateLineItemName,
@@ -49,9 +50,7 @@ export const updateLineItem = action({
     return { data };
   },
   inputs: updateLineItemInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: updateLineItemExamplePayload.data,
   }),
   examplePayload: updateLineItemExamplePayload,

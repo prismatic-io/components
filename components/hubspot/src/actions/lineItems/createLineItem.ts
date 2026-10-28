@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createLineItemExamplePayload } from "../../examplePayloads";
 import { createLineItemInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const createLineItem = action({
   display: {
     label: "Create Line Item",
@@ -29,7 +30,7 @@ export const createLineItem = action({
       timeout,
       debugRequest: context.debug.enabled,
     });
-    const { data } = await client.post("/crm/v3/objects/line_items", {
+    const { data } = await client.post(hubspotPaths.objects("line_items"), {
       properties: {
         name: lineItemName,
         hs_product_id: productId,
@@ -44,9 +45,7 @@ export const createLineItem = action({
     return { data };
   },
   inputs: createLineItemInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createLineItemExamplePayload.data,
   }),
   examplePayload: createLineItemExamplePayload,

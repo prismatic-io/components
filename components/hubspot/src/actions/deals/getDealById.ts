@@ -1,9 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
+import { getDealByIdExamplePayload } from "../../examplePayloads";
 import { getDealByIdOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { getDealByIdInputs } from "../../inputs";
 import { getProps } from "../../util";
-import { DEAL_PROPS } from "../../constants";
+import { DEAL_PROPS, hubspotPaths } from "../../constants";
 export const getDealById = action({
   display: {
     label: "Get Deal",
@@ -44,7 +45,7 @@ export const getDealById = action({
       archived: archived,
     };
     if (dealName) {
-      const result = await client.get("/crm/v3/objects/deals", {
+      const result = await client.get(hubspotPaths.objects("deals"), {
         params,
       });
       const { results: deals } = result.data;
@@ -56,12 +57,19 @@ export const getDealById = action({
       }
       return { data: filteredDeals };
     }
-    const { data } = await client.get(`/crm/v3/objects/deals/${dealId}`, {
-      params,
-    });
+    const { data } = await client.get(
+      hubspotPaths.objects("deals", `/${dealId}`),
+      {
+        params,
+      },
+    );
     return { data };
   },
   inputs: getDealByIdInputs,
+  examplePerform: async () => ({
+    data: getDealByIdExamplePayload.data,
+  }),
+  examplePayload: getDealByIdExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getDealByIdOutputSchema,

@@ -3,6 +3,8 @@ import { readAssociationsOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { readAssociationsExamplePayload } from "../../examplePayloads";
 import { readAssociationsInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
+import { mapReadAssociations } from "../../util";
 export const readAssociations = action({
   display: {
     label: "Read Association",
@@ -21,7 +23,7 @@ export const readAssociations = action({
       debugRequest,
     });
     const { data } = await client.post(
-      `/crm/v3/associations/${fromObjectType}/${toObjectType}/batch/read`,
+      hubspotPaths.associations(fromObjectType, toObjectType, "/batch/read"),
       {
         inputs: [
           {
@@ -30,7 +32,7 @@ export const readAssociations = action({
         ],
       },
     );
-    return { data };
+    return { data: mapReadAssociations(data) };
   },
   inputs: readAssociationsInputs,
   examplePayload: readAssociationsExamplePayload,

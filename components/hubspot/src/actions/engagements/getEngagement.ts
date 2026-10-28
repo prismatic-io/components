@@ -5,6 +5,7 @@ import { getHubspotClient } from "../../client";
 import { getEngagementExamplePayload } from "../../examplePayloads";
 import { getEngagementInputs } from "../../inputs";
 import { addUrlSearchParamsFromStringArray } from "../../util";
+import { hubspotPaths } from "../../constants";
 export const getEngagement = action({
   display: {
     label: "Get Engagement",
@@ -56,7 +57,7 @@ export const getEngagement = action({
     if (debugRequest)
       context.logger.debug(`Params: ${urlSearchParams.toString()}`);
     const { data } = await client.get(
-      `/crm/v3/objects/${engagementObject}/${engagementId}`,
+      hubspotPaths.objects(engagementObject, `/${engagementId}`),
       {
         params: urlSearchParams,
       },

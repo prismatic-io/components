@@ -16,9 +16,9 @@ export interface PollingRecordChange {
 export interface SearchObjectParams {
   timeout: number;
   hubspotConnection: Connection;
-  searchEndpoint?: string;
   searchProperties: object;
-  objectType?: string;
   fetchAll: boolean;
   searchLimit: number;
+  searchEndpoint?: string;
+  objectType?: string;
 }

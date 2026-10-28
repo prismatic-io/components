@@ -98,12 +98,12 @@ const state = input({
 });
 export const listCompaniesInputs = {
   hubspotConnection: connectionInput,
-  additionalProperties,
-  associationsList,
   archived,
-  timeout,
   fetchAll,
   pagination,
+  additionalProperties,
+  associationsList,
+  timeout,
 };
 export const createCompanyInputs = {
   companyName,
@@ -141,9 +141,9 @@ export const getCompanyInputs = {
   companyId: { ...companyId, required: false, clean: toOptionalString },
   companyName: { ...companyName, required: false, clean: toOptionalString },
   domain: { ...domain, required: false, clean: toOptionalString },
+  archived,
   additionalProperties,
   associationsList,
-  archived,
   timeout,
   hubspotConnection: connectionInput,
 };

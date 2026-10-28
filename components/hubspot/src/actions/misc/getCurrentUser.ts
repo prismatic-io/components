@@ -1,9 +1,13 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
-import { getCurrentUserOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { hubspotOAuth, privateAppAccessToken } from "../../connections";
+import {
+  hubspotPaths,
+  TOKEN_WITHOUT_BEARER_PREFIX_INDEX_START,
+} from "../../constants";
 import { getCurrentUserExamplePayload } from "../../examplePayloads";
 import { getCurrentUserInputs } from "../../inputs";
+import { getCurrentUserOutputSchema } from "../../outputSchemas";
 export const getCurrentUser = action({
   display: {
     label: "Get Current User",
@@ -12,13 +16,13 @@ export const getCurrentUser = action({
   performSafety: "safe",
   perform: async (context, { timeout, hubspotConnection }) => {
     const debugRequest = context.debug.enabled;
-    const TOKEN_WITHOUT_BEARER_PREFIX_INDEX_START = 7;
     const client = getHubspotClient({
       hubspotConnection,
       timeout,
       debugRequest,
     });
-    const { data: userData } = await client.get("/integrations/v1/me");
+    const { data: details } = await client.get(hubspotPaths.accountDetails);
+    const userData = { ...details, currency: details.companyCurrency };
     if (hubspotConnection.key === hubspotOAuth.key) {
       const token = (client.defaults.headers.Authorization as string).slice(
         TOKEN_WITHOUT_BEARER_PREFIX_INDEX_START,
@@ -31,7 +35,7 @@ export const getCurrentUser = action({
         token,
       };
       const { data: tokenData } = await client.post(
-        "/oauth/v3/token/introspect",
+        hubspotPaths.oauthIntrospect,
         new URLSearchParams(data).toString(),
         {
           headers: {

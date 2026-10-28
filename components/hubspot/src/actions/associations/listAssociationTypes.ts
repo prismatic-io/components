@@ -3,6 +3,8 @@ import { listAssociationTypesOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { listAssociationTypesExamplePayload } from "../../examplePayloads";
 import { listAssociationTypesInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
+import { mapAssociationTypes } from "../../util";
 export const listAssociationTypes = action({
   display: {
     label: "List Association Types",
@@ -18,9 +20,13 @@ export const listAssociationTypes = action({
       debugRequest,
     });
     const { data } = await client.get(
-      `/crm/v3/associations/${params.fromObjectType}/${params.toObjectType}/types`,
+      hubspotPaths.associations(
+        params.fromObjectType,
+        params.toObjectType,
+        "/labels",
+      ),
     );
-    return { data };
+    return { data: mapAssociationTypes(data) };
   },
   inputs: listAssociationTypesInputs,
   examplePayload: listAssociationTypesExamplePayload,

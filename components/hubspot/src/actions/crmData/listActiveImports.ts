@@ -1,8 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listActiveImportsOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { listActiveImportsExamplePayload } from "../../examplePayloads";
 import { listActiveImportsInputs } from "../../inputs";
 import { getAllPaginatedData } from "../../util";
+import { hubspotPaths } from "../../constants";
 export const listActiveImports = action({
   display: {
     label: "List Active Imports",
@@ -18,7 +20,7 @@ export const listActiveImports = action({
     });
     const data = await getAllPaginatedData(
       client,
-      "/crm/v3/imports",
+      hubspotPaths.imports(),
       true,
       true,
       {},
@@ -28,10 +30,12 @@ export const listActiveImports = action({
     };
   },
   inputs: listActiveImportsInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: listActiveImportsExamplePayload.data,
   }),
   examplePayload: listActiveImportsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listActiveImportsOutputSchema,
+  }),
 });

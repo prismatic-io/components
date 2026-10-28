@@ -2,6 +2,7 @@ import { action } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../../client";
 import { deleteDealExamplePayload } from "../../examplePayloads";
 import { deleteDealInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const deleteDeal = action({
   display: {
     label: "Delete Deal",
@@ -15,13 +16,13 @@ export const deleteDeal = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.delete(`/crm/v3/objects/deals/${dealId}`);
+    const { data } = await client.delete(
+      hubspotPaths.objects("deals", `/${dealId}`),
+    );
     return { data };
   },
   inputs: deleteDealInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: deleteDealExamplePayload.data,
   }),
   examplePayload: deleteDealExamplePayload,

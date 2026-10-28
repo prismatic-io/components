@@ -3,6 +3,7 @@ import { validateConnectionOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { validateConnectionExamplePayload } from "../../examplePayloads";
 import { validateConnectionInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const validateConnection = action({
   display: {
     label: "Validate Connection",
@@ -19,7 +20,7 @@ export const validateConnection = action({
         timeout,
         debugRequest,
       });
-      await client.get("/integrations/v1/me");
+      await client.get(hubspotPaths.accountDetails);
       return {
         data: true,
       };

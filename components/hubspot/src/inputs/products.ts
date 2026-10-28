@@ -108,12 +108,12 @@ const updateSku = input({
 });
 export const listProductsInputs = {
   hubspotConnection: connectionInput,
-  additionalProperties,
-  associationsList,
   archived,
-  timeout,
   fetchAll,
   pagination,
+  additionalProperties,
+  associationsList,
+  timeout,
 };
 export const createProductInputs = {
   productName,

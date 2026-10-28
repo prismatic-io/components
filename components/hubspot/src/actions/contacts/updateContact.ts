@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { updateContactExamplePayload } from "../../examplePayloads";
 import { updateContactInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const updateContact = action({
   display: {
     label: "Update Contact",
@@ -30,7 +31,7 @@ export const updateContact = action({
       debugRequest,
     });
     const { data } = await client.patch(
-      `/crm/v3/objects/contacts/${contactId}`,
+      hubspotPaths.objects("contacts", `/${contactId}`),
       {
         properties: {
           company: contactUpdateCompany,
@@ -47,9 +48,7 @@ export const updateContact = action({
     return { data };
   },
   inputs: updateContactInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: updateContactExamplePayload.data,
   }),
   examplePayload: updateContactExamplePayload,

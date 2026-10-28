@@ -1,4 +1,22 @@
 export const BASE_URL = "https://api.hubapi.com";
+export const API_VERSION = "2026-09";
+export const hubspotPaths = {
+  objects: (objectType: string, suffix = "") =>
+    `/crm/objects/${API_VERSION}/${objectType}${suffix}`,
+  schemas: (suffix = "") =>
+    `/crm-object-schemas/${API_VERSION}/schemas${suffix}`,
+  properties: (objectType: string, suffix = "") =>
+    `/crm/properties/${API_VERSION}/${objectType}${suffix}`,
+  imports: (suffix = "") => `/crm/imports/${API_VERSION}${suffix}`,
+  exports: (suffix = "") => `/crm/exports/${API_VERSION}${suffix}`,
+  associations: (fromObjectType: string, toObjectType: string, suffix = "") =>
+    `/crm/associations/${API_VERSION}/${fromObjectType}/${toObjectType}${suffix}`,
+  appWebhooks: (appId: string | number, suffix = "") =>
+    `/app-webhooks/${API_VERSION}/${appId}${suffix}`,
+  oauthToken: `/oauth/${API_VERSION}/token`,
+  oauthIntrospect: `/oauth/${API_VERSION}/token/introspect`,
+  accountDetails: `/account-info/${API_VERSION}/details`,
+};
 export const EVENT_TYPES = [
   { label: "Contact Creation", value: "contact.creation" },
   { label: "Contact Deletion", value: "contact.deletion" },
@@ -62,6 +80,10 @@ export const CUSTOM_OBJECT_LAST_MODIFIED_PROPERTY = "hs_lastmodifieddate";
 export const CUSTOM_OBJECT_CREATED_PROPERTY = "hs_createdate";
 export const CUSTOM_OBJECT_SEARCH_ENDPOINT =
   "/crm/v3/objects/{objectType}/search";
+export const CUSTOM_OBJECT_PLACEHOLDER = "{objecttype}";
+export const SEARCH_ENDPOINT_PATTERN =
+  /^\/crm\/(?:v3\/objects|objects\/\d{4}-\d{2})\/([^/]+)\/search$/i;
+export const TOKEN_WITHOUT_BEARER_PREFIX_INDEX_START = 7;
 export const MAX_FILTER_GROUPS = 5;
 export const MAX_FILTERS_PER_GROUP = 6;
 export const MAX_FILTERS_TOTAL = 18;
@@ -85,95 +107,95 @@ export const SEARCH_ENDPOINTS = [
   { label: "Tasks", value: "/crm/v3/objects/tasks/search" },
 ];
 export const HUBSPOT_DATE_PROPERTIES = {
-  "/crm/v3/objects/carts/search": {
+  carts: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/companies/search": {
+  companies: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/contacts/search": {
+  contacts: {
     createdate: "createdate",
     lastmodifieddate: "lastmodifieddate",
   },
-  "/crm/v3/objects/deals/search": {
+  deals: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/deal_split/search": {
+  deal_split: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/discounts/search": {
+  discounts: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/feedback_submissions/search": {
+  feedback_submissions: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/fees/search": {
+  fees: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/invoices/search": {
+  invoices: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/leads/search": {
+  leads: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/line_items/search": {
+  line_items: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/orders/search": {
+  orders: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/commerce_payments/search": {
+  commerce_payments: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/products/search": {
+  products: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/quotes/search": {
+  quotes: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/subscriptions/search": {
+  subscriptions: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/taxes/search": {
+  taxes: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/tickets/search": {
+  tickets: {
     createdate: "createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/calls/search": {
+  calls: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/emails/search": {
+  emails: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/meetings/search": {
+  meetings: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/notes/search": {
+  notes: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
-  "/crm/v3/objects/tasks/search": {
+  tasks: {
     hs_createdate: "hs_createdate",
     hs_lastmodifieddate: "hs_lastmodifieddate",
   },
@@ -186,6 +208,22 @@ export const ENGAGEMENT_OBJECTS = [
   { label: "Calls", value: "calls" },
   { label: "Emails", value: "emails" },
   { label: "Communications", value: "communications" },
+];
+export const STANDARD_OBJECT_TYPES: ReadonlyArray<{
+  label: string;
+  key: string;
+  name: string;
+}> = [
+  { label: "Contacts", key: "0-1", name: "contacts" },
+  { label: "Companies", key: "0-2", name: "companies" },
+  { label: "Deals", key: "0-3", name: "deals" },
+  { label: "Tickets", key: "0-5", name: "tickets" },
+  { label: "Calls", key: "0-48", name: "calls" },
+  { label: "Quotes", key: "0-14", name: "quotes" },
+  { label: "Line Items", key: "0-8", name: "line_items" },
+  { label: "Meetings", key: "0-47", name: "meetings" },
+  { label: "Products", key: "0-7", name: "products" },
+  { label: "Feedback Submissions", key: "0-19", name: "feedback_submissions" },
 ];
 export const ENGAGEMENT_PROPERTIES = [
   { label: "Task - Timestamp", value: "hs_timestamp" },

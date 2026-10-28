@@ -18,7 +18,7 @@ export const validateConnection = (connection: Connection): void => {
   ) {
     throw new ConnectionError(
       connection,
-      "HubSpot connection is required for this action.",
+      `HubSpot connection is required for this action. Received connection type: ${connection.key}.`,
     );
   }
 };

@@ -1,14 +1,9 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
+import { hubspotPaths } from "../constants";
+import { selectCustomObjectExamplePayload } from "../examplePayloads";
 import { selectCustomObjectInputs } from "../inputs";
-interface CustomObjectSchema {
-  objectTypeId?: string;
-  name?: string;
-  labels?: {
-    singular?: string;
-    plural?: string;
-  };
-}
+import type { CustomObjectSchema } from "../types";
 export const selectCustomObject = dataSource({
   display: {
     label: "Select Custom Object",
@@ -20,7 +15,7 @@ export const selectCustomObject = dataSource({
       hubspotConnection: connection,
       debugRequest: false,
     });
-    const { data } = await client.get("/crm/v3/schemas");
+    const { data } = await client.get(hubspotPaths.schemas());
     const result = ((data.results || []) as CustomObjectSchema[]).map<Element>(
       (item) => ({
         label: item.labels?.singular || item.name || "",
@@ -29,5 +24,6 @@ export const selectCustomObject = dataSource({
     );
     return { result };
   },
+  examplePayload: selectCustomObjectExamplePayload,
   dataSourceType: "picklist",
 });

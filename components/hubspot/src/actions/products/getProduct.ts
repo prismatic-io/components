@@ -1,8 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
+import { getProductExamplePayload } from "../../examplePayloads";
 import { getProductOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { getProductInputs } from "../../inputs";
 import { getProps } from "../../util";
+import { hubspotPaths } from "../../constants";
 export const getProduct = action({
   display: {
     label: "Get Product",
@@ -43,7 +45,7 @@ export const getProduct = action({
       archived: archived,
     };
     if (productName) {
-      const result = await client.get("/crm/v3/objects/products", {
+      const result = await client.get(hubspotPaths.objects("products"), {
         params,
       });
       const { results: products } = result.data;
@@ -51,16 +53,23 @@ export const getProduct = action({
         return product?.properties?.name === productName;
       });
       if (filteredProducts.length === 0) {
-        throw new Error(`No line items found matching ${productName}`);
+        throw new Error(`No products found matching ${productName}`);
       }
       return { data: filteredProducts };
     }
-    const { data } = await client.get(`/crm/v3/objects/products/${productId}`, {
-      params,
-    });
+    const { data } = await client.get(
+      hubspotPaths.objects("products", `/${productId}`),
+      {
+        params,
+      },
+    );
     return { data };
   },
   inputs: getProductInputs,
+  examplePerform: async () => ({
+    data: getProductExamplePayload.data,
+  }),
+  examplePayload: getProductExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getProductOutputSchema,

@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { updateDealExamplePayload } from "../../examplePayloads";
 import { updateDealInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const updateDeal = action({
   display: {
     label: "Update Deal",
@@ -33,26 +34,27 @@ export const updateDeal = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.patch(`/crm/v3/objects/deals/${dealId}`, {
-      properties: {
-        amount,
-        closedate: closeDate,
-        dealname: updateDealName,
-        dealstage: updateDealStage,
-        hubspot_owner_id: hubspotOwnerId,
-        pipeline: updatePipeline,
-        dealtype: dealType,
-        hs_priority: priority,
-        ...fieldValues,
-        ...dynamicValues,
+    const { data } = await client.patch(
+      hubspotPaths.objects("deals", `/${dealId}`),
+      {
+        properties: {
+          amount,
+          closedate: closeDate,
+          dealname: updateDealName,
+          dealstage: updateDealStage,
+          hubspot_owner_id: hubspotOwnerId,
+          pipeline: updatePipeline,
+          dealtype: dealType,
+          hs_priority: priority,
+          ...fieldValues,
+          ...dynamicValues,
+        },
       },
-    });
+    );
     return { data };
   },
   inputs: updateDealInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: updateDealExamplePayload.data,
   }),
   examplePayload: updateDealExamplePayload,

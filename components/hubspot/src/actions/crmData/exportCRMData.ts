@@ -1,7 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { exportCRMDataOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { exportCRMDataExamplePayload } from "../../examplePayloads";
 import { exportCRMDataInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const exportCRMData = action({
   display: {
     label: "Export CRM Data",
@@ -48,17 +50,20 @@ export const exportCRMData = action({
       ...(publicCrmSearchRequest && { publicCrmSearchRequest }),
       ...(listId && { listId }),
     };
-    const data = (await client.post("/crm/v3/exports/export/async", payload))
-      .data;
+    const data = (
+      await client.post(hubspotPaths.exports("/export/async"), payload)
+    ).data;
     return {
       data,
     };
   },
   inputs: exportCRMDataInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: exportCRMDataExamplePayload.data,
   }),
   examplePayload: exportCRMDataExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: exportCRMDataOutputSchema,
+  }),
 });

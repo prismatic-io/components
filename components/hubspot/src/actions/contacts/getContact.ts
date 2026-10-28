@@ -1,9 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
+import { getContactExamplePayload } from "../../examplePayloads";
 import { getContactOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { getContactInputs } from "../../inputs";
 import { getProps } from "../../util";
-import { CONTACT_PROPS } from "../../constants";
+import { CONTACT_PROPS, hubspotPaths } from "../../constants";
 export const getContact = action({
   display: {
     label: "Get Contact",
@@ -42,9 +43,12 @@ export const getContact = action({
       archived: archived,
     };
     if (id) {
-      const { data } = await client.get(`/crm/v3/objects/contacts/${id}`, {
-        params,
-      });
+      const { data } = await client.get(
+        hubspotPaths.objects("contacts", `/${id}`),
+        {
+          params,
+        },
+      );
       return { data };
     }
     const searchBody = {
@@ -61,7 +65,7 @@ export const getContact = action({
       ],
     };
     const { data } = await client.post(
-      "/crm/v3/objects/contacts/search",
+      hubspotPaths.objects("contacts", "/search"),
       searchBody,
       {
         headers: {
@@ -72,6 +76,10 @@ export const getContact = action({
     return { data };
   },
   inputs: getContactInputs,
+  examplePerform: async () => ({
+    data: getContactExamplePayload.data,
+  }),
+  examplePayload: getContactExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getContactOutputSchema,

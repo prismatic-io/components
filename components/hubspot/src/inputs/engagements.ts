@@ -97,7 +97,7 @@ export const createEngagementInputs = {
   properties: {
     ...properties,
     comments:
-      "A properties object, attributes depend on the engagement type. For possible properties for each engagement type refer to [HubSpot Engagements API](https://developers.hubspot.com/docs/api/crm/tasks).",
+      "A properties object, attributes depend on the engagement type. For possible properties for each engagement type refer to [HubSpot Engagements API](https://developers.hubspot.com/docs/api-reference/latest/crm/activities/tasks/guide).",
     example: JSON.stringify(
       {
         hs_timestamp: "2019-10-30T03:30:17.883Z",
@@ -121,7 +121,7 @@ export const updateEngagementInputs = {
   properties: {
     ...properties,
     comments:
-      "A properties object to update, attributes depend on the engagement type. For possible properties for each engagement type refer to [HubSpot Engagements API](https://developers.hubspot.com/docs/api/crm/tasks).",
+      "A properties object to update, attributes depend on the engagement type. For possible properties for each engagement type refer to [HubSpot Engagements API](https://developers.hubspot.com/docs/api-reference/latest/crm/activities/tasks/guide).",
     example: JSON.stringify(
       {
         property_date: "1572480000000",
@@ -143,6 +143,7 @@ export const getEngagementInputs = {
   hubspotConnection: connectionInput,
   engagementObject,
   engagementId,
+  archived,
   propertiesToReturn,
   propertiesWithHistoryToReturn: {
     ...propertiesToReturn,
@@ -151,7 +152,6 @@ export const getEngagementInputs = {
       "A property to be returned along with it's history of previous values. If the specified property is not present on the requested object, it will be ignored.",
   },
   associations,
-  archived,
   idProperty,
   timeout,
 };
@@ -179,7 +179,7 @@ export const updateBatchEngagementInputs = {
   batchInputs: {
     ...batchInputs,
     comments:
-      "An array of engagement objects to update. Each engagement object must contain the required properties for the specified engagement type. See [HubSpot Engagements API](https://developers.hubspot.com/docs/api/crm/tasks) for more information.",
+      "An array of engagement objects to update. Each engagement object must contain the required properties for the specified engagement type. See [HubSpot Engagements API](https://developers.hubspot.com/docs/api-reference/latest/crm/activities/tasks/guide) for more information.",
     example: JSON.stringify(
       [
         {

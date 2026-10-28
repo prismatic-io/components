@@ -1,5 +1,22 @@
 ## Changelog
 
+### 2026-10-28
+
+Moved the component to HubSpot's date-based APIs and expanded action configuration support:
+
+- Updated the component to call HubSpot's date-based 2026-09 API version in place of the legacy v1 and v3 APIs; existing **Search Endpoint** selections keep working without being reselected
+- Updated the component documentation to note that, starting with the 2026-09 API version, HubSpot enforces a portal's required-property validation rules on every CRM create and update request, and association writes over a user-level **OAuth 2.0** connection require the **Edit Associations** permission
+- Updated **Create Association** and **Archive Association** to resolve **Type Of Association** by numeric association type ID or association label; a legacy type name such as `contact_to_company` that matches neither now fails before any association is changed
+- Updated **List Association Types** and **Read Association** to report each association type by its label, or by its numeric type ID when it has no label, and **Archive Association** to return HubSpot's response instead of an empty result
+- Added the **Select Object Type** inline data source to **From Object Type** and **To Object Type** on **Create Association**, **Archive Association**, **Read Association**, and **List Association Types** for choosing from standard and custom objects; standard object names entered before, in singular or plural and any casing, such as `contact` or `Line_items`, are still accepted without being reselected
+- Added the **Select Association Type** inline data source to **Type Of Association** on **Create Association** and **Archive Association** for choosing from the association types available for the selected object pair
+- Updated **Import CRM Data** to group its **Import Operations**, **Marketable Contact Import**, and **Create Contact List From Import** inputs into **Import Options**
+- Fixed the **Get Product** action reporting "No line items found" when no product matched the **Product Name**
+- Added inline action calling support to the **Create Custom Object**, **Delete Custom Object**, **Get Company**, **Get Contact**, **Get Deal**, **Get Line Item**, **Get Product**, and **Update Custom Object** actions for improved example output during configuration
+- Added output schemas to 12 actions for improved field mapping during configuration
+
+Configuration notice: **Create Association** and **Archive Association** no longer accept a legacy association type name in **Type Of Association**. Re-enter it as the numeric association type ID or the label that **List Association Types** returns for the same object pair. **List Association Types** and **Read Association** now return the label, or the numeric type ID when the type has no label, in `name` and `type` instead of the legacy type name; check any step that reads those fields.
+
 ### 2026-09-02
 
 Improved trigger inputs, connection options, action correctness, and developer experience:

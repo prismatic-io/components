@@ -3,6 +3,7 @@ import { batchResponseSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createBatchContactsExamplePayload } from "../../examplePayloads";
 import { createBatchContactsInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const createBatchContacts = action({
   display: {
     label: "Create Batch Contacts",
@@ -23,7 +24,7 @@ export const createBatchContacts = action({
       inputs: batchInputs,
     };
     const { data } = await client.post(
-      "/crm/v3/objects/contacts/batch/create",
+      hubspotPaths.objects("contacts", "/batch/create"),
       payload,
     );
     return {
@@ -31,9 +32,7 @@ export const createBatchContacts = action({
     };
   },
   inputs: createBatchContactsInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createBatchContactsExamplePayload.data,
   }),
   examplePayload: createBatchContactsExamplePayload,

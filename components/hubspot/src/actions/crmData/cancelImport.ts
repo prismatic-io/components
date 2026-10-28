@@ -1,7 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { cancelImportOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { cancelImportExamplePayload } from "../../examplePayloads";
 import { cancelImportInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const cancelImport = action({
   display: {
     label: "Cancel Import",
@@ -16,14 +18,18 @@ export const cancelImport = action({
       debugRequest,
       headers: { "Content-Type": "application/json" },
     });
-    const { data } = await client.post(`/crm/v3/imports/${importId}/cancel`);
+    const { data } = await client.post(
+      hubspotPaths.imports(`/${importId}/cancel`),
+    );
     return { data };
   },
   inputs: cancelImportInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: cancelImportExamplePayload.data,
   }),
   examplePayload: cancelImportExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: cancelImportOutputSchema,
+  }),
 });

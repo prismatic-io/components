@@ -1,12 +1,15 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { customObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createCustomObjectExamplePayload } from "../../examplePayloads";
 import { createCustomObjectInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const createCustomObject = action({
   display: {
     label: "Create Custom Object",
     description: "Creates new custom object schema.",
   },
+  performSafety: "notAllowed",
   perform: async (
     context,
     {
@@ -30,7 +33,7 @@ export const createCustomObject = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.post("/crm/v3/schemas", {
+    const { data } = await client.post(hubspotPaths.schemas(), {
       labels: {
         singular: singularLabel,
         plural: pluralLabel,
@@ -41,6 +44,7 @@ export const createCustomObject = action({
       properties,
       associatedObjects: associatedObjects,
       name,
+      allowsSensitiveProperties: false,
       ...fieldValues,
       ...dynamicValues,
     });
@@ -49,5 +53,12 @@ export const createCustomObject = action({
     };
   },
   inputs: createCustomObjectInputs,
+  examplePerform: async () => ({
+    data: createCustomObjectExamplePayload.data,
+  }),
   examplePayload: createCustomObjectExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: customObjectSchema,
+  }),
 });

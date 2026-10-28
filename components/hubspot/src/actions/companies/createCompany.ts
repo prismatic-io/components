@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createCompanyExamplePayload } from "../../examplePayloads";
 import { createCompanyInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const createCompany = action({
   display: {
     label: "Create Company",
@@ -31,7 +32,7 @@ export const createCompany = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.post("/crm/v3/objects/companies", {
+    const { data } = await client.post(hubspotPaths.objects("companies"), {
       properties: {
         city,
         domain,
@@ -47,9 +48,7 @@ export const createCompany = action({
     return { data };
   },
   inputs: createCompanyInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createCompanyExamplePayload.data,
   }),
   examplePayload: createCompanyExamplePayload,

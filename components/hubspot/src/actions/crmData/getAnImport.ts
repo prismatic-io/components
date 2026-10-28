@@ -1,7 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { importSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { getAnImportExamplePayload } from "../../examplePayloads";
 import { getAnImportInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const getAnImport = action({
   display: {
     label: "Get Import",
@@ -16,9 +18,10 @@ export const getAnImport = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.get(`/crm/v3/imports/${importId}`);
+    const { data } = await client.get(hubspotPaths.imports(`/${importId}`));
     return { data };
   },
   inputs: getAnImportInputs,
   examplePayload: getAnImportExamplePayload,
+  outputSchema: outputSchema({ type: "actionOutput", schema: importSchema }),
 });

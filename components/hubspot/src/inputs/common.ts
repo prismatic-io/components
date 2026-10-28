@@ -103,6 +103,7 @@ export const additionalProperties = input({
   required: false,
   comments: "For each item, provide a property to return in the response.",
   dataSource: "selectProperty",
+  clean: valueListInputClean,
 });
 export const associationsList = input({
   label: "Associations List",

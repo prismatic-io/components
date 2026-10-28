@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { EVENT_TYPES, EVENT_TYPES_PROPERTY_CHANGE } from "../constants";
-import { valueListInputClean } from "../util";
+import { toOptionalString, valueListInputClean } from "../util";
 import { connectionInput, timeout } from "./common";
 const eventType = input({
   type: "string",
@@ -20,7 +20,7 @@ const propertyWebhookName = input({
     "The internal name of the property to monitor for changes. Only applies when eventType is propertyChange.",
   required: false,
   example: "email",
-  clean: util.types.toString,
+  clean: toOptionalString,
 });
 const active = input({
   type: "boolean",

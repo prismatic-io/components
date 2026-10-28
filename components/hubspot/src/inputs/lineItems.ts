@@ -93,11 +93,11 @@ const recurringBillingFrequency = input({
 export const listLineItemsInputs = {
   hubspotConnection: connectionInput,
   archived,
+  fetchAll,
+  pagination,
   additionalProperties,
   associationsList,
   timeout,
-  fetchAll,
-  pagination,
 };
 export const createLineItemInputs = {
   lineItemName,
@@ -132,9 +132,9 @@ export const deleteLineItemInputs = {
 export const getLineItemInputs = {
   lineItemId: { ...lineItemId, required: false, clean: toOptionalString },
   lineItemName: { ...lineItemName, required: false, clean: toOptionalString },
+  archived,
   additionalProperties,
   associationsList,
-  archived,
   timeout,
   hubspotConnection: connectionInput,
 };

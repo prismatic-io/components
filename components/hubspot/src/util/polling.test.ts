@@ -16,8 +16,10 @@ import {
   cycleFloor,
   fetchPollingWindow,
   getPollingChanges,
+  resolveCreatedProperty,
   resolveCursor,
   resolveCursorSafely,
+  resolveEndpoint,
   resolveLastModifiedProperty,
   windowFloor,
 } from "./polling";
@@ -176,7 +178,7 @@ describe("resolveCursor", () => {
   });
 });
 describe("resolveCursorSafely", () => {
-  const logger = { warn: jest.fn() };
+  const logger = { warn: vi.fn() };
   beforeEach(() => logger.warn.mockClear());
   test("propagates a throw attributable to the incoming cursor", () => {
     expect(() =>
@@ -407,6 +409,80 @@ describe("resolveLastModifiedProperty", () => {
   test("throws when no endpoint is supplied and custom objects are not selected", () => {
     expect(() => resolveLastModifiedProperty(undefined, false)).toThrow(
       /\(none provided\)/,
+    );
+  });
+  test.each([
+    ["/crm/objects/2026-09/contacts/search", "lastmodifieddate"],
+    ["/crm/objects/2026-09/companies/search", "hs_lastmodifieddate"],
+    ["/CRM/V3/Objects/Contacts/Search", "lastmodifieddate"],
+    ["/crm/objects/2026-09/Tasks/search", "hs_lastmodifieddate"],
+  ])("resolves the dated or mixed-case stored value %s to %s", (endpoint, expected) => {
+    expect(resolveLastModifiedProperty(endpoint, false)).toBe(expected);
+  });
+  test("throws a named error for a junk stored value", () => {
+    expect(() => resolveLastModifiedProperty("not-an-endpoint", false)).toThrow(
+      /No last-modified property is known for the search endpoint not-an-endpoint/,
+    );
+  });
+});
+describe("resolveCreatedProperty", () => {
+  test.each([
+    ["/crm/v3/objects/contacts/search", "createdate"],
+    ["/crm/objects/2026-09/contacts/search", "createdate"],
+    ["/crm/v3/objects/tasks/search", "hs_createdate"],
+    ["/CRM/V3/Objects/Tasks/Search", "hs_createdate"],
+  ])("resolves %s to %s", (endpoint, expected) => {
+    expect(resolveCreatedProperty(endpoint, false)).toBe(expected);
+  });
+  test("throws a named error for a junk stored value", () => {
+    expect(() => resolveCreatedProperty("junk", false)).toThrow(
+      /No creation-date property is known for the search endpoint junk/,
+    );
+  });
+});
+describe("resolveEndpoint", () => {
+  test("translates a stored legacy value to the dated path", () => {
+    expect(
+      resolveEndpoint("/crm/v3/objects/contacts/search", undefined, false),
+    ).toBe("/crm/objects/2026-09/contacts/search");
+  });
+  test("keeps a stored dated value on the current version", () => {
+    expect(
+      resolveEndpoint("/crm/objects/2026-09/deals/search", undefined, false),
+    ).toBe("/crm/objects/2026-09/deals/search");
+  });
+  test("translates a mixed-case stored value", () => {
+    expect(
+      resolveEndpoint("/CRM/V3/Objects/contacts/Search", undefined, false),
+    ).toBe("/crm/objects/2026-09/contacts/search");
+  });
+  test("substitutes the object type for the custom-objects placeholder", () => {
+    expect(
+      resolveEndpoint(
+        "/crm/v3/objects/{objectType}/search",
+        "p123_equipment",
+        false,
+      ),
+    ).toBe("/crm/objects/2026-09/p123_equipment/search");
+  });
+  test("substitutes the object type when custom objects are selected", () => {
+    expect(resolveEndpoint(undefined, "Equipment", true)).toBe(
+      "/crm/objects/2026-09/Equipment/search",
+    );
+  });
+  test("requires an object type for the placeholder", () => {
+    expect(() =>
+      resolveEndpoint("/crm/v3/objects/{objectType}/search", undefined, false),
+    ).toThrow("Object Type input is required");
+  });
+  test("requires a search endpoint", () => {
+    expect(() => resolveEndpoint(undefined, undefined, false)).toThrow(
+      "Search Endpoint input is required",
+    );
+  });
+  test("throws on a junk stored value", () => {
+    expect(() => resolveEndpoint("/nope", undefined, false)).toThrow(
+      /Unrecognized search endpoint/,
     );
   });
 });
@@ -783,9 +859,9 @@ const page = (count: number, after?: string, startMs = 0, total = count) => ({
     ...(after ? { paging: { next: { after } } } : {}),
   },
 });
-const fakeLogger = () => ({ warn: jest.fn() });
+const fakeLogger = () => ({ warn: vi.fn() });
 const windowParams = {
-  endpoint: "/crm/v3/objects/deals/search",
+  endpoint: "/crm/objects/2026-09/deals/search",
   searchProperties: undefined,
   dateProp: "hs_lastmodifieddate",
   cursor: CURSOR,
@@ -793,7 +869,7 @@ const windowParams = {
 };
 describe("fetchPollingWindow", () => {
   test("stops with hasMore false when HubSpot returns no next page", async () => {
-    const client = { post: jest.fn().mockResolvedValue(page(3)) };
+    const client = { post: vi.fn().mockResolvedValue(page(3)) };
     const result = await fetchPollingWindow(
       client as never,
       windowParams,
@@ -805,7 +881,7 @@ describe("fetchPollingWindow", () => {
   });
   test("follows the after cursor across pages", async () => {
     const client = {
-      post: jest
+      post: vi
         .fn()
         .mockResolvedValueOnce(page(MAX_SEARCH_LIMIT, "200", 0))
         .mockResolvedValueOnce(page(5, undefined, 1000)),
@@ -821,7 +897,7 @@ describe("fetchPollingWindow", () => {
   });
   test("stops at the result cap with hasMore true", async () => {
     const client = {
-      post: jest
+      post: vi
         .fn()
         .mockImplementation(() =>
           Promise.resolve(page(MAX_SEARCH_LIMIT, "next")),
@@ -840,7 +916,7 @@ describe("fetchPollingWindow", () => {
   });
   test("honors a smaller windowLimit, leaving the rest for a later round", async () => {
     const client = {
-      post: jest
+      post: vi
         .fn()
         .mockImplementation(() =>
           Promise.resolve(page(MAX_SEARCH_LIMIT, "next")),
@@ -859,7 +935,7 @@ describe("fetchPollingWindow", () => {
   });
   test("never requests more than the remaining budget", async () => {
     const client = {
-      post: jest
+      post: vi
         .fn()
         .mockImplementation(() =>
           Promise.resolve(page(MAX_SEARCH_LIMIT, "next")),
@@ -875,7 +951,7 @@ describe("fetchPollingWindow", () => {
       response: { status: 429, headers: { "retry-after": "0" } },
     };
     const client = {
-      post: jest
+      post: vi
         .fn()
         .mockRejectedValueOnce(rateLimited)
         .mockResolvedValueOnce(page(1)),
@@ -894,7 +970,7 @@ describe("fetchPollingWindow", () => {
     const rateLimited = {
       response: { status: 429, headers: { "retry-after": "0" } },
     };
-    const client = { post: jest.fn().mockRejectedValue(rateLimited) };
+    const client = { post: vi.fn().mockRejectedValue(rateLimited) };
     await expect(
       fetchPollingWindow(client as never, windowParams, fakeLogger()),
     ).rejects.toBe(rateLimited);
@@ -902,7 +978,7 @@ describe("fetchPollingWindow", () => {
   });
   test("treats a page that adds no records as exhaustion, even with a next-page token", async () => {
     const client = {
-      post: jest.fn().mockResolvedValue({
+      post: vi.fn().mockResolvedValue({
         data: { total: 0, results: [], paging: { next: { after: "200" } } },
       }),
     };
@@ -917,7 +993,7 @@ describe("fetchPollingWindow", () => {
   });
   test("reports hasMore true from total when the last page omits paging.next", async () => {
     const client = {
-      post: jest.fn().mockResolvedValue(page(3, undefined, 0, 100)),
+      post: vi.fn().mockResolvedValue(page(3, undefined, 0, 100)),
     };
     const result = await fetchPollingWindow(
       client as never,
@@ -930,7 +1006,7 @@ describe("fetchPollingWindow", () => {
   });
   test("reports hasMore false when total equals the records returned and there is no next page", async () => {
     const client = {
-      post: jest.fn().mockResolvedValue(page(3, undefined, 0, 3)),
+      post: vi.fn().mockResolvedValue(page(3, undefined, 0, 3)),
     };
     const result = await fetchPollingWindow(
       client as never,
@@ -943,7 +1019,7 @@ describe("fetchPollingWindow", () => {
   });
   test("zero progress still wins over a large total", async () => {
     const client = {
-      post: jest.fn().mockResolvedValue(page(0, undefined, 0, 999)),
+      post: vi.fn().mockResolvedValue(page(0, undefined, 0, 999)),
     };
     const result = await fetchPollingWindow(
       client as never,
@@ -956,7 +1032,7 @@ describe("fetchPollingWindow", () => {
   });
   test("translates an unknown-property 400 into a self-diagnosing error", async () => {
     const client = {
-      post: jest.fn().mockRejectedValue({
+      post: vi.fn().mockRejectedValue({
         response: {
           status: 400,
           data: { message: 'Property "hs_lastmodifieddate" does not exist' },
@@ -966,12 +1042,12 @@ describe("fetchPollingWindow", () => {
     await expect(
       fetchPollingWindow(client as never, windowParams, fakeLogger()),
     ).rejects.toThrow(
-      /property "hs_lastmodifieddate" is not searchable on \/crm\/v3\/objects\/deals\/search/,
+      /property "hs_lastmodifieddate" is not searchable on \/crm\/objects\/2026-09\/deals\/search/,
     );
   });
   test("rethrows an unrelated 400 unchanged", async () => {
     const other = { response: { status: 400, data: { message: "bad limit" } } };
-    const client = { post: jest.fn().mockRejectedValue(other) };
+    const client = { post: vi.fn().mockRejectedValue(other) };
     await expect(
       fetchPollingWindow(client as never, windowParams, fakeLogger()),
     ).rejects.toBe(other);

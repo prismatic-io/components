@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createDealExamplePayload } from "../../examplePayloads";
 import { createDealInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const createDeal = action({
   display: {
     label: "Create Deal",
@@ -32,7 +33,7 @@ export const createDeal = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.post("/crm/v3/objects/deals", {
+    const { data } = await client.post(hubspotPaths.objects("deals"), {
       properties: {
         amount,
         closedate: closeDate,
@@ -49,9 +50,7 @@ export const createDeal = action({
     return { data };
   },
   inputs: createDealInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createDealExamplePayload.data,
   }),
   examplePayload: createDealExamplePayload,

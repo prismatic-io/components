@@ -1,5 +1,5 @@
 import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
-import { toOptionalString } from "../util";
+import { toOptionalString, toSearchLimit } from "../util";
 import {
   additionalProperties,
   after,
@@ -124,19 +124,19 @@ const priority = input({
 export const listDealsInputs = {
   hubspotConnection: connectionInput,
   archived,
+  fetchAll,
+  pagination,
   additionalProperties,
   associationsList,
   timeout,
-  fetchAll,
-  pagination,
 };
 export const createDealInputs = {
-  amount,
-  closeDate,
   dealName,
-  hubspotOwnerId,
   pipeline,
   dealStage,
+  amount,
+  closeDate,
+  hubspotOwnerId,
   priority,
   dealType,
   fieldValues,
@@ -167,9 +167,9 @@ export const deleteDealInputs = {
 export const getDealByIdInputs = {
   dealId: { ...dealId, required: false, clean: toOptionalString },
   dealName: { ...dealName, required: false, clean: toOptionalString },
+  archived,
   additionalProperties,
   associationsList,
-  archived,
   timeout,
   hubspotConnection: connectionInput,
 };
@@ -180,7 +180,7 @@ const searchLimit = input({
   default: "100",
   example: "100",
   comments: "The maximum number of items that will be returned by the search.",
-  clean: (value: unknown): number => util.types.toInt(value, 100),
+  clean: toSearchLimit,
 });
 const searchPagination = structuredObjectInput({
   label: "Pagination",

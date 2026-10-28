@@ -144,12 +144,12 @@ const contactIds = input({
 });
 export const listContactsInputs = {
   hubspotConnection: connectionInput,
-  additionalProperties,
-  associationsList,
   archived,
-  timeout,
   fetchAll,
   pagination,
+  additionalProperties,
+  associationsList,
+  timeout,
 };
 export const createContactInputs = {
   contactFirstName,
@@ -164,12 +164,12 @@ export const createContactInputs = {
     required: false,
     comments: "Optional contact channel fields: email, phone, and website.",
     inputs: {
-      phone: { ...phone, required: false, clean: toOptionalString },
       contactEmail: {
         ...contactEmail,
         required: false,
         clean: toOptionalString,
       },
+      phone: { ...phone, required: false, clean: toOptionalString },
       website: { ...website, required: false, clean: toOptionalString },
     },
   }),
@@ -206,9 +206,9 @@ export const deleteContactInputs = {
 export const getContactInputs = {
   contactId: { ...contactId, required: false, clean: toOptionalString },
   contactEmail: { ...contactEmail, required: false, clean: toOptionalString },
+  archived,
   additionalProperties,
   associationsList,
-  archived,
   timeout,
   hubspotConnection: connectionInput,
 };
@@ -218,7 +218,7 @@ export const createBatchContactsInputs = {
     ...batchInputs,
     label: "Batch Contacts",
     comments:
-      "An array of contact objects to create. See [HubSpot Contacts API](https://developers.hubspot.com/docs/api/crm/contacts) for properties.",
+      "An array of contact objects to create. See [HubSpot Contacts API](https://developers.hubspot.com/docs/api-reference/latest/crm/objects/contacts/guide) for properties.",
     example: JSON.stringify(
       [
         {
@@ -253,6 +253,7 @@ export const createBatchContactsInputs = {
 };
 export const getBatchContactsInputs = {
   hubspotConnection: connectionInput,
+  archived,
   propertiesWithHistory,
   properties: {
     ...propertiesWithHistory,
@@ -260,7 +261,6 @@ export const getBatchContactsInputs = {
   },
   idProperty: { ...idProperty, comments: "An ID property to search by" },
   contactIds: { ...contactIds, required: false },
-  archived,
   timeout,
 };
 export const updateBatchContactsInputs = {
@@ -269,7 +269,7 @@ export const updateBatchContactsInputs = {
     ...batchInputs,
     label: "Batch Contacts",
     comments:
-      "An array of contact objects to update. See [HubSpot Contacts API](https://developers.hubspot.com/docs/api/crm/contacts) for properties.",
+      "An array of contact objects to update. See [HubSpot Contacts API](https://developers.hubspot.com/docs/api-reference/latest/crm/objects/contacts/guide) for properties.",
     example: JSON.stringify(
       [
         {

@@ -8,6 +8,7 @@ import {
 import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { hubspotOAuth, hubspotOAuthTrigger } from "../connections";
 import type { GetSubscriptionPayload, WebhookSettings } from "../types";
+import { hubspotPaths } from "../constants";
 export const checkDeveloperApiKeyAndAppId = (
   hubspotConnection: Connection,
 ): {
@@ -33,7 +34,7 @@ export const appWebhookSettingsExists = async (
 ): Promise<WebhookSettings | boolean> => {
   try {
     const { data } = await client.get<WebhookSettings>(
-      `/webhooks/v3/${appId}/settings`,
+      hubspotPaths.appWebhooks(appId, "/settings"),
       {
         params: { hapikey: developerApiKey },
       },
@@ -72,7 +73,7 @@ export const appWebhookSubscriptionsExists = async (
   const {
     data: { results: allSubscriptions },
   } = await client.get<GetSubscriptionPayload>(
-    `/webhooks/v3/${appId}/subscriptions`,
+    hubspotPaths.appWebhooks(appId, "/subscriptions"),
     {
       params: { hapikey: developerApiKey },
     },
@@ -88,13 +89,13 @@ export const deleteAllAppSubscriptions = async (
     hapikey: developerApiKey,
   };
   const { data } = await client.get<GetSubscriptionPayload>(
-    `/webhooks/v3/${appId}/subscriptions`,
+    hubspotPaths.appWebhooks(appId, "/subscriptions"),
     {
       params: queryParams,
     },
   );
   const deleteSubscriptionPromises = data.results.map(({ id }) =>
-    client.delete(`/webhooks/v3/${appId}/subscriptions/${id}`, {
+    client.delete(hubspotPaths.appWebhooks(appId, `/subscriptions/${id}`), {
       params: queryParams,
     }),
   );
@@ -108,7 +109,7 @@ export const deleteAppSettings = async (
   const queryParams = {
     hapikey: developerApiKey,
   };
-  await client.delete(`/webhooks/v3/${appId}/settings`, {
+  await client.delete(hubspotPaths.appWebhooks(appId, "/settings"), {
     params: queryParams,
   });
 };
@@ -168,7 +169,7 @@ export const createAppWebhookConfiguration = async (
   await deleteAllAppSubscriptions(client, appId, developerApiKey);
   await deleteAppSettings(client, appId, developerApiKey);
   await client.put<WebhookSettings>(
-    `/webhooks/v3/${appId}/settings`,
+    hubspotPaths.appWebhooks(appId, "/settings"),
     {
       targetUrl: webhookUrl,
       throttling: {
@@ -184,11 +185,15 @@ export const createAppWebhookConfiguration = async (
   );
   await Promise.all(
     subscriptions.map((subscription) =>
-      client.post(`/webhooks/v3/${appId}/subscriptions`, subscription, {
-        params: {
-          hapikey: developerApiKey,
+      client.post(
+        hubspotPaths.appWebhooks(appId, "/subscriptions"),
+        subscription,
+        {
+          params: {
+            hapikey: developerApiKey,
+          },
         },
-      }),
+      ),
     ),
   );
 };
@@ -225,7 +230,7 @@ export const webhookPerformFunction = async (
     hubspotConnection: Connection;
   },
 ) => {
-  if (![hubspotOAuth.key].includes(inputs.hubspotConnection.key)) {
+  if (inputs.hubspotConnection.key !== hubspotOAuth.key) {
     throw new ConnectionError(
       inputs.hubspotConnection,
       `${hubspotOAuth.display.label} connection is required for this action.`,
@@ -241,7 +246,7 @@ export const triggerWebhookPerformFunction = async (
     hubspotConnection: Connection;
   },
 ) => {
-  if (![hubspotOAuthTrigger.key].includes(inputs.hubspotConnection.key)) {
+  if (inputs.hubspotConnection.key !== hubspotOAuthTrigger.key) {
     throw new ConnectionError(
       inputs.hubspotConnection,
       `Only the ${hubspotOAuthTrigger.display.label} connection can be used for this trigger.`,

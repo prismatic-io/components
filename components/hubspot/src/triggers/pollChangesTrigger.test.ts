@@ -1,3 +1,4 @@
+import type { MockedFunction } from "vitest";
 import { getHubspotClient } from "../client";
 import {
   BATCHED_WINDOW_LIMIT,
@@ -12,8 +13,8 @@ import type {
 } from "../types";
 import { pollChangesCustomObjectsTrigger } from "./pollChangesCustomObjectsTrigger";
 import { pollChangesTrigger } from "./pollChangesTrigger";
-jest.mock("../client");
-const mockedGetHubspotClient = getHubspotClient as jest.MockedFunction<
+vi.mock("../client");
+const mockedGetHubspotClient = getHubspotClient as MockedFunction<
   typeof getHubspotClient
 >;
 const createContext = (
@@ -26,12 +27,7 @@ const createContext = (
   let state: Record<string, unknown> = initialState as Record<string, unknown>;
   const context = {
     debug: { enabled: false },
-    logger: {
-      debug: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      error: jest.fn(),
-    },
+    logger: { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() },
     ...(batch ? { batch } : {}),
     polling: {
       getState: () => state,
@@ -66,7 +62,7 @@ const baseParams = (overrides: Record<string, unknown> = {}) => ({
   lookBackDate: "",
   ...overrides,
 });
-beforeEach(() => jest.clearAllMocks());
+beforeEach(() => vi.clearAllMocks());
 describe("pollChangesTrigger composition", () => {
   test("declares batching with a serial default", () => {
     expect(pollChangesTrigger.triggerResolverSupport).toBe("valid");
@@ -89,6 +85,23 @@ describe("pollChangesTrigger composition", () => {
     );
     expect(items).toEqual([{ changeType: "created", record: a }]);
   });
+  test("custom objects resolveItems flattens the payload into tagged changes", () => {
+    const a = rec("a", "2026-08-02T00:00:00.000Z", "2026-08-02T00:00:00.000Z");
+    const b = rec("b", "2026-08-01T00:00:00.000Z", "2026-08-03T00:00:00.000Z");
+    const items =
+      pollChangesCustomObjectsTrigger.triggerResolver?.resolveItems?.(
+        {} as never,
+        {
+          payload: {
+            body: { data: { createdRecords: [a], updatedRecords: [b] } },
+          },
+        } as never,
+      );
+    expect(items).toEqual([
+      { changeType: "created", record: a },
+      { changeType: "updated", record: b },
+    ]);
+  });
   test("getNextPaginationState mirrors the payload cursor and stops when absent", () => {
     const cursor: PollingCursor = {
       watermark: "2026-08-05T00:00:00.000Z",
@@ -110,7 +123,7 @@ describe("pollChangesTrigger composition", () => {
 });
 describe("pollChangesTrigger perform", () => {
   test("seeds the initial sync on the creation property, filtered from lookBackDate", async () => {
-    const post = jest.fn().mockResolvedValue(searchPage([]));
+    const post = vi.fn().mockResolvedValue(searchPage([]));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context } = createContext({});
     await pollChangesTrigger.perform(
@@ -132,7 +145,7 @@ describe("pollChangesTrigger perform", () => {
     ]);
   });
   test("commits windowEnd and omits the cursor when a window is exhausted", async () => {
-    const post = jest
+    const post = vi
       .fn()
       .mockResolvedValue(
         searchPage([
@@ -164,7 +177,7 @@ describe("pollChangesTrigger perform", () => {
         new Date(Date.UTC(2026, 7, 2, 0, 0, 0, i)).toISOString(),
       ),
     );
-    const post = jest.fn().mockResolvedValue(searchPage(results, "next"));
+    const post = vi.fn().mockResolvedValue(searchPage(results, "next"));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context, getState } = createContext({
       lastPolledAt: "2026-08-01T00:00:00.000Z",
@@ -184,7 +197,7 @@ describe("pollChangesTrigger perform", () => {
     const results = Array.from({ length: MAX_SEARCH_LIMIT }, (_, i) =>
       rec(`r${i}`, "2026-08-02T00:00:00.000Z", "2026-08-05T00:00:00.000Z"),
     );
-    const post = jest.fn().mockResolvedValue(searchPage(results, "next"));
+    const post = vi.fn().mockResolvedValue(searchPage(results, "next"));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context, getState } = createContext(
       { lastPolledAt: "2026-08-01T00:00:00.000Z" },
@@ -213,7 +226,7 @@ describe("pollChangesTrigger perform", () => {
         new Date(Date.UTC(2026, 7, 2, 0, 0, 0, i)).toISOString(),
       ),
     );
-    const post = jest.fn().mockResolvedValue(searchPage(results, "next"));
+    const post = vi.fn().mockResolvedValue(searchPage(results, "next"));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context } = createContext(
       { lastPolledAt: "2026-08-01T00:00:00.000Z" },
@@ -235,7 +248,7 @@ describe("pollChangesTrigger perform", () => {
         new Date(Date.UTC(2026, 7, 2, 0, 0, 0, i)).toISOString(),
       ),
     );
-    const post = jest.fn().mockResolvedValue(searchPage(results, "next"));
+    const post = vi.fn().mockResolvedValue(searchPage(results, "next"));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context } = createContext({
       lastPolledAt: "2026-08-01T00:00:00.000Z",
@@ -249,7 +262,7 @@ describe("pollChangesTrigger perform", () => {
     expect((result as unknown as PollResult).polledNoChanges).toBe(false);
   });
   test("reports polledNoChanges only when the drain is done and nothing changed", async () => {
-    const post = jest.fn().mockResolvedValue(searchPage([]));
+    const post = vi.fn().mockResolvedValue(searchPage([]));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context } = createContext({
       lastPolledAt: "2026-08-01T00:00:00.000Z",
@@ -271,7 +284,7 @@ describe("pollChangesTrigger perform", () => {
       windowEnd: "2026-08-10T00:00:00.000Z",
       isBackfill: false,
     };
-    const post = jest
+    const post = vi
       .fn()
       .mockResolvedValue(
         searchPage([
@@ -300,14 +313,14 @@ describe("pollChangesTrigger perform", () => {
       "2026-08-06T00:00:00.000Z",
       "2026-08-06T00:00:00.000Z",
     );
-    const viaPayloadPost = jest.fn().mockResolvedValue(searchPage([record]));
+    const viaPayloadPost = vi.fn().mockResolvedValue(searchPage([record]));
     mockedGetHubspotClient.mockReturnValue({ post: viaPayloadPost } as never);
     const viaPayload = await pollChangesTrigger.perform(
       createContext({}).context,
       { paginationState: cursor } as never,
       baseParams() as never,
     );
-    const viaStatePost = jest.fn().mockResolvedValue(searchPage([record]));
+    const viaStatePost = vi.fn().mockResolvedValue(searchPage([record]));
     mockedGetHubspotClient.mockReturnValue({ post: viaStatePost } as never);
     const viaState = await pollChangesTrigger.perform(
       createContext({ cursor }).context,
@@ -337,7 +350,7 @@ describe("pollChangesTrigger perform", () => {
       rec("a", "2026-01-01T00:00:00.000Z", "2026-08-05T00:00:00.000Z"),
       rec("b", "2026-01-01T00:00:00.000Z", "2026-08-06T00:00:00.000Z"),
     ];
-    const post = jest
+    const post = vi
       .fn()
       .mockResolvedValue({ data: { total: 100, results: nonAscending } });
     mockedGetHubspotClient.mockReturnValue({ post } as never);
@@ -357,7 +370,7 @@ describe("pollChangesTrigger perform", () => {
     expect(getState().lastPolledAt).toBe("2026-08-10T00:00:00.000Z");
   });
   test("output carries both keys even when a toggle is off", async () => {
-    const post = jest
+    const post = vi
       .fn()
       .mockResolvedValue(
         searchPage([
@@ -377,7 +390,7 @@ describe("pollChangesTrigger perform", () => {
     expect(result.payload.body.data).toHaveProperty("updatedRecords", []);
   });
   test("the look-back sync reports every created record as created, ignoring the toggles", async () => {
-    const post = jest
+    const post = vi
       .fn()
       .mockResolvedValue(
         searchPage([
@@ -403,7 +416,7 @@ describe("pollChangesTrigger perform", () => {
 });
 describe("pollChangesCustomObjectsTrigger perform", () => {
   test("filters on hs_lastmodifieddate against the object-type endpoint", async () => {
-    const post = jest.fn().mockResolvedValue(searchPage([]));
+    const post = vi.fn().mockResolvedValue(searchPage([]));
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context } = createContext({
       lastPolledAt: "2026-08-01T00:00:00.000Z",
@@ -417,7 +430,7 @@ describe("pollChangesCustomObjectsTrigger perform", () => {
       }) as never,
     );
     expect(post).toHaveBeenCalledWith(
-      "/crm/v3/objects/equipment/search",
+      "/crm/objects/2026-09/equipment/search",
       expect.objectContaining({
         sorts: [
           { propertyName: "hs_lastmodifieddate", direction: "ASCENDING" },
@@ -430,7 +443,7 @@ describe("pollChangesCustomObjectsTrigger perform", () => {
     expect(names).toEqual(["hs_lastmodifieddate", "hs_lastmodifieddate"]);
   });
   test("requires an object type", async () => {
-    const post = jest.fn();
+    const post = vi.fn();
     mockedGetHubspotClient.mockReturnValue({ post } as never);
     const { context } = createContext({});
     await expect(
@@ -443,6 +456,43 @@ describe("pollChangesCustomObjectsTrigger perform", () => {
         }) as never,
       ),
     ).rejects.toThrow(/Object Type/);
+    expect(post).not.toHaveBeenCalled();
+  });
+});
+describe("pollChangesTrigger stored Search Endpoint values", () => {
+  test.each([
+    ["a legacy stored value", "/crm/v3/objects/contacts/search"],
+    ["a dated stored value", "/crm/objects/2026-09/contacts/search"],
+    ["a mixed-case stored value", "/CRM/V3/Objects/Contacts/Search"],
+  ])("posts %s to the dated path and filters on the contacts date property", async (_, stored) => {
+    const post = vi.fn().mockResolvedValue(searchPage([]));
+    mockedGetHubspotClient.mockReturnValue({ post } as never);
+    const { context } = createContext({
+      lastPolledAt: "2026-08-01T00:00:00.000Z",
+    });
+    await pollChangesTrigger.perform(
+      context,
+      {} as never,
+      baseParams({ searchEndpoint: stored }) as never,
+    );
+    expect(post).toHaveBeenCalledWith(
+      "/crm/objects/2026-09/contacts/search",
+      expect.objectContaining({
+        sorts: [{ propertyName: "lastmodifieddate", direction: "ASCENDING" }],
+      }),
+    );
+  });
+  test("throws on a junk stored value before any request", async () => {
+    const post = vi.fn();
+    mockedGetHubspotClient.mockReturnValue({ post } as never);
+    const { context } = createContext({});
+    await expect(
+      pollChangesTrigger.perform(
+        context,
+        {} as never,
+        baseParams({ searchEndpoint: "/not/an/endpoint" }) as never,
+      ),
+    ).rejects.toThrow(/Unrecognized search endpoint/);
     expect(post).not.toHaveBeenCalled();
   });
 });

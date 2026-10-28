@@ -3,4 +3,12 @@ Manage contacts, companies, deals, products, engagements, and custom objects in 
 
 #### API Documentation
 
-This component was built using the [HubSpot API Documentation](https://developers.hubspot.com/docs/api-reference/latest/overview) currently utilizing v3
+This component was built using the [HubSpot API Documentation](https://developers.hubspot.com/docs/api-reference/latest/overview) and calls the date-based 2026-09 API version.
+
+#### Write Validation
+
+Starting with the 2026-09 API version, HubSpot enforces the validation rules configured by a portal's admins on every CRM write.
+A create or update request fails with a `400` error when it omits a property that the portal marks as required, either conditionally (`MISSING_CONDITIONAL_REQUIRED_PROPERTY`) or at record creation (`MISSING_REQUIRED_PROPERTY`).
+With user-level OAuth, writes that create, update, or delete associations also require the installing user to have the **Edit Associations** permission.
+Portals without these rules are not affected.
+See [CRM API Write Validation Enforcement](https://developers.hubspot.com/changelog/crm-api-write-validation-enforcement) for details.

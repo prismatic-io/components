@@ -1,7 +1,9 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { customObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { getCustomObjectExamplePayload } from "../../examplePayloads";
 import { getCustomObjectInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const getCustomObject = action({
   display: {
     label: "Get Custom Object",
@@ -15,11 +17,15 @@ export const getCustomObject = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.get(`/crm/v3/schemas/${objectType}`);
+    const { data } = await client.get(hubspotPaths.schemas(`/${objectType}`));
     return {
       data,
     };
   },
   inputs: getCustomObjectInputs,
   examplePayload: getCustomObjectExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: customObjectSchema,
+  }),
 });

@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createEngagementExamplePayload } from "../../examplePayloads";
 import { createEngagementInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const createEngagement = action({
   display: {
     label: "Create Engagement",
@@ -29,7 +30,7 @@ export const createEngagement = action({
     });
     const payload = { associations: associationsJson, properties };
     const { data } = await client.post(
-      `/crm/v3/objects/${engagementObject}`,
+      hubspotPaths.objects(engagementObject),
       payload,
     );
     return {
@@ -37,9 +38,7 @@ export const createEngagement = action({
     };
   },
   inputs: createEngagementInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createEngagementExamplePayload.data,
   }),
   examplePayload: createEngagementExamplePayload,

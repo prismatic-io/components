@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { updateEngagementExamplePayload } from "../../examplePayloads";
 import { updateEngagementInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const updateEngagement = action({
   display: {
     label: "Update Engagement",
@@ -30,7 +31,7 @@ export const updateEngagement = action({
     });
     const payload = { properties };
     const { data } = await client.patch(
-      `/crm/v3/objects/${engagementObject}/${engagementId}`,
+      hubspotPaths.objects(engagementObject, `/${engagementId}`),
       payload,
       { params: { idProperty: idProperty } },
     );
@@ -39,9 +40,7 @@ export const updateEngagement = action({
     };
   },
   inputs: updateEngagementInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: updateEngagementExamplePayload.data,
   }),
   examplePayload: updateEngagementExamplePayload,

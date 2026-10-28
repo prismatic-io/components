@@ -1,7 +1,19 @@
 import { input, util } from "@prismatic-io/spectral";
+import { fromObjectType, toObjectType } from "./associations";
 import { connectionInput, objectType, objectsToSelect } from "./common";
 export const selectCompanyInputs = {
   connection: connectionInput,
+};
+export const selectAssociationTypeInputs = {
+  connection: connectionInput,
+  fromObjectType: {
+    ...fromObjectType,
+    dataSource: undefined,
+  },
+  toObjectType: {
+    ...toObjectType,
+    dataSource: undefined,
+  },
 };
 export const selectContactInputs = selectCompanyInputs;
 export const selectDealInputs = selectCompanyInputs;
@@ -11,6 +23,7 @@ export const selectProductInputs = selectCompanyInputs;
 export const selectWebhookInputs = selectCompanyInputs;
 export const selectImportInputs = selectCompanyInputs;
 export const selectCustomObjectInputs = selectCompanyInputs;
+export const selectObjectTypeInputs = selectCompanyInputs;
 export const selectPropertyInputs = {
   ...selectCompanyInputs,
   objectType: {

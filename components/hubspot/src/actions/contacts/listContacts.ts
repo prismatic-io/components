@@ -4,7 +4,7 @@ import { getHubspotClient } from "../../client";
 import { listContactsExamplePayload } from "../../examplePayloads";
 import { listContactsInputs } from "../../inputs";
 import { getAllPaginatedData, getProps } from "../../util";
-import { CONTACT_PROPS } from "../../constants";
+import { CONTACT_PROPS, hubspotPaths } from "../../constants";
 export const listContacts = action({
   display: {
     label: "List Contacts",
@@ -24,7 +24,7 @@ export const listContacts = action({
     );
     const data = await getAllPaginatedData(
       client,
-      "/crm/v3/objects/contacts",
+      hubspotPaths.objects("contacts"),
       params.fetchAll,
       false,
       {
@@ -40,9 +40,7 @@ export const listContacts = action({
     return { data };
   },
   inputs: listContactsInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: listContactsExamplePayload.data,
   }),
   examplePayload: listContactsExamplePayload,

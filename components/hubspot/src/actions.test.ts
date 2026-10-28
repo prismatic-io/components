@@ -14,7 +14,7 @@ describe("test raw request", () => {
     if (!connection.fields.accessToken) return;
     const { result: postResult } = await invoke(rawRequest, {
       connection,
-      url: "/crm/v3/objects/deals",
+      url: "/crm/objects/2026-09/deals",
       data: JSON.stringify({ Name: "My New Company" }),
       fileData: undefined,
       formData: undefined,
@@ -37,7 +37,7 @@ describe("test raw request", () => {
     if (!testDealId) return;
     const { result: getResult } = await invoke(rawRequest, {
       connection,
-      url: `/crm/v3/objects/deals/${testDealId}`,
+      url: `/crm/objects/2026-09/deals/${testDealId}`,
       data: undefined,
       fileData: undefined,
       formData: undefined,
@@ -60,7 +60,7 @@ describe("test raw request", () => {
     const updatedName = "Blah";
     const { result: patchResult } = await invoke(rawRequest, {
       connection,
-      url: `/crm/v3/objects/deals/${testDealId}`,
+      url: `/crm/objects/2026-09/deals/${testDealId}`,
       data: JSON.stringify({ properties: { dealname: updatedName } }),
       fileData: undefined,
       formData: undefined,
@@ -84,7 +84,7 @@ describe("test raw request", () => {
     if (!testDealId) return;
     const { result: deleteResult } = await invoke(rawRequest, {
       connection,
-      url: `/crm/v3/objects/deals/${testDealId}`,
+      url: `/crm/objects/2026-09/deals/${testDealId}`,
       data: undefined,
       fileData: undefined,
       formData: undefined,

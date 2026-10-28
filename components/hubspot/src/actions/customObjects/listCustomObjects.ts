@@ -1,8 +1,10 @@
-import { action } from "@prismatic-io/spectral";
+import { action, outputSchema } from "@prismatic-io/spectral";
+import { listCustomObjectsOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { listCustomObjectsExamplePayload } from "../../examplePayloads";
 import { listCustomObjectsInputs } from "../../inputs";
 import { getProps } from "../../util";
+import { hubspotPaths } from "../../constants";
 export const listCustomObjects = action({
   display: {
     label: "List Custom Objects",
@@ -23,7 +25,7 @@ export const listCustomObjects = action({
       ["name"],
       additionalProperties || [],
     );
-    const { data } = await client.get("/crm/v3/schemas", {
+    const { data } = await client.get(hubspotPaths.schemas(), {
       params: {
         ...parameterizedProperties,
         archived: archived,
@@ -33,4 +35,8 @@ export const listCustomObjects = action({
   },
   inputs: listCustomObjectsInputs,
   examplePayload: listCustomObjectsExamplePayload,
+  outputSchema: outputSchema({
+    type: "actionOutput",
+    schema: listCustomObjectsOutputSchema,
+  }),
 });

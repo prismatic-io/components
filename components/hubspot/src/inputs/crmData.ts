@@ -1,5 +1,10 @@
-import { input, type KeyValuePair, util } from "@prismatic-io/spectral";
-import { toOptionalString, valueListInputClean } from "../util";
+import { input, structuredObjectInput, util } from "@prismatic-io/spectral";
+import {
+  toKeyValueListObject,
+  toOptionalObject,
+  toOptionalString,
+  valueListInputClean,
+} from "../util";
 import { connectionInput, name, objectType, timeout } from "./common";
 const importId = input({
   label: "Import ID",
@@ -17,8 +22,8 @@ const importOperations = input({
   language: "json",
   required: false,
   comments:
-    "Indicates whether the import should create and update, only create, or only update records for a certain object or activity. Include the objectTypeId for the object/activity and whether to UPSERT (create and update), CREATE, or UPDATE records. For objectTypeId's, check [HubSpot CRM Object Type IDs](https://developers.hubspot.com/docs/api/crm/understanding-the-crm#object-type-id).",
-  clean: util.types.toObject,
+    "Indicates whether the import should create and update, only create, or only update records for a certain object or activity. Include the objectTypeId for the object/activity and whether to UPSERT (create and update), CREATE, or UPDATE records. For objectTypeId's, check [HubSpot CRM Object Type IDs](https://developers.hubspot.com/docs/api-reference/latest/crm/understanding-the-crm#object-type-ids).",
+  clean: toOptionalObject,
   example: JSON.stringify({ "0-1": "CREATE" }, null, 2),
 });
 const dateFormat = input({
@@ -52,13 +57,24 @@ const createContactListFromImport = input({
   comments: "When true, creates a static list of the contacts from the import.",
   clean: util.types.toBool,
 });
+const importOptions = structuredObjectInput({
+  label: "Import Options",
+  required: false,
+  comments:
+    "Record operation mode, marketable status, and list creation settings.",
+  inputs: {
+    importOperations,
+    marketableContactImport,
+    createContactListFromImport,
+  },
+});
 const files = input({
   label: "Files",
   type: "code",
   language: "json",
   required: true,
   comments:
-    "An array containing the import file information. For more information, see [HubSpot CRM Imports API](https://developers.hubspot.com/docs/api/crm/imports).",
+    "An array containing the import file information. For more information, see [HubSpot CRM Imports API](https://developers.hubspot.com/docs/api-reference/latest/crm/imports/guide).",
   clean: util.types.toObject,
   example: JSON.stringify(
     [
@@ -100,8 +116,7 @@ const dataFiles = input({
   comments:
     "The CSV file to import, this should be binary data from a previous step. Key name should be the file name and the value should be the binary data.",
   example: "key: 'contact-import-file.csv', value: 'binary data'",
-  clean: (values: unknown) =>
-    util.types.keyValPairListToObject(values as KeyValuePair[]),
+  clean: toKeyValueListObject,
 });
 const schemaType = input({
   label: "Schema Type",
@@ -185,7 +200,7 @@ const publicCrmSearchRequest = input({
   required: false,
   comments:
     "Indicates which data should be exported based on certain property values and search queries.",
-  clean: util.types.toObject,
+  clean: toOptionalObject,
   example: JSON.stringify(
     {
       filters: [
@@ -236,10 +251,8 @@ export const importCRMDataInputs = {
   },
   files,
   dataFiles,
-  importOperations,
   dateFormat,
-  marketableContactImport,
-  createContactListFromImport,
+  importOptions,
   timeout,
 };
 export const exportCRMDataInputs = {
@@ -251,7 +264,7 @@ export const exportCRMDataInputs = {
   objectType: {
     ...objectType,
     comments:
-      "The name or ID of the object you're exporting. For standard objects, you can use the object's name (e.g., CONTACT), but for custom objects, you must use the objectTypeId value, you can find this value in the response of the List Custom Objects action.",
+      "The name or ID of the object to export. Standard objects accept the object's name (e.g., CONTACT); custom objects require the objectTypeId value, which is returned by the List Custom Objects action.",
   },
   language,
   listId,

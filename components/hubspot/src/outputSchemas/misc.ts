@@ -2,12 +2,15 @@ export const getCurrentUserOutputSchema = {
   type: "object" as const,
   properties: {
     portalId: { type: "integer" },
+    portalName: { type: "string" },
+    createdAt: { type: "integer" },
     timeZone: { type: "string" },
     accountType: {
       type: "string",
       enum: ["APP_DEVELOPER", "DEVELOPER_TEST", "SANDBOX", "STANDARD"],
     },
     companyCurrency: { type: "string" },
+    currency: { type: "string" },
     additionalCurrencies: {
       type: "array" as const,
       items: { type: "string" },

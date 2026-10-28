@@ -1,6 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../../client";
-import { COMPANY_PROPS } from "../../constants";
+import { COMPANY_PROPS, hubspotPaths } from "../../constants";
+import { getCompanyExamplePayload } from "../../examplePayloads";
 import { getCompanyInputs } from "../../inputs";
 import { getCompanyOutputSchema } from "../../outputSchemas";
 import { getAllPaginatedData, getProps } from "../../util";
@@ -44,7 +45,7 @@ export const getCompany = action({
       associations: associationsList,
       archived: archived,
     };
-    const companiesUrl = "/crm/v3/objects/companies";
+    const companiesUrl = hubspotPaths.objects("companies");
     if (domain) {
       const companies = await getAllPaginatedData(
         client,
@@ -107,6 +108,10 @@ export const getCompany = action({
     return { data };
   },
   inputs: getCompanyInputs,
+  examplePerform: async () => ({
+    data: getCompanyExamplePayload.data,
+  }),
+  examplePayload: getCompanyExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getCompanyOutputSchema,

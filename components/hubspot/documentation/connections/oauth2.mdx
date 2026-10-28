@@ -124,7 +124,7 @@ The **App ID** and **Developer API Key** fields are optional and are used only b
 - **Developer API Key** is available in the developer overview of the HubSpot developer account
 
 :::warning[Webhook subscription management requires a legacy public app]
-The webhook actions and the **Event Type Subscription** trigger call HubSpot's [webhooks v3 subscription API](https://developers.hubspot.com/docs/api-reference/legacy/webhooks/guide), which HubSpot supports **only for legacy public apps**. Since legacy public apps can no longer be created, an app created with the CLI cannot use them.
+The webhook actions and the **Event Type Subscription** trigger call HubSpot's [webhooks subscription API](https://developers.hubspot.com/docs/api-reference/legacy/webhooks/guide), which HubSpot supports **only for legacy public apps**. Since legacy public apps can no longer be created, an app created with the CLI cannot use them.
 
 A CLI-created app configures webhooks [declaratively in the project](https://developers.hubspot.com/docs/apps/developer-platform/add-features/configure-webhooks), or through the [webhooks journal and management APIs](https://developers.hubspot.com/docs/api-reference/latest/webhooks-journal/guide), which authenticate with a client credentials token rather than a developer API key. This component does not use either mechanism.
 

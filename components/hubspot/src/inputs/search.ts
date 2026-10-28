@@ -1,6 +1,6 @@
 import { input, util } from "@prismatic-io/spectral";
 import { MAX_SEARCH_LIMIT, SEARCH_ENDPOINTS } from "../constants";
-import { toOptionalInt } from "../util";
+import { toOptionalInt, toOptionalObject, toOptionalString } from "../util";
 import { connectionInput, fetchAll, objectType, timeout } from "./common";
 export const propertyName = input({
   label: "Property Name",
@@ -49,7 +49,7 @@ export const searchProperties = input({
   language: "json",
   required: false,
   comments:
-    "Include properties such as filters and sorts, or specify the properties to be returned. If empty, only the default properties will be returned. On the polling triggers, `sorts` is ignored (they sort by the object's last-modified property ascending so polling can resume) and `filters`/`filterGroups` are combined with the recurrence's date window using AND. For more information, see [HubSpot CRM Search API](https://developers.hubspot.com/docs/api/crm/search).",
+    "Include properties such as filters and sorts, or specify the properties to be returned. If empty, only the default properties will be returned. On the polling triggers, `sorts` is ignored (they sort by the object's last-modified property ascending so polling can resume) and `filters`/`filterGroups` are combined with the recurrence's date window using AND. For more information, see [HubSpot CRM Search API](https://developers.hubspot.com/docs/api-reference/latest/crm/search-the-crm).",
   example: JSON.stringify(
     {
       sorts: [
@@ -62,7 +62,7 @@ export const searchProperties = input({
     null,
     2,
   ),
-  clean: util.types.toObject,
+  clean: toOptionalObject,
 });
 const searchLimit = input({
   label: "Search Limit",
@@ -81,6 +81,7 @@ export const searchInputs = {
   objectType: {
     ...objectType,
     required: false,
+    clean: toOptionalString,
     comments:
       "The type of custom object to search for. Required for the Custom objects search endpoint.",
   },

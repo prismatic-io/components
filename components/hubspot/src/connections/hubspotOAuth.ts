@@ -1,5 +1,5 @@
 import { OAuth2Type, oauth2Connection } from "@prismatic-io/spectral";
-import { BASE_URL } from "../constants";
+import { BASE_URL, hubspotPaths } from "../constants";
 export const hubspotOAuth = oauth2Connection({
   oauth2Type: OAuth2Type.AuthorizationCode,
   key: "oauth2",
@@ -27,7 +27,7 @@ export const hubspotOAuth = oauth2Connection({
       required: true,
       shown: false,
       comments: "The OAuth 2.0 Token URL for HubSpot.",
-      default: `${BASE_URL}/oauth/v3/token`,
+      default: `${BASE_URL}${hubspotPaths.oauthToken}`,
     },
     scopes: {
       label: "Scopes",

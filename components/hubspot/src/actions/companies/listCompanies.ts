@@ -1,6 +1,6 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../../client";
-import { COMPANY_PROPS } from "../../constants";
+import { COMPANY_PROPS, hubspotPaths } from "../../constants";
 import { listCompaniesExamplePayload } from "../../examplePayloads";
 import { listCompaniesInputs } from "../../inputs";
 import { paginatedListSchema } from "../../outputSchemas";
@@ -22,7 +22,7 @@ export const listCompanies = action({
       COMPANY_PROPS,
       params.additionalProperties || [],
     );
-    const url = "/crm/v3/objects/companies";
+    const url = hubspotPaths.objects("companies");
     const configParams = {
       ...parameterizedProperties,
       limit: params.pagination.limit,
@@ -44,9 +44,7 @@ export const listCompanies = action({
     };
   },
   inputs: listCompaniesInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: listCompaniesExamplePayload.data,
   }),
   examplePayload: listCompaniesExamplePayload,

@@ -1,5 +1,7 @@
 import { dataSource, type Element } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
+import { hubspotPaths } from "../constants";
+import { selectWebhookExamplePayload } from "../examplePayloads";
 import { selectWebhookInputs } from "../inputs";
 import type { Webhook } from "../types";
 import { checkDeveloperApiKeyAndAppId } from "../util";
@@ -20,14 +22,17 @@ export const selectWebhook = dataSource({
     const { developerApiKey, appId } = checkDeveloperApiKeyAndAppId(connection);
     const { data } = await client.get<{
       results: Webhook[];
-    }>(`/webhooks/v3/${appId}/subscriptions`, {
+    }>(hubspotPaths.appWebhooks(appId, "/subscriptions"), {
       params: { hapikey: developerApiKey },
     });
     const result = data.results.map<Element>((webhook) => ({
-      label: `${webhook.eventType} ${webhook.propertyName ? `(${webhook.propertyName})` : ""}`,
+      label: webhook.propertyName
+        ? `${webhook.eventType} (${webhook.propertyName})`
+        : webhook.eventType,
       key: webhook.id,
     }));
     return { result };
   },
+  examplePayload: selectWebhookExamplePayload,
   dataSourceType: "picklist",
 });

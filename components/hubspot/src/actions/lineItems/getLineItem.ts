@@ -1,8 +1,10 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
+import { getLineItemExamplePayload } from "../../examplePayloads";
 import { getLineItemOutputSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { getLineItemInputs } from "../../inputs";
 import { getProps } from "../../util";
+import { hubspotPaths } from "../../constants";
 export const getLineItem = action({
   display: {
     label: "Get Line Item",
@@ -42,7 +44,7 @@ export const getLineItem = action({
       archived: archived,
     };
     if (lineItemName) {
-      const result = await client.get("/crm/v3/objects/line_items", {
+      const result = await client.get(hubspotPaths.objects("line_items"), {
         params,
       });
       const { results: lineItems } = result.data;
@@ -55,7 +57,7 @@ export const getLineItem = action({
       return { data: filteredLineItems };
     }
     const { data } = await client.get(
-      `/crm/v3/objects/line_items/${lineItemId}`,
+      hubspotPaths.objects("line_items", `/${lineItemId}`),
       {
         params,
       },
@@ -63,6 +65,10 @@ export const getLineItem = action({
     return { data };
   },
   inputs: getLineItemInputs,
+  examplePerform: async () => ({
+    data: getLineItemExamplePayload.data,
+  }),
+  examplePayload: getLineItemExamplePayload,
   outputSchema: outputSchema({
     type: "actionOutput",
     schema: getLineItemOutputSchema,

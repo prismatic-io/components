@@ -33,9 +33,7 @@ export const deleteAllWebhooks = action({
       },
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: deleteAllWebhooksExamplePayload.data,
   }),
   inputs: deleteAllWebhooksInputs,

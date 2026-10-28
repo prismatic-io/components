@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createProductExamplePayload } from "../../examplePayloads";
 import { createProductInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const createProduct = action({
   display: {
     label: "Create Product",
@@ -30,7 +31,7 @@ export const createProduct = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.post("/crm/v3/objects/products", {
+    const { data } = await client.post(hubspotPaths.objects("products"), {
       properties: {
         description: description,
         hs_cost_of_goods_sold: unitCost,
@@ -45,9 +46,7 @@ export const createProduct = action({
     return { data };
   },
   inputs: createProductInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createProductExamplePayload.data,
   }),
   examplePayload: createProductExamplePayload,

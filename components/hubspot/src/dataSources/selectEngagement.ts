@@ -1,7 +1,12 @@
 import { URLSearchParams } from "node:url";
 import { dataSource, type Element, util } from "@prismatic-io/spectral";
 import { getHubspotClient } from "../client";
-import { ENGAGEMENT_OBJECTS, ENGAGEMENT_PROPERTIES } from "../constants";
+import {
+  ENGAGEMENT_OBJECTS,
+  ENGAGEMENT_PROPERTIES,
+  hubspotPaths,
+} from "../constants";
+import { selectEngagementExamplePayload } from "../examplePayloads";
 import { selectEngagementInputs } from "../inputs";
 import type { Engagement } from "../types";
 import {
@@ -23,7 +28,7 @@ export const selectEngagement = dataSource({
     const allEngagements = ENGAGEMENT_OBJECTS.map((engagementObject) => {
       return getAllPaginatedData<Engagement>(
         client,
-        `/crm/v3/objects/${engagementObject.value}`,
+        hubspotPaths.objects(engagementObject.value),
         true,
         true,
         {
@@ -50,5 +55,6 @@ export const selectEngagement = dataSource({
     });
     return { result: allResults };
   },
+  examplePayload: selectEngagementExamplePayload,
   dataSourceType: "picklist",
 });

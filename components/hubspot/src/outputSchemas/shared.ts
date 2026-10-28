@@ -1,3 +1,40 @@
+export const stringArrayMapSchema = {
+  type: "object" as const,
+  additionalProperties: {
+    type: "array" as const,
+    items: { type: "string" },
+  },
+};
+export const batchErrorSchema = {
+  type: "object" as const,
+  properties: {
+    category: { type: "string" },
+    context: stringArrayMapSchema,
+    errors: {
+      type: "array" as const,
+      items: {
+        type: "object" as const,
+        properties: {
+          code: { type: "string" },
+          context: stringArrayMapSchema,
+          in: { type: "string" },
+          message: { type: "string" },
+          subCategory: { type: "string" },
+        },
+        required: ["message"],
+      },
+    },
+    id: { type: "string" },
+    links: {
+      type: "object" as const,
+      additionalProperties: { type: "string" },
+    },
+    message: { type: "string" },
+    status: { type: "string" },
+    subCategory: { type: "object" as const },
+  },
+  required: ["category", "context", "errors", "links", "message", "status"],
+};
 export const crmObjectSchema = {
   type: "object" as const,
   properties: {
@@ -23,10 +60,53 @@ export const crmObjectSchema = {
         },
       },
     },
+    associations: {
+      type: "object" as const,
+      additionalProperties: {
+        type: "object" as const,
+        properties: {
+          results: {
+            type: "array" as const,
+            items: {
+              type: "object" as const,
+              properties: {
+                id: { type: "string" },
+                type: { type: "string" },
+              },
+              required: ["id", "type"],
+            },
+          },
+          paging: {
+            type: "object" as const,
+            properties: {
+              next: {
+                type: "object" as const,
+                properties: {
+                  after: { type: "string" },
+                  link: { type: "string" },
+                },
+                required: ["after"],
+              },
+              prev: {
+                type: "object" as const,
+                properties: {
+                  before: { type: "string" },
+                  link: { type: "string" },
+                },
+                required: ["before"],
+              },
+            },
+          },
+        },
+        required: ["results"],
+      },
+    },
     createdAt: { type: "string", format: "date-time" },
     updatedAt: { type: "string", format: "date-time" },
     archived: { type: "boolean" },
     archivedAt: { type: ["string", "null"] as string[], format: "date-time" },
+    objectWriteTraceId: { type: "string" },
+    url: { type: "string" },
   },
   required: ["id", "properties", "createdAt", "updatedAt", "archived"],
 };
@@ -46,7 +126,7 @@ export const paginatedListSchema = {
             after: { type: "string" },
             link: { type: "string" },
           },
-          required: ["after", "link"],
+          required: ["after"],
         },
       },
     },
@@ -74,34 +154,12 @@ export const batchResponseSchema = {
     numErrors: { type: ["integer", "null"] as string[] },
     errors: {
       type: ["array", "null"] as string[],
-      items: {
-        type: "object" as const,
-        properties: {
-          status: { type: "string" },
-          category: { type: "string" },
-          message: { type: "string" },
-          context: { type: "object" as const },
-        },
-      },
+      items: batchErrorSchema,
     },
-    links: { type: ["object", "null"] as string[] },
-  },
-  required: ["status", "results", "startedAt", "completedAt"],
-};
-export const batchArchiveResponseSchema = {
-  type: "object" as const,
-  properties: {
-    status: {
-      type: "string",
-      enum: ["CANCELED", "COMPLETE", "PENDING", "PROCESSING"],
+    links: {
+      type: ["object", "null"] as string[],
+      additionalProperties: { type: "string" },
     },
-    results: { type: "array" as const, items: { type: "object" as const } },
-    requestedAt: { type: ["string", "null"] as string[], format: "date-time" },
-    startedAt: { type: "string", format: "date-time" },
-    completedAt: { type: "string", format: "date-time" },
-    numErrors: { type: ["integer", "null"] as string[] },
-    errors: { type: ["array", "null"] as string[] },
-    links: { type: ["object", "null"] as string[] },
   },
   required: ["status", "results", "startedAt", "completedAt"],
 };
@@ -120,8 +178,17 @@ export const searchResponseSchema = {
           type: "object" as const,
           properties: {
             after: { type: "string" },
+            link: { type: "string" },
           },
           required: ["after"],
+        },
+        prev: {
+          type: "object" as const,
+          properties: {
+            before: { type: "string" },
+            link: { type: "string" },
+          },
+          required: ["before"],
         },
       },
     },

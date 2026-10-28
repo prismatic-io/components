@@ -1,9 +1,10 @@
 export {
+  stringArrayMapSchema,
+  batchErrorSchema,
   crmObjectSchema,
   paginatedListSchema,
   crmObjectArraySchema,
   batchResponseSchema,
-  batchArchiveResponseSchema,
   searchResponseSchema,
 } from "./shared";
 export {
@@ -24,3 +25,19 @@ export {
   getProductOutputSchema,
   getLineItemOutputSchema,
 } from "./partials";
+export {
+  importSchema,
+  listActiveImportsOutputSchema,
+  cancelImportOutputSchema,
+} from "./imports";
+export { exportCRMDataOutputSchema } from "./exports";
+export { propertySchema, listPropertiesOutputSchema } from "./properties";
+export {
+  customObjectSchema,
+  listCustomObjectsOutputSchema,
+  updateCustomObjectOutputSchema,
+} from "./customObjects";
+export {
+  webhookSubscriptionSchema,
+  listWebhooksOutputSchema,
+} from "./webhooks";

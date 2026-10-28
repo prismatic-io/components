@@ -3,6 +3,7 @@ import { crmObjectSchema } from "../../outputSchemas";
 import { getHubspotClient } from "../../client";
 import { createContactExamplePayload } from "../../examplePayloads";
 import { createContactInputs } from "../../inputs";
+import { hubspotPaths } from "../../constants";
 export const createContact = action({
   display: {
     label: "Create Contact",
@@ -28,7 +29,7 @@ export const createContact = action({
       timeout,
       debugRequest,
     });
-    const { data } = await client.post("/crm/v3/objects/contacts", {
+    const { data } = await client.post(hubspotPaths.objects("contacts"), {
       properties: {
         company: contactCompany,
         email: contactInfo.contactEmail,
@@ -43,9 +44,7 @@ export const createContact = action({
     return { data };
   },
   inputs: createContactInputs,
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
+  examplePerform: async () => ({
     data: createContactExamplePayload.data,
   }),
   examplePayload: createContactExamplePayload,

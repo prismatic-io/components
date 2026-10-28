@@ -3,6 +3,14 @@ import type {
   HttpClient,
 } from "@prismatic-io/spectral/dist/clients/http";
 import type { Paging } from "../types";
+const withAfter = (params: unknown, after: string) => {
+  if (params instanceof URLSearchParams) {
+    const next = new URLSearchParams(params);
+    next.set("after", after);
+    return next;
+  }
+  return { ...(params as Record<string, unknown>), after };
+};
 export const getAllPaginatedData = async <T>(
   client: HttpClient,
   url: string,
@@ -17,15 +25,16 @@ export const getAllPaginatedData = async <T>(
     results: [],
     paging: null,
   };
-  let nextUrl = url;
   let nextConfig = config;
   do {
-    const { data } = await client.get(nextUrl, nextConfig);
+    const { data } = await client.get(url, nextConfig);
     finalObject.paging = data.paging;
     finalObject.results = finalObject.results.concat(data.results);
     if (finalObject.paging?.next) {
-      nextUrl = data.paging.next.link;
-      nextConfig = undefined;
+      nextConfig = {
+        ...config,
+        params: withAfter(config?.params, finalObject.paging.next.after),
+      };
     }
     if (!fetchAll) break;
   } while (finalObject.paging?.next);
