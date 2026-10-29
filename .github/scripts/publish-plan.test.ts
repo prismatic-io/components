@@ -1,4 +1,4 @@
-import { describe, expect, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test, vi } from "bun:test";
 import {
   BOOTSTRAP_VERSION,
   fetchPublished,
@@ -277,65 +277,84 @@ describe("trustConfigsIn", () => {
 });
 
 describe("waitForPackages", () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
   /** A registry that starts showing each package after the given number of lookups. */
   const registry = (shownAfter: Record<string, number>) => {
     const lookups: Record<string, number> = {};
-    return async (name: string) => {
+    const lookup = async (name: string) => {
       lookups[name] = (lookups[name] ?? 0) + 1;
       return lookups[name] > (shownAfter[name] ?? Number.POSITIVE_INFINITY)
         ? onNpm([BOOTSTRAP_VERSION])
         : null;
     };
+    return { lookup, lookups };
   };
-  /** A clock that moves only when the wait sleeps. */
-  const clock = () => {
-    let time = 0;
-    const sleeps: number[] = [];
-    return {
-      now: () => time,
-      sleep: async (ms: number) => {
-        sleeps.push(ms);
-        time += ms;
-      },
-      sleeps,
-    };
+
+  /**
+   * Settles a wait under fake timers: lets its lookups finish, then fires the
+   * next timer, until the wait returns. Returns the result and the time it took.
+   */
+  const drive = async <T>(wait: Promise<T>) => {
+    let settled = false;
+    void wait.finally(() => {
+      settled = true;
+    });
+    let elapsed = 0;
+    for (let i = 0; i < 1000 && !settled; i++) {
+      for (let tick = 0; tick < 20; tick++) await Promise.resolve();
+      if (settled || vi.getTimerCount() === 0) continue;
+      const before = Date.now();
+      vi.advanceTimersToNextTimer();
+      elapsed += Date.now() - before;
+    }
+    return { result: await wait, elapsed };
   };
 
   test("returns at once when npm shows every package", async () => {
-    const c = clock();
-    const lookup = registry({ a: 0, b: 0 });
-    expect(await waitForPackages(["a", "b"], { lookup, ...c })).toEqual([]);
-    expect(c.sleeps).toEqual([]);
+    const { lookup } = registry({ a: 0, b: 0 });
+    const { result, elapsed } = await drive(waitForPackages(["a", "b"], { lookup }));
+    expect(result).toEqual([]);
+    expect(elapsed).toBe(0);
   });
 
   test("waits until npm shows each package, asking only about the hidden ones", async () => {
-    const c = clock();
     const waits: string[][] = [];
-    const lookup = registry({ a: 1, b: 3 });
-    const pending = await waitForPackages(["a", "b"], {
-      lookup,
-      ...c,
-      intervalMs: 10,
-      onWait: (names) => waits.push(names),
-    });
-    expect(pending).toEqual([]);
+    const { lookup, lookups } = registry({ a: 1, b: 3 });
+    const { result, elapsed } = await drive(
+      waitForPackages(["a", "b"], { lookup, intervalMs: 10, onWait: (names) => waits.push(names) }),
+    );
+    expect(result).toEqual([]);
     expect(waits).toEqual([["a", "b"], ["b"], ["b"]]);
-    expect(c.sleeps).toEqual([10, 10, 10]);
+    expect(lookups).toEqual({ a: 2, b: 4 });
+    expect(elapsed).toBe(30);
   });
 
-  test("returns what is still hidden when time runs out", async () => {
-    const c = clock();
-    const lookup = registry({ a: 0 });
-    expect(await waitForPackages(["a", "b"], { lookup, ...c, intervalMs: 10, limitMs: 25 })).toEqual(["b"]);
-    expect(c.sleeps).toEqual([10, 10, 10]);
+  test("stops after limitMs and returns what is still hidden", async () => {
+    const { lookup, lookups } = registry({ a: 0 });
+    const { result, elapsed } = await drive(
+      waitForPackages(["a", "b"], { lookup, intervalMs: 10, limitMs: 25 }),
+    );
+    expect(result).toEqual(["b"]);
+    expect(lookups).toEqual({ a: 1, b: 3 });
+    expect(elapsed).toBe(20);
+  });
+
+  test("looks 61 times by default, over 15 minutes", async () => {
+    const { lookup, lookups } = registry({});
+    const { result, elapsed } = await drive(waitForPackages(["a"], { lookup }));
+    expect(result).toEqual(["a"]);
+    expect(lookups).toEqual({ a: 61 });
+    expect(elapsed).toBe(15 * 60_000);
   });
 
   test("treats a package without the bootstrap version, or a failed lookup, as hidden", async () => {
-    const c = clock();
     const lookup = async (name: string) => {
       if (name === "a") throw new Error("registry answered 503");
       return onNpm(["0.0.0-stage"]);
     };
-    expect(await waitForPackages(["a", "b"], { lookup, ...c, intervalMs: 10, limitMs: 10 })).toEqual(["a", "b"]);
+    const { result } = await drive(waitForPackages(["a", "b"], { lookup, intervalMs: 10, limitMs: 10 }));
+    expect(result).toEqual(["a", "b"]);
   });
 });

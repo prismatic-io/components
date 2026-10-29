@@ -211,8 +211,6 @@ export const fetchPublished = async (
 
 export interface WaitOptions {
   lookup?: (name: string) => Promise<Published | null>;
-  sleep?: (ms: number) => Promise<unknown>;
-  now?: () => number;
   intervalMs?: number;
   limitMs?: number;
   /** Called before each wait with the packages npm does not show yet. */
@@ -223,31 +221,28 @@ export interface WaitOptions {
  * Waits until the registry shows each package at the bootstrap version. npm
  * holds a new package's first version back while it reviews it (about three
  * minutes for the first package), and the publish workflow skips a package
- * the registry does not show. Returns the packages still hidden when the time
- * runs out; a failed lookup counts as hidden.
+ * the registry does not show. It looks once, then again after each interval,
+ * for at most `limitMs` (61 lookups by default), and returns the packages
+ * still hidden; a failed lookup counts as hidden.
  */
 export const waitForPackages = async (
   names: readonly string[],
-  {
-    lookup = fetchPublished,
-    sleep = (ms) => Bun.sleep(ms),
-    now = Date.now,
-    intervalMs = 15_000,
-    limitMs = 15 * 60_000,
-    onWait = () => {},
-  }: WaitOptions = {},
+  { lookup = fetchPublished, intervalMs = 15_000, limitMs = 15 * 60_000, onWait = () => {} }: WaitOptions = {},
 ): Promise<string[]> => {
-  const deadline = now() + limitMs;
+  const waits = Math.floor(limitMs / intervalMs);
   let pending = [...names];
-  for (;;) {
+  for (let waited = 0; waited <= waits; waited++) {
+    if (waited > 0) {
+      onWait(pending);
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
+    }
     const shown = await Promise.all(
       pending.map(async (name) =>
         ((await lookup(name).catch(() => null))?.versions ?? []).includes(BOOTSTRAP_VERSION),
       ),
     );
     pending = pending.filter((_, i) => !shown[i]);
-    if (pending.length === 0 || now() >= deadline) return pending;
-    onWait(pending);
-    await sleep(intervalMs);
+    if (pending.length === 0) break;
   }
+  return pending;
 };
