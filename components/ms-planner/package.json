@@ -1,0 +1,25 @@
+{
+  "name": "@prismatic-io/ms-planner",
+  "private": true,
+  "scripts": {
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "build": "npm run format && npm run lint && tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "publish": "npm run build && prism components:publish"
+  },
+  "dependencies": {
+    "@prismatic-io/spectral": "10.36.1",
+    "ms-utils": "file:../../packages/ms-utils"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.1",
+    "@microsoft/microsoft-graph-types": "2.26.0",
+    "@types/node": "^26.4.1",
+    "nock": "^14.0.17",
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
+  }
+}

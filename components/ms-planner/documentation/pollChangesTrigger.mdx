@@ -1,0 +1,89 @@
+The **New Tasks** trigger checks a single plan for tasks that were created since the previous run.
+
+#### How It Works
+
+Each recurrence fetches the plan's tasks and emits those whose creation timestamp is later than the trigger's stored position. That position is the newest `createdDateTime` among the tasks it has delivered, taken from Planner's own clock rather than the worker's, and it stays unchanged after a recurrence that finds no new tasks. On a first recurrence with no **Look-back Date**, existing tasks are not delivered and the position starts at the newest `createdDateTime` among them, so it is on Planner's clock from the start; only an empty plan starts from the current time.
+The trigger stores only that single timestamp between recurrences, so its state stays the same size no matter how many tasks the plan holds.
+
+The trigger watches one plan. Use a separate flow for each additional plan.
+
+| Change | Detected |
+|--------|----------|
+| A task is created | Yes |
+| A task is edited, reassigned, or completed | No |
+| A task is deleted | No |
+
+[Microsoft Planner](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0) records a creation timestamp on a task but no modification timestamp, and its API accepts no server-side filter or sort.
+Detecting edits would mean keeping a copy of every task's state between runs, which is not what trigger state is for.
+
+Because Planner accepts no query parameters, each recurrence fetches the plan's full task list and filters it in memory. The page walk is capped at 100 pages. A plan whose task list exceeds that cap fails the recurrence with an error naming the plan and the limit: no tasks are emitted and the position does not move.
+
+**Initial Sync**
+
+An initial sync seeds a complete starting state. Inputs that narrow a change feed would leave gaps in it, but this trigger has none, so an initial sync ignores no inputs. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, UTC) is set, and delivers every existing task created on or after midnight UTC of that date exactly once. A wrong format, an impossible date, or a future date is rejected. Left empty, there is no sync.
+
+The window has no fixed upper bound, so a task created while the sync is being read is swept into it. The position then advances to the newest task delivered, never to the wall clock, and the next recurrence resumes from exactly there; nothing in the payload marks the handoff. The sync is delivered in one recurrence whether batching is on or off.
+
+**Connection**, **Group ID**, and **Plan ID** still apply throughout. The trigger has no page-size or field-selection input.
+
+**Batching**
+
+Batching is enabled per flow on this trigger: each changed record is dispatched as its own
+execution, or grouped by the configured batch size. Batch size and batch concurrency can both be
+overridden per instance. Raising concurrency increases the request volume sent to Microsoft Planner.
+
+To turn it on, select the flow's trigger, open the **Flow control** tab, and switch on **Enable
+Batching**. Under **Batch Size**, keep **Trigger default** or choose **Custom batch size**.
+**Batch Concurrency** is optional; leave it blank for no batch-level limit.
+
+With batching off, a downstream step reads `body.data.created`. With batching on, that field does not exist: each execution receives one `{ "changeType": "created", "record": ... }` item, or an array of them when the batch size is greater than 1. Any step reading the older shape must be updated before batching is enabled. Because batching is enabled per flow, the change is scoped to that flow rather than to the component or to other flows using the same trigger.
+
+<details>
+<summary>Unbatched payload</summary>
+
+```json
+{ "data": { "created": [ ... ] } }
+```
+
+</details>
+
+<details>
+<summary>Batched item</summary>
+
+```json
+{ "changeType": "created", "record": { ... } }
+```
+
+</details>
+
+#### Returned Data
+
+<details>
+<summary>Example Payload</summary>
+
+```json
+{
+  "data": {
+    "created": [
+      {
+        "@odata.etag": "W/\"JzEtVGFzayAgQEBAQEBAQEBAQEBAQEBAWCc=\"",
+        "id": "01gzSlKkIUSUl6DF_EilrmQAKDhh",
+        "planId": "xqQg5FS2LkCp935s-FIFm2QAFkHM",
+        "bucketId": "hsOf2dhOJkqyYYZEtdzDe2QAIUCR",
+        "title": "Update the client list",
+        "percentComplete": 50,
+        "priority": 5,
+        "createdDateTime": "2024-01-09T09:12:03.1533333Z",
+        "completedDateTime": null,
+        "hasDescription": true
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+Fields shown are representative. The full response object includes additional properties.
+
+A run that finds nothing reports no changes, so the flow does not execute.

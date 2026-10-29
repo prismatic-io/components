@@ -1,0 +1,41 @@
+To connect to Microsoft Planner with a connection of type **OAuth 2.0 Authorization Code**, create an App Registration in Microsoft Entra (formerly Azure Active Directory).
+
+This is the recommended connection. Planner operations that act on "the signed-in user" (listing the plans shared with a user, or the tasks assigned to them) require a user to authorize, and are only available through this flow.
+
+#### Prerequisites
+
+- Access to the [Microsoft Entra admin center](https://entra.microsoft.com/) or the [Azure Portal](https://portal.azure.com/#home)
+- Permissions to create App Registrations
+- A Microsoft 365 group that contains the plans to work with
+- A work or school account to authorize with. Planner is unavailable to personal Microsoft accounts
+
+#### Setup Steps
+
+1. Navigate to [Microsoft Entra](https://entra.microsoft.com/) **Identity** > **Applications** > **App registrations** and select **New registration**
+2. Set **Supported account types**:
+   - Choose **Accounts in any organizational directory (Any Azure AD directory - Multitenant)** to allow users from other organizations to authenticate
+3. Under **Platforms**, add the **Web** platform:
+   - Add <OauthCallbackUrl /> as a **Redirect URI**
+4. Navigate to **Certificates & Secrets** and create a new **Client Secret**:
+   - Copy the **Value** of the client secret (this is only shown once)
+5. Navigate to the **Overview** page and copy the **Application (client) ID**
+
+#### Configure the Connection
+
+- **Base URL** defaults to `https://graph.microsoft.com`. Change it only for a national cloud deployment
+- Set the **Tenant URL** to `login.microsoftonline.com/organizations` rather than the default `login.microsoftonline.com/common`, so that a personal account cannot complete an authorization that would then fail on every action
+- Enter the **Application (client) ID** value into the **Client ID** field
+- Enter the client secret **Value** into the **Client secret value** field
+- The default **Scopes** are pre-configured:
+  ```
+  https://graph.microsoft.com/Tasks.ReadWrite https://graph.microsoft.com/User.Read https://graph.microsoft.com/User.ReadBasic.All offline_access
+  ```
+  - `https://graph.microsoft.com/Tasks.ReadWrite` - Read and write plans, buckets, and tasks
+  - `https://graph.microsoft.com/User.Read` - Sign in, and read the groups the signed-in user belongs to, which is how the **Group ID** dropdown is populated
+  - `https://graph.microsoft.com/User.ReadBasic.All` - List the organization's users, which is how the **Select User** dropdown is populated
+  - `offline_access` - Maintain the connection and receive refresh tokens
+  - To list every group in the organization in the **Group ID** dropdown, rather than only the signed-in user's groups, add `https://graph.microsoft.com/Group.Read.All`. That scope requires admin consent
+  - Refer to the [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) for additional scope information
+- **Additional Authorization Parameters** (optional) - Query string parameters appended to the OAuth authorization URL:
+  - Use `prompt=consent` to force the consent screen, which is useful when the requested scopes have changed
+  - Use `login_hint=user@example.com` to pre-fill the sign-in page

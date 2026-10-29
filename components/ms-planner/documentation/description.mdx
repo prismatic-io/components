@@ -1,0 +1,26 @@
+[Microsoft Planner](https://www.microsoft.com/en-us/microsoft-365/planner/planner-app) is a task and work management service for Microsoft 365 teams, organizing work into plans, buckets, and tasks.
+This component allows creating, reading, updating, and deleting plans, buckets, and tasks, managing task descriptions, checklists, and links, assigning work to people, and detecting newly created tasks on a schedule.
+
+#### API Documentation
+
+This component was built using the [Microsoft Graph Planner API](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0) currently utilizing v1.0
+
+#### Change Detection
+
+Planner does not publish change notifications, and its plans, buckets, and tasks carry no modification timestamp.
+The **New Tasks** trigger therefore detects tasks that are added to a plan, and cannot detect tasks that are edited, completed, or deleted.
+Flows that need to react to those events should poll with the **List Tasks in Plan** action and compare against their own records.
+
+#### Migrating from Microsoft Project
+
+Microsoft retired Project Online, including Project Web App, on September 30, 2026.
+Its REST and OData reporting endpoints are no longer available, so integrations built on the **Microsoft Project** component no longer return data.
+Microsoft lists Planner as one destination, alongside Project desktop, Project Server Subscription Edition, and Dynamics 365 Project Operations; see [Prepare for Project Online retirement](https://learn.microsoft.com/en-us/planner/prepare-for-project-online-retirement).
+
+To move an integration from the **Microsoft Project** component to this component:
+
+1. Confirm the destination plans are basic plans. Work moved into premium plans is not reachable through this component.
+2. Map Project records to Planner resources: projects to plans, phases or summary tasks to buckets, tasks to tasks, and assignments to task assignees.
+3. Replace Project reporting queries with the list actions, such as **List Plans in Group**, **List Buckets in Plan**, and **List Tasks in Plan**.
+4. Replace scheduled checks for new work with the **New Tasks** trigger, within the change detection limits described above.
+5. Store Project data that has no Planner equivalent, such as custom fields, baselines, dependencies, timesheets, and resource data, in another system before migrating.

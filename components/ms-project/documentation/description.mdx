@@ -1,2 +1,38 @@
+:::warning[Deprecated]
+Microsoft retired Project Online, including Project Web App, on September 30, 2026, and this component works only while its Project Web App site remains available under a Microsoft-approved extension.
+Use the **Microsoft Planner** component instead, and move existing integrations by following [Migrating to Microsoft Planner](#migrating-to-microsoft-planner).
+:::
+
 [Microsoft Project](https://project.microsoft.com/en-US/) is a project management software product, developed and sold by Microsoft.
-This component allows you to interact with your projects, tasks, and assignments by making queries to reporting data from a Project Web App instance.
+This component allows interacting with projects, tasks, and assignments by making queries to reporting data from a Project Web App instance.
+
+### Migrating to Microsoft Planner
+
+Microsoft lists Planner as one destination for Project Online work, alongside Project desktop, Project Server Subscription Edition, and Dynamics 365 Project Operations.
+See [Prepare for Project Online retirement](https://learn.microsoft.com/en-us/planner/prepare-for-project-online-retirement) for Microsoft's full transition guidance.
+
+To move an integration from this component to the **Microsoft Planner** component:
+
+1. **Confirm Planner fits the workload.** The **Microsoft Planner** component works with basic plans only, because the Microsoft Graph Planner API cannot reach premium plans. Basic plans have no equivalent for baselines, dependencies, enterprise resources, timesheets, or custom fields, so workloads that depend on them belong in one of the other destinations listed above.
+2. **Copy the Project data that still exists.** Project Online data is no longer accessible after retirement. A tenant still under a Microsoft-approved extension can run an integration that reads each project with **List Projects**, **List Tasks**, and **List Assignments**, and writes it to Planner with **Create Plan**, **Create Bucket**, **Create Task**, and **Assign Task**, before the extension ends.
+3. **Prepare a Microsoft 365 group for each plan.** Every Planner plan belongs to a Microsoft 365 group, and the user behind the connection must be a member of the group to create a plan in it.
+4. **Create a Microsoft Planner connection.** The **Microsoft Planner** component authenticates to Microsoft Graph rather than to a Project Web App site, so the existing connection cannot be reused.
+5. **Replace each step** using the mapping below. Planner applies every change immediately, so steps that check out, verify, publish, or check in a draft project are removed rather than replaced.
+6. **Replace the New and Updated Projects trigger.** Planner publishes no change notifications, so the **New Tasks** trigger detects new tasks only. Flows that must react to edited or completed tasks poll with **List Tasks in Plan** and compare against their own records.
+7. **Remove the Microsoft Project steps and connection** once the flows run against Planner.
+
+| Microsoft Project | Microsoft Planner |
+| --- | --- |
+| **List Projects**, **Get Project** | **List Plans in Group**, **List Plans for User**, **Get Plan** |
+| **Create Project** | **Create Plan** |
+| **Delete Project**, **Remove Project** | **Delete Plan** |
+| **List Tasks**, **Get Task**, **List Draft Tasks**, **Get Draft Task** | **List Tasks in Plan**, **List Tasks in Bucket**, **Get Task**, **Get Task Details** |
+| **Create Draft Task** | **Create Task** |
+| **Update Draft** | **Update Task**, **Update Task Details**, **Update Plan** |
+| **Delete Draft Task** | **Delete Task** |
+| **Create Draft Assignment**, **List Assignments**, **Get Assignment**, **List Draft Assignments** | **Assign Task**, **List Tasks for User** |
+| **Checkout Project**, **Verify Draft**, **Publish Draft Project**, **Check In Draft Project** | No equivalent; Planner applies changes immediately |
+| **Submit Product To Workflow** | No equivalent |
+| **list Project Resources**, **Get Project Resource**, **list Draft Project Resources**, **Create Draft Project Resources** | No equivalent; Planner assigns tasks to Microsoft 365 users |
+| **New and Updated Projects** | **New Tasks** |
+| **Raw Request** | **Raw Request**, against the Microsoft Graph API |
