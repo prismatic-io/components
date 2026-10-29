@@ -28,6 +28,7 @@ export const listLists = action({
       data,
     };
   },
+  examplePerform: async () => listListsExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

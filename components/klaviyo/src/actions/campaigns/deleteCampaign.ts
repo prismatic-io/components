@@ -21,6 +21,7 @@ export const deleteCampaign = action({
       data: "Campaign deleted successfully.",
     };
   },
+  examplePerform: async () => deleteCampaignExamplePayload,
   inputs,
   examplePayload: deleteCampaignExamplePayload,
   outputSchema: outputSchema({

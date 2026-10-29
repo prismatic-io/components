@@ -263,53 +263,56 @@ export const FIELDS_IMAGE_MODEL = [
   { label: "Updated At", value: "updated_at" },
 ];
 export const FIELDS_CAMPAIGN_MODEL = [
-  { label: "Name", value: "name" },
-  { label: "Status", value: "status" },
   { label: "Archived", value: "archived" },
   { label: "Audiences", value: "audiences" },
-  { label: "Audiences Included", value: "audiences.included" },
   { label: "Audiences Excluded", value: "audiences.excluded" },
-  { label: "Send Options", value: "send_options" },
-  { label: "Tracking Options", value: "tracking_options" },
-  { label: "Send Strategy", value: "send_strategy" },
-  { label: "Send Strategy Method", value: "send_strategy.method" },
-  {
-    label: "Send Strategy Options Static",
-    value: "send_strategy.options_static",
-  },
-  {
-    label: "Send Strategy Options Static Datetime",
-    value: "send_strategy.options_static.datetime",
-  },
-  {
-    label: "Send Strategy Options Static Is Local",
-    value: "send_strategy.options_static.is_local",
-  },
-  {
-    label: "Send Strategy Options Static Send Past Recipients Immediately",
-    value: "send_strategy.options_static.send_past_recipients_immediately",
-  },
-  {
-    label: "Send Strategy Options Throttled",
-    value: "send_strategy.options_throttled",
-  },
-  {
-    label: "Send Strategy Options Throttled Datetime",
-    value: "send_strategy.options_throttled.datetime",
-  },
-  {
-    label: "Send Strategy Options Throttled Throttle Percentage",
-    value: "send_strategy.options_throttled.throttle_percentage",
-  },
-  { label: "Send Strategy Options Sto", value: "send_strategy.options_sto" },
-  {
-    label: "Send Strategy Options Sto Date",
-    value: "send_strategy.options_sto.date",
-  },
+  { label: "Audiences Included", value: "audiences.included" },
   { label: "Created At", value: "created_at" },
+  { label: "ID", value: "id" },
+  { label: "Name", value: "name" },
   { label: "Scheduled At", value: "scheduled_at" },
-  { label: "Updated At", value: "updated_at" },
+  { label: "Send Options", value: "send_options" },
+  {
+    label: "Send Options Use Smart Sending",
+    value: "send_options.use_smart_sending",
+  },
+  { label: "Send Strategy", value: "send_strategy" },
+  { label: "Send Strategy Date", value: "send_strategy.date" },
+  { label: "Send Strategy Datetime", value: "send_strategy.datetime" },
+  { label: "Send Strategy Method", value: "send_strategy.method" },
+  { label: "Send Strategy Options", value: "send_strategy.options" },
+  {
+    label: "Send Strategy Options Is Local",
+    value: "send_strategy.options.is_local",
+  },
+  {
+    label: "Send Strategy Options Send Past Recipients Immediately",
+    value: "send_strategy.options.send_past_recipients_immediately",
+  },
+  {
+    label: "Send Strategy Throttle Percentage",
+    value: "send_strategy.throttle_percentage",
+  },
   { label: "Send Time", value: "send_time" },
+  { label: "Status", value: "status" },
+  { label: "Tracking Options", value: "tracking_options" },
+  {
+    label: "Tracking Options Add Tracking Params",
+    value: "tracking_options.add_tracking_params",
+  },
+  {
+    label: "Tracking Options Custom Tracking Params",
+    value: "tracking_options.custom_tracking_params",
+  },
+  {
+    label: "Tracking Options Is Tracking Clicks",
+    value: "tracking_options.is_tracking_clicks",
+  },
+  {
+    label: "Tracking Options Is Tracking Opens",
+    value: "tracking_options.is_tracking_opens",
+  },
+  { label: "Updated At", value: "updated_at" },
 ];
 export const FIELDS_EVENT_MODEL = [
   { label: "Timestamp", value: "timestamp" },

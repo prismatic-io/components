@@ -17,7 +17,7 @@ export const fields = input({
 export const excludeAuthorization = input({
   label: "Exclude Authorization",
   comments:
-    "Exclude the Authorization header from the request. Turn this on and include the company_id query param when calling public endpoints (/client).",
+    "When true, omits the Authorization header from the request. Turn this on and include the company_id query param when calling public endpoints (/client).",
   type: "boolean",
   required: false,
   default: "false",

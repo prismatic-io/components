@@ -24,11 +24,7 @@ export const getAccount = action({
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: getAccountExamplePayload.data,
-  }),
+  examplePerform: async () => getAccountExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

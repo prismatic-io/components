@@ -40,6 +40,7 @@ export const bulkCreateEvents = action({
       data: "Events created successfully.",
     };
   },
+  examplePerform: async () => bulkCreateEventsExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

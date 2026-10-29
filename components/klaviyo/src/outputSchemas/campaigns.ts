@@ -2,6 +2,7 @@ import {
   collectionLinksSchema,
   includedItemSchema,
   resourceLinksSchema,
+  toManyRelationshipSchema,
 } from "./shared";
 const campaignResourceObject = {
   type: "object" as const,
@@ -18,42 +19,61 @@ const campaignResourceObject = {
           type: "object" as const,
           properties: {
             included: { type: "array" as const, items: { type: "string" } },
-            excluded: { type: "array" as const, items: { type: "string" } },
+            excluded: { type: ["array", "null"], items: { type: "string" } },
           },
         },
-        sendOptions: { type: "object" as const },
-        trackingOptions: { type: "object" as const },
+        sendOptions: {
+          type: "object" as const,
+          properties: {
+            useSmartSending: { type: ["boolean", "null"] },
+          },
+        },
+        trackingOptions: {
+          type: ["object", "null"],
+          properties: {
+            addTrackingParams: { type: ["boolean", "null"] },
+            customTrackingParams: {
+              type: ["array", "null"],
+              items: {
+                type: "object" as const,
+                properties: {
+                  type: { type: "string" },
+                  name: { type: "string" },
+                  value: { type: "string" },
+                },
+              },
+            },
+            isTrackingClicks: { type: ["boolean", "null"] },
+            isTrackingOpens: { type: ["boolean", "null"] },
+          },
+        },
         sendStrategy: {
           type: "object" as const,
           properties: {
             method: { type: "string" },
-            optionsStatic: {
-              type: "object" as const,
+            datetime: { type: "string", format: "date-time" },
+            date: { type: "string" },
+            options: {
+              type: ["object", "null"],
               properties: {
-                datetime: { type: "string", format: "date-time" },
                 isLocal: { type: "boolean" },
                 sendPastRecipientsImmediately: { type: "boolean" },
               },
             },
-            optionsThrottled: {
-              type: "object" as const,
-              properties: {
-                datetime: { type: "string", format: "date-time" },
-                throttlePercentage: { type: "number" },
-              },
-            },
-            optionsSto: {
-              type: "object" as const,
-              properties: {
-                date: { type: "string" },
-              },
-            },
+            throttlePercentage: { type: "number" },
           },
         },
         createdAt: { type: "string", format: "date-time" },
         scheduledAt: { type: ["string", "null"] },
         updatedAt: { type: "string", format: "date-time" },
         sendTime: { type: ["string", "null"] },
+      },
+    },
+    relationships: {
+      type: "object" as const,
+      properties: {
+        campaignMessages: toManyRelationshipSchema,
+        tags: toManyRelationshipSchema,
       },
     },
     links: resourceLinksSchema,
@@ -64,6 +84,7 @@ export const createCampaignOutputSchema = {
   type: "object" as const,
   properties: {
     data: campaignResourceObject,
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };
@@ -75,6 +96,7 @@ export const getCampaignOutputSchema = {
       type: "array" as const,
       items: includedItemSchema,
     },
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };

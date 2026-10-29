@@ -2,6 +2,8 @@ import {
   collectionLinksSchema,
   includedItemSchema,
   resourceLinksSchema,
+  toManyRelationshipSchema,
+  toOneRelationshipSchema,
 } from "./shared";
 const eventResourceObject = {
   type: "object" as const,
@@ -17,6 +19,14 @@ const eventResourceObject = {
         uuid: { type: ["string", "null"] },
       },
     },
+    relationships: {
+      type: "object" as const,
+      properties: {
+        profile: toOneRelationshipSchema,
+        metric: toOneRelationshipSchema,
+        attributions: toManyRelationshipSchema,
+      },
+    },
     links: resourceLinksSchema,
   },
   required: ["type", "id", "attributes", "links"],
@@ -29,6 +39,7 @@ export const getEventOutputSchema = {
       type: "array" as const,
       items: includedItemSchema,
     },
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };

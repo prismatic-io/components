@@ -56,14 +56,14 @@ const showUpdatedRecords = input({
 export const pollCampaignChangesInputs = {
   connection,
   pollMessageChannel,
-  lookBackDate,
   showNewRecords,
   showUpdatedRecords,
+  lookBackDate,
 };
 export const pollProfileAndListChangesInputs = {
   connection,
   pollProfileOrListResourceType,
-  lookBackDate,
   showNewRecords,
   showUpdatedRecords,
+  lookBackDate,
 };

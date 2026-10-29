@@ -24,11 +24,7 @@ export const getSegment = action({
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: getSegmentExamplePayload.data,
-  }),
+  examplePerform: async () => getSegmentExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -21,6 +21,7 @@ export const deleteTemplate = action({
       data: "Template deleted successfully.",
     };
   },
+  examplePerform: async () => deleteTemplateExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

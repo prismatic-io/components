@@ -16,7 +16,13 @@ export const uploadImage = action({
     const imagesApi = getApi(connection, KlaviyoApi.Images);
     const debug = context.debug.enabled;
     const importFromUrl =
-      imageUrl || bufferToDataUri(fileData.data, fileData.contentType);
+      imageUrl ||
+      (fileData
+        ? bufferToDataUri(fileData.data, fileData.contentType)
+        : undefined);
+    if (!importFromUrl) {
+      throw new Error("Provide either an Image URL or File Data.");
+    }
     if (debug) {
       context.logger.debug({
         connection,
@@ -40,6 +46,7 @@ export const uploadImage = action({
       data: body,
     };
   },
+  examplePerform: async () => uploadImageExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

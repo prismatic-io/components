@@ -13,22 +13,22 @@ const accountResourceObject = {
           properties: {
             defaultSenderName: { type: "string" },
             defaultSenderEmail: { type: "string" },
-            websiteUrl: { type: "string" },
+            websiteUrl: { type: ["string", "null"] },
             organizationName: { type: "string" },
             streetAddress: {
               type: "object" as const,
               properties: {
-                address1: { type: "string" },
-                address2: { type: "string" },
+                address1: { type: ["string", "null"] },
+                address2: { type: ["string", "null"] },
                 city: { type: "string" },
-                region: { type: "string" },
-                country: { type: "string" },
-                zip: { type: "string" },
+                region: { type: ["string", "null"] },
+                country: { type: ["string", "null"] },
+                zip: { type: ["string", "null"] },
               },
             },
           },
         },
-        industry: { type: "string" },
+        industry: { type: ["string", "null"] },
         timezone: { type: "string" },
         preferredCurrency: { type: "string" },
         publicApiKey: { type: "string" },
@@ -43,6 +43,7 @@ export const getAccountOutputSchema = {
   type: "object" as const,
   properties: {
     data: accountResourceObject,
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };

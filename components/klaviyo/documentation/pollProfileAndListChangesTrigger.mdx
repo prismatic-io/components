@@ -39,7 +39,7 @@ With batching enabled, each execution receives a single `{ changeType, record }`
 
 #### Returned Data
 
-The trigger returns an object with two arrays: `created` for newly created records and `updated` for modified records. Each record follows the Klaviyo JSON:API resource shape for the selected resource type. Fields shown are representative. The full response object includes additional properties.
+The trigger returns an object with two arrays: `created` for newly created records and `updated` for modified records. Each record follows the Klaviyo JSON:API resource shape for the selected resource type. Fields shown are representative. The full response object includes additional properties. With batching enabled, each execution instead receives one item, or a batch of items, of the form `{ "changeType": "created" | "updated", "record": <profile or list> }`.
 
 <details>
 <summary>Example Payload (Profiles)</summary>

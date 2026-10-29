@@ -11,36 +11,36 @@ import type {
   FieldsTemplate,
 } from "../types";
 import type {
+  CampaignResponseObjectResource,
   CampaignsApi,
+  EventResponseObjectResource,
   EventsApi,
   GetCampaignResponseCollectionCompoundDocument,
-  GetCampaignResponseCollectionCompoundDocumentDataInner,
   GetEventResponseCollectionCompoundDocument,
-  GetEventResponseCollectionCompoundDocumentDataInner,
   GetEventResponseCollectionCompoundDocumentIncludedInner,
   GetImageResponseCollection,
   GetListListResponseCollectionCompoundDocument,
-  GetListListResponseCollectionCompoundDocumentDataInner,
   GetListMemberResponseCollection,
-  GetListMemberResponseCollectionDataInner,
-  GetProfileResponseCollectionCompoundDocument,
-  GetProfileResponseData,
+  GetProfileResponseCollection,
   GetSegmentListResponseCollectionCompoundDocument,
-  GetSegmentListResponseCollectionCompoundDocumentDataInner,
-  GetTemplateResponseCollection,
+  GetTemplateDndResponseCollection,
   ImageResponseObjectResource,
   ImagesApi,
+  ListListResponseObjectResource,
+  ListMemberResponseObjectResourceExtended,
   ListsApi,
+  ProfileResponseObjectResourceExtended,
   ProfilesApi,
+  SegmentListResponseObjectResource,
   SegmentsApi,
-  TemplateResponseObjectResource,
+  TemplateDndResponseObjectResourceExtended,
   TemplatesApi,
 } from "klaviyo-api";
 export const fetchCampaigns = async (
   campaignsApi: CampaignsApi,
   fieldsCampaign: FieldsCampaign[] | undefined,
   filterCampaigns: string,
-  data: GetCampaignResponseCollectionCompoundDocumentDataInner[] = [],
+  data: CampaignResponseObjectResource[] = [],
   next?: string,
 ): Promise<GetCampaignResponseCollectionCompoundDocument> => {
   const {
@@ -52,13 +52,13 @@ export const fetchCampaigns = async (
     pageCursor: next,
   });
   data.push(...body.data);
-  if (body.links.next) {
+  if (body.links?.next) {
     return fetchCampaigns(
       campaignsApi,
       fieldsCampaign,
       filterCampaigns,
       data,
-      body.links.next,
+      body.links?.next,
     );
   } else {
     body.data = data;
@@ -83,7 +83,7 @@ export const fetchEvents = async (
   fieldsEvent: FieldsEvent[] | undefined,
   fieldsMetric: FieldsMetric[] | undefined,
   fieldsProfile: FieldsProfileEvent[] | undefined,
-  data: GetEventResponseCollectionCompoundDocumentDataInner[] = [],
+  data: EventResponseObjectResource[] = [],
   includedData: GetEventResponseCollectionCompoundDocumentIncludedInner[] = [],
   next?: string,
 ): Promise<GetEventResponseCollectionCompoundDocument> => {
@@ -105,7 +105,7 @@ export const fetchEvents = async (
     includedData.push(...newItems);
   }
   data.push(...body.data);
-  if (body.links.next) {
+  if (body.links?.next) {
     return fetchEvents(
       eventsApi,
       fieldsEvent,
@@ -113,7 +113,7 @@ export const fetchEvents = async (
       fieldsProfile,
       data,
       includedData,
-      body.links.next,
+      body.links?.next,
     );
   } else {
     body.data = data;
@@ -138,8 +138,8 @@ export const fetchImages = async (
     pageCursor: next,
   });
   data.push(...body.data);
-  if (body.links.next) {
-    return fetchImages(imagesApi, fieldsImage, data, body.links.next);
+  if (body.links?.next) {
+    return fetchImages(imagesApi, fieldsImage, data, body.links?.next);
   } else {
     body.data = data;
     return body;
@@ -150,7 +150,7 @@ export const fetchListProfiles = async (
   listId: string,
   additionalFieldsProfile: AdditionalFieldsProfile[] | undefined,
   fieldsProfile: FieldsProfile[] | undefined,
-  data: GetListMemberResponseCollectionDataInner[] = [],
+  data: ListMemberResponseObjectResourceExtended[] = [],
   next?: string,
 ): Promise<GetListMemberResponseCollection> => {
   const {
@@ -163,14 +163,14 @@ export const fetchListProfiles = async (
     pageCursor: next,
   });
   data.push(...body.data);
-  if (body.links.next) {
+  if (body.links?.next) {
     return fetchListProfiles(
       listsApi,
       listId,
       additionalFieldsProfile,
       fieldsProfile,
       data,
-      body.links.next,
+      body.links?.next,
     );
   } else {
     body.data = data;
@@ -180,7 +180,7 @@ export const fetchListProfiles = async (
 export const fetchLists = async (
   listsApi: ListsApi,
   fieldsList: FieldsList[] | undefined,
-  data: GetListListResponseCollectionCompoundDocumentDataInner[] = [],
+  data: ListListResponseObjectResource[] = [],
   next?: string,
 ): Promise<GetListListResponseCollectionCompoundDocument> => {
   const {
@@ -192,8 +192,8 @@ export const fetchLists = async (
     pageCursor: next,
   });
   data.push(...body.data);
-  if (body.links.next) {
-    return fetchLists(listsApi, fieldsList, data, body.links.next);
+  if (body.links?.next) {
+    return fetchLists(listsApi, fieldsList, data, body.links?.next);
   } else {
     body.data = data;
     return body;
@@ -203,26 +203,26 @@ export const fetchProfile = async (
   profilesApi: ProfilesApi,
   fieldsProfile: FieldsProfile[] | undefined,
   additionalFieldsProfile: AdditionalFieldsProfile[] | undefined,
-  data: GetProfileResponseData[] = [],
+  data: ProfileResponseObjectResourceExtended[] = [],
   next?: string,
-): Promise<GetProfileResponseCollectionCompoundDocument> => {
+): Promise<GetProfileResponseCollection> => {
   const {
     body,
   }: {
-    body: GetProfileResponseCollectionCompoundDocument;
+    body: GetProfileResponseCollection;
   } = await profilesApi.getProfiles({
     fieldsProfile,
     additionalFieldsProfile,
     pageCursor: next,
   });
   data.push(...body.data);
-  if (body.links.next) {
+  if (body.links?.next) {
     return fetchProfile(
       profilesApi,
       fieldsProfile,
       additionalFieldsProfile,
       data,
-      body.links.next,
+      body.links?.next,
     );
   } else {
     body.data = data;
@@ -232,7 +232,7 @@ export const fetchProfile = async (
 export const fetchSegments = async (
   segmentsApi: SegmentsApi,
   fieldsSegment: FieldsSegment[] | undefined,
-  data: GetSegmentListResponseCollectionCompoundDocumentDataInner[] = [],
+  data: SegmentListResponseObjectResource[] = [],
   next?: string,
 ): Promise<GetSegmentListResponseCollectionCompoundDocument> => {
   const {
@@ -244,8 +244,8 @@ export const fetchSegments = async (
     pageCursor: next,
   });
   data.push(...body.data);
-  if (body.links.next) {
-    return fetchSegments(segmentsApi, fieldsSegment, data, body.links.next);
+  if (body.links?.next) {
+    return fetchSegments(segmentsApi, fieldsSegment, data, body.links?.next);
   } else {
     body.data = data;
     return body;
@@ -254,20 +254,20 @@ export const fetchSegments = async (
 export const fetchTemplates = async (
   templatesApi: TemplatesApi,
   fieldsTemplate: FieldsTemplate[] | undefined,
-  data: TemplateResponseObjectResource[] = [],
+  data: TemplateDndResponseObjectResourceExtended[] = [],
   next?: string,
-): Promise<GetTemplateResponseCollection> => {
+): Promise<GetTemplateDndResponseCollection> => {
   const {
     body,
   }: {
-    body: GetTemplateResponseCollection;
+    body: GetTemplateDndResponseCollection;
   } = await templatesApi.getTemplates({
     fieldsTemplate,
     pageCursor: next,
   });
   data.push(...body.data);
-  if (body.links.next) {
-    return fetchTemplates(templatesApi, fieldsTemplate, data, body.links.next);
+  if (body.links?.next) {
+    return fetchTemplates(templatesApi, fieldsTemplate, data, body.links?.next);
   } else {
     body.data = data;
     return body;

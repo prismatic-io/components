@@ -4,7 +4,7 @@ import { getCampaignInputs as inputs } from "../../inputs";
 import { getApi } from "../../api";
 import { getCampaignExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
-import type { FieldsCampaign } from "../../types";
+import { toCampaignFields } from "../../util";
 export const getCampaign = action({
   display: {
     label: "Get Campaign",
@@ -18,17 +18,13 @@ export const getCampaign = action({
       context.logger.debug({ connection, campaignId, fieldsCampaign, debug });
     }
     const { body } = await campaignsApi.getCampaign(campaignId, {
-      fieldsCampaign: fieldsCampaign as FieldsCampaign[],
+      fieldsCampaign: toCampaignFields(fieldsCampaign),
     });
     return {
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: getCampaignExamplePayload.data,
-  }),
+  examplePerform: async () => getCampaignExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

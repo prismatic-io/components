@@ -28,6 +28,7 @@ export const listTemplates = action({
       data,
     };
   },
+  examplePerform: async () => listTemplatesExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -61,7 +61,7 @@ export const fetchProfileOrListRecords = async (
     do {
       const { body } = await api.getProfiles({ pageCursor: next, filter });
       all.push(...(body.data as unknown as KlaviyoRecord[]));
-      next = body.links.next;
+      next = body.links?.next;
     } while (next);
     return all;
   }
@@ -69,7 +69,7 @@ export const fetchProfileOrListRecords = async (
   do {
     const { body } = await api.getLists({ pageCursor: next, filter });
     all.push(...(body.data as unknown as KlaviyoRecord[]));
-    next = body.links.next;
+    next = body.links?.next;
   } while (next);
   return all;
 };

@@ -3,11 +3,11 @@ import { createCampaignOutputSchema } from "../../outputSchemas";
 import { createCampaignInputs as inputs } from "../../inputs";
 import { getApi } from "../../api";
 import {
-  type CampaignCreateQuery,
-  CampaignEnum,
-  type CampaignMessageCreateQueryResourceObject,
-  type SendStrategySubObject,
-} from "klaviyo-api";
+  toCampaignMessages,
+  toSendStrategy,
+  toTrackingOptions,
+} from "../../util";
+import { type CampaignCreateQuery, CampaignEnum } from "klaviyo-api";
 import { createCampaignExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
 export const createCampaign = action({
@@ -46,14 +46,14 @@ export const createCampaign = action({
         type: CampaignEnum.Campaign,
         attributes: {
           name: campaignName,
-          sendStrategy: campaignConfig.sendStrategy as SendStrategySubObject,
+          sendStrategy: toSendStrategy(campaignConfig.sendStrategy),
           sendOptions: campaignConfig.sendOptions,
-          trackingOptions: campaignConfig.trackingOptions,
+          trackingOptions: toTrackingOptions(campaignConfig.trackingOptions),
           campaignMessages: {
-            data: campaignMessages as CampaignMessageCreateQueryResourceObject[],
+            data: toCampaignMessages(campaignMessages) ?? [],
           },
           audiences: {
-            included: includedAudiences,
+            included: includedAudiences ?? [],
             excluded: excludedAudiences,
           },
         },
@@ -64,6 +64,7 @@ export const createCampaign = action({
       data: body,
     };
   },
+  examplePerform: async () => createCampaignExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -11,6 +11,7 @@ const templateResourceObject = {
         editorType: { type: "string" },
         html: { type: "string" },
         text: { type: ["string", "null"] },
+        amp: { type: ["string", "null"] },
         created: { type: ["string", "null"], format: "date-time" },
         updated: { type: ["string", "null"], format: "date-time" },
       },
@@ -23,6 +24,7 @@ export const createTemplateOutputSchema = {
   type: "object" as const,
   properties: {
     data: templateResourceObject,
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };

@@ -28,6 +28,7 @@ export const listSegments = action({
       data,
     };
   },
+  examplePerform: async () => listSegmentsExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

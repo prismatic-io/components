@@ -47,6 +47,7 @@ export const createSegment = action({
       data: body,
     };
   },
+  examplePerform: async () => createSegmentExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

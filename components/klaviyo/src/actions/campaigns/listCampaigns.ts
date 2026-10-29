@@ -2,10 +2,9 @@ import { action, outputSchema } from "@prismatic-io/spectral";
 import { listCampaignsOutputSchema } from "../../outputSchemas";
 import { listCampaignsInputs as inputs } from "../../inputs";
 import { getApi } from "../../api";
-import { fetchCampaigns } from "../../util";
+import { fetchCampaigns, toCampaignFields } from "../../util";
 import { listCampaignsExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
-import type { FieldsCampaign } from "../../types";
 export const listCampaigns = action({
   display: {
     label: "List Campaigns",
@@ -25,7 +24,7 @@ export const listCampaigns = action({
     }
     const data = await fetchCampaigns(
       campaignsApi,
-      fieldsCampaign as FieldsCampaign[],
+      toCampaignFields(fieldsCampaign),
       filterCampaigns,
       [],
       undefined,
@@ -34,6 +33,7 @@ export const listCampaigns = action({
       data,
     };
   },
+  examplePerform: async () => listCampaignsExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -57,6 +57,7 @@ export const updateSegment = action({
       data: body,
     };
   },
+  examplePerform: async () => updateSegmentExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

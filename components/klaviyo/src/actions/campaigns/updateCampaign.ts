@@ -2,11 +2,8 @@ import { action, outputSchema } from "@prismatic-io/spectral";
 import { updateCampaignOutputSchema } from "../../outputSchemas";
 import { updateCampaignInputs as inputs } from "../../inputs";
 import { getApi } from "../../api";
-import {
-  CampaignEnum,
-  type CampaignPartialUpdateQuery,
-  type SendStrategySubObject,
-} from "klaviyo-api";
+import { toSendStrategy, toTrackingOptions } from "../../util";
+import { CampaignEnum, type CampaignPartialUpdateQuery } from "klaviyo-api";
 import { updateCampaignExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
 export const updateCampaign = action({
@@ -44,9 +41,9 @@ export const updateCampaign = action({
         type: CampaignEnum.Campaign,
         attributes: {
           name: campaignName,
-          sendStrategy: campaignConfig.sendStrategy as SendStrategySubObject,
+          sendStrategy: toSendStrategy(campaignConfig.sendStrategy),
           sendOptions: campaignConfig.sendOptions,
-          trackingOptions: campaignConfig.trackingOptions,
+          trackingOptions: toTrackingOptions(campaignConfig.trackingOptions),
           audiences: {
             included: includedAudiences,
             excluded: excludedAudiences,
@@ -60,6 +57,7 @@ export const updateCampaign = action({
       data: body,
     };
   },
+  examplePerform: async () => updateCampaignExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -37,6 +37,7 @@ export const listProfile = action({
       data,
     };
   },
+  examplePerform: async () => listProfileExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

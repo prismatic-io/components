@@ -41,6 +41,7 @@ export const subscribeProfiles = action({
       data: "Profiles subscribed successfully.",
     };
   },
+  examplePerform: async () => subscribeProfilesExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -24,6 +24,10 @@ export const cleanCodeInput = (value: unknown, inputLabel: string) => {
   }
   return undefined;
 };
+export const cleanCodeInputOrEmptyObject = (
+  value: unknown,
+  inputLabel: string,
+) => cleanCodeInput(value, inputLabel) || {};
 export const cleanArrayCodeInput = (value: unknown, inputLabel: string) => {
   if (value) {
     let object: unknown;
@@ -70,8 +74,4 @@ export const lookBackDateClean = (value: unknown): string => {
     throw new Error("Look-back Date cannot be a future date.");
   }
   return raw;
-};
-export const bufferToDataUri = (buffer: Buffer, mimeType: string): string => {
-  const base64String = buffer.toString("base64");
-  return `data:${mimeType};base64,${base64String}`;
 };

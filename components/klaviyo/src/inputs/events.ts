@@ -7,6 +7,7 @@ import {
 } from "../constants";
 import {
   cleanCodeInput,
+  cleanCodeInputOrEmptyObject,
   cleanDate,
   cleanNumberInput,
   cleanStringInput,
@@ -40,6 +41,7 @@ const eventProperties = input({
   comments: "A JSON object of custom key-value pairs to attach to the event.",
   type: "code",
   language: "json",
+  placeholder: "Enter event properties as JSON",
   required: true,
   example: JSON.stringify(
     {
@@ -48,20 +50,20 @@ const eventProperties = input({
     null,
     2,
   ),
-  clean: (value) => cleanCodeInput(value, "Event Properties") || {},
+  clean: (value) => cleanCodeInputOrEmptyObject(value, "Event Properties"),
 });
 const eventTime = input({
-  label: "Event Time",
+  label: "Time",
   comments:
-    "When this event occurred. By default, the time the request was received will be used.",
+    "When this event occurred, as an ISO 8601 datetime. By default, the time the request was received will be used.",
   type: "string",
   required: false,
   example: "2024-07-10T14:48:00.000Z",
-  placeholder: "Enter a timestamp",
-  clean: (value) => cleanDate(value, "Event Time"),
+  placeholder: "Enter a timestamp (ISO 8601)",
+  clean: (value) => cleanDate(value, "Time"),
 });
 const eventValue = input({
-  label: "Event Value",
+  label: "Value",
   comments: "A numeric, monetary value to associate with this event.",
   type: "string",
   required: false,
@@ -70,7 +72,7 @@ const eventValue = input({
   clean: cleanNumberInput,
 });
 const eventValueCurrency = input({
-  label: "Event Value Currency",
+  label: "Value Currency",
   comments:
     "The ISO 4217 currency code of the value associated with the event.",
   type: "string",
@@ -80,8 +82,9 @@ const eventValueCurrency = input({
   clean: cleanStringInput,
 });
 const eventUniqueId = input({
-  label: "Event Unique ID",
-  comments: "A unique identifier for this event.",
+  label: "Unique ID",
+  comments:
+    "A deduplication key for the event. When the same unique ID is sent again for the same profile and metric, only the first event is recorded.",
   type: "string",
   required: false,
   example: "123",
@@ -99,9 +102,11 @@ const eventName = input({
 });
 const eventProfile = input({
   label: "Event Profile",
-  comments: "The profile associated with this event.",
+  comments:
+    "The profile the event is attributed to, as a JSON object of profile attributes. Include email or phoneNumber to identify the profile.",
   type: "code",
   language: "json",
+  placeholder: "Enter profile attributes as JSON",
   required: true,
   example: JSON.stringify(
     {
@@ -146,7 +151,7 @@ const eventProfile = input({
 const eventFields = structuredObjectInput({
   label: "Event Details",
   required: false,
-  comments: "Timestamp, monetary value, currency, and unique ID for the event.",
+  comments: "Timestamp, monetary value, currency, and unique ID.",
   inputs: { eventTime, eventValue, eventValueCurrency, eventUniqueId },
 });
 export const createEventInputs = {
@@ -178,6 +183,7 @@ const eventsArray = input({
   comments: "An array of events to create.",
   type: "code",
   language: "json",
+  placeholder: "Enter events as a JSON array",
   required: true,
   example: JSON.stringify(
     [

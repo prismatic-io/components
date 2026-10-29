@@ -10,12 +10,12 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@prismatic-io/spectral": "10.31.1",
-    "klaviyo-api": "^10.1.0"
+    "@prismatic-io/spectral": "10.36.2",
+    "klaviyo-api": "23.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
-    "@types/node": "^22",
+    "@types/node": "^26",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
     "vitest": "^4.1.11"

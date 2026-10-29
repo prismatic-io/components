@@ -1,4 +1,5 @@
 export type { KlaviyoApiMap } from "./api";
+export type { UnknownRecord } from "./common";
 export type {
   AdditionalFieldsProfile,
   FieldsAccount,

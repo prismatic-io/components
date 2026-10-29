@@ -2,6 +2,7 @@ import {
   collectionLinksSchema,
   includedItemSchema,
   resourceLinksSchema,
+  toManyRelationshipSchema,
 } from "./shared";
 const listResourceObject = {
   type: "object" as const,
@@ -17,6 +18,14 @@ const listResourceObject = {
         optInProcess: { type: ["string", "null"] },
       },
     },
+    relationships: {
+      type: "object" as const,
+      properties: {
+        profiles: toManyRelationshipSchema,
+        tags: toManyRelationshipSchema,
+        flowTriggers: toManyRelationshipSchema,
+      },
+    },
     links: resourceLinksSchema,
   },
   required: ["type", "id", "attributes", "links"],
@@ -25,6 +34,7 @@ export const createListOutputSchema = {
   type: "object" as const,
   properties: {
     data: listResourceObject,
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };
@@ -36,6 +46,7 @@ export const getListOutputSchema = {
       type: "array" as const,
       items: includedItemSchema,
     },
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };

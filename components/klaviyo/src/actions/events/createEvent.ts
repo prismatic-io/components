@@ -14,7 +14,7 @@ import { KlaviyoApi } from "../../constants";
 export const createEvent = action({
   display: {
     label: "Create Event",
-    description: "Create a new event to track a profiles activity.",
+    description: "Create a new event to track a profile's activity.",
   },
   performSafety: "notAllowed",
   perform: async (
@@ -65,6 +65,7 @@ export const createEvent = action({
       data: "Event created successfully.",
     };
   },
+  examplePerform: async () => createEventExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

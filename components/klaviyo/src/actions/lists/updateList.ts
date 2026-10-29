@@ -31,6 +31,7 @@ export const updateList = action({
       data: body,
     };
   },
+  examplePerform: async () => updateListExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

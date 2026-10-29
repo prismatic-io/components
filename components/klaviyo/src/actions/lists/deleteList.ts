@@ -21,6 +21,7 @@ export const deleteList = action({
       data: "List deleted successfully.",
     };
   },
+  examplePerform: async () => deleteListExamplePayload,
   inputs,
   examplePayload: deleteListExamplePayload,
   outputSchema: outputSchema({

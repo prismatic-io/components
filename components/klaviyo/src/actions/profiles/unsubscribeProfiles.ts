@@ -13,7 +13,7 @@ export const unsubscribeProfiles = action({
   display: {
     label: "Unsubscribe Profiles",
     description:
-      "Unsubscribe one or more profiles to email marketing, SMS marketing, or both.",
+      "Unsubscribe one or more profiles from email marketing, SMS marketing, or both.",
   },
   performSafety: "notAllowed",
   perform: async (context, { connection, unsubscribeProfiles }) => {
@@ -41,6 +41,7 @@ export const unsubscribeProfiles = action({
       data: "Profiles unsubscribed successfully.",
     };
   },
+  examplePerform: async () => unsubscribeProfilesExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

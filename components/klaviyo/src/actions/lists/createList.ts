@@ -30,6 +30,7 @@ export const createList = action({
       data: body,
     };
   },
+  examplePerform: async () => createListExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

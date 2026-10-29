@@ -1,5 +1,16 @@
 ## Changelog
 
+### 2026-10-29
+
+Updated all actions and triggers to Klaviyo API revision 2026-07-15.
+
+- Updated **Create Campaign** and **Update Campaign** to convert **Send Strategy** and **Tracking Options** values written for revision 2024-06-15 to the current shape, and **Create Campaign** to convert **Campaign Messages** the same way, so configured values keep working; email messages no longer send render options and SMS messages no longer send a label, which the new revision does not accept
+- Updated **Get Campaign** and **List Campaigns** to map **Fields** selections made under revision 2024-06-15 to their current equivalents
+- Updated **Upload Image** to raise a clear error when neither **Image URL** nor **File Data** is provided
+- Added inline action calling support to 28 actions for improved example output during configuration
+
+Reconfiguration notice: campaigns returned by **Create Campaign**, **Update Campaign**, **Get Campaign**, **List Campaigns**, and the **New and Updated Campaigns** trigger now follow revision 2026-07-15, so `sendStrategy` carries `method`, `datetime`, and `options` directly, `trackingOptions` returns `addTrackingParams` and `customTrackingParams` instead of `isAddUtm` and `utmParams`, and campaign-message details sit under `definition`. Nothing can be re-entered to restore the earlier keys; check any downstream step that reads them.
+
 ### 2026-09-28
 
 - Added output schemas to 37 actions for improved field mapping during configuration

@@ -104,9 +104,11 @@ const image = input({
 });
 const location = input({
   label: "Location",
-  comments: "Location information for the profile.",
+  comments:
+    "The profile's postal address, coordinates, timezone, and IP address, as a JSON object.",
   type: "code",
   language: "json",
+  placeholder: "Enter location as JSON",
   example: JSON.stringify(
     {
       address1: "89 E 42nd St",
@@ -132,6 +134,7 @@ const properties = input({
     "An object containing key/value pairs for any custom properties assigned to this profile.",
   type: "code",
   language: "json",
+  placeholder: "Enter custom properties as JSON",
   required: false,
   example: JSON.stringify(
     {
@@ -140,12 +143,12 @@ const properties = input({
     null,
     2,
   ),
-  clean: (value) => cleanCodeInput(value, "Event Properties"),
+  clean: (value) => cleanCodeInput(value, "Properties"),
 });
 const contactInfo = structuredObjectInput({
-  label: "Contact Information",
+  label: "Name & Contact Information",
   required: false,
-  comments: "Email, phone, and other contact channel details.",
+  comments: "Name, email, phone, and other contact channel details.",
   inputs: { email, phoneNumber, firstName, lastName },
 });
 const profileFields = structuredObjectInput({
@@ -177,6 +180,7 @@ const subscribeProfiles = input({
   comments: "Array of profiles to subscribe.",
   type: "code",
   language: "json",
+  placeholder: "Enter profiles as a JSON array",
   example: JSON.stringify(
     [
       {
@@ -207,6 +211,7 @@ const unsubscribeProfiles = input({
   comments: "Array of profiles to unsubscribe.",
   type: "code",
   language: "json",
+  placeholder: "Enter profiles as a JSON array",
   example: JSON.stringify(
     [
       {

@@ -24,11 +24,7 @@ export const getList = action({
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: getListExamplePayload.data,
-  }),
+  examplePerform: async () => getListExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

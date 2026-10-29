@@ -35,11 +35,7 @@ export const getProfile = action({
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: getProfileExamplePayload.data,
-  }),
+  examplePerform: async () => getProfileExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

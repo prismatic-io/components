@@ -1,7 +1,7 @@
 import { action, outputSchema } from "@prismatic-io/spectral";
 import { createTemplateOutputSchema } from "../../outputSchemas";
 import { getApi } from "../../api";
-import { type TemplateCreateQuery, TemplateEnum } from "klaviyo-api";
+import { type TemplateCreateHtmlOrDndQuery, TemplateEnum } from "klaviyo-api";
 import { createTemplateInputs as inputs } from "../../inputs";
 import { createTemplateExamplePayload } from "../../examplePayloads";
 import { KlaviyoApi } from "../../constants";
@@ -27,7 +27,7 @@ export const createTemplate = action({
         debug,
       });
     }
-    const template: TemplateCreateQuery = {
+    const template: TemplateCreateHtmlOrDndQuery = {
       data: {
         type: TemplateEnum.Template,
         attributes: {
@@ -43,6 +43,7 @@ export const createTemplate = action({
       data: body,
     };
   },
+  examplePerform: async () => createTemplateExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

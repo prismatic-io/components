@@ -26,6 +26,7 @@ const segmentConditionGroups = input({
   required: true,
   label: "Segment Condition Groups",
   comments: "The condition groups that define the segment.",
+  placeholder: "Enter condition groups as a JSON array",
   example: JSON.stringify(
     [
       {

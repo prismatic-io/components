@@ -43,6 +43,7 @@ export const listEvents = action({
       data,
     };
   },
+  examplePerform: async () => listEventsExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

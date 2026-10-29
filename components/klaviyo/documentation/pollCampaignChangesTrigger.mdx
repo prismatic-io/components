@@ -32,7 +32,7 @@ With batching enabled, each execution receives a single `{ changeType, record }`
 
 #### Returned Data
 
-The trigger returns an object with two arrays: `created` for newly created campaigns and `updated` for modified campaigns. Both arrays follow the Klaviyo JSON:API resource shape. Fields shown are representative. The full response object includes additional properties.
+The trigger returns an object with two arrays: `created` for newly created campaigns and `updated` for modified campaigns. Both arrays follow the Klaviyo JSON:API resource shape. Fields shown are representative. The full response object includes additional properties. With batching enabled, each execution instead receives one item, or a batch of items, of the form `{ "changeType": "created" | "updated", "record": <campaign> }`.
 
 <details>
 <summary>Example Payload</summary>
@@ -60,7 +60,9 @@ The trigger returns an object with two arrays: `created` for newly created campa
             "isTrackingOpens": true
           },
           "sendStrategy": {
-            "method": "static"
+            "method": "static",
+            "datetime": "2026-07-01T14:00:00Z",
+            "options": { "isLocal": false }
           },
           "createdAt": "2026-04-15T14:30:00Z",
           "scheduledAt": null,

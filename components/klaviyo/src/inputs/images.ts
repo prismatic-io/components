@@ -10,7 +10,7 @@ export const listImagesInputs = {
 const imageUrl = input({
   label: "Image URL",
   comments:
-    "An existing image url to import the image from. Alternatively, you may specify a base-64 encoded data-uri (`data:image/...`). Supported image formats: jpeg,png,gif. Maximum image size: 5MB. Use this field or File Data.",
+    "An existing image url to import the image from. A base-64 encoded data URI (`data:image/...`) is also accepted. Supported image formats: jpeg,png,gif. Maximum image size: 5MB. Use this field or File Data.",
   type: "string",
   example: "https://example.com/image.jpg",
   placeholder: "Enter an image URL",
@@ -33,7 +33,7 @@ const fileData = input({
   type: "data",
   required: false,
   comments:
-    "The contents to write to a file. Binary data generated from a previous step.",
+    "The image to upload, as binary data from a previous step. Use this field or Image URL.",
   clean: util.types.toData,
 });
 export const uploadImageInputs = {

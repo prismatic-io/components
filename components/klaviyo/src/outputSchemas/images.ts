@@ -23,6 +23,7 @@ export const getImageOutputSchema = {
   type: "object" as const,
   properties: {
     data: imageResourceObject,
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };

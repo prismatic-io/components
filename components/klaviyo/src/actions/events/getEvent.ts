@@ -45,11 +45,7 @@ export const getEvent = action({
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: getEventExamplePayload.data,
-  }),
+  examplePerform: async () => getEventExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

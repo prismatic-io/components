@@ -2,6 +2,7 @@ import {
   collectionLinksSchema,
   includedItemSchema,
   resourceLinksSchema,
+  toManyRelationshipSchema,
 } from "./shared";
 const segmentResourceObject = {
   type: "object" as const,
@@ -28,6 +29,14 @@ const segmentResourceObject = {
         isStarred: { type: "boolean" },
       },
     },
+    relationships: {
+      type: "object" as const,
+      properties: {
+        profiles: toManyRelationshipSchema,
+        tags: toManyRelationshipSchema,
+        flowTriggers: toManyRelationshipSchema,
+      },
+    },
     links: resourceLinksSchema,
   },
   required: ["type", "id", "attributes", "links"],
@@ -36,6 +45,7 @@ export const createSegmentOutputSchema = {
   type: "object" as const,
   properties: {
     data: segmentResourceObject,
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };
@@ -47,6 +57,7 @@ export const getSegmentOutputSchema = {
       type: "array" as const,
       items: includedItemSchema,
     },
+    links: resourceLinksSchema,
   },
   required: ["data"],
 };

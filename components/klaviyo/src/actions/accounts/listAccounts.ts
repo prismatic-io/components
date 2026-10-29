@@ -25,11 +25,7 @@ export const listAccounts = action({
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: listAccountsExamplePayload.data,
-  }),
+  examplePerform: async () => listAccountsExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

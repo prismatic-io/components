@@ -28,6 +28,7 @@ export const listImages = action({
       data,
     };
   },
+  examplePerform: async () => listImagesExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

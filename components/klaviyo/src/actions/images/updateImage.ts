@@ -38,6 +38,7 @@ export const updateImage = action({
       data: body,
     };
   },
+  examplePerform: async () => updateImageExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

@@ -29,11 +29,7 @@ export const getImage = action({
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: getImageExamplePayload.data,
-  }),
+  examplePerform: async () => getImageExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

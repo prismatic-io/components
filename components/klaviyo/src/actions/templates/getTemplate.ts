@@ -24,11 +24,7 @@ export const getTemplate = action({
       data: body,
     };
   },
-  examplePerform: async (): Promise<{
-    data: unknown;
-  }> => ({
-    data: getTemplateExamplePayload.data,
-  }),
+  examplePerform: async () => getTemplateExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

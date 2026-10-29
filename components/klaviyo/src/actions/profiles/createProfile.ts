@@ -44,6 +44,7 @@ export const createProfile = action({
       data: body,
     };
   },
+  examplePerform: async () => createProfileExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",

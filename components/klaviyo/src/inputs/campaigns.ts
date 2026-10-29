@@ -33,7 +33,9 @@ const campaignName = input({
 });
 const campaignMessages = input({
   label: "Campaign Messages",
-  comments: "The message(s) to send in the campaign.",
+  placeholder: "Enter campaign messages as a JSON array",
+  comments:
+    "The message(s) to send in the campaign. Messages that place channel, label and content directly under attributes, as API revision 2024-06-15 did, are converted to the current definition shape.",
   type: "code",
   language: "json",
   required: true,
@@ -42,22 +44,18 @@ const campaignMessages = input({
       {
         type: "campaign-message",
         attributes: {
-          channel: "email",
-          label: "My message name",
-          content: {
-            subject: "Buy our product!",
-            previewText: "My preview text",
-            fromEmail: "store@my-company.com",
-            fromLabel: "My Company",
-            replyToEmail: "reply-to@my-company.com",
-            ccEmail: "cc@my-company.com",
-            bccEmail: "bcc@my-company.com",
-          },
-          renderOptions: {
-            shortenLinks: true,
-            addOrgPrefix: true,
-            addInfoLink: true,
-            addOptOutLanguage: false,
+          definition: {
+            channel: "email",
+            label: "My message name",
+            content: {
+              subject: "Buy our product!",
+              previewText: "My preview text",
+              fromEmail: "store@my-company.com",
+              fromLabel: "My Company",
+              replyToEmail: "reply-to@my-company.com",
+              ccEmail: "cc@my-company.com",
+              bccEmail: "bcc@my-company.com",
+            },
           },
         },
       },
@@ -89,15 +87,17 @@ const excludedAudiences = input({
 });
 const trackingOptions = input({
   label: "Tracking Options",
+  placeholder: "Enter tracking options as JSON",
   comments:
-    "UTM parameters, click tracking, and open tracking configuration. Provide as a JSON object.",
+    "UTM parameters, click tracking, and open tracking configuration. Provide as a JSON object. The isAddUtm and utmParams fields of API revision 2024-06-15 are converted to addTrackingParams and customTrackingParams.",
   type: "code",
   language: "json",
   example: JSON.stringify(
     {
-      isAddUtm: true,
-      utmParams: [
+      addTrackingParams: true,
+      customTrackingParams: [
         {
+          type: "static",
           name: "utm_medium",
           value: "campaign",
         },
@@ -113,6 +113,7 @@ const trackingOptions = input({
 });
 const sendOptions = input({
   label: "Send Options",
+  placeholder: "Enter send options as JSON",
   comments:
     "Smart-sending and related delivery preferences. Provide as a JSON object.",
   type: "code",
@@ -129,24 +130,18 @@ const sendOptions = input({
 });
 const sendStrategy = input({
   label: "Send Strategy",
+  placeholder: "Enter a send strategy as JSON",
   comments:
-    "Scheduling method and timing for campaign delivery. Provide as a JSON object.",
+    "Scheduling method and timing for campaign delivery. Provide as a JSON object. The optionsStatic, optionsThrottled and optionsSto blocks of API revision 2024-06-15 are converted to the current shape.",
   type: "code",
   language: "json",
   example: JSON.stringify(
     {
       method: "static",
-      optionsStatic: {
-        datetime: new Date("2022-11-08T00:00:00+00:00"),
-        isLocal: false,
+      datetime: "2022-11-08T00:00:00+00:00",
+      options: {
+        isLocal: true,
         sendPastRecipientsImmediately: false,
-      },
-      optionsThrottled: {
-        datetime: new Date("2022-11-08T00:00:00+00:00"),
-        throttlePercentage: 10,
-      },
-      optionsSto: {
-        date: "",
       },
     },
     null,

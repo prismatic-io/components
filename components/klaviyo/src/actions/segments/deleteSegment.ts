@@ -21,6 +21,7 @@ export const deleteSegment = action({
       data: "Segment deleted successfully.",
     };
   },
+  examplePerform: async () => deleteSegmentExamplePayload,
   inputs,
   examplePayload: deleteSegmentExamplePayload,
   outputSchema: outputSchema({

@@ -49,6 +49,7 @@ export const updateProfile = action({
       data: body,
     };
   },
+  examplePerform: async () => updateProfileExamplePayload,
   inputs,
   outputSchema: outputSchema({
     type: "actionOutput",
