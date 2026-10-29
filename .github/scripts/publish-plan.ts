@@ -3,7 +3,16 @@ import { z } from "zod";
 
 export const MANIFEST_FILE = "npm-api/manifest.json";
 const SHARED_PACKAGE_PREFIX = "file:../../packages/";
-const REGISTRY = "https://registry.npmjs.org";
+export const REGISTRY = "https://registry.npmjs.org";
+
+/**
+ * `npm ci` without running any install script, the package's own `prepare`
+ * included. Builds come only from `npm run build` and `npm publish`, and no
+ * dependency's script runs where a package can publish. Every tsdown
+ * component's build output was checked to be identical with and without
+ * install scripts.
+ */
+export const NPM_CI_ARGS = ["ci", "--ignore-scripts", "--no-audit", "--no-fund"];
 
 const ManifestEntrySchema = z.object({
   name: z.string().min(1),
@@ -18,6 +27,7 @@ export type Manifest = z.infer<typeof ManifestSchema>;
 /** The parts of a component's package.json this reads; everything else passes through. */
 export const PackageJsonSchema = z
   .object({
+    name: z.string().optional(),
     version: z.string().optional(),
     dependencies: z.record(z.string(), z.string()).optional(),
     devDependencies: z.record(z.string(), z.string()).optional(),
@@ -58,6 +68,26 @@ export type Plan =
   | { action: "manual"; key: string; entry: ManifestEntry; reason: string }
   | { action: "error"; key: string; entry: ManifestEntry; reason: string };
 
+/** What a plan reads from a component's package.json, which is what npm publishes. */
+export type PackageIdentity = Pick<PackageJson, "name" | "version">;
+
+/**
+ * Why a manifest entry cannot publish, or null when it can. The registry is
+ * asked about the manifest's name and npm publishes the package.json, so the
+ * two must name the same package at the same version.
+ */
+const packageProblem = (entry: ManifestEntry, pkg: PackageIdentity | undefined): string | null => {
+  if (!pkg) return "there is no package.json";
+  if (pkg.name !== entry.name) {
+    return `package.json names ${pkg.name ?? "no package"}, the manifest ${entry.name}`;
+  }
+  if (pkg.version !== entry.version) {
+    return `package.json has ${pkg.version ?? "no version"}, the manifest ${entry.version}`;
+  }
+  if (!semver.valid(entry.version)) return `${entry.version} is not a valid version`;
+  return null;
+};
+
 /**
  * Decides, per manifest entry, whether to publish. Refuses a version below
  * what npm already has as latest: that means npm-api/ was reset
@@ -65,31 +95,21 @@ export type Plan =
  */
 export const planPublish = (
   manifest: Manifest,
-  packageVersions: Record<string, string | undefined>,
+  packages: Record<string, PackageIdentity | undefined>,
   published: Record<string, Published | null>,
 ): Plan[] =>
   Object.entries(manifest)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, entry]): Plan => {
-      const inPackage = packageVersions[key];
-      if (inPackage !== entry.version) {
-        return {
-          action: "error",
-          key,
-          entry,
-          reason: `package.json has ${inPackage ?? "no version"}, the manifest ${entry.version}`,
-        };
-      }
-      if (!semver.valid(entry.version)) {
-        return { action: "error", key, entry, reason: `${entry.version} is not a valid version` };
-      }
+      const invalid = packageProblem(entry, packages[key]);
+      if (invalid) return { action: "error", key, entry, reason: invalid };
       const onNpm = published[key];
       if (onNpm === null) {
         return {
           action: "manual",
           key,
           entry,
-          reason: "not on npm yet; a developer publishes the first version by hand",
+          reason: "not on npm yet; a developer creates it with `mise run publish-first`",
         };
       }
       if (onNpm?.versions.includes(entry.version)) {
@@ -105,6 +125,74 @@ export const planPublish = (
       }
       return { action: "publish", key, entry };
     });
+
+/**
+ * The version a developer publishes by hand to create a package on npm, below
+ * every version the manifest records. npm needs the package before it can
+ * trust the publish workflow, and a trusted publisher expires unless it
+ * publishes within two days, so the manifest's version is left for the
+ * workflow to publish right after.
+ */
+export const BOOTSTRAP_VERSION = "0.0.1";
+
+export type FirstPublish =
+  | { action: "bootstrap"; entry: ManifestEntry }
+  | { action: "trust"; entry: ManifestEntry }
+  | { action: "skip"; entry: ManifestEntry; reason: string }
+  | { action: "error"; reason: string };
+
+/**
+ * Decides what a developer's first publish of `key` does. A package npm has
+ * never seen gets the bootstrap version, then its trusted publisher. One with
+ * only the bootstrap version, as when a first publish stopped partway, gets its
+ * trusted publisher. Any other package on npm is the workflow's to publish.
+ */
+export const planFirstPublish = (
+  key: string,
+  entry: ManifestEntry | undefined,
+  pkg: PackageIdentity | undefined,
+  published: Published | null,
+): FirstPublish => {
+  if (!entry) {
+    return {
+      action: "error",
+      reason: `${key} is not in ${MANIFEST_FILE}, which lists every npm-ready component`,
+    };
+  }
+  const invalid = packageProblem(entry, pkg);
+  if (invalid) return { action: "error", reason: invalid };
+  if (!semver.gt(entry.version, BOOTSTRAP_VERSION)) {
+    return {
+      action: "error",
+      reason: `${entry.version} is not above ${BOOTSTRAP_VERSION}, so the workflow would have nothing to publish`,
+    };
+  }
+  if (published === null) return { action: "bootstrap", entry };
+  if (published.versions.includes(entry.version)) {
+    return { action: "skip", entry, reason: `npm already has ${entry.version}` };
+  }
+  if (published.versions.every((version) => version === BOOTSTRAP_VERSION)) {
+    return { action: "trust", entry };
+  }
+  return {
+    action: "skip",
+    entry,
+    reason: `npm already has ${published.latest ?? published.versions.join(", ")}; the publish workflow publishes its later versions`,
+  };
+};
+
+const TrustConfigSchema = z.object({ id: z.string() }).passthrough();
+
+/**
+ * Reads the configurations `npm trust list --json` prints. npm prints one JSON
+ * object per configuration, back to back, and nothing when there are none.
+ */
+export const trustConfigsIn = (output: string): z.infer<typeof TrustConfigSchema>[] => {
+  const trimmed = output.trim();
+  if (!trimmed) return [];
+  const listed = JSON.parse(`[${trimmed.replace(/}\s*{/g, "},{")}]`);
+  return parseAs(z.array(TrustConfigSchema), listed, "`npm trust list --json`");
+};
 
 /** Looks a package up on the registry; `fetchImpl` is a seam for tests. */
 export const fetchPublished = async (
