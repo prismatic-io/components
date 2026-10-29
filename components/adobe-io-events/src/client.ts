@@ -1,5 +1,5 @@
 import { type Connection, ConnectionError } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { adobeIOConnection } from "./connections";
 import { API_BASE_URL } from "./constants";
 export const validateConnection = (connection: Connection) => {

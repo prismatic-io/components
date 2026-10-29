@@ -1,0 +1,8 @@
+{
+  "adobe-io-events": {
+    "name": "@prismatic-io/components-adobe-io-events",
+    "version": "0.1.0",
+    "build": "193af1cb249158666c7999aa91a1631d4e567de8d9579eb868658c62527920e6",
+    "spectral": "^10.36.0"
+  }
+}

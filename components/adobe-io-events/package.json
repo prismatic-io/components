@@ -1,22 +1,50 @@
 {
-  "name": "adobe-io",
-  "private": true,
+  "name": "@prismatic-io/components-adobe-io-events",
+  "version": "0.1.0",
+  "main": "./npm-dist/index.cjs",
+  "types": "./npm-dist/index.d.cts",
+  "exports": {
+    ".": {
+      "types": "./npm-dist/index.d.cts",
+      "default": "./npm-dist/index.cjs"
+    }
+  },
+  "description": "Adobe I/O Events notifies you when changes occur. Use the Adobe I/O Events component to easily integrate events into your applications using Webhooks.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prismatic-io/components.git",
+    "directory": "components/adobe-io-events"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "npm-dist",
+    "dist"
+  ],
+  "prismatic": {
+    "component": "./dist/index.js"
+  },
   "scripts": {
-    "publish": "npm run build && prism components:publish",
     "build": "npm run format && npm run lint && tsdown",
     "typecheck": "tsc --noEmit",
     "lint": "biome check --write .",
     "format": "biome format --write .",
-    "test": "echo 'no tests'"
+    "test": "echo 'no tests'",
+    "prepare": "npm run build",
+    "publish:platform": "npm run build && prism components:publish"
   },
-  "dependencies": {
-    "@prismatic-io/spectral": "10.32.0"
+  "peerDependencies": {
+    "@prismatic-io/spectral": "^10.36.0"
   },
+  "dependencies": {},
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/node": "^26.6.3",
     "tsdown": "0.22.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.9",
+    "@prismatic-io/spectral": "^10.36.0"
   }
 }
