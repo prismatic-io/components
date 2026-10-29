@@ -263,9 +263,9 @@ export const lookBackDate = input({
   type: "string",
   required: false,
   comments:
-    "Optional ISO 8601 date used as the initial cursor on first deploy, allowing pre-existing events created or updated after this date to be included. When omitted the first poll seeds the cursor to now and emits nothing.",
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each event modified on or after this date once, ignoring the visibility filters.",
   example: "2026-01-01",
-  placeholder: "2026-01-01",
+  placeholder: "Enter look-back date (YYYY-MM-DD)",
   clean: cleanString,
 });
 export const showNewRecords = input({

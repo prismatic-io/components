@@ -21,6 +21,7 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
+    const isBackfill = !pollState?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt =
       pollState?.lastPolledAt ??
       (params.lookBackDate ? `${params.lookBackDate}T00:00:00Z` : now);
@@ -60,8 +61,9 @@ export const pollChangesTrigger = pollingTrigger({
       const isUpdated =
         !isNew &&
         (modifiedAtDate === null || modifiedAtDate > lastPolledAtDate);
-      if (isNew && params.showNewRecords) created.push(record);
-      else if (isUpdated && params.showUpdatedRecords) updated.push(record);
+      if (isNew && (isBackfill || params.showNewRecords)) created.push(record);
+      else if (isUpdated && (isBackfill || params.showUpdatedRecords))
+        updated.push(record);
     }
     const totalMatched = created.length + updated.length;
     const maxModifiedOn = records.length

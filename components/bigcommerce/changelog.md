@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-29
+
+Updated the **New and Updated Orders** trigger so the initial sync ignores the **Show New Orders** and **Show Updated Orders** visibility toggles, seeding every matched order regardless of those settings; later recurrences apply the toggles normally
+
 ### 2026-10-13
 
 - Added opt-in batching to the **New and Updated Orders** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives

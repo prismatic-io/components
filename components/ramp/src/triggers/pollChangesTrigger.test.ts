@@ -252,6 +252,89 @@ describe("pollChangesTrigger", () => {
       });
     });
   });
+  describe("initial sync ignores visibility toggles", () => {
+    const pollWithOverrides = async (
+      store: PollingStore,
+      resourceType: string,
+      overrides: Record<string, unknown>,
+    ): Promise<{
+      result: PollResult;
+    }> => {
+      const { result } = await invokeTrigger(
+        triggerUnderTest,
+        store.context,
+        undefined,
+        {
+          connection: testConnection,
+          resourceType,
+          showNewRecords: true,
+          showUpdatedRecords: true,
+          lookBackDate: undefined,
+          ...overrides,
+        },
+      );
+      return { result: result as unknown as PollResult };
+    };
+    test("initial sync seeds all records despite toggles=false", async () => {
+      const store = createPollingStore();
+      freezeClockAt(POLL_ONE_AT);
+      rampNock()
+        .get(REIMBURSEMENTS_PATH)
+        .query(true)
+        .reply(
+          200,
+          listBody([
+            {
+              id: "rb_new",
+              created_at: "2026-05-15T00:00:00.000Z",
+              updated_at: "2026-05-15T00:00:00.000Z",
+            },
+            {
+              id: "rb_touched",
+              created_at: "2026-04-01T00:00:00.000Z",
+              updated_at: "2026-05-20T00:00:00.000Z",
+            },
+          ]),
+        );
+      const { result } = await pollWithOverrides(store, "reimbursements", {
+        showNewRecords: false,
+        showUpdatedRecords: false,
+        lookBackDate: "2026-04-01T00:00:00.000Z",
+      });
+      expect(idsOf(changesOf(result).created)).toEqual(["rb_new"]);
+      expect(idsOf(changesOf(result).updated)).toEqual(["rb_touched"]);
+      expect(result.polledNoChanges).toBe(false);
+    });
+    test("steady-state respects toggles after initial sync", async () => {
+      const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+      freezeClockAt(POLL_ONE_AT);
+      rampNock()
+        .get(REIMBURSEMENTS_PATH)
+        .query(true)
+        .reply(
+          200,
+          listBody([
+            {
+              id: "rb_new",
+              created_at: "2026-05-15T00:00:00.000Z",
+              updated_at: "2026-05-15T00:00:00.000Z",
+            },
+            {
+              id: "rb_touched",
+              created_at: "2026-04-01T00:00:00.000Z",
+              updated_at: "2026-05-20T00:00:00.000Z",
+            },
+          ]),
+        );
+      const { result } = await pollWithOverrides(store, "reimbursements", {
+        showNewRecords: false,
+        showUpdatedRecords: false,
+      });
+      expect(changesOf(result).created).toEqual([]);
+      expect(changesOf(result).updated).toEqual([]);
+      expect(result.polledNoChanges).toBe(true);
+    });
+  });
   test("reports no changes when the resource returns no records", async () => {
     const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
     freezeClockAt(POLL_ONE_AT);

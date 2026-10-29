@@ -33,7 +33,7 @@ const lookBackDate = input({
   required: false,
   placeholder: "Enter look-back date (YYYY-MM-DD)",
   comments:
-    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once.",
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once, ignoring the visibility filters.",
   example: "2026-01-01",
   clean: cleanLookBackDate,
 });

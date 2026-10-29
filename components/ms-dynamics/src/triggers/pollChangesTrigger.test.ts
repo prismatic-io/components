@@ -179,6 +179,72 @@ describe("pollChangesTrigger", () => {
     );
     expect(ctx.polling.getState().lastPolledAt).toBe("2025-05-15T14:00:00Z");
   });
+  test("initial sync seeds all records despite toggles=false", async () => {
+    mockRetrieveMultiple.mockResolvedValueOnce({
+      value: [
+        {
+          accountid: "new-1",
+          createdon: "2025-06-01T10:00:00Z",
+          modifiedon: "2025-06-01T10:00:00Z",
+        },
+        {
+          accountid: "updated-1",
+          createdon: "2024-06-01T10:00:00Z",
+          modifiedon: "2025-06-01T12:00:00Z",
+        },
+      ],
+    });
+    const ctx = createPollingContext({});
+    const result = await pollChangesTrigger.perform(
+      ctx,
+      { body: {} } as any,
+      {
+        connection: conn,
+        entityType: "accounts",
+        lookBackDate: "2025-01-01",
+        filterExpression: undefined,
+        showNewRecords: false,
+        showUpdatedRecords: false,
+      } as any,
+    );
+    const total =
+      getData(result).created.length + getData(result).updated.length;
+    expect(total).toBeGreaterThan(0);
+    expect(result.polledNoChanges).toBe(false);
+  });
+  test("steady-state respects toggles after initial sync", async () => {
+    const lastPolledAt = "2025-05-01T00:00:00Z";
+    mockRetrieveMultiple.mockResolvedValueOnce({
+      value: [
+        {
+          accountid: "new-1",
+          createdon: "2025-05-15T10:00:00Z",
+          modifiedon: "2025-05-15T10:00:00Z",
+        },
+        {
+          accountid: "updated-1",
+          createdon: "2025-01-01T10:00:00Z",
+          modifiedon: "2025-05-15T12:00:00Z",
+        },
+      ],
+    });
+    const ctx = createPollingContext({ lastPolledAt });
+    const result = await pollChangesTrigger.perform(
+      ctx,
+      { body: {} } as any,
+      {
+        connection: conn,
+        entityType: "accounts",
+        lookBackDate: undefined,
+        filterExpression: undefined,
+        showNewRecords: false,
+        showUpdatedRecords: false,
+      } as any,
+    );
+    expect(getData(result).created).toHaveLength(0);
+    expect(getData(result).updated).toHaveLength(0);
+    expect(result.polledNoChanges).toBe(true);
+  });
   test("empty result falls back to now and returns polledNoChanges: true", async () => {
     mockRetrieveMultiple.mockResolvedValueOnce({ value: [] });
     const before = new Date().toISOString();

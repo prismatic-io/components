@@ -39,6 +39,7 @@ export const pollChangesTrigger = pollingTrigger({
   ) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as PollingState;
+    const isBackfill = !pollState?.lastPolledAt && Boolean(lookBackDate);
     const lastPolledAt = pollState?.lastPolledAt ?? (lookBackDate || now);
     const client = createAlgoliaClient({
       algoliaConnection,
@@ -59,8 +60,8 @@ export const pollChangesTrigger = pollingTrigger({
         updated.push(index);
       }
     }
-    const filteredCreated = showNewRecords ? created : [];
-    const filteredUpdated = showUpdatedRecords ? updated : [];
+    const filteredCreated = isBackfill || showNewRecords ? created : [];
+    const filteredUpdated = isBackfill || showUpdatedRecords ? updated : [];
     const totalChanges = filteredCreated.length + filteredUpdated.length;
     context.polling.setState({
       lastPolledAt: now,

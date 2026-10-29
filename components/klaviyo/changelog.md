@@ -2,6 +2,10 @@
 
 ### 2026-10-29
 
+Fixed the initial sync on the **New and Updated Campaigns** and **New and Updated Profiles and Lists** triggers dropping records when **Show New Records** or **Show Updated Records** was disabled; the sync now ignores those visibility filters and seeds every record in range
+
+### 2026-10-29
+
 Updated all actions and triggers to Klaviyo API revision 2026-07-15.
 
 - Updated **Create Campaign** and **Update Campaign** to convert **Send Strategy** and **Tracking Options** values written for revision 2024-06-15 to the current shape, and **Create Campaign** to convert **Campaign Messages** the same way, so configured values keep working; email messages no longer send render options and SMS messages no longer send a label, which the new revision does not accept

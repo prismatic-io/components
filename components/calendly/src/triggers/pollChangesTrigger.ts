@@ -30,6 +30,7 @@ export const pollChangesTrigger = pollingTrigger({
   },
   perform: async (context, payload, params) => {
     const pollState = context.polling.getState() as PollingState;
+    const isBackfill = !pollState?.lastPolledAt && Boolean(params.lookBackDate);
     const now = new Date().toISOString();
     if (!pollState?.lastPolledAt) {
       const seedDate = params.lookBackDate || now;
@@ -57,8 +58,9 @@ export const pollChangesTrigger = pollingTrigger({
       params.user,
     )) as CalendlyEvent[];
     const { created, updated } = classifyEventsByPollDate(events, lastPolledAt);
-    const emittedCreated = params.showNewRecords ? created : [];
-    const emittedUpdated = params.showUpdatedRecords ? updated : [];
+    const emittedCreated = isBackfill || params.showNewRecords ? created : [];
+    const emittedUpdated =
+      isBackfill || params.showUpdatedRecords ? updated : [];
     const totalMatched = emittedCreated.length + emittedUpdated.length;
     context.polling.setState({ lastPolledAt: now });
     if (context.debug.enabled) {

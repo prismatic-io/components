@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-29
+
+Updated the **New and Updated Records** trigger so the initial sync ignores the **Show New Records** and **Show Updated Records** visibility toggles, delivering every matched record during the backfill; later recurrences apply them normally
+
 ### 2026-10-09
 
 - Added opt-in batching to the **New and Updated Records** trigger, dispatching each changed record individually or in configured batches; enabling it changes the shape a downstream step receives

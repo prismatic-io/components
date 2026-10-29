@@ -33,6 +33,8 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const nowMs = Date.now();
     const pollState = context.polling.getState() as PollingState;
+    const isBackfill =
+      pollState?.backfillActive === true || !pollState?.lastPolledAt;
     const { fromIso, toIso } = computePollWindow(
       pollState,
       nowMs,
@@ -45,13 +47,15 @@ export const pollChangesTrigger = pollingTrigger({
       toIso,
     );
     const updated: SendgridMessageRecord[] =
-      params.showUpdatedRecords !== false ? records : [];
+      isBackfill || params.showUpdatedRecords !== false ? records : [];
     const created: SendgridMessageRecord[] = [];
     const fromMs = Date.parse(fromIso);
     const toMs = Date.parse(toIso);
     const nextCursorMs = truncated ? fromMs + POLL_WINDOW_STEP_MS : toMs;
+    const caughtUp = nextCursorMs >= nowMs - POLL_WINDOW_STEP_MS && !truncated;
     context.polling.setState({
       lastPolledAt: new Date(nextCursorMs).toISOString(),
+      ...(isBackfill && !caughtUp ? { backfillActive: true } : {}),
     });
     if (context.debug.enabled) {
       context.logger.debug(

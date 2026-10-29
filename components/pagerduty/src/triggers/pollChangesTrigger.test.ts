@@ -138,4 +138,25 @@ describe("pollChangesTrigger", () => {
     expect(result.polledNoChanges).toBe(true);
     expect(mockFetchAllIncidentsSince).not.toHaveBeenCalled();
   });
+  test("initial sync seeds all records despite toggles=false", async () => {
+    const store = createPollingStore();
+    freezeClockAt(POLL_ONE_AT);
+    mockFetchAllIncidentsSince.mockResolvedValueOnce([
+      makeIncident("inc1"),
+      makeIncident("inc2"),
+    ]);
+    const result = await poll(store, {
+      showNewIncidents: false,
+      lookBackDate: "2026-04-01",
+    });
+    expect(result.payload.body.data.created).toHaveLength(2);
+    expect(result.polledNoChanges).toBe(false);
+  });
+  test("steady-state respects toggles after initial sync", async () => {
+    const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+    freezeClockAt(POLL_ONE_AT);
+    const result = await poll(store, { showNewIncidents: false });
+    expect(result.payload.body.data.created).toEqual([]);
+    expect(result.polledNoChanges).toBe(true);
+  });
 });

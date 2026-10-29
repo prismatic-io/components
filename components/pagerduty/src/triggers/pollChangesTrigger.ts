@@ -35,13 +35,15 @@ export const pollChangesTrigger = pollingTrigger({
   ) => {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState | undefined;
+    const isBackfill = !state?.lastPolledAt && Boolean(lookBackDate);
     const lastPolledAt =
       state?.lastPolledAt ??
       (lookBackDate ? new Date(lookBackDate).toISOString() : now);
     const client = createClient(connection, context.debug.enabled);
-    const incidents: PagerDutyIncident[] = showNewIncidents
-      ? await fetchAllIncidentsSince(client, lastPolledAt)
-      : [];
+    const incidents: PagerDutyIncident[] =
+      isBackfill || showNewIncidents
+        ? await fetchAllIncidentsSince(client, lastPolledAt)
+        : [];
     context.polling.setState({ lastPolledAt: now } as Record<string, unknown>);
     if (context.debug.enabled) {
       context.logger.debug(

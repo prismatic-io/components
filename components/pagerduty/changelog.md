@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-29
+
+Updated the **New Incidents** trigger so the initial sync ignores the **Show New Incidents** toggle while it runs; later recurrences apply it normally
+
 ### 2026-10-20
 
 - Added batching to the **New Incidents** trigger; enabling it changes the shape a downstream step receives

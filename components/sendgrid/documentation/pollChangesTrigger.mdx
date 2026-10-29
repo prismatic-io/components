@@ -31,11 +31,11 @@ The window is constructed using three safeguards:
 
 **Initial Sync**
 
-An initial sync seeds a complete starting state rather than a change feed, so inputs that narrow which changes are reported would leave gaps in it. This trigger suppresses none of them during the sync. The sync begins on the first recurrence, when the trigger has no stored position, and seeds each record once as its window walks forward. It covers the full 30-day Email Activity retention window unless **Look-back Date** (`YYYY-MM-DD`) starts it later. Leaving that input empty does not skip the sync; the window still starts at the retention floor, and a date older than 30 days is clamped forward to it.
+An initial sync seeds a complete starting state from history, so inputs that narrow a change feed would leave gaps in it. The sync begins on the first recurrence, when the trigger has no stored position, and seeds each record once as its window walks forward. It covers the full 30-day Email Activity retention window unless **Look-back Date** (`YYYY-MM-DD`) starts it later. Leaving that input empty does not skip the sync; the window still starts at the retention floor, and a date older than 30 days is clamped forward to it. The initial sync ignores **Show Updated Records** while it runs, delivering every matched message regardless of that toggle.
 
 The sync's end is not fixed when it starts. Each recurrence recomputes its ceiling from the current time, so a message whose activity lands mid-drain is swept into the sync rather than held for the schedule. The trigger stores the upper bound it queried as its position, or advances a fixed six hours when the response was truncated, never a timestamp taken from the records received, and the first scheduled recurrence resumes from exactly there so nothing is lost. No field in the payload marks that handoff. Batching does not change the drain: the six-hour step is unconditional, so a full 30-day window takes roughly 120 recurrences either way.
 
-**Show Updated Records** applies during the sync exactly as it does afterward. The trigger has no page-size or field-selection input, so nothing else behaves differently between the sync and the schedule.
+Later recurrences apply **Show Updated Records** normally. The trigger has no page-size or field-selection input.
 
 **Batching**
 

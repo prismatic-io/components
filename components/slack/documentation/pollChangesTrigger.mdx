@@ -20,7 +20,7 @@ The trigger checks for:
 
 **During an initial sync**
 
-No inputs are suppressed. A sync seeds a complete starting state, and none of this trigger's inputs narrow the change feed in a way that would leave gaps in it, so every input keeps the effect it has during incremental polling. **Show New Records** still gates whether messages reach the `created` bucket, and **Channel ID** still selects the single channel the sync covers. **Show Updated Records** has no effect during a sync for the same reason it has none afterward: `conversations.history` never returns an edit as its own record.
+A sync seeds a complete starting state, so inputs that narrow a change feed would leave gaps in it. The initial sync ignores **Show New Records** while it runs, delivering every matched message regardless of that toggle; later recurrences apply it normally. **Channel ID** still selects the single channel the sync covers. **Show Updated Records** has no effect during a sync for the same reason it has none afterward: `conversations.history` never returns an edit as its own record.
 
 There is no page-size input to cap a page of the sync. Each recurrence fetches the whole window it can reach, following Slack's cursor pagination until the endpoint reports no more pages or the trigger's internal page cap stops it.
 

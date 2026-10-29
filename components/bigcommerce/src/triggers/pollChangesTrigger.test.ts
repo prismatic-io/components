@@ -241,6 +241,40 @@ describe("pollChangesTrigger", () => {
       expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
     });
   });
+  describe("initial sync ignores visibility toggles", () => {
+    test("initial sync seeds all records despite toggles=false", async () => {
+      const store = createPollingStore();
+      freezeClockAt(POLL_ONE_AT);
+      mockFetchAllOrders.mockResolvedValueOnce([
+        makeOrder(1, "2026-05-15T00:00:00.000Z", "2026-05-15T00:00:00.000Z"),
+        makeOrder(2, "2026-04-20T00:00:00.000Z", "2026-05-20T00:00:00.000Z"),
+      ]);
+      const result = await poll(store, {
+        showNewOrders: false,
+        showUpdatedOrders: false,
+        lookBackDate: "2026-04-01T00:00:00.000Z",
+      });
+      const total =
+        changesOf(result).created.length + changesOf(result).updated.length;
+      expect(total).toBeGreaterThan(0);
+      expect(result.polledNoChanges).toBe(false);
+    });
+    test("steady-state respects toggles after initial sync", async () => {
+      const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+      freezeClockAt(POLL_ONE_AT);
+      mockFetchAllOrders.mockResolvedValueOnce([
+        makeOrder(1, "2026-05-15T00:00:00.000Z", "2026-05-15T00:00:00.000Z"),
+        makeOrder(2, "2026-04-20T00:00:00.000Z", "2026-05-20T00:00:00.000Z"),
+      ]);
+      const result = await poll(store, {
+        showNewOrders: false,
+        showUpdatedOrders: false,
+      });
+      expect(changesOf(result).created).toEqual([]);
+      expect(changesOf(result).updated).toEqual([]);
+      expect(result.polledNoChanges).toBe(true);
+    });
+  });
   describe("state precedence", () => {
     test("ignores lookBackDate when prior poll state exists", async () => {
       const store = createPollingStore({

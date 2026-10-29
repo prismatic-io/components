@@ -32,6 +32,7 @@ export const pollChangesTrigger = pollingTrigger({
   ) => {
     const now = new Date();
     const lastState = context.polling.getState() as PollingState | undefined;
+    const isBackfill = !lastState?.lastPolledAt && Boolean(lookBackDate);
     const sinceDate = lastState?.lastPolledAt
       ? new Date(lastState.lastPolledAt)
       : lookBackDate
@@ -52,8 +53,8 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt: now.toISOString(),
     } as Record<string, unknown>);
     const result = {
-      created: showNewRecords ? created : [],
-      updated: showUpdatedRecords ? updated : [],
+      created: isBackfill || showNewRecords ? created : [],
+      updated: isBackfill || showUpdatedRecords ? updated : [],
     };
     if (context.debug.enabled) {
       context.logger.debug(

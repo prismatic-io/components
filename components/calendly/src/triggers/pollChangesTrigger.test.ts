@@ -1,14 +1,14 @@
-import { afterEach, describe, expect, test, vi } from "vitest";
 import {
   createConnection,
   defaultTriggerPayload,
 } from "@prismatic-io/spectral/dist/testing";
 import nock from "nock";
-import { pollChangesTrigger } from "./pollChangesTrigger";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import { calendlyOauth2Connection } from "../connections";
-import { resolvePollingRecordChanges } from "../util";
-import type { CalendlyEvent } from "../types";
 import { LIVE_API_URL } from "../constants";
+import type { CalendlyEvent } from "../types";
+import { resolvePollingRecordChanges } from "../util";
+import { pollChangesTrigger } from "./pollChangesTrigger";
 const BASE = LIVE_API_URL;
 const conn = createConnection(calendlyOauth2Connection, {
   useLiveServer: true,
@@ -123,6 +123,107 @@ describe("pollChangesTrigger", () => {
       "https://api.calendly.com/scheduled_events/UPD1",
     );
     expect(result.polledNoChanges).toBe(false);
+  });
+});
+describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
+  test("initial sync seeds all records despite toggles=false", async () => {
+    const now = new Date();
+    const recentDate = new Date(now.getTime() + 60000).toISOString();
+    const oldDate = "2020-01-01T00:00:00.000Z";
+    const events = [
+      {
+        uri: "https://api.calendly.com/scheduled_events/NEW1",
+        name: "New Meeting",
+        created_at: recentDate,
+        updated_at: recentDate,
+      },
+      {
+        uri: "https://api.calendly.com/scheduled_events/UPD1",
+        name: "Updated Meeting",
+        created_at: oldDate,
+        updated_at: recentDate,
+      },
+    ];
+    nock(BASE)
+      .get("/scheduled_events")
+      .query(true)
+      .reply(200, {
+        collection: events,
+        pagination: { next_page_token: null },
+      });
+    const ctx = createPollingContext(null);
+    const payload = defaultTriggerPayload();
+    const result = (await pollChangesTrigger.perform(
+      ctx as unknown as Parameters<typeof pollChangesTrigger.perform>[0],
+      payload,
+      {
+        ...params,
+        lookBackDate: "2019-01-01T00:00:00.000Z",
+        showNewRecords: false,
+        showUpdatedRecords: false,
+      } as Parameters<typeof pollChangesTrigger.perform>[2],
+    )) as {
+      payload: typeof payload;
+      polledNoChanges: boolean;
+    };
+    const data = result.payload.body.data as {
+      created: {
+        uri: string;
+      }[];
+      updated: {
+        uri: string;
+      }[];
+    };
+    const total = data.created.length + data.updated.length;
+    expect(total).toBeGreaterThan(0);
+    expect(result.polledNoChanges).toBe(false);
+  });
+  test("steady-state respects toggles after initial sync", async () => {
+    const now = new Date();
+    const recentDate = new Date(now.getTime() + 60000).toISOString();
+    const oldDate = "2020-01-01T00:00:00.000Z";
+    const events = [
+      {
+        uri: "https://api.calendly.com/scheduled_events/NEW1",
+        name: "New Meeting",
+        created_at: recentDate,
+        updated_at: recentDate,
+      },
+      {
+        uri: "https://api.calendly.com/scheduled_events/UPD1",
+        name: "Updated Meeting",
+        created_at: oldDate,
+        updated_at: recentDate,
+      },
+    ];
+    nock(BASE)
+      .get("/scheduled_events")
+      .query(true)
+      .reply(200, {
+        collection: events,
+        pagination: { next_page_token: null },
+      });
+    const ctx = createPollingContext({ lastPolledAt: now.toISOString() });
+    const payload = defaultTriggerPayload();
+    const result = (await pollChangesTrigger.perform(
+      ctx as unknown as Parameters<typeof pollChangesTrigger.perform>[0],
+      payload,
+      {
+        ...params,
+        showNewRecords: false,
+        showUpdatedRecords: false,
+      } as Parameters<typeof pollChangesTrigger.perform>[2],
+    )) as {
+      payload: typeof payload;
+      polledNoChanges: boolean;
+    };
+    const data = result.payload.body.data as {
+      created: unknown[];
+      updated: unknown[];
+    };
+    expect(data.created).toEqual([]);
+    expect(data.updated).toEqual([]);
+    expect(result.polledNoChanges).toBe(true);
   });
 });
 describe("pollChangesTrigger batching", () => {

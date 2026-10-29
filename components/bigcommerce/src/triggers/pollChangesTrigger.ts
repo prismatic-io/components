@@ -46,6 +46,7 @@ export const pollChangesTrigger = pollingTrigger({
     const lookBackISO = lookBackDate
       ? new Date(lookBackDate).toISOString()
       : undefined;
+    const isBackfill = !pollState?.lastPolledAt && Boolean(lookBackDate);
     const sinceISO =
       pollState?.lastPolledAt ?? lookBackISO ?? now.toISOString();
     const sinceDate = new Date(sinceISO);
@@ -63,8 +64,8 @@ export const pollChangesTrigger = pollingTrigger({
       lastPolledAt: now.toISOString(),
     } as Record<string, unknown>);
     const result = {
-      created: showNewOrders ? created : [],
-      updated: showUpdatedOrders ? updated : [],
+      created: isBackfill || showNewOrders ? created : [],
+      updated: isBackfill || showUpdatedOrders ? updated : [],
     };
     if (context.debug.enabled) {
       context.logger.debug(

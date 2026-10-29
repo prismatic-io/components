@@ -11,7 +11,11 @@ import type {
   PollingState,
   Property,
 } from "../types";
-import { paginateRecords, resolvePollingRecordChanges } from "../util";
+import {
+  filterByTimestamp,
+  paginateRecords,
+  resolvePollingRecordChanges,
+} from "../util";
 export const pollChangesTrigger = pollingTrigger({
   display: {
     label: "New and Updated Records",
@@ -28,6 +32,7 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
+    const isBackfill = !state?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt = state?.lastPolledAt ?? (params.lookBackDate || now);
     const client = createAnalyticsClient({
       connection: params.connection,
@@ -61,21 +66,13 @@ export const pollChangesTrigger = pollingTrigger({
     } else {
       throw new Error(`Unsupported resource type: ${params.pollResourceType}`);
     }
-    const lastPolledAtDate = new Date(lastPolledAt);
-    const created: GA4Record[] = [];
-    const updated: GA4Record[] = [];
-    for (const record of allRecords) {
-      const { createTime, updateTime } = record;
-      const createdAtDate =
-        typeof createTime === "string" ? new Date(createTime) : null;
-      const updatedAtDate =
-        typeof updateTime === "string" ? new Date(updateTime) : null;
-      const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
-      const isUpdated =
-        !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
-      if (isNew && params.showNewRecords) created.push(record);
-      else if (isUpdated && params.showUpdatedRecords) updated.push(record);
-    }
+    const { created, updated } = filterByTimestamp(
+      allRecords,
+      lastPolledAt,
+      isBackfill,
+      params.showNewRecords,
+      params.showUpdatedRecords,
+    );
     const totalMatched = created.length + updated.length;
     if (context.debug.enabled) {
       context.logger.debug(

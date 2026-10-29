@@ -25,6 +25,7 @@ export const pollChangesTrigger = pollingTrigger({
   perform: async (context, payload, params) => {
     const now = new Date().toISOString();
     const pollState = context.polling.getState() as unknown as PollingState;
+    const isBackfill = !pollState?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt: string =
       pollState?.lastPolledAt || params.lookBackDate || now;
     const resourceType = params.pollResourceType;
@@ -69,8 +70,9 @@ export const pollChangesTrigger = pollingTrigger({
           (!record.created_at || new Date(record.created_at) <= lastPolledDate),
       );
     }
-    const filteredCreated = params.showNewRecords ? created : [];
-    const filteredUpdated = params.showUpdatedRecords ? updated : [];
+    const filteredCreated = isBackfill || params.showNewRecords ? created : [];
+    const filteredUpdated =
+      isBackfill || params.showUpdatedRecords ? updated : [];
     context.polling.setState({ lastPolledAt: now });
     const totalChanges = filteredCreated.length + filteredUpdated.length;
     return {

@@ -10,7 +10,7 @@ An initial sync seeds a complete starting state rather than a change feed. It be
 
 The window has no fixed upper bound, so an incident created mid-drain is swept into the sync. Once all matching incidents have been emitted, the trigger stores the current time as its position and the first incremental recurrence resumes from exactly there. Without batching the full window is fetched in a single recurrence; with batching the resolver drains the window over batched executions within the same recurrence.
 
-**Show New Incidents** is the only toggle and it is not suppressed during the sync.
+The initial sync ignores **Show New Incidents** while it runs, delivering every matched incident regardless of that toggle; later recurrences apply it normally.
 
 **Batching**
 

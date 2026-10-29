@@ -10,11 +10,11 @@ The **New and Updated Records** trigger checks for new and updated records in Go
 
 **Initial Sync**
 
-An initial sync seeds a starting state from history. Inputs that narrow which changes are reported would leave gaps in that state, and this trigger does not suppress them: **Show New Records** and **Show Updated Records** still gate the `created` and `updated` arrays, so turning either off leaves that half out of the sync. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers each record created or updated after that date, as **created** when its `createTime` is after the date and otherwise as **updated**.
+An initial sync seeds a complete starting state from history, so inputs that narrow a change feed would leave gaps in it. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers each record created or updated after that date, as **created** when its `createTime` is after the date and otherwise as **updated**. It ignores **Show New Records** and **Show Updated Records** while it runs, delivering every matched record regardless of those toggles.
 
 The window has no fixed upper bound and no per-recurrence cap: the trigger lists every record and filters client-side, so the sync completes in one recurrence whether batching is on or off. The position is then set to the wall-clock time at which that recurrence started, not to the newest record received, and the first incremental recurrence resumes from there. A record updated after that time but before the listing finished is delivered again on the next recurrence. Nothing in the payload marks the handoff.
 
-**Resource Type** and **Account ID** still apply. The trigger has no page-size or field-selection input.
+Later recurrences apply **Show New Records** and **Show Updated Records** normally. **Resource Type** and **Account ID** still apply throughout. The trigger has no page-size or field-selection input.
 
 **Batching**
 

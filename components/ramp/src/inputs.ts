@@ -311,7 +311,7 @@ export const lookBackDate = input({
   type: "string",
   required: false,
   comments:
-    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. On resources without timestamps (Departments, Locations, Business Entities), the first poll always emits all current records regardless of this setting.",
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once, ignoring the visibility filters. On resources without timestamps (Departments, Locations, Business Entities), the first poll always emits all current records regardless of this setting.",
   example: "2026-01-01",
   clean: lookBackDateClean,
 });

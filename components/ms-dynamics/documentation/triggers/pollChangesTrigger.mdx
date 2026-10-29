@@ -20,7 +20,7 @@ The `modifiedon` comparison is strict, so a record already reported is not repor
 - **Look-back Date empty**: the trigger stores the current time as its position and reports nothing. Incremental polling begins on the next recurrence.
 - **Look-back Date set**: the trigger starts from midnight UTC on that date and returns every record created or modified since, seeding each one exactly once.
 
-The look-back date is consulted only while no position is stored, so setting it on an instance that has already run does not replay that instance's history. **Entity Type**, **Filter Expression**, **Show New Records**, and **Show Updated Records** all apply on that first recurrence exactly as they do on later ones; the historical load suppresses no input.
+The look-back date is consulted only while no position is stored, so setting it on an instance that has already run does not replay that instance's history. The initial sync ignores **Show New Records** and **Show Updated Records** while it runs, delivering every matched record regardless of those toggles; later recurrences apply them normally. **Entity Type** and **Filter Expression** still apply throughout.
 
 **Batching**
 

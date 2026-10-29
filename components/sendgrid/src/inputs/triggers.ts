@@ -8,7 +8,7 @@ const lookBackDate = input({
   placeholder: "Enter look-back date (YYYY-MM-DD)",
   example: "2026-01-01",
   comments:
-    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. SendGrid retains activity for 30 days, so dates older than 30 days are clamped to the retention floor. Leave empty to sync the full 30-day retention window.",
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. SendGrid retains activity for 30 days, so dates older than 30 days are clamped to the retention floor. Leave empty to sync the full 30-day retention window. The initial sync seeds each message once, ignoring the visibility filters, whether or not this date is set.",
   clean: lookBackDateClean,
 });
 const showNewRecords = input({

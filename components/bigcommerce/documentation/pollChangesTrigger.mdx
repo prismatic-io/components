@@ -14,11 +14,11 @@ If both **Show New Orders** and **Show Updated Orders** are disabled, the trigge
 
 **Initial Sync**
 
-An initial sync seeds a starting state from history. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, read as midnight UTC) is set, and seeds each order modified on or after that date once. It ignores no input. Left empty, there is no sync and the trigger starts from its first recurrence.
+An initial sync seeds a complete starting state from history, so inputs that narrow a change feed would leave gaps in it. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, read as midnight UTC) is set, and seeds each order modified on or after that date once. It ignores **Show New Orders** and **Show Updated Orders** while it runs, delivering every matched order regardless of those toggles. Left empty, there is no sync and the trigger starts from its first recurrence.
 
 The window has no fixed upper bound: the trigger requests every order modified since the look-back date, so an order modified mid-sync is included. The drain is uncapped and finishes in one recurrence, with batching on or off. The trigger then stores that recurrence's start time as its position and the first incremental recurrence resumes from there, so an order modified during that recurrence can be reported again on the next one. Nothing in the payload marks the handoff.
 
-**Store Hash**, **Show New Orders** and **Show Updated Orders** still apply throughout, so turning either toggle off leaves those orders out of the starting state. The trigger has no page-size or field-selection input.
+Later recurrences apply **Show New Orders** and **Show Updated Orders** normally. **Store Hash** still applies throughout. The trigger has no page-size or field-selection input.
 
 **Batching**
 

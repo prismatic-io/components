@@ -12,20 +12,11 @@ It uses each object's `WHENMODIFIED` timestamp to detect changes since the last 
 
 **Initial Sync**
 
-An initial sync seeds a complete starting state rather than a change feed. It begins on the first
-recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set,
-and seeds every record modified on or after that date exactly once. Left empty, there is no sync
-and the trigger starts from its first recurrence. No input is suppressed while a sync runs: **Show
-New Records** and **Show Updated Records** each still gate one of the two result arrays, so a sync
-started with either turned off seeds only the other category.
+An initial sync seeds a complete starting state from history, so inputs that narrow a change feed would leave gaps in it. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and seeds every record modified on or after that date exactly once. It ignores **Show New Records** and **Show Updated Records** while it runs, delivering every matched record regardless of those toggles. Left empty, there is no sync and the trigger starts from its first recurrence.
 
-The window has no fixed upper bound, so a record modified mid-drain is swept into the sync rather
-than deferred to the schedule. The whole window drains in a single recurrence whether or not
-batching is on. The position then advances to the wall-clock time that recurrence started, never to
-a watermark taken from the records received, and the first incremental recurrence resumes from
-exactly there; nothing in the payload marks the handoff.
+The window has no fixed upper bound, so a record modified mid-drain is swept into the sync rather than deferred to the schedule. The whole window drains in a single recurrence whether or not batching is on. The position then advances to the wall-clock time that recurrence started, never to a watermark taken from the records received, and the first incremental recurrence resumes from exactly there; nothing in the payload marks the handoff.
 
-**Resource Type** applies throughout, and the trigger has no page-size or field-selection input.
+Later recurrences apply **Show New Records** and **Show Updated Records** normally. **Resource Type** still applies throughout, and the trigger has no page-size or field-selection input.
 
 **Batching**
 

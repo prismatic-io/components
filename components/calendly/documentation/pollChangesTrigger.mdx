@@ -23,7 +23,7 @@ Calendly's List Events endpoint does not support filtering by creation or modifi
 
 **During an initial sync**
 
-No inputs are suppressed. A sync seeds a complete starting state, and none of this trigger's inputs narrow the change feed in a way that would leave gaps in it, so every input keeps the effect it has during incremental polling. **Show New Records** and **Show Updated Records** still gate which buckets are emitted, and **Organization** and **User** still scope which events the sync covers.
+A sync seeds a complete starting state, so inputs that narrow a change feed would leave gaps in it. The initial sync ignores **Show New Records** and **Show Updated Records** while it runs, delivering every matched event regardless of those toggles. Later recurrences apply them normally. **Organization** and **User** still scope which events the sync covers.
 
 There is no page-size input to cap a page of the sync. Each recurrence follows Calendly's pagination until every page of the window has been retrieved.
 

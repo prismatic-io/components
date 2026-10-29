@@ -9,11 +9,11 @@ This trigger polls the [Algolia Search API](https://www.algolia.com/doc/rest-api
 
 **Initial Sync**
 
-An initial sync seeds a starting state from history. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, read as midnight UTC) is set, and seeds each index created or updated after that point once. It ignores no input.
+An initial sync seeds a complete starting state from history, so inputs that narrow a change feed would leave gaps in it. It begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`, read as midnight UTC) is set, and seeds each index created or updated after that point once. It ignores **Show New Records** and **Show Updated Records** while it runs, delivering every matched index regardless of those toggles.
 
 The window has no fixed upper bound: the trigger lists every index and keeps those changed after the look-back point, so an index modified mid-sync is included. The drain is uncapped and finishes in one recurrence, with batching on or off. The trigger then stores that recurrence's start time as its position and the first incremental recurrence resumes from there, so an index modified during that recurrence can be reported again on the next one. Nothing in the payload marks the handoff.
 
-**Show New Records** and **Show Updated Records** still apply throughout, so turning either off leaves those indices out of the starting state. The trigger has no page-size or field-selection input.
+Later recurrences apply **Show New Records** and **Show Updated Records** normally. The trigger has no page-size or field-selection input.
 
 **Batching**
 

@@ -52,6 +52,7 @@ export interface CreateClientProps {
 }
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
+  backfillActive?: boolean;
 }
 export interface SlackMessage extends Record<string, unknown> {
   ts?: string;

@@ -216,6 +216,67 @@ describe("pollChangesTrigger", () => {
       expect(result.polledNoChanges).toBe(false);
     });
   });
+  describe("initial sync ignores visibility toggles", () => {
+    test("initial sync seeds all records despite toggles=false", async () => {
+      const store = createPollingStore();
+      freezeClockAt(POLL_ONE_AT);
+      mockGet.mockResolvedValueOnce({
+        data: {
+          accounts: [
+            makeAccount(
+              "acct/new",
+              "2026-05-15T00:00:00Z",
+              "2026-05-15T00:00:00Z",
+            ),
+            makeAccount(
+              "acct/upd",
+              "2026-04-01T00:00:00Z",
+              "2026-05-20T00:00:00Z",
+            ),
+          ],
+        },
+      });
+      const result = await poll(store, {
+        showNewRecords: false,
+        showUpdatedRecords: false,
+        lookBackDate: "2026-04-01T00:00:00.000Z",
+      });
+      expect(result.payload.body.data.created.map((r) => r.name)).toEqual([
+        "acct/new",
+      ]);
+      expect(result.payload.body.data.updated.map((r) => r.name)).toEqual([
+        "acct/upd",
+      ]);
+      expect(result.polledNoChanges).toBe(false);
+    });
+    test("steady-state respects toggles after initial sync", async () => {
+      const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+      freezeClockAt(POLL_ONE_AT);
+      mockGet.mockResolvedValueOnce({
+        data: {
+          accounts: [
+            makeAccount(
+              "acct/new",
+              "2026-05-15T00:00:00Z",
+              "2026-05-15T00:00:00Z",
+            ),
+            makeAccount(
+              "acct/upd",
+              "2026-04-01T00:00:00Z",
+              "2026-05-20T00:00:00Z",
+            ),
+          ],
+        },
+      });
+      const result = await poll(store, {
+        showNewRecords: false,
+        showUpdatedRecords: false,
+      });
+      expect(result.payload.body.data.created).toEqual([]);
+      expect(result.payload.body.data.updated).toEqual([]);
+      expect(result.polledNoChanges).toBe(true);
+    });
+  });
   test("throws for unsupported resource type", async () => {
     const store = createPollingStore();
     freezeClockAt(POLL_ONE_AT);

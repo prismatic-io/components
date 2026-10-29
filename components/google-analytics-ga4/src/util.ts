@@ -3,6 +3,7 @@ import type { HttpClient } from "@prismatic-io/spectral/dist/clients/http";
 import { LOOK_BACK_DATE_PATTERN, POLL_RESOURCE_CONFIG } from "./constants";
 import type {
   GA4ChangesObject,
+  GA4Record,
   GA4RecordChange,
   PaginatedFunction,
 } from "./types";
@@ -65,6 +66,34 @@ export const resolvePollingRecordChanges = (
       (record): GA4RecordChange => ({ changeType: "updated", record }),
     ),
   ];
+};
+export const filterByTimestamp = (
+  records: GA4Record[],
+  lastPolledAt: string,
+  isBackfill: boolean,
+  showNewRecords: boolean,
+  showUpdatedRecords: boolean,
+): {
+  created: GA4Record[];
+  updated: GA4Record[];
+} => {
+  const lastPolledAtDate = new Date(lastPolledAt);
+  const created: GA4Record[] = [];
+  const updated: GA4Record[] = [];
+  for (const record of records) {
+    const { createTime, updateTime } = record;
+    const createdAtDate =
+      typeof createTime === "string" ? new Date(createTime) : null;
+    const updatedAtDate =
+      typeof updateTime === "string" ? new Date(updateTime) : null;
+    const isNew = createdAtDate !== null && createdAtDate > lastPolledAtDate;
+    const isUpdated =
+      !isNew && updatedAtDate !== null && updatedAtDate > lastPolledAtDate;
+    if (isNew && (isBackfill || showNewRecords)) created.push(record);
+    else if (isUpdated && (isBackfill || showUpdatedRecords))
+      updated.push(record);
+  }
+  return { created, updated };
 };
 export const lookBackDateClean = (value: unknown): string => {
   const str = util.types.toString(value).trim();

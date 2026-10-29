@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-29
+
+Updated initial sync on the **New and Updated Records** polling trigger to ignore the visibility filters; the backfill now seeds every record modified on or after the **Look-back Date** regardless of toggle state, and later recurrences remain unaffected
+
 ### 2026-10-13
 
 - Added batching to the **New and Updated Records** polling trigger; enabling it changes the shape a downstream step receives

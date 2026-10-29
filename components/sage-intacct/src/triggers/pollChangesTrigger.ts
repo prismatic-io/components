@@ -34,8 +34,9 @@ export const pollChangesTrigger = pollingTrigger({
     }
     const now = new Date().toISOString();
     const state = context.polling.getState() as PollingState;
+    const isBackfill = !state?.lastPolledAt && Boolean(params.lookBackDate);
     const lastPolledAt = state?.lastPolledAt ?? (params.lookBackDate || now);
-    if (!params.showNewRecords && !params.showUpdatedRecords) {
+    if (!isBackfill && !params.showNewRecords && !params.showUpdatedRecords) {
       context.polling.setState({ lastPolledAt: now });
       return {
         payload: { ...payload, body: { data: { created: [], updated: [] } } },
@@ -52,8 +53,8 @@ export const pollChangesTrigger = pollingTrigger({
     const { created, updated } = filterByTimestamp(
       records,
       lastPolledAt,
-      params.showNewRecords,
-      params.showUpdatedRecords,
+      isBackfill || params.showNewRecords,
+      isBackfill || params.showUpdatedRecords,
       config.createdField,
     );
     const totalMatched = created.length + updated.length;

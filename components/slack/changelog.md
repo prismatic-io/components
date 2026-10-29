@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-29
+
+Fixed the **New and Updated Messages** trigger's initial sync dropping records when **Show New Records** was disabled; the backfill now seeds every matched message regardless of visibility toggles, and later recurrences apply them normally
+
 ### 2026-09-04
 
 Added Enterprise Grid support and enhanced component capabilities:

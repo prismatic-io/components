@@ -326,6 +326,36 @@ describe("pollChangesTrigger perform: dedup across polls", () => {
     expect(bodyData(second)).toEqual({ created: [], updated: [] });
   });
 });
+describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
+  test("initial sync seeds all records despite toggles=false", async () => {
+    nock(BASE_URL_V2)
+      .get("/workers")
+      .query(filterFor("2026-01-01T00:00:00.000Z"))
+      .reply(200, { results: newAndEdited });
+    const { context } = makeContext({});
+    const result = await runPerform(context, {
+      lookBackDate: "2026-01-01T00:00:00.000Z",
+      showNewRecords: false,
+      showUpdatedRecords: false,
+    });
+    expect(ids(bodyData(result).created)).toEqual(["wrk_new"]);
+    expect(ids(bodyData(result).updated)).toEqual(["wrk_edited"]);
+    expect(result.polledNoChanges).toBe(false);
+  });
+  test("steady-state respects toggles after initial sync", async () => {
+    nock(BASE_URL_V2)
+      .get("/workers")
+      .query(filterFor(CURSOR))
+      .reply(200, { results: newAndEdited });
+    const { context } = makeContext({ lastPolledAt: CURSOR });
+    const result = await runPerform(context, {
+      showNewRecords: false,
+      showUpdatedRecords: false,
+    });
+    expect(bodyData(result)).toEqual({ created: [], updated: [] });
+    expect(result.polledNoChanges).toBe(true);
+  });
+});
 describe("pollChangesTrigger initial sync", () => {
   test("seeds the first recurrence from the Look-back Date and stores the watermark", async () => {
     nock(BASE_URL_V2)

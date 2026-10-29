@@ -1,4 +1,6 @@
-import { describe, expect, it } from "vitest";
+import type { ActionContext } from "@prismatic-io/spectral";
+import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { afterEach, describe, expect, it, test, vi } from "vitest";
 import { DEFAULT_BATCH_SIZE } from "../constants";
 import { pollChangesTriggerExamplePayload } from "../examplePayloads";
 import type {
@@ -8,6 +10,14 @@ import type {
 } from "../types";
 import { resolvePollingRecordChanges } from "../util";
 import { pollChangesTrigger } from "./pollChangesTrigger";
+const mockQueryRecordsPaginated = vi.fn<() => Promise<SageIntacctRecord[]>>();
+vi.mock("../util", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../util")>();
+  return {
+    ...actual,
+    queryRecordsPaginated: () => mockQueryRecordsPaginated(),
+  };
+});
 const createdVendor: SageIntacctRecord = {
   RECORDNO: "10042",
   WHENMODIFIED: "2026-01-15T14:30:00Z",
@@ -116,5 +126,108 @@ describe("pollChangesTrigger resolveItems", () => {
         },
       }),
     ).toEqual([]);
+  });
+});
+const NOW = "2026-06-01T12:00:00.000Z";
+const SEEDED_CURSOR = "2026-05-01T00:00:00.000Z";
+interface PollingStore {
+  currentState: () => Record<string, unknown>;
+  context: Partial<ActionContext>;
+}
+const createPollingStore = (
+  seedState: Record<string, unknown> = {},
+): PollingStore => {
+  let state: Record<string, unknown> = seedState;
+  return {
+    currentState: () => state,
+    context: {
+      polling: {
+        getState: () => state,
+        setState: (newState: Record<string, unknown>) => {
+          state = newState;
+        },
+        invokeAction: () => {
+          throw new Error("not stubbed");
+        },
+      },
+      debug: { enabled: false },
+      logger: { debug: vi.fn() },
+    } as unknown as Partial<ActionContext>,
+  };
+};
+const freezeClockAt = (iso: string): void => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date(iso));
+};
+const triggerUnderTest = {
+  perform: pollChangesTrigger.perform,
+} as unknown as Parameters<typeof invokeTrigger>[0];
+interface PollResult {
+  payload: {
+    body: {
+      data: {
+        created: SageIntacctRecord[];
+        updated: SageIntacctRecord[];
+      };
+    };
+  };
+  polledNoChanges: boolean;
+}
+const poll = async (
+  store: PollingStore,
+  overrides: Partial<{
+    showNewRecords: boolean;
+    showUpdatedRecords: boolean;
+    lookBackDate: string;
+  }> = {},
+): Promise<PollResult> => {
+  const { result } = await invokeTrigger(
+    triggerUnderTest,
+    store.context,
+    undefined,
+    {
+      connection: {},
+      pollResourceType: "vendors",
+      showNewRecords: true,
+      showUpdatedRecords: true,
+      lookBackDate: undefined,
+      ...overrides,
+    } as Record<string, unknown>,
+  );
+  return result as unknown as PollResult;
+};
+describe("pollChangesTrigger initial sync ignores visibility toggles", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    mockQueryRecordsPaginated.mockReset();
+  });
+  test("initial sync seeds all records despite toggles=false", async () => {
+    const store = createPollingStore();
+    freezeClockAt(NOW);
+    mockQueryRecordsPaginated.mockResolvedValueOnce([
+      createdVendor,
+      updatedVendor,
+    ]);
+    const result = await poll(store, {
+      showNewRecords: false,
+      showUpdatedRecords: false,
+      lookBackDate: "2026-01-01T00:00:00.000Z",
+    });
+    const total =
+      result.payload.body.data.created.length +
+      result.payload.body.data.updated.length;
+    expect(total).toBeGreaterThan(0);
+    expect(result.polledNoChanges).toBe(false);
+  });
+  test("steady-state respects toggles after initial sync", async () => {
+    const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+    freezeClockAt(NOW);
+    const result = await poll(store, {
+      showNewRecords: false,
+      showUpdatedRecords: false,
+    });
+    expect(result.payload.body.data.created).toEqual([]);
+    expect(result.payload.body.data.updated).toEqual([]);
+    expect(result.polledNoChanges).toBe(true);
   });
 });

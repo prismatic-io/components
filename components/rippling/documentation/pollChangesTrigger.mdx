@@ -9,7 +9,7 @@ This trigger polls the [Rippling API](https://developer.rippling.com/documentati
 
 **Initial sync**
 
-By default the trigger reports only changes made after the flow's first recurrence. Set **Look-back Date** to also report the records created or updated since that date, once, on the first recurrence. No input is ignored during an initial sync: **Resource Type**, **Show New Records**, and **Show Updated Records** apply as they do on every recurrence.
+By default the trigger reports only changes made after the flow's first recurrence. Set **Look-back Date** to also report the records created or updated since that date, once, on the first recurrence. A sync seeds a complete starting state, so inputs that narrow a change feed would leave gaps in it. The initial sync ignores **Show New Records** and **Show Updated Records** while it runs, delivering every matched record regardless of those toggles; later recurrences apply them normally. **Resource Type** still applies throughout.
 
 The sync has no fixed upper bound and fetches every page in a single recurrence, whether batching is on or off. The trigger then stores the time the recurrence began as its position, and the next recurrence resumes from there. No field in the payload marks the handoff.
 

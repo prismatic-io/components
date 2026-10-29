@@ -9,11 +9,11 @@ This trigger polls the [Ramp API](https://docs.ramp.com/developer-api/v1/overvie
 
 **Initial Sync**
 
-An initial sync seeds a starting state from history. Inputs that narrow which changes are reported would leave gaps in that state, and this trigger does not suppress them: **Show New Records** and **Show Updated Records** still gate the `created` and `updated` arrays. For timestamp-based resources the sync begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers each record created or updated after that date. **Transactions** and **Bills** carry no update timestamp, so only records created after that date are included. ID-based resources (**Departments**, **Locations**, **Business Entities**) ignore **Look-back Date**: their first recurrence delivers every current record as **created**, with or without it.
+An initial sync seeds a complete starting state from history, so inputs that narrow a change feed would leave gaps in it. The initial sync ignores **Show New Records** and **Show Updated Records** while it runs, delivering every matched record regardless of those toggles. For timestamp-based resources the sync begins on the first recurrence, when the trigger has no stored position and a **Look-back Date** (`YYYY-MM-DD`) is set, and delivers each record created or updated after that date. **Transactions** and **Bills** carry no update timestamp, so only records created after that date are included. ID-based resources (**Departments**, **Locations**, **Business Entities**) ignore **Look-back Date**: their first recurrence delivers every current record as **created**, with or without it.
 
 The window has no fixed upper bound and no per-recurrence cap: the trigger lists every record of the resource and filters client-side, so the sync completes in one recurrence whether batching is on or off. The position is then set to the wall-clock time at which that recurrence started, not to the newest record received, and the first incremental recurrence resumes from there. A record updated after that time but before the listing finished is delivered again on the next recurrence. Nothing in the payload marks the handoff.
 
-**Resource Type** still applies. The trigger has no page-size or field-selection input.
+Later recurrences apply **Show New Records** and **Show Updated Records** normally. **Resource Type** still applies throughout. The trigger has no page-size or field-selection input.
 
 **Batching**
 

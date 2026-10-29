@@ -93,6 +93,8 @@ export const pollChangesTrigger = pollingTrigger({
       true,
     );
     const hasTimestamps = config.createdAtField !== null;
+    const isBackfill =
+      !lastState?.lastPolledAt && (Boolean(lookBackDate) || !hasTimestamps);
     const lastPolledAt = lastState?.lastPolledAt ?? (lookBackDate || now);
     let result: {
       created: RampRecord[];
@@ -106,14 +108,14 @@ export const pollChangesTrigger = pollingTrigger({
         config.updatedAtField,
       );
       result = {
-        created: showNewRecords ? filtered.created : [],
-        updated: showUpdatedRecords ? filtered.updated : [],
+        created: isBackfill || showNewRecords ? filtered.created : [],
+        updated: isBackfill || showUpdatedRecords ? filtered.updated : [],
       };
     } else {
       const knownIds = lastState?.knownIds ?? [];
       const newRecords = filterByNewIds(records, knownIds);
       result = {
-        created: showNewRecords ? newRecords : [],
+        created: isBackfill || showNewRecords ? newRecords : [],
         updated: [],
       };
     }

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-29
+
+Fixed the **New and Updated Records** trigger initial sync dropping records when **Show New Records** or **Show Updated Records** was turned off; the sync now seeds every matched record regardless of the visibility toggles
+
 ### 2026-09-18
 
 - Added output schemas to 27 actions for improved field mapping during configuration

@@ -29,6 +29,9 @@ export const pollChangesTrigger = pollingTrigger({
     const pollState = context.polling.getState() as PollingState;
     const hasExistingState = !!pollState?.lastPolledAt;
     const hasLookBackDate = !!params.lookBackDate;
+    const isBackfill =
+      pollState?.backfillActive === true ||
+      (!hasExistingState && hasLookBackDate);
     let lastPolledAt: string;
     if (hasExistingState) {
       lastPolledAt = pollState.lastPolledAt;
@@ -44,7 +47,7 @@ export const pollChangesTrigger = pollingTrigger({
       oldest,
     );
     const created: SlackMessage[] =
-      params.showNewRecords !== false ? messages : [];
+      isBackfill || params.showNewRecords !== false ? messages : [];
     const updated: SlackMessage[] = [];
     let nextCursor = now;
     if (truncated) {
@@ -62,7 +65,10 @@ export const pollChangesTrigger = pollingTrigger({
         `Polling truncated at the page cap for Slack channel ${params.channelId}. Advancing cursor to ${nextCursor}; next poll will resume from there.`,
       );
     }
-    context.polling.setState({ lastPolledAt: nextCursor });
+    context.polling.setState({
+      lastPolledAt: nextCursor,
+      ...(isBackfill && truncated ? { backfillActive: true } : {}),
+    });
     if (context.debug.enabled) {
       context.logger.debug(
         `Polled Slack channel ${params.channelId}: ${messages.length} fetched, truncated=${truncated}`,

@@ -1,5 +1,6 @@
 export interface PollingState extends Record<string, unknown> {
   lastPolledAt?: string;
+  backfillActive?: boolean;
 }
 export interface SendgridMessageRecord {
   msg_id?: string;

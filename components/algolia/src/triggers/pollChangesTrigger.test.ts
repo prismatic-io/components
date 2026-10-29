@@ -181,4 +181,39 @@ describe("pollChangesTrigger", () => {
     expect(result.polledNoChanges).toBe(true);
     expect(store.currentState()).toEqual({ lastPolledAt: POLL_ONE_AT });
   });
+  test("initial sync seeds all records despite toggles=false", async () => {
+    const store = createPollingStore();
+    freezeClockAt(POLL_ONE_AT);
+    mockFetchAllIndices.mockResolvedValueOnce([
+      makeIndex("new_one", "2026-05-15T00:00:00Z", "2026-05-15T00:00:00Z"),
+      makeIndex("updated_one", "2026-04-01T00:00:00Z", "2026-05-20T00:00:00Z"),
+    ]);
+    const result = await poll(store, {
+      showNewRecords: false,
+      showUpdatedRecords: false,
+      lookBackDate: "2026-04-01T00:00:00.000Z",
+    });
+    expect(result.payload.body.data.created.map((i) => i.name)).toEqual([
+      "new_one",
+    ]);
+    expect(result.payload.body.data.updated.map((i) => i.name)).toEqual([
+      "updated_one",
+    ]);
+    expect(result.polledNoChanges).toBe(false);
+  });
+  test("steady-state respects toggles after initial sync", async () => {
+    const store = createPollingStore({ lastPolledAt: SEEDED_CURSOR });
+    freezeClockAt(POLL_ONE_AT);
+    mockFetchAllIndices.mockResolvedValueOnce([
+      makeIndex("new_one", "2026-05-15T00:00:00Z", "2026-05-15T00:00:00Z"),
+      makeIndex("updated_one", "2026-04-01T00:00:00Z", "2026-05-20T00:00:00Z"),
+    ]);
+    const result = await poll(store, {
+      showNewRecords: false,
+      showUpdatedRecords: false,
+    });
+    expect(result.payload.body.data.created).toEqual([]);
+    expect(result.payload.body.data.updated).toEqual([]);
+    expect(result.polledNoChanges).toBe(true);
+  });
 });

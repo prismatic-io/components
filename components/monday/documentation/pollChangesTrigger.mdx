@@ -12,11 +12,11 @@ On each scheduled execution:
 
 **Initial sync**
 
-When **Look-back Date** is set, the first execution seeds the flow with every item modified on or after that date. This initial sync establishes a complete starting state, so the **Show New Records** and **Show Updated Records** inputs still apply during the sync — they control which buckets are emitted, not which items are fetched.
+When **Look-back Date** is set, the first execution seeds the flow with every item modified on or after that date. A sync seeds a complete starting state, so inputs that narrow a change feed would leave gaps in it. The initial sync ignores **Show New Records** and **Show Updated Records** while it runs, delivering every matched item regardless of those toggles.
 
 Once the sync window is exhausted, the trigger stores the current time as its polling position. The first incremental recurrence resumes from exactly there, so no items are lost across the handoff. Nothing in the payload marks the transition from sync to incremental polling.
 
-All inputs apply during the initial sync. **Board ID** determines which board is scanned, and the page size is fixed at 500 items per page.
+Later recurrences apply **Show New Records** and **Show Updated Records** normally. **Board ID** still applies throughout, and the page size is fixed at 500 items per page.
 
 **Batching**
 

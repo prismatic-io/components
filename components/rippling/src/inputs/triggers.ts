@@ -17,7 +17,7 @@ export const lookBackDate = input({
   type: "string",
   required: false,
   comments:
-    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the first recurrence reports each record created or updated since this date once, still subject to the new and updated record settings.",
+    "The date the initial sync starts from, in YYYY-MM-DD format. Cannot be a future date. Leave empty to start from the first recurrence with no backfill. When set, the initial sync seeds each record modified on or after this date once, ignoring the visibility filters.",
   example: "2026-01-01",
   clean: lookBackDateClean,
 });
