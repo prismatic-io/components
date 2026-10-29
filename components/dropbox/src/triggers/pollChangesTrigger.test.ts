@@ -1,7 +1,7 @@
 import {
   createConnection,
   defaultTriggerPayload,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import type { files } from "dropbox";
 import { oauthConnection } from "../connections";
 import type { SyncCursor } from "../types";

@@ -1,8 +1,5 @@
 import { action, ConnectionError, util } from "@prismatic-io/spectral";
-import {
-  handleErrors,
-  sendRawRequest,
-} from "@prismatic-io/spectral/dist/clients/http";
+import { handleErrors, sendRawRequest } from "@prismatic-io/spectral/http";
 import { MISSING_ACCESS_TOKEN_ERROR_MESSAGE } from "../../constants";
 import { rawRequestInputs } from "../../inputs";
 import {

@@ -20,7 +20,7 @@ import {
   ListBucketsCommand,
   S3ServiceException,
 } from "@aws-sdk/client-s3";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { accessKeySecretPair } from "../../connections";
 import { LIST_BUCKETS_MAX_BUCKETS } from "../../constants";
 import {

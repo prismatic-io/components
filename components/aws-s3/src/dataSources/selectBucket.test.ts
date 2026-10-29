@@ -18,7 +18,7 @@ import { ListBucketsCommand } from "@aws-sdk/client-s3";
 import {
   createConnection,
   invokeDataSource,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { accessKeySecretPair } from "../connections";
 import { LIST_BUCKETS_MAX_BUCKETS } from "../constants";
 import {

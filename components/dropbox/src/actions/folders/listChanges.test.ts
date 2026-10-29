@@ -1,4 +1,4 @@
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { oauthConnection } from "../../connections";
 import { listChangesExamplePayload } from "../../examplePayloads";
 import type { CursorData } from "../../types";

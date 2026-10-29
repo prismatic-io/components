@@ -18,7 +18,7 @@ import type { ActionContext } from "@prismatic-io/spectral";
 import {
   createConnection,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { createS3Client } from "../client";
 import { accessKeySecretPair } from "../connections";
 import { LIST_BUCKETS_MAX_BUCKETS } from "../constants";

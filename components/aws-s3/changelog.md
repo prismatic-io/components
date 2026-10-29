@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-29
+
+Various modernizations and documentation updates
+
 ### 2026-10-05
 
 Added new inputs and polling trigger capabilities, and fixed issues in file polling, bucket listing, and webhook message verification:

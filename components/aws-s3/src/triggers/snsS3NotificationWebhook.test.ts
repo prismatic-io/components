@@ -3,12 +3,12 @@ const { createClientMock, getMock } = vi.hoisted(() => ({
   getMock: vi.fn(),
 }));
 
-vi.mock("@prismatic-io/spectral/dist/clients/http", () => ({
+vi.mock("@prismatic-io/spectral/http", () => ({
   createClient: createClientMock,
 }));
 
 import { generateKeyPairSync, sign } from "node:crypto";
-import { invokeTrigger } from "@prismatic-io/spectral/dist/testing";
+import { invokeTrigger } from "@prismatic-io/spectral/testing";
 import { snsS3NotificationWebhookExamplePayload } from "../examplePayloads";
 import type { SnsMessage } from "../types";
 import { buildSnsStringToSign } from "../utils";

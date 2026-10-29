@@ -1,5 +1,5 @@
 import { verify } from "node:crypto";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import type { SnsCertificateFetcher, SnsMessage } from "../types";
 
 const SNS_HOSTNAME = /^sns\.[a-z0-9-]+\.amazonaws\.com(\.cn)?$/;

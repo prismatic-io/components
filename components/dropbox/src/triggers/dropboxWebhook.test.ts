@@ -1,7 +1,7 @@
 import {
   defaultTriggerPayload,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { dropboxWebhook } from "./dropboxWebhook";
 
 const SIGNING_SECRET = "exampleSigningSecret";

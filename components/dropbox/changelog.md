@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2026-10-29
+
+Various modernizations and documentation updates
+
 ### 2026-09-18
 
 Added an initial sync and opt-in batching to the **New and Updated Files** trigger, added output schemas and inline action calling across the component, grouped related action inputs into structured objects, and fixed path handling on the lock actions:

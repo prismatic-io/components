@@ -29,7 +29,7 @@ import {
   SubscribeCommand,
   UnsubscribeCommand,
 } from "@aws-sdk/client-sns";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { accessKeySecretPair } from "../../connections";
 import {
   bucketEventTriggerConfigurationExamplePayload,

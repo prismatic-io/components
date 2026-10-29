@@ -36,7 +36,7 @@ import {
   GetCallerIdentityCommand,
   STSServiceException,
 } from "@aws-sdk/client-sts";
-import { createConnection, invoke } from "@prismatic-io/spectral/dist/testing";
+import { createConnection, invoke } from "@prismatic-io/spectral/testing";
 import { accessKeySecretPair } from "../../connections";
 import { getCurrentAccountExamplePayload } from "../../examplePayloads";
 import { getCurrentAccount } from "./getCurrentAccount";

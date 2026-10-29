@@ -18,7 +18,7 @@ import type { ActionContext } from "@prismatic-io/spectral";
 import {
   createConnection,
   invokeTrigger,
-} from "@prismatic-io/spectral/dist/testing";
+} from "@prismatic-io/spectral/testing";
 import { accessKeySecretPair } from "../connections";
 import { pollChangesFilesTriggerExamplePayload } from "../examplePayloads";
 import type { FileListingCursor, PollingState } from "../types";

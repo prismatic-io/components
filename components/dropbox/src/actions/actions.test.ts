@@ -1,4 +1,4 @@
-import { createHarness } from "@prismatic-io/spectral/dist/testing";
+import { createHarness } from "@prismatic-io/spectral/testing";
 import component from "..";
 import { oauthConnection } from "../connections";
 

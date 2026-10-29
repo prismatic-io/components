@@ -4,5 +4,17 @@
     "version": "0.1.0",
     "build": "193af1cb249158666c7999aa91a1631d4e567de8d9579eb868658c62527920e6",
     "spectral": "^10.36.0"
+  },
+  "aws-s3": {
+    "name": "@prismatic-io/components-aws-s3",
+    "version": "0.1.0",
+    "build": "105448ce46f6cf9e948924bcfc80ef828863d70548334df9d1e67576d5bb3171",
+    "spectral": "^10.36.0"
+  },
+  "dropbox": {
+    "name": "@prismatic-io/components-dropbox",
+    "version": "0.1.0",
+    "build": "5943e980c71590efc74be48a1930019415bff4d7b9e86e18fd1c0160fce2d914",
+    "spectral": "^10.36.0"
   }
 }

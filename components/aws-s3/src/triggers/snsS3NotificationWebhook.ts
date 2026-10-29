@@ -1,5 +1,5 @@
 import { trigger, util } from "@prismatic-io/spectral";
-import { createClient } from "@prismatic-io/spectral/dist/clients/http";
+import { createClient } from "@prismatic-io/spectral/http";
 import { snsS3NotificationWebhookExamplePayload } from "../examplePayloads";
 import { snsS3NotificationWebhookInputs } from "../inputs";
 import type { SnsMessage } from "../types";

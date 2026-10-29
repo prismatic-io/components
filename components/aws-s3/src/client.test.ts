@@ -23,7 +23,7 @@ vi.mock("aws-utils", () => {
 });
 
 import { ConnectionError } from "@prismatic-io/spectral";
-import { createConnection } from "@prismatic-io/spectral/dist/testing";
+import { createConnection } from "@prismatic-io/spectral/testing";
 import { createS3Client } from "./client";
 import { accessKeySecretPair } from "./connections";
 
