@@ -13,6 +13,17 @@ postinstall = """
   npm install --global @prismatic-io/spectral@^10
 """
 
+[tasks.release]
+description = "Start the npm publish workflow, which publishes each version in npm-api/manifest.json that npm does not have"
+usage = '''
+flag "--dry-run" help="Pack and report without publishing"
+'''
+run = """
+dry_run=$([ "$usage_dry_run" = "true" ] && echo true || echo false)
+gh workflow run npm-publish.yml --repo prismatic-io/components --ref main -f dry_run=$dry_run
+echo "Publish workflow started (dry_run=$dry_run): https://github.com/prismatic-io/components/actions/workflows/npm-publish.yml"
+"""
+
 [tasks.publish-first]
 description = "Publish npm-ready components' first versions and make the publish workflow their trusted publisher"
 usage = '''

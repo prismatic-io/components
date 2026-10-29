@@ -8,17 +8,18 @@
  * trust expires unless the workflow publishes within two days. So, from main
  * and the developer's npm login, this publishes each package at the bootstrap
  * version (0.0.1, the package as main builds it), makes the workflow its
- * trusted publisher, and then starts the workflow, which publishes the
- * manifest's version through it. Every package is built and packed before
+ * trusted publisher, and then starts the workflow with `mise run release`,
+ * which publishes the manifest's version through it. Every package is built and packed before
  * anything publishes, then the publishes and trusted publishers run back to
  * back, so npm's one-time password prompts come together. A package that
- * fails does not stop the others, and running the command again for it picks
- * up where it stopped, replacing a trusted publisher that may have expired.
+ * fails does not stop the others, and running the same command again picks up
+ * where it stopped, replacing a trusted publisher that may have expired.
  *
  * Usage: mise run publish-first (<component>... | --all) [--dry-run]
  */
 
-import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync } from "node:fs";
+import { mkdtemp, readdir, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { $ } from "bun";
@@ -60,9 +61,13 @@ const npmOutput = async (args: string[]): Promise<string | null> => {
   return (await proc.exited) === 0 ? output : null;
 };
 
-const readJson = (path: string): unknown => JSON.parse(readFileSync(path, "utf8"));
+const readJson = async (path: string): Promise<unknown> => JSON.parse(await readFile(path, "utf8"));
 
-/** Why this checkout is not main as it is on GitHub, or null when it is. */
+/**
+ * Why this checkout is not main as it is on GitHub, or null when it is. Untracked files
+ * count, since a pack could pick them up; ignored ones, such as node_modules and the
+ * builds, do not, since the pack installs and rebuilds them.
+ */
 const checkoutProblem = async (): Promise<string | null> => {
   const branch = (await $`git rev-parse --abbrev-ref HEAD`.text()).trim();
   if (branch !== "main") return `this is ${branch}; check out main`;
@@ -72,8 +77,8 @@ const checkoutProblem = async (): Promise<string | null> => {
     $`git rev-parse origin/main`.text(),
   ]);
   if (head !== upstream) return "main is not origin/main; pull first";
-  if ((await $`git status --porcelain --untracked-files=no`.text()).trim()) {
-    return "there are local changes; commit or stash them";
+  if ((await $`git status --porcelain`.text()).trim()) {
+    return "there are local changes or untracked files; commit, stash or remove them";
   }
   return null;
 };
@@ -122,13 +127,13 @@ const packBootstrap = async (key: string, into: string): Promise<string> => {
   // published with scripts off, so nothing builds twice.
   await npm(dir, NPM_CI_ARGS);
   await npm(dir, ["pack", "--pack-destination", into]);
-  const tarball = readdirSync(into).find((file) => file.endsWith(".tgz"));
+  const tarball = (await readdir(into)).find((file) => file.endsWith(".tgz"));
   if (!tarball) throw new Error(`npm pack left no tarball in ${into}`);
   await $`tar -xzf ${join(into, tarball)} -C ${into}`;
   const unpacked = join(into, "package");
   const pkgPath = join(unpacked, "package.json");
-  const pkg = readJson(pkgPath) as Record<string, unknown>;
-  writeFileSync(pkgPath, `${JSON.stringify({ ...pkg, version: BOOTSTRAP_VERSION }, null, 2)}\n`);
+  const pkg = (await readJson(pkgPath)) as Record<string, unknown>;
+  await writeFile(pkgPath, `${JSON.stringify({ ...pkg, version: BOOTSTRAP_VERSION }, null, 2)}\n`);
   return unpacked;
 };
 
@@ -151,13 +156,13 @@ const main = async () => {
   if (checkout) console.warn(`Warning: ${checkout}. Continuing because this is a dry run.`);
 
   const manifest = existsSync(MANIFEST_FILE)
-    ? parseAs(ManifestSchema, readJson(MANIFEST_FILE), MANIFEST_FILE)
+    ? parseAs(ManifestSchema, await readJson(MANIFEST_FILE), MANIFEST_FILE)
     : {};
   const keys = all ? Object.keys(manifest).sort() : named;
   const packages: Record<string, PackageJson | undefined> = {};
   for (const key of keys) {
     const path = join("components", key, "package.json");
-    packages[key] = existsSync(path) ? parseAs(PackageJsonSchema, readJson(path), path) : undefined;
+    packages[key] = existsSync(path) ? parseAs(PackageJsonSchema, await readJson(path), path) : undefined;
   }
   const steps = await Promise.all(
     keys.map(async (key) => {
@@ -195,7 +200,7 @@ const main = async () => {
   const toBootstrap = jobs.filter((job) => job.step.action === "bootstrap");
   console.log(`\nBuilding ${toBootstrap.length} package(s)`);
   const builtShared = new Set<string>();
-  const packDir = mkdtempSync(join(tmpdir(), "publish-first-"));
+  const packDir = await mkdtemp(join(tmpdir(), "publish-first-"));
   await eachJob(toBootstrap, async (job, label) => {
     console.log(`\n== ${label}`);
     for (const shared of sharedPackagesOf(packages[job.key] ?? {})) {
@@ -204,7 +209,7 @@ const main = async () => {
       await npm(join("packages", shared), ["run", "build"]);
       builtShared.add(shared);
     }
-    job.bootstrap = await packBootstrap(job.key, mkdtempSync(join(packDir, `${job.key}-`)));
+    job.bootstrap = await packBootstrap(job.key, await mkdtemp(join(packDir, `${job.key}-`)));
   });
 
   console.log(`\nPublishing ${toBootstrap.filter((job) => !job.failed).length} package(s) at ${BOOTSTRAP_VERSION}`);
@@ -247,13 +252,12 @@ const main = async () => {
   const trusted = jobs.filter((job) => !job.failed);
   if (trusted.length > 0) {
     // The trusted publishers expire unless the workflow publishes within two days.
-    const dispatch = ["workflow", "run", WORKFLOW, "--repo", REPOSITORY, "--ref", "main", "-f", "dry_run=false"];
     if (dryRun) {
-      console.log(`\nDry run: would then run \`gh ${dispatch.join(" ")}\``);
+      console.log("\nDry run: would then run `mise run release`");
     } else {
-      await $`gh ${dispatch}`;
+      await $`mise run release`;
       console.log(
-        `\nStarted ${WORKFLOW}, which publishes ${trusted.length} package(s) at their manifest versions. ` +
+        `\nThe workflow publishes ${trusted.length} package(s) at their manifest versions. ` +
           `Check it at https://github.com/${REPOSITORY}/actions/workflows/${WORKFLOW}; ` +
           "if it fails, fix it and run it again within two days, before the trusted publishers expire; " +
           "after that, run this command again for those packages first, which sets their trusted publishers up again.",
@@ -262,9 +266,11 @@ const main = async () => {
   }
   const failures = jobs.filter((job) => job.failed);
   if (failures.length > 0) {
-    const rerun = failures.map((job) => job.key).join(" ");
+    // A rerun skips what is done, so the same command picks up where this one stopped.
+    const rerun = all ? "--all" : named.join(" ");
     throw new Error(
-      `${failures.length} package(s) failed; to pick up where they stopped, run\n  mise run publish-first ${rerun}`,
+      `${failures.length} package(s) failed (${failures.map((job) => job.key).join(", ")}); ` +
+        `fix them and run \`mise run publish-first ${rerun}\` again`,
     );
   }
 };

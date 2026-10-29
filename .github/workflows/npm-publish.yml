@@ -9,7 +9,8 @@
 # publishes the manifest's version. This workflow skips packages npm has
 # never seen, with a warning.
 #
-# Run it by hand with dry_run to see what would publish. To pause publishing,
+# Start it by hand with `mise run release`, or `mise run release --dry-run` to
+# see what would publish. To pause publishing,
 # disable the workflow from the Actions tab.
 name: Publish npm packages
 
