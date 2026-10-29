@@ -12,6 +12,7 @@ import {
   planPublish,
   sharedPackagesOf,
   trustConfigsIn,
+  waitForPackages,
 } from "./publish-plan.ts";
 
 const entry = (version: string): ManifestEntry => ({
@@ -272,5 +273,69 @@ describe("trustConfigsIn", () => {
 
   test("rejects a configuration without an id", () => {
     expect(() => trustConfigsIn('{ "type": "github" }')).toThrow("npm trust list --json");
+  });
+});
+
+describe("waitForPackages", () => {
+  /** A registry that starts showing each package after the given number of lookups. */
+  const registry = (shownAfter: Record<string, number>) => {
+    const lookups: Record<string, number> = {};
+    return async (name: string) => {
+      lookups[name] = (lookups[name] ?? 0) + 1;
+      return lookups[name] > (shownAfter[name] ?? Number.POSITIVE_INFINITY)
+        ? onNpm([BOOTSTRAP_VERSION])
+        : null;
+    };
+  };
+  /** A clock that moves only when the wait sleeps. */
+  const clock = () => {
+    let time = 0;
+    const sleeps: number[] = [];
+    return {
+      now: () => time,
+      sleep: async (ms: number) => {
+        sleeps.push(ms);
+        time += ms;
+      },
+      sleeps,
+    };
+  };
+
+  test("returns at once when npm shows every package", async () => {
+    const c = clock();
+    const lookup = registry({ a: 0, b: 0 });
+    expect(await waitForPackages(["a", "b"], { lookup, ...c })).toEqual([]);
+    expect(c.sleeps).toEqual([]);
+  });
+
+  test("waits until npm shows each package, asking only about the hidden ones", async () => {
+    const c = clock();
+    const waits: string[][] = [];
+    const lookup = registry({ a: 1, b: 3 });
+    const pending = await waitForPackages(["a", "b"], {
+      lookup,
+      ...c,
+      intervalMs: 10,
+      onWait: (names) => waits.push(names),
+    });
+    expect(pending).toEqual([]);
+    expect(waits).toEqual([["a", "b"], ["b"], ["b"]]);
+    expect(c.sleeps).toEqual([10, 10, 10]);
+  });
+
+  test("returns what is still hidden when time runs out", async () => {
+    const c = clock();
+    const lookup = registry({ a: 0 });
+    expect(await waitForPackages(["a", "b"], { lookup, ...c, intervalMs: 10, limitMs: 25 })).toEqual(["b"]);
+    expect(c.sleeps).toEqual([10, 10, 10]);
+  });
+
+  test("treats a package without the bootstrap version, or a failed lookup, as hidden", async () => {
+    const c = clock();
+    const lookup = async (name: string) => {
+      if (name === "a") throw new Error("registry answered 503");
+      return onNpm(["0.0.0-stage"]);
+    };
+    expect(await waitForPackages(["a", "b"], { lookup, ...c, intervalMs: 10, limitMs: 10 })).toEqual(["a", "b"]);
   });
 });

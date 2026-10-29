@@ -8,8 +8,9 @@
  * trust expires unless the workflow publishes within two days. So, from main
  * and the developer's npm login, this publishes each package at the bootstrap
  * version (0.0.1, the package as main builds it), makes the workflow its
- * trusted publisher, and then starts the workflow with `mise run release`,
- * which publishes the manifest's version through it. Every package is built and packed before
+ * trusted publisher, waits for npm to finish reviewing the new packages, and
+ * then starts the workflow with `mise run release`, which publishes the
+ * manifest's version through it. Every package is built and packed before
  * anything publishes, then the publishes and trusted publishers run back to
  * back, so npm's one-time password prompts come together. A package that
  * fails does not stop the others, and running the same command again picks up
@@ -38,6 +39,7 @@ import {
   REGISTRY,
   sharedPackagesOf,
   trustConfigsIn,
+  waitForPackages,
 } from "./publish-plan.ts";
 
 /** `npm trust` needs npm 11.15 or later. */
@@ -250,19 +252,42 @@ const main = async () => {
   console.log("");
   for (const job of jobs) console.log(`${job.step.entry.name}: ${job.result}`);
   const trusted = jobs.filter((job) => !job.failed);
-  if (trusted.length > 0) {
+  // The workflow skips a package the registry does not show yet, and npm holds
+  // a new package's first version back while it reviews it.
+  const created = trusted.filter((job) => job.step.action === "bootstrap").map((job) => job.step.entry.name);
+  let inReview: string[] = [];
+  if (created.length > 0 && !dryRun) {
+    console.log(`\nWaiting for npm to finish reviewing ${created.length} new package(s), for up to 15 minutes`);
+    let reported = created.length;
+    inReview = await waitForPackages(created, {
+      onWait: (pending) => {
+        if (pending.length !== reported) console.log(`  ${pending.length} still in review`);
+        reported = pending.length;
+      },
+    });
+  }
+  const ready = trusted.filter((job) => !inReview.includes(job.step.entry.name));
+  if (ready.length > 0) {
     // The trusted publishers expire unless the workflow publishes within two days.
     if (dryRun) {
-      console.log("\nDry run: would then run `mise run release`");
+      const wait = created.length > 0 ? `wait for npm to show ${created.length} new package(s), then ` : "";
+      console.log(`\nDry run: would ${wait}run \`mise run release\``);
     } else {
       await $`mise run release`;
       console.log(
-        `\nThe workflow publishes ${trusted.length} package(s) at their manifest versions. ` +
+        `\nThe workflow publishes ${ready.length} package(s) at their manifest versions. ` +
           `Check it at https://github.com/${REPOSITORY}/actions/workflows/${WORKFLOW}; ` +
           "if it fails, fix it and run it again within two days, before the trusted publishers expire; " +
           "after that, run this command again for those packages first, which sets their trusted publishers up again.",
       );
     }
+  }
+  if (inReview.length > 0) {
+    console.log(
+      `\nnpm is still reviewing ${inReview.length} package(s): ${inReview.join(", ")}. ` +
+        "Once npm shows them, run `mise run release` within two days, before their trusted publishers expire; " +
+        "after that, run this command again for them first.",
+    );
   }
   const failures = jobs.filter((job) => job.failed);
   if (failures.length > 0) {

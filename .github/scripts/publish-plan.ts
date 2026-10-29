@@ -109,7 +109,8 @@ export const planPublish = (
           action: "manual",
           key,
           entry,
-          reason: "not on npm yet; a developer creates it with `mise run publish-first`",
+          reason:
+            "not on npm yet, or npm is still reviewing its first version; a developer creates it with `mise run publish-first`",
         };
       }
       if (onNpm?.versions.includes(entry.version)) {
@@ -206,4 +207,47 @@ export const fetchPublished = async (
   if (!res.ok) throw new Error(`${name}: registry answered ${res.status}`);
   const body = parseAs(PackumentSchema, await res.json(), `the registry's answer for ${name}`);
   return { versions: Object.keys(body.versions), latest: body["dist-tags"]["latest"] ?? null };
+};
+
+export interface WaitOptions {
+  lookup?: (name: string) => Promise<Published | null>;
+  sleep?: (ms: number) => Promise<unknown>;
+  now?: () => number;
+  intervalMs?: number;
+  limitMs?: number;
+  /** Called before each wait with the packages npm does not show yet. */
+  onWait?: (pending: string[]) => void;
+}
+
+/**
+ * Waits until the registry shows each package at the bootstrap version. npm
+ * holds a new package's first version back while it reviews it (about three
+ * minutes for the first package), and the publish workflow skips a package
+ * the registry does not show. Returns the packages still hidden when the time
+ * runs out; a failed lookup counts as hidden.
+ */
+export const waitForPackages = async (
+  names: readonly string[],
+  {
+    lookup = fetchPublished,
+    sleep = (ms) => Bun.sleep(ms),
+    now = Date.now,
+    intervalMs = 15_000,
+    limitMs = 15 * 60_000,
+    onWait = () => {},
+  }: WaitOptions = {},
+): Promise<string[]> => {
+  const deadline = now() + limitMs;
+  let pending = [...names];
+  for (;;) {
+    const shown = await Promise.all(
+      pending.map(async (name) =>
+        ((await lookup(name).catch(() => null))?.versions ?? []).includes(BOOTSTRAP_VERSION),
+      ),
+    );
+    pending = pending.filter((_, i) => !shown[i]);
+    if (pending.length === 0 || now() >= deadline) return pending;
+    onWait(pending);
+    await sleep(intervalMs);
+  }
 };
