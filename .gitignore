@@ -21,6 +21,7 @@ jspm_packages
 .yarn-integrity
 .next
 dist
+npm-dist
 *.zip
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
