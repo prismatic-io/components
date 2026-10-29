@@ -10,7 +10,7 @@
 # never seen, with a warning.
 #
 # Start it by hand with `mise run release`, or `mise run release --dry-run` to
-# see what would publish. To pause publishing,
+# see what would publish. Only main publishes; a dry run works from any branch. To pause publishing,
 # disable the workflow from the Actions tab.
 name: Publish npm packages
 
@@ -37,6 +37,14 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      # Pushes come only from main, but a manual run can pick any branch, and
+      # checkout takes that branch: only main publishes for real.
+      - if: github.ref != 'refs/heads/main' && !inputs.dry_run
+        env:
+          REF: ${{ github.ref_name }}
+        run: |
+          echo "::error::Only main publishes; run $REF with dry_run to see what it would publish."
+          exit 1
       - uses: actions/checkout@v4
       # Node builds and publishes the components; Bun runs the publish script.
       # Versions match mise.toml.

@@ -57,9 +57,7 @@ const main = async () => {
       Object.entries(manifest).map(async ([key, entry]) => [key, await fetchPublished(entry.name)] as const),
     ),
   );
-  const versions = Object.fromEntries(Object.entries(packages).map(([key, pkg]) => [key, pkg.version]));
-
-  const plan = planPublish(manifest, versions, published);
+  const plan = planPublish(manifest, packages, published);
   const builtShared = new Map<string, Promise<boolean>>();
   const buildShared = (name: string): Promise<boolean> => {
     const cwd = join("packages", name);

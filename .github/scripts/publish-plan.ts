@@ -27,6 +27,7 @@ export type Manifest = z.infer<typeof ManifestSchema>;
 /** The parts of a component's package.json this reads; everything else passes through. */
 export const PackageJsonSchema = z
   .object({
+    name: z.string().optional(),
     version: z.string().optional(),
     dependencies: z.record(z.string(), z.string()).optional(),
     devDependencies: z.record(z.string(), z.string()).optional(),
@@ -67,10 +68,21 @@ export type Plan =
   | { action: "manual"; key: string; entry: ManifestEntry; reason: string }
   | { action: "error"; key: string; entry: ManifestEntry; reason: string };
 
-/** Why a manifest entry's version cannot publish, or null when it can. */
-const versionProblem = (entry: ManifestEntry, inPackage: string | undefined): string | null => {
-  if (inPackage !== entry.version) {
-    return `package.json has ${inPackage ?? "no version"}, the manifest ${entry.version}`;
+/** What a plan reads from a component's package.json, which is what npm publishes. */
+export type PackageIdentity = Pick<PackageJson, "name" | "version">;
+
+/**
+ * Why a manifest entry cannot publish, or null when it can. The registry is
+ * asked about the manifest's name and npm publishes the package.json, so the
+ * two must name the same package at the same version.
+ */
+const packageProblem = (entry: ManifestEntry, pkg: PackageIdentity | undefined): string | null => {
+  if (!pkg) return "there is no package.json";
+  if (pkg.name !== entry.name) {
+    return `package.json names ${pkg.name ?? "no package"}, the manifest ${entry.name}`;
+  }
+  if (pkg.version !== entry.version) {
+    return `package.json has ${pkg.version ?? "no version"}, the manifest ${entry.version}`;
   }
   if (!semver.valid(entry.version)) return `${entry.version} is not a valid version`;
   return null;
@@ -83,13 +95,13 @@ const versionProblem = (entry: ManifestEntry, inPackage: string | undefined): st
  */
 export const planPublish = (
   manifest: Manifest,
-  packageVersions: Record<string, string | undefined>,
+  packages: Record<string, PackageIdentity | undefined>,
   published: Record<string, Published | null>,
 ): Plan[] =>
   Object.entries(manifest)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, entry]): Plan => {
-      const invalid = versionProblem(entry, packageVersions[key]);
+      const invalid = packageProblem(entry, packages[key]);
       if (invalid) return { action: "error", key, entry, reason: invalid };
       const onNpm = published[key];
       if (onNpm === null) {
@@ -138,7 +150,7 @@ export type FirstPublish =
 export const planFirstPublish = (
   key: string,
   entry: ManifestEntry | undefined,
-  packageVersion: string | undefined,
+  pkg: PackageIdentity | undefined,
   published: Published | null,
 ): FirstPublish => {
   if (!entry) {
@@ -147,7 +159,7 @@ export const planFirstPublish = (
       reason: `${key} is not in ${MANIFEST_FILE}, which lists every npm-ready component`,
     };
   }
-  const invalid = versionProblem(entry, packageVersion);
+  const invalid = packageProblem(entry, pkg);
   if (invalid) return { action: "error", reason: invalid };
   if (!semver.gt(entry.version, BOOTSTRAP_VERSION)) {
     return {

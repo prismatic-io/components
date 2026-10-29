@@ -26,9 +26,12 @@ const onNpm = (versions: string[], latest = versions.at(-1) ?? null): Published 
   latest,
 });
 
+/** slack's package.json, at `version`. */
+const pkg = (version: string, name = "@prismatic-io/components-slack") => ({ name, version });
+
 /** Plans one package, `slack`, whose package.json carries `inPackage`. */
 const planOne = (version: string, published: Published | null, inPackage = version) =>
-  planPublish({ slack: entry(version) }, { slack: inPackage }, { slack: published })[0];
+  planPublish({ slack: entry(version) }, { slack: pkg(inPackage) }, { slack: published })[0];
 
 describe("planPublish", () => {
   test("publishes a version newer than anything on npm", () => {
@@ -65,7 +68,19 @@ describe("planPublish", () => {
 
   test("refuses a manifest entry whose package.json is missing", () => {
     const [plan] = planPublish({ slack: entry("0.2.0") }, {}, { slack: onNpm(["0.1.0"]) });
-    expect(plan).toMatchObject({ action: "error", reason: "package.json has no version, the manifest 0.2.0" });
+    expect(plan).toMatchObject({ action: "error", reason: "there is no package.json" });
+  });
+
+  test("refuses a manifest name that disagrees with package.json", () => {
+    const [plan] = planPublish(
+      { slack: entry("0.2.0") },
+      { slack: pkg("0.2.0", "@prismatic-io/components-zoom") },
+      { slack: onNpm(["0.1.0"]) },
+    );
+    expect(plan).toMatchObject({
+      action: "error",
+      reason: "package.json names @prismatic-io/components-zoom, the manifest @prismatic-io/components-slack",
+    });
   });
 
   test("refuses an invalid version before asking anything of npm", () => {
@@ -75,9 +90,9 @@ describe("planPublish", () => {
 
   test("plans every entry, in key order", () => {
     const manifest: Manifest = { zoom: entry("0.1.0"), asana: entry("0.1.0"), slack: entry("0.1.0") };
-    const versions = { zoom: "0.1.0", asana: "0.1.0", slack: "0.1.0" };
+    const packages = { zoom: pkg("0.1.0"), asana: pkg("0.1.0"), slack: pkg("0.1.0") };
     const published = { zoom: null, asana: onNpm(["0.1.0"]), slack: onNpm(["0.0.9"]) };
-    expect(planPublish(manifest, versions, published).map((p) => [p.key, p.action])).toEqual([
+    expect(planPublish(manifest, packages, published).map((p) => [p.key, p.action])).toEqual([
       ["asana", "skip"],
       ["slack", "publish"],
       ["zoom", "manual"],
@@ -170,14 +185,14 @@ describe("parseAs", () => {
 
 describe("planFirstPublish", () => {
   test("bootstraps a package npm has never seen", () => {
-    expect(planFirstPublish("slack", entry("0.1.0"), "0.1.0", null)).toEqual({
+    expect(planFirstPublish("slack", entry("0.1.0"), pkg("0.1.0"), null)).toEqual({
       action: "bootstrap",
       entry: entry("0.1.0"),
     });
   });
 
   test("only sets the trusted publisher when npm has just the bootstrap version", () => {
-    expect(planFirstPublish("slack", entry("0.1.0"), "0.1.0", onNpm([BOOTSTRAP_VERSION]))).toEqual({
+    expect(planFirstPublish("slack", entry("0.1.0"), pkg("0.1.0"), onNpm([BOOTSTRAP_VERSION]))).toEqual({
       action: "trust",
       entry: entry("0.1.0"),
     });
@@ -185,36 +200,36 @@ describe("planFirstPublish", () => {
 
   test("leaves a package npm already has the manifest version of", () => {
     expect(
-      planFirstPublish("slack", entry("0.1.0"), "0.1.0", onNpm([BOOTSTRAP_VERSION, "0.1.0"])),
+      planFirstPublish("slack", entry("0.1.0"), pkg("0.1.0"), onNpm([BOOTSTRAP_VERSION, "0.1.0"])),
     ).toEqual({ action: "skip", entry: entry("0.1.0"), reason: "npm already has 0.1.0" });
   });
 
   test("leaves a package with other versions on npm to the workflow", () => {
-    const step = planFirstPublish("slack", entry("0.3.0"), "0.3.0", onNpm(["0.1.0", "0.2.0"]));
+    const step = planFirstPublish("slack", entry("0.3.0"), pkg("0.3.0"), onNpm(["0.1.0", "0.2.0"]));
     expect(step).toMatchObject({ action: "skip", reason: expect.stringContaining("npm already has 0.2.0") });
   });
 
   test("refuses a manifest version the workflow could not publish after the bootstrap", () => {
-    expect(planFirstPublish("slack", entry(BOOTSTRAP_VERSION), BOOTSTRAP_VERSION, null)).toEqual({
+    expect(planFirstPublish("slack", entry(BOOTSTRAP_VERSION), pkg(BOOTSTRAP_VERSION), null)).toEqual({
       action: "error",
       reason: "0.0.1 is not above 0.0.1, so the workflow would have nothing to publish",
     });
   });
 
   test("refuses a component the manifest does not list", () => {
-    const step = planFirstPublish("slack", undefined, "0.0.1", null);
+    const step = planFirstPublish("slack", undefined, pkg("0.0.1"), null);
     expect(step).toEqual({ action: "error", reason: expect.stringContaining("slack is not in npm-api/manifest.json") });
   });
 
   test("refuses a manifest version that disagrees with package.json", () => {
-    expect(planFirstPublish("slack", entry("0.1.0"), "0.0.1", null)).toEqual({
+    expect(planFirstPublish("slack", entry("0.1.0"), pkg("0.0.1"), null)).toEqual({
       action: "error",
       reason: "package.json has 0.0.1, the manifest 0.1.0",
     });
   });
 
   test("refuses an invalid version", () => {
-    expect(planFirstPublish("slack", entry("one"), "one", null)).toEqual({
+    expect(planFirstPublish("slack", entry("one"), pkg("one"), null)).toEqual({
       action: "error",
       reason: "one is not a valid version",
     });

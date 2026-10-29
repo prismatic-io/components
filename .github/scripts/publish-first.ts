@@ -168,7 +168,7 @@ const main = async () => {
     keys.map(async (key) => {
       const entry = manifest[key];
       const published = entry ? await fetchPublished(entry.name) : null;
-      return [key, planFirstPublish(key, entry, packages[key]?.version, published)] as const;
+      return [key, planFirstPublish(key, entry, packages[key], published)] as const;
     }),
   );
 
